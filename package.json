@@ -47,7 +47,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && next build"
+      "pre-commit": "lint-staged && next build src"
     }
   },
   "browserslist": [
