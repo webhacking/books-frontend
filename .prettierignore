@@ -1,0 +1,6 @@
+.next/
+node_modules/
+build/
+out/
+yarn.lock
+yarn-error.log

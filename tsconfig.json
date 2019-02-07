@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true,
+    "sourceMap": true,
+    "removeComments": true,
+    "jsx": "preserve",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es3",
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "outDir": "./dist/",
+    "baseUrl": ".",
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "paths": {
+      "src/*": ["./src/*"]
+    }
+  },
+  "include": ["src/pages/**/*"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,9 @@
+.idea
+.DS_Store
+
+yarn-error.log
+
+.next/
+build/
+node_modules/
+out/
