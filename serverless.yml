@@ -9,8 +9,8 @@ package:
 provider:
   name: aws
   runtime: nodejs8.10
-  region: ap-northeast-2
-  stage: ${opt:stage, 'production'}
+  region: ${self:custom.secrets.REGION}
+  stage: ${opt:stage, 'dev'}
   environment:
     NODE_ENV: ${self:custom.secrets.NODE_ENV}
 
@@ -25,19 +25,25 @@ functions:
 plugins:
   - serverless-offline
   - serverless-apigw-binary
-#  - serverless-domain-manager
+  - serverless-domain-manager
 
+# Serverless.js Custom Domain 사용하지 않을 경우 다음 이슈 확인
 # https://github.com/Vadorequest/serverless-with-next#known-issues
-# 현재 Custom Domain 이 아닐 경우 API Staging 경로 이슈가 있음
-#custom:
-#  secrets: ${file(secrets.json)}
-#  apigwBinary:
-#    types:
-#      - '*/*'
-#  customDomain:
-#    domainName: ssr-test.crying.dance
-#    basePath: ''
-#    stage: dev
-#    certificateName: '*.crying.dance'
-#    createRoute53Record: true
-#    endpointType: 'regional'
+custom:
+  stage: ${opt:stage, 'dev'}
+  secrets: ${file(secrets.json)}
+  domains:
+    prod: ${self:custom.secrets.PROD_DOMAIN}
+    staging: ${self:custom.secrets.STAGING_DOMAIN}
+    dev: ${self:custom.secrets.DEV_DOMAIN}
+
+  apigwBinary:
+    types:
+      - '*/*'
+  customDomain:
+    domainName: ${self:custom.domains.${self:custom.stage}}
+    basePath: ''
+    stage: ${opt:stage, 'dev'}
+    certificateName: ${self:custom.secrets.ACM_NAME}
+    createRoute53Record: true
+    endpointType: 'regional'

@@ -5,11 +5,13 @@ module.exports = {
       script: './server/server.js',
       autorestart: true,
       watch: './{server,src}/**/*.{js,jsx,ts,tsx}',
-      env: {
+      env_development: {
+        PORT: 8081,
         NODE_ENV: 'development',
       },
-      env_production: {
-        NODE_ENV: 'production',
+      env_local: {
+        PORT: 8081,
+        NODE_ENV: 'local',
       },
     },
   ],
