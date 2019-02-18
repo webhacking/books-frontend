@@ -10,7 +10,6 @@ module.exports = withTypeScript({
           tsconfig: '../tsconfig.json',
         }),
       );
-
     return config;
   },
 });

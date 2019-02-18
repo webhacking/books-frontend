@@ -4,6 +4,7 @@
 yarn-error.log
 
 .next/
+.serverless/
 build/
 node_modules/
 out/

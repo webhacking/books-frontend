@@ -1,9 +1,8 @@
 module.exports = {
   apps: [
     {
-      name: 'store-ssr-server',
-      script: 'ts-node',
-      args: '--project ./tsconfig.server.json ./server/index.ts',
+      name: 'store-web-server',
+      script: './server/server.js',
       autorestart: true,
       watch: './{server,src}/**/*.{js,jsx,ts,tsx}',
       env: {
