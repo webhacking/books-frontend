@@ -49,8 +49,8 @@
     "lint": "tslint \"./+(!node_modules|src|server)/**/*.+(ts|tsx)\" -c tslint.json --fix",
     "validate": "yarn lint && yarn format && yarn prettier --list-different \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "build": "next build src",
-    "local": "pm2-runtime start ecosystem.config.js --only store-web-server --env local ",
-    "deploy": "cross-env SLS_DEBUG=* yarn build && serverless deploy -v",
+    "local": "pm2-runtime start ecosystem.config.js --only store-web-server --env local",
+    "deploy": "cross-env SLS_DEBUG=* yarn build && serverless create_domain --stage prod && serverless deploy --stage prod -v",
     "offline": "cross-env SLS_DEBUG=* yarn build && serverless offline -v"
   },
   "husky": {

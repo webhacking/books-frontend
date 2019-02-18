@@ -1,0 +1,15 @@
+version: '3.6'
+services:
+  store-web:
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=${EXTERNAL_NETWORK:-ridi}'
+      - 'traefik.frontend.rule=Host:store-web.local.ridi.io'
+    networks:
+      - traefik
+    ports:
+      - 8081
+networks:
+  traefik:
+    external:
+      name: ${EXTERNAL_NETWORK:-ridi}

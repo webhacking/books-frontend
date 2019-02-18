@@ -1,0 +1,11 @@
+version: '3.6'
+
+# ssl dependent by traefik (https://github.com/ridi/traefik)
+services:
+  store-web:
+    image: node:8.10
+    container_name: store-web
+    volumes:
+      - .:/store-web
+    working_dir: /store-web
+    command: ['make', 'docker-start-local']
