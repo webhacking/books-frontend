@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 // @ts-ignore
 import { Book } from '@ridi/web-ui/dist/index.node';
 import { css } from '@emotion/core';
+import { Link } from 'server/routes';
 
 // emotion test
 const Div = styled.div`
@@ -16,7 +17,10 @@ export default class Home extends React.Component {
   public render() {
     return (
       <div>
-        <Div>Home Test</Div>
+        <Link route={'/about/1242000770'}>
+          <button>To Book Page</button>
+        </Link>
+        <Div>Home</Div>
         <Book.Thumbnail
           thumbnailWidth={240}
           css={css`

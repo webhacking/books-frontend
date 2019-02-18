@@ -13,8 +13,10 @@
     "baseUrl": ".",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
+
     "paths": {
-      "src/*": ["./src/*"]
+      "src/*": ["./src/*"],
+      "server/*": ["./server/*"]
     }
   },
   "include": ["src/pages/**/*"],

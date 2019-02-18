@@ -9,6 +9,8 @@
     "no-trailing-whitespace": false,
     "typedef-whitespace": false,
     "whitespace": false,
-    "no-any": true
+    "no-any": true,
+    "no-unused-variable": true,
+    "no-inferrable-types": true
   }
 }

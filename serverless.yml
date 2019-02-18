@@ -1,0 +1,43 @@
+service: store-web
+
+package:
+  exclude:
+    - node_modules/.cache/**
+    - .cache
+    - yarn.lock
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: ap-northeast-2
+  stage: ${opt:stage, 'production'}
+  environment:
+    NODE_ENV: ${self:custom.secrets.NODE_ENV}
+
+functions:
+  server:
+    path: /
+    handler: server/index.handler
+    events:
+      - http: ANY /
+      - http: ANY /{proxy+}
+
+plugins:
+  - serverless-offline
+  - serverless-apigw-binary
+#  - serverless-domain-manager
+
+# https://github.com/Vadorequest/serverless-with-next#known-issues
+# 현재 Custom Domain 이 아닐 경우 API Staging 경로 이슈가 있음
+#custom:
+#  secrets: ${file(secrets.json)}
+#  apigwBinary:
+#    types:
+#      - '*/*'
+#  customDomain:
+#    domainName: ssr-test.crying.dance
+#    basePath: ''
+#    stage: dev
+#    certificateName: '*.crying.dance'
+#    createRoute53Record: true
+#    endpointType: 'regional'
