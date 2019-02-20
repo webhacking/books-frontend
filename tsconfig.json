@@ -20,5 +20,5 @@
     }
   },
   "include": ["src/pages/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["/**/__tests__/*", "node_modules/**/*"]
 }

@@ -10,7 +10,7 @@ provider:
   name: aws
   runtime: nodejs8.10
   region: ${self:custom.secrets.REGION}
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'development'}
   environment:
     NODE_ENV: ${self:custom.secrets.NODE_ENV}
 
@@ -21,6 +21,8 @@ functions:
     events:
       - http: ANY /
       - http: ANY /{proxy+}
+# Proxy Resource:
+# https://docs.aws.amazon.com/ko_kr/apigateway/latest/developerguide/api-gateway-set-up-simple-proxy.html
 
 plugins:
   - serverless-offline
@@ -30,12 +32,12 @@ plugins:
 # Serverless.js Custom Domain 사용하지 않을 경우 다음 이슈 확인
 # https://github.com/Vadorequest/serverless-with-next#known-issues
 custom:
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'development'}
   secrets: ${file(secrets.json)}
   domains:
-    prod: ${self:custom.secrets.PROD_DOMAIN}
+    production: ${self:custom.secrets.PROD_DOMAIN}
     staging: ${self:custom.secrets.STAGING_DOMAIN}
-    dev: ${self:custom.secrets.DEV_DOMAIN}
+    development: ${self:custom.secrets.DEV_DOMAIN}
 
   apigwBinary:
     types:
@@ -43,7 +45,7 @@ custom:
   customDomain:
     domainName: ${self:custom.domains.${self:custom.stage}}
     basePath: ''
-    stage: ${opt:stage, 'dev'}
+    stage: ${opt:stage, 'development'}
     certificateName: ${self:custom.secrets.ACM_NAME}
     createRoute53Record: true
     endpointType: 'regional'
