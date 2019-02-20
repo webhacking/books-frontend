@@ -1,0 +1,65 @@
+image: ridibooks/gitlab-ci-docker-aws:1.5.0
+
+stages:
+  - test
+  - deploy
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules
+
+.install:
+  before_script:
+    - apk add nodejs yarn
+    - make install
+
+.test-template:
+  stage: test
+  extends: .install
+
+test:jest:
+  stage: test
+  extends: .test-template
+  script:
+    - yarn global add codecov
+    - yarn test
+  after_script:
+    - codecov
+
+.deploy-template:
+  stage: deploy
+  extends: .install
+  script: yarn build
+
+deploy-development:
+  extends: .deploy-template
+  variables:
+    ENVIRONMENT: 'development'
+    AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
+  script:
+    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+    - yarn deploy
+
+deploy-staging:
+  extends: .deploy-template
+  when: manual
+  variables:
+    ENVIRONMENT: 'staging'
+    AWS_ACCESS_KEY_ID: $STAGING_AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $STAGING_AWS_SECRET_ACCESS_KEY
+  script:
+    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+# sls deploy
+
+deploy-production:
+  extends: .deploy-template
+  when: manual
+  variables:
+    ENVIRONMENT: 'production'
+    AWS_ACCESS_KEY_ID: $PRODUCTION_AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $PRODUCTION_AWS_SECRET_ACCESS_KEY
+  script:
+    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+# sls deploy
