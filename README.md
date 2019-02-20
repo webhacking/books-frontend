@@ -7,6 +7,11 @@
 ### Requirements
 
 - Docker
+- Install packages
+
+```bash
+$ make install
+```
 
 **Serve with TLS**
 
@@ -15,3 +20,21 @@
 ```bash
 $ docker-compose up
 ```
+
+> Open https://store-web.local.ridi.io and enjoying development! 🥳
+
+### Testing
+
+> Sourcecode
+
+```bash
+$ yarn test
+```
+
+> E2E
+
+### FAQ
+
+#### Custom Routing
+
+> Look `server/routes.js` and `https://github.com/fridays/next-routes`
