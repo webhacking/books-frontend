@@ -18,20 +18,25 @@ $ make install
 > First run [traefik](https://github.com/ridi/traefik/blob/master/README.md),
 
 ```bash
-$ docker-compose up
+$ docker-compose up -d
+...
+$ open https://store-web.local.ridi.io
+
 ```
 
-> Open https://store-web.local.ridi.io and enjoying development! 🥳
+**Enjoying development! 🥳**
 
 ### Testing
 
-> Sourcecode
+#### Sourcecode
 
 ```bash
 $ yarn test
 ```
 
-> E2E
+#### E2E
+
+> Use cypress.io
 
 ### FAQ
 
