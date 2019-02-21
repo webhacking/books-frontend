@@ -2,6 +2,7 @@ const express = require('express');
 const next = require('next');
 const path = require('path');
 const compression = require('compression');
+const cookieParser = require('cookie-parser');
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = parseInt(process.env.PORT || '8081', 10);
@@ -15,8 +16,14 @@ function createServer() {
   const server = express();
 
   server.use(compression());
+  server.use(cookieParser());
   server.use(express.json());
-  server.use(`/_next`, express.static(path.join(__dirname, '../build')));
+  server.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    next();
+  });
+  // server.use(`/_next`, express.static(path.join(__dirname, '../build')));
+  // app.serveStatic()
   server.get('*', (req, res) => handle(req, res));
 
   return server;
