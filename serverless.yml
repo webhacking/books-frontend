@@ -10,7 +10,13 @@ provider:
   name: aws
   runtime: nodejs8.10
   region: ${self:custom.secrets.REGION}
-  stage: ${opt:stage, 'development'}
+  stage:
+    ${opt:stage, 'development'}
+    # CloudFormation Name
+  stackName: store-web-serverless-${opt:stage, 'development'}
+  deploymentBucket:
+    name: store-web.serverless.${opt:stage, 'development'}.${self:provider.region}.deploys
+  #   serverSideEncryption: AES256
   environment:
     NODE_ENV: ${self:custom.secrets.NODE_ENV}
 
@@ -19,8 +25,13 @@ functions:
     path: /
     handler: server/index.handler
     events:
-      - http: ANY /
-      - http: ANY /{proxy+}
+      - cors: true
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: /{proxy+}
 # Proxy Resource:
 # https://docs.aws.amazon.com/ko_kr/apigateway/latest/developerguide/api-gateway-set-up-simple-proxy.html
 
@@ -47,5 +58,6 @@ custom:
     basePath: ''
     stage: ${opt:stage, 'development'}
     certificateName: ${self:custom.secrets.ACM_NAME}
-    createRoute53Record: true
+    #    createRoute53Record: true
     endpointType: 'regional'
+# Todo CloudFront 자동화 설정

@@ -7,7 +7,7 @@ stages:
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-    - node_modules
+    - node_modules/
 
 .install:
   before_script:
@@ -41,6 +41,7 @@ deploy-development:
   script:
     - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
     - yarn deploy
+    - aws cloudfront create-invalidation --distribution-id $DEV_CDN_DISTRIBUTION_ID --paths "/*"
 
 deploy-staging:
   extends: .deploy-template
