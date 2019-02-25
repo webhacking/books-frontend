@@ -4,6 +4,9 @@ package:
   exclude:
     - node_modules/.cache/**
     - .cache
+    - coverage/
+    - static/
+    - secrets.json
     - yarn.lock
 
 provider:
@@ -39,25 +42,80 @@ plugins:
   - serverless-offline
   - serverless-apigw-binary
   - serverless-domain-manager
+  - serverless-s3-sync
 
 # Serverless.js Custom Domain 사용하지 않을 경우 다음 이슈 확인
 # https://github.com/Vadorequest/serverless-with-next#known-issues
 custom:
+  s3Sync:
+    - bucketName: store-web.serverless.${opt:stage, 'development'}.${self:provider.region}.deploys
+      bucketPrefix: static/ # optional
+      localDir: static/ # required
+    - bucketName: store-web.serverless.${opt:stage, 'development'}.${self:provider.region}.deploys
+      bucketPrefix: _next/ # optional
+      localDir: build/
+      params: # optional
+        - '*.js':
+            CacheControl: 'public, max-age=31536000'
+
   stage: ${opt:stage, 'development'}
   secrets: ${file(secrets.json)}
   domains:
-    production: ${self:custom.secrets.PROD_DOMAIN}
-    staging: ${self:custom.secrets.STAGING_DOMAIN}
-    development: ${self:custom.secrets.DEV_DOMAIN}
+    production:
+      lambda: ${self:custom.secrets.PROD_DOMAIN}
+      static: ${self:custom.secrets.PROD_STATIC_DOMAIN}
+    staging:
+      lambda: ${self:custom.secrets.STAGING_DOMAIN}
+      static: ${self:custom.secrets.STAGING_STATIC_DOMAIN}
+    development:
+      lambda: ${self:custom.secrets.DEV_DOMAIN}
+      static: ${self:custom.secrets.DEV_STATIC_DOMAIN}
 
   apigwBinary:
     types:
       - '*/*'
   customDomain:
-    domainName: ${self:custom.domains.${self:custom.stage}}
+    domainName: ${self:custom.domains.${self:custom.stage}.lambda}
     basePath: ''
     stage: ${opt:stage, 'development'}
     certificateName: ${self:custom.secrets.ACM_NAME}
-    #    createRoute53Record: true
+    createRoute53Record: false
     endpointType: 'regional'
+
 # Todo CloudFront 자동화 설정
+
+# S3 Bucket Policy
+resources:
+  Resources:
+    StaticBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: store-web.serverless.${opt:stage, 'development'}.${self:provider.region}.deploys
+        PolicyDocument:
+          Statement:
+            - Sid: 'AllowPublicRead'
+              Action:
+                - 's3:GetObject'
+              Effect: 'Allow'
+              Resource: arn:aws:s3:::store-web.serverless.${opt:stage, 'development'}.${self:provider.region}.deploys/*
+              Principal: '*'
+    LambdaDNSRecord:
+      Type: AWS::Route53::RecordSet
+      Properties:
+        HostedZoneName: crying.dance.
+        Name: ${self:custom.domains.${self:custom.stage}.lambda}
+        Type: A
+        AliasTarget:
+          DNSName: diy45jt5bbljd.cloudfront.net.
+          HostedZoneId: Z2FDTNDATAQYW2
+    StaticDNSRecord:
+      Type: AWS::Route53::RecordSet
+      Properties:
+        HostedZoneName: crying.dance.
+        Name: ${self:custom.domains.${self:custom.stage}.static}
+        Type: A
+        AliasTarget:
+          DNSName: d1dpwi79ahko80.cloudfront.net.
+          HostedZoneId: Z2FDTNDATAQYW2
+          # https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html
+    #
