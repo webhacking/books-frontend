@@ -22,9 +22,18 @@ function createServer() {
     res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     next();
   });
-  // server.use(`/_next`, express.static(path.join(__dirname, '../build')));
-  // app.serveStatic()
-  server.get('*', (req, res) => handle(req, res));
+
+  server.use(`/_next`, express.static(path.join(__dirname, '../build')));
+  server.use('/static', express.static(path.join(__dirname, '../static')));
+  server.get('*', async (req, res) => {
+    // console.log(req.url);
+    if (req.url === '/service-worker.js' || req.url.includes('precache-manifest')) {
+      const filePath = path.join(__dirname, '../', 'build', req.url);
+      // console.log(filePath);
+      await app.serveStatic(req, res, filePath);
+    }
+    return handle(req, res);
+  });
 
   return server;
 }

@@ -24,7 +24,7 @@ $ open https://store-web.local.ridi.io
 
 ```
 
-**Enjoying development! 🥳**
+**Enjoying development!**
 
 ### Testing
 

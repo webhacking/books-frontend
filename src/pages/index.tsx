@@ -20,7 +20,7 @@ export default class Home extends React.Component {
         <Link route={'/about/1242000770'}>
           <button>To Book Page</button>
         </Link>
-        <Div>Very New Home</Div>
+        <Div>SW Test New Home</Div>
         <Book.Thumbnail
           thumbnailWidth={240}
           css={css`

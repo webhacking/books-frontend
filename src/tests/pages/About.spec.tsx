@@ -1,12 +1,12 @@
 import * as React from 'react';
-import Index from '../index';
+import About from 'src/pages/about';
 import { render, cleanup } from 'react-testing-library';
 import 'jest-dom/extend-expect';
 
 afterEach(cleanup);
 
 test('should be render Index Component', () => {
-  const { getByText } = render(<Index />);
+  const { getByText } = render(<About id={'12345'} />);
 
   expect(getByText(/Home/)).toHaveTextContent('Home');
 });

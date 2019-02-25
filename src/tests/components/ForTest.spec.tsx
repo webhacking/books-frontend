@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ForTest from '../ForTest';
+import ForTest from '../../components/ForTest';
 import { render, cleanup } from 'react-testing-library';
 import 'jest-dom/extend-expect';
 
