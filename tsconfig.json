@@ -17,7 +17,8 @@
     "paths": {
       "src/*": ["./src/*"],
       "server/*": ["./server/*"]
-    }
+    },
+    "typeRoots": ["./src/types", "node_modules/@types"]
   },
   "include": ["src/pages/**/*"],
   "exclude": ["/**/__tests__/*", "node_modules/**/*"]

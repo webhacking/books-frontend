@@ -6,6 +6,8 @@ import styled from '@emotion/styled';
 // @ts-ignore
 import { Book } from '@ridi/web-ui/dist/index.node';
 import { css } from '@emotion/core';
+
+// @ts-ignore
 import { Link } from 'server/routes';
 
 // emotion test
