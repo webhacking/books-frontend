@@ -26,11 +26,10 @@ function createServer() {
   server.use(`/_next`, express.static(path.join(__dirname, '../build')));
   server.use('/static', express.static(path.join(__dirname, '../static')));
   server.get('*', async (req, res) => {
-    // console.log(req.url);
     if (req.url === '/service-worker.js' || req.url.includes('precache-manifest')) {
       const filePath = path.join(__dirname, '../', 'build', req.url);
-      // console.log(filePath);
       await app.serveStatic(req, res, filePath);
+      return;
     }
     return handle(req, res);
   });

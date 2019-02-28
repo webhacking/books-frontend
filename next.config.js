@@ -6,6 +6,7 @@ const { parsed: localEnv = {} } = require('dotenv').config();
 module.exports = withTypeScript({
   distDir: '../build',
   assetPrefix: localEnv.CDN_URL || undefined,
+  useFileSystemPublicRoutes: false,
   exportPathMap: () => {
     return {};
   },
@@ -22,6 +23,11 @@ module.exports = withTypeScript({
         swSrc: 'static/service-worker.js',
       }),
     );
+    //
+    // config.plugins = config.plugins.filter(plugin => {
+    //   return plugin.constructor.name !== 'UglifyJsPlugin';
+    // });
+    //
     config.node = {
       fs: 'empty',
     };

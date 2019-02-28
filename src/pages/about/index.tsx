@@ -6,11 +6,26 @@ import * as React from 'react';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import { css } from '@emotion/core';
 import { Link } from 'server/routes';
+import { connect } from 'react-redux';
+import { StoreRootState } from 'src/store/config';
+import { appActions } from 'src/services';
+import { AppState } from 'src/services/app/reducer';
+import { ConnectedInitializeProps } from 'src/types/common';
 
-export default class About extends React.Component<{ id: string }> {
-  public static async getInitialProps(init: { query: string }) {
-    return init.query;
+interface AboutProps {
+  id: string;
+  app: AppState;
+  dispatchTestAction: typeof appActions.initialize;
+}
+
+class About extends React.Component<AboutProps> {
+  public static async getInitialProps(init: ConnectedInitializeProps<{ id: string }>) {
+    return { id: init.query.id };
   }
+  public componentDidMount() {
+    this.props.dispatchTestAction({ version: 'test' });
+  }
+
   public render() {
     const bookId = parseInt(this.props.id, 10) + 1;
     return (
@@ -32,3 +47,18 @@ export default class About extends React.Component<{ id: string }> {
     );
   }
 }
+
+const mapStateToProps = (state: StoreRootState) => {
+  return {
+    app: state.app!,
+  };
+};
+
+const mapDispatchToProps = {
+  dispatchTestAction: appActions.initialize,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(About);
