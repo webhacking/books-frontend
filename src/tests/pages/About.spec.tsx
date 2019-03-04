@@ -4,6 +4,7 @@ import { render, cleanup } from 'react-testing-library';
 import 'jest-dom/extend-expect';
 import makeStore from '../../store/config';
 import { Provider } from 'react-redux';
+jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
 
 afterEach(cleanup);
 

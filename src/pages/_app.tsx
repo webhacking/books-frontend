@@ -4,13 +4,23 @@ import { Store } from 'redux';
 import withRedux from 'next-redux-wrapper';
 import makeStore, { StoreRootState } from 'src/store/config';
 import { ConnectedRouter } from 'connected-next-router';
+import { initializeSentry } from 'src/utils/sentry';
 
 interface StoreAppProps extends AppComponentProps {
   store: Store<StoreRootState>;
+  // tslint:disable-next-line
+  pageProps: any;
 }
 
 class StoreApp extends App<StoreAppProps> {
-  public static async getInitialProps({ ctx, Component }: NextAppContext): Promise<DefaultAppIProps> {
+  constructor(props: StoreAppProps) {
+    super(props);
+    initializeSentry();
+  }
+  public static async getInitialProps({
+    ctx,
+    Component,
+  }: NextAppContext): Promise<DefaultAppIProps> {
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
 
     return { pageProps };
@@ -42,7 +52,10 @@ class StoreApp extends App<StoreAppProps> {
       <Container>
         <Provider store={store}>
           <ConnectedRouter>
-            <Component {...pageProps} />
+            {/* Todo Apply Layout */}
+            <div>
+              <Component {...pageProps} />
+            </div>
           </ConnectedRouter>
         </Provider>
       </Container>

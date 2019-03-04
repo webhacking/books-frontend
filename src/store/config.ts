@@ -43,7 +43,10 @@ const routerMiddleware = createRouterMiddleware({
 // next-redux-saga
 // next-redux-wrapper
 // connected-next-router
-const makeStore = (preLoadedState: StoreRootState = initialState, makeStoreOption?: MakeStoreOption) => {
+const makeStore = (
+  preLoadedState: StoreRootState = initialState,
+  makeStoreOption?: MakeStoreOption,
+) => {
   // @ts-ignore
   if (makeStoreOption && makeStoreOption.asPath) {
     preLoadedState.router = initialRouterState(makeStoreOption.asPath);

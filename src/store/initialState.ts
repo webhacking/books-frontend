@@ -1,9 +1,8 @@
 import { StoreRootState } from './config';
+import { appStateInitialState } from 'src/services/app/reducer';
 
 export const initialState: StoreRootState = {
-  app: {
-    version: '0.0.1',
-  },
+  app: appStateInitialState,
   router: {
     action: '',
   },

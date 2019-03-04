@@ -42,8 +42,9 @@ deploy-development:
     STATIC_CDN_DISTRIBUTION_ID: $DEV_STATIC_CDN_DISTRIBUTION_ID
     LAMBDA_CDN_DISTRIBUTION_ID: $DEV_CDN_DISTRIBUTION_ID
   script:
-    - env | grep CDN_URL >> .env
-    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+    - env | awk '/CDN_URL|ENVIRONMENT|SENTRY_DSN/' >> .env
+    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret
+      $AWS_SECRET_ACCESS_KEY
     - yarn deploy
     - aws cloudfront create-invalidation --distribution-id $LAMBDA_CDN_DISTRIBUTION_ID --paths "/*"
     - aws cloudfront create-invalidation --distribution-id $STATIC_CDN_DISTRIBUTION_ID --paths "/*"
@@ -57,7 +58,8 @@ deploy-staging:
     AWS_SECRET_ACCESS_KEY: $STAGING_AWS_SECRET_ACCESS_KEY
     CDN_URL: $DEV_CDN_URL
   script:
-    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret
+      $AWS_SECRET_ACCESS_KEY
 # sls deploy
 
 deploy-production:
@@ -69,5 +71,6 @@ deploy-production:
     AWS_SECRET_ACCESS_KEY: $PRODUCTION_AWS_SECRET_ACCESS_KEY
     CDN_URL: $DEV_CDN_URL
   script:
-    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret
+      $AWS_SECRET_ACCESS_KEY
 # sls deploy

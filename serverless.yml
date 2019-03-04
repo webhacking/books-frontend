@@ -3,6 +3,8 @@ service: store-web
 package:
   exclude:
     - node_modules/.cache/**
+    - node_modules/@types/**
+    - '*.js.map'
     - .cache
     - coverage/
     - static/
@@ -97,7 +99,9 @@ resources:
               Action:
                 - 's3:GetObject'
               Effect: 'Allow'
-              Resource: arn:aws:s3:::store-web.serverless.${opt:stage, 'development'}.${self:provider.region}.deploys/*
+              Resource:
+                arn:aws:s3:::store-web.serverless.${opt:stage,
+                'development'}.${self:provider.region}.deploys/*
               Principal: '*'
     LambdaDNSRecord:
       Type: AWS::Route53::RecordSet
