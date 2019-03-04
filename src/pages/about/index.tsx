@@ -24,12 +24,23 @@ class About extends React.Component<AboutProps> {
   }
   public componentDidMount() {
     this.props.dispatchTestAction({ version: 'test' });
+
+    setTimeout(() => {
+      throw new Error('real?');
+    }, 10000);
+  }
+
+  public onClick() {
+    // @ts-ignore
+    this.ewef();
   }
 
   public render() {
+    // throw new Error('error?');
     const bookId = parseInt(this.props.id, 10) + 1;
     return (
       <div>
+        <button onClick={this.onClick}>let's get error!</button>
         <Link route={`/about/${parseInt(this.props.id, 10) + 1}`}>
           <button>Next Book Page</button>
         </Link>

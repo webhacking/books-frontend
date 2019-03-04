@@ -5,8 +5,12 @@
   "dependencies": {
     "@emotion/core": "^10.0.7",
     "@emotion/styled": "^10.0.7",
-    "@ridi/web-ui": "^0.2.1",
+    "@ridi/web-ui": "^0.3.6",
+    "@sentry/browser": "^4.6.4",
+    "@sentry/cli": "^1.40.0",
+    "@sentry/webpack-plugin": "^1.6.2",
     "@types/next-redux-wrapper": "^2.0.2",
+    "@zeit/next-source-maps": "^0.0.4-canary.1",
     "@zeit/next-typescript": "^1.1.1",
     "babel-plugin-emotion": "^10.0.7",
     "compression": "^1.7.3",
@@ -66,16 +70,17 @@
     "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "lint": "tslint \"./+(!node_modules|src|server)/**/*.+(ts|tsx)\" -c tslint.json --fix",
     "validate": "yarn lint && yarn format && yarn prettier --list-different \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
-    "build": "yarn clear && next build src",
-    "local": "pm2-runtime start ecosystem.config.js --only store-web-server --env local",
-    "deploy": "cross-env SLS_DEBUG=* yarn clear && yarn build && serverless create_domain --stage $ENVIRONMENT && serverless deploy --stage $ENVIRONMENT -v",
+    "build": "next build src",
+    "local": "cross-env ENVIRONMENT=local pm2-runtime start ecosystem.config.js --only store-web-server --env local",
+    "deploy": "cross-env SLS_DEBUG=* yarn clear && yarn build && yarn clear-source-map && serverless create_domain --stage $ENVIRONMENT && serverless deploy --stage $ENVIRONMENT -v",
     "offline": "cross-env SLS_DEBUG=* yarn clear && yarn build && serverless offline -v",
     "clear": "rm -rf ./build",
+    "clear-source-map": "find ./build -type f -name '*.js.map' -delete",
     "test": "jest --passWithNoTests --collectCoverage --colors"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && next build src"
+      "pre-commit": "lint-staged"
     }
   },
   "browserslist": [

@@ -7,5 +7,8 @@ if ('workbox' in self) {
   workbox.clientsClaim();
 
   // ridibooks 요청일 경우 stateWhileRevalidate 캐싱
-  workbox.routing.registerRoute(/.*(?:ridibooks)\.com.*$/, workbox.strategies.staleWhileRevalidate());
+  workbox.routing.registerRoute(
+    /.*(?:ridibooks)\.com.*$/,
+    workbox.strategies.staleWhileRevalidate(),
+  );
 }
