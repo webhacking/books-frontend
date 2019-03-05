@@ -8,5 +8,5 @@ services:
     container_name: store-e2e
     working_dir: /store-e2e
     environment:
-      CYPRESS_BASE_URL: https://store-web.local.ridi.io
+      CYPRESS_BASE_URL: $CYPRESS_BASE_URL
     command: npx cypress run
