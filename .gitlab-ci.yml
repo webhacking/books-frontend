@@ -1,4 +1,4 @@
-image: ridibooks/gitlab-ci-docker-aws:1.5.0
+image: ridibooks/gitlab-ci-docker-aws:1.6.0
 
 stages:
   - test
@@ -11,8 +11,7 @@ cache:
 
 .install:
   before_script:
-    - apk add nodejs yarn
-    - make install
+    - yarn install
 
 .test-template:
   stage: test
@@ -22,10 +21,9 @@ test:jest:
   stage: test
   extends: .test-template
   script:
-    - yarn global add codecov
     - yarn test
   after_script:
-    - codecov
+    - ./node_modules/.bin/codecov
 
 .deploy-template:
   stage: deploy
@@ -43,8 +41,8 @@ deploy-development:
     LAMBDA_CDN_DISTRIBUTION_ID: $DEV_CDN_DISTRIBUTION_ID
   script:
     - env | awk '/CDN_URL|ENVIRONMENT|SENTRY_DSN/' >> .env
-    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret
-      $AWS_SECRET_ACCESS_KEY
+    - ./node_modules/.bin/serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID
+      --secret $AWS_SECRET_ACCESS_KEY
     - yarn deploy
     - aws cloudfront create-invalidation --distribution-id $LAMBDA_CDN_DISTRIBUTION_ID --paths "/*"
     - aws cloudfront create-invalidation --distribution-id $STATIC_CDN_DISTRIBUTION_ID --paths "/*"

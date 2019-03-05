@@ -2,7 +2,6 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 docker-start-local: ## to run local server by docker
-	$(MAKE) install
 	$(MAKE) local
 
 
@@ -20,3 +19,10 @@ local: ## to run server at local machine
 
 offline: ## to run serverless offline mode
 	@yarn offline
+
+
+docker-rebuild: ## rebuild local docker image
+	@docker-compose build
+
+
+

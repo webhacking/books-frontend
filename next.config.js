@@ -19,6 +19,7 @@ module.exports = nextSourceMaps(
       ENVIRONMENT: process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'development',
       SENTRY_DSN: process.env.SENTRY_DSN || localEnv.SENTRY_DSN,
       VERSION: require('./package.json').version,
+      ...require(`./env/${process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'development'}`),
     },
     webpack(config, option) {
       if (option.isServer) {

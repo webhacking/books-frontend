@@ -4,24 +4,32 @@ package:
   exclude:
     - node_modules/.cache/**
     - node_modules/@types/**
+    - node_modules/serverless/**
+    - node_modules/codecov/**
+    - node_modules/aws-sdk/**
+    - node_modules/prettier/**
     - '*.js.map'
     - .cache
-    - coverage/
-    - static/
+    - coverage/**
+    - static/**
     - secrets.json
     - yarn.lock
+    - provisioning/**
+    - cypress/**
+    - src/**
+    - tslint.json
+    - tsconfig.json
 
 provider:
   name: aws
   runtime: nodejs8.10
   region: ${self:custom.secrets.REGION}
-  stage:
-    ${opt:stage, 'development'}
-    # CloudFormation Name
+  stage: ${opt:stage, 'development'}
+  # CloudFormation Name
   stackName: store-web-serverless-${opt:stage, 'development'}
   deploymentBucket:
     name: store-web.serverless.${opt:stage, 'development'}.${self:provider.region}.deploys
-  #   serverSideEncryption: AES256
+  # serverSideEncryption: AES256
   environment:
     NODE_ENV: ${self:custom.secrets.NODE_ENV}
 
@@ -84,9 +92,6 @@ custom:
     createRoute53Record: false
     endpointType: 'regional'
 
-# Todo CloudFront 자동화 설정
-
-# S3 Bucket Policy
 resources:
   Resources:
     StaticBucketPolicy:
@@ -122,4 +127,3 @@ resources:
           DNSName: d1dpwi79ahko80.cloudfront.net.
           HostedZoneId: Z2FDTNDATAQYW2
           # https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html
-    #

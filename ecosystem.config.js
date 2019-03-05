@@ -4,7 +4,7 @@ module.exports = {
       name: 'store-web-server',
       script: './server/server.js',
       autorestart: true,
-      watch: './{server,src}/**/*.{js,jsx,ts,tsx}',
+      watch: './{server}/**/*.{js,jsx,ts,tsx}',
       env_development: {
         PORT: 8081,
         NODE_ENV: 'development',
