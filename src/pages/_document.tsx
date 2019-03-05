@@ -8,6 +8,9 @@ import Document, {
 } from 'next/document';
 import { extractCritical } from 'emotion-server';
 import { EmotionCritical } from 'create-emotion-server';
+import getConfig from 'next-server/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 interface StoreDocumentProps extends DocumentProps, EmotionCritical {}
 
@@ -44,7 +47,11 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
             name="google-site-verification"
             content="Ej_LuvDzCxS1Ck6Sa5AN_OVntufSGfi8VfuytSrHaPk"
           />
-          <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+          <link
+            rel="icon"
+            type="image/x-icon"
+            href={`${publicRuntimeConfig.STATIC_CDN_URL}/static/favicon.ico`}
+          />
           <link rel="manifest" href="/static/manifest.webmanifest" />
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
