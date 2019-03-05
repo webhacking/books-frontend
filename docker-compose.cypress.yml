@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  store-e2e:
+    build:
+      dockerfile: $PWD/provisioning/e2e/Dockerfile
+      context: ./
+    container_name: store-e2e
+    working_dir: /store-e2e
+    environment:
+      CYPRESS_BASE_URL: https://store-web.local.ridi.io
+    command: npx cypress run

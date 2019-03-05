@@ -25,4 +25,6 @@ docker-rebuild: ## rebuild local docker image
 	@docker-compose build
 
 
+docker-e2e: ## docker e2e for local
+	@docker-compose -f ./docker-compose.cypress.yml up --force-recreate --build
 
