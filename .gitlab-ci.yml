@@ -3,11 +3,18 @@ image: ridibooks/gitlab-ci-docker-aws:1.6.0
 stages:
   - test
   - deploy
+  - e2e
+
+variables:
+  npm_config_cache: /builds/store/web-test/.npm
+  CYPRESS_CACHE_FOLDER: /builds/store/web-test/cache/Cypress
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-    - node_modules/
+    - .npm
+    - cache/Cypress
+    - node_modules
 
 .install:
   before_script:
@@ -72,3 +79,47 @@ deploy-production:
     - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret
       $AWS_SECRET_ACCESS_KEY
 # sls deploy
+
+.e2e:
+  image: cypress/base:10
+  stage: e2e
+  before_script:
+    - yarn add cypress
+    - ./node_modules/.bin/cypress verify
+  artifacts:
+    expire_in: 1 week
+    when: always
+    paths:
+      - cypress/screenshots
+      - cypress/videos
+
+e2e-development:
+  extends: .e2e
+  when: manual
+  variables:
+    CYPRESS_BASE_URL: https://web-dev.crying.dance
+  script:
+    - ./node_modules/.bin/cypress run
+#  only:
+#    - development
+
+e2e-staging:
+  extends: .e2e
+  when: manual
+  variables:
+    CYPRESS_BASE_URL: https://web-staging.crying.dance
+  script:
+    - ./node_modules/.bin/cypress run
+#  only:
+#    - development
+
+e2e-production:
+  extends: .e2e
+  when: manual
+  variables:
+    CYPRESS_BASE_URL: https://web-production.crying.dance
+  script:
+    - ./node_modules/.bin/cypress run
+#  only:
+#    - development
+
