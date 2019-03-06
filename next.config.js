@@ -29,7 +29,6 @@ module.exports = nextSourceMaps(
           }),
         );
       }
-      // Todo create sourcemap only production build time
       if (process.env.ENVIRONMENT !== 'local') {
         config.plugins.push(
           new SentryCliPlugin({

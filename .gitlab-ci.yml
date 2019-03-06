@@ -2,6 +2,7 @@ image: ridibooks/gitlab-ci-docker-aws:1.6.0
 
 stages:
   - test
+  - build
   - deploy
   - e2e
 
@@ -32,6 +33,18 @@ test:jest:
   after_script:
     - ./node_modules/.bin/codecov
 
+# 배포 관련 브랜치가 아닌 Feature 브랜치에서 진행하는 스테이지
+build:
+  stage: build
+  variables:
+    ENVIRONMENT: 'local'
+  except:
+    - master
+    - development
+    - staging
+  script:
+    - yarn build src
+
 .deploy-template:
   stage: deploy
   extends: .install
@@ -39,7 +52,9 @@ test:jest:
 
 deploy-development:
   extends: .deploy-template
-  when: manual
+  only:
+    - development
+    - merge_request
   variables:
     ENVIRONMENT: 'development'
     AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
@@ -57,6 +72,9 @@ deploy-development:
 
 deploy-staging:
   extends: .deploy-template
+  only:
+    - staging
+    - merge_request
   when: manual
   variables:
     ENVIRONMENT: 'staging'
@@ -70,6 +88,9 @@ deploy-staging:
 
 deploy-production:
   extends: .deploy-template
+  only:
+    - master
+    - merge_request
   when: manual
   variables:
     ENVIRONMENT: 'production'

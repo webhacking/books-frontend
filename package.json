@@ -72,7 +72,7 @@
     "validate": "yarn lint && yarn format && yarn prettier --list-different \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "build": "next build src",
     "local": "cross-env ENVIRONMENT=local pm2-runtime start ecosystem.config.js --only store-web-server --env local",
-    "deploy": "cross-env SLS_DEBUG=* yarn clear && yarn build && yarn clear-source-map && serverless create_domain --stage $ENVIRONMENT && serverless deploy --stage $ENVIRONMENT -v",
+    "deploy": "cross-env SLS_DEBUG=* yarn clear && yarn build && yarn clear-source-map && serverless deploy --stage $ENVIRONMENT -v",
     "offline": "cross-env SLS_DEBUG=* yarn clear && yarn build && serverless offline -v",
     "clear": "rm -rf ./build",
     "clear-source-map": "find ./build -type f -name '*.js.map' -delete",
