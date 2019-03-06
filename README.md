@@ -1,34 +1,50 @@
 # Ridibooks Store Web
 
+```spacebars
+
+            .--.                   .---.
+        .---|__|           .-.     |~~~|
+     .--|===|--|_          |_|     |~~~|--.
+     |  |===|  |'\     .---!~|  .--|   |--|
+     |%%|   |  |.'\    |===| |--|%%|   |  |
+     |%%|   |  |\.'\   |   | |__|  |   |  |
+     |  |   |  | \  \  |===| |==|  |   |  |
+     |  |   |__|  \.'\ |   |_|__|  |~~~|__|
+     |  |===|--|   \.'\|===|~|--|%%|~~~|--|
+     ^--^---'--^    `-'`---^-^--^--^---'--' hjw
+
+       (https://www.asciiart.eu/books/books)
+```
+
 [![codecov](https://codecov.io/gl/ridicorp:store/web-test/branch/master/graph/badge.svg?token=SlneHi8wtU)](https://codecov.io/gl/ridicorp:store/web-test)
 
 ## Infrastructure
 
 ```
-               +------------+
-               | CloudFlare |
-               +----+-------+                               Function Package from S3
-                    |                                                   |
-       +---------+--+->+------------+--->+-------------+--->+--------+  | +--------+
-       |         |  |  | CloudFront |    | API Gateway |    | Lambda |<---+        |
-       |         +<-+--+------------+<---+-------------+<---+--------+    |        |
-       |   Web   |  |    Caching              First Rendered HTML         |   S3   |
-       | Browser |  |                                                     | Bucket |
-       |         +--+->+------------+------------------------------------>+        |
-       |         |  |  | CloudFront |                                     |        |
-       +-----+---+<-+--+------------+<------------------------------------+----+---+
-             |      |    Caching              Static Files                     ^
-             |      +                                                          | D
-             |                     +--------+                                  | E
-             +-------------------->+ Sentry +<---------------------------------+ P
-                   (Un)Known Bug   +----+---+         SourceMap                | L  (with Serverless.js)
-                                        |                                      | O
-                                        v                                      | Y
-                                    +---+---+         +-----------+            | !
-                                    | Slack +-------->+ Developer +------------>
-                                    | Asana |  WORK   +-----------+   WORK
-                                    |  ETC  |
-                                    +-------+
+             +------------+
+             | CloudFlare |
+             +----+-------+                               Function Package from S3
+                  |                                                   |
+     +---------+--+->+------------+--->+-------------+--->+--------+  | +--------+
+     |         |  |  | CloudFront |    | API Gateway |    | Lambda |<---+        |
+     |         +<-+--+------------+<---+-------------+<---+--------+    |        |
+     |   Web   |  |    Caching              First Rendered HTML         |   S3   |
+     | Browser |  |                                                     | Bucket |
+     |         +--+->+------------+------------------------------------>+        |
+     |         |  |  | CloudFront |                                     |        |
+     +-----+---+<-+--+------------+<------------------------------------+----+---+
+           |      |    Caching              Static Files                     ^
+           |      +                                                          | D
+           |                     +--------+                                  | E
+           +-------------------->+ Sentry +<---------------------------------+ P
+                 (Un)Known Bug   +----+---+         SourceMap                | L  (with Serverless.js)
+                                      |                                      | O
+                                      v                                      | Y
+                                  +---+---+         +-----------+            | !
+                                  | Slack +-------->+ Developer +------------>
+                                  | Asana |  WORK   +-----------+   WORK
+                                  |  ETC  |
+                                  +-------+
 
 ```
 
