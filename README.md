@@ -5,28 +5,30 @@
 ## Infrastructure
 
 ```
-                                             Function Package from S3
-                                                        |
-+-------+--->+----------+--->+-----------+--->+------+  | +------+
-|       |    |CloudFront|    |API Gateway|    |Lambda|<---+      |
-|       +<---+----------+<---+-----------+<---+------+    |      |
-|  Web  |      Caching              First Rendered HTML   |  S3  |
-|Browser|                                                 |Bucket|
-|       +--->+----------+-------------------------------->+      |
-|       |    |CloudFront|                                 |      |
-+-----+-+<---+----------+<--------------------------------+---+--+
-      |         Caching              Static Files             ^
-      |                                                       | D
-      |                     +------+                          | E
-      +-------------------->+Sentry+<-------------------------+ P
-            (Un)Known Bug   +---+--+         SourceMap        | L  (with Serverless.js)
-                                |                             | O
-                                v                             | Y
-                             +--+--+      +---------+         | !
-                             |Slack+----->|Developer+--------->
-                             |Asana| WORK +---------+   WORK
-                             | ETC |
-                             +-----+
+      +----------+
+      |CloudFlare|
+      +----+-----+                               Function Package from S3
+           |                                             |
++-------+--+->+----------+--->+-----------+--->+------+  | +------+
+|       |  |  |CloudFront|    |API Gateway|    |Lambda|<---+      |
+|       +<-+--+----------+<---+-----------+<---+------+    |      |
+|  Web  |  |    Caching              First Rendered HTML   |  S3  |
+|Browser|  |                                               |Bucket|
+|       +--+->+----------+-------------------------------->+      |
+|       |  |  |CloudFront|                                 |      |
++-----+-+<-+--+----------+<--------------------------------+---+--+
+      |    |    Caching              Static Files              ^
+      |    +                                                   | D
+      |                     +------+                           | E
+      +-------------------->+Sentry+<--------------------------+ P
+            (Un)Known Bug   +---+--+         SourceMap         | L  (with Serverless.js)
+                                |                              | O
+                                v                              | Y
+                            +---+---+       +---------+        | !
+                            | Slack +------>+Developer+-------->
+                            | Asana |  WORK +---------+   WORK
+                            |  ETC  |
+                            +-------+
 
 ```
 
