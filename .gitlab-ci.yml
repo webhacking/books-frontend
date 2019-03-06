@@ -48,7 +48,13 @@ build:
 .deploy-template:
   stage: deploy
   extends: .install
-  script: yarn build
+  script:
+    - env | awk '/CDN_URL|ENVIRONMENT|SENTRY_DSN/' >> .env
+    - ./node_modules/.bin/serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID
+      --secret $AWS_SECRET_ACCESS_KEY
+    - yarn deploy
+    - aws cloudfront create-invalidation --distribution-id $LAMBDA_CDN_DISTRIBUTION_ID --paths "/*"
+    - aws cloudfront create-invalidation --distribution-id $STATIC_CDN_DISTRIBUTION_ID --paths "/*"
 
 deploy-development:
   extends: .deploy-template
@@ -61,13 +67,6 @@ deploy-development:
     CDN_URL: $DEV_CDN_URL
     STATIC_CDN_DISTRIBUTION_ID: $DEV_STATIC_CDN_DISTRIBUTION_ID
     LAMBDA_CDN_DISTRIBUTION_ID: $DEV_CDN_DISTRIBUTION_ID
-  script:
-    - env | awk '/CDN_URL|ENVIRONMENT|SENTRY_DSN/' >> .env
-    - ./node_modules/.bin/serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID
-      --secret $AWS_SECRET_ACCESS_KEY
-    - yarn deploy
-    - aws cloudfront create-invalidation --distribution-id $LAMBDA_CDN_DISTRIBUTION_ID --paths "/*"
-    - aws cloudfront create-invalidation --distribution-id $STATIC_CDN_DISTRIBUTION_ID --paths "/*"
 
 deploy-staging:
   extends: .deploy-template
@@ -79,10 +78,6 @@ deploy-staging:
     AWS_ACCESS_KEY_ID: $STAGING_AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $STAGING_AWS_SECRET_ACCESS_KEY
     CDN_URL: $DEV_CDN_URL
-  script:
-    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret
-      $AWS_SECRET_ACCESS_KEY
-# sls deploy
 
 deploy-production:
   extends: .deploy-template
@@ -94,14 +89,11 @@ deploy-production:
     AWS_ACCESS_KEY_ID: $PRODUCTION_AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $PRODUCTION_AWS_SECRET_ACCESS_KEY
     CDN_URL: $DEV_CDN_URL
-  script:
-    - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret
-      $AWS_SECRET_ACCESS_KEY
-# sls deploy
 
 .e2e:
   image: cypress/base:10
   stage: e2e
+  allow_failure: true
   before_script:
     - yarn add cypress
     - ./node_modules/.bin/cypress verify
@@ -111,6 +103,8 @@ deploy-production:
     paths:
       - cypress/screenshots
       - cypress/videos
+  script:
+    - ./node_modules/.bin/cypress run
 
 e2e-development:
   extends: .e2e
@@ -118,28 +112,15 @@ e2e-development:
     - development
   variables:
     CYPRESS_BASE_URL: https://store.ridi.io
-  script:
-    - ./node_modules/.bin/cypress run
-#  only:
-#    - development
 
 e2e-staging:
   extends: .e2e
   when: manual
   variables:
     CYPRESS_BASE_URL: https://web-staging.crying.dance
-  script:
-    - ./node_modules/.bin/cypress run
-#  only:
-#    - development
 
 e2e-production:
   extends: .e2e
   when: manual
   variables:
     CYPRESS_BASE_URL: https://web-production.crying.dance
-  script:
-    - ./node_modules/.bin/cypress run
-#  only:
-#    - development
-
