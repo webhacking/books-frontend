@@ -2,7 +2,9 @@
 
 ## [Unreleased]
 
-<a name="0.0.1"></a>
+### Chore
+
+- Add CHANGELOG.md <a name="0.0.1"></a>
 
 ## 0.0.1 - 2019-03-06
 
