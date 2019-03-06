@@ -54,7 +54,6 @@ deploy-development:
   extends: .deploy-template
   only:
     - development
-    - merge_request
   variables:
     ENVIRONMENT: 'development'
     AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
@@ -74,7 +73,6 @@ deploy-staging:
   extends: .deploy-template
   only:
     - staging
-    - merge_request
   when: manual
   variables:
     ENVIRONMENT: 'staging'
@@ -90,7 +88,6 @@ deploy-production:
   extends: .deploy-template
   only:
     - master
-    - merge_request
   when: manual
   variables:
     ENVIRONMENT: 'production'
@@ -117,9 +114,10 @@ deploy-production:
 
 e2e-development:
   extends: .e2e
-  when: manual
+  only:
+    - development
   variables:
-    CYPRESS_BASE_URL: https://web-dev.crying.dance
+    CYPRESS_BASE_URL: https://store.ridi.io
   script:
     - ./node_modules/.bin/cypress run
 #  only:
