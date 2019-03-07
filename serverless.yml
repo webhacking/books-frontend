@@ -104,7 +104,9 @@ resources:
               Action:
                 - 's3:GetObject'
               Effect: 'Allow'
-              Resource: arn:aws:s3:::store-web.sls.${opt:stage,'development'}.${self:provider.region}.deploys/*
+              Resource:
+                - arn:aws:s3:::store-web.sls.${opt:stage,'development'}.${self:provider.region}.deploys/_next/*
+                - arn:aws:s3:::store-web.sls.${opt:stage,'development'}.${self:provider.region}.deploys/static/*
               Principal: '*'
 #    LambdaDNSRecord:
 #      Type: AWS::Route53::RecordSet
