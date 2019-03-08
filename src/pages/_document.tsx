@@ -54,6 +54,7 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
           />
           <link
             rel="manifest"
+            crossOrigin="anonymous"
             href={`${publicRuntimeConfig.STATIC_CDN_URL}/static/manifest.webmanifest`}
           />
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
