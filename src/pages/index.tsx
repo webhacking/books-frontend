@@ -22,7 +22,7 @@ export default class Home extends React.Component {
         <Link route={'/about/1242000770'}>
           <button>To Book Page</button>
         </Link>
-        <Div>Home. Store Responsive Web Infra Test</Div>
+        <Div>Home. Store Responsive Web Infra(Next.js + Serverless) Test.</Div>
         <Book.Thumbnail
           thumbnailWidth={240}
           css={css`

@@ -91,6 +91,9 @@ deploy-production:
     CDN_URL: $DEV_CDN_URL
 
 .e2e:
+  tags:
+    - ridicorp
+    - aws
   image: cypress/base:10
   stage: e2e
   allow_failure: true
