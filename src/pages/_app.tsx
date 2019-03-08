@@ -15,11 +15,22 @@ interface StoreAppProps extends AppComponentProps {
   pageProps: any;
 }
 
-class StoreApp extends App<StoreAppProps> {
+interface StoreAppState {
+  // tslint:disable-next-line
+  isUpdateAvailable: Promise<any> | null;
+  refreshing: boolean;
+}
+
+class StoreApp extends App<StoreAppProps, StoreAppState> {
   constructor(props: StoreAppProps) {
     super(props);
+    this.state = {
+      isUpdateAvailable: null,
+      refreshing: false,
+    };
     initializeSentry();
   }
+
   public static async getInitialProps({
     ctx,
     Component,
@@ -28,35 +39,82 @@ class StoreApp extends App<StoreAppProps> {
 
     return { pageProps };
   }
-  public componentDidMount(): void {
-    if ('serviceWorker' in navigator) {
-      // Unregistration
-      // navigator.serviceWorker.getRegistrations().then(r => {
-      //   for (const registration of r) {
-      //     registration.unregister();
-      //   }
-      // });
+  // tslint:disable-next-line
 
-      navigator.serviceWorker
-        .register(`${publicRuntimeConfig.STATIC_CDN_URL}/service-worker.js`)
-        // @ts-ignore
-        .then((registration: ServiceWorkerRegistration) => {
-          console.log('service worker registration successful');
-        })
-        .catch((err: Error) => {
-          console.warn('service worker registration failed', err.message);
-        });
+  public componentDidMount(): void {
+    const isUpdateAvailable = new Promise(resolve => {
+      if ('serviceWorker' in navigator) {
+        // Unregistration
+        // navigator.serviceWorker.getRegistrations().then(r => {
+        //   for (const registration of r) {
+        //     registration.unregister();
+        //   }
+        // });
+
+        navigator.serviceWorker
+          .register(`${publicRuntimeConfig.STATIC_CDN_URL}/service-worker.js`)
+          // @ts-ignore
+          .then((registration: ServiceWorkerRegistration) => {
+            registration.onupdatefound = () => {
+              const installingWorker = registration.installing;
+              if (installingWorker) {
+                installingWorker.onstatechange = () => {
+                  switch (installingWorker.state) {
+                    case 'installed': {
+                      if (navigator.serviceWorker.controller) {
+                        resolve(registration);
+                      } else {
+                        resolve(false);
+                      }
+                    }
+                  }
+                };
+              }
+            };
+            console.log('service worker registration successful');
+          })
+          .catch((err: Error) => {
+            console.warn('service worker registration failed', err.message);
+          });
+      }
+    });
+
+    this.setState({
+      isUpdateAvailable,
+    });
+  }
+
+  public componentDidUpdate(): void {
+    if (this.state.isUpdateAvailable !== null) {
+      this.state.isUpdateAvailable.then(isAvailable => {
+        if (isAvailable) {
+          // isAvailable.update();
+          console.log('New Update Available!');
+          if (!this.state.refreshing) {
+            this.setState({
+              refreshing: true,
+            });
+          }
+        }
+      });
     }
   }
 
   public render() {
     const { Component, pageProps, store } = this.props;
+    const { refreshing } = this.state;
     return (
       <Container>
         <Provider store={store}>
           <ConnectedRouter>
             {/* Todo Apply Layout */}
             <div>
+              {refreshing && (
+                // tslint:disable-next-line
+                <button onClick={() => window.location.reload()}>
+                  New Update Available - Refresh
+                </button>
+              )}
               <Component {...pageProps} />
             </div>
           </ConnectedRouter>
