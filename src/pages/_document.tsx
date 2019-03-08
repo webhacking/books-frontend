@@ -14,7 +14,6 @@ const { publicRuntimeConfig } = getConfig();
 
 interface StoreDocumentProps extends DocumentProps, EmotionCritical {}
 
-// Todo _document.tsx 의 '/static/**' 리소스 assetPrefix 맞춰 CloudFront 바라보게끔 수정
 export default class StoreDocument extends Document<StoreDocumentProps> {
   public constructor(props: StoreDocumentProps) {
     super(props);

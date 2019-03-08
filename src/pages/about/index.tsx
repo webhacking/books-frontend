@@ -24,10 +24,6 @@ class About extends React.Component<AboutProps> {
   }
   public componentDidMount() {
     this.props.dispatchTestAction({ version: 'test' });
-
-    setTimeout(() => {
-      throw new Error('real?');
-    }, 10000);
   }
 
   public onClick() {
