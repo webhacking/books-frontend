@@ -5,9 +5,6 @@ import withRedux from 'next-redux-wrapper';
 import makeStore, { StoreRootState } from 'src/store/config';
 import { ConnectedRouter } from 'connected-next-router';
 import { initializeSentry } from 'src/utils/sentry';
-import getConfig from 'next-server/config';
-
-const { publicRuntimeConfig } = getConfig();
 
 interface StoreAppProps extends AppComponentProps {
   store: Store<StoreRootState>;
@@ -52,7 +49,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         // });
 
         navigator.serviceWorker
-          .register(`${publicRuntimeConfig.STATIC_CDN_URL}/service-worker.js`)
+          .register(`/service-worker.js`)
           // @ts-ignore
           .then((registration: ServiceWorkerRegistration) => {
             registration.onupdatefound = () => {
