@@ -52,10 +52,7 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
             type="image/x-icon"
             href={`${publicRuntimeConfig.STATIC_CDN_URL}/static/favicon.ico`}
           />
-          <link
-            rel="manifest"
-            href={`${publicRuntimeConfig.STATIC_CDN_URL}/static/manifest.webmanifest`}
-          />
+          <link rel="manifest" href={`/static/manifest.webmanifest`} />
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
         <body>
