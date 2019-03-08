@@ -43,7 +43,7 @@ module.exports = nextSourceMaps(
           }),
         );
       }
-      config.output.publicPath = localEnv.CDN_URL ? localEnv.CDN_URL + '/_next/' : undefined;
+      config.output.publicPath = !!localEnv.CDN_URL ? localEnv.CDN_URL + '/_next/' : '/_next/';
       config.plugins.push(
         new CopyPlugin([
           {
@@ -55,7 +55,6 @@ module.exports = nextSourceMaps(
       config.plugins.push(
         new InjectManifest({
           swSrc: 'static/service-worker.js',
-          // exclude:[/\.webmanifest$/]
         }),
       );
       config.node = {

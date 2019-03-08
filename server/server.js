@@ -28,7 +28,6 @@ function createServer() {
   server.use(`/_next`, express.static(path.join(__dirname, '../build')));
   server.use('/static', express.static(path.join(__dirname, '../static')));
   server.get('*', async (req, res) => {
-    // console.log(req.url);
     if (
       req.url === '/service-worker.js' ||
       req.url.includes('precache-manifest') ||
