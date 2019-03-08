@@ -16,10 +16,10 @@ module.exports = nextSourceMaps(
       return {};
     },
     publicRuntimeConfig: {
-      ENVIRONMENT: process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'development',
+      ENVIRONMENT: process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'local',
       SENTRY_DSN: process.env.SENTRY_DSN || localEnv.SENTRY_DSN,
       VERSION: require('./package.json').version,
-      ...require(`./env/${process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'development'}`),
+      ...require(`./env/${process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'local'}`),
     },
     webpack(config, option) {
       if (option.isServer) {
