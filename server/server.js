@@ -21,7 +21,7 @@ function createServer() {
   server.use(cookieParser());
   server.use(express.json());
   server.use((req, res, next) => {
-    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    res.setHeader('Cache-Control', 'public, max-age=60, immutable');
     next();
   });
 
