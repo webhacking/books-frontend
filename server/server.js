@@ -12,6 +12,8 @@ const { clientRoutes } = require('./routes');
 
 const handle = clientRoutes.getRequestHandler(app);
 
+// const whiteList = ['/service-worker.js', '/manifest.webmanifest']
+
 function createServer() {
   const server = express();
 
@@ -26,9 +28,11 @@ function createServer() {
   server.use(`/_next`, express.static(path.join(__dirname, '../build')));
   server.use('/static', express.static(path.join(__dirname, '../static')));
   server.get('*', async (req, res) => {
+    // console.log(req.url);
     if (
       req.url === '/service-worker.js' ||
       req.url.includes('precache-manifest') ||
+      req.url.includes('react-loadable-manifest.json') ||
       req.url === '/manifest.webmanifest'
     ) {
       const filePath = path.join(__dirname, '../', 'build', req.url);

@@ -48,13 +48,14 @@ module.exports = nextSourceMaps(
         new CopyPlugin([
           {
             from: '../static/manifest.webmanifest',
-            to: '../build',
+            to: '',
           },
         ]),
       );
       config.plugins.push(
         new InjectManifest({
           swSrc: 'static/service-worker.js',
+          // exclude:[/\.webmanifest$/]
         }),
       );
       config.node = {

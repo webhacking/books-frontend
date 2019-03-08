@@ -46,6 +46,7 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
             name="google-site-verification"
             content="Ej_LuvDzCxS1Ck6Sa5AN_OVntufSGfi8VfuytSrHaPk"
           />
+          <meta name="theme-color" content="#339CF2" />
           <link
             rel="icon"
             type="image/x-icon"
