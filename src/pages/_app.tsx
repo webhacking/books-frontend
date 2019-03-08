@@ -5,9 +5,6 @@ import withRedux from 'next-redux-wrapper';
 import makeStore, { StoreRootState } from 'src/store/config';
 import { ConnectedRouter } from 'connected-next-router';
 import { initializeSentry } from 'src/utils/sentry';
-import getConfig from 'next-server/config';
-
-const { publicRuntimeConfig } = getConfig();
 
 interface StoreAppProps extends AppComponentProps {
   store: Store<StoreRootState>;
@@ -52,7 +49,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         // });
 
         navigator.serviceWorker
-          .register(`${publicRuntimeConfig.STATIC_CDN_URL}/service-worker.js`)
+          .register(`/service-worker.js`)
           // @ts-ignore
           .then((registration: ServiceWorkerRegistration) => {
             registration.onupdatefound = () => {
@@ -88,7 +85,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     if (this.state.isUpdateAvailable !== null) {
       this.state.isUpdateAvailable.then(isAvailable => {
         if (isAvailable) {
-          // isAvailable.update();
+          isAvailable.update();
           console.log('New Update Available!');
           if (!this.state.refreshing) {
             this.setState({
@@ -110,8 +107,14 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
             {/* Todo Apply Layout */}
             <div>
               {refreshing && (
-                // tslint:disable-next-line
-                <button onClick={() => window.location.reload()}>
+                <button
+                  // tslint:disable-next-line
+                  onClick={() => {
+                    this.setState({
+                      refreshing: false,
+                    });
+                    window.location.reload();
+                  }}>
                   New Update Available - Refresh
                 </button>
               )}
