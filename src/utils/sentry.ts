@@ -6,7 +6,7 @@ const { publicRuntimeConfig } = getConfig();
 export const initializeSentry = () => {
   init({
     dsn: publicRuntimeConfig.SENTRY_DSN,
-    environment: publicRuntimeConfig.ENVIRONMENT || 'development',
+    environment: publicRuntimeConfig.ENVIRONMENT || 'local',
     release: publicRuntimeConfig.VERSION || 'UNKNOWN',
   });
 };

@@ -1,14 +1,16 @@
 if ('workbox' in self) {
   workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
 
-  workbox.loadModule('workbox-strategies');
+  workbox.routing.registerRoute(new RegExp('.*.js'), new workbox.strategies.NetworkFirst());
 
-  workbox.skipWaiting();
-  workbox.clientsClaim();
-
-  // ridibooks 요청일 경우 stateWhileRevalidate 캐싱
   workbox.routing.registerRoute(
-    /.*(?:ridibooks)\.com.*$/,
-    workbox.strategies.staleWhileRevalidate(),
+    /.*\.(jpg|png|jpeg|bmp)/,
+    new workbox.strategies.CacheFirst({
+      cacheName: 'books-images',
+      plugins: [
+        new workbox.cacheableResponse.Plugin({ statuses: [200] }),
+        new workbox.rangeRequests.Plugin(),
+      ],
+    }),
   );
 }

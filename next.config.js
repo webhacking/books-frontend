@@ -57,11 +57,6 @@ module.exports = nextSourceMaps(
           swSrc: 'static/service-worker.js',
         }),
       );
-      //
-      // config.plugins = config.plugins.filter(plugin => {
-      //   return plugin.constructor.name !== 'UglifyJsPlugin';
-      // });
-      //
       config.node = {
         fs: 'empty',
       };
