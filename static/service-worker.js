@@ -45,6 +45,16 @@ if ('workbox' in self) {
   );
 }
 
+self.addEventListener('install', function(event) {
+  // The promise that skipWaiting() returns can be safely ignored.
+  console.log('[Service Worker] Install!');
+  self.skipWaiting();
+
+  // Perform any other actions required for your
+  // service worker to install, potentially inside
+  // of event.waitUntil();
+});
+
 self.addEventListener('activate', e => {
   console.log('[Service Worker] Activate!');
   // caches.keys().then(function(cacheNames) {
@@ -61,6 +71,7 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', function(e) {
+  console.log('[Service Worker] Fetch!');
   e.respondWith(
     caches.match(e.request).then(function(r) {
       console.log('[Service Worker] Fetching resource: ' + e.request.url);
