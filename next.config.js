@@ -2,7 +2,7 @@ const withTypeScript = require('@zeit/next-typescript');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
 const nextSourceMaps = require('@zeit/next-source-maps')({
-  devtool: 'source-map',
+  devtool: 'hidden-source-map',
 });
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const { parsed: localEnv = {} } = require('dotenv').config();
