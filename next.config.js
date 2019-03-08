@@ -6,6 +6,7 @@ const nextSourceMaps = require('@zeit/next-source-maps')({
 });
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const { parsed: localEnv = {} } = require('dotenv').config();
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = nextSourceMaps(
   withTypeScript({
@@ -43,6 +44,14 @@ module.exports = nextSourceMaps(
         );
       }
       config.output.publicPath = localEnv.CDN_URL ? localEnv.CDN_URL + '/_next/' : undefined;
+      config.plugins.push(
+        new CopyPlugin([
+          {
+            from: '../static/manifest.webmanifest',
+            to: '../build',
+          },
+        ]),
+      );
       config.plugins.push(
         new InjectManifest({
           swSrc: 'static/service-worker.js',
