@@ -5,7 +5,7 @@ if ('workbox' in self) {
 
   workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
 
-  workbox.routing.registerRoute(new RegExp('.*.js'), new workbox.strategies.NetworkFirst());
+  workbox.routing.registerRoute(new RegExp('.*.js'), new workbox.strategies.StaleWhileRevalidate());
   workbox.routing.registerRoute(
     '/static',
     new workbox.strategies.CacheFirst({
@@ -57,17 +57,19 @@ self.addEventListener('install', function(event) {
 
 self.addEventListener('activate', e => {
   console.log('[Service Worker] Activate!');
-  // caches.keys().then(function(cacheNames) {
-  //   return Promise.all(
-  //     cacheNames.filter(function(cacheName) {
-  //       // Return true if you want to remove this cache,
-  //       // but remember that caches are shared across
-  //       // the whole origin
-  //     }).map(function(cacheName) {
-  //       return caches.delete(cacheName);
-  //     })
-  //   );
-  // })
+  caches.keys().then(function(cacheNames) {
+    return Promise.all(
+      cacheNames
+        .filter(function(cacheName) {
+          // Return true if you want to remove this cache,
+          // but remember that caches are shared across
+          // the whole origin
+        })
+        .map(function(cacheName) {
+          return caches.delete(cacheName);
+        }),
+    );
+  });
 });
 
 self.addEventListener('fetch', function(e) {
