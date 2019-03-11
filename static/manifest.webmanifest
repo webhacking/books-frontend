@@ -4,7 +4,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f0f0f0",
-  "theme_color": "#ff6600",
+  "theme_color": "#339CF2",
   "description": "Store Web PWA.",
   "icons": [{
     "src": "icon/android-chrome-256x256.png",
