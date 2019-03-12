@@ -108,6 +108,25 @@ _Alternatively, you can use the cypress app to create test cases_
 $ npx cypress open
 ```
 
+### Branches
+
+#### [master](https://gitlab.com/ridicorp/store/web-test/tree/master)
+
+#### [staging](https://gitlab.com/ridicorp/store/web-test/tree/staging)
+
+#### [development](https://gitlab.com/ridicorp/store/web-test/tree/development)
+
+- Deploy to https://store.ridi.io
+
+#### Feature branches
+
+- You should be able to guess the issue by branch name.
+
+> ex)  
+> feat/add-background-color  
+> hotfix/fix-login-bug  
+> refactor/refactoring-layout-component
+
 ### FAQ
 
 #### How to make cypress test cases
