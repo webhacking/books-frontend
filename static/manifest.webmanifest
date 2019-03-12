@@ -7,7 +7,7 @@
   "theme_color": "#339CF2",
   "description": "Store Web PWA.",
   "icons": [{
-    "src": "icon/android-chrome-256x256.png",
+    "src": "https://store-static.ridi.io/static/icon/android-chrome-256x256.png",
     "sizes": "256x256",
     "type": "image/png"
   }]
