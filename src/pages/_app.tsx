@@ -4,7 +4,7 @@ import { Store } from 'redux';
 import withRedux from 'next-redux-wrapper';
 import makeStore, { StoreRootState } from 'src/store/config';
 import { ConnectedRouter } from 'connected-next-router';
-import { initializeSentry } from 'src/utils/sentry';
+import { initializeSentry, notifySentry } from 'src/utils/sentry';
 
 interface StoreAppProps extends AppComponentProps {
   store: Store<StoreRootState>;
@@ -39,39 +39,35 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   // tslint:disable-next-line
 
   public componentDidMount(): void {
+    // @ts-ignore
     const isUpdateAvailable = new Promise(resolve => {
       if ('serviceWorker' in navigator) {
-        // Unregistration
-        // navigator.serviceWorker.getRegistrations().then(r => {
-        //   for (const registration of r) {
-        //     registration.unregister();
-        //   }
-        // });
-
         navigator.serviceWorker
           .register(`/service-worker.js`)
           // @ts-ignore
           .then((registration: ServiceWorkerRegistration) => {
-            registration.onupdatefound = () => {
-              const installingWorker = registration.installing;
-              if (installingWorker) {
-                installingWorker.onstatechange = () => {
-                  switch (installingWorker.state) {
-                    case 'installed': {
-                      if (navigator.serviceWorker.controller) {
-                        resolve(registration);
-                      } else {
-                        resolve(false);
-                      }
-                    }
-                  }
-                };
-              }
-            };
+            // registration.onupdatefound = () => {
+            //   const installingWorker = registration.installing;
+            //   if (installingWorker) {
+            //     installingWorker.onstatechange = () => {
+            //       switch (installingWorker.state) {
+            //         case 'installed': {
+            //           console.log('installed from _app.tsx');
+            //           if (navigator.serviceWorker.controller) {
+            //             resolve(registration);
+            //           } else {
+            //             resolve(false);
+            //           }
+            //         }
+            //       }
+            //     };
+            //   }
+            // };
             console.log('service worker registration successful');
           })
           .catch((err: Error) => {
             console.warn('service worker registration failed', err.message);
+            notifySentry(err);
           });
       }
     });
@@ -82,19 +78,15 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   }
 
   public componentDidUpdate(): void {
-    if (this.state.isUpdateAvailable !== null) {
-      this.state.isUpdateAvailable.then(isAvailable => {
-        if (isAvailable) {
-          isAvailable.update();
-          console.log('New Update Available!');
-          if (!this.state.refreshing) {
-            this.setState({
-              refreshing: true,
-            });
-          }
-        }
-      });
-    }
+    // if (this.state.isUpdateAvailable !== null) {
+    //   this.state.isUpdateAvailable
+    //     .then((registration: ServiceWorkerRegistration) => {
+    //       if (registration) {
+    //         registration.update();
+    //       }
+    //     })
+    //     .catch(error => notifySentry(error));
+    // }
   }
 
   public render() {

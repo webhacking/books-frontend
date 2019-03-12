@@ -12,7 +12,7 @@ import { Link } from 'server/routes';
 
 // emotion test
 const Div = styled.div`
-  color: red;
+  color: cornsilk;
 `;
 
 export default class Home extends React.Component {

@@ -12,18 +12,12 @@ const { clientRoutes } = require('./routes');
 
 const handle = clientRoutes.getRequestHandler(app);
 
-// const whiteList = ['/service-worker.js', '/manifest.webmanifest']
-
 function createServer() {
   const server = express();
 
   server.use(compression());
   server.use(cookieParser());
   server.use(express.json());
-  server.use((req, res, next) => {
-    res.setHeader('Cache-Control', 'public, max-age=60, immutable');
-    next();
-  });
 
   server.use(`/_next`, express.static(path.join(__dirname, '../build')));
   server.use('/static', express.static(path.join(__dirname, '../static')));
