@@ -113,6 +113,9 @@ e2e-development:
   extends: .e2e
   only:
     - development
+  allow_failure: true
+  after_script:
+    - echo 'Hahaha'
   variables:
     CYPRESS_BASE_URL: https://store.ridi.io
 
