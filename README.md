@@ -16,7 +16,7 @@
        (https://www.asciiart.eu/books/books)
 ```
 
-[![codecov](https://codecov.io/gl/ridicorp:store/web-test/branch/master/graph/badge.svg?token=SlneHi8wtU)](https://codecov.io/gl/ridicorp:store/web-test)
+[![codecov](https://codecov.io/gl/ridicorp:frontend/books/branch/master/graph/badge.svg?token=SlneHi8wtU)](https://codecov.io/gl/ridicorp:frontend/books)
 
 ## Infrastructure
 
@@ -110,11 +110,11 @@ $ npx cypress open
 
 ### Branches
 
-#### [master](https://gitlab.com/ridicorp/store/web-test/tree/master)
+#### [master](https://gitlab.com/ridicorp/frontend/books/tree/master)
 
-#### [staging](https://gitlab.com/ridicorp/store/web-test/tree/staging)
+#### [staging](https://gitlab.com/ridicorp/frontend/books/tree/staging)
 
-#### [development](https://gitlab.com/ridicorp/store/web-test/tree/development)
+#### [development](https://gitlab.com/ridicorp/frontend/books/tree/development)
 
 - Deploy to https://store.ridi.io
 
