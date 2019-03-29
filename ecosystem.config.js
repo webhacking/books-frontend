@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'store-web-server',
+      name: 'books-server',
       script: './server/server.js',
       autorestart: true,
       watch: './{server}/**/*.{js,jsx,ts,tsx}',

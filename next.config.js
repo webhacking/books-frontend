@@ -11,7 +11,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = nextSourceMaps(
   withTypeScript({
     distDir: '../build',
-    assetPrefix: localEnv.CDN_URL || undefined,
+    assetPrefix: localEnv.STATIC_CDN_URL || undefined,
     useFileSystemPublicRoutes: false,
     exportPathMap: () => {
       return {};
@@ -43,7 +43,9 @@ module.exports = nextSourceMaps(
           }),
         );
       }
-      config.output.publicPath = !!localEnv.CDN_URL ? localEnv.CDN_URL + '/_next/' : '/_next/';
+      config.output.publicPath = !!localEnv.STATIC_CDN_URL
+        ? localEnv.STATIC_CDN_URL + '/_next/'
+        : '/_next/';
       config.plugins.push(
         new CopyPlugin([
           {

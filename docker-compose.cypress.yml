@@ -5,8 +5,8 @@ services:
     build:
       dockerfile: $PWD/provisioning/e2e/Dockerfile
       context: ./
-    container_name: store-e2e
-    working_dir: /store-e2e
+    container_name: books-e2e
+    working_dir: /books-e2e
     environment:
       CYPRESS_BASE_URL: $CYPRESS_BASE_URL
     command: npx cypress run
