@@ -7,8 +7,8 @@ stages:
   - e2e
 
 variables:
-  npm_config_cache: /builds/store/web-test/.npm
-  CYPRESS_CACHE_FOLDER: /builds/store/web-test/cache/Cypress
+  npm_config_cache: /builds/frontend/books/.npm
+  CYPRESS_CACHE_FOLDER: /builds/frontend/books/cache/Cypress
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -36,6 +36,7 @@ test:jest:
 # 배포 관련 브랜치가 아닌 Feature 브랜치에서 진행하는 스테이지
 build:
   stage: build
+  extends: .install
   variables:
     ENVIRONMENT: 'local'
   except:
@@ -49,7 +50,7 @@ build:
   stage: deploy
   extends: .install
   script:
-    - env | awk '/CDN_URL|ENVIRONMENT|SENTRY_DSN/' >> .env
+    - env | awk '/STATIC_CDN_URL|ENVIRONMENT|SENTRY_DSN/' >> .env
     - ./node_modules/.bin/serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID
       --secret $AWS_SECRET_ACCESS_KEY
     - yarn deploy
@@ -64,7 +65,7 @@ deploy-development:
     ENVIRONMENT: 'development'
     AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
-    CDN_URL: $DEV_CDN_URL
+    STATIC_CDN_URL: $DEV_STATIC_CDN_URL
     STATIC_CDN_DISTRIBUTION_ID: $DEV_STATIC_CDN_DISTRIBUTION_ID
     LAMBDA_CDN_DISTRIBUTION_ID: $DEV_CDN_DISTRIBUTION_ID
 
@@ -77,7 +78,7 @@ deploy-staging:
     ENVIRONMENT: 'staging'
     AWS_ACCESS_KEY_ID: $STAGING_AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $STAGING_AWS_SECRET_ACCESS_KEY
-    CDN_URL: $DEV_CDN_URL
+    STATIC_CDN_URL: $DEV_STATIC_CDN_URL
 
 deploy-production:
   extends: .deploy-template
@@ -88,7 +89,7 @@ deploy-production:
     ENVIRONMENT: 'production'
     AWS_ACCESS_KEY_ID: $PRODUCTION_AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $PRODUCTION_AWS_SECRET_ACCESS_KEY
-    CDN_URL: $DEV_CDN_URL
+    STATIC_CDN_URL: $DEV_STATIC_CDN_URL
 
 .e2e:
   tags:
@@ -117,7 +118,7 @@ e2e-development:
   after_script:
     - echo 'Hahaha'
   variables:
-    CYPRESS_BASE_URL: https://store.ridi.io
+    CYPRESS_BASE_URL: https://books.ridi.io
 
 e2e-staging:
   extends: .e2e

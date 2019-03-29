@@ -9,4 +9,4 @@
 ### Chore
 
 - Add CHANGELOG.md [Unreleased]:
-  https://gitlab.com/ridicorp/store/web-test/compare/0.0.1-initialize...HEAD
+  https://gitlab.com/ridicorp/frontend/books/compare/0.0.1-initialize...HEAD

@@ -1,4 +1,4 @@
-service: store-web
+service: books
 
 package:
   exclude:
@@ -26,9 +26,9 @@ provider:
   region: ${self:custom.secrets.REGION}
   stage: ${opt:stage, 'development'}
   # CloudFormation Name
-  stackName: store-web-sls-${opt:stage, 'development'}
+  stackName: books-sls-${opt:stage, 'development'}
   deploymentBucket:
-    name: store-web.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
+    name: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
   # serverSideEncryption: AES256
   environment:
     NODE_ENV: ${self:custom.secrets.NODE_ENV}
@@ -58,10 +58,10 @@ plugins:
 # https://github.com/Vadorequest/serverless-with-next#known-issues
 custom:
   s3Sync:
-    - bucketName: store-web.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
+    - bucketName: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
       bucketPrefix: static/ # optional
       localDir: static/ # required
-    - bucketName: store-web.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
+    - bucketName: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
       bucketPrefix: _next/ # optional
       localDir: build/
       params: # optional
@@ -97,7 +97,7 @@ resources:
     StaticBucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
-        Bucket: store-web.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
+        Bucket: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
         PolicyDocument:
           Statement:
             - Sid: 'AllowPublicRead'
@@ -105,8 +105,8 @@ resources:
                 - 's3:GetObject'
               Effect: 'Allow'
               Resource:
-                - arn:aws:s3:::store-web.sls.${opt:stage,'development'}.${self:provider.region}.deploys/_next/*
-                - arn:aws:s3:::store-web.sls.${opt:stage,'development'}.${self:provider.region}.deploys/static/*
+                - arn:aws:s3:::books.sls.${opt:stage,'development'}.${self:provider.region}.deploys/_next/*
+                - arn:aws:s3:::books.sls.${opt:stage,'development'}.${self:provider.region}.deploys/static/*
               Principal: '*'
 #    LambdaDNSRecord:
 #      Type: AWS::Route53::RecordSet

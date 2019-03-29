@@ -1,4 +1,4 @@
-# Ridibooks Store Web
+# Ridibooks
 
 ```spacebars
 
@@ -66,7 +66,7 @@ $ make install
 ```bash
 $ docker-compose up -d
 ...
-$ open https://store-web.local.ridi.io
+$ open https://books.local.ridi.io
 
 ```
 
@@ -116,7 +116,7 @@ $ npx cypress open
 
 #### [development](https://gitlab.com/ridicorp/frontend/books/tree/development)
 
-- Deploy to https://store.ridi.io
+- Deploy to https://books.ridi.io
 
 #### Feature branches
 

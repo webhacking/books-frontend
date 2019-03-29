@@ -7,10 +7,10 @@ services:
     build:
       dockerfile: $PWD/provisioning/local/Dockerfile
       context: ./
-    container_name: store-web
+    container_name: books
     volumes:
-      - .:/store-web
-    working_dir: /store-web
+      - .:/books
+    working_dir: /books
     environment:
       ENVIRONMENT: local
     command: ['make', 'docker-start-local']

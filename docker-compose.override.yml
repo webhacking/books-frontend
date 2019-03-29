@@ -4,7 +4,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=${EXTERNAL_NETWORK:-ridi}'
-      - 'traefik.frontend.rule=Host:store-web.local.ridi.io'
+      - 'traefik.frontend.rule=Host:books.local.ridi.io'
     networks:
       - traefik
     ports:
