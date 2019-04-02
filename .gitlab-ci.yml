@@ -130,17 +130,22 @@ e2e-development:
 e2e-staging:
   extends: .e2e
   when: manual
+  only:
+    - staging
   variables:
     CYPRESS_BASE_URL: https://web-staging.crying.dance
 
 e2e-production:
   extends: .e2e
   when: manual
+  only:
+    - master
   variables:
     CYPRESS_BASE_URL: https://web-production.crying.dance
 
 notify:
   when: always
+  stage: notify
   only:
     - master
     - development
@@ -151,6 +156,7 @@ notify:
     - ./notify/slack-notify.sh
 
 notify-e2e:
+  stage: notify-e2e
   when: always
   only:
     - master
