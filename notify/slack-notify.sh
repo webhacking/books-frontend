@@ -4,7 +4,7 @@ STATUS="$(cat .job_status)"
 STAGE="$(cat .stage)"
 ENV=${ENVIRONMENT:="DEVELOPMENT"}
 
-[[ $STATUS = "FAIL" ]] && COLOR="#5ABF0D" || COLOR="#D93826"
+[[ $STATUS = "FAIL" ]] && COLOR="#D93826" || COLOR="#5ABF0D"
 
 
 if [ ${ENV} = "DEVELOPMENT" ]
