@@ -30,6 +30,10 @@ test:jest:
     - echo "SUCCESS" > .job_status
   after_script:
     - ./node_modules/.bin/codecov
+  artifacts:
+    paths:
+      - .job_status
+      - .stage
 
 # 배포 관련 브랜치가 아닌 Feature 브랜치에서 진행하는 스테이지
 build:
@@ -62,6 +66,10 @@ build:
     - aws cloudfront create-invalidation --distribution-id $LAMBDA_CDN_DISTRIBUTION_ID --paths "/*"
     - aws cloudfront create-invalidation --distribution-id $STATIC_CDN_DISTRIBUTION_ID --paths "/*"
     - echo "SUCCESS" > .job_status
+  artifacts:
+    paths:
+      - .job_status
+      - .stage
 
 deploy-development:
   extends: .deploy-template
@@ -115,6 +123,8 @@ deploy-production:
     paths:
       - cypress/screenshots
       - cypress/videos
+      - .job_status
+      - .stage
   script:
     - ./node_modules/.bin/cypress run
     - echo "SUCCESS" > .job_status
