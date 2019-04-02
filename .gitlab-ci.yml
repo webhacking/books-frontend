@@ -161,6 +161,7 @@ notify:
     - development
     - staging
   before_script:
+    - apk --update add git
     - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
   script:
     - ./notify/slack-notify.sh
@@ -173,6 +174,7 @@ notify-e2e:
     - development
     - staging
   before_script:
+    - apk --update add git
     - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
   script:
     - ./notify/slack-notify.sh
