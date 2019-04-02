@@ -4,7 +4,9 @@ stages:
   - test
   - build
   - deploy
+  - notify
   - e2e
+  - notify-e2e
 
 variables:
   npm_config_cache: /builds/frontend/books/.npm
@@ -17,38 +19,41 @@ cache:
     - cache/Cypress
     - node_modules
 
-.install:
-  before_script:
-    - yarn install
-
-.test-template:
-  stage: test
-  extends: .install
-
 test:jest:
   stage: test
-  extends: .test-template
+  before_script:
+    - echo "FAIL" > .job_status
+    - echo "TEST" > .stage
+    - yarn install
   script:
     - yarn test
+    - echo "SUCCESS" > .job_status
   after_script:
     - ./node_modules/.bin/codecov
 
 # 배포 관련 브랜치가 아닌 Feature 브랜치에서 진행하는 스테이지
 build:
   stage: build
-  extends: .install
   variables:
     ENVIRONMENT: 'local'
   except:
     - master
     - development
     - staging
+  before_script:
+    - echo "FAIL" > .job_status
+    - echo "BUILD" > .stage
+    - yarn install
   script:
     - yarn build src
+    - echo "SUCCESS" > .job_status
 
 .deploy-template:
   stage: deploy
-  extends: .install
+  before_script:
+    - echo "FAIL" > .job_status
+    - echo "DEPLOY" > .stage
+    - yarn install
   script:
     - env | awk '/STATIC_CDN_URL|ENVIRONMENT|SENTRY_DSN/' >> .env
     - ./node_modules/.bin/serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID
@@ -56,6 +61,7 @@ build:
     - yarn deploy
     - aws cloudfront create-invalidation --distribution-id $LAMBDA_CDN_DISTRIBUTION_ID --paths "/*"
     - aws cloudfront create-invalidation --distribution-id $STATIC_CDN_DISTRIBUTION_ID --paths "/*"
+    - echo "SUCCESS" > .job_status
 
 deploy-development:
   extends: .deploy-template
@@ -99,6 +105,8 @@ deploy-production:
   stage: e2e
   allow_failure: true
   before_script:
+    - echo "FAIL" > .job_status
+    - echo "E2E" > .stage
     - yarn add cypress
     - ./node_modules/.bin/cypress verify
   artifacts:
@@ -109,14 +117,13 @@ deploy-production:
       - cypress/videos
   script:
     - ./node_modules/.bin/cypress run
+    - echo "SUCCESS" > .job_status
 
 e2e-development:
   extends: .e2e
   only:
     - development
   allow_failure: true
-  after_script:
-    - echo 'Hahaha'
   variables:
     CYPRESS_BASE_URL: https://books.ridi.io
 
@@ -131,3 +138,25 @@ e2e-production:
   when: manual
   variables:
     CYPRESS_BASE_URL: https://web-production.crying.dance
+
+notify:
+  when: always
+  only:
+    - master
+    - development
+    - staging
+  before_script:
+    - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
+  script:
+    - ./notify/slack-notify.sh
+
+notify-e2e:
+  when: always
+  only:
+    - master
+    - development
+    - staging
+  before_script:
+    - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
+  script:
+    - ./notify/slack-notify.sh
