@@ -8,8 +8,9 @@ import Document, {
 } from 'next/document';
 import { extractCritical } from 'emotion-server';
 import { EmotionCritical } from 'create-emotion-server';
+import Favicon from 'src/pages/Favicon';
+import Meta from 'src/pages/Meta';
 import getConfig from 'next-server/config';
-
 const { publicRuntimeConfig } = getConfig();
 
 interface StoreDocumentProps extends DocumentProps, EmotionCritical {}
@@ -36,23 +37,17 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
     return (
       <html lang="ko">
         <Head>
-          <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-          <meta charSet="UTF-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"
-          />
-          <meta
-            name="google-site-verification"
-            content="Ej_LuvDzCxS1Ck6Sa5AN_OVntufSGfi8VfuytSrHaPk"
-          />
-          <meta name="theme-color" content="#339CF2" />
+          <Meta />
+          <Favicon />
           <link
-            rel="icon"
-            type="image/x-icon"
-            href={`${publicRuntimeConfig.STATIC_CDN_URL}/static/favicon.ico`}
+            rel="manifest"
+            crossOrigin="anonymous"
+            href={
+              publicRuntimeConfig.STATIC_CDN_URL !== ''
+                ? `${publicRuntimeConfig.STATIC_CDN_URL}/static/manifest.webmanifest`
+                : '/manifest.webmanifest'
+            }
           />
-          <link rel="manifest" href="/manifest.webmanifest" />
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
         <body>

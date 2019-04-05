@@ -9,6 +9,7 @@ import { css } from '@emotion/core';
 
 // @ts-ignore
 import { Link } from 'server/routes';
+import Head from 'next-server/head';
 
 // emotion test
 const Div = styled.div`
@@ -18,19 +19,24 @@ const Div = styled.div`
 export default class Home extends React.Component {
   public render() {
     return (
-      <div>
-        <Link route={'/about/1242000770'}>
-          <button>To Book Page</button>
-        </Link>
-        <Div>Home. Store Responsive Web Infra Test.</Div>
-        <Book.Thumbnail
-          thumbnailWidth={240}
-          css={css`
-            border: 4px dashed blueviolet;
-          `}
-          thumbnailUrl={'https://misc.ridibooks.com/cover/1242000770/xxlarge'}
-        />
-      </div>
+      <>
+        <Head>
+          <title>리디북스</title>
+        </Head>
+        <div>
+          <Link route={'/about/1242000770'}>
+            <button>To Book Page</button>
+          </Link>
+          <Div>Home. Store Responsive Web Infra Test.</Div>
+          <Book.Thumbnail
+            thumbnailWidth={240}
+            css={css`
+              border: 4px dashed blueviolet;
+            `}
+            thumbnailUrl={'https://misc.ridibooks.com/cover/1242000770/xxlarge'}
+          />
+        </div>
+      </>
     );
   }
 }
