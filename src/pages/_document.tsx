@@ -10,8 +10,6 @@ import { extractCritical } from 'emotion-server';
 import { EmotionCritical } from 'create-emotion-server';
 import Favicon from 'src/pages/Favicon';
 import Meta from 'src/pages/Meta';
-import getConfig from 'next-server/config';
-const { publicRuntimeConfig } = getConfig();
 
 interface StoreDocumentProps extends DocumentProps, EmotionCritical {}
 
@@ -39,15 +37,7 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
         <Head>
           <Meta />
           <Favicon />
-          <link
-            rel="manifest"
-            crossOrigin="anonymous"
-            href={
-              publicRuntimeConfig.STATIC_CDN_URL !== ''
-                ? `${publicRuntimeConfig.STATIC_CDN_URL}/static/manifest.webmanifest`
-                : '/manifest.webmanifest'
-            }
-          />
+          <link rel="manifest" href="/manifest.webmanifest" />
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
         <body>

@@ -1,13 +1,13 @@
 {
   "name": "Ridibooks.com",
   "short_name": "Ridibooks.com",
-  "start_url": "https://books-static.ridi.io",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#f0f0f0",
   "theme_color": "#339CF2",
   "description": "Ridibooks.com",
   "icons": [{
-    "src": "/static/favicon/android-icon-192x192.png",
+    "src": "https://books-static.ridi.io/static/favicon/android-icon-192x192.png",
     "sizes": "192x192",
     "type": "image/png"
   }]
