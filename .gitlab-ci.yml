@@ -82,6 +82,9 @@ deploy-development:
     STATIC_CDN_URL: $DEV_STATIC_CDN_URL
     STATIC_CDN_DISTRIBUTION_ID: $DEV_STATIC_CDN_DISTRIBUTION_ID
     LAMBDA_CDN_DISTRIBUTION_ID: $DEV_CDN_DISTRIBUTION_ID
+  environment:
+    name: development
+    url: https://books.ridi.io
 
 deploy-staging:
   extends: .deploy-template
