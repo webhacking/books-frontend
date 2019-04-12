@@ -1,5 +1,6 @@
 import getConfig from 'next-server/config';
 const { publicRuntimeConfig } = getConfig();
+
 export default () => (
   <>
     <link
