@@ -7,6 +7,7 @@ BRANCH_NAME=${CI_COMMIT_REF_NAME:="NONE"}
 
 [[ $STATUS = "FAIL" ]] && COLOR="#D93826" || COLOR="#5ABF0D"
 
+# on Jest testing failed
 if [ $STAGE = "TEST" ] && [ $STATUS = "FAIL" ]
 then
 curl -X POST \

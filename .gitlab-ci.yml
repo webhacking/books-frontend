@@ -4,9 +4,7 @@ stages:
   - test
   - build
   - deploy
-  - notify
   - e2e
-  - notify-e2e
 
 variables:
   npm_config_cache: /builds/frontend/books/.npm
@@ -50,10 +48,11 @@ build:
 
 .deploy-template:
   stage: deploy
-  allow_failure: true
   before_script:
     - echo "FAIL" > .job_status
     - echo "DEPLOY" > .stage
+    - apk --update add git
+    - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
     - yarn install
   script:
     - env | awk '/STATIC_CDN_URL|ENVIRONMENT|SENTRY_DSN/' >> .env
@@ -70,6 +69,8 @@ build:
     paths:
       - .job_status
       - .stage
+  after_script:
+    - ./notify/slack-notify.sh
 
 deploy-development:
   extends: .deploy-template
@@ -118,6 +119,8 @@ deploy-production:
   before_script:
     - echo "FAIL" > .job_status
     - echo "E2E" > .stage
+    - apk --update add git
+    - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
     - yarn add cypress
     - ./node_modules/.bin/cypress verify
   artifacts:
@@ -131,6 +134,8 @@ deploy-production:
   script:
     - ./node_modules/.bin/cypress run
     - echo "SUCCESS" > .job_status
+  after_script:
+    - ./notify/slack-notify-e2e.sh
 
 e2e-development:
   extends: .e2e
@@ -155,29 +160,3 @@ e2e-production:
     - master
   variables:
     CYPRESS_BASE_URL: https://web-production.crying.dance
-
-notify:
-  when: always
-  stage: notify
-  only:
-    - master
-    - development
-    - staging
-  before_script:
-    - apk --update add git
-    - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
-  script:
-    - ./notify/slack-notify.sh
-
-notify-e2e:
-  stage: notify-e2e
-  when: always
-  only:
-    - master
-    - development
-    - staging
-  before_script:
-    - apk --update add git
-    - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
-  script:
-    - ./notify/slack-notify-e2e.sh

@@ -8,5 +8,5 @@ afterEach(cleanup);
 test('should be render Index Component', () => {
   const { getByText } = render(<Index />);
 
-  expect(getByText(/Hfailome/)).toHaveTextContent('Homfailfaile');
+  expect(getByText(/Home/)).toHaveTextContent('Home');
 });
