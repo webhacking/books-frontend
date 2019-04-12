@@ -2,7 +2,7 @@
 
 STATUS="$(cat .job_status)"
 STAGE="$(cat .stage)"
-ENV=${ENVIRONMENT:="DEVELOPMENT"}
+ENV=${ENVIRONMENT:="development"}
 BRANCH_NAME=${CI_COMMIT_REF_NAME:="NONE"}
 
 [[ $STATUS = "FAIL" ]] && COLOR="#D93826" || COLOR="#5ABF0D"
@@ -10,10 +10,6 @@ BRANCH_NAME=${CI_COMMIT_REF_NAME:="NONE"}
 # on Jest testing failed
 if [ $STAGE = "TEST" ] && [ $STATUS = "FAIL" ]
 then
-  echo '??'
-  echo $ENV
-  echo $STATUS
-  echo $STAGE
   curl -X POST \
   -H 'Content-type: application/json' \
   --data '{
@@ -30,13 +26,8 @@ then
    }]
   }'\
   ${DEV_SLACK_WEB_HOOK}
-elif [ ${ENV} = "DEVELOPMENT" ] && [ $STAGE != "TEST" ]
+elif [ ${ENV} = "development" ] && [ $STAGE != "TEST" ]
 then
-  echo '???'
-  echo $ENV
-  echo $STATUS
-  echo $STAGE
-
   curl -X POST \
   -H 'Content-type: application/json' \
   --data '{
@@ -54,7 +45,3 @@ then
   }'\
   ${DEV_SLACK_WEB_HOOK}
 fi
-echo '????'
-echo $ENV
-echo $STATUS
-echo $STAGE
