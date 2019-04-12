@@ -145,6 +145,7 @@ e2e-development:
   allow_failure: true
   variables:
     CYPRESS_BASE_URL: https://books.ridi.io
+    ENVIRONMENT: 'development'
 
 e2e-staging:
   extends: .e2e
@@ -153,6 +154,7 @@ e2e-staging:
     - staging
   variables:
     CYPRESS_BASE_URL: https://web-staging.crying.dance
+    ENVIRONMENT: 'staging'
 
 e2e-production:
   extends: .e2e
@@ -161,3 +163,4 @@ e2e-production:
     - master
   variables:
     CYPRESS_BASE_URL: https://web-production.crying.dance
+    ENVIRONMENT: 'production'
