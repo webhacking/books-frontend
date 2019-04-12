@@ -55,6 +55,7 @@ build:
     - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
     - yarn install
   script:
+    - exit 1
     - env | awk '/STATIC_CDN_URL|ENVIRONMENT|SENTRY_DSN/' >> .env
     - ./node_modules/.bin/serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID
       --secret $AWS_SECRET_ACCESS_KEY

@@ -28,6 +28,10 @@ curl -X POST \
   ${DEV_SLACK_WEB_HOOK}
 elif [ ${ENV} = "DEVELOPMENT" ] && [ $STAGE != "TEST" ]
 then
+  echo $ENV
+  echo $STATUS
+  echo $STAGE
+
   curl -X POST \
   -H 'Content-type: application/json' \
   --data '{
@@ -43,5 +47,5 @@ then
      ]
    }]
   }'\
-${DEV_SLACK_WEB_HOOK}
+  ${DEV_SLACK_WEB_HOOK}
 fi
