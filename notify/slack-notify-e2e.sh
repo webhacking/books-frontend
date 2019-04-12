@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 STATUS="$(cat .job_status)"
 STAGE="$(cat .stage)"
