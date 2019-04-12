@@ -65,6 +65,9 @@ build:
     - yarn deploy
     - aws cloudfront create-invalidation --distribution-id $LAMBDA_CDN_DISTRIBUTION_ID --paths "/*"
     - aws cloudfront create-invalidation --distribution-id $STATIC_CDN_DISTRIBUTION_ID --paths "/*"
+    - LATEST_SLS_DEPLOY_TIMESTAMP=$(sls deploy list | awk '/Timestamp/' | awk '{print $3}' | awk
+      END{print})
+    - LATEST_COMMIT_HASH=$(git rev-parse HEAD)
     - echo "SUCCESS" > .job_status
   artifacts:
     paths:

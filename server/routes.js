@@ -1,6 +1,9 @@
 const nextRoutes = require('next-routes');
 const clientRoutes = nextRoutes();
 
+// clientRoutes.add({ page: 'partials', pattern: '/partials/gnb' });
+clientRoutes.add({ page: 'partials/gnb', pattern: '/partials/gnb' });
+clientRoutes.add({ page: 'partials/footer', pattern: '/partials/footer' });
 clientRoutes.add({ page: 'about', pattern: '/about/:id' });
 clientRoutes.add({ page: '/', pattern: '/' });
 

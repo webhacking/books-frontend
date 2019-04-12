@@ -10,6 +10,7 @@ import { css } from '@emotion/core';
 // @ts-ignore
 import { Link } from 'server/routes';
 import Head from 'next-server/head';
+import { ConnectedInitializeProps } from 'src/types/common';
 
 // emotion test
 const Div = styled.div`
@@ -17,6 +18,9 @@ const Div = styled.div`
 `;
 
 export default class Home extends React.Component {
+  public static async getInitialProps(props: ConnectedInitializeProps<{ genre: string }>) {
+    return { genre: props.query.genre };
+  }
   public render() {
     return (
       <>
