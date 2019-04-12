@@ -119,7 +119,7 @@ deploy-production:
   before_script:
     - echo "FAIL" > .job_status
     - echo "E2E" > .stage
-    - apk --update add git
+    - apt-get update && apt-get git
     - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
     - yarn add cypress
     - ./node_modules/.bin/cypress verify

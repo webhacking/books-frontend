@@ -21,7 +21,6 @@ then
         { "title": "Revision", "value": "'"${CI_COMMIT_SHA:="NONE"}"'", "short": true },
         { "title": "CI Stage", "value": "'"${STAGE}"'", "short": true },
         { "title": "JOB Result", "value": "'"${STATUS}"'", "short": true },
-        { "title": "E2E Video", "value": "'"https://gitlab.com/ridicorp/frontend/books/-/jobs/artifacts/${BRANCH_NAME}/download?job=e2e-${BRANCH_NAME}"'", "short": true}
       ]
     }]
   }'\
