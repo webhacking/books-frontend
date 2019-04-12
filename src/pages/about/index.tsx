@@ -40,7 +40,7 @@ class About extends React.Component<AboutProps> {
         <Link route={`/about/${parseInt(this.props.id, 10) + 1}`}>
           <button>Next Book Page</button>
         </Link>
-        <Link route={'/'}>
+        <Link route={'/?genre=bl'}>
           <button>To Home Page</button>
         </Link>
         <Book.Thumbnail

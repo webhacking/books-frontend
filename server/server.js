@@ -34,7 +34,9 @@ function createServer() {
     }
     return handle(req, res);
   });
-
+  server.use(function(err, req, res, next) {
+    console.log(err);
+  });
   return server;
 }
 
