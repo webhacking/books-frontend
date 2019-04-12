@@ -30,9 +30,8 @@ test:jest:
     - echo "SUCCESS" > .job_status
   after_script:
     - ./node_modules/.bin/codecov
-    - [ $(cat .job_status) == "FAIL" ] && ./notify/slack-notify.sh
+    - ./notify/slack-notify.sh
 
-# 배포 관련 브랜치가 아닌 Feature 브랜치에서 진행하는 스테이지
 build:
   stage: build
   variables:
