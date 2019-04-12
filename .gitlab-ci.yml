@@ -55,15 +55,14 @@ build:
     - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
     - yarn install
   script:
-    - exit 1
     - env | awk '/STATIC_CDN_URL|ENVIRONMENT|SENTRY_DSN/' >> .env
     - ./node_modules/.bin/serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID
       --secret $AWS_SECRET_ACCESS_KEY
     - yarn deploy
     - aws cloudfront create-invalidation --distribution-id $LAMBDA_CDN_DISTRIBUTION_ID --paths "/*"
     - aws cloudfront create-invalidation --distribution-id $STATIC_CDN_DISTRIBUTION_ID --paths "/*"
-    - LATEST_SLS_DEPLOY_TIMESTAMP=$(sls deploy list | awk '/Timestamp/' | awk '{print $3}' | awk
-      END{print})
+    - LATEST_SLS_DEPLOY_TIMESTAMP=$(./node_modules/.bin/serverless deploy list | awk '/Timestamp/' |
+      awk '{print $3}' | awk END{print})
     - LATEST_COMMIT_HASH=$(git rev-parse HEAD)
     - echo "SUCCESS" > .job_status
   artifacts:
