@@ -30,10 +30,7 @@ test:jest:
     - echo "SUCCESS" > .job_status
   after_script:
     - ./node_modules/.bin/codecov
-  artifacts:
-    paths:
-      - .job_status
-      - .stage
+    - [ $(cat .job_status) == "FAIL" ] && ./notify/slack-notify.sh
 
 # 배포 관련 브랜치가 아닌 Feature 브랜치에서 진행하는 스테이지
 build:
@@ -54,6 +51,7 @@ build:
 
 .deploy-template:
   stage: deploy
+  allow_failure: true
   before_script:
     - echo "FAIL" > .job_status
     - echo "DEPLOY" > .stage
@@ -65,6 +63,9 @@ build:
     - yarn deploy
     - aws cloudfront create-invalidation --distribution-id $LAMBDA_CDN_DISTRIBUTION_ID --paths "/*"
     - aws cloudfront create-invalidation --distribution-id $STATIC_CDN_DISTRIBUTION_ID --paths "/*"
+    - LATEST_SLS_DEPLOY_TIMESTAMP=$(sls deploy list | awk '/Timestamp/' | awk '{print $3}' | awk
+      END{print})
+    - LATEST_COMMIT_HASH=$(git rev-parse HEAD)
     - echo "SUCCESS" > .job_status
   artifacts:
     paths:
@@ -180,4 +181,4 @@ notify-e2e:
     - apk --update add git
     - export CI_COMMIT_TITLE=`git log -1 --pretty=%B | head -n1`
   script:
-    - ./notify/slack-notify.sh
+    - ./notify/slack-notify-e2e.sh
