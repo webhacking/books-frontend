@@ -26,9 +26,7 @@ curl -X POST \
    }]
   }'\
   ${DEV_SLACK_WEB_HOOK}
-fi
-
-if [ ${ENV} = "DEVELOPMENT" ] && [ $STAGE != "TEST" ]
+elif [ ${ENV} = "DEVELOPMENT" ] && [ $STAGE != "TEST" ]
 then
   curl -X POST \
   -H 'Content-type: application/json' \
