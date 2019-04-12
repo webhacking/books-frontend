@@ -10,7 +10,11 @@ BRANCH_NAME=${CI_COMMIT_REF_NAME:="NONE"}
 # on Jest testing failed
 if [ $STAGE = "TEST" ] && [ $STATUS = "FAIL" ]
 then
-curl -X POST \
+  echo '??'
+  echo $ENV
+  echo $STATUS
+  echo $STAGE
+  curl -X POST \
   -H 'Content-type: application/json' \
   --data '{
     "attachments": [{
@@ -28,6 +32,7 @@ curl -X POST \
   ${DEV_SLACK_WEB_HOOK}
 elif [ ${ENV} = "DEVELOPMENT" ] && [ $STAGE != "TEST" ]
 then
+  echo '???'
   echo $ENV
   echo $STATUS
   echo $STAGE
@@ -49,3 +54,7 @@ then
   }'\
   ${DEV_SLACK_WEB_HOOK}
 fi
+echo '????'
+echo $ENV
+echo $STATUS
+echo $STAGE
