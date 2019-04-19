@@ -32,12 +32,17 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
     return { ...page };
   }
   public render() {
+    const isPartials = !!this.props.__NEXT_DATA__.page.match(/\/partials\//);
     return (
       <html lang="ko">
         <Head>
-          <Meta />
-          <Favicon />
-          <link rel="manifest" href="/manifest.webmanifest" />
+          {!isPartials && (
+            <>
+              <Meta />
+              <Favicon />
+              <link rel="manifest" href="/manifest.webmanifest" />
+            </>
+          )}
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
         <body>

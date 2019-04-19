@@ -1078,12 +1078,22 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.0.2.tgz#1d94f02800b094753f9271c206a26c2a06ca14ee"
   integrity sha512-8/qcMh15507AnXJ3lBeuhsdFwnWQqnp68EpUuHlYPixJ5vjVmls7/Jq48cnUlrZI8Jd9U1jkhfCl0gaT5KMgVw==
 
+"@ridi/colors@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@ridi/colors/-/colors-0.3.0.tgz#ce105915ecdd76908eeb12dcb29922609ecd6d44"
+  integrity sha512-1hZE3YJ+zPmpmg9C3rddmp86zF+FPkyCWUgISZBF/4ATLxCqZkN7jH/73sEM69GZPnV4Eyfdm+HyV9GlElennQ==
+
 "@ridi/tslint-config@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ridi/tslint-config/-/tslint-config-0.1.0.tgz#9ae7e344d1b58d43bb038f16eb55de1b319c399d"
   integrity sha1-mufjRNG1jUO7A48W61XeGzGcOZ0=
   dependencies:
     tslint-react "^3.4.0"
+
+"@ridi/web-icons@^0.3.7":
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/@ridi/web-icons/-/web-icons-0.3.7.tgz#2b296bbb58abfc9aeee1ca359a0771c792d27c30"
+  integrity sha512-vtv11W9xNPAg+5nKcHyXoWAp0PHmnqJyOOtgkmdz0NH719w8xIFzwcimXF3+HnsVZvOWu8EjGq4/zMWE94TqOQ==
 
 "@ridi/web-ui@^0.3.10":
   version "0.3.10"
@@ -3713,6 +3723,15 @@ emotion-server@^10.0.9:
   integrity sha512-SSOEsOEEkI2JrM5kxAbo3jJq6PEn3jDrdk3blOPaBQlhjwCbL5ZswzruIIdtNvFXvPlgWZJSr3Pdy/3mCC+I2Q==
   dependencies:
     create-emotion-server "10.0.0"
+
+emotion-theming@^10.0.10:
+  version "10.0.10"
+  resolved "https://registry.yarnpkg.com/emotion-theming/-/emotion-theming-10.0.10.tgz#efe8751119751bdc70fdc1795fe4cde0fb0cf14c"
+  integrity sha512-E4SQ3Y91avxxydDgubi/po/GaC5MM1XHm8kcClKg1PA/TeOye0PiLBzAzlgt9dBzDRV9+qHDunsayPvzVYIYng==
+  dependencies:
+    "@emotion/weak-memoize" "0.2.2"
+    hoist-non-react-statics "^3.3.0"
+    object-assign "^4.1.1"
 
 emotion@^10.0.9:
   version "10.0.9"
@@ -6903,10 +6922,10 @@ next-routes@^1.4.2:
   dependencies:
     path-to-regexp "^2.1.0"
 
-next-server@8.0.5-canary.32:
-  version "8.0.5-canary.32"
-  resolved "https://registry.yarnpkg.com/next-server/-/next-server-8.0.5-canary.32.tgz#4858a4c7a2167d72a88f955fcf52a3db85889168"
-  integrity sha512-/5s7S/2TyCWgO556/u8HGQE+FiyM3+EQJ34G+tjW83bWME78Z1Uuou+oX/7ovB4DRvUGSJqLX7x6+OvWTgr17Q==
+next-server@8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/next-server/-/next-server-8.1.0.tgz#50a9f248ede69fb33d83aa5274ec6c66f421556e"
+  integrity sha512-CUFIQ2qeJr6GDt2mOYBjbPmTP02delRn9O5tihJkS8kSMIH2oFyEJXdwgp9A1J7XqiALBjnq6HnUL0MjeGQs0Q==
   dependencies:
     amp-toolbox-optimizer "0.5.2-beta.6"
     etag "1.8.1"
@@ -6919,10 +6938,10 @@ next-server@8.0.5-canary.32:
     send "0.16.1"
     url "0.11.0"
 
-next@^8.0.5-canary.32:
-  version "8.0.5-canary.32"
-  resolved "https://registry.yarnpkg.com/next/-/next-8.0.5-canary.32.tgz#5f290ce426168c5049d4fc3d135b626e429adbbf"
-  integrity sha512-adavhOud+R4t1sH1vewylHP1bshFsxrjIEbxwoKplnyfbNa4VSPDKAbZ3Sjm47gf7kJwmVxeJkJCnd/U56v7CA==
+next@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/next/-/next-8.1.0.tgz#2a996dcd611f9e16920841c615e8bd6e5ada6e1c"
+  integrity sha512-NRlL+FNSeHXkDSi8hFoBWghXFJrjHTCXyH6T/EFR1HJiGo2xR3xBPhsb7W+GvIIGIxHRTCDq+lyQLYvPirH84g==
   dependencies:
     "@babel/core" "7.1.2"
     "@babel/plugin-proposal-class-properties" "7.1.0"
@@ -6949,7 +6968,7 @@ next@^8.0.5-canary.32:
     launch-editor "2.2.1"
     loader-utils "1.1.0"
     mkdirp "0.5.1"
-    next-server "8.0.5-canary.32"
+    next-server "8.1.0"
     prop-types "15.6.2"
     prop-types-exact "1.2.0"
     react-error-overlay "5.1.4"
