@@ -11,6 +11,7 @@
     "whitespace": false,
     "no-any": true,
     "no-unused-variable": true,
-    "no-inferrable-types": true
+    "no-inferrable-types": true,
+    "jsx-no-lambda": [false]
   }
 }

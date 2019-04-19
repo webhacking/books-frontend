@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Index from 'src/pages/partials/gnb';
+import Index from 'src/pages/partials/footer';
 import { render, cleanup } from 'react-testing-library';
 import 'jest-dom/extend-expect';
 
@@ -8,5 +8,5 @@ afterEach(cleanup);
 test('should be render Index Component', () => {
   const { getByText } = render(<Index />);
 
-  expect(getByText(/회원가입/)).toHaveTextContent('회원가입');
+  expect(getByText(/Footer/)).toHaveTextContent('Footer');
 });

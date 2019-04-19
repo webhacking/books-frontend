@@ -11,7 +11,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = nextSourceMaps(
   withTypeScript({
     distDir: '../build',
-    assetPrefix: localEnv.STATIC_CDN_URL || undefined,
+    assetPrefix: localEnv.STATIC_CDN_URL || 'https://books.local.ridi.io',
     useFileSystemPublicRoutes: false,
     exportPathMap: () => {
       return {};
