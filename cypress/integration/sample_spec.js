@@ -4,9 +4,4 @@ describe('My First Test', function() {
     cy.contains('Home');
     expect(true).to.equal(true);
   });
-  // it('Intentional Error!', () => {
-  //   cy.visit('');
-  //   cy.contains('Strange Victory!, Strange Defeat!');
-  //   expect(true).to.equal(false);
-  // });
 });
