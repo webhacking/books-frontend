@@ -5,6 +5,11 @@ import withRedux from 'next-redux-wrapper';
 import makeStore, { StoreRootState } from 'src/store/config';
 import { ConnectedRouter } from 'connected-next-router';
 import { notifySentry, initializeSentry } from 'src/utils/sentry';
+import { Global } from '@emotion/core';
+import { defaultTheme, resetStyles } from 'src/styles';
+import GNB from 'src/components/GNB';
+import { ThemeProvider } from 'emotion-theming';
+import Footer from 'src/components/Footer';
 
 interface StoreAppProps extends AppComponentProps {
   store: Store<StoreRootState>;
@@ -80,17 +85,23 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       return (
         <Container>
           {/* Todo Apply Layout */}
+          <Global styles={resetStyles} />
           <Component {...pageProps} />
         </Container>
       );
     } else {
       return (
         <Container>
+          <Global styles={resetStyles} />
           <Provider store={store}>
             {/* Todo Apply Layout */}
-            <ConnectedRouter>
-              <Component {...pageProps} />
-            </ConnectedRouter>
+            <ThemeProvider theme={defaultTheme}>
+              <ConnectedRouter>
+                <GNB />
+                <Component {...pageProps} />
+                <Footer />
+              </ConnectedRouter>
+            </ThemeProvider>
           </Provider>
         </Container>
       );

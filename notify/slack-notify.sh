@@ -21,7 +21,7 @@ then
        { "title": "Branch", "value": "'"${BRANCH_NAME}"'", "short": true },
        { "title": "Revision", "value": "'"${CI_COMMIT_SHA:="NONE"}"'", "short": true },
        { "title": "CI Stage", "value": "'"${STAGE}"'", "short": true },
-       { "title": "JOB Result", "value": "'"${STATUS}"'", "short": true },
+       { "title": "Job Result", "value": "'"${STATUS}"'", "short": true },
      ]
    }]
   }'\
