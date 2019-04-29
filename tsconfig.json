@@ -7,6 +7,8 @@
     "jsx": "preserve",
     "module": "esnext",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "target": "es3",
     "lib": ["esnext", "dom", "dom.iterable"],
     "outDir": "./dist/",
@@ -20,5 +22,5 @@
     "typeRoots": ["./src/types", "node_modules/@types"]
   },
   "include": ["src/pages/**/*"],
-  "exclude": ["/**/__tests__/*", "node_modules/**/*"]
+  "exclude": ["node_modules/**/*"]
 }

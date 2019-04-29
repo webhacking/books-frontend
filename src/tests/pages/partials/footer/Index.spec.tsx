@@ -2,11 +2,21 @@ import * as React from 'react';
 import Index from 'src/pages/partials/footer';
 import { render, cleanup } from 'react-testing-library';
 import 'jest-dom/extend-expect';
-
+import makeStore from '../../../../store/config';
+const store = makeStore({}, { asPath: 'test', isServer: false });
+jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
 afterEach(cleanup);
 
-test('should be render Index Component', () => {
-  const { getByText } = render(<Index />);
+test('should be render Index Component', async () => {
+  const props = await Index.getInitialProps({
+    pathname: '',
+    isServer: false,
+    asPath: '',
+    store,
+    query: { theme: 'dark' },
+  });
+
+  const { getByText } = render(<Index {...props} />);
 
   expect(getByText(/고객센터/)).toHaveTextContent('고객센터');
 });

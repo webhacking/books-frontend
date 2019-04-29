@@ -4,7 +4,7 @@ module.exports = {
     '**/*.{ts,tsx}',
     '!**/types/**/*',
     '!**/__test__/*.*',
-    '!**/_{document,app}.tsx',
+    '!**/_document.tsx',
     '!**/utils/sentry.ts',
   ],
   coveragePathIgnorePatterns: ['/node_modules/'],

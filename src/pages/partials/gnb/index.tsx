@@ -13,6 +13,11 @@ interface GNBState {
 interface GNBProps {
   type?: string;
   theme?: string;
+  search?: string;
+  isLogin?: string;
+
+  // 기존 서점의 search query params 이 'q'
+  q?: string;
 }
 export default class PartialGNB extends React.Component<GNBProps, GNBState> {
   public static async getInitialProps(
@@ -28,7 +33,7 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
   public render() {
     return (
       <ThemeProvider theme={!this.state.theme ? defaultTheme : darkTheme}>
-        <GNB id={'gnb'} type={this.props.type} />
+        <GNB id={'gnb'} type={this.props.type} searchKeyword={this.props.q || ''} />
       </ThemeProvider>
     );
   }

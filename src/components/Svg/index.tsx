@@ -1,8 +1,5 @@
 import * as React from 'react';
-import RidiLogo_1 from './RidiLogo_1';
-import RidiSelectLogo_1 from './RidiSelectLogo_1';
-import Paper from './Paper';
-import New_1 from './New_1';
+import { Paper, Lens, New_1, RidiSelectLogo_1, RidiLogo_1, Arrow_Left_13 } from './Icons';
 import styled from '@emotion/styled';
 
 enum IconNames {
@@ -10,6 +7,8 @@ enum IconNames {
   RidiSelectLogo_1 = 'RidiSelectLogo_1',
   Paper = 'Paper',
   New_1 = 'New_1',
+  Lens = 'Lens',
+  Arrow_Left_13 = 'Arrow_Left_13',
 }
 
 interface IconProps {
@@ -21,7 +20,9 @@ const Icons: IconProps = {
   RidiLogo_1,
   RidiSelectLogo_1,
   Paper,
+  Lens,
   New_1,
+  Arrow_Left_13,
 };
 
 // tslint:disable-next-line

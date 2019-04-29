@@ -18,7 +18,7 @@ const createCSS = (theme: RIDITheme) => css`
   color: white;
   word-break: keep-all;
   font-size: 14px;
-  height: 30px;
+  height: 32px;
 
   @media (max-width: 999px) {
     padding: 6px 8px;

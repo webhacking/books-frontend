@@ -1,11 +1,11 @@
 {
-  "name": "Ridibooks.com",
-  "short_name": "Ridibooks.com",
-  "start_url": "/",
-  "display": "standalone",
+  "name": "리디북스",
+  "short_name": "리디북스",
+  "start_url": "/?genre=general",
+  "display": "browser",
   "background_color": "#f0f0f0",
   "theme_color": "#339CF2",
-  "description": "Ridibooks.com",
+  "description": "리디북스 서점",
   "icons": [{
     "src": "https://books-static.ridi.io/static/favicon/android-icon-192x192.png",
     "sizes": "192x192",
