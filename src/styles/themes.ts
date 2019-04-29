@@ -15,6 +15,9 @@ export interface RIDITheme {
     primaryBorderColor: string;
     secondaryBorderColor: string;
   };
+  input: {
+    placeholder: string;
+  };
 }
 
 export const defaultTheme: RIDITheme = {
@@ -32,6 +35,9 @@ export const defaultTheme: RIDITheme = {
     secondaryBackground: '#ffffff',
     secondaryBorderColor: '#ffffff',
   },
+  input: {
+    placeholder: colors.slateGray50,
+  },
 };
 
 export const darkTheme: RIDITheme = {
@@ -48,5 +54,8 @@ export const darkTheme: RIDITheme = {
     primaryBackground: colors.dodgerBlue50,
     secondaryBackground: '#ffffff',
     secondaryBorderColor: '#ffffff',
+  },
+  input: {
+    placeholder: colors.slateGray50,
   },
 };

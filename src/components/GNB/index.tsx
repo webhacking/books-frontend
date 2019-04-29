@@ -5,26 +5,33 @@ import * as React from 'react';
 import { RIDITheme } from 'src/styles/themes';
 import { StyledSvg } from 'src/components/Svg';
 import { Button } from 'src/components/Button';
+import { InstantSearch } from 'src/components/Search';
+// import { useLayoutEffect } from 'react';
 
 const GNBWrapper = styled.div`
   width: 100%;
   background-color: ${props => props.theme.primaryColor};
-  overflow-x: auto;
-  overflow-y: hidden;
 `;
 
 const Header = styled.header`
   max-width: 1000px;
   margin: 0 auto;
+  position: relative;
 `;
 
 const Navigation = styled.nav`
-  padding: 8px 10px;
+  box-sizing: border-box;
+  padding: 9px 10px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 `;
 
-const Logos = styled.ul`
+const LogoWrapper = styled.ul`
+  min-height: 30px;
+  margin-bottom: unset;
+  @media (max-width: 999px) {
+    //margin-bottom: 9x;
+  }
   display: inline-flex;
   li {
     display: inline-flex;
@@ -82,9 +89,13 @@ const ridiSelectLogo = (theme: RIDITheme) => css`
   }
 `;
 
-const Buttons = styled.ul`
-  margin-left: auto;
+const ButtonWrapper = styled.ul`
+  position: absolute;
+  right: 16px;
   display: flex;
+  @media (max-width: 999px) {
+    right: 10px;
+  }
 
   li {
     :not(:last-of-type) {
@@ -96,17 +107,28 @@ const Buttons = styled.ul`
   }
 `;
 
+const logoAndSearchBox = css`
+  display: flex;
+  flex-direction: row;
+  @media (max-width: 999px) {
+    flex-direction: column;
+  }
+`;
+
 interface GNBProps {
   type?: string;
   id?: string;
+  login?: boolean;
+  searchKeyword?: string;
 }
-export default class GNB extends React.PureComponent<GNBProps> {
-  public render() {
-    return (
-      <GNBWrapper id={this.props.id}>
-        <Header>
-          <Navigation>
-            <Logos>
+
+export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
+  return (
+    <GNBWrapper id={props.id}>
+      <Header>
+        <Navigation>
+          <div css={logoAndSearchBox}>
+            <LogoWrapper>
               <li>
                 <a href="https://ridibooks.com">
                   <StyledSvg iconName={'RidiLogo_1'} fill={'white'} css={ridiLogo} />
@@ -119,18 +141,21 @@ export default class GNB extends React.PureComponent<GNBProps> {
                   <span className="a11y">리디셀렉트</span>
                 </a>
               </li>
-            </Logos>
-            <Buttons>
+            </LogoWrapper>
+            <ButtonWrapper>
               <li>
                 <Button type={'secondary'} label={'회원가입'} />
               </li>
               <li>
                 <Button type={'primary'} label={'로그인'} />
               </li>
-            </Buttons>
-          </Navigation>
-        </Header>
-      </GNBWrapper>
-    );
-  }
-}
+            </ButtonWrapper>
+            <InstantSearch searchKeyword={props.searchKeyword || ''} />
+          </div>
+        </Navigation>
+      </Header>
+    </GNBWrapper>
+  );
+});
+
+export default GNB;

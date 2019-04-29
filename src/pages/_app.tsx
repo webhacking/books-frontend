@@ -16,6 +16,8 @@ interface StoreAppProps extends AppComponentProps {
   // tslint:disable-next-line
   pageProps: any;
   isPartials?: boolean;
+  // tslint:disable-next-line
+  query: any;
 }
 
 interface StoreAppState {
@@ -32,11 +34,11 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   public static async getInitialProps({
     ctx,
     Component,
-  }: NextAppContext): Promise<DefaultAppIProps & { isPartials?: boolean }> {
+  }: // tslint:disable-next-line
+  NextAppContext): Promise<DefaultAppIProps & { isPartials?: boolean; query: any }> {
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     const isPartials = !!ctx.pathname.match(/\/partials\//);
-
-    return { pageProps, isPartials };
+    return { pageProps, isPartials, query: ctx.query };
   }
   // tslint:disable-next-line
 
@@ -80,7 +82,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   }
 
   public render() {
-    const { Component, pageProps, isPartials, store } = this.props;
+    const { Component, query, pageProps, isPartials, store } = this.props;
     if (isPartials) {
       return (
         <Container>
@@ -97,7 +99,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
             {/* Todo Apply Layout */}
             <ThemeProvider theme={defaultTheme}>
               <ConnectedRouter>
-                <GNB />
+                <GNB searchKeyword={query.search || ''} />
                 <Component {...pageProps} />
                 <Footer />
               </ConnectedRouter>

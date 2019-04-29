@@ -72,6 +72,21 @@ export const resetStyles = css`
     cursor: pointer;
     ${css([inheritFont, resetAppearance, resetSpacing])};
   }
+  input {
+    ${inheritFont};
+    ${resetAppearance};
+    ${resetSpacing};
+
+    &::-ms-clear {
+      display: none;
+    }
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
   ul {
     list-style-type: none;
     ${css([resetSpacing])};

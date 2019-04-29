@@ -10,10 +10,18 @@ afterEach(cleanup);
 
 const store = makeStore({}, { asPath: 'test', isServer: false });
 
-test('should be render Index Component', () => {
+test('should be render Index Component', async () => {
+  const props = await About.getInitialProps({
+    pathname: '',
+    isServer: false,
+    asPath: '',
+    store,
+    query: { id: '1' },
+  });
+
   const { getByText } = render(
     <Provider store={store}>
-      <About id={'12345'} />
+      <About {...props} id={'12345'} />
     </Provider>,
   );
 
