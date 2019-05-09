@@ -15,11 +15,33 @@ describe('Genre Home Test', function() {
     cy.get('input')
       .should('have.attr', 'placeholder', labels.searchPlaceHolder)
       .click();
-    cy.contains(labels.saveSearchHistory);
+
     cy.viewport(700, 500);
     cy.get('input')
       .should('have.attr', 'placeholder', labels.searchPlaceHolder)
       .click();
-    cy.contains(labels.saveSearchHistory);
+  });
+
+  it('검색 히스토리 목록 표시', () => {
+    cy.clearLocalStorage();
+    cy.get('input')
+      .click()
+      .type('{enter}');
+    cy.viewport(700, 500);
+    cy.wait(250);
+    cy.get('input')
+      .should('have.attr', 'placeholder', labels.searchPlaceHolder)
+      .click()
+      .type('test{enter}');
+    cy.wait(250);
+    cy.get('input').click();
+    cy.contains(labels.turnOffSearchHistory);
+    cy.contains(labels.clearSearchHistory);
+    cy.contains('test');
+    cy.contains(labels.turnOffSearchHistory).click();
+    cy.contains(labels.turnOffStatus);
+    cy.contains(labels.turnOnSearchHistory).click();
+    cy.contains('test');
+    cy.contains(labels.clearSearchHistory).click();
   });
 });

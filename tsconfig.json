@@ -15,6 +15,7 @@
     "baseUrl": ".",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
+    "downlevelIteration": true,
     "paths": {
       "src/*": ["./src/*"],
       "server/*": ["./server/*"]

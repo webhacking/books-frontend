@@ -6,6 +6,7 @@ import { RIDITheme } from 'src/styles/themes';
 import { StyledSvg } from 'src/components/Svg';
 import { Button } from 'src/components/Button';
 import { InstantSearch } from 'src/components/Search';
+import Anchor from 'src/components/Misc/Anchor';
 // import { useLayoutEffect } from 'react';
 
 const GNBWrapper = styled.div`
@@ -16,7 +17,6 @@ const GNBWrapper = styled.div`
 const Header = styled.header`
   max-width: 1000px;
   margin: 0 auto;
-  position: relative;
 `;
 
 const Navigation = styled.nav`
@@ -28,6 +28,7 @@ const Navigation = styled.nav`
 
 const LogoWrapper = styled.ul`
   min-height: 30px;
+  order: 1;
   margin-bottom: unset;
   @media (max-width: 999px) {
     //margin-bottom: 9x;
@@ -66,12 +67,18 @@ const ridiLogo = (theme: RIDITheme) => css`
   filter: ${theme.logoFilter};
   width: 103px;
   height: 16px;
+  :hover {
+    opacity: 0.7;
+  }
   @media (max-width: 999px) {
     width: 88px;
     height: 14px;
-  }
-  :hover {
-    opacity: 0.7;
+    :hover {
+      opacity: unset;
+    }
+    :active {
+      opacity: 0.7;
+    }
   }
 `;
 
@@ -90,11 +97,13 @@ const ridiSelectLogo = (theme: RIDITheme) => css`
 `;
 
 const ButtonWrapper = styled.ul`
-  position: absolute;
-  right: 16px;
+  margin-left: auto;
   display: flex;
+  order: 3;
   @media (max-width: 999px) {
     right: 10px;
+    order: 2;
+    position: absolute;
   }
 
   li {
@@ -120,6 +129,7 @@ interface GNBProps {
   id?: string;
   login?: boolean;
   searchKeyword?: string;
+  isPartials: boolean;
 }
 
 export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
@@ -130,10 +140,20 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
           <div css={logoAndSearchBox}>
             <LogoWrapper>
               <li>
-                <a href="https://ridibooks.com">
-                  <StyledSvg iconName={'RidiLogo_1'} fill={'white'} css={ridiLogo} />
-                  <span className="a11y">RIDIBOOKS</span>
-                </a>
+                <Anchor
+                  anchorProps={{ href: 'https://ridibooks.com' }}
+                  linkProps={'/'}
+                  isPartials={props.isPartials}>
+                  <a
+                    href={props.isPartials ? 'https://ridibooks.com' : '#'}
+                    css={css`
+                      display: flex;
+                      align-items: center;
+                    `}>
+                    <StyledSvg iconName={'RidiLogo_1'} fill={'white'} css={ridiLogo} />
+                    <span className="a11y">RIDIBOOKS</span>
+                  </a>
+                </Anchor>
               </li>
               <li className="GNBNavigation_Item">
                 <a href="https://select.ridibooks.com">
@@ -150,7 +170,10 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
                 <Button type={'primary'} label={'로그인'} />
               </li>
             </ButtonWrapper>
-            <InstantSearch searchKeyword={props.searchKeyword || ''} />
+            <InstantSearch
+              isPartials={props.isPartials}
+              searchKeyword={props.searchKeyword || ''}
+            />
           </div>
         </Navigation>
       </Header>

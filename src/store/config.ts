@@ -30,6 +30,10 @@ interface MakeStoreOption {
   res?: ServerResponse;
   isServer: boolean;
 }
+Router.events.on('routeChangeStart', (url: string) => {
+  console.log('App is changing to: ', url);
+});
+
 const sagaMiddleware = createSagaMiddleware();
 const routerMiddleware = createRouterMiddleware({
   Router,

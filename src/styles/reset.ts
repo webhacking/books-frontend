@@ -110,4 +110,8 @@ export const resetStyles = css`
     }
   }
   ${fonts};
+  #__next {
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
 `;

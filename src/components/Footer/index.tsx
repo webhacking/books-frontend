@@ -13,7 +13,7 @@ const ridiMeta = {
 
 const FNBWrapper = styled.section`
   width: 100%;
-  min-width: 375px;
+  //min-width: 375px;
   color: ${props => props.theme.footerTextColor};
   hr {
     display: none;
