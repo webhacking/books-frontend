@@ -1,6 +1,5 @@
-/** @jsx jsx */
 import * as React from 'react';
-import { jsx, css, keyframes } from '@emotion/core';
+import { css, keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Svg } from 'src/components/Svg';
 import { RIDITheme, ZIndexLayer } from 'src/styles';
@@ -8,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { Router } from 'server/routes';
 import localStorageKeys from 'src/constants/localStorage';
-import labels from 'src/labels/instantSearch.json';
+import * as labels from 'src/labels/instantSearch.json';
 import { isOnsetNucleusCoda } from 'src/utils/hangle';
 import { safeJSONParse } from 'src/utils/common';
 
@@ -44,6 +43,8 @@ const searchWrapper = (theme: RIDITheme) => css`
   }
 
   input {
+    position: relative;
+    top: -0.5px;
     //margin-top: -2px;
     padding-right: 4px;
     width: 98%;
@@ -52,14 +53,31 @@ const searchWrapper = (theme: RIDITheme) => css`
     letter-spacing: -0.5px;
     color: #000000;
     ::placeholder {
-      padding-top: 2px;
+      //padding-top: 2px;
       font-size: 15px;
       height: 19px;
-      line-height: 15px;
+      line-height: 19px;
       font-weight: 500;
       letter-spacing: -0.5px;
       color: ${theme.input.placeholder};
-      vertical-align: middle;
+    }
+    ::-moz-placeholder {
+      opacity: 1;
+      font-size: 15px;
+      height: 19px;
+      line-height: 19px;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      color: ${theme.input.placeholder};
+    }
+    :-moz-placeholder {
+      opacity: 1;
+      font-size: 15px;
+      height: 19px;
+      line-height: 19px;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      color: ${theme.input.placeholder};
     }
   }
   display: flex;
@@ -88,12 +106,11 @@ const exclamation = (theme: RIDITheme) => css`
 const iconStyle = (theme: RIDITheme) => css`
   fill: ${theme.input.placeholder};
   opacity: 0.6;
+  box-sizing: content-box;
   padding: 6px 3px 5px 6px;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   @media (max-width: 999px) {
-    width: 24px;
-    height: 24px;
   }
 `;
 
@@ -151,6 +168,7 @@ const SearchHistoryItem = styled.li`
   a {
     span {
       color: black;
+      font-size: 14px;
     }
   }
 `;
@@ -229,7 +247,6 @@ const dimmer = css`
 `;
 
 const arrow = css`
-  padding: 0 12px 0 8px;
   display: none;
   cursor: pointer;
   @media (max-width: 999px) {
@@ -241,6 +258,7 @@ const arrowWrapperButton = css`
   display: none;
   @media (max-width: 999px) {
     display: block;
+    padding: 0 11px 0 5px;
   }
 `;
 

@@ -7,11 +7,19 @@ import {
   RidiSelectLogo_1,
   RidiLogo_1,
   Arrow_Left_13,
+  Home,
   Close_2,
+  Home_solid,
+  Notification_regular,
+  Notification_solid,
+  MyRIDI_solid,
+  MyRIDI_regular,
+  Cart_regular,
+  Cart_solid,
 } from './Icons';
 import styled from '@emotion/styled';
 
-enum IconNames {
+export enum IconNames {
   RidiLogo_1 = 'RidiLogo_1',
   RidiSelectLogo_1 = 'RidiSelectLogo_1',
   Paper = 'Paper',
@@ -20,6 +28,14 @@ enum IconNames {
   Arrow_Left_13 = 'Arrow_Left_13',
   Exclamation_1 = 'Exclamation_1',
   Close_2 = 'Close_2',
+  Home = 'Home',
+  Home_solid = 'Home_solid',
+  Notification_regular = 'Notification_regular',
+  Notification_solid = 'Notification_solid',
+  Cart_regular = 'Cart_regular',
+  Cart_solid = 'Cart_solid',
+  MyRIDI_regular = 'MyRIDI_regular',
+  MyRIDI_solid = 'MyRIDI_solid',
 }
 
 interface IconProps {
@@ -36,6 +52,14 @@ const Icons: IconProps = {
   New_1,
   Arrow_Left_13,
   Exclamation_1,
+  Home,
+  Home_solid,
+  Notification_solid,
+  Notification_regular,
+  Cart_regular,
+  Cart_solid,
+  MyRIDI_regular,
+  MyRIDI_solid,
 };
 
 // tslint:disable-next-line

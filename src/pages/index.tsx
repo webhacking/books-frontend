@@ -1,14 +1,4 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
 import * as React from 'react';
-// import styled from '@emotion/styled';
-
-// @ts-ignore
-import { Book } from '@ridi/web-ui/dist/index.node';
-// import { css } from '@emotion/core';
-
-// @ts-ignore
-// import { Link } from 'server/routes';
 import Head from 'next-server/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 

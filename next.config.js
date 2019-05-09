@@ -13,6 +13,9 @@ module.exports = nextSourceMaps(
     distDir: '../build',
     assetPrefix: localEnv.STATIC_CDN_URL || 'https://books.local.ridi.io',
     useFileSystemPublicRoutes: false,
+    experimental: {
+      amp: true,
+    },
     exportPathMap: () => {
       return {};
     },
@@ -30,6 +33,18 @@ module.exports = nextSourceMaps(
           }),
         );
       }
+      const originalEntry = config.entry;
+      config.entry = async () => {
+        const entries = await originalEntry();
+        Object.values(entries).forEach(entry => {
+          if (!entry.includes('@babel/polyfill') && !!entry.unshift) {
+            entry.unshift('@babel/polyfill');
+          } else if (typeof entry === 'string') {
+            entry = ['@babel/polyfill', entry];
+          }
+        });
+        return entries;
+      };
       if (process.env.ENVIRONMENT !== 'local') {
         config.plugins.push(
           new SentryCliPlugin({

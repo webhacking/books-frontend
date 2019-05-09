@@ -8,7 +8,6 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "esModuleInterop": true,
     "target": "es3",
     "lib": ["esnext", "dom", "dom.iterable"],
     "outDir": "./dist/",
@@ -18,10 +17,12 @@
     "downlevelIteration": true,
     "paths": {
       "src/*": ["./src/*"],
-      "server/*": ["./server/*"]
+      "server/*": ["./server/*"],
+      "@ridi/web-ui/dist/index.node": ["./node_modules/@ridi/web-ui/dist/index.d.ts"]
     },
     "typeRoots": ["./src/types", "node_modules/@types"]
   },
+
   "include": ["src/pages/**/*"],
   "exclude": ["node_modules/**/*"]
 }

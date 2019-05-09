@@ -1,8 +1,4 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
 import * as React from 'react';
-
-// @ts-ignore
 import { Book } from '@ridi/web-ui/dist/index.node';
 import { css } from '@emotion/core';
 import { Link } from 'server/routes';

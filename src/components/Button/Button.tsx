@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import * as React from 'react';
 import { RIDITheme } from 'src/styles';
 

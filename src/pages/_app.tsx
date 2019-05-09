@@ -1,4 +1,3 @@
-/** @jsx jsx */
 import App, { AppComponentProps, Container, DefaultAppIProps, NextAppContext } from 'next/app';
 import { Provider } from 'react-redux';
 import { Store } from 'redux';
@@ -6,12 +5,13 @@ import withRedux from 'next-redux-wrapper';
 import makeStore, { StoreRootState } from 'src/store/config';
 // import { ConnectedRouter } from 'connected-next-router';
 import { notifySentry, initializeSentry } from 'src/utils/sentry';
-import { Global, jsx } from '@emotion/core';
+import { Global } from '@emotion/core';
 import { defaultTheme, resetStyles } from 'src/styles';
 import GNB from 'src/components/GNB';
 import { ThemeProvider } from 'emotion-theming';
 import Footer from 'src/components/Footer';
 import styled from '@emotion/styled';
+import { BrowserLocationWithRouter } from 'src/components/Context';
 // import { useEffect } from 'react';
 
 interface StoreAppProps extends AppComponentProps {
@@ -21,6 +21,7 @@ interface StoreAppProps extends AppComponentProps {
   isPartials?: boolean;
   // tslint:disable-next-line
   query: any;
+  ctxPathname?: string;
 }
 
 interface StoreAppState {
@@ -28,19 +29,6 @@ interface StoreAppState {
   isUpdateAvailable: Promise<any> | null;
   refreshing: boolean;
 }
-//
-// const LocationListener = () => {
-//   useEffect(() => {
-//     const handleHashChange = (a, b, c) => {
-//       console.log(a, b, c);
-//     };
-//     window.addEventListener('popstate', handleHashChange);
-//     return () => {
-//       window.removeEventListener('popstate', handleHashChange);
-//     };
-//   }, []);
-//   return <></>;
-// };
 
 const Contents = styled.div`
   overflow: auto;
@@ -56,16 +44,20 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   public static async getInitialProps({
     ctx,
     Component,
-  }: // tslint:disable-next-line
-  NextAppContext): Promise<DefaultAppIProps & { isPartials?: boolean; query: any }> {
+  }: NextAppContext): Promise<
+    // tslint:disable-next-line
+    DefaultAppIProps & { ctxPathname?: string; isPartials?: boolean; query: any }
+  > {
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     const isPartials = !!ctx.pathname.match(/\/partials\//);
-    return { pageProps, isPartials, query: ctx.query };
+    return {
+      pageProps,
+      isPartials,
+      query: ctx.query,
+      ctxPathname: ctx.pathname,
+    };
   }
-  // tslint:disable-next-line
-
   public componentDidMount(): void {
-    // @ts-ignore
     if (!this.props.isPartials) {
       initializeSentry();
       // @ts-ignore
@@ -104,33 +96,36 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   }
 
   public render() {
-    const { Component, query, pageProps, isPartials, store } = this.props;
-    // console.log(query);
+    const { Component, ctxPathname, query, pageProps, isPartials, store } = this.props;
     if (isPartials) {
       return (
         <Container>
-          {/* Todo Apply Layout */}
-          <Global styles={resetStyles} />
-          <Component {...pageProps} />
+          <BrowserLocationWithRouter pathname={query.pathname || '/'}>
+            {/* Todo Apply Layout */}
+            <Global styles={resetStyles} />
+            <Component {...pageProps} />
+          </BrowserLocationWithRouter>
         </Container>
       );
     } else {
       return (
         <Container>
-          <Global styles={resetStyles} />
-          {/*<LocationListener />*/}
-          <Provider store={store}>
-            {/* Todo Apply Layout */}
-            <ThemeProvider theme={defaultTheme}>
-              {/*<ConnectedRouter>*/}
-              <GNB searchKeyword={query.search || query.q} isPartials={false} />
-              <Contents>
-                <Component {...pageProps} />
-              </Contents>
-              <Footer />
-              {/*</ConnectedRouter>*/}
-            </ThemeProvider>
-          </Provider>
+          <BrowserLocationWithRouter pathname={ctxPathname || '/'}>
+            <Global styles={resetStyles} />
+            {/*<LocationListener />*/}
+            <Provider store={store}>
+              {/* Todo Apply Layout */}
+              <ThemeProvider theme={defaultTheme}>
+                {/*<ConnectedRouter>*/}
+                <GNB searchKeyword={query.search || query.q} isPartials={false} />
+                <Contents>
+                  <Component {...pageProps} />
+                </Contents>
+                <Footer />
+                {/*</ConnectedRouter>*/}
+              </ThemeProvider>
+            </Provider>
+          </BrowserLocationWithRouter>
         </Container>
       );
     }

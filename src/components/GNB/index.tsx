@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import * as React from 'react';
 import { RIDITheme } from 'src/styles/themes';
@@ -7,7 +6,7 @@ import { StyledSvg } from 'src/components/Svg';
 import { Button } from 'src/components/Button';
 import { InstantSearch } from 'src/components/Search';
 import Anchor from 'src/components/Misc/Anchor';
-// import { useLayoutEffect } from 'react';
+import { MainTab } from 'src/components/Tabs';
 
 const GNBWrapper = styled.div`
   width: 100%;
@@ -21,9 +20,12 @@ const Header = styled.header`
 
 const Navigation = styled.nav`
   box-sizing: border-box;
-  padding: 9px 10px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
+  @media (max-width: 999px) {
+    padding: 9px 10px;
+  }
 `;
 
 const LogoWrapper = styled.ul`
@@ -102,6 +104,7 @@ const ButtonWrapper = styled.ul`
   order: 3;
   @media (max-width: 999px) {
     right: 10px;
+    top: 8px;
     order: 2;
     position: absolute;
   }
@@ -140,12 +143,9 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
           <div css={logoAndSearchBox}>
             <LogoWrapper>
               <li>
-                <Anchor
-                  anchorProps={{ href: 'https://ridibooks.com' }}
-                  linkProps={'/'}
-                  isPartials={props.isPartials}>
+                <Anchor linkProps={'/'} isPartials={props.isPartials}>
                   <a
-                    href={props.isPartials ? 'https://ridibooks.com' : '#'}
+                    href={props.isPartials ? 'https://ridibooks.com' : ''}
                     css={css`
                       display: flex;
                       align-items: center;
@@ -176,6 +176,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
             />
           </div>
         </Navigation>
+        <MainTab isPartials={props.isPartials} />
       </Header>
     </GNBWrapper>
   );
