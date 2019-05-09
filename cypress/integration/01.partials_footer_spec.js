@@ -1,10 +1,4 @@
-describe('Partials Component Test', function() {
-  it('GNB', () => {
-    cy.visit('/partials/gnb');
-    cy.contains('로그인');
-    // expect(true).to.equal(true);
-  });
-
+describe('Partials Footer Test', function() {
   it('Footer', () => {
     cy.visit('/partials/footer');
     cy.contains('사업자 정보 확인');

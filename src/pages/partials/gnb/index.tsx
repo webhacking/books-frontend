@@ -33,7 +33,12 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
   public render() {
     return (
       <ThemeProvider theme={!this.state.theme ? defaultTheme : darkTheme}>
-        <GNB id={'gnb'} type={this.props.type} searchKeyword={this.props.q || ''} />
+        <GNB
+          id={'gnb'}
+          isPartials={true}
+          type={this.props.type}
+          searchKeyword={this.props.q || ''}
+        />
       </ThemeProvider>
     );
   }

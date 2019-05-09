@@ -6,6 +6,7 @@ clientRoutes.add({ page: 'partials/gnb', pattern: '/partials/gnb' });
 clientRoutes.add({ page: 'partials/footer', pattern: '/partials/footer' });
 // clientRoutes.add({ page: 'partials', pattern: '/partials' });
 clientRoutes.add({ page: 'about', pattern: '/about/:id' });
+clientRoutes.add({ page: 'search', pattern: '/search' });
 clientRoutes.add({ page: '/', pattern: '/' });
 
 module.exports = {

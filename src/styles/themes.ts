@@ -18,6 +18,14 @@ export interface RIDITheme {
   input: {
     placeholder: string;
   };
+  divider: string;
+  label: string;
+  etc: {
+    slot1: string;
+  };
+  icon: {
+    warn: string;
+  };
 }
 
 export const defaultTheme: RIDITheme = {
@@ -38,6 +46,14 @@ export const defaultTheme: RIDITheme = {
   input: {
     placeholder: colors.slateGray50,
   },
+  divider: colors.slateGray5,
+  label: colors.slateGray40,
+  etc: {
+    slot1: colors.slateGray20,
+  },
+  icon: {
+    warn: colors.slateGray20,
+  },
 };
 
 export const darkTheme: RIDITheme = {
@@ -57,5 +73,13 @@ export const darkTheme: RIDITheme = {
   },
   input: {
     placeholder: colors.slateGray50,
+  },
+  divider: colors.slateGray5,
+  label: colors.slateGray40,
+  etc: {
+    slot1: colors.slateGray20,
+  },
+  icon: {
+    warn: colors.slateGray20,
   },
 };
