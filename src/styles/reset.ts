@@ -58,6 +58,7 @@ export const resetStyles = css`
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
+    font-size: 14px;
   }
   body {
     ${css([resetSpacing])};
@@ -108,6 +109,9 @@ export const resetStyles = css`
     .a11y {
       ${css([a11y])};
     }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
   ${fonts};
   #__next {

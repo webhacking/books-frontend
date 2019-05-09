@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import * as React from 'react';
 import { Svg } from 'src/components/Svg';
@@ -40,16 +39,25 @@ const FooterWrapper = styled.footer`
 
 const FlexBox = styled.div`
   display: flex;
+  align-items: start;
+  justify-content: unset;
   @media (max-width: 999px) {
     flex-direction: column;
+    justify-content: start;
+    align-items: unset;
   }
 `;
 
 const Contact = styled.ul`
-  min-width: 192px;
+  //min-width: 192px;
   display: flex;
-
+  align-items: center;
   li {
+    word-break: keep-all;
+    span {
+      word-break: keep-all;
+      white-space: nowrap;
+    }
     :not(:last-of-type) {
       ::after {
         position: relative;
@@ -69,6 +77,7 @@ const Contact = styled.ul`
 `;
 
 const serviceNumber = css`
+  word-break: keep-all;
   font-size: 20px;
   letter-spacing: -0.3px;
   font-weight: bold;
@@ -113,6 +122,7 @@ const hiddenMenu = css`
 `;
 
 const anchorHover = css`
+  word-break: keep-all;
   :hover {
     opacity: 0.7;
   }
@@ -146,7 +156,7 @@ const MiscWrapper = styled.div`
   flex-direction: row;
   @media (max-width: 999px) {
     flex-direction: column;
-    align-items: unset;
+    align-items: start;
     justify-content: center;
   }
 `;
@@ -169,7 +179,6 @@ const Copyright = styled.p`
 
 const MiscMenu = styled.ul`
   display: flex;
-
   li {
     :not(:last-of-type) {
       ::after {
@@ -196,12 +205,48 @@ const MiscMenuLabel = styled.span`
   color: #7e8992;
 `;
 
-export default class Footer extends React.PureComponent {
+const NoticeWrapper = styled.article`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+`;
+
+const NoticeLabel = styled.h2`
+  line-height: 14px;
+  a {
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 0.93;
+    letter-spacing: -0.5px;
+  }
+  margin-right: 10px;
+`;
+
+interface NoticeItem {
+  title: string;
+  url: string;
+}
+
+interface FooterProps {
+  // Fix me
+  // tslint:disable-next-line
+  noticeItems?: NoticeItem[];
+}
+
+export default class Footer extends React.PureComponent<FooterProps> {
   public render() {
     return (
       <FNBWrapper css={theme => ({ backgroundColor: theme.secondaryColor })}>
         <NoticeSection>
-          <article>공지사항</article>
+          <NoticeWrapper>
+            <NoticeLabel>
+              <a href="/support/notice">공지사항</a>
+            </NoticeLabel>
+            <ul>
+              <li>{this.props.noticeItems ? this.props.noticeItems[0].title : ''}</li>
+            </ul>
+          </NoticeWrapper>
         </NoticeSection>
         <hr />
         <FooterWrapper>

@@ -3,18 +3,17 @@ const PRECACHE_NAME = 'books-precache';
 if ('workbox' in self) {
   workbox.setConfig({ debug: true, cleanupOutdatedCaches: true });
 
-  workbox.precaching.precacheAndRoute(
-    self.__precacheManifest.filter(manifest => !manifest.url.includes('/pages/')) || [],
-  );
+  workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
 
   workbox.routing.registerRoute(
     new RegExp('/'),
     new workbox.strategies.NetworkFirst({
-      // cacheName: PRECACHE_NAME,
+      cacheName: PRECACHE_NAME,
     }),
   );
+
   workbox.routing.registerRoute(
-    '/static',
+    /.*\.(jpg|png|jpeg|bmp|woff|woff2|ttf)/,
     new workbox.strategies.StaleWhileRevalidate({
       cacheName: 'static-cache',
       plugins: [
@@ -25,20 +24,9 @@ if ('workbox' in self) {
   );
 
   workbox.routing.registerRoute(
-    /.*\.(jpg|png|jpeg|bmp)/,
-    new workbox.strategies.StaleWhileRevalidate({
-      cacheName: 'images-cache',
-      plugins: [
-        new workbox.cacheableResponse.Plugin({ statuses: [200] }),
-        new workbox.rangeRequests.Plugin(),
-      ],
-    }),
-  );
-
-  workbox.routing.registerRoute(
     /.*(?:ridibooks)\.com.*$/,
     new workbox.strategies.CacheFirst({
-      cacheName: 'mics-images-cache',
+      cacheName: 'misc-images-cache',
       plugins: [
         new workbox.cacheableResponse.Plugin({
           statuses: [0, 200],
@@ -50,6 +38,22 @@ if ('workbox' in self) {
       ],
     }),
   );
+  //
+  // workbox.routing.registerRoute(
+  //   /.*(?:books-static.ridi.io\/static\/)(fonts|favicon|icon|svg)\/.*$/,
+  //   new workbox.strategies.CacheFirst({
+  //     cacheName: 'static-cache',
+  //     plugins: [
+  //       new workbox.cacheableResponse.Plugin({
+  //         statuses: [0, 200],
+  //       }),
+  //       new workbox.expiration.Plugin({
+  //         maxEntries: 50,
+  //         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+  //       }),
+  //     ],
+  //   }),
+  // );
 }
 //
 // self.addEventListener('install', async function(event) {

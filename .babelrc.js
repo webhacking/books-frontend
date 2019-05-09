@@ -1,4 +1,16 @@
-const presets = ['next/babel', '@zeit/next-typescript/babel'];
+const presets = [
+  [
+    'next/babel',
+    {
+      'preset-env': {
+        useBuiltIns: 'entry',
+      },
+    },
+  ],
+  ['@emotion/babel-preset-css-prop', { autoLabel: true, labelFormat: '[local]' }],
+  '@zeit/next-typescript/babel',
+];
+
 const plugins = [
   ['emotion', { inline: true }],
   [

@@ -2,11 +2,11 @@ import * as React from 'react';
 import Head from 'next-server/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 
-interface SearchProps {
+interface CartPageProps {
   q?: string;
 }
 
-export default class Search extends React.Component<SearchProps> {
+export default class CartPage extends React.Component<CartPageProps> {
   public static async getInitialProps(props: ConnectedInitializeProps<{ q: string }>) {
     return { q: props.query.q };
   }
@@ -14,9 +14,9 @@ export default class Search extends React.Component<SearchProps> {
     return (
       <>
         <Head>
-          <title>리디북스 - 검색</title>
+          <title>리디북스 - 카트</title>
         </Head>
-        <div>검색 결과 {this.props.q}</div>
+        <div>카트</div>
       </>
     );
   }
