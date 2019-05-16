@@ -17,7 +17,6 @@ import {
   Cart_regular,
   Cart_solid,
 } from './Icons';
-import styled from '@emotion/styled';
 
 export enum IconNames {
   RidiLogo_1 = 'RidiLogo_1',
@@ -39,8 +38,7 @@ export enum IconNames {
 }
 
 interface IconProps {
-  // tslint:disable-next-line
-  [index: string]: any;
+  [index: string]: React.FC<React.SVGProps<SVGElement>>;
 }
 
 const Icons: IconProps = {
@@ -62,8 +60,7 @@ const Icons: IconProps = {
   MyRIDI_solid,
 };
 
-// tslint:disable-next-line
-interface SvgProps extends React.SVGProps<any> {
+interface SvgProps extends React.SVGProps<SVGElement> {
   iconName: keyof typeof IconNames;
 }
 
@@ -72,5 +69,3 @@ export const Svg: React.FC<SvgProps> = React.memo(props => {
   const { iconName, ...rest } = props;
   return <Icon {...rest} />;
 });
-
-export const StyledSvg = styled(Svg)``;
