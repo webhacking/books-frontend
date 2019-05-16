@@ -1,8 +1,7 @@
 # for local e2e
-FROM cypress/base:10
-WORKDIR /store-e2e
-RUN npm install --save-dev cypress
-RUN $(npm bin)/cypress verify
+FROM cypress/included:3.2.0
+WORKDIR /books-e2e
 COPY cypress.json ./
 COPY cypress ./cypress/
+COPY src/labels ./src/labels/
 
