@@ -42,6 +42,10 @@ describe('Genre Home Test', function() {
     cy.contains(labels.turnOffStatus);
     cy.contains(labels.turnOnSearchHistory).click();
     cy.contains('test');
+    cy.get('input')
+      .should('have.attr', 'placeholder', labels.searchPlaceHolder)
+      .click()
+      .type('');
     cy.contains(labels.clearSearchHistory).click();
   });
 });
