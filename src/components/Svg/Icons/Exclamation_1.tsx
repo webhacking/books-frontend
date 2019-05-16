@@ -1,11 +1,7 @@
-import * as React from 'react';
 import { SVGAttributes } from 'react';
 
-// tslint:disable-next-line
-const Icon = (props: SVGAttributes<any>) => (
+export default (props: SVGAttributes<SVGElement>) => (
   <svg {...props} viewBox="0 0 32 32">
     <path d="M16.080 0.24c-8.656 0-15.68 7.024-15.68 15.68s7.024 15.68 15.68 15.68 15.68-7.024 15.68-15.68c0-8.656-7.024-15.68-15.68-15.68zM16.080 26.656c-1.36 0-2.48-1.104-2.48-2.48 0-1.36 1.104-2.48 2.48-2.48 1.36 0 2.48 1.104 2.48 2.48 0 1.36-1.12 2.48-2.48 2.48zM18.56 15.92c0 1.36-1.104 2.48-2.48 2.48-1.36 0-2.48-1.12-2.48-2.48v-8.256c0-1.36 1.104-2.48 2.48-2.48 1.36 0 2.48 1.104 2.48 2.48v8.256z" />
   </svg>
 );
-
-export default Icon;

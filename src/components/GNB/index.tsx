@@ -2,11 +2,11 @@ import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import * as React from 'react';
 import { RIDITheme } from 'src/styles/themes';
-import { StyledSvg } from 'src/components/Svg';
 import { Button } from 'src/components/Button';
 import { InstantSearch } from 'src/components/Search';
 import Anchor from 'src/components/Misc/Anchor';
 import { MainTab } from 'src/components/Tabs';
+import { Svg } from 'src/components/Svg';
 
 const GNBWrapper = styled.div`
   width: 100%;
@@ -150,14 +150,14 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
                       display: flex;
                       align-items: center;
                     `}>
-                    <StyledSvg iconName={'RidiLogo_1'} fill={'white'} css={ridiLogo} />
+                    <Svg iconName={'RidiLogo_1'} fill={'white'} css={ridiLogo} />
                     <span className="a11y">RIDIBOOKS</span>
                   </a>
                 </Anchor>
               </li>
               <li className="GNBNavigation_Item">
                 <a href="https://select.ridibooks.com">
-                  <StyledSvg iconName={'RidiSelectLogo_1'} fill={'white'} css={ridiSelectLogo} />
+                  <Svg iconName={'RidiSelectLogo_1'} fill={'white'} css={ridiSelectLogo} />
                   <span className="a11y">리디셀렉트</span>
                 </a>
               </li>
