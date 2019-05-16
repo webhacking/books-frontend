@@ -26,7 +26,8 @@ module.exports = nextSourceMaps(
       ...require(`./env/${process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'local'}`),
     },
     webpack(config, option) {
-      if (option.isServer) {
+      const { isServer } = option;
+      if (isServer) {
         config.plugins.push(
           new ForkTsCheckerWebpackPlugin({
             tsconfig: '../tsconfig.json',
@@ -66,14 +67,23 @@ module.exports = nextSourceMaps(
           {
             from: '../static/manifest.webmanifest',
             to: '',
+            transform(content, src) {
+              return Promise.resolve(
+                Buffer.from(content, 'utf8')
+                  .toString()
+                  .replace(/<path>/gi, localEnv.STATIC_CDN_URL || ''),
+              );
+            },
           },
         ]),
       );
       config.plugins.push(
         new InjectManifest({
           swSrc: 'static/service-worker.js',
+          exclude: [/\.map$/, /\/pages\/partials\//, /build-manifest.json/, /manifest.webmanifest/],
         }),
       );
+
       config.node = {
         fs: 'empty',
       };

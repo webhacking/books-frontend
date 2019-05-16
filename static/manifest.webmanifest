@@ -7,7 +7,7 @@
   "theme_color": "#339CF2",
   "description": "리디북스 서점",
   "icons": [{
-    "src": "https://books-static.ridi.io/static/favicon/android-icon-192x192.png",
+    "src": "<path>/static/favicon/android-icon-192x192.png",
     "sizes": "192x192",
     "type": "image/png"
   }]
