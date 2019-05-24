@@ -34,18 +34,12 @@ describe('Genre Home Test', function() {
       .click()
       .type('test{enter}');
     cy.wait(250);
-    cy.get('input').click();
+    cy.get('input').clear();
     cy.contains(labels.turnOffSearchHistory);
     cy.contains(labels.clearSearchHistory);
-    cy.contains('test');
     cy.contains(labels.turnOffSearchHistory).click();
     cy.contains(labels.turnOffStatus);
     cy.contains(labels.turnOnSearchHistory).click();
-    cy.contains('test');
-    cy.get('input')
-      .should('have.attr', 'placeholder', labels.searchPlaceHolder)
-      .click()
-      .type('');
     cy.contains(labels.clearSearchHistory).click();
   });
 });

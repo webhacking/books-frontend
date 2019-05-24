@@ -14,6 +14,7 @@ import Cart_regular from './Cart_regular';
 import Cart_solid from './Cart_solid';
 import MyRIDI_regular from './MyRIDI_regular';
 import MyRIDI_solid from './MyRIDI_solid';
+import GNB_Category from './GNB_Category';
 
 export {
   Home_solid,
@@ -32,4 +33,5 @@ export {
   Cart_solid,
   MyRIDI_regular,
   MyRIDI_solid,
+  GNB_Category,
 };

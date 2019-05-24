@@ -11,7 +11,8 @@ clientRoutes.add({ page: 'account/myridi', pattern: '/account/myridi' });
 clientRoutes.add({ page: 'about', pattern: '/about/:id' });
 clientRoutes.add({ page: 'search', pattern: '/search' });
 clientRoutes.add({ page: '/', pattern: '/' });
-clientRoutes.add({ page: '/', pattern: '/genre/:genre' });
+clientRoutes.add({ page: '/', pattern: '/:genre' });
+clientRoutes.add({ page: '/', pattern: '/:genre/:service' });
 
 module.exports = {
   clientRoutes: clientRoutes,

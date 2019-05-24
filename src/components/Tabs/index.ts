@@ -1,3 +1,3 @@
 import MainTab from './MainTab';
-
-export { MainTab };
+import GenreTab from './GenreTab';
+export { GenreTab, MainTab };
