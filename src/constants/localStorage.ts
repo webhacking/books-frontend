@@ -1,6 +1,8 @@
 // localStorage Keys
-export const prefix = '__books__';
+
+import { PREFIX } from 'src/constants/common';
+
 export default {
-  instantSearchHistory: `${prefix}instantSearchHistory`,
-  instantSearchHistoryOption: `${prefix}instantSearchHistoryOption`,
+  instantSearchHistory: `${PREFIX}instantSearchHistory`,
+  instantSearchHistoryOption: `${PREFIX}instantSearchHistoryOption`,
 };

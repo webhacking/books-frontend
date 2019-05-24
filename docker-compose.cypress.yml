@@ -7,6 +7,7 @@ services:
       context: ./
     container_name: books-e2e
     working_dir: /books-e2e
+    init: true
     environment:
       CYPRESS_BASE_URL: $CYPRESS_BASE_URL
     command: npx cypress run

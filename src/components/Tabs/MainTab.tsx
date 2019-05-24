@@ -2,12 +2,13 @@ import * as React from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { IconNames, Svg } from 'src/components/Svg';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { a11y } from 'src/styles';
 import Anchor from 'src/components/Misc/Anchor';
 import { BrowserLocationContext } from 'src/components/Context';
 import * as labels from 'src/labels/menus.json';
-
+import * as Cookies from 'js-cookie';
+import cookieKeys from 'src/constants/cookies';
 // import { RIDITheme } from 'src/styles';
 
 const StyledAnchor = styled.a`
@@ -106,6 +107,8 @@ interface MainTabProps {
 
 interface TabItemProps {
   isPartials: boolean;
+  replace?: boolean;
+  shallow?: boolean;
   path: string;
   currentPath: string;
   activeIconName: keyof typeof IconNames;
@@ -119,10 +122,20 @@ interface TabItemProps {
 // GNB/Footer 캐싱 때문에 생긴 파편화.
 // 반응형 레거시 코드 작업이 종료되면 이 부분 개선 해야 함.
 const TabItem: React.FC<TabItemProps> = props => {
-  const { isPartials, path, pathRegexp, currentPath, label, activeIconName, iconName } = props;
+  const {
+    isPartials,
+    path,
+    pathRegexp,
+    currentPath,
+    shallow,
+    replace,
+    label,
+    activeIconName,
+    iconName,
+  } = props;
   return (
     <TabItemWrapper>
-      <Anchor isPartials={isPartials} linkProps={path}>
+      <Anchor isPartials={isPartials} path={path} shallow={shallow} replace={replace}>
         <StyledAnchor href={isPartials ? path : ''}>
           <TabButton>
             <Svg
@@ -131,7 +144,7 @@ const TabItem: React.FC<TabItemProps> = props => {
             />
             <span css={labelStyle}>{label}</span>
           </TabButton>
-          <BottomLine css={currentPath === path ? currentTab : css``} />
+          <BottomLine css={currentPath.match(pathRegexp) ? currentTab : css``} />
         </StyledAnchor>
       </Anchor>
     </TabItemWrapper>
@@ -141,6 +154,18 @@ const TabItem: React.FC<TabItemProps> = props => {
 export const MainTab: React.FC<MainTabProps> = props => {
   const { isPartials } = props;
   const currentPath = useContext(BrowserLocationContext);
+  const [homeURL, setHomeURL] = useState('/');
+  useEffect(() => {
+    const visitedGenre = Cookies.get(`${cookieKeys.recentlyVisitedGenre}`);
+    const visitedService = visitedGenre
+      ? Cookies.get(`${cookieKeys.recentlyVisitedGenre}_${visitedGenre}_Service`)
+      : null;
+    if (visitedGenre && visitedGenre !== 'general') {
+      setHomeURL(visitedService ? `/${visitedGenre}/${visitedService}` : `/${visitedGenre}` || '/');
+    } else {
+      setHomeURL('/');
+    }
+  });
   return (
     <Tabs>
       <TabItem
@@ -149,8 +174,9 @@ export const MainTab: React.FC<MainTabProps> = props => {
         iconName={'Home'}
         currentPath={currentPath}
         label={labels.mainTab.home}
-        path={'/'}
-        pathRegexp={/^[^/]*\/$/}
+        path={homeURL}
+        replace={true}
+        pathRegexp={/(^[^/]*\/$|^\/(fantasy|romance|bl|general|comic)(\/.*$|$))/}
       />
       <TabItem
         isPartials={isPartials}

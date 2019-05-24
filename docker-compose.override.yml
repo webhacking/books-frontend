@@ -6,7 +6,9 @@ services:
       - 'traefik.docker.network=${EXTERNAL_NETWORK:-ridi}'
       - 'traefik.frontend.rule=Host:books.local.ridi.io'
     networks:
-      - traefik
+      traefik:
+        aliases:
+          - books
     ports:
       - 8081
 networks:

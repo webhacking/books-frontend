@@ -16,6 +16,7 @@ import {
   MyRIDI_regular,
   Cart_regular,
   Cart_solid,
+  GNB_Category,
 } from './Icons';
 
 export enum IconNames {
@@ -35,6 +36,7 @@ export enum IconNames {
   Cart_solid = 'Cart_solid',
   MyRIDI_regular = 'MyRIDI_regular',
   MyRIDI_solid = 'MyRIDI_solid',
+  GNB_Category = 'GNB_Category',
 }
 
 interface IconProps {
@@ -57,6 +59,7 @@ const Icons: IconProps = {
   Cart_regular,
   Cart_solid,
   MyRIDI_regular,
+  GNB_Category,
   MyRIDI_solid,
 };
 

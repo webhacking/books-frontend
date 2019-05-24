@@ -6,7 +6,19 @@ import { render, cleanup } from 'react-testing-library';
 import 'jest-dom/extend-expect';
 import makeStore from '../../store/config';
 jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
-
+jest.mock('server/routes', () => {
+  require('react');
+  return {
+    default: {},
+    Link: props => <div>{props.children}</div>,
+    Router: {
+      pushRoute: () => null,
+      push: () => null,
+      replace: () => null,
+      replaceRoute: () => null,
+    },
+  };
+});
 afterEach(cleanup);
 
 const store = makeStore({}, { asPath: 'test', isServer: false });
@@ -32,7 +44,7 @@ test('should be render Index Component', async () => {
 
   const { getByText } = render(<App Component={Index} router={{}} {...props} />);
 
-  expect(getByText(/Home/)).toHaveTextContent('Home');
+  expect(getByText(/general/)).toHaveTextContent('general');
 });
 test('should be render Partials Component', async () => {
   const props = await App.getInitialProps({

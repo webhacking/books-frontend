@@ -12,7 +12,6 @@ import { ThemeProvider } from 'emotion-theming';
 import Footer from 'src/components/Footer';
 import styled from '@emotion/styled';
 import { BrowserLocationWithRouter } from 'src/components/Context';
-// import { useEffect } from 'react';
 
 interface StoreAppProps extends AppComponentProps {
   store: Store<StoreRootState>;
@@ -44,6 +43,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   public static async getInitialProps({
     ctx,
     Component,
+    ...rest
   }: NextAppContext): Promise<
     // tslint:disable-next-line
     DefaultAppIProps & { ctxPathname?: string; isPartials?: boolean; query: any }
@@ -54,7 +54,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       pageProps,
       isPartials,
       query: ctx.query,
-      ctxPathname: ctx.pathname,
+      ctxPathname: rest.router ? rest.router.asPath : '/',
     };
   }
   public componentDidMount(): void {
