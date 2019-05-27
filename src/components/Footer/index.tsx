@@ -156,7 +156,7 @@ const MiscWrapper = styled.div`
   flex-direction: row;
   @media (max-width: 999px) {
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
     justify-content: center;
   }
 `;

@@ -23,6 +23,7 @@ function createServer() {
   server.use('/static', express.static(path.join(__dirname, '../static')));
   server.get('*', async (req, res) => {
     if (
+      // req.url === '/favicon.ico' ||
       req.url === '/service-worker.js' ||
       req.url.includes('precache-manifest') ||
       req.url.includes('react-loadable-manifest.json') ||
