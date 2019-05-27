@@ -8,6 +8,7 @@ jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
 afterEach(cleanup);
 
 test('should be render Index Component', async () => {
+  // @ts-ignore
   const props = await Index.getInitialProps({
     pathname: '',
     isServer: false,

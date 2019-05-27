@@ -12,6 +12,8 @@ import { ThemeProvider } from 'emotion-theming';
 import Footer from 'src/components/Footer';
 import styled from '@emotion/styled';
 import { BrowserLocationWithRouter } from 'src/components/Context';
+import * as React from 'react';
+import { PartialSeparator } from 'src/components/Misc';
 
 interface StoreAppProps extends AppComponentProps {
   store: Store<StoreRootState>;
@@ -25,8 +27,9 @@ interface StoreAppProps extends AppComponentProps {
 
 interface StoreAppState {
   // tslint:disable-next-line
-  isUpdateAvailable: Promise<any> | null;
-  refreshing: boolean;
+  isUpdateAvailable?: Promise<any> | null;
+  refreshing?: boolean;
+  isMounted: boolean;
 }
 
 const Contents = styled.div`
@@ -38,6 +41,9 @@ const Contents = styled.div`
 class StoreApp extends App<StoreAppProps, StoreAppState> {
   constructor(props: StoreAppProps) {
     super(props);
+    this.state = {
+      isMounted: false,
+    };
   }
 
   public static async getInitialProps({
@@ -93,6 +99,9 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         }
       });
     }
+    this.setState({
+      isMounted: true,
+    });
   }
 
   public render() {
@@ -100,9 +109,11 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     if (isPartials) {
       return (
         <Container>
-          <BrowserLocationWithRouter pathname={query.pathname || '/'}>
-            {/* Todo Apply Layout */}
+          <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={!this.state.isMounted}>
             <Global styles={resetStyles} />
+          </PartialSeparator>
+          <BrowserLocationWithRouter isPartials={true} pathname={query.pathname || '/'}>
+            {/* Todo Apply Layout */}
             <Component {...pageProps} />
           </BrowserLocationWithRouter>
         </Container>
@@ -110,8 +121,8 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     } else {
       return (
         <Container>
-          <BrowserLocationWithRouter pathname={ctxPathname || '/'}>
-            <Global styles={resetStyles} />
+          <Global styles={resetStyles} />
+          <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
             {/*<LocationListener />*/}
             <Provider store={store}>
               {/* Todo Apply Layout */}

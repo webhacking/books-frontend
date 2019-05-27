@@ -3,9 +3,11 @@ import { darkTheme, defaultTheme } from 'src/styles/themes';
 import { ThemeProvider } from 'emotion-theming';
 import { ConnectedInitializeProps } from 'src/types/common';
 import GNB from 'src/components/GNB';
+import { PartialSeparator } from 'src/components/Misc';
 
 interface GNBState {
   theme?: string | boolean;
+  isMounted: boolean;
 }
 
 interface GNBProps {
@@ -26,17 +28,26 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
 
   public state: GNBState = {
     theme: this.props.theme,
+    isMounted: false,
   };
+
+  public componentDidMount(): void {
+    this.setState({
+      isMounted: true,
+    });
+  }
 
   public render() {
     return (
       <ThemeProvider theme={!this.state.theme ? defaultTheme : darkTheme}>
-        <GNB
-          id={'gnb'}
-          isPartials={true}
-          type={this.props.type}
-          searchKeyword={this.props.q || ''}
-        />
+        <PartialSeparator name={'GNB'} wrapped={!this.state.isMounted}>
+          <GNB
+            id={'gnb'}
+            isPartials={true}
+            type={this.props.type}
+            searchKeyword={this.props.q || ''}
+          />
+        </PartialSeparator>
       </ThemeProvider>
     );
   }

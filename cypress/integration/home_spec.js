@@ -3,11 +3,11 @@ import labels from '../../src/labels/instantSearch.json';
 describe('Genre Home Test', function() {
   it('홈 방문이 가능', function() {
     cy.visit('/');
-    cy.contains('Home');
+    cy.contains('일반');
+    cy.contains('로맨스');
     expect(true).to.equal(true);
 
     cy.viewport(700, 500);
-    cy.contains('Home');
   });
 
   it('인스턴트 검색이 존재', () => {

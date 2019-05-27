@@ -38,6 +38,9 @@ export interface RIDITheme {
   icon: {
     warn: string;
   };
+  quickMenu: {
+    label: string;
+  };
 }
 
 export const defaultTheme: RIDITheme = {
@@ -78,6 +81,9 @@ export const defaultTheme: RIDITheme = {
   icon: {
     warn: colors.slateGray20,
   },
+  quickMenu: {
+    label: colors.slateGray70,
+  },
 };
 
 export const darkTheme: RIDITheme = {
@@ -117,5 +123,8 @@ export const darkTheme: RIDITheme = {
   },
   icon: {
     warn: colors.slateGray20,
+  },
+  quickMenu: {
+    label: colors.slateGray70,
   },
 };

@@ -4,6 +4,7 @@ import { darkTheme, defaultTheme } from 'src/styles/themes';
 import { ThemeProvider } from 'emotion-theming';
 import { withAmp } from 'next/amp';
 import Footer from 'src/components/Footer';
+import { PartialSeparator } from 'src/components/Misc';
 // import axios from 'axios';
 
 interface FooterProps {
@@ -12,8 +13,6 @@ interface FooterProps {
   noticeItems?: any;
 }
 
-// Partials 로 볼러올 경우 공지사항을 Lazy 로드 하지 않고 미리 로드 후 렌더
-// 이유: id="__next" DOM 안에 들어가지 않아 Lazy 로드 불가능
 export class PartialFooter extends React.Component<FooterProps> {
   public static async getInitialProps(initialProps: ConnectedInitializeProps<{ theme: string }>) {
     // Fix me
@@ -24,13 +23,15 @@ export class PartialFooter extends React.Component<FooterProps> {
   public render() {
     return (
       <ThemeProvider theme={!this.props.theme ? defaultTheme : darkTheme}>
-        <Footer
-          noticeItems={[
-            { title: 'Do you have the time', url: 'url...' },
-            { title: 'to listen to me whine', url: 'url...' },
-            { title: 'About nothing and everything at all once', url: 'url...' },
-          ]}
-        />
+        <PartialSeparator name={'FOOTER'} wrapped={true}>
+          <Footer
+            noticeItems={[
+              { title: 'Do you have the time', url: 'url...' },
+              { title: 'to listen to me whine', url: 'url...' },
+              { title: 'About nothing and everything at all once', url: 'url...' },
+            ]}
+          />
+        </PartialSeparator>
       </ThemeProvider>
     );
   }

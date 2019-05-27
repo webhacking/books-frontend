@@ -15,6 +15,7 @@ import Cart_solid from './Cart_solid';
 import MyRIDI_regular from './MyRIDI_regular';
 import MyRIDI_solid from './MyRIDI_solid';
 import GNB_Category from './GNB_Category';
+import QuickMenuShape from './QuickMenuShape';
 
 export {
   Home_solid,
@@ -34,4 +35,5 @@ export {
   MyRIDI_regular,
   MyRIDI_solid,
   GNB_Category,
+  QuickMenuShape,
 };

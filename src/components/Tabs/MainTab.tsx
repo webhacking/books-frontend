@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { IconNames, Svg } from 'src/components/Svg';
 import { useContext, useEffect, useState } from 'react';
 import { a11y } from 'src/styles';
-import Anchor from 'src/components/Misc/Anchor';
+import { Anchor } from 'src/components/Misc';
 import { BrowserLocationContext } from 'src/components/Context';
 import * as labels from 'src/labels/menus.json';
 import * as Cookies from 'js-cookie';

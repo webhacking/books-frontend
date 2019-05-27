@@ -6,6 +6,8 @@ import { Genre, GenreSubService, homeGenres } from 'src/constants/genres';
 import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
 import { Router } from 'server/routes';
 import * as Cookies from 'js-cookie';
+import { QuickMenuList } from 'src/components/QuickMenu';
+import { quickMenuItems } from 'src/components/QuickMenu/mockData';
 
 export interface HomeProps {
   genre: keyof typeof Genre;
@@ -135,7 +137,7 @@ export class Home extends React.Component<HomeProps> {
   }
 
   public render() {
-    const { genre, service } = this.props;
+    const { genre } = this.props;
     const currentGenre = Genre[genre.toUpperCase() as keyof typeof Genre];
     return (
       <>
@@ -144,9 +146,10 @@ export class Home extends React.Component<HomeProps> {
         </Head>
         <div>
           <GenreTab currentGenre={currentGenre} genres={homeGenres} />
-          {currentGenre}
-          {service}
+          {/*{currentGenre}*/}
+          {/*{service}*/}
         </div>
+        <QuickMenuList items={quickMenuItems} />
       </>
     );
   }
