@@ -1,10 +1,8 @@
 const nextRoutes = require('next-routes');
 const clientRoutes = nextRoutes();
 
-// clientRoutes.add({ page: 'partials', pattern: '/partials/gnb' });
 clientRoutes.add({ page: 'partials/gnb', pattern: '/partials/gnb' });
 clientRoutes.add({ page: 'partials/footer', pattern: '/partials/footer' });
-clientRoutes.add({ page: 'partials', pattern: '/partials/:component' });
 clientRoutes.add({ page: 'notification', pattern: '/notification' });
 clientRoutes.add({ page: 'cart', pattern: '/cart' });
 clientRoutes.add({ page: 'account/myridi', pattern: '/account/myridi' });
