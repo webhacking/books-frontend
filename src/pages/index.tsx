@@ -28,6 +28,7 @@ export class Home extends React.Component<HomeProps> {
     if (req && res) {
       const redirect = (path: string) => {
         if (req.path !== path) {
+          console.log('change location!', path);
           res.writeHead(302, {
             Location: path,
           });
