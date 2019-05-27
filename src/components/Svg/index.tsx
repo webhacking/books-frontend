@@ -17,6 +17,7 @@ import {
   Cart_regular,
   Cart_solid,
   GNB_Category,
+  QuickMenuShape,
 } from './Icons';
 
 export enum IconNames {
@@ -37,12 +38,14 @@ export enum IconNames {
   MyRIDI_regular = 'MyRIDI_regular',
   MyRIDI_solid = 'MyRIDI_solid',
   GNB_Category = 'GNB_Category',
+  QuickMenuShape = 'QuickMenuShape',
 }
 
 interface IconProps {
   [index: string]: React.FC<React.SVGProps<SVGElement>>;
 }
 
+// Fixme Dynamic import icon...
 const Icons: IconProps = {
   RidiLogo_1,
   RidiSelectLogo_1,
@@ -61,6 +64,7 @@ const Icons: IconProps = {
   MyRIDI_regular,
   GNB_Category,
   MyRIDI_solid,
+  QuickMenuShape,
 };
 
 interface SvgProps extends React.SVGProps<SVGElement> {
