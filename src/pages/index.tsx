@@ -19,6 +19,7 @@ export class Home extends React.Component<HomeProps> {
     props: ConnectedInitializeProps<{ genre?: string; service?: string }>,
   ) {
     const { query, res, req } = props;
+    console.log(query);
     const genre = query.genre ? Genre[query.genre.toUpperCase() as keyof typeof Genre] : null;
 
     if (req) {
@@ -79,7 +80,7 @@ export class Home extends React.Component<HomeProps> {
       }
     }
 
-    return { genre: genre || 'general', service: props.query.service };
+    return { genre: genre || 'general', service: props.query.service, ...props.query };
   }
 
   private setCookie = (props: HomeProps) => {

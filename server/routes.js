@@ -1,16 +1,16 @@
 const nextRoutes = require('next-routes');
 const clientRoutes = nextRoutes();
 
-clientRoutes.add({ page: 'partials/gnb', pattern: '/partials/gnb' });
-clientRoutes.add({ page: 'partials/footer', pattern: '/partials/footer' });
+// clientRoutes.add({ page: 'partials/gnb', pattern: '/partials/gnb' });
+// clientRoutes.add({ page: 'partials/footer', pattern: '/partials/footer' });
 clientRoutes.add({ page: 'notification', pattern: '/notification' });
 clientRoutes.add({ page: 'cart', pattern: '/cart' });
 clientRoutes.add({ page: 'account/myridi', pattern: '/account/myridi' });
 clientRoutes.add({ page: 'about', pattern: '/about/:id' });
 clientRoutes.add({ page: 'search', pattern: '/search' });
-clientRoutes.add({ page: '/', pattern: '/' });
-clientRoutes.add({ page: '/', pattern: '/:genre' });
 clientRoutes.add({ page: '/', pattern: '/:genre/:service' });
+clientRoutes.add({ page: '/', pattern: '/:genre' });
+clientRoutes.add({ page: '/', pattern: '/' });
 
 module.exports = {
   clientRoutes: clientRoutes,
