@@ -139,7 +139,7 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
 const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
   const { genres, currentGenre } = props;
   const genre = genres[currentGenre];
-  const hasSubService = genre.subServices.length > 0;
+  const hasSubService = genre ? genre.subServices.length > 0 : false;
   const currentPath = useContext(BrowserLocationContext);
   return (
     <GenreTabWrapper>
