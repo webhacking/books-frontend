@@ -21,7 +21,10 @@ export class Home extends React.Component<HomeProps> {
     const { query, res, req } = props;
     const genre = query.genre ? Genre[query.genre.toUpperCase() as keyof typeof Genre] : null;
 
-    console.log(req!.path, query);
+    if (req) {
+      console.log(req.path, query);
+    }
+
     if (req && res) {
       const redirect = (path: string) => {
         if (req.path !== path) {

@@ -26,7 +26,8 @@ const store = makeStore({}, { asPath: 'test', isServer: false });
 
 test('should be render Index Component', async () => {
   const props = await App.getInitialProps({
-    pathname: '/',
+    // pathname: '/',
+    path: '/',
     isServer: false,
     asPath: '/',
     store,
@@ -39,6 +40,9 @@ test('should be render Index Component', async () => {
       },
       pathname: '/',
       query: { genre: '1', search: 'testKeyword' },
+    },
+    req: {
+      path: '/',
     },
     Component: Index,
   });
@@ -58,6 +62,9 @@ test('should be render Partials Component', async () => {
       },
       pathname: '/partials/gnb',
       query: { search: 'testKeyword' },
+    },
+    req: {
+      path: '/',
     },
     Component: GNB,
   });
