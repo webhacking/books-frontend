@@ -56,8 +56,6 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   > {
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     const isPartials = !!ctx.pathname.match(/\/partials\//);
-    console.log(ctx);
-    console.log(rest);
     return {
       pageProps,
       isPartials,
@@ -114,10 +112,8 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
           <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={!this.state.isMounted}>
             <Global styles={resetStyles} />
           </PartialSeparator>
-          <BrowserLocationWithRouter isPartials={true} pathname={query.pathname || '/'}>
-            {/* Todo Apply Layout */}
-            <Component {...pageProps} />
-          </BrowserLocationWithRouter>
+          {/* Todo Apply Layout */}
+          <Component {...pageProps} />
         </Container>
       );
     } else {
