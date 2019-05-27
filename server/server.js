@@ -19,8 +19,19 @@ function createServer() {
   server.use(cookieParser());
   server.use(express.json());
 
-  server.use(`/_next`, express.static(path.join(__dirname, '../build')));
+  server.use('/_next', express.static(path.join(__dirname, '../build')));
   server.use('/static', express.static(path.join(__dirname, '../static')));
+  server.get('/partials/gnb', (req, res) => {
+    return app.render(req, res, '/partials/gnb', {
+      ...req.query,
+    });
+  });
+  server.get('/partials/footer', (req, res) => {
+    return app.render(req, res, '/partials/footer', {
+      ...req.query,
+    });
+  });
+
   server.get('*', async (req, res) => {
     if (
       req.url === '/favicon.ico' ||

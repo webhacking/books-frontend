@@ -56,6 +56,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   > {
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     const isPartials = !!ctx.pathname.match(/\/partials\//);
+    console.log('_app getInitialProps query', ctx.query);
     return {
       pageProps,
       isPartials,
@@ -106,6 +107,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
 
   public render() {
     const { Component, ctxPathname, query, pageProps, isPartials, store } = this.props;
+    console.log('_app query props', query);
     if (isPartials) {
       return (
         <Container>
