@@ -123,17 +123,14 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         <Container>
           <Global styles={resetStyles} />
           <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
-            {/*<LocationListener />*/}
             <Provider store={store}>
               {/* Todo Apply Layout */}
               <ThemeProvider theme={defaultTheme}>
-                {/*<ConnectedRouter>*/}
                 <GNB searchKeyword={query.search || query.q} isPartials={false} />
                 <Contents>
                   <Component {...pageProps} />
                 </Contents>
                 <Footer />
-                {/*</ConnectedRouter>*/}
               </ThemeProvider>
             </Provider>
           </BrowserLocationWithRouter>

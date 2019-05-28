@@ -22,7 +22,7 @@ package:
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs10.x
   region: ${self:custom.secrets.REGION}
   stage: ${opt:stage, 'development'}
   # CloudFormation Name
