@@ -31,7 +31,10 @@ function createServer() {
       ...req.query,
     });
   });
-
+  server.get('/favicon.ico', async (req, res) => {
+    const filePath = path.join(__dirname, '../', 'build', req.url);
+    return await app.serveStatic(req, res, filePath);
+  });
   server.get('*', async (req, res) => {
     if (
       req.url === '/favicon.ico' ||
