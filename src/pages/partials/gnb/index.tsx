@@ -30,8 +30,7 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
       theme: string;
     }>,
   ) {
-    console.log('partials!', initialProps.query);
-    return { query: initialProps.query, ...initialProps.query };
+    return { ...initialProps.query };
   }
 
   public state: GNBState = {
@@ -46,10 +45,9 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
   }
 
   public render() {
-    console.log('partial gnb index render', this.props);
     return (
       <ThemeProvider theme={!this.state.theme ? defaultTheme : darkTheme}>
-        <BrowserLocationWithRouter isPartials={true} pathname={this.props.pathname || '/'}>
+        <BrowserLocationWithRouter isPartials={true} pathname={this.props.pathname || ''}>
           <PartialSeparator name={'GNB'} wrapped={!this.state.isMounted}>
             <GNB
               id={'gnb'}

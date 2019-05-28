@@ -11,7 +11,6 @@ interface BrowserLocationContextProps {
 
 const BrowserLocation: React.FC<BrowserLocationContextProps & WithRouterProps> = props => {
   const [currentPath, setCurrentPath] = useState<string>(props.pathname);
-  console.log('browserlocation', props);
   if (!props.isPartials) {
     useEffect(() => {
       setCurrentPath(window.location.pathname);

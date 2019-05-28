@@ -154,7 +154,6 @@ const TabItem: React.FC<TabItemProps> = props => {
 export const MainTab: React.FC<MainTabProps> = props => {
   const { isPartials } = props;
   const currentPath = useContext(BrowserLocationContext);
-  console.log('maintab currentpath', currentPath);
   const [homeURL, setHomeURL] = useState('/');
   useEffect(() => {
     const visitedGenre = Cookies.get(`${cookieKeys.recentlyVisitedGenre}`);
