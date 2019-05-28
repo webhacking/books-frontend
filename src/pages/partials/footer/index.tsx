@@ -18,7 +18,6 @@ export class PartialFooter extends React.Component<FooterProps> {
     // Fix me
     // will get notice items
     // const result = await axios.get('https://randomuser.me/api/');
-    console.log(initialProps.query);
     return { ...initialProps.query };
   }
   public render() {

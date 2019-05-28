@@ -19,17 +19,11 @@ export class Home extends React.Component<HomeProps> {
     props: ConnectedInitializeProps<{ genre?: string; service?: string }>,
   ) {
     const { query, res, req } = props;
-    console.log(query);
     const genre = query.genre ? Genre[query.genre.toUpperCase() as keyof typeof Genre] : null;
-
-    if (req) {
-      console.log(req.path, query);
-    }
 
     if (req && res) {
       const redirect = (path: string) => {
         if (req.path !== path) {
-          console.log('change location!', path);
           res.writeHead(302, {
             Location: path,
           });
