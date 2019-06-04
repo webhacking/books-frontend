@@ -16,6 +16,7 @@ import MyRIDI_regular from './MyRIDI_regular';
 import MyRIDI_solid from './MyRIDI_solid';
 import GNB_Category from './GNB_Category';
 import QuickMenuShape from './QuickMenuShape';
+import LeftArrow from './LeftArrow';
 
 export {
   Home_solid,
@@ -36,4 +37,5 @@ export {
   MyRIDI_solid,
   GNB_Category,
   QuickMenuShape,
+  LeftArrow,
 };

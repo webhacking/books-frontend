@@ -17,6 +17,8 @@ const Label = styled.span`
 `;
 
 const MenuList = styled.ul`
+  max-width: 1000px;
+  margin: 0 auto;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

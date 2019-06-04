@@ -18,6 +18,7 @@ import {
   Cart_solid,
   GNB_Category,
   QuickMenuShape,
+  LeftArrow,
 } from './Icons';
 
 export enum IconNames {
@@ -39,6 +40,7 @@ export enum IconNames {
   MyRIDI_solid = 'MyRIDI_solid',
   GNB_Category = 'GNB_Category',
   QuickMenuShape = 'QuickMenuShape',
+  LeftArrow = 'LeftArrow',
 }
 
 interface IconProps {
@@ -65,6 +67,7 @@ const Icons: IconProps = {
   GNB_Category,
   MyRIDI_solid,
   QuickMenuShape,
+  LeftArrow,
 };
 
 interface SvgProps extends React.SVGProps<SVGElement> {
