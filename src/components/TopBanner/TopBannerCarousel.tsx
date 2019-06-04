@@ -292,8 +292,18 @@ const items = [
   },
 ];
 
+const clearOutline = css`
+  :active {
+    outline: none;
+  }
+  :focus {
+    outline: none;
+  }
+`;
+
 const LeftArrow = styled.div`
   display: none;
+  ${clearOutline};
   @media (min-width: 1000px) {
     display: initial;
     position: absolute;
@@ -309,6 +319,7 @@ const LeftArrow = styled.div`
 `;
 const RightArrow = styled.div`
   display: none;
+  ${clearOutline};
   @media (min-width: 1000px) {
     display: initial;
     position: absolute;
@@ -408,18 +419,20 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
     }, []);
 
     const handleClickLeft = () => {
+      // Todo Enter Control
       if (slider.current) {
         slider.current.slickPrev();
       }
     };
     const handleClickRight = () => {
+      // Todo Enter Control
       if (slider.current) {
         slider.current.slickNext();
       }
     };
 
     return (
-      <div>
+      <>
         {!carouselInitialized && (
           <div
             style={{
@@ -446,7 +459,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
             />
           </div>
         )}
-        <div>
+        <>
           <TopBannerCarousel
             forwardRef={slider}
             banners={banners}
@@ -458,7 +471,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
               total={banners.length}
               currentPosition={currentPosition + 1}
             />
-            <LeftArrow onClick={handleClickLeft}>
+            <LeftArrow tabIndex={1} onKeyDown={handleClickLeft} onClick={handleClickLeft}>
               <Svg
                 css={css`
                   fill-opacity: 0.7;
@@ -469,7 +482,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
                 height={'40px'}
               />
             </LeftArrow>
-            <RightArrow onClick={handleClickRight}>
+            <RightArrow tabIndex={1} onKeyDown={handleClickRight} onClick={handleClickRight}>
               <Svg
                 css={css`
                   fill-opacity: 0.7;
@@ -483,8 +496,8 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
               />
             </RightArrow>
           </PositionOverlay>
-        </div>
-      </div>
+        </>
+      </>
     );
   },
 );
