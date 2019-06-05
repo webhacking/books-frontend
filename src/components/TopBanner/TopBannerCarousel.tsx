@@ -57,7 +57,7 @@ const sliderCSS = css`
     height: 237px;
   }
 
-  .slick-slide > div > div[class*='TopBannerItem'] {
+  .slick-slide {
     .slide-overlay {
       position: absolute;
       width: 355px;
@@ -67,7 +67,8 @@ const sliderCSS = css`
       transition: background-color 0.1s;
     }
   }
-  .slick-slide.slick-center > div > div[class*='TopBannerItem'] {
+
+  .slick-slide.slick-center {
     .slide-overlay {
       background: rgba(0, 0, 0, 0);
       transition: background-color 0.1s;
@@ -79,22 +80,26 @@ const sliderCSS = css`
       overflow: hidden;
       height: 286px;
     }
-    .slick-slide > div > div > div[class*='ItemInner'] {
-      height: 286px;
-      width: 430px;
-      transform: scale(0.965);
-      margin: 0 1px;
-      transition: all 0.2s;
+    .slick-slide {
+      .slide-item-inner {
+        height: 286px;
+        width: 430px;
+        transform: scale(0.965);
+        margin: 0 1px;
+        transition: all 0.2s;
+      }
     }
 
-    .slick-slide.slick-center > div > div > div[class*='ItemInner'] {
-      height: 286px;
-      width: 430px;
-      transform: scale(1);
-      transition: all 0.2s;
+    .slick-slide.slick-center {
+      .slide-item-inner {
+        height: 286px;
+        width: 430px;
+        transform: scale(1);
+        transition: all 0.2s;
+      }
     }
 
-    .slick-slide > div > div[class*='TopBannerItem'] {
+    .slick-slide {
       .slide-overlay {
         width: 430px;
         border-radius: 6px;
@@ -103,7 +108,7 @@ const sliderCSS = css`
         transform: scale(0.965);
       }
     }
-    .slick-slide.slick-center > div > div[class*='TopBannerItem'] {
+    .slick-slide.slick-center {
       .slide-overlay {
         width: 430px;
         transform: scale(1);
@@ -214,6 +219,7 @@ const TopBannerItem: React.FC<TopBannerItemProps> = props => {
   return (
     <TopBannerItemWrapper>
       <ItemInner
+        className={'slide-item-inner'}
         css={css`
           @media (min-width: 1000px) {
             transform: ${props.loading && !props.center ? 'scale(0.965)' : 'scale(1)'};
