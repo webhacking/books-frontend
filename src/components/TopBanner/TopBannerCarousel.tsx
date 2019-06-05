@@ -1,19 +1,54 @@
 import * as React from 'react';
 import SliderCarousel from 'react-slick';
 import dynamic from 'next/dynamic';
-
 import 'slick-carousel/slick/slick.css';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 import 'slick-carousel/slick/slick-theme.css';
 import { useCallback, useState } from 'react';
 import { Svg } from 'src/components/Svg';
+import { clearOutline, flexCenter } from 'src/styles';
+
+const items = [
+  {
+    label: '1',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603112320_1559528600505.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603112320_1559528600505.jpg',
+  },
+  {
+    label: '2',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
+  },
+  {
+    label: '3',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
+  },
+  {
+    label: '19',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
+  },
+  {
+    label: '20',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
+  },
+];
 
 const TopBannerItemWrapper = styled.div`
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${flexCenter};
+  margin: 0 5px;
+  @media (min-width: 1000px) {
+    margin: unset;
+  }
 `;
 
 const sliderCSS = css`
@@ -29,14 +64,13 @@ const sliderCSS = css`
       border-radius: 6px;
       height: 100%;
       background: rgba(0, 0, 0, 0.7);
-      transition: all 0.1s;
+      transition: background-color 0.1s;
     }
   }
   .slick-slide.slick-center > div > div[class*='TopBannerItem'] {
     .slide-overlay {
       background: rgba(0, 0, 0, 0);
-      //display: none;
-      transition: all 0.1s;
+      transition: background-color 0.1s;
     }
   }
 
@@ -46,43 +80,37 @@ const sliderCSS = css`
       height: 286px;
     }
     .slick-slide > div > div > div[class*='ItemInner'] {
-      height: 276px;
-      width: 415px;
-      transition: height 0.3s;
+      height: 286px;
+      width: 430px;
+      transform: scale(0.965);
+      margin: 0 1px;
+      transition: all 0.2s;
     }
 
     .slick-slide.slick-center > div > div > div[class*='ItemInner'] {
       height: 286px;
       width: 430px;
-      //background: #8685cb;
-      transition: height 0.3s;
+      transform: scale(1);
+      transition: all 0.2s;
     }
 
     .slick-slide > div > div[class*='TopBannerItem'] {
       .slide-overlay {
-        position: absolute;
-        width: 415px;
+        width: 430px;
         border-radius: 6px;
-        height: 100%;
         background: rgba(0, 0, 0, 0.7);
-        transition: background-color 0.2s;
+        transition: all 0.2s;
+        transform: scale(0.965);
       }
     }
     .slick-slide.slick-center > div > div[class*='TopBannerItem'] {
       .slide-overlay {
-        //background: rgba(0, 0, 0, 0);
-        //display: none;
-        //position: absolute;
-        width: 433px;
-        transition: background-color 0.2s;
+        width: 430px;
+        transform: scale(1);
+        transition: all 0.2s;
       }
     }
   }
-  //.slick-slide > div > div > div[class*='ItemInner'] {
-  //}
-  //
-  //.slick-slide.slick-current > div > div > div[class*='ItemInner'] {
-  //}
   .slick-position {
     display: none;
   }
@@ -93,16 +121,25 @@ const sliderCSS = css`
   }
   .slick-slide {
     height: 237px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    ${flexCenter};
     @media (min-width: 1000px) {
       height: 286px;
     }
   }
 `;
 
-const ItemInner = styled.div``;
+const ItemInner = styled.div`
+  border-radius: 6px;
+  height: 286px;
+  @media (max-width: 999px) {
+    width: 355px;
+    height: 237px;
+  }
+  @media (min-width: 1000px) {
+    width: 430px;
+  }
+  background-size: cover;
+`;
 
 const TopBannerCurrentPositionInner = styled.div`
   position: absolute;
@@ -110,37 +147,44 @@ const TopBannerCurrentPositionInner = styled.div`
   bottom: 11px;
   width: 54px;
   height: 24px;
-  //opacity: 0.4;
-  //box-shadow: 2px 2px 2px 2px #333333 inset;
   border-radius: 12px;
   border: solid 1px rgba(180, 180, 180, 0.1);
-  //box-shadow: 0 0 0 1px rgba(0,0,0,0.3) inset;
   background-color: rgba(0, 0, 0, 0.4);
   @media (min-width: 1000px) {
     right: 16px;
     bottom: 11px;
   }
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  ${flexCenter};
+`;
+
+const positionLabelCSS = css`
+  color: white;
+  font-size: 12px;
+  line-height: 22px;
+  letter-spacing: -0.3px;
+  font-family: 'museo_sans', 'Helvetica Neue';
 `;
 
 const currentPosCSS = css`
-  color: white;
-  font-size: 12px;
   font-weight: bold;
-  line-height: 22px;
-  letter-spacing: -0.3px;
-  font-family: 'museo_sans', 'Helvetica Neue';
+  ${positionLabelCSS};
 `;
 
 const totalCountCSS = css`
-  color: white;
   font-weight: 500;
-  font-size: 12px;
-  line-height: 22px;
-  letter-spacing: -0.3px;
-  font-family: 'museo_sans', 'Helvetica Neue';
+  ${positionLabelCSS};
+`;
+
+const carouselLoadingOverlay = css`
+  position: absolute;
+  width: 355px;
+  border-radius: 6px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  @media (min-width: 1000px) {
+    width: 430px;
+    transform: scale(0.965);
+  }
 `;
 
 interface TopBannerCurrentPositionProps {
@@ -160,8 +204,10 @@ const TopBannerCurrentPosition: React.FC<TopBannerCurrentPositionProps> = props 
 
 interface TopBannerItemProps {
   label?: string;
-  url: string;
+  url?: string;
+  imageUrl?: string;
   loading?: boolean;
+  center?: boolean;
 }
 
 const TopBannerItem: React.FC<TopBannerItemProps> = props => {
@@ -169,137 +215,20 @@ const TopBannerItem: React.FC<TopBannerItemProps> = props => {
     <TopBannerItemWrapper>
       <ItemInner
         css={css`
-          border-radius: 6px;
-          margin: 0 5px;
-          max-width: 430px;
-          height: ${props.loading ? '276px' : '286px'};
-          @media (max-width: 999px) {
-            width: 355px;
-            height: 237px;
-          }
           @media (min-width: 1000px) {
-            width: ${props.loading ? '415px' : '430px'};
-            //width: 430px;
+            transform: ${props.loading && !props.center ? 'scale(0.965)' : 'scale(1)'};
+            margin: ${props.loading ? '0 1px' : '0'};
           }
-
-          //background-image: url('');
-          background-size: cover;
-          background-image: url(${props.url});
+          background-image: url(${props.imageUrl});
         `}
       />
       <div
-        css={
-          props.loading
-            ? css`
-                position: absolute;
-                width: 355px;
-                border-radius: 6px;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.7);
-                @media (min-width: 1000px) {
-                  width: 415px;
-                }
-                //transition: background-color 0.2s;
-              `
-            : null
-        }
+        css={props.loading && !props.center ? carouselLoadingOverlay : null}
         className={'slide-overlay'}
       />
     </TopBannerItemWrapper>
   );
 };
-
-const items = [
-  {
-    label: '1',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603112320_1559528600505.jpg',
-  },
-  {
-    label: '2',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-  },
-  {
-    label: '3',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-  },
-  {
-    label: '19',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-  },
-  {
-    label: '20',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-  },
-  {
-    label: '1',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603112320_1559528600505.jpg',
-  },
-  {
-    label: '2',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-  },
-  {
-    label: '3',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-  },
-  {
-    label: '19',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-  },
-  {
-    label: '20',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-  },
-  {
-    label: '1',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603112320_1559528600505.jpg',
-  },
-  {
-    label: '2',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-  },
-  {
-    label: '3',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-  },
-  {
-    label: '19',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-  },
-  {
-    label: '20',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-  },
-  {
-    label: '1',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603112320_1559528600505.jpg',
-  },
-  {
-    label: '2',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-  },
-  {
-    label: '3',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-  },
-  {
-    label: '19',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-  },
-  {
-    label: '20',
-    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-  },
-];
-
-const clearOutline = css`
-  :active {
-    outline: none;
-  }
-  :focus {
-    outline: none;
-  }
-`;
 
 const LeftArrow = styled.div`
   display: none;
@@ -368,14 +297,28 @@ const ForwardedRefComponent = React.forwardRef((props, ref: React.RefObject<any>
   return <Slider {...props} forwardedRef={ref} />;
 });
 
+interface TopBannerCarouselLoadingProps {
+  left: string;
+  center: string;
+  right: string;
+}
+
+const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props => {
+  return (
+    <div css={flexCenter}>
+      <TopBannerItem loading={true} imageUrl={props.left} />
+      <TopBannerItem center={true} loading={true} imageUrl={props.center} />
+      <TopBannerItem loading={true} imageUrl={props.right} />
+    </div>
+  );
+};
+
 const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => {
   const { banners } = props;
-
-  // console.log(ForwardedRefComponent);
   return (
     <ForwardedRefComponent
       ref={props.forwardRef}
-      className={'center'}
+      className={'center slider variable-width'}
       css={sliderCSS}
       slidesToShow={1}
       initialSlide={0}
@@ -388,18 +331,15 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       variableWidth={true}
       afterChange={(item: number) => {
         props.changePosition(item);
-        // @ts-ignore
-        if (props.forwardRef.current && props.forwardRef.current.innerSlider) {
-          // @ts-ignore
-          props.forwardRef.current.innerSlider.onWindowResized();
-        }
       }}
       onInit={() => {
         props.setInitialized();
       }}
       centerMode={true}>
       {banners.map((item, index) => {
-        return <TopBannerItem key={index} label={item.label} url={item.url} />;
+        return (
+          <TopBannerItem key={index} label={item.label} url={item.url} imageUrl={item.imageUrl} />
+        );
       })}
     </ForwardedRefComponent>
   );
@@ -434,30 +374,17 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
     return (
       <>
         {!carouselInitialized && (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <TopBannerItem
-              loading={true}
-              url={
-                'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg'
-              }
-            />
-            <TopBannerItem
-              url={
-                'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603112320_1559528600505.jpg'
-              }
-            />
-            <TopBannerItem
-              loading={true}
-              url={
-                'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg'
-              }
-            />
-          </div>
+          <TopBannerCarouselLoading
+            left={
+              'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg'
+            }
+            center={
+              'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603112320_1559528600505.jpg'
+            }
+            right={
+              'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg'
+            }
+          />
         )}
         <>
           <TopBannerCarousel
