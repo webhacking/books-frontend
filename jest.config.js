@@ -7,6 +7,9 @@ module.exports = {
     '!**/_document.tsx',
     '!**/utils/sentry.ts',
   ],
+  moduleNameMapper: {
+    '\\.(css|less)$': 'identity-obj-proxy',
+  },
   coveragePathIgnorePatterns: ['/node_modules/'],
   testPathIgnorePatterns: ['/node_modules/'],
   moduleDirectories: ['node_modules'],
