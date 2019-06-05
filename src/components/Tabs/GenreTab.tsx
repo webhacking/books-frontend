@@ -11,7 +11,10 @@ import { BrowserLocationContext } from 'src/components/Context';
 import * as Cookies from 'js-cookie';
 import cookieKeys from 'src/constants/cookies';
 
-const GenreTabWrapper = styled.ul``;
+const GenreTabWrapper = styled.ul`
+  max-width: 1000px;
+  margin: 0 auto;
+`;
 
 const Ruler = styled.hr`
   position: absolute;

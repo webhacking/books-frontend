@@ -176,7 +176,9 @@ export const MainTab: React.FC<MainTabProps> = props => {
         label={labels.mainTab.home}
         path={homeURL}
         replace={true}
-        pathRegexp={/(^[^/]*\/$|^\/(fantasy|romance|bl|general|comic)(\/.*$|$))/}
+        pathRegexp={
+          /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(fantasy|romance|bl|general|comic)(\/.*$|$))/
+        }
       />
       <TabItem
         isPartials={isPartials}

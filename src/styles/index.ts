@@ -1,3 +1,5 @@
+import { css } from '@emotion/core';
+
 export * from './reset';
 export * from './themes';
 
@@ -13,3 +15,9 @@ export enum ZIndexLayer {
   LEVEL_2 = 0,
   LEVEL_1 = -10000,
 }
+
+export const flexCenter = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
