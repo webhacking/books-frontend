@@ -1,5 +1,5 @@
 // temporary code
-function pastelColors() {
+export function pastelColors() {
   const r = (Math.round(Math.random() * 127) + 127).toString(16);
   const g = (Math.round(Math.random() * 127) + 127).toString(16);
   const b = (Math.round(Math.random() * 127) + 127).toString(16);

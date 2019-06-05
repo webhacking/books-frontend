@@ -33,8 +33,6 @@ interface StoreAppState {
 }
 
 const Contents = styled.div`
-  overflow: auto;
-  max-width: 1000px;
   margin: 0 auto;
 `;
 

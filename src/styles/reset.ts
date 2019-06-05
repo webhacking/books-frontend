@@ -30,6 +30,15 @@ export const a11y = css`
   clip: rect(0, 0, 0, 0);
 `;
 
+export const clearOutline = css`
+  :focus {
+    outline: none;
+  }
+  :active {
+    outline: none;
+  }
+`;
+
 export const fontFamily = [
   'Helvetica Neue',
   'Apple SD Gothic Neo',

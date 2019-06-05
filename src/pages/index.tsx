@@ -8,6 +8,18 @@ import { Router } from 'server/routes';
 import * as Cookies from 'js-cookie';
 import { QuickMenuList } from 'src/components/QuickMenu';
 import { quickMenuItems } from 'src/components/QuickMenu/mockData';
+import { TopBannerCarouselContainer } from 'src/components/TopBanner';
+import styled from '@emotion/styled';
+
+const TopBannerCarouselWrapper = styled.section`
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  min-height: 237px;
+  @media (min-width: 1000px) {
+    min-height: 287px;
+  }
+`;
 
 export interface HomeProps {
   genre: keyof typeof Genre;
@@ -20,6 +32,9 @@ export class Home extends React.Component<HomeProps> {
   ) {
     const { query, res, req } = props;
     const genre = query.genre ? Genre[query.genre.toUpperCase() as keyof typeof Genre] : null;
+    const service = query.service
+      ? GenreSubService[query.service.toUpperCase() as keyof typeof GenreSubService]
+      : null;
 
     if (req && res) {
       const redirect = (path: string) => {
@@ -72,9 +87,11 @@ export class Home extends React.Component<HomeProps> {
       if (res.statusCode !== 302) {
         console.log('Server Side Fetch Start');
       }
+    } else {
+      console.log('Initial Fetch Start');
     }
 
-    return { genre: genre || 'general', service: props.query.service, ...props.query };
+    return { genre: genre || 'general', service: service || 'single', ...props.query };
   }
 
   private setCookie = (props: HomeProps) => {
@@ -137,18 +154,22 @@ export class Home extends React.Component<HomeProps> {
   }
 
   public render() {
-    const { genre } = this.props;
+    const { genre, service } = this.props;
     const currentGenre = Genre[genre.toUpperCase() as keyof typeof Genre];
+    const currentService = GenreSubService[service.toUpperCase() as keyof typeof GenreSubService];
     return (
       <>
         <Head>
           <title>리디북스 - 홈 - {genre}</title>
         </Head>
-        <div>
-          <GenreTab currentGenre={currentGenre} genres={homeGenres} />
-          {/*{currentGenre}*/}
-          {/*{service}*/}
-        </div>
+        <GenreTab currentGenre={currentGenre} genres={homeGenres} />
+        {/*{currentGenre}*/}
+        {/*{service}*/}
+        {(currentGenre === Genre.GENERAL || currentService === GenreSubService.SERIAL) && (
+          <TopBannerCarouselWrapper>
+            <TopBannerCarouselContainer />
+          </TopBannerCarouselWrapper>
+        )}
         <QuickMenuList items={quickMenuItems} />
       </>
     );
