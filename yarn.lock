@@ -7964,11 +7964,6 @@ react-is@16.8.6, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
-react-multi-carousel@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/react-multi-carousel/-/react-multi-carousel-1.4.1.tgz#a3439004121ea96f3b576caf9e7c275ef548e21a"
-  integrity sha512-8GeKePsyuDqrU23ZI7r+O1A1nbXNA3iWOMoSqaYXGGxWx3YIZNPbw4w1xHu7udLdnkLzTkMOI7RRqUlfpCORwg==
-
 react-redux@^7.0.1:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.0.3.tgz#983c5a6de81cb1e696bd1c090ba826545f9170f1"
