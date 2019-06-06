@@ -46,6 +46,16 @@ const GenreList = styled.ul`
     :hover {
       opacity: 0.7;
     }
+    @media (hover: hover) {
+      :hover {
+        opacity: 0.7;
+      }
+    }
+    @media (hover: none) {
+      :hover {
+        opacity: 1;
+      }
+    }
     padding: 0 22px;
     margin-right: 10px;
   }
@@ -85,8 +95,14 @@ const SubServicesList = styled.ul`
       display: inline-block;
       cursor: pointer;
       height: 100%;
-      :hover {
-        color: ${props => props.theme.subServiceTab.hover};
+      @media (hover: hover) {
+        :hover {
+          color: ${props => props.theme.subServiceTab.hover};
+        }
+      }
+      @media (hover: none) {
+        :hover {
+        }
       }
     }
     :not(:last-of-type) {

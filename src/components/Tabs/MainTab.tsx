@@ -85,13 +85,21 @@ const TabItemWrapper = styled.li`
     }
   }
   transition: opacity 0.2s;
-  :hover {
-    ${BottomLine} {
-      background-color: #99d1ff;
+
+  @media (hover: hover) {
+    :hover {
+      ${BottomLine} {
+        background-color: #99d1ff;
+        opacity: 0.7;
+        width: 100%;
+      }
       opacity: 0.7;
-      width: 100%;
     }
-    opacity: 0.7;
+  }
+  @media (hover: none) {
+    :hover {
+      opacity: 1;
+    }
   }
   padding-bottom: 3px;
 `;

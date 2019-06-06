@@ -28,6 +28,7 @@ const MenuList = styled.ul`
   @media (max-width: 999px) {
     //width: calc(100% + 13px) !important;
   }
+  -webkit-overflow-scrolling: touch;
 `;
 
 const MenuItem = styled.li`

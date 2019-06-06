@@ -328,7 +328,6 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       css={sliderCSS}
       slidesToShow={1}
       initialSlide={0}
-      useTransform={false}
       slidesToScroll={1}
       autoplaySpeed={5000}
       autoplay={true}
