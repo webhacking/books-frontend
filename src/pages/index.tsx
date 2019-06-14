@@ -10,6 +10,8 @@ import { QuickMenuList } from 'src/components/QuickMenu';
 import { quickMenuItems } from 'src/components/QuickMenu/mockData';
 import { TopBannerCarouselContainer } from 'src/components/TopBanner';
 import styled from '@emotion/styled';
+import { EventBanner } from 'src/components/EventBanner';
+import { eventBannerItems } from 'src/components/EventBanner/mockData';
 
 const TopBannerCarouselWrapper = styled.section`
   max-width: 1280px;
@@ -18,6 +20,20 @@ const TopBannerCarouselWrapper = styled.section`
   min-height: 237px;
   @media (min-width: 1000px) {
     min-height: 287px;
+  }
+`;
+
+const EventBannerWrapper = styled.section`
+  margin: 0 auto;
+  max-width: 1000px;
+  overflow: auto;
+  position: relative;
+  min-height: 215px;
+  @media (max-width: 999px) {
+    min-height: 162px;
+  }
+  @media (min-width: 1280px) {
+    overflow: unset;
   }
 `;
 
@@ -165,12 +181,23 @@ export class Home extends React.Component<HomeProps> {
         <GenreTab currentGenre={currentGenre} genres={homeGenres} />
         {/*{currentGenre}*/}
         {/*{service}*/}
+        {/* Todo 이런 조건이면 될까? */}
         {(currentGenre === Genre.GENERAL || currentService === GenreSubService.SERIAL) && (
           <TopBannerCarouselWrapper>
             <TopBannerCarouselContainer />
           </TopBannerCarouselWrapper>
         )}
         <QuickMenuList items={quickMenuItems} />
+
+        {/* Todo 마찬가지로 이런 조건으로만 체크하는 것이 옳을까? */}
+        {(currentGenre === Genre.FANTASY ||
+          currentGenre === Genre.ROMANCE ||
+          currentGenre === Genre.BL) &&
+          currentService === GenreSubService.SINGLE && (
+            <EventBannerWrapper>
+              <EventBanner items={eventBannerItems} genre={currentGenre} />
+            </EventBannerWrapper>
+          )}
       </>
     );
   }

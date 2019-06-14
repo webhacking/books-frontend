@@ -25,8 +25,11 @@ const MenuList = styled.ul`
   overflow: auto;
   padding-top: 14px;
   padding-bottom: 32px;
+  padding-left: 13px;
+  padding-right: 13px;
   @media (max-width: 999px) {
-    //width: calc(100% + 13px) !important;
+    padding-left: unset;
+    padding-right: unset;
   }
   -webkit-overflow-scrolling: touch;
 `;

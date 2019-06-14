@@ -21,3 +21,9 @@ export const flexCenter = css`
   justify-content: center;
   align-items: center;
 `;
+
+export const flexRowStart = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+`;
