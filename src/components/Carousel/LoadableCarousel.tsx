@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Slider, { Settings } from 'react-slick';
 
-const LoadableSlider: React.RefForwardingComponent<
+const LoadableCarousel: React.RefForwardingComponent<
   Settings,
   { forwardedRef: React.RefObject<Slider> }
 > = ({ forwardedRef, ...rest }) => (
@@ -10,4 +10,4 @@ const LoadableSlider: React.RefForwardingComponent<
   </Slider>
 );
 
-export default LoadableSlider;
+export default LoadableCarousel;

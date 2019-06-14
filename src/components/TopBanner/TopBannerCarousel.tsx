@@ -2,12 +2,12 @@ import * as React from 'react';
 import SliderCarousel from 'react-slick';
 import dynamic from 'next/dynamic';
 import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
-import 'slick-carousel/slick/slick-theme.css';
-import { useCallback, useState } from 'react';
-import { Svg } from 'src/components/Svg';
+import { FormEvent, useCallback, useState } from 'react';
 import { clearOutline, flexCenter } from 'src/styles';
+import Arrow from 'src/components/Carousel/Arrow';
 
 const items = [
   {
@@ -63,7 +63,7 @@ const sliderCSS = css`
       width: 355px;
       border-radius: 6px;
       height: 100%;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.6);
       transition: background-color 0.1s;
     }
   }
@@ -103,7 +103,7 @@ const sliderCSS = css`
       .slide-overlay {
         width: 430px;
         border-radius: 6px;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 0, 0, 0.6);
         transition: all 0.2s;
         transform: scale(0.965);
       }
@@ -185,7 +185,7 @@ const carouselLoadingOverlay = css`
   width: 355px;
   border-radius: 6px;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.6);
   @media (min-width: 1000px) {
     width: 430px;
     transform: scale(0.965);
@@ -225,9 +225,24 @@ const TopBannerItem: React.FC<TopBannerItemProps> = props => {
             transform: ${props.loading && !props.center ? 'scale(0.965)' : 'scale(1)'};
             margin: ${props.loading ? '0 1px' : '0'};
           }
-          background-image: url(${props.imageUrl});
-        `}
-      />
+          //background-image: url(${props.imageUrl});
+        `}>
+        <img
+          css={css`
+            width: 430px;
+            height: 286px;
+            border-radius: 6px;
+            // Fix me 올바른 사이즈 배너가 올 때 다시 테스트
+            object-fit: cover; // IE 11 미지원
+            object-position: 0 0; // IE 11 미지원
+            @media (max-width: 999px) {
+              width: 355px;
+              height: 237px;
+            }
+          `}
+          src={props.imageUrl}
+        />
+      </ItemInner>
       <div
         css={props.loading && !props.center ? carouselLoadingOverlay : null}
         className={'slide-overlay'}
@@ -236,36 +251,18 @@ const TopBannerItem: React.FC<TopBannerItemProps> = props => {
   );
 };
 
-const LeftArrow = styled.div`
+const arrowWrapperCSS = css`
   display: none;
   ${clearOutline};
   @media (min-width: 1000px) {
     display: initial;
     position: absolute;
-    left: -40px;
     width: 40px;
     height: 40px;
     bottom: 143.5px;
     border-radius: 50px;
     border: solid 1px rgba(0, 0, 0, 0.07);
     background-color: rgba(255, 255, 255, 0.15);
-    transform: translate(-50%, 50%);
-  }
-`;
-const RightArrow = styled.div`
-  display: none;
-  ${clearOutline};
-  @media (min-width: 1000px) {
-    display: initial;
-    position: absolute;
-    right: -40px;
-    width: 40px;
-    height: 40px;
-    bottom: 143.5px;
-    border-radius: 50px;
-    border: solid 1px rgba(0, 0, 0, 0.07);
-    background-color: rgba(255, 255, 255, 0.15);
-    transform: translate(50%, 50%);
   }
 `;
 
@@ -292,11 +289,15 @@ interface TopBannerCarouselProps {
   forwardRef: React.RefObject<SliderCarousel>;
 }
 interface TopBannerCarouselContainerProps {
+  // Todo ANY 타입 수정
   // tslint:disable-next-line:no-any
   banners?: any[];
 }
 
-const Slider = dynamic(import('./LoadableCarousel'), { ssr: false, loading: () => null });
+const Slider = dynamic(import('src/components/Carousel/LoadableCarousel'), {
+  ssr: false,
+  loading: () => null,
+});
 // @ts-ignore
 // tslint:disable-next-line:no-any
 const ForwardedRefComponent = React.forwardRef((props, ref: React.RefObject<any>) => {
@@ -330,6 +331,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       initialSlide={0}
       slidesToScroll={1}
       autoplaySpeed={5000}
+      speed={75}
       autoplay={true}
       arrows={false}
       infinite={true}
@@ -363,14 +365,14 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
       setCarouselInitialized(true);
     }, []);
 
-    const handleClickLeft = () => {
-      // Todo Enter Control
+    const handleClickLeft = (e: FormEvent) => {
+      e.preventDefault();
       if (slider.current) {
         slider.current.slickPrev();
       }
     };
-    const handleClickRight = () => {
-      // Todo Enter Control
+    const handleClickRight = (e: FormEvent) => {
+      e.preventDefault();
       if (slider.current) {
         slider.current.slickNext();
       }
@@ -403,30 +405,31 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
               total={banners.length}
               currentPosition={currentPosition + 1}
             />
-            <LeftArrow tabIndex={1} onKeyDown={handleClickLeft} onClick={handleClickLeft}>
-              <Svg
-                css={css`
-                  fill-opacity: 0.7;
-                `}
-                fill={'#d1d5d9'}
-                iconName={'LeftArrow'}
-                width={'40px'}
-                height={'40px'}
-              />
-            </LeftArrow>
-            <RightArrow tabIndex={1} onKeyDown={handleClickRight} onClick={handleClickRight}>
-              <Svg
-                css={css`
-                  fill-opacity: 0.7;
-                  transform-origin: center;
-                  transform: rotate(180deg) translate(3%, 0);
-                `}
-                fill={'#d1d5d9'}
-                iconName={'LeftArrow'}
-                width={'40px'}
-                height={'40px'}
-              />
-            </RightArrow>
+            <form>
+              <button type="submit" onClick={handleClickLeft}>
+                <Arrow
+                  opacity={true}
+                  wrapperStyle={css`
+                    ${arrowWrapperCSS};
+                    left: -40px;
+                    transform: translate(-50%, 50%);
+                  `}
+                />
+                <span className={'a11y'}>이전</span>
+              </button>
+              <button type="submit" onClick={handleClickRight}>
+                <Arrow
+                  opacity={true}
+                  side={'right'}
+                  wrapperStyle={css`
+                    ${arrowWrapperCSS};
+                    right: -40px;
+                    transform: translate(50%, 50%);
+                  `}
+                />
+                <span className={'a11y'}>다음</span>
+              </button>
+            </form>
           </PositionOverlay>
         </>
       </>
