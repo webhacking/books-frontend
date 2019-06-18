@@ -9,6 +9,7 @@ module.exports = {
   ],
   moduleNameMapper: {
     '\\.(css|less)$': 'identity-obj-proxy',
+    '\\.svg': '<rootDir>/src/tests/__mocks__/svgrMock.ts',
   },
   coveragePathIgnorePatterns: ['/node_modules/'],
   testPathIgnorePatterns: ['/node_modules/'],

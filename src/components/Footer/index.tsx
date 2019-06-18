@@ -1,7 +1,8 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import * as React from 'react';
-import { Svg } from 'src/components/Svg';
+import PaperIcon from 'src/svgs/Paper.svg';
+import NewIcon from 'src/svgs/New_1.svg';
 
 const ridiMeta = {
   serviceCenterNumber: '1644-0331',
@@ -223,6 +224,12 @@ const NoticeLabel = styled.h2`
   margin-right: 10px;
 `;
 
+const paperIcon = css`
+  width: 45px;
+  height: 12px;
+  fill: white;
+`;
+
 interface NoticeItem {
   title: string;
   url: string;
@@ -273,7 +280,7 @@ export default class Footer extends React.PureComponent<FooterProps> {
                 <FooterMenu>
                   <li>
                     <a css={anchorHover} href="https://paper.ridibooks.com">
-                      <Svg iconName={'Paper'} width={'45px'} height={'12px'} fill={'white'} />
+                      <PaperIcon css={paperIcon} />
                       <span className={'a11y'}>페이퍼</span>
                     </a>
                   </li>
@@ -357,16 +364,15 @@ export default class Footer extends React.PureComponent<FooterProps> {
                       target="_blank"
                       rel="noopener">
                       <FooterMenuLabel>인재 채용</FooterMenuLabel>
-                      <Svg
-                        css={() => css`
+                      <NewIcon
+                        css={css`
                           position: relative;
                           top: 1.5px;
                           margin-left: 6px;
+                          fill: #509deb;
+                          width: 14px;
+                          height: 14px;
                         `}
-                        fill={'#509DEB'}
-                        iconName={'New_1'}
-                        width={'14px'}
-                        height={'14px'}
                       />
                     </a>
                   </li>

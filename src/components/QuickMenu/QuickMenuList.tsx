@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
-import { Svg } from 'src/components/Svg';
-
+import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
+import { css } from '@emotion/core';
 const Label = styled.span`
   font-size: 13px;
   line-height: 1.23;
@@ -72,7 +72,13 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
         <MenuItem key={index}>
           <MenuItemWrapper>
             <a href={menu.link}>
-              <Svg iconName={'QuickMenuShape'} height={'44px'} width={'44px'} fill={menu.color} />
+              <QuickMenuShape
+                css={css`
+                  height: 44px;
+                  width: 44px;
+                  fill: ${menu.color};
+                `}
+              />
               <Label>{menu.label}</Label>
             </a>
           </MenuItemWrapper>

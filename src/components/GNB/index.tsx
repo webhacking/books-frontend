@@ -5,7 +5,8 @@ import { RIDITheme } from 'src/styles/themes';
 import { Button } from 'src/components/Button';
 import { InstantSearch } from 'src/components/Search';
 import { MainTab } from 'src/components/Tabs';
-import { Svg } from 'src/components/Svg';
+import RidiLogo from 'src/svgs/RidiLogo_1.svg';
+import RidiSelectLogo from 'src/svgs/RidiSelectLogo_1.svg';
 
 const GNBWrapper = styled.div`
   width: 100%;
@@ -68,6 +69,7 @@ const ridiLogo = (theme: RIDITheme) => css`
   filter: ${theme.logoFilter};
   width: 103px;
   height: 16px;
+  fill: white;
   :hover {
     opacity: 0.7;
   }
@@ -85,6 +87,7 @@ const ridiLogo = (theme: RIDITheme) => css`
 
 const ridiSelectLogo = (theme: RIDITheme) => css`
   filter: ${theme.logoFilter2};
+  fill: white;
   opacity: 0.6;
   width: 87.5px;
   height: 14px;
@@ -148,13 +151,13 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
                     display: flex;
                     align-items: center;
                   `}>
-                  <Svg iconName={'RidiLogo_1'} fill={'white'} css={ridiLogo} />
+                  <RidiLogo css={ridiLogo} />
                   <span className="a11y">RIDIBOOKS</span>
                 </a>
               </li>
               <li className="GNBNavigation_Item">
                 <a href="https://select.ridibooks.com">
-                  <Svg iconName={'RidiSelectLogo_1'} fill={'white'} css={ridiSelectLogo} />
+                  <RidiSelectLogo css={ridiSelectLogo} />
                   <span className="a11y">리디셀렉트</span>
                 </a>
               </li>

@@ -22,7 +22,7 @@
     },
     "typeRoots": ["./src/types", "node_modules/@types"]
   },
-
+  "files": ["./src/types/svg.d.ts"],
   "include": ["src/pages/**/*"],
   "exclude": ["node_modules/**/*"]
 }
