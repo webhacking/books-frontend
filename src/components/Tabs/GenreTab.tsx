@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Genre, Genres } from 'src/constants/genres';
 import styled from '@emotion/styled';
 import * as labels from 'src/labels/common.json';
-import { Svg } from 'src/components/Svg';
+import GNBCategory from 'src/svgs/GNB_Category.svg';
 import { css, SerializedStyles } from '@emotion/core';
 import { RIDITheme } from 'src/styles';
 import { Link } from 'server/routes';
@@ -165,7 +165,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
       <li>
         <GenreList>
           <li>
-            <Svg css={iconCSS} iconName={'GNB_Category'} />
+            <GNBCategory css={iconCSS} />
             <span className={'a11y'}>{labels.category}</span>
           </li>
           {Object.keys(genres).map((k, index) => {

@@ -1,13 +1,20 @@
 import * as React from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import { IconNames, Svg } from 'src/components/Svg';
 import { useContext, useEffect, useState } from 'react';
 import { a11y } from 'src/styles';
 import { Anchor } from 'src/components/Misc';
 import { BrowserLocationContext } from 'src/components/Context';
 import * as labels from 'src/labels/menus.json';
 import * as Cookies from 'js-cookie';
+import Home from 'src/svgs/Home.svg';
+import HomeSolid from 'src/svgs/Home_solid.svg';
+import Notification_solid from 'src/svgs/Notification_solid.svg';
+import Notification_regular from 'src/svgs/Notification_regular.svg';
+import Cart_regular from 'src/svgs/Cart_regular.svg';
+import Cart_solid from 'src/svgs/Cart_solid.svg';
+import MyRIDI_solid from 'src/svgs/MyRIDI_solid.svg';
+import MyRIDI_regular from 'src/svgs/MyRIDI_regular.svg';
 import cookieKeys from 'src/constants/cookies';
 // import { RIDITheme } from 'src/styles';
 
@@ -119,8 +126,8 @@ interface TabItemProps {
   shallow?: boolean;
   path: string;
   currentPath: string;
-  activeIconName: keyof typeof IconNames;
-  iconName: keyof typeof IconNames;
+  activeIcon: React.ReactNode;
+  normalIcon: React.ReactNode;
   label: string;
   pathRegexp: RegExp;
 }
@@ -138,18 +145,15 @@ const TabItem: React.FC<TabItemProps> = props => {
     shallow,
     replace,
     label,
-    activeIconName,
-    iconName,
+    activeIcon,
+    normalIcon,
   } = props;
   return (
     <TabItemWrapper>
       <Anchor isPartials={isPartials} path={path} shallow={shallow} replace={replace}>
         <StyledAnchor href={isPartials ? path : ''}>
           <TabButton>
-            <Svg
-              iconName={currentPath.match(pathRegexp) ? activeIconName : iconName}
-              css={iconStyle}
-            />
+            {currentPath.match(pathRegexp) ? activeIcon : normalIcon}
             <span css={labelStyle}>{label}</span>
           </TabButton>
           <BottomLine css={currentPath.match(pathRegexp) ? currentTab : css``} />
@@ -178,8 +182,8 @@ export const MainTab: React.FC<MainTabProps> = props => {
     <Tabs>
       <TabItem
         isPartials={isPartials}
-        activeIconName={'Home_solid'}
-        iconName={'Home'}
+        activeIcon={<HomeSolid css={iconStyle} />}
+        normalIcon={<Home css={iconStyle} />}
         currentPath={currentPath}
         label={labels.mainTab.home}
         path={homeURL}
@@ -190,8 +194,8 @@ export const MainTab: React.FC<MainTabProps> = props => {
       />
       <TabItem
         isPartials={isPartials}
-        activeIconName={'Notification_solid'}
-        iconName={'Notification_regular'}
+        activeIcon={<Notification_solid css={iconStyle} />}
+        normalIcon={<Notification_regular css={iconStyle} />}
         currentPath={currentPath}
         label={labels.mainTab.notification}
         path={'/notification'}
@@ -199,8 +203,8 @@ export const MainTab: React.FC<MainTabProps> = props => {
       />
       <TabItem
         isPartials={isPartials}
-        activeIconName={'Cart_solid'}
-        iconName={'Cart_regular'}
+        activeIcon={<Cart_solid css={iconStyle} />}
+        normalIcon={<Cart_regular css={iconStyle} />}
         currentPath={currentPath}
         label={labels.mainTab.cart}
         path={'/cart'}
@@ -208,8 +212,8 @@ export const MainTab: React.FC<MainTabProps> = props => {
       />
       <TabItem
         isPartials={isPartials}
-        activeIconName={'MyRIDI_solid'}
-        iconName={'MyRIDI_regular'}
+        activeIcon={<MyRIDI_solid css={iconStyle} />}
+        normalIcon={<MyRIDI_regular css={iconStyle} />}
         currentPath={currentPath}
         label={labels.mainTab.myRidi}
         path={'/account/myridi'}

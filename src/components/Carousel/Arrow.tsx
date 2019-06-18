@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Svg } from '../Svg';
+import LeftArrow from 'src/svgs/LeftArrow.svg';
 import { css, SerializedStyles } from '@emotion/core';
 
 interface ArrowProps {
@@ -16,18 +16,17 @@ interface ArrowProps {
 const Arrow: React.FC<ArrowProps> = props => {
   return (
     <div css={props.wrapperStyle} tabIndex={1}>
-      <Svg
+      <LeftArrow
         css={css`
           ${props.opacity ? 'fill-opacity: 0.7;' : ''};
           ${props.side === 'right'
             ? `transform-origin: center;
                transform: rotate(180deg) translate(3%, 0);`
             : ''};
+          width: ${props.width || '40px'};
+          height: ${props.height || '40px'};
+          fill: ${props.fill || '#d1d5d9'};
         `}
-        fill={props.fill || '#d1d5d9'}
-        iconName={'LeftArrow'}
-        width={props.width || '40px'}
-        height={props.height || '40px'}
       />
     </div>
   );

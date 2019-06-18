@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { css, keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Svg } from 'src/components/Svg';
+import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
+import Lens from 'src/svgs/Lens.svg';
+import Close from 'src/svgs/Close_2.svg';
+import Exclamation from 'src/svgs/Exclamation_1.svg';
 import { RIDITheme, ZIndexLayer } from 'src/styles';
 import { useState, useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -101,6 +104,8 @@ const turnOffSearchHistory = (theme: RIDITheme) => css`
 const exclamation = (theme: RIDITheme) => css`
   margin-right: 3px;
   fill: ${theme.etc.slot1};
+  width: 14px;
+  height: 14px;
 `;
 
 const iconStyle = (theme: RIDITheme) => css`
@@ -249,6 +254,9 @@ const dimmer = css`
 const arrow = css`
   display: none;
   cursor: pointer;
+  fill: white;
+  width: 16px;
+  height: 16px;
   @media (max-width: 999px) {
     display: block;
   }
@@ -449,12 +457,12 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         <div tabIndex={0} onBlur={handleSearchWrapperBlur} css={isFocused ? focused : initial}>
           {isFocused && (
             <button css={arrowWrapperButton} onClick={handleFocus.bind(null, false)}>
-              <Svg css={arrow} iconName={'Arrow_Left_13'} width="16px" height="16px" fill="white" />
+              <ArrowLeft css={arrow} />
               <span className={'a11y'}>{labels.goBack}</span>
             </button>
           )}
           <div css={searchWrapper}>
-            <Svg css={iconStyle} iconName={'Lens'} />
+            <Lens css={iconStyle} />
             <form onSubmit={handleSubmit}>
               <input
                 disabled={!isLoaded}
@@ -487,7 +495,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                             data-value={history}
                             onKeyDown={handleRemoveHistory}
                             onMouseDown={handleRemoveHistory}>
-                            <Svg css={closeIcon} iconName={'Close_2'} />
+                            <Close css={closeIcon} />
                             <span className={'a11y'}>{labels.removeHistory}</span>
                           </button>
                         </SearchHistoryItem>
@@ -495,7 +503,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                     </>
                   ) : (
                     <li css={turnOffSearchHistory}>
-                      <Svg css={exclamation} iconName={'Exclamation_1'} width={14} height={14} />
+                      <Exclamation css={exclamation} />
                       <span>{labels.turnOffStatus}</span>
                     </li>
                   )}

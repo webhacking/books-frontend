@@ -37,7 +37,7 @@ module.exports = nextSourceMaps(
           );
         }
         config.module.rules.push({
-          test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
+          test: /\.(eot|woff|woff2|ttf|png|jpg|gif)$/,
           use: {
             loader: 'url-loader',
             options: {
@@ -45,6 +45,10 @@ module.exports = nextSourceMaps(
               name: '[name].[ext]',
             },
           },
+        });
+        config.module.rules.push({
+          test: /\.svg$/,
+          use: ['@svgr/webpack'],
         });
         const originalEntry = config.entry;
         config.entry = async () => {

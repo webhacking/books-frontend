@@ -7,7 +7,7 @@ options:
   commits:
     filters:
       Type:
-        - feat
+        - feature
         - fix
         - perf
         - refactor
