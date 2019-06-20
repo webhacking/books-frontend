@@ -49,6 +49,7 @@ const CarouselWrapper = styled.div`
   margin: 0 auto;
   position: relative;
   padding-left: 24px;
+  height: 372px;
 `;
 
 const Slider = dynamic(import('src/components/Carousel/LoadableCarousel'), {
@@ -79,7 +80,10 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
       {props.items.map((book, index) => (
         <BookItem key={index}>
           <ThumbnailWrapper>
-            <Book.Thumbnail thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`} />
+            <Book.Thumbnail
+              thumbnailWidth={140}
+              thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
+            />
           </ThumbnailWrapper>
         </BookItem>
       ))}
@@ -151,6 +155,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                   `}>
                   <ThumbnailWrapper>
                     <Book.Thumbnail
+                      thumbnailWidth={140}
                       thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
                     />
                   </ThumbnailWrapper>
