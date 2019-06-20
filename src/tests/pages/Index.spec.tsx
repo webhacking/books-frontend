@@ -8,6 +8,13 @@ import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from '../../styles';
 import { HomeProps } from '../../pages';
 import { Router } from 'server/routes';
+
+jest.mock('next/dynamic', () => () => {
+  const DynamicComponent = () => null;
+  DynamicComponent.displayName = 'LoadableComponent';
+  DynamicComponent.preload = jest.fn();
+  return DynamicComponent;
+});
 jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
 jest.mock('server/routes', () => {
   require('react');
