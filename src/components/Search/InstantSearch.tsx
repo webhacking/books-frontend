@@ -13,8 +13,7 @@ import localStorageKeys from 'src/constants/localStorage';
 import * as labels from 'src/labels/instantSearch.json';
 import { isOnsetNucleusCoda } from 'src/utils/hangle';
 import { safeJSONParse } from 'src/utils/common';
-
-// import axios from 'axios';
+import axios from 'axios';
 
 const fadeIn = keyframes`
   0% { 
@@ -302,7 +301,13 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const handleSearch = async (value: string) => {
       console.log(`search start keyword:${value}`);
       // Fixme
-      // const result = await axios.get(`https://search-api.dev.ridi.io/search?=${searchKeyword}`);
+
+      // https://search-api.staging.ridi.io/search/no-cache?site=ridi-store&where=book&what=base&keyword=neo
+
+      const result = await axios.get(
+        `https://search-api.staging.ridi.io/search?site=ridi-store&keyword=${value}`,
+      );
+      console.log(result.data);
       setSearchResult([{ name: 'test' }]);
     };
     const [debouncedCallback] = useDebouncedCallback(handleSearch, 300, [keyword]);
@@ -329,9 +334,6 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const handleToggleSearchHistoryRecord = (
       e: React.KeyboardEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement>,
     ) => {
-      if ((e as React.KeyboardEvent).keyCode && (e as React.KeyboardEvent).keyCode !== 13) {
-        return;
-      }
       e.preventDefault();
       localStorage.setItem(
         localStorageKeys.instantSearchHistoryOption,
@@ -343,9 +345,6 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const handleRemoveHistory = (
       e: React.KeyboardEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement>,
     ) => {
-      if ((e as React.KeyboardEvent).keyCode && (e as React.KeyboardEvent).keyCode !== 13) {
-        return;
-      }
       e.preventDefault();
       e.stopPropagation();
       const label = e.currentTarget.getAttribute('data-value');
@@ -364,9 +363,6 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const handleClearHistory = (
       e: React.KeyboardEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement>,
     ) => {
-      if ((e as React.KeyboardEvent).keyCode && (e as React.KeyboardEvent).keyCode !== 13) {
-        return;
-      }
       e.preventDefault();
       if (enableSearchHistoryRecord) {
         localStorage.setItem(localStorageKeys.instantSearchHistory, JSON.stringify([]));
@@ -478,60 +474,62 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           </div>
           {showFooter && (
             <div css={searchFooter}>
-              {keyword.length < 1 ? (
-                <SearchHistory>
-                  {enableSearchHistoryRecord ? (
-                    <>
-                      <li css={recentHistoryLabel}>{labels.recentKeywords}</li>
-                      {searchHistory.slice(0, 5).map((history: string, index: number) => (
-                        <SearchHistoryItem
-                          data-value={history}
-                          onMouseDown={handleClickHistoryItem}
-                          key={index}>
-                          <a href={'#'}>
-                            <span>{history}</span>
-                          </a>
-                          <button
+              <form>
+                {keyword.length < 1 ? (
+                  <SearchHistory>
+                    {enableSearchHistoryRecord ? (
+                      <>
+                        <li css={recentHistoryLabel}>{labels.recentKeywords}</li>
+                        {searchHistory.slice(0, 5).map((history: string, index: number) => (
+                          <SearchHistoryItem
                             data-value={history}
-                            onKeyDown={handleRemoveHistory}
-                            onMouseDown={handleRemoveHistory}>
-                            <Close css={closeIcon} />
-                            <span className={'a11y'}>{labels.removeHistory}</span>
-                          </button>
-                        </SearchHistoryItem>
-                      ))}
-                    </>
-                  ) : (
-                    <li css={turnOffSearchHistory}>
-                      <Exclamation css={exclamation} />
-                      <span>{labels.turnOffStatus}</span>
-                    </li>
-                  )}
+                            onMouseDown={handleClickHistoryItem}
+                            key={index}>
+                            <a href={'#'}>
+                              <span>{history}</span>
+                            </a>
+                            <button
+                              data-value={history}
+                              type={'submit'}
+                              onClick={handleRemoveHistory}>
+                              <Close css={closeIcon} />
+                              <span className={'a11y'}>{labels.removeHistory}</span>
+                            </button>
+                          </SearchHistoryItem>
+                        ))}
+                      </>
+                    ) : (
+                      <li css={turnOffSearchHistory}>
+                        <Exclamation css={exclamation} />
+                        <span>{labels.turnOffStatus}</span>
+                      </li>
+                    )}
 
-                  <SearchHistoryOptionPanel>
-                    <button
-                      css={css`
-                        font-size: 13px;
-                      `}
-                      onMouseDown={handleClearHistory}
-                      onKeyDown={handleClearHistory}>
-                      {enableSearchHistoryRecord && labels.clearSearchHistory}
-                    </button>
-                    <button
-                      css={css`
-                        font-size: 13px;
-                      `}
-                      onMouseDown={handleToggleSearchHistoryRecord}
-                      onKeyDown={handleToggleSearchHistoryRecord}>
-                      {enableSearchHistoryRecord
-                        ? labels.turnOffSearchHistory
-                        : labels.turnOnSearchHistory}
-                    </button>
-                  </SearchHistoryOptionPanel>
-                </SearchHistory>
-              ) : (
-                searchResult.length > 0 && <div>result</div>
-              )}
+                    <SearchHistoryOptionPanel>
+                      <button
+                        css={css`
+                          font-size: 13px;
+                        `}
+                        type={'submit'}
+                        onClick={handleClearHistory}>
+                        {enableSearchHistoryRecord && labels.clearSearchHistory}
+                      </button>
+                      <button
+                        css={css`
+                          font-size: 13px;
+                        `}
+                        type={'submit'}
+                        onClick={handleToggleSearchHistoryRecord}>
+                        {enableSearchHistoryRecord
+                          ? labels.turnOffSearchHistory
+                          : labels.turnOnSearchHistory}
+                      </button>
+                    </SearchHistoryOptionPanel>
+                  </SearchHistory>
+                ) : (
+                  searchResult.length > 0 && <div>result</div>
+                )}
+              </form>
             </div>
           )}
         </div>

@@ -12,6 +12,8 @@ import { TopBannerCarouselContainer } from 'src/components/TopBanner';
 import styled from '@emotion/styled';
 import { EventBanner } from 'src/components/EventBanner';
 import { eventBannerItems } from 'src/components/EventBanner/mockData';
+import recommendedBookMockItems from 'src/components/RecommendedBook/mockData';
+import RecommendedBook from 'src/components/RecommendedBook/RecommendedBook';
 
 const TopBannerCarouselWrapper = styled.section`
   max-width: 1280px;
@@ -35,6 +37,7 @@ const EventBannerWrapper = styled.section`
   @media (min-width: 1280px) {
     overflow: unset;
   }
+  -webkit-overflow-scrolling: touch;
 `;
 
 export interface HomeProps {
@@ -179,15 +182,34 @@ export class Home extends React.Component<HomeProps> {
           <title>리디북스 - 홈 - {genre}</title>
         </Head>
         <GenreTab currentGenre={currentGenre} genres={homeGenres} />
-        {/*{currentGenre}*/}
-        {/*{service}*/}
-        {/* Todo 이런 조건이면 될까? */}
+        {/* 일반도서 상단 배너 */}
         {(currentGenre === Genre.GENERAL || currentService === GenreSubService.SERIAL) && (
           <TopBannerCarouselWrapper>
             <TopBannerCarouselContainer />
           </TopBannerCarouselWrapper>
         )}
+        {/* 장르 단행본 추천 영역 */}
+        {(currentGenre === Genre.FANTASY ||
+          currentGenre === Genre.ROMANCE ||
+          currentGenre === Genre.BL) &&
+          currentService === GenreSubService.SINGLE && (
+            <RecommendedBook
+              type={'single_book_recommendation'}
+              items={recommendedBookMockItems}
+              genre={currentGenre}
+            />
+          )}
+
         <QuickMenuList items={quickMenuItems} />
+
+        {/* Todo 상단 추천영역 조건 확인 */}
+        {currentGenre === Genre.GENERAL && (
+          <RecommendedBook
+            type={'hot_release'}
+            items={recommendedBookMockItems}
+            genre={currentGenre}
+          />
+        )}
 
         {/* Todo 마찬가지로 이런 조건으로만 체크하는 것이 옳을까? */}
         {(currentGenre === Genre.FANTASY ||

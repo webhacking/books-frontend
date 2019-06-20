@@ -103,7 +103,7 @@ describe('test instant search', () => {
     fireEvent.click(inputNode, {});
     const historyClearNode = getByText(container, labels.clearSearchHistory);
     expect(historyClearNode).not.toBe(null);
-    fireEvent.mouseDown(historyClearNode, {});
+    fireEvent.click(historyClearNode, {});
     const history = safeJSONParse(localStorage.getItem(localStorageKeys.instantSearchHistory), '');
 
     expect(history.length).toBe(0);
@@ -115,7 +115,7 @@ describe('test instant search', () => {
     fireEvent.click(inputNode, {});
     const historyToggleNode = getByText(container, labels.turnOffSearchHistory);
     expect(historyToggleNode).not.toBe(null);
-    fireEvent.mouseDown(historyToggleNode, {});
+    fireEvent.click(historyToggleNode, {});
     const historyOption = safeJSONParse(
       localStorage.getItem(localStorageKeys.instantSearchHistoryOption),
       'defaultValue',
@@ -125,7 +125,7 @@ describe('test instant search', () => {
 
     const historyToggleOnNode = getByText(container, labels.turnOnSearchHistory);
     expect(historyToggleOnNode).not.toBe(null);
-    fireEvent.mouseDown(historyToggleOnNode, {});
+    fireEvent.click(historyToggleOnNode, {});
     const historyOnOption = safeJSONParse(
       localStorage.getItem(localStorageKeys.instantSearchHistoryOption),
       'defaultValue',
@@ -144,7 +144,7 @@ describe('test instant search', () => {
     const removeHistoryNode: HTMLElement = getByText(container, labels.removeHistory);
 
     // @ts-ignore
-    fireEvent.mouseDown(removeHistoryNode.parentElement, {});
+    fireEvent.click(removeHistoryNode.parentElement, {});
 
     const history = safeJSONParse(localStorage.getItem(localStorageKeys.instantSearchHistory), []);
     expect(history.length).toBe(1);
@@ -162,6 +162,6 @@ describe('test instant search', () => {
 
     // history item click
     // @ts-ignore
-    fireEvent.mouseDown(removeHistoryNode.parentElement.parentElement, {});
+    fireEvent.click(removeHistoryNode.parentElement.parentElement, {});
   });
 });
