@@ -8,7 +8,7 @@ import { css } from '@emotion/core';
 import { FormEvent, useCallback, useState } from 'react';
 import { clearOutline, flexCenter } from 'src/styles';
 import Arrow from 'src/components/Carousel/Arrow';
-
+import uiOption from 'src/constants/ui';
 const items = [
   {
     label: '1',
@@ -287,9 +287,6 @@ interface TopBannerCarouselProps {
   changePosition: (pos: number) => void;
   setInitialized: () => void;
   forwardRef: React.RefObject<SliderCarousel>;
-
-  // Todo remove this
-  speed: number;
 }
 interface TopBannerCarouselContainerProps {
   // Todo ANY 타입 수정
@@ -333,8 +330,8 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       slidesToShow={1}
       initialSlide={0}
       slidesToScroll={1}
-      autoplaySpeed={5000}
-      speed={props.speed || 75}
+      speed={uiOption.topBannerCarouselSpeed}
+      autoplaySpeed={uiOption.topBannerCarouselPlaySpeed}
       autoplay={true}
       arrows={false}
       infinite={true}
@@ -359,10 +356,8 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
   props => {
     const [carouselInitialized, setCarouselInitialized] = useState(false);
     const [currentPosition, setCurrentPosition] = useState(0);
-    const [speed, setSpeed] = useState(75);
     const [banners] = useState(props.banners || items);
     const slider: React.RefObject<SliderCarousel> = React.createRef();
-    const inputRef: React.RefObject<HTMLInputElement> = React.createRef();
     const changePosition = useCallback(item => {
       setCurrentPosition(item || 0);
     }, []);
@@ -402,7 +397,6 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
           <TopBannerCarousel
             forwardRef={slider}
             banners={banners}
-            speed={speed}
             changePosition={changePosition}
             setInitialized={setInitialized}
           />
@@ -435,83 +429,6 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
                 />
                 <span className={'a11y'}>다음</span>
               </button>
-              <div
-                css={css`
-                  top: -47px;
-                  position: absolute;
-                  border: 1px solid black;
-                  background: rgba(0, 0, 0, 0.7);
-                  border-radius: 6px;
-                  color: antiquewhite;
-                  width: 21em;
-                  padding: 2px;
-                `}>
-                <span
-                  css={css`
-                    padding-left: 10px;
-                    font-style: italic;
-                  `}>
-                  Speed(ms)
-                </span>
-                <input
-                  css={css`
-                    padding: 10px;
-                    font-weight: bolder;
-                    font-size: 1.2em;
-                    letter-spacing: 0.1em;
-                    width: 8em;
-                  `}
-                  type="number"
-                  ref={inputRef}
-                  value={speed}
-                  onChange={e => {
-                    // inputRef.current.value = e.target.value
-                    setSpeed(parseInt(e.target.value || '75', 10));
-                  }}
-                />
-                <button
-                  onClick={e => {
-                    e.preventDefault();
-                    if (inputRef.current) {
-                      setSpeed(parseFloat(inputRef.current.value || '75') * 2);
-                    }
-                  }}
-                  css={css`
-                    background: white;
-                    width: 33px;
-                    height: 33px;
-                    color: black;
-                    border-radius: 40px;
-                    font-size: 1.1em;
-                    letter-spacing: 0.1rem;
-                    border: 1px solid rgba(95, 158, 160, 0.5);
-                    font-weight: bolder;
-                    box-shadow: 0 0 3px 2px black;
-                  `}>
-                  2X
-                </button>
-                <button
-                  onClick={e => {
-                    e.preventDefault();
-                    if (inputRef.current) {
-                      setSpeed(parseFloat(inputRef.current.value || '75') / 2);
-                    }
-                  }}
-                  css={css`
-                    background: white;
-                    width: 33px;
-                    height: 33px;
-                    color: black;
-                    border-radius: 40px;
-                    font-size: 1.1em;
-                    letter-spacing: 0.1rem;
-                    border: 1px solid rgba(95, 158, 160, 0.5);
-                    font-weight: bolder;
-                    box-shadow: 0 0 3px 2px black;
-                  `}>
-                  ½
-                </button>
-              </div>
             </form>
           </PositionOverlay>
         </>
