@@ -78,7 +78,7 @@ export const hotReleaseBookListCSS = css`
   @media (max-width: 999px) {
     height: 322px;
   }
-  height: 458px;
+  height: 372px;
   max-width: 1000px;
 `;
 export const recommendedBookListCSS = css`
