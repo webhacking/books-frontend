@@ -7,7 +7,7 @@ import { EventBannerItem } from 'src/components/EventBanner/index';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useCallback } from 'react';
 import styled from '@emotion/styled';
-import { clearOutline, flexRowStart } from 'src/styles';
+import { flexRowStart } from 'src/styles';
 import Arrow from 'src/components/Carousel/Arrow';
 import SliderCarousel from 'react-slick';
 
@@ -28,15 +28,8 @@ const eventBannerCarouselCSS = css`
 `;
 
 const arrowWrapperCSS = css`
-  ${clearOutline};
-  height: 40px;
-  width: 40px;
   position: absolute;
-  box-shadow: rgba(185, 185, 185, 0.9) 0 1px 3.5px;
-  background: white;
   top: calc(50% - 9px);
-  cursor: pointer;
-  border-radius: 40px;
 `;
 
 const CarouselWrapper = styled.div`
@@ -139,8 +132,7 @@ const EventBannerCarousel: React.FC<EventBannerCarouselProps> = props => {
           <form>
             <button type="submit" onClick={handleLeftArrow}>
               <Arrow
-                opacity={false}
-                fill={'#818990'}
+                side={'left'}
                 wrapperStyle={css`
                   ${arrowWrapperCSS};
                   transform: translate(-50%, -50%);
@@ -152,8 +144,6 @@ const EventBannerCarousel: React.FC<EventBannerCarouselProps> = props => {
             </button>
             <button type="submit" onClick={handleRightArrow}>
               <Arrow
-                opacity={false}
-                fill={'#818990'}
                 side={'right'}
                 wrapperStyle={css`
                   ${arrowWrapperCSS};

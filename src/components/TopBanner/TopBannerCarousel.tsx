@@ -6,7 +6,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 import { FormEvent, useCallback, useState } from 'react';
-import { clearOutline, flexCenter } from 'src/styles';
+import { flexCenter } from 'src/styles';
 import Arrow from 'src/components/Carousel/Arrow';
 import uiOption from 'src/constants/ui';
 const items = [
@@ -253,16 +253,11 @@ const TopBannerItem: React.FC<TopBannerItemProps> = props => {
 
 const arrowWrapperCSS = css`
   display: none;
-  ${clearOutline};
   @media (min-width: 1000px) {
     display: initial;
     position: absolute;
-    width: 40px;
-    height: 40px;
+    opacity: 0.7;
     bottom: 143.5px;
-    border-radius: 50px;
-    border: solid 1px rgba(0, 0, 0, 0.07);
-    background-color: rgba(255, 255, 255, 0.15);
   }
 `;
 
@@ -408,7 +403,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
             <form>
               <button type="submit" onClick={handleClickLeft}>
                 <Arrow
-                  opacity={true}
+                  side={'left'}
                   wrapperStyle={css`
                     ${arrowWrapperCSS};
                     left: -40px;
@@ -419,7 +414,6 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
               </button>
               <button type="submit" onClick={handleClickRight}>
                 <Arrow
-                  opacity={true}
                   side={'right'}
                   wrapperStyle={css`
                     ${arrowWrapperCSS};

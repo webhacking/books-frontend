@@ -20,18 +20,6 @@ const FNBWrapper = styled.section`
   }
 `;
 
-const NoticeSection = styled.section`
-  border-bottom: 1px solid ${props => props.theme.horizontalRuleColor};
-  article {
-    margin: 0 auto;
-    padding: 15px 17px 14px 16px;
-    max-width: 1000px;
-  }
-  @media (max-width: 999px) {
-    //font-size: 3rem;
-  }
-`;
-
 const FooterWrapper = styled.footer`
   max-width: 1000px;
   margin: 0 auto;
@@ -206,24 +194,6 @@ const MiscMenuLabel = styled.span`
   color: #7e8992;
 `;
 
-const NoticeWrapper = styled.article`
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-`;
-
-const NoticeLabel = styled.h2`
-  line-height: 14px;
-  a {
-    font-size: 15px;
-    font-weight: bold;
-    line-height: 0.93;
-    letter-spacing: -0.5px;
-  }
-  margin-right: 10px;
-`;
-
 const paperIcon = css`
   width: 45px;
   height: 12px;
@@ -245,17 +215,6 @@ export default class Footer extends React.PureComponent<FooterProps> {
   public render() {
     return (
       <FNBWrapper css={theme => ({ backgroundColor: theme.secondaryColor })}>
-        <NoticeSection>
-          <NoticeWrapper>
-            <NoticeLabel>
-              <a href="/support/notice">공지사항</a>
-            </NoticeLabel>
-            <ul>
-              <li>{this.props.noticeItems ? this.props.noticeItems[0].title : ''}</li>
-            </ul>
-          </NoticeWrapper>
-        </NoticeSection>
-        <hr />
         <FooterWrapper>
           <FlexBox>
             <Contact>
@@ -272,6 +231,11 @@ export default class Footer extends React.PureComponent<FooterProps> {
                   target="_blank"
                   rel="noopener">
                   <span css={serviceCenter}>고객센터</span>
+                </a>
+              </li>
+              <li>
+                <a css={anchorHover} href="/support/notice">
+                  <span css={serviceCenter}>공지사항</span>
                 </a>
               </li>
             </Contact>
