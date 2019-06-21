@@ -4,6 +4,7 @@ import { ConnectedInitializeProps } from 'src/types/common';
 import { GenreTab } from 'src/components/Tabs';
 import { Genre, GenreSubService, homeGenres } from 'src/constants/genres';
 import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
+// @ts-ignore
 import { Router } from 'server/routes';
 import * as Cookies from 'js-cookie';
 import { QuickMenuList } from 'src/components/QuickMenu';
