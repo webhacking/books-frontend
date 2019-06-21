@@ -1,11 +1,9 @@
 import * as React from 'react';
-// import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import { View } from 'libreact/lib/View';
 import { css } from '@emotion/core';
 // @ts-ignore
-// import { EventBannerCarousel, EventBannerItem, EventBannerList } from 'src/components/EventBanner';
 import { Genre } from 'src/constants/genres';
 import getConfig from 'next-server/config';
 import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
@@ -13,6 +11,7 @@ import styled from '@emotion/styled';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import { flexRowStart } from 'src/styles';
 import NewBadge from 'src/svgs/NewBadge.svg';
+import AtSelectIcon from 'src/svgs/Book1.svg';
 import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedBookCarousel';
 const { publicRuntimeConfig } = getConfig();
 
@@ -56,7 +55,7 @@ const recommendedBookWrapperCSS = css`
 `;
 
 export const ThumbnailWrapper = styled.div`
-  max-height: 236px;
+  max-height: 216px;
   display: flex;
   align-items: flex-end;
   min-width: 140px;
@@ -80,12 +79,14 @@ export const hotReleaseBookListCSS = css`
   }
   height: 372px;
   max-width: 1000px;
+  padding-left: 3px;
 `;
 export const recommendedBookListCSS = css`
   @media (max-width: 999px) {
     height: 300px;
   }
   height: 406px;
+  padding-left: 3px;
 `;
 
 export const BookList = styled.ul`
@@ -107,10 +108,10 @@ export const BookItem = styled.li`
   width: 140px;
 
   :first-of-type {
-    padding-left: 24px;
+    padding-left: 20px;
   }
   :last-of-type {
-    padding-right: 24px;
+    padding-right: 20px;
   }
   :not(:last-of-type) {
     margin-right: 24px;
@@ -120,10 +121,10 @@ export const BookItem = styled.li`
     min-width: 120px;
     width: 120px;
     :first-of-type {
-      padding-left: 20px;
+      padding-left: 16px;
     }
     :last-of-type {
-      padding-right: 20px;
+      padding-right: 16px;
     }
     :not(:last-of-type) {
       margin-right: 20px;
@@ -131,10 +132,10 @@ export const BookItem = styled.li`
   }
 `;
 
-export const BookMeta = styled.div`
+export const bookMetaWrapperCSS = css`
   display: flex;
   flex-direction: column;
-  width: 120px;
+  width: 100%;
 `;
 
 export const BookTitle = styled.h3`
@@ -144,6 +145,15 @@ export const BookTitle = styled.h3`
   line-height: 1.33;
   letter-spacing: -0.4px;
   margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  white-space: normal;
+  word-break: keep-all;
 `;
 
 export const BookAuthor = styled.span`
@@ -155,7 +165,7 @@ export const BookAuthor = styled.span`
   text-overflow: ellipsis;
   display: block;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   word-wrap: break-word;
   white-space: normal;
@@ -168,9 +178,9 @@ const hotReleaseTitleCSS = css`
   margin: 0 auto;
   display: flex;
   align-items: center;
-  padding-left: 24px;
+  padding-left: 20px;
   @media (max-width: 999px) {
-    padding-left: 20px;
+    padding-left: 16px;
   }
 
   height: 21px;
@@ -181,8 +191,49 @@ const hotReleaseTitleCSS = css`
   margin-bottom: 30px;
 `;
 
+interface BookMetaProps {
+  book: BookScheme;
+}
+
+export const BookMeta: React.FC<BookMetaProps> = props => {
+  return (
+    <div css={bookMetaWrapperCSS}>
+      <BookTitle>{props.book.title || ''}</BookTitle>
+      <BookAuthor>{props.book.author || ''}</BookAuthor>
+      {props.book.serviceAtSelect && (
+        <div
+          css={css`
+            display: flex;
+            //justify-content: center;
+            align-items: center;
+          `}>
+          <AtSelectIcon
+            css={css`
+              width: 14px;
+              height: 12px;
+              margin-right: 6px;
+            `}
+          />
+          <span
+            css={css`
+              font-size: 13px;
+              font-weight: bold;
+              letter-spacing: -0.3px;
+              color: #8e97ff;
+            `}>
+            리디셀렉트
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export interface BookScheme {
   id: string;
+  title: string;
+  author: string;
+  serviceAtSelect: boolean;
 }
 
 interface RecommendedBookProps {
@@ -237,9 +288,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
                     thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
                   />
                 </ThumbnailWrapper>
-                <BookMeta>
-                  <BookTitle>Test</BookTitle>
-                </BookMeta>
+                <BookMeta book={book} />
               </BookItem>
             );
           })}

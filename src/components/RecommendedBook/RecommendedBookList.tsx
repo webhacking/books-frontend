@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import {
-  BookAuthor,
   BookItem,
   BookList,
   BookMeta,
   BookScheme,
-  BookTitle,
   hotReleaseBookListCSS,
   recommendedBookListCSS,
   ThumbnailWrapper,
@@ -30,10 +28,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                 thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
               />
             </ThumbnailWrapper>
-            <BookMeta>
-              <BookTitle>Test</BookTitle>
-              <BookAuthor>한스 로슬링, 올라 로슬링, 한스 로슬링</BookAuthor>
-            </BookMeta>
+            <BookMeta book={book} />
           </BookItem>
         );
       })}

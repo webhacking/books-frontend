@@ -4,7 +4,6 @@ import { css } from '@emotion/core';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useCallback } from 'react';
 import styled from '@emotion/styled';
-import { clearOutline } from 'src/styles';
 import Arrow from 'src/components/Carousel/Arrow';
 import SliderCarousel from 'react-slick';
 import { Book } from '@ridi/web-ui/dist/index.node';
@@ -12,40 +11,27 @@ import {
   BookItem,
   BookMeta,
   BookScheme,
-  BookTitle,
   ThumbnailWrapper,
 } from 'src/components/RecommendedBook/RecommendedBook';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
-  //height: 135px;
   .slick-slide {
     will-change: transform;
     .slide-item-inner {
       display: inline-block;
-      //height: 135px;
       width: 140px;
-      img {
-        border: solid 1px #d1d5d9;
-      }
     }
   }
 `;
 
 const arrowWrapperCSS = css`
-  ${clearOutline};
-  height: 40px;
-  width: 40px;
   position: absolute;
-  box-shadow: rgba(185, 185, 185, 0.9) 0 1px 3.5px;
-  background: white;
   top: calc(50% - 9px);
-  cursor: pointer;
-  border-radius: 40px;
 `;
 
 const CarouselWrapper = styled.div`
-  width: 1000px;
+  width: 1005px;
   margin: 0 auto;
   position: relative;
   padding-left: 24px;
@@ -73,9 +59,9 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
     <ul
       css={css`
         display: flex;
-        padding-left: 8px;
-        padding-top: 19px;
+        padding-left: 3px;
         justify-content: center;
+        height: 365px;
       `}>
       {props.items.map((book, index) => (
         <BookItem key={index}>
@@ -85,6 +71,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
               thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
             />
           </ThumbnailWrapper>
+          <BookMeta book={book} />
         </BookItem>
       ))}
     </ul>
@@ -131,7 +118,6 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
           className={'slider'}
           slidesToShow={6}
           slidesToScroll={6}
-          lazyLoad={'ondemand'}
           speed={200}
           autoplay={false}
           arrows={false}
@@ -146,7 +132,8 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                 css={css`
                   display: flex;
                   flex-direction: column;
-                  height: 325px;
+                  height: 355px;
+                  outline: none;
                 `}>
                 <BookItem
                   css={css`
@@ -159,9 +146,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                       thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
                     />
                   </ThumbnailWrapper>
-                  <BookMeta>
-                    <BookTitle>Test</BookTitle>
-                  </BookMeta>
+                  <BookMeta book={book} />
                 </BookItem>
               </div>
             );
@@ -171,33 +156,29 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
           <form>
             <button type="submit" onClick={handleLeftArrow}>
               <Arrow
-                opacity={false}
-                fill={'#818990'}
+                color={'dark'}
+                side={'left'}
                 wrapperStyle={css`
                   ${arrowWrapperCSS};
-                  //transform: translate(-50%, -50%);
-                  //left: 28px;
                   @media (min-width: 1280px) {
                     left: -32px;
                   }
-                  //transform: translate(0, -50%);
                   left: 6px;
+                  top: 37%;
                 `}
               />
             </button>
             <button type="submit" onClick={handleRightArrow}>
               <Arrow
-                opacity={false}
-                fill={'#818990'}
+                color={'dark'}
                 side={'right'}
                 wrapperStyle={css`
                   ${arrowWrapperCSS};
-                  //right: 7px;
-                  //transform: translate(0, -50%);
                   @media (min-width: 1280px) {
                     right: -36px;
                   }
                   right: 5px;
+                  top: 37%;
                 `}
               />
             </button>
