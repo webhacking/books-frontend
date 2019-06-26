@@ -27,3 +27,15 @@ export const flexRowStart = css`
   flex-direction: row;
   justify-content: start;
 `;
+
+export const lineClamp = (limit: number) => css`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: ${limit};
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  white-space: normal;
+  word-break: keep-all;
+`;

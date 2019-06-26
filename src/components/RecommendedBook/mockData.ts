@@ -3,15 +3,15 @@ export default [
   {
     id: '1648000213',
     title: '나는 습관을 조금 바꾸기로 했다',
-    author: '세르만 헤세',
+    author: '사사키 후미',
     serviceAtSelect: true,
   },
-  { id: '745000127', title: '깃털 도둑', author: '헤르만 십육세', serviceAtSelect: false },
-  { id: '102073049', title: '소근소근', author: '데이비드 포스터 월리스', serviceAtSelect: false },
+  { id: '745000127', title: '깃털 도둑', author: '커크 월리스 존스', serviceAtSelect: false },
+  { id: '102073049', title: '소근소근', author: 'Kzu', serviceAtSelect: false },
   {
     id: '1546000541',
     title: '팩트풀니스',
-    author: '한스 로슬링, 한화 로슬링, 로슬링과 한스',
+    author: '한스 로슬링 외 2명',
     serviceAtSelect: true,
   },
   {
@@ -23,7 +23,7 @@ export default [
   {
     id: '1046000023',
     title: '그랜드 부다페스트 호텔',
-    author: '웨스 앤더슨과 다즐링 주식회사',
+    author: '매트 졸러 세이츠',
     serviceAtSelect: false,
   },
   { id: '809019926', title: '슬립워커', author: '워커 슬림', serviceAtSelect: false },
@@ -55,20 +55,13 @@ export default [
   {
     id: '962000026',
     title: '소셜커머스 광고마케팅 보고서',
-    author: '마크 주커버그',
+    author: 'DMC미디어 R&D팀',
     serviceAtSelect: false,
   },
-  {
-    id: '953000037',
-    title: '소셜커머스 광고마케팅 보고서',
-    author: '윙클보스 브라더스',
-    serviceAtSelect: false,
-  },
-  { id: '371001619', title: '요즘 우울하십니까?', author: '김언희', serviceAtSelect: false },
   {
     id: '2093025396',
     title: '은하수를 횡단하는 택시 운전사',
-    author: '카카오 모빌리티',
+    author: '한유담',
     serviceAtSelect: false,
   },
   {

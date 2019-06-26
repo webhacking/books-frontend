@@ -9,6 +9,18 @@ import { EventBannerCarousel, EventBannerItem, EventBannerList } from 'src/compo
 import { Genre } from 'src/constants/genres';
 
 const eventBannerWrapperCSS = css`
+  margin: 0 auto;
+  max-width: 1000px;
+  overflow: auto;
+  position: relative;
+  min-height: 215px;
+  @media (max-width: 999px) {
+    min-height: 162px;
+  }
+  @media (min-width: 1280px) {
+    overflow: unset;
+  }
+  -webkit-overflow-scrolling: touch;
   padding-top: 24px;
   @media (max-width: 999px) {
     padding-top: unset;
@@ -39,7 +51,7 @@ const EventBanner: React.FC<EventBannerProps> = props => {
     // Todo 장르가 달라져서 마운트 된다면 Fetch
   });
   return (
-    <div css={eventBannerWrapperCSS}>
+    <section css={eventBannerWrapperCSS}>
       <WindowWidthQuery>
         <View maxWidth={1000}>
           <EventBannerList items={props.items} />
@@ -48,7 +60,7 @@ const EventBanner: React.FC<EventBannerProps> = props => {
           <EventBannerCarousel items={props.items} />
         </View>
       </WindowWidthQuery>
-    </div>
+    </section>
   );
 };
 
