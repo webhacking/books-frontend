@@ -161,9 +161,9 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                 wrapperStyle={css`
                   ${arrowWrapperCSS};
                   @media (min-width: 1280px) {
-                    left: -32px;
+                    left: -38px;
                   }
-                  left: 6px;
+                  left: 5px;
                   top: 37%;
                 `}
               />
@@ -175,7 +175,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                 wrapperStyle={css`
                   ${arrowWrapperCSS};
                   @media (min-width: 1280px) {
-                    right: -36px;
+                    right: -38px;
                   }
                   right: 5px;
                   top: 37%;

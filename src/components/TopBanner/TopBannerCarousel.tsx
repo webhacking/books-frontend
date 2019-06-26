@@ -40,6 +40,102 @@ const items = [
     imageUrl:
       'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
   },
+  {
+    label: '2',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
+  },
+  {
+    label: '3',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
+  },
+  {
+    label: '19',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
+  },
+  {
+    label: '20',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
+  },
+  {
+    label: '2',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
+  },
+  {
+    label: '3',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
+  },
+  {
+    label: '19',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
+  },
+  {
+    label: '20',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
+  },
+  {
+    label: '2',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
+  },
+  {
+    label: '3',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
+  },
+  {
+    label: '19',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
+  },
+  {
+    label: '20',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
+  },
+  {
+    label: '2',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
+  },
+  {
+    label: '3',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
+  },
+  {
+    label: '19',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
+  },
+  {
+    label: '20',
+    url: 'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
+    imageUrl:
+      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
+  },
 ];
 
 const TopBannerItemWrapper = styled.div`
@@ -85,12 +181,12 @@ const sliderCSS = css`
         height: 286px;
         width: 430px;
         transform: scale(0.965);
-        margin: 0 1px;
+        margin: 0 -2.5px;
         transition: all 0.2s;
       }
     }
-
     .slick-slide.slick-center {
+      width: 439px;
       .slide-item-inner {
         height: 286px;
         width: 430px;
@@ -270,9 +366,18 @@ const PositionOverlay = styled.div`
   width: 355px;
   left: 50%;
   transform: translate(-50%, 0);
-  z-index: 0;
   @media (min-width: 1000px) {
     width: 430px;
+  }
+`;
+
+const TopBannerCarouselWrapper = styled.section`
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+  min-height: 237px;
+  @media (min-width: 1000px) {
+    min-height: 287px;
   }
 `;
 
@@ -331,9 +436,16 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       arrows={false}
       infinite={true}
       variableWidth={true}
-      afterChange={(item: number) => {
-        props.changePosition(item);
-      }}
+      beforeChange={
+        // @ts-ignore
+        (prev: number, next: number) => {
+          // Todo fix this awful hack
+          setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+            setTimeout(() => props.changePosition(next), 200);
+          }, 100);
+        }
+      }
       onInit={() => {
         props.setInitialized();
       }}
@@ -374,7 +486,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
     };
 
     return (
-      <>
+      <TopBannerCarouselWrapper>
         {!carouselInitialized && (
           <TopBannerCarouselLoading
             left={
@@ -426,7 +538,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
             </form>
           </PositionOverlay>
         </>
-      </>
+      </TopBannerCarouselWrapper>
     );
   },
 );

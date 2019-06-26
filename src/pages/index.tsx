@@ -10,36 +10,12 @@ import * as Cookies from 'js-cookie';
 import { QuickMenuList } from 'src/components/QuickMenu';
 import { quickMenuItems } from 'src/components/QuickMenu/mockData';
 import { TopBannerCarouselContainer } from 'src/components/TopBanner';
-import styled from '@emotion/styled';
 import { EventBanner } from 'src/components/EventBanner';
 import { eventBannerItems } from 'src/components/EventBanner/mockData';
 import recommendedBookMockItems from 'src/components/RecommendedBook/mockData';
+import bookSectionsMockItems from 'src/components/BookSections/mockData';
 import RecommendedBook from 'src/components/RecommendedBook/RecommendedBook';
-
-const TopBannerCarouselWrapper = styled.section`
-  max-width: 1280px;
-  margin: 0 auto;
-  position: relative;
-  min-height: 237px;
-  @media (min-width: 1000px) {
-    min-height: 287px;
-  }
-`;
-
-const EventBannerWrapper = styled.section`
-  margin: 0 auto;
-  max-width: 1000px;
-  overflow: auto;
-  position: relative;
-  min-height: 215px;
-  @media (max-width: 999px) {
-    min-height: 162px;
-  }
-  @media (min-width: 1280px) {
-    overflow: unset;
-  }
-  -webkit-overflow-scrolling: touch;
-`;
+import BookSectionContainer from 'src/components/BookSections/BookSectionContainer';
 
 export interface HomeProps {
   genre: keyof typeof Genre;
@@ -185,9 +161,7 @@ export class Home extends React.Component<HomeProps> {
         <GenreTab currentGenre={currentGenre} genres={homeGenres} />
         {/* 일반도서 상단 배너 */}
         {(currentGenre === Genre.GENERAL || currentService === GenreSubService.SERIAL) && (
-          <TopBannerCarouselWrapper>
-            <TopBannerCarouselContainer />
-          </TopBannerCarouselWrapper>
+          <TopBannerCarouselContainer />
         )}
         {/* 장르 단행본 추천 영역 */}
         {(currentGenre === Genre.FANTASY ||
@@ -212,15 +186,17 @@ export class Home extends React.Component<HomeProps> {
           />
         )}
 
-        {/* Todo 마찬가지로 이런 조건으로만 체크하는 것이 옳을까? */}
+        {/* Todo 이벤트 배너 출력 조건 확인 */}
         {(currentGenre === Genre.FANTASY ||
           currentGenre === Genre.ROMANCE ||
           currentGenre === Genre.BL) &&
           currentService === GenreSubService.SINGLE && (
-            <EventBannerWrapper>
-              <EventBanner items={eventBannerItems} genre={currentGenre} />
-            </EventBannerWrapper>
+            <EventBanner items={eventBannerItems} genre={currentGenre} />
           )}
+
+        {/* Todo Belt Banner */}
+
+        <BookSectionContainer sections={bookSectionsMockItems} />
       </>
     );
   }
