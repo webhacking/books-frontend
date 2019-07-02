@@ -7,12 +7,9 @@ import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
 import SliderCarousel from 'react-slick';
 import { Book } from '@ridi/web-ui/dist/index.node';
-import {
-  BookItem,
-  BookMeta,
-  BookScheme,
-  ThumbnailWrapper,
-} from 'src/components/RecommendedBook/RecommendedBook';
+import { BookMeta, BookScheme } from 'src/components/RecommendedBook/RecommendedBook';
+import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
+import { PortraitBook } from 'src/components/Book/PortraitBook';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -64,7 +61,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
         height: 365px;
       `}>
       {props.items.map((book, index) => (
-        <BookItem key={index}>
+        <PortraitBook key={index}>
           <ThumbnailWrapper>
             <Book.Thumbnail
               thumbnailWidth={140}
@@ -72,7 +69,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
             />
           </ThumbnailWrapper>
           <BookMeta book={book} />
-        </BookItem>
+        </PortraitBook>
       ))}
     </ul>
   );
@@ -135,7 +132,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                   height: 355px;
                   outline: none;
                 `}>
-                <BookItem
+                <PortraitBook
                   css={css`
                     height: 100%;
                     padding-left: 0 !important;
@@ -147,7 +144,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                     />
                   </ThumbnailWrapper>
                   <BookMeta book={book} />
-                </BookItem>
+                </PortraitBook>
               </div>
             );
           })}

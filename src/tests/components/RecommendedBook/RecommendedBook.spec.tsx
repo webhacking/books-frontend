@@ -10,6 +10,7 @@ import 'jest-dom/extend-expect';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
 import { Genre } from '../../../constants/genres';
+import mockData from 'src/components/RecommendedBook/mockData';
 // import { act } from 'react-dom/test-utils';
 // import axiosMock from 'axios';
 jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
@@ -21,21 +22,21 @@ afterEach(cleanup);
 const renderRecommendedBookWrapper = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <RecommendedBook type={'hot_release'} genre={Genre.GENERAL} items={[{ id: '12345' }]} />
+      <RecommendedBook type={'hot_release'} genre={Genre.GENERAL} items={mockData} />
     </ThemeProvider>,
   );
 
 const renderList = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <RecommendedBookList type={'hot_release'} items={[{ id: '12345' }]} />
+      <RecommendedBookList type={'hot_release'} items={mockData} />
     </ThemeProvider>,
   );
 
 const renderCarousel = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <RecommendedBookCarousel type={'hot_release'} items={[{ id: '12345' }]} />
+      <RecommendedBookCarousel type={'hot_release'} items={mockData} />
     </ThemeProvider>,
   );
 

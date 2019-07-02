@@ -1,30 +1,16 @@
 import * as React from 'react';
 // import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
-import { View } from 'libreact/lib/View';
 import { css } from '@emotion/core';
 // @ts-ignore
-import { EventBannerCarousel, EventBannerItem, EventBannerList } from 'src/components/EventBanner';
+import { EventBannerList } from 'src/components/EventBanner';
 import { Genre } from 'src/constants/genres';
 
 const eventBannerWrapperCSS = css`
   margin: 0 auto;
-  max-width: 1000px;
-  overflow: auto;
-  position: relative;
-  min-height: 215px;
-  @media (max-width: 999px) {
-    min-height: 162px;
-  }
-  @media (min-width: 1280px) {
-    overflow: unset;
-  }
-  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  min-height: 175px;
   padding-top: 24px;
-  @media (max-width: 999px) {
-    padding-top: unset;
-  }
 `;
 
 export interface BannerItem {
@@ -52,14 +38,7 @@ const EventBanner: React.FC<EventBannerProps> = props => {
   });
   return (
     <section css={eventBannerWrapperCSS}>
-      <WindowWidthQuery>
-        <View maxWidth={1000}>
-          <EventBannerList items={props.items} />
-        </View>
-        <View>
-          <EventBannerCarousel items={props.items} />
-        </View>
-      </WindowWidthQuery>
+      <EventBannerList items={props.items} />
     </section>
   );
 };

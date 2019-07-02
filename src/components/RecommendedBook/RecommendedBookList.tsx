@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import {
-  BookItem,
   BookList,
   BookMeta,
   BookScheme,
   hotReleaseBookListCSS,
   recommendedBookListCSS,
-  ThumbnailWrapper,
 } from 'src/components/RecommendedBook/RecommendedBook';
+import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
+import { PortraitBook } from 'src/components/Book/PortraitBook';
 
 interface RecommendedBookListProps {
   items: BookScheme[];
@@ -20,7 +20,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
     <BookList css={props.type === 'hot_release' ? hotReleaseBookListCSS : recommendedBookListCSS}>
       {props.items.map((book, index) => {
         return (
-          <BookItem key={index}>
+          <PortraitBook key={index}>
             <ThumbnailWrapper>
               <Book.Thumbnail
                 adultBadge={true}
@@ -29,7 +29,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
               />
             </ThumbnailWrapper>
             <BookMeta book={book} />
-          </BookItem>
+          </PortraitBook>
         );
       })}
     </BookList>
