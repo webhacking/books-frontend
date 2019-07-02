@@ -32,7 +32,7 @@ interface StoreAppState {
   isMounted: boolean;
 }
 
-const Contents = styled.div`
+const Contents = styled.main`
   margin: 0 auto;
 `;
 

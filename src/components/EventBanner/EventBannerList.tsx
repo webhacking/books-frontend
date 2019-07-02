@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BannerItem } from 'src/components/EventBanner/EventBanner';
 import { EventBannerItem } from 'src/components/EventBanner/index';
-import { flexRowStart } from 'src/styles';
+import { css } from '@emotion/core';
 
 interface EventBannerListProps {
   items: BannerItem[];
@@ -9,7 +9,19 @@ interface EventBannerListProps {
 
 const EventBannerList: React.FC<EventBannerListProps> = props => {
   return (
-    <ul css={flexRowStart}>
+    <ul
+      css={css`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @media (max-width: 833px) {
+          flex-wrap: wrap;
+        }
+        @media (min-width: 834px) and (max-width: 999px) {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      `}>
       {props.items.map((item, index) => (
         <EventBannerItem key={index}>
           <a href={item.link}>

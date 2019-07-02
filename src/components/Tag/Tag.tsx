@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Fragment } from 'react';
 import { css } from '@emotion/core';
+import SomeDealIcon from 'src/svgs/SomeDealBadge.svg';
 
 const tagWrapper = css`
   width: 34px;
   height: 21px;
+  margin-right: 4px;
   border-radius: 3px;
   font-family: AppleSDGothicNeo;
   font-size: 13px;
@@ -26,6 +28,13 @@ const comicCSS = css`
   background-color: #e7eef5;
   color: #0f5d9c;
 `;
+const someDealCSS = css`
+  ${tagWrapper};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e7e9ff;
+`;
 
 const NovelTag = () => {
   return <span css={novelCSS}>소설</span>;
@@ -33,10 +42,22 @@ const NovelTag = () => {
 const ComicTag = () => {
   return <span css={comicCSS}>만화</span>;
 };
+const SomeDealTag = () => {
+  return (
+    <span css={someDealCSS}>
+      <SomeDealIcon
+        css={css`
+          height: 12px;
+        `}
+      />
+    </span>
+  );
+};
 
 export default class Tag extends React.Component {
   public static Comic = ComicTag;
   public static Novel = NovelTag;
+  public static SomeDeal = SomeDealTag;
   public render() {
     return <Fragment>{this.props.children}</Fragment>;
   }

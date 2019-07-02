@@ -2,48 +2,36 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 
 const desktopBannerLayout = css`
-  width: 306px;
-  min-width: 306px;
-  height: 135px;
+  width: 234px;
 `;
 const mobileBannerLayout = css`
-  width: 240px;
-  min-width: 240px;
-  height: 106px;
+  //min-width: 194px;
 `;
 
 const EventBannerItem = styled.li`
   display: inline-block;
-  box-sizing: content-box;
+
+  //box-sizing: content-box;
   ${desktopBannerLayout};
-  :not(:last-of-type) {
-    margin-right: 17px;
-  }
-  :first-of-type {
-    padding-left: 24px;
-  }
-  :last-of-type {
-    padding-right: 24px;
-  }
+
   @media (max-width: 833px) {
     ${mobileBannerLayout};
-    :first-of-type {
-      padding-left: 16px;
+    :not(:nth-of-type(2n)) {
+      margin-right: 12px;
     }
-    :last-of-type {
-      padding-right: 16px;
-    }
+    flex-basis: calc(49% - 16px);
+    margin-bottom: 6px;
   }
   @media (min-width: 834px) and (max-width: 999px) {
     ${mobileBannerLayout};
     :not(:last-of-type) {
-      margin-right: 16px;
+      margin-right: 4px;
     }
-    :first-of-type {
-      padding-left: 20px;
-    }
-    :last-of-type {
-      padding-right: 20px;
+    min-width: 194px;
+  }
+  @media (min-width: 1000px) {
+    :not(:last-of-type) {
+      margin-right: 4px;
     }
   }
   img {

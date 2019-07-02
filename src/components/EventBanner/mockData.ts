@@ -19,9 +19,4 @@ export const eventBannerItems = [
     link: '/event/45678',
     imageUrl: 'https://active.ridibooks.com/ridibooks_banner/20190604190131_1559642491779.jpg',
   },
-  {
-    label: '천상유애 <4P> #다공일수',
-    link: '/event/56789',
-    imageUrl: 'https://active.ridibooks.com/ridibooks_banner/20190530220203_1559221323788.jpg',
-  },
 ];

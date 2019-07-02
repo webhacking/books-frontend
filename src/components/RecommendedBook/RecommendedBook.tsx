@@ -9,10 +9,12 @@ import getConfig from 'next-server/config';
 import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
 import styled from '@emotion/styled';
 import { Book } from '@ridi/web-ui/dist/index.node';
-import { flexRowStart } from 'src/styles';
+import { flexRowStart, lineClamp } from 'src/styles';
 import NewBadge from 'src/svgs/NewBadge.svg';
 import AtSelectIcon from 'src/svgs/Book1.svg';
 import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedBookCarousel';
+import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
+import { PortraitBook } from 'src/components/Book/PortraitBook';
 const { publicRuntimeConfig } = getConfig();
 
 const hotReleaseRecommendedBookWrapperCSS = css`
@@ -54,25 +56,6 @@ const recommendedBookWrapperCSS = css`
   padding-top: 54px;
 `;
 
-export const ThumbnailWrapper = styled.div`
-  max-height: 216px;
-  display: flex;
-  align-items: flex-end;
-  min-width: 140px;
-  margin-bottom: 8px;
-  @media (max-width: 999px) {
-    min-width: 120px;
-    max-height: 184px;
-  }
-  img {
-    @media (max-width: 999px) {
-      max-height: calc(120px * 1.618 - 10px);
-    }
-    max-height: calc(140px * 1.618 - 10px);
-  }
-  height: 100%;
-`;
-
 export const hotReleaseBookListCSS = css`
   @media (max-width: 999px) {
     height: 322px;
@@ -100,38 +83,6 @@ export const BookList = styled.ul`
   -webkit-overflow-scrolling: touch;
 `;
 
-export const BookItem = styled.li`
-  display: flex;
-  flex-direction: column;
-  box-sizing: content-box;
-  min-width: 140px;
-  width: 140px;
-
-  :first-of-type {
-    padding-left: 20px;
-  }
-  :last-of-type {
-    padding-right: 20px;
-  }
-  :not(:last-of-type) {
-    margin-right: 24px;
-  }
-
-  @media (max-width: 999px) {
-    min-width: 120px;
-    width: 120px;
-    :first-of-type {
-      padding-left: 16px;
-    }
-    :last-of-type {
-      padding-right: 16px;
-    }
-    :not(:last-of-type) {
-      margin-right: 20px;
-    }
-  }
-`;
-
 export const bookMetaWrapperCSS = css`
   display: flex;
   flex-direction: column;
@@ -145,15 +96,7 @@ export const BookTitle = styled.h3`
   line-height: 1.33;
   letter-spacing: -0.4px;
   margin-bottom: 4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  word-wrap: break-word;
-  white-space: normal;
-  word-break: keep-all;
+  ${lineClamp(2)};
 `;
 
 export const BookAuthor = styled.span`
@@ -161,16 +104,8 @@ export const BookAuthor = styled.span`
   line-height: 1.36;
   letter-spacing: -0.4px;
   color: #808991;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  word-wrap: break-word;
-  white-space: normal;
-  word-break: keep-all;
   margin-bottom: 5px;
+  ${lineClamp(1)};
 `;
 
 const hotReleaseTitleCSS = css`
@@ -204,7 +139,6 @@ export const BookMeta: React.FC<BookMetaProps> = props => {
         <div
           css={css`
             display: flex;
-            //justify-content: center;
             align-items: center;
           `}>
           <AtSelectIcon
@@ -282,14 +216,14 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           css={props.type === 'hot_release' ? hotReleaseBookListCSS : recommendedBookListCSS}>
           {props.items.slice(0, 6).map((book, index) => {
             return (
-              <BookItem key={index}>
+              <PortraitBook key={index}>
                 <ThumbnailWrapper>
                   <Book.Thumbnail
                     thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
                   />
                 </ThumbnailWrapper>
                 <BookMeta book={book} />
-              </BookItem>
+              </PortraitBook>
             );
           })}
         </BookList>
