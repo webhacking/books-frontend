@@ -134,7 +134,7 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
 
   useEffect(() => {
     if (wrapperRef.current) {
-      const items = wrapperRef.current.querySelectorAll('li[class*="SearchHistoryItem"]');
+      const items = wrapperRef.current.querySelectorAll('li');
       if (items.length > 0 && focusedPosition !== 0) {
         (items[focusedPosition - 1] as HTMLLIElement).focus();
       }
@@ -164,10 +164,10 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
             ))}
           </>
         ) : (
-          <li css={turnOffSearchHistory}>
+          <div css={turnOffSearchHistory}>
             <Exclamation css={exclamation} />
             <span>{labels.turnOffStatus}</span>
-          </li>
+          </div>
         )}
       </SearchHistory>
       <SearchHistoryOptionPanel>
