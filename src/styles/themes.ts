@@ -32,6 +32,7 @@ export interface RIDITheme {
     active: string;
   };
   label: string;
+  label2: string;
   etc: {
     slot1: string;
   };
@@ -40,6 +41,12 @@ export interface RIDITheme {
   };
   quickMenu: {
     label: string;
+  };
+  instantSearch: {
+    itemHover: string;
+  };
+  image: {
+    border: string;
   };
 }
 
@@ -65,6 +72,7 @@ export const defaultTheme: RIDITheme = {
   divider2: colors.slateGray10,
   divider3: colors.slateGray20,
   label: colors.slateGray40,
+  label2: colors.slateGray50,
   genreTab: {
     icon: colors.slateGray60,
     normal: colors.slateGray80,
@@ -83,6 +91,12 @@ export const defaultTheme: RIDITheme = {
   },
   quickMenu: {
     label: colors.slateGray70,
+  },
+  instantSearch: {
+    itemHover: colors.dodgerBlue5,
+  },
+  image: {
+    border: colors.slateGray30,
   },
 };
 
@@ -118,6 +132,7 @@ export const darkTheme: RIDITheme = {
     active: colors.dodgerBlue50,
   },
   label: colors.slateGray40,
+  label2: colors.slateGray50,
   etc: {
     slot1: colors.slateGray20,
   },
@@ -126,5 +141,11 @@ export const darkTheme: RIDITheme = {
   },
   quickMenu: {
     label: colors.slateGray70,
+  },
+  instantSearch: {
+    itemHover: colors.dodgerBlue5,
+  },
+  image: {
+    border: colors.slateGray30,
   },
 };

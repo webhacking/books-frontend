@@ -33,7 +33,10 @@ describe('test instant search', () => {
   });
 
   it('should be render history list', async () => {
-    localStorage.setItem(localStorageKeys.instantSearchHistory, JSON.stringify(['history_1']));
+    localStorage.setItem(
+      localStorageKeys.instantSearchHistory,
+      JSON.stringify(['history_1', 'history_2']),
+    );
     const { container } = renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
     fireEvent.click(inputNode, {});
@@ -43,6 +46,27 @@ describe('test instant search', () => {
     expect(historyItems.length).toBeGreaterThan(1);
     const item = getByText(container, 'history_1');
     expect(item).not.toBe(null);
+  });
+
+  it('should be move item by keyboard control', async () => {
+    localStorage.setItem(
+      localStorageKeys.instantSearchHistory,
+      JSON.stringify(['history_1', 'history_2']),
+    );
+    const { container } = renderComponent();
+    const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
+    fireEvent.click(inputNode, {});
+    fireEvent.keyDown(inputNode, { key: 'Down', keyCode: 40, code: 40, charCode: 40, which: 40 });
+    fireEvent.keyDown(inputNode, { key: 'Down', keyCode: 40, code: 40, charCode: 40, which: 40 });
+    fireEvent.keyDown(inputNode, { key: 'Up', keyCode: 38, code: 38, charCode: 38, which: 38 });
+    expect(document.activeElement).not.toBe(null);
+    fireEvent.keyDown(document.activeElement!, {
+      key: 'Enter',
+      keyCode: 13,
+      code: 13,
+      charCode: 13,
+      which: 13,
+    });
   });
 
   it('should not be render search history', () => {

@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { css, keyframes } from '@emotion/core';
-import styled from '@emotion/styled';
 import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
 import Lens from 'src/svgs/Lens.svg';
-import Close from 'src/svgs/Close_2.svg';
-import Exclamation from 'src/svgs/Exclamation_1.svg';
 import { RIDITheme, ZIndexLayer } from 'src/styles';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { Router } from 'server/routes';
 import localStorageKeys from 'src/constants/localStorage';
@@ -14,6 +11,9 @@ import * as labels from 'src/labels/instantSearch.json';
 import { isOnsetNucleusCoda } from 'src/utils/hangle';
 import { safeJSONParse } from 'src/utils/common';
 import axios from 'axios';
+import InstantSearchResult from 'src/components/Search/InstantSearchResult';
+import { notifySentry } from 'src/utils/sentry';
+import InstantSearchHistory from 'src/components/Search/InstantSearchHistory';
 
 const fadeIn = keyframes`
   0% { 
@@ -85,27 +85,6 @@ const searchWrapper = (theme: RIDITheme) => css`
   display: flex;
   align-items: center;
 `;
-const turnOffSearchHistory = (theme: RIDITheme) => css`
-  text-align: center;
-  width: 100%;
-  height: 160px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  vertical-align: middle;
-  box-sizing: content-box;
-  font-size: 13px;
-  letter-spacing: -0.3px;
-  color: ${theme.label};
-`;
-
-const exclamation = (theme: RIDITheme) => css`
-  margin-right: 3px;
-  fill: ${theme.etc.slot1};
-  width: 14px;
-  height: 14px;
-`;
 
 const iconStyle = (theme: RIDITheme) => css`
   fill: ${theme.input.placeholder};
@@ -145,77 +124,6 @@ const initial = () => css`
   @media (max-width: 999px) {
     margin-top: 10px;
     order: 3;
-  }
-`;
-
-const SearchHistoryItem = styled.li`
-  cursor: pointer;
-  box-sizing: border-box;
-  padding: 8px 20px;
-  font-size: 14px;
-  line-height: 1;
-  letter-spacing: -0.4px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  @media (max-width: 999px) {
-    height: 40px;
-    padding: 12px 15px 12px 20px;
-  }
-  :nth-last-of-type(2) {
-    padding: 12px 20px 18px 20px;
-    height: unset;
-    @media (max-width: 999px) {
-      padding: 12px 15px 12px 20px;
-    }
-  }
-  a {
-    span {
-      color: black;
-      font-size: 14px;
-    }
-  }
-`;
-
-const closeIcon = (theme: RIDITheme) => css`
-  fill: ${theme.icon.warn};
-  width: 8px;
-  height: 8px;
-  @media (max-width: 999px) {
-    width: 10px;
-    height: 10px;
-  }
-`;
-
-const SearchHistoryOptionPanel = styled.li`
-  padding: 12px 20px;
-  cursor: pointer;
-  @media (max-width: 999px) {
-    height: 40px;
-  }
-  display: flex;
-  justify-content: space-between;
-`;
-
-const SearchHistory = styled.ul`
-  li {
-    box-sizing: border-box;
-    :last-of-type {
-      background-color: ${props => props.theme.divider};
-      color: ${props => props.theme.input.placeholder};
-      font-size: 13px;
-      line-height: 1.31;
-      letter-spacing: -0.4px;
-      border-bottom-left-radius: 3px;
-      border-bottom-right-radius: 3px;
-      @media (max-width: 999px) {
-      }
-    }
-    :not(:last-of-type) {
-      @media (max-width: 999px) {
-        border-bottom: 1px ${props => props.theme.divider} solid;
-      }
-    }
   }
 `;
 
@@ -269,57 +177,141 @@ const arrowWrapperButton = css`
   }
 `;
 
-const recentHistoryLabel = (theme: RIDITheme) => css`
-  padding: 18px 20px 10px 20px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: -0.3px;
-  color: ${theme.label};
+export interface InstantSearchBookResultScheme {
+  b_id: string;
+  highlight: {
+    web_title_title?: string;
+    web_title_title_raw?: string;
+    author_title_title?: string;
+    author_title_title_raw?: string;
+  };
+  web_title_title?: string;
+  web_title_title_raw?: string;
+  author_title_title?: string;
+  author_title_title_raw?: string;
+}
 
-  @media (max-width: 999px) {
-    display: none;
-  }
-`;
+export interface InstantSearchAuthorResultScheme {
+  popular_book_title: string;
+  book_count: number;
+  name: string;
+  id: number;
+  name_raw: string;
+  popular_book_title_raw: string;
+  highlight: {
+    name: string;
+    name_raw: string;
+  };
+}
+
+export interface InstantSearchResultScheme {
+  books: InstantSearchBookResultScheme[];
+  authors: InstantSearchAuthorResultScheme[];
+}
 
 interface InstantSearchProps {
   searchKeyword: string;
   isPartials?: boolean;
 }
+
+const initialSearchResult = {
+  books: [],
+  authors: [],
+};
 export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
   (props: InstantSearchProps) => {
     const inputRef = React.createRef<HTMLInputElement>();
-
+    const listWrapperRef = React.createRef<HTMLDivElement>();
     const [isLoaded, setLoaded] = useState(false);
     const [isFocused, setFocus] = useState(false);
     const [keyword, setKeyword] = useState<string>(props.searchKeyword);
     const [searchHistory, setSearchHistory] = useState<string[]>([]);
     const [enableSearchHistoryRecord, toggleSearchHistoryRecord] = useState(true);
+    const [focusedPosition, setFocusedPosition] = useState(0);
 
-    // Todo Make search result interface
-    const [searchResult, setSearchResult] = useState<Array<{ name: string }>>([]);
+    const [searchResult, setSearchResult] = useState<InstantSearchResultScheme>(
+      initialSearchResult,
+    );
 
     const handleSearch = async (value: string) => {
       console.log(`search start keyword:${value}`);
+
       // Fixme
-
-      // https://search-api.staging.ridi.io/search/no-cache?site=ridi-store&where=book&what=base&keyword=neo
-
-      const result = await axios.get(
-        `https://search-api.staging.ridi.io/search?site=ridi-store&keyword=${value}`,
-      );
-      console.log(result.data);
-      setSearchResult([{ name: 'test' }]);
+      try {
+        const result = await axios.get(
+          `https://search-api.staging.ridi.io/search?site=ridi-store&what=instant&keyword=${value}`,
+        );
+        setSearchResult({
+          books: result.data.books,
+          authors: [
+            {
+              popular_book_title:
+                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
+              book_count: 2,
+              name: '아오이 유유',
+              id: 71875,
+              name_raw: '아오이 유유',
+              popular_book_title_raw:
+                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
+              highlight: {
+                name: '<strong class="title_point">아오이 유유</strong>',
+                name_raw: '<strong class="title_point">아오이 유유</strong>',
+              },
+            },
+            {
+              popular_book_title:
+                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
+              book_count: 2,
+              name: '아오이 유유',
+              id: 71875,
+              name_raw: '아오이 유유',
+              popular_book_title_raw:
+                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
+              highlight: {
+                name: '<strong class="title_point">후가 유유</strong>',
+                name_raw: '후가<strong class="title_point"> 유유</strong>',
+              },
+            },
+            {
+              popular_book_title:
+                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
+              book_count: 2,
+              name: '아오이 유유',
+              id: 71875,
+              name_raw: '아오이 유유',
+              popular_book_title_raw:
+                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
+              highlight: {
+                name: '<strong class="title_point">후가 유유</strong>',
+                name_raw: '<strong class="title_point">유유</strong>',
+              },
+            },
+          ],
+        });
+      } catch (error) {
+        notifySentry(error);
+        setSearchResult(initialSearchResult);
+        setFocusedPosition(0);
+      }
     };
     const [debouncedCallback] = useDebouncedCallback(handleSearch, 300, [keyword]);
 
-    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target;
-      setKeyword(value);
-      // 초-중-종성 체크
-      if (value.length > 0 && !isOnsetNucleusCoda(value[0])) {
-        debouncedCallback(value);
-      }
-    };
+    const handleOnChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setKeyword(value);
+        // 초-중-종성 체크
+        if (value.length > 0) {
+          if (value.length === 1 && isOnsetNucleusCoda(value[0])) {
+            setSearchResult(initialSearchResult);
+          } else {
+            debouncedCallback(value);
+          }
+        }
+        setFocusedPosition(0);
+      },
+      [searchHistory, focusedPosition, keyword],
+    );
 
     const handleFocus = (focus: boolean) => {
       setFocus(focus);
@@ -328,23 +320,21 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const handleSearchWrapperBlur = (e: React.FocusEvent<HTMLDivElement>) => {
       if (!e.relatedTarget) {
         handleFocus(false);
+        setFocusedPosition(0);
       }
     };
 
-    const handleToggleSearchHistoryRecord = (
-      e: React.KeyboardEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement>,
-    ) => {
+    const handleToggleSearchHistoryRecord = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       localStorage.setItem(
         localStorageKeys.instantSearchHistoryOption,
         JSON.stringify(!enableSearchHistoryRecord),
       );
       toggleSearchHistoryRecord(!enableSearchHistoryRecord);
+      setFocusedPosition(0);
     };
 
-    const handleRemoveHistory = (
-      e: React.KeyboardEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement>,
-    ) => {
+    const handleRemoveHistory = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       e.stopPropagation();
       const label = e.currentTarget.getAttribute('data-value');
@@ -353,6 +343,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         historySet.delete(label);
         const newHistory: string[] = Array<string>(...historySet);
         setSearchHistory(newHistory);
+        // setFocusedPosition(0);
         localStorage.setItem(
           localStorageKeys.instantSearchHistory,
           JSON.stringify(newHistory.slice(0, 10)),
@@ -360,13 +351,12 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       }
     };
 
-    const handleClearHistory = (
-      e: React.KeyboardEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement>,
-    ) => {
+    const handleClearHistory = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       if (enableSearchHistoryRecord) {
         localStorage.setItem(localStorageKeys.instantSearchHistory, JSON.stringify([]));
         setSearchHistory([]);
+        setFocusedPosition(0);
       }
     };
 
@@ -375,18 +365,37 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       const label = e.currentTarget.getAttribute('data-value');
       if (label) {
         setKeyword(label);
-        // Router.pushRoute(`/search/?q=${label}`);
-        // setFocus(false);
-        if (inputRef.current) {
-          inputRef.current.blur();
-        }
+        setFocus(false);
+        setSearchResult(initialSearchResult);
         if (!props.isPartials) {
-          Router.pushRoute(`/search/?q=${keyword}`);
+          Router.pushRoute(`/search/?q=${label}`);
         } else {
-          // Router.push(`/search/?q=${keyword}`);
-          window.location.href = `${window.location.origin}/search/?q=${keyword}`;
+          window.location.href = `${window.location.origin}/search/?q=${label}`;
         }
       }
+    };
+
+    const handleClickBookItem = (e: React.MouseEvent<HTMLLIElement>) => {
+      e.preventDefault();
+      const { bookId } = e.currentTarget.dataset;
+      if (!props.isPartials) {
+        Router.pushRoute(`/books/${bookId}?_s=instant&_q=${keyword}`);
+      } else {
+        window.location.href = `${window.location.origin}/books/${bookId}?_s=instant&_q=${keyword}`;
+      }
+      setFocus(false);
+    };
+    const handleClickAuthorItem = (e: React.MouseEvent<HTMLLIElement>) => {
+      e.preventDefault();
+      const { authorId } = e.currentTarget.dataset;
+      if (!props.isPartials) {
+        Router.pushRoute(`/author/${authorId}?_s=instant&_q=${keyword}`);
+      } else {
+        window.location.href = `${
+          window.location.origin
+        }/author/${authorId}?_s=instant&_q=${keyword}`;
+      }
+      setFocus(false);
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -415,7 +424,44 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       }
     };
 
-    // initialize
+    const handleSetCurrentPosition = (pos: number) => {
+      setFocusedPosition(pos);
+      if (pos === 0 && inputRef.current) {
+        inputRef.current.focus();
+      }
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent | KeyboardEvent) => {
+      if (!inputRef.current) {
+        return;
+      }
+      if (e.which === 13 && e.target) {
+        (e.target as HTMLLIElement).click();
+      }
+      if (e.which === 40 || e.which === 38) {
+        e.preventDefault();
+
+        const history = safeJSONParse(
+          window.localStorage.getItem(localStorageKeys.instantSearchHistory),
+          [],
+        ).slice(0, 5);
+        const total =
+          inputRef.current.value.length < 1
+            ? history.length
+            : searchResult.authors.length + searchResult.books.length;
+        if (e.which === 40) {
+          // keyDown
+          const nextPos = focusedPosition + 1;
+          const pos = nextPos > total ? 0 : nextPos;
+          handleSetCurrentPosition(pos);
+        } else {
+          const prevPos = focusedPosition - 1;
+          const pos = prevPos < 0 ? total : prevPos;
+          handleSetCurrentPosition(pos);
+        }
+      }
+    };
+
     useEffect(() => {
       toggleSearchHistoryRecord(
         safeJSONParse(
@@ -430,24 +476,21 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
       setSearchHistory(Array<string>(...new Set<string>(history)));
 
-      const focusListener = handleFocus.bind(null, true);
       if (inputRef.current) {
         setLoaded(true);
-        inputRef.current.addEventListener('focus', focusListener);
       }
       return () => {
-        // Todo Unmount test
-        if (inputRef.current) {
-          inputRef.current.removeEventListener('focus', focusListener);
-        }
+        // Todo Unmount
       };
     }, []);
 
-    const showFooter =
-      isFocused &&
-      ((keyword.length > 0 && searchResult.length > 0) ||
-        (keyword.length < 1 && searchHistory.length > 0));
+    const showFooter = useMemo(() => {
+      const hasAvailableResult =
+        keyword.length > 0 && (searchResult.books.length > 0 || searchResult.authors.length > 0);
+      const hasAvailableSearchHistory = keyword.length < 1 && searchHistory.length > 0;
 
+      return isFocused && (hasAvailableResult || hasAvailableSearchHistory);
+    }, [isFocused, keyword, searchResult, searchHistory]);
     return (
       <>
         <div tabIndex={0} onBlur={handleSearchWrapperBlur} css={isFocused ? focused : initial}>
@@ -467,67 +510,35 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                 ref={inputRef}
                 name="instant_search"
                 placeholder={labels.searchPlaceHolder}
+                onFocus={handleFocus.bind(null, true)}
                 onClick={handleFocus.bind(null, true)}
+                onKeyDown={handleKeyDown}
                 onChange={handleOnChange}
               />
             </form>
           </div>
           {showFooter && (
-            <div css={searchFooter}>
+            <div ref={listWrapperRef} css={searchFooter}>
               <form>
                 {keyword.length < 1 ? (
-                  <SearchHistory>
-                    {enableSearchHistoryRecord ? (
-                      <>
-                        <li css={recentHistoryLabel}>{labels.recentKeywords}</li>
-                        {searchHistory.slice(0, 5).map((history: string, index: number) => (
-                          <SearchHistoryItem
-                            data-value={history}
-                            onMouseDown={handleClickHistoryItem}
-                            key={index}>
-                            <a href={'#'}>
-                              <span>{history}</span>
-                            </a>
-                            <button
-                              data-value={history}
-                              type={'submit'}
-                              onClick={handleRemoveHistory}>
-                              <Close css={closeIcon} />
-                              <span className={'a11y'}>{labels.removeHistory}</span>
-                            </button>
-                          </SearchHistoryItem>
-                        ))}
-                      </>
-                    ) : (
-                      <li css={turnOffSearchHistory}>
-                        <Exclamation css={exclamation} />
-                        <span>{labels.turnOffStatus}</span>
-                      </li>
-                    )}
-
-                    <SearchHistoryOptionPanel>
-                      <button
-                        css={css`
-                          font-size: 13px;
-                        `}
-                        type={'submit'}
-                        onClick={handleClearHistory}>
-                        {enableSearchHistoryRecord && labels.clearSearchHistory}
-                      </button>
-                      <button
-                        css={css`
-                          font-size: 13px;
-                        `}
-                        type={'submit'}
-                        onClick={handleToggleSearchHistoryRecord}>
-                        {enableSearchHistoryRecord
-                          ? labels.turnOffSearchHistory
-                          : labels.turnOnSearchHistory}
-                      </button>
-                    </SearchHistoryOptionPanel>
-                  </SearchHistory>
+                  <InstantSearchHistory
+                    searchHistory={searchHistory}
+                    enableSearchHistoryRecord={enableSearchHistoryRecord}
+                    handleClickHistoryItem={handleClickHistoryItem}
+                    handleClearHistory={handleClearHistory}
+                    handleRemoveHistory={handleRemoveHistory}
+                    handleToggleSearchHistoryRecord={handleToggleSearchHistoryRecord}
+                    handleKeyDown={handleKeyDown}
+                    focusedPosition={focusedPosition}
+                  />
                 ) : (
-                  searchResult.length > 0 && <div>result</div>
+                  <InstantSearchResult
+                    handleKeyDown={handleKeyDown}
+                    handleClickBookItem={handleClickBookItem}
+                    handleClickAuthorItem={handleClickAuthorItem}
+                    focusedPosition={focusedPosition}
+                    result={searchResult}
+                  />
                 )}
               </form>
             </div>
