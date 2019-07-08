@@ -17,25 +17,25 @@ const EventBannerItem = styled.li`
   @media (max-width: 833px) {
     ${mobileBannerLayout};
     :not(:nth-of-type(2n)) {
-      margin-right: 12px;
+      margin-right: 4px;
     }
-    flex-basis: calc(49% - 16px);
-    margin-bottom: 6px;
+    flex-basis: calc(50% - 2px);
+    margin-bottom: 1px;
   }
   @media (min-width: 834px) and (max-width: 999px) {
     ${mobileBannerLayout};
     :not(:last-of-type) {
-      margin-right: 4px;
+      margin-right: 6px;
     }
     min-width: 194px;
   }
   @media (min-width: 1000px) {
     :not(:last-of-type) {
-      margin-right: 4px;
+      margin-right: 8px;
     }
   }
   img {
-    border: solid 1px #d1d5d9;
+    border-radius: 3px;
   }
 `;
 
