@@ -1,5 +1,4 @@
 import * as React from 'react';
-import dynamic from 'next/dynamic';
 import { css } from '@emotion/core';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useCallback } from 'react';
@@ -10,6 +9,7 @@ import { Book } from '@ridi/web-ui/dist/index.node';
 import { BookMeta, BookScheme } from 'src/components/RecommendedBook/RecommendedBook';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
+import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -34,17 +34,6 @@ const CarouselWrapper = styled.div`
   padding-left: 24px;
   height: 372px;
 `;
-
-const Slider = dynamic(import('src/components/Carousel/LoadableCarousel'), {
-  ssr: false,
-  loading: () => null,
-});
-
-// @ts-ignore
-// tslint:disable-next-line:no-any
-const ForwardedRefComponent = React.forwardRef((props, ref: React.RefObject<any>) => {
-  return <Slider {...props} forwardedRef={ref} />;
-});
 
 interface RecommendedBookCarouselProps {
   items: BookScheme[];

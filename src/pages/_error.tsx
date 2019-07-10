@@ -1,17 +1,11 @@
-import { DefaultErrorIProps } from 'next/error';
-import { NextContext } from 'next';
+import { ErrorProps } from 'next/error';
+import { NextPageContext } from 'next';
 import * as React from 'react';
 import { NextError } from 'src/constants/nextError';
 import { notifySentry } from 'src/utils/sentry';
 
-interface ErrorProps {
-  statusCode: number;
-}
-
 export default class ErrorPage extends React.Component<ErrorProps> {
-  public static getInitialProps(
-    context: NextContext,
-  ): Promise<DefaultErrorIProps> | DefaultErrorIProps {
+  public static getInitialProps(context: NextPageContext) {
     const { res, req, err } = context;
     if (res && res.statusCode) {
       return { statusCode: res.statusCode };

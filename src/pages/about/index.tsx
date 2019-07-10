@@ -15,7 +15,7 @@ interface AboutProps {
 }
 
 class About extends React.Component<AboutProps> {
-  public static async getInitialProps(init: ConnectedInitializeProps<{ id: string }>) {
+  public static async getInitialProps(init: ConnectedInitializeProps) {
     return { id: init.query.id };
   }
   public componentDidMount() {

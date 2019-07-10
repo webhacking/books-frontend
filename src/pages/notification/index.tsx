@@ -7,7 +7,7 @@ interface NotificationPageProps {
 }
 
 export default class NotificationPage extends React.Component<NotificationPageProps> {
-  public static async getInitialProps(props: ConnectedInitializeProps<{ q: string }>) {
+  public static async getInitialProps(props: ConnectedInitializeProps) {
     return { q: props.query.q };
   }
   public render() {

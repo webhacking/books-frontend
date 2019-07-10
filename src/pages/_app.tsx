@@ -1,4 +1,4 @@
-import App, { AppComponentProps, Container, DefaultAppIProps, NextAppContext } from 'next/app';
+import App, { Container } from 'next/app';
 import { Provider } from 'react-redux';
 import { Store } from 'redux';
 import withRedux from 'next-redux-wrapper';
@@ -15,7 +15,7 @@ import { BrowserLocationWithRouter } from 'src/components/Context';
 import * as React from 'react';
 import { PartialSeparator } from 'src/components/Misc';
 
-interface StoreAppProps extends AppComponentProps {
+interface StoreAppProps {
   store: Store<StoreRootState>;
   // tslint:disable-next-line
   pageProps: any;
@@ -25,33 +25,19 @@ interface StoreAppProps extends AppComponentProps {
   ctxPathname?: string;
 }
 
-interface StoreAppState {
-  // tslint:disable-next-line
-  isUpdateAvailable?: Promise<any> | null;
-  refreshing?: boolean;
-  isMounted: boolean;
-}
+// interface StoreAppState {
+//   // tslint:disable-next-line
+//   isUpdateAvailable?: Promise<any> | null;
+//   refreshing?: boolean;
+//   isMounted: boolean;
+// }
 
 const Contents = styled.main`
   margin: 0 auto;
 `;
 
-class StoreApp extends App<StoreAppProps, StoreAppState> {
-  constructor(props: StoreAppProps) {
-    super(props);
-    this.state = {
-      isMounted: false,
-    };
-  }
-
-  public static async getInitialProps({
-    ctx,
-    Component,
-    ...rest
-  }: NextAppContext): Promise<
-    // tslint:disable-next-line
-    DefaultAppIProps & { ctxPathname?: string; isPartials?: boolean; query: any }
-  > {
+class StoreApp extends App<StoreAppProps> {
+  public static async getInitialProps({ ctx, Component, ...rest }) {
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     const isPartials = !!ctx.pathname.match(/\/partials\//);
     return {
@@ -107,7 +93,8 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     if (isPartials) {
       return (
         <Container>
-          <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={!this.state.isMounted}>
+          {/*<PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={!this.state.isMounted}>*/}
+          <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={true}>
             <Global styles={resetStyles} />
           </PartialSeparator>
           {/* Todo Apply Layout */}

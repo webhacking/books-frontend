@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { WithRouterProps, withRouter } from 'next/router';
+import { PublicRouterInstance, withRouter } from 'next/router';
 
 export const BrowserLocationContext = React.createContext('/');
 
 interface BrowserLocationContextProps {
   pathname: string;
   isPartials: boolean;
+  router: PublicRouterInstance;
 }
 
-const BrowserLocation: React.FC<BrowserLocationContextProps & WithRouterProps> = props => {
+const BrowserLocation: React.FC<BrowserLocationContextProps> = props => {
   const [currentPath, setCurrentPath] = useState<string>(props.pathname);
   if (!props.isPartials) {
     useEffect(() => {
@@ -30,7 +31,6 @@ const BrowserLocation: React.FC<BrowserLocationContextProps & WithRouterProps> =
       return () => {
         if (props.router) {
           props.router.events.off('routeChangeComplete', routeChangeCompleteHandler);
-          // @ts-ignore
           props.router.events.off('routeChangeError', routeErrorHandler);
         }
       };

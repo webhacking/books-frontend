@@ -23,13 +23,13 @@ export interface HomeProps {
 }
 
 export class Home extends React.Component<HomeProps> {
-  public static async getInitialProps(
-    props: ConnectedInitializeProps<{ genre?: string; service?: string }>,
-  ) {
+  public static async getInitialProps(props: ConnectedInitializeProps) {
     const { query, res, req } = props;
-    const genre = query.genre ? Genre[query.genre.toUpperCase() as keyof typeof Genre] : null;
+    const genre = query.genre
+      ? Genre[(query.genre as string).toUpperCase() as keyof typeof Genre]
+      : null;
     const service = query.service
-      ? GenreSubService[query.service.toUpperCase() as keyof typeof GenreSubService]
+      ? GenreSubService[(query.service as string).toUpperCase() as keyof typeof GenreSubService]
       : null;
 
     if (req && res) {

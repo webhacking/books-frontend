@@ -1,6 +1,5 @@
 import * as React from 'react';
 import SliderCarousel from 'react-slick';
-import dynamic from 'next/dynamic';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from '@emotion/styled';
@@ -9,6 +8,7 @@ import { FormEvent, useCallback, useState } from 'react';
 import { flexCenter } from 'src/styles';
 import Arrow from 'src/components/Carousel/Arrow';
 import uiOption from 'src/constants/ui';
+import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
 const items = [
   {
     label: '1',
@@ -393,16 +393,6 @@ interface TopBannerCarouselContainerProps {
   // tslint:disable-next-line:no-any
   banners?: any[];
 }
-
-const Slider = dynamic(import('src/components/Carousel/LoadableCarousel'), {
-  ssr: false,
-  loading: () => null,
-});
-// @ts-ignore
-// tslint:disable-next-line:no-any
-const ForwardedRefComponent = React.forwardRef((props, ref: React.RefObject<any>) => {
-  return <Slider {...props} forwardedRef={ref} />;
-});
 
 interface TopBannerCarouselLoadingProps {
   left: string;

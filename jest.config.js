@@ -1,4 +1,5 @@
 module.exports = {
+  setupFiles: ['<rootDir>/src/tests/setup.js'],
   moduleFileExtensions: ['js', 'ts', 'tsx'],
   collectCoverageFrom: [
     '**/*.{ts,tsx}',
@@ -9,7 +10,7 @@ module.exports = {
   ],
   moduleNameMapper: {
     '\\.(css|less)$': 'identity-obj-proxy',
-    '\\.svg': '<rootDir>/src/tests/__mocks__/svgrMock.ts',
+    '\\.svg': '<rootDir>/src/tests/__mocks__/svgrMock.tsx',
   },
   coveragePathIgnorePatterns: ['/node_modules/'],
   testPathIgnorePatterns: ['/node_modules/'],

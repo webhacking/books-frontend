@@ -3,12 +3,13 @@ const presets = [
     'next/babel',
     {
       'preset-env': {
+        exclude: ['transform-classes'], // jest class invoke 'new' related
         useBuiltIns: 'entry',
+        corejs: 3,
       },
     },
   ],
   ['@emotion/babel-preset-css-prop', { autoLabel: true, labelFormat: '[local]' }],
-  '@zeit/next-typescript/babel',
 ];
 
 const plugins = [
