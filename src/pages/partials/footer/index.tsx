@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ConnectedInitializeProps } from 'src/types/common';
 import { darkTheme, defaultTheme } from 'src/styles/themes';
 import { ThemeProvider } from 'emotion-theming';
-import { withAmp } from 'next/amp';
 import Footer from 'src/components/Footer';
 import { PartialSeparator } from 'src/components/Misc';
 // import axios from 'axios';
@@ -14,7 +13,7 @@ interface FooterProps {
 }
 
 export class PartialFooter extends React.Component<FooterProps> {
-  public static async getInitialProps(initialProps: ConnectedInitializeProps<{ theme: string }>) {
+  public static async getInitialProps(initialProps: ConnectedInitializeProps) {
     // Fix me
     // will get notice items
     // const result = await axios.get('https://randomuser.me/api/');
@@ -37,4 +36,8 @@ export class PartialFooter extends React.Component<FooterProps> {
   }
 }
 
-export default withAmp(PartialFooter);
+export default PartialFooter;
+
+export const config = {
+  amp: 'true',
+};

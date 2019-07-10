@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Slider, { Settings } from 'react-slick';
+import dynamic from 'next/dynamic';
+import { ReactNode } from 'react';
 
 const LoadableCarousel: React.RefForwardingComponent<
   Settings,
@@ -10,4 +12,16 @@ const LoadableCarousel: React.RefForwardingComponent<
   </Slider>
 );
 
+const DynamicSlider = dynamic(import('src/components/Carousel/LoadableCarousel'), {
+  ssr: false,
+  loading: () => null,
+});
+
+export const ForwardedRefComponent = React.forwardRef<Slider, Settings & { children: ReactNode }>(
+  (props, ref: React.RefObject<Slider>) => {
+    return <DynamicSlider {...props} forwardedRef={ref} />;
+  },
+);
+
+// @ts-ignore
 export default LoadableCarousel;

@@ -1,11 +1,4 @@
-import Document, {
-  Head,
-  Main,
-  NextScript,
-  DocumentProps,
-  NextDocumentContext,
-  RenderPageResponse,
-} from 'next/document';
+import Document, { Head, Main, NextScript, DocumentProps, DocumentContext } from 'next/document';
 import { extractCritical } from 'emotion-server';
 import { EmotionCritical } from 'create-emotion-server';
 import Favicon from 'src/pages/Favicon';
@@ -20,13 +13,17 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
     super(props);
     const { __NEXT_DATA__, ids } = props;
     if (ids) {
+      // @ts-ignore
       __NEXT_DATA__.ids = ids;
     }
   }
 
-  public static async getInitialProps(context: NextDocumentContext): Promise<RenderPageResponse> {
+  public static async getInitialProps(context: DocumentContext) {
     const page = context.renderPage();
+
+    // @ts-ignore
     if (page.html) {
+      // @ts-ignore
       const styles = extractCritical(page.html);
       return { ...page, ...styles };
     }

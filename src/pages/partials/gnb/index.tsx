@@ -22,14 +22,7 @@ interface GNBProps {
   q?: string;
 }
 export default class PartialGNB extends React.Component<GNBProps, GNBState> {
-  public static async getInitialProps(
-    initialProps: ConnectedInitializeProps<{
-      pathname: string;
-      q: string;
-      type: string;
-      theme: string;
-    }>,
-  ) {
+  public static async getInitialProps(initialProps: ConnectedInitializeProps) {
     return { ...initialProps.query };
   }
 
