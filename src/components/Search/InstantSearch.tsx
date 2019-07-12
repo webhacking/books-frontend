@@ -1,7 +1,9 @@
 import * as React from 'react';
+import { notifySentry } from 'src/utils/sentry';
 import { css, keyframes } from '@emotion/core';
 import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
 import Lens from 'src/svgs/Lens.svg';
+import Clear from 'src/svgs/Clear.svg';
 import { RIDITheme, ZIndexLayer } from 'src/styles';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -12,8 +14,11 @@ import { isOnsetNucleusCoda } from 'src/utils/hangle';
 import { safeJSONParse } from 'src/utils/common';
 import axios from 'axios';
 import InstantSearchResult from 'src/components/Search/InstantSearchResult';
-import { notifySentry } from 'src/utils/sentry';
 import InstantSearchHistory from 'src/components/Search/InstantSearchHistory';
+import getConfig from 'next/config';
+import { get } from 'ts-get';
+import { PublicRuntimeConfig } from 'src/types/common';
+const { publicRuntimeConfig } = getConfig();
 
 const fadeIn = keyframes`
   0% { 
@@ -54,6 +59,7 @@ const searchWrapper = (theme: RIDITheme) => css`
   }
 
   input {
+    flex-shrink: 0;
     position: relative;
     top: -0.5px;
     //margin-top: -2px;
@@ -82,8 +88,8 @@ const searchWrapper = (theme: RIDITheme) => css`
 
 const iconStyle = (theme: RIDITheme) => css`
   fill: ${theme.input.placeholder};
-  opacity: 0.6;
   box-sizing: content-box;
+  flex-shrink: 0;
   padding: 5.5px 3px 5px 6px;
   width: 24px;
   height: 24px;
@@ -171,6 +177,14 @@ const arrowWrapperButton = css`
   }
 `;
 
+export interface AuthorInfo {
+  author_id: number;
+  b_id: string;
+  name: string;
+  order: number;
+  role: 'author' | 'translator' | 'illustrator';
+}
+
 export interface InstantSearchBookResultScheme {
   b_id: string;
   highlight: {
@@ -183,6 +197,10 @@ export interface InstantSearchBookResultScheme {
   web_title_title_raw?: string;
   author_title_title?: string;
   author_title_title_raw?: string;
+  author: string;
+  author2: string;
+  authors_info: AuthorInfo[];
+  publisher: string;
 }
 
 export interface InstantSearchAuthorResultScheme {
@@ -228,59 +246,15 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     );
 
     const handleSearch = async (value: string) => {
-      console.log(`search start keyword:${value}`);
-
-      // Fixme
       try {
         const result = await axios.get(
-          `https://search-api.staging.ridi.io/search?site=ridi-store&what=instant&keyword=${value}`,
+          `${
+            (publicRuntimeConfig as PublicRuntimeConfig).SEARCH_API
+          }/search?site=ridi-store&where=book&where=author&what=instant&keyword=${value}`,
         );
         setSearchResult({
-          books: result.data.books,
-          authors: [
-            {
-              popular_book_title:
-                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
-              book_count: 2,
-              name: '아오이 유유',
-              id: 71875,
-              name_raw: '아오이 유유',
-              popular_book_title_raw:
-                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
-              highlight: {
-                name: '<strong class="title_point">아오이 유유</strong>',
-                name_raw: '<strong class="title_point">아오이 유유</strong>',
-              },
-            },
-            {
-              popular_book_title:
-                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
-              book_count: 2,
-              name: '아오이 유유',
-              id: 71875,
-              name_raw: '아오이 유유',
-              popular_book_title_raw:
-                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
-              highlight: {
-                name: '<strong class="title_point">후가 유유</strong>',
-                name_raw: '후가<strong class="title_point"> 유유</strong>',
-              },
-            },
-            {
-              popular_book_title:
-                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
-              book_count: 2,
-              name: '아오이 유유',
-              id: 71875,
-              name_raw: '아오이 유유',
-              popular_book_title_raw:
-                '인생을 주도적으로 살기 위해 반드시 알아야 할 영어로 배우는 명언 10선',
-              highlight: {
-                name: '<strong class="title_point">후가 유유</strong>',
-                name_raw: '<strong class="title_point">유유</strong>',
-              },
-            },
-          ],
+          books: get(result.data, data => data.book.books, []),
+          authors: get(result.data, data => data.author.authors, []),
         });
       } catch (error) {
         notifySentry(error);
@@ -474,7 +448,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         setLoaded(true);
       }
       return () => {
-        // Todo Unmount
+        // Unmount
       };
     }, []);
 
@@ -495,7 +469,14 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
             </button>
           )}
           <div css={searchWrapper}>
-            <Lens css={iconStyle} />
+            <Lens
+              css={theme =>
+                css`
+                  ${iconStyle(theme)};
+                  opacity: ${isFocused ? 1 : 0.6};
+                `
+              }
+            />
             <form onSubmit={handleSubmit}>
               <input
                 disabled={!isLoaded}
@@ -510,6 +491,23 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                 onChange={handleOnChange}
               />
             </form>
+            {keyword.length > 0 && isFocused && (
+              <button
+                css={css`
+                  outline: none;
+                `}
+                onClick={() => setKeyword('')}>
+                <Clear
+                  css={css`
+                    position: relative;
+                    right: 9px;
+                    width: 14px;
+                    height: 14px;
+                  `}
+                />
+                <span className={'a11y'}>모두 지우기</span>
+              </button>
+            )}
           </div>
           {showFooter && (
             <div ref={listWrapperRef} css={searchFooter}>
