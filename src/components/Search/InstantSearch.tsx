@@ -25,6 +25,15 @@ const fadeIn = keyframes`
   
 `;
 
+const placeHolderCSS = css`
+  opacity: 1;
+  font-size: 15px;
+  height: 19px;
+  line-height: 19px;
+  font-weight: 500;
+  letter-spacing: -0.46px;
+`;
+
 const searchWrapper = (theme: RIDITheme) => css`
   background-color: #ffffff;
   box-sizing: border-box;
@@ -52,33 +61,18 @@ const searchWrapper = (theme: RIDITheme) => css`
     width: 98%;
     font-size: 15px;
     font-weight: 500;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.46px;
     color: #000000;
     ::placeholder {
-      //padding-top: 2px;
-      font-size: 15px;
-      height: 19px;
-      line-height: 19px;
-      font-weight: 500;
-      letter-spacing: -0.5px;
+      ${placeHolderCSS};
       color: ${theme.input.placeholder};
     }
     ::-moz-placeholder {
-      opacity: 1;
-      font-size: 15px;
-      height: 19px;
-      line-height: 19px;
-      font-weight: 500;
-      letter-spacing: -0.5px;
+      ${placeHolderCSS};
       color: ${theme.input.placeholder};
     }
     :-moz-placeholder {
-      opacity: 1;
-      font-size: 15px;
-      height: 19px;
-      line-height: 19px;
-      font-weight: 500;
-      letter-spacing: -0.5px;
+      ${placeHolderCSS};
       color: ${theme.input.placeholder};
     }
   }
@@ -90,7 +84,7 @@ const iconStyle = (theme: RIDITheme) => css`
   fill: ${theme.input.placeholder};
   opacity: 0.6;
   box-sizing: content-box;
-  padding: 6px 3px 5px 6px;
+  padding: 5.5px 3px 5px 6px;
   width: 24px;
   height: 24px;
   @media (max-width: 999px) {

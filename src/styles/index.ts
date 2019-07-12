@@ -27,6 +27,12 @@ export const flexRowStart = css`
   flex-direction: row;
   justify-content: start;
 `;
+export const flexColumnStart = css`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+`;
 
 export const lineClamp = (limit: number) => css`
   overflow: hidden;

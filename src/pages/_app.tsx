@@ -13,6 +13,9 @@ import Footer from 'src/components/Footer';
 import styled from '@emotion/styled';
 import { BrowserLocationWithRouter } from 'src/components/Context';
 import * as React from 'react';
+// Todo move css import code
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { PartialSeparator } from 'src/components/Misc';
 
 interface StoreAppProps {

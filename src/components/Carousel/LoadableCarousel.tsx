@@ -12,9 +12,8 @@ const LoadableCarousel: React.RefForwardingComponent<
   </Slider>
 );
 
-const DynamicSlider = dynamic(import('src/components/Carousel/LoadableCarousel'), {
+const DynamicSlider = dynamic(() => import('src/components/Carousel/LoadableCarousel'), {
   ssr: false,
-  loading: () => null,
 });
 
 export const ForwardedRefComponent = React.forwardRef<Slider, Settings & { children: ReactNode }>(

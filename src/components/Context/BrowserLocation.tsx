@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { PublicRouterInstance, withRouter } from 'next/router';
+import { NextRouter, withRouter } from 'next/router';
 
 export const BrowserLocationContext = React.createContext('/');
 
 interface BrowserLocationContextProps {
   pathname: string;
   isPartials: boolean;
-  router: PublicRouterInstance;
+  router: NextRouter;
 }
 
 const BrowserLocation: React.FC<BrowserLocationContextProps> = props => {

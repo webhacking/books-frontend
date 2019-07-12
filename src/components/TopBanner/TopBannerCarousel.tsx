@@ -1,7 +1,5 @@
 import * as React from 'react';
 import SliderCarousel from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 import { FormEvent, useCallback, useState } from 'react';

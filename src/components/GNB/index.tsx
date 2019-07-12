@@ -20,7 +20,7 @@ const Header = styled.header`
 
 const Navigation = styled.nav`
   box-sizing: border-box;
-  padding: 16px 20px;
+  padding: 16px 16px 24px 20px;
   display: flex;
   flex-direction: column;
   @media (max-width: 999px) {
@@ -30,6 +30,7 @@ const Navigation = styled.nav`
 
 const LogoWrapper = styled.ul`
   min-height: 30px;
+  margin-right: -2.5px;
   order: 1;
   margin-bottom: unset;
   @media (max-width: 999px) {
@@ -50,7 +51,7 @@ const LogoWrapper = styled.ul`
       content: '|';
       color: white;
       opacity: 0.4;
-      margin: 0 10px;
+      margin: 0 8.5px 0 10px;
       @media (max-width: 999px) {
         margin: 0 5px 0 4px;
         top: 7px;
@@ -155,7 +156,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
                   <span className="a11y">RIDIBOOKS</span>
                 </a>
               </li>
-              <li className="GNBNavigation_Item">
+              <li>
                 <a href="https://select.ridibooks.com">
                   <RidiSelectLogo css={ridiSelectLogo} />
                   <span className="a11y">리디셀렉트</span>
