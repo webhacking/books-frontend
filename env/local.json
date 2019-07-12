@@ -1,3 +1,4 @@
 {
-  "STATIC_CDN_URL": "https://books.local.ridi.io"
+  "STATIC_CDN_URL": "https://books.local.ridi.io",
+  "SEARCH_API": "https://search-api.staging.ridi.io"
 }

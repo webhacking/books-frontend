@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  AuthorInfo as AuthorInfoScheme,
   InstantSearchAuthorResultScheme,
   InstantSearchBookResultScheme,
   InstantSearchResultScheme,
@@ -23,6 +24,7 @@ const listItemCSS = css`
     min-height: 40px;
     padding: 13px 10px;
   }
+  cursor: pointer;
 `;
 const bookListItemCSS = (theme: RIDITheme) => css`
   ${listItemCSS};
@@ -108,8 +110,9 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
           word-break: keep-all;
           color: ${theme.label2};
         `}>
-        {/* Todo 1권 만 있을 경우는 어떻게 할 것인가? */}
-        {`<${author.popular_book_title}> 외 ${author.book_count - 1}권`}
+        {`<${author.popular_book_title}>${
+          author.book_count > 1 ? ` 외 ${author.book_count - 1}권` : ''
+        }`}
       </span>
     </div>
   );
@@ -121,6 +124,43 @@ const ListWrapper = styled.div`
     padding: 0;
   }
 `;
+
+const authorPublisherCSS = css`
+  font-size: 13px;
+  line-height: 1.08;
+  letter-spacing: -0.4px;
+  color: #808991;
+  -webkit-font-smoothing: antialiased;
+`;
+
+// Todo 사용 컴포넌트마다 다른 options 사용해서 보여주기
+const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = props => {
+  const viewedAuthors = props.authors
+    .filter(author => author.role === 'author' || author.role === 'illustrator')
+    .map(author => author.name);
+  if (viewedAuthors.length === 0) {
+    return (
+      <span
+        css={css`
+          ${authorPublisherCSS};
+          margin-right: 4px;
+        `}>
+        {props.author}
+      </span>
+    );
+  }
+  return (
+    <span
+      css={css`
+        ${authorPublisherCSS};
+        margin-right: 4px;
+      `}>
+      {viewedAuthors.length > 2
+        ? `${viewedAuthors[0]} 외 ${viewedAuthors.length - 1}명`
+        : `${viewedAuthors.join(', ')}`}
+    </span>
+  );
+};
 
 const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props => {
   const { result, handleKeyDown, handleClickBookItem } = props;
@@ -139,10 +179,22 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
             <WindowWidthQuery>
               <View maxWidth={1000}>
                 <span
+                  css={css`
+                    margin-right: 4px;
+                  `}
                   dangerouslySetInnerHTML={{
                     __html: book.highlight.web_title_title_raw! || book.web_title_title_raw!,
                   }}
                 />
+                <AuthorLabel author={book.author} authors={book.authors_info} />
+                <span
+                  css={css`
+                    ${authorPublisherCSS};
+                    padding-left: 4px;
+                    border-left: 1px solid #e6e8eb;
+                  `}>
+                  {book.publisher}
+                </span>
               </View>
               <View>
                 <div>
@@ -154,6 +206,8 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                       css={(theme: RIDITheme) => css`
                         margin-right: 12px;
                         border: 1px solid ${theme.image.border};
+                        flex-shrink: 0;
+                        width: 38px;
                       `}
                       width="38px"
                       height="58px"
@@ -170,12 +224,23 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                           line-height: 1.57;
                           letter-spacing: -0.43px;
                           word-break: keep-all;
+                          margin-bottom: 4px;
                         `}
                         dangerouslySetInnerHTML={{
                           __html: book.highlight.web_title_title_raw! || book.web_title_title_raw!,
                         }}
                       />
-                      {/*  Todo 저자, 출판사 출력 */}
+                      <div>
+                        <AuthorLabel author={book.author} authors={book.authors_info} />
+                        <span
+                          css={css`
+                            ${authorPublisherCSS};
+                            padding-left: 4px;
+                            border-left: 1px solid #e6e8eb;
+                          `}>
+                          {book.publisher}
+                        </span>
+                      </div>
                     </div>
                   </ItemWrapper>
                 </div>
