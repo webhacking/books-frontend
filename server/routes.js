@@ -8,6 +8,7 @@ clientRoutes.add({ page: 'cart', pattern: '/cart' });
 clientRoutes.add({ page: 'account/myridi', pattern: '/account/myridi' });
 clientRoutes.add({ page: 'about', pattern: '/about/:id' });
 clientRoutes.add({ page: 'search', pattern: '/search' });
+clientRoutes.add({ page: 'category/list', pattern: '/category/list' });
 clientRoutes.add({ page: '/', pattern: '/:genre/:service' });
 clientRoutes.add({ page: '/', pattern: '/:genre' });
 clientRoutes.add({ page: '/', pattern: '/' });

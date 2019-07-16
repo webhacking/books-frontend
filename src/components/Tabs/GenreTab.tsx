@@ -28,20 +28,21 @@ const Ruler = styled.hr`
 const GenreList = styled.ul`
   display: flex;
   flex-direction: row;
-  height: 44px;
+  height: 47px;
   align-items: center;
   li {
     font-size: 16px;
     font-weight: 500;
-    line-height: 44px;
+    line-height: 47px;
     height: 100%;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.2px;
     text-align: center;
     color: ${props => props.theme.genreTab.normal};
     cursor: pointer;
     :first-of-type {
       line-height: 56px;
       padding: 0 20px;
+      margin-right: 0;
     }
     :hover {
       opacity: 0.7;
@@ -74,6 +75,8 @@ const GenreList = styled.ul`
 `;
 
 const iconCSS = (theme: RIDITheme) => css`
+  position: relative;
+  top: 2px;
   width: 24px;
   height: 24px;
   fill: ${theme.genreTab.icon};
@@ -86,7 +89,7 @@ const SubServicesList = styled.ul`
   align-items: center;
   height: 50px;
   font-size: 17px;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.2px;
   color: ${props => props.theme.subServiceTab.normal};
   li {
     height: 100%;
@@ -164,10 +167,19 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
     <GenreTabWrapper>
       <li>
         <GenreList>
-          <li>
-            <GNBCategory css={iconCSS} />
-            <span className={'a11y'}>{labels.category}</span>
-          </li>
+          <Link route={'/category/list'}>
+            <li>
+              <GNBCategory
+                css={(theme: RIDITheme) =>
+                  css`
+                    ${iconCSS(theme)};
+                    ${currentPath === '/category/list' ? `fill:${theme.primaryColor}` : ''};
+                  `
+                }
+              />
+              <span className={'a11y'}>{labels.category}</span>
+            </li>
+          </Link>
           {Object.keys(genres).map((k, index) => {
             const visitedService = Cookies.get(
               `${cookieKeys.recentlyVisitedGenre}_${genres[k].key}_Service`,

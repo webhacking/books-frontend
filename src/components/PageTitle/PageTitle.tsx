@@ -17,12 +17,27 @@ const pageTitleCSS = css`
   }
 `;
 
+const mobileDisplayNone = css`
+  @media (max-width: 999px) {
+    display: none;
+  }
+`;
+
 interface PageTitleProps {
   title: string;
+  mobileHidden?: boolean;
 }
 
 const PageTitle: React.FC<PageTitleProps> = props => {
-  return <h2 css={pageTitleCSS}>{props.title}</h2>;
+  return (
+    <h2
+      css={css`
+        ${pageTitleCSS};
+        ${props.mobileHidden ? mobileDisplayNone : ''};
+      `}>
+      {props.title}
+    </h2>
+  );
 };
 
 export default PageTitle;

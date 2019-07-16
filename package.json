@@ -29,7 +29,7 @@
     "immer-reducer": "^0.7.0",
     "js-cookie": "^2.2.0",
     "libreact": "^2.13.1",
-    "next": "^9.0.1",
+    "next": "^9.0.2",
     "next-redux-saga": "^4.0.1",
     "next-redux-wrapper": "^3.0.0-alpha.2",
     "next-routes": "^1.4.2",
