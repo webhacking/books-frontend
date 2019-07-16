@@ -36,7 +36,7 @@ const placeHolderCSS = css`
   height: 19px;
   line-height: 19px;
   font-weight: 500;
-  letter-spacing: -0.46px;
+  letter-spacing: -0.65px;
 `;
 
 const searchWrapper = (theme: RIDITheme) => css`

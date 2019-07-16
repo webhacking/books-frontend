@@ -40,13 +40,14 @@ const TabButton = styled.button`
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  padding: 0 6px;
-  padding-bottom: 3px;
+  padding: 0 5px 3px 4px;
   outline: none;
+  position: relative;
+  top: -1px;
 `;
 
 const iconStyle = () => css`
-  margin-right: 8px;
+  margin-right: 10px;
   fill: white;
   width: 20px;
   height: 20px;
@@ -62,6 +63,7 @@ const labelStyle = css`
   font-size: 16px;
   font-weight: 600;
   line-height: 1;
+  letter-spacing: -0.4px;
   text-align: center;
   color: #ffffff;
   @media (max-width: 999px) {
@@ -97,6 +99,8 @@ const TabItemWrapper = styled.li`
     :hover {
       ${BottomLine} {
         background-color: #99d1ff;
+        position: relative;
+        top: 1px;
         opacity: 0.7;
         width: 100%;
       }
@@ -108,12 +112,14 @@ const TabItemWrapper = styled.li`
       opacity: 1;
     }
   }
-  padding-bottom: 3px;
+  padding-bottom: 4px;
 `;
 
 const currentTab = css`
   background-color: #99d1ff;
   width: 100%;
+  position: relative;
+  top: 1px;
 `;
 
 interface MainTabProps {
