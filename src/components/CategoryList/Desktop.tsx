@@ -22,6 +22,22 @@ const parentCategoryItemCSS = (theme: RIDITheme) => css`
     }
   }
   transition: all 0.1s;
+  ::after {
+    right: -15px;
+    ${selectedItemArrowCSS};
+  }
+`;
+
+const selectedItemArrowCSS = css`
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  border-right: 14px solid #ebf6ff;
+  content: ' ';
+  z-index: 2;
+  transition: all 0.1s;
 `;
 
 const parentCategoryItemHoverCSS = (theme: RIDITheme) => css`
@@ -29,6 +45,11 @@ const parentCategoryItemHoverCSS = (theme: RIDITheme) => css`
   color: white;
   svg {
     fill: white;
+  }
+
+  ::after {
+    right: -8px;
+    ${selectedItemArrowCSS};
   }
 `;
 

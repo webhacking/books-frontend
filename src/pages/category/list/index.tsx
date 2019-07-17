@@ -58,7 +58,7 @@ const categoryMock: CategoryList = {
         { id: 34, name: '경제 일반' },
         { id: 35, name: '마케팅/세일즈' },
         { id: 36, name: '재테크/금융/부동산' },
-        { id: 37, name: 'CEO/리더' },
+        { id: 37, name: 'CEO/리더십' },
       ],
     },
     {
@@ -300,6 +300,7 @@ const sectionCSS = css`
   padding: 31px 50px 50px 50px;
   max-width: 1000px;
   margin: 0 auto;
+  margin-top: -20px;
   @media (max-width: 999px) {
     padding: 0;
   }
@@ -316,14 +317,7 @@ const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = pr
       <Head>
         <title>카테고리 - 리디북스</title>
       </Head>
-      <div
-        css={css`
-          @media (max-width: 999px) {
-            display: none;
-          }
-        `}>
-        <GenreTab currentGenre={Genre.GENERAL} genres={homeGenres} />
-      </div>
+      <GenreTab currentGenre={Genre.GENERAL} genres={homeGenres} />
       <section css={sectionCSS}>
         <PageTitle title={'카테고리'} mobileHidden={true} />
         {isMounted ? (

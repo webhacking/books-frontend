@@ -4,7 +4,6 @@ import { ConnectedInitializeProps } from 'src/types/common';
 import { GenreTab } from 'src/components/Tabs';
 import { Genre, GenreSubService, homeGenres } from 'src/constants/genres';
 import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
-// @ts-ignore
 import { Router } from 'server/routes';
 import * as Cookies from 'js-cookie';
 import { QuickMenuList } from 'src/components/QuickMenu';
@@ -16,6 +15,7 @@ import recommendedBookMockItems from 'src/components/RecommendedBook/mockData';
 import bookSectionsMockItems from 'src/components/BookSections/mockData';
 import RecommendedBook from 'src/components/RecommendedBook/RecommendedBook';
 import BookSectionContainer from 'src/components/BookSections/BookSectionContainer';
+import titleGenerator from 'src/utils/titleGenerator';
 
 export interface HomeProps {
   genre: keyof typeof Genre;
@@ -156,7 +156,7 @@ export class Home extends React.Component<HomeProps> {
     return (
       <>
         <Head>
-          <title>리디북스 - 홈 - {genre}</title>
+          <title>{`${titleGenerator(genre, currentService)} - 리디북스`}</title>
         </Head>
         <GenreTab currentGenre={currentGenre} genres={homeGenres} />
         {/* 일반도서 상단 배너 */}

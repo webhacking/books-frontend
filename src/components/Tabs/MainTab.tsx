@@ -55,6 +55,7 @@ const iconStyle = () => css`
   @media (max-width: 999px) {
     width: 24px;
     height: 24px;
+    margin-right: 0;
   }
 `;
 

@@ -5,6 +5,8 @@ import { css } from '@emotion/core';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
+import { useRef } from 'react';
+import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -83,10 +85,13 @@ interface RankingBookListProps {
 }
 
 const RankingBookList: React.FC<RankingBookListProps> = props => {
+  const targetRef = useRef(null);
+  const isIntersecting = useIntersectionObserver(targetRef, '50px');
   return (
     <>
       {props.title && <RankingBookTitle>{props.title}</RankingBookTitle>}
       <SectionWrapper
+        ref={targetRef}
         css={css`
           padding-top: ${props.type === 'big' ? '6px' : '7px'};
           height: ${props.type === 'big' ? '464px' : '311px'};
@@ -109,7 +114,11 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                     `}>
                     <Book.Thumbnail
                       thumbnailWidth={props.type === 'big' ? 80 : 50}
-                      thumbnailUrl={`https://misc.ridibooks.com/cover/${book.bId}/medium`}
+                      thumbnailUrl={
+                        !isIntersecting
+                          ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
+                          : `https://misc.ridibooks.com/cover/${book.bId}/medium`
+                      }
                       adultBadge={book.isAdult}
                     />
                   </div>

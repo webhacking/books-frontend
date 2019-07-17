@@ -205,10 +205,9 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
           })}
         </GenreList>
       </li>
-
-      {hasSubService && (
+      <Ruler />
+      {hasSubService ? (
         <>
-          <Ruler />
           <li>
             <SubServicesList>
               {genres[currentGenre].subServices.map((service, index) => (
@@ -230,6 +229,12 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             </SubServicesList>
           </li>
         </>
+      ) : (
+        <div
+          css={css`
+            margin-bottom: 20px;
+          `}
+        />
       )}
     </GenreTabWrapper>
   );
