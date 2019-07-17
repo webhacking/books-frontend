@@ -15,6 +15,8 @@ import AtSelectIcon from 'src/svgs/Book1.svg';
 import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedBookCarousel';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
+import { useRef } from 'react';
+import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 const { publicRuntimeConfig } = getConfig();
 
 const hotReleaseRecommendedBookWrapperCSS = css`
@@ -177,18 +179,19 @@ interface RecommendedBookProps {
 }
 
 const RecommendedBook: React.FC<RecommendedBookProps> = props => {
-  const [isMounted, setMounted] = useState(false);
   // @ts-ignore
   const [currentGenre, setGenre] = useState(props.genre);
   useEffect(() => {
-    setMounted(true);
     setGenre(props.genre);
     // console.log('mount?', currentGenre, props.genre);
 
     // Todo 장르가 달라져서 마운트 된다면 Fetch
   });
+  const targetRef = useRef(null);
+  const isIntersecting = useIntersectionObserver(targetRef, '50px');
   return (
     <section
+      ref={targetRef}
       css={
         props.type === 'hot_release'
           ? hotReleaseRecommendedBookWrapperCSS
@@ -211,7 +214,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           />
         </p>
       )}
-      {!isMounted ? (
+      {!isIntersecting ? (
         <BookList
           css={props.type === 'hot_release' ? hotReleaseBookListCSS : recommendedBookListCSS}>
           {props.items.slice(0, 6).map((book, index) => {
@@ -219,7 +222,11 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
               <PortraitBook key={index}>
                 <ThumbnailWrapper>
                   <Book.Thumbnail
-                    thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
+                    thumbnailUrl={
+                      !isIntersecting
+                        ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
+                        : `https://misc.ridibooks.com/cover/${book.id}/xxlarge`
+                    }
                   />
                 </ThumbnailWrapper>
                 <BookMeta book={book} />

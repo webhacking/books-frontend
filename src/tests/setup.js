@@ -1,3 +1,5 @@
+require('intersection-observer');
+
 window.matchMedia =
   window.matchMedia ||
   function() {

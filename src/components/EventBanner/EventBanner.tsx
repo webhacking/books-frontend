@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/core';
 // @ts-ignore
 import { EventBannerList } from 'src/components/EventBanner';
@@ -9,8 +9,9 @@ import { Genre } from 'src/constants/genres';
 const eventBannerWrapperCSS = css`
   margin: 0 auto;
   width: 100%;
-  min-height: 175px;
+  max-height: 175px;
   padding-top: 24px;
+  height: 100%;
 `;
 
 export interface BannerItem {
@@ -29,6 +30,7 @@ const EventBanner: React.FC<EventBannerProps> = props => {
   const [isMounted, setMounted] = useState(false);
   // @ts-ignore
   const [currentGenre, setGenre] = useState(props.genre);
+  const targetRef = useRef(null);
   useEffect(() => {
     setMounted(true);
     setGenre(props.genre);
@@ -36,8 +38,9 @@ const EventBanner: React.FC<EventBannerProps> = props => {
 
     // Todo 장르가 달라져서 마운트 된다면 Fetch
   });
+
   return (
-    <section css={eventBannerWrapperCSS}>
+    <section ref={targetRef} css={eventBannerWrapperCSS}>
       <EventBannerList items={props.items} />
     </section>
   );

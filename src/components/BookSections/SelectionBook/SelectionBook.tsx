@@ -11,6 +11,8 @@ import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper'
 import { useEffect, useState } from 'react';
 import { SectionTitle, SelectionOption } from 'src/components/BookSections/BookSectionContainer';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
+import { useRef } from 'react';
+import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -72,9 +74,11 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
 export interface SelectionBookCarouselProps {
   items: BookScheme[];
   isAIRecommendation: boolean;
+  isIntersecting?: boolean;
 }
 
 export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props => {
+  const { isIntersecting } = props;
   return (
     <ul
       css={css`
@@ -85,7 +89,13 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
       {props.items.map((book, index) => (
         <PortraitBook key={index}>
           <ThumbnailWrapper>
-            <Book.Thumbnail thumbnailUrl={`https://misc.ridibooks.com/cover/${book.bId}/xxlarge`} />
+            <Book.Thumbnail
+              thumbnailUrl={
+                !isIntersecting
+                  ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
+                  : `https://misc.ridibooks.com/cover/${book.bId}/xxlarge`
+              }
+            />
           </ThumbnailWrapper>
           <BookMeta book={book} showRating={true} />
         </PortraitBook>
@@ -95,7 +105,7 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
 };
 
 const SelectionBook: React.FC<SelectionBookProps> = props => {
-  const [isMounted, setMounted] = useState(false);
+  const [, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -104,12 +114,14 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
   // const handleExceptAIRecommendation = (bId: string) => {
   //
   // }
-
+  const targetRef = useRef(null);
+  const isIntersecting = useIntersectionObserver(targetRef, '50px');
   return (
-    <SectionWrapper>
+    <SectionWrapper ref={targetRef}>
       <SectionTitle>{props.title}</SectionTitle>
-      {!isMounted ? (
+      {!isIntersecting ? (
         <SelectionBookLoading
+          isIntersecting={isIntersecting}
           isAIRecommendation={props.option.isAIRecommendation}
           items={props.items.slice(0, 6)}
         />

@@ -52,10 +52,18 @@ module.exports = nextSourceMaps(
       config.entry = async () => {
         const entries = await originalEntry();
         Object.values(entries).forEach(entry => {
-          if (!entry.includes('@babel/polyfill/noConflict') && !!entry.unshift) {
-            entry.unshift('@babel/polyfill/noConflict');
-          } else if (typeof entry === 'string') {
-            entry = ['@babel/polyfill/noConflict', entry];
+          if (!!entry.unshift) {
+            if (!entry.includes('@babel/polyfill/noConflict')) {
+              entry.unshift('@babel/polyfill/noConflict');
+            } else if (typeof entry === 'string') {
+              entry = ['@babel/polyfill/noConflict', entry];
+            }
+
+            if (!entry.includes('intersection-observer')) {
+              entry.unshift('intersection-observer');
+            } else if (typeof entry === 'string') {
+              entry = ['intersection-observer', entry];
+            }
           }
         });
         return entries;
