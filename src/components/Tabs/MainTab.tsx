@@ -196,7 +196,8 @@ export const MainTab: React.FC<MainTabProps> = props => {
         path={homeURL}
         replace={true}
         pathRegexp={
-          /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(fantasy|romance|bl|general|comic)(\/.*$|$))/
+          // Hack
+          /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(author|book|event|search|category|fantasy|romance|bl|general|comic)(\/.*$|$))/
         }
       />
       <TabItem
