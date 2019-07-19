@@ -3,7 +3,6 @@ const { publicRuntimeConfig } = getConfig();
 export default () => (
   <>
     <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-    {/*<meta httpEquiv="Content-Security-Policy" content="default-src 'self' https://*.ridi.io; script-src 'self' 'unsafe-inline'; style-src 'self'; img-src 'self' data: https://*.ridibooks.com;"/>*/}
     <meta charSet="UTF-8" />
     <meta
       name="viewport"

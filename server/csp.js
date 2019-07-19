@@ -19,7 +19,6 @@ module.exports = function csp(app) {
 
   if (process.env.NODE_ENV !== 'production') {
     scriptSrc.push("'unsafe-eval'");
-    // styleSrc.push();
   } else {
     // styleSrc.push(nonce);
   }

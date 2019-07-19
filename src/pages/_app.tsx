@@ -5,7 +5,7 @@ import withRedux from 'next-redux-wrapper';
 import makeStore, { StoreRootState } from 'src/store/config';
 // import { ConnectedRouter } from 'connected-next-router';
 import { notifySentry, initializeSentry } from 'src/utils/sentry';
-import { Global } from '@emotion/core';
+import { CacheProvider, Global } from '@emotion/core';
 import { defaultTheme, resetStyles } from 'src/styles';
 import GNB from 'src/components/GNB';
 import { ThemeProvider } from 'emotion-theming';
@@ -18,6 +18,8 @@ import * as React from 'react';
 // Todo move css import code
 import 'slick-carousel/slick/slick.css';
 import { PartialSeparator } from 'src/components/Misc';
+import { cache } from 'emotion';
+import createCache from '@emotion/cache';
 
 interface StoreAppProps {
   store: Store<StoreRootState>;
@@ -93,8 +95,9 @@ class StoreApp extends App<StoreAppProps> {
   }
 
   public render() {
-    // console.log(cache);
-    const { Component, ctxPathname, query, pageProps, isPartials, store } = this.props;
+    // @ts-ignore
+    const { Component, ctxPathname, query, pageProps, isPartials, store, nonce } = this.props;
+
     if (isPartials) {
       return (
         <Container>
@@ -109,19 +112,21 @@ class StoreApp extends App<StoreAppProps> {
     } else {
       return (
         <Container>
-          <Global styles={resetStyles} />
-          <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
-            <Provider store={store}>
-              {/* Todo Apply Layout */}
-              <ThemeProvider theme={defaultTheme}>
-                <GNB searchKeyword={query.search || query.q} isPartials={false} />
-                <Contents>
-                  <Component {...pageProps} />
-                </Contents>
-                <Footer />
-              </ThemeProvider>
-            </Provider>
-          </BrowserLocationWithRouter>
+          <CacheProvider value={createCache({ ...cache, nonce })}>
+            <Global styles={resetStyles} />
+            <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
+              <Provider store={store}>
+                {/* Todo Apply Layout */}
+                <ThemeProvider theme={defaultTheme}>
+                  <GNB searchKeyword={query.search || query.q} isPartials={false} />
+                  <Contents>
+                    <Component {...pageProps} />
+                  </Contents>
+                  <Footer />
+                </ThemeProvider>
+              </Provider>
+            </BrowserLocationWithRouter>
+          </CacheProvider>
         </Container>
       );
     }
