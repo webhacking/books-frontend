@@ -15,13 +15,13 @@ module.exports = function csp(app) {
     'https://*.ridi.io',
     'https://*.ridibooks.com',
   ];
-  const styleSrc = ["'self'", 'https://*.ridi.io', 'https://*.ridibooks.com'];
+  const styleSrc = ["'self'", "'unsafe-inline'", 'https://*.ridi.io', 'https://*.ridibooks.com'];
 
   if (process.env.NODE_ENV !== 'production') {
     scriptSrc.push("'unsafe-eval'");
-    styleSrc.push("'unsafe-inline'");
+    // styleSrc.push();
   } else {
-    styleSrc.push(nonce);
+    // styleSrc.push(nonce);
   }
 
   app.use(
