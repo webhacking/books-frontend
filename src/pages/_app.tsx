@@ -9,13 +9,14 @@ import { Global } from '@emotion/core';
 import { defaultTheme, resetStyles } from 'src/styles';
 import GNB from 'src/components/GNB';
 import { ThemeProvider } from 'emotion-theming';
+// import { cache } from 'emotion';
+// import { CacheProvider } from '@emotion/core';
 import Footer from 'src/components/Footer';
 import styled from '@emotion/styled';
 import { BrowserLocationWithRouter } from 'src/components/Context';
 import * as React from 'react';
 // Todo move css import code
 import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import { PartialSeparator } from 'src/components/Misc';
 
 interface StoreAppProps {
@@ -92,6 +93,7 @@ class StoreApp extends App<StoreAppProps> {
   }
 
   public render() {
+    // console.log(cache);
     const { Component, ctxPathname, query, pageProps, isPartials, store } = this.props;
     if (isPartials) {
       return (

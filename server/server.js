@@ -3,6 +3,7 @@ const next = require('next');
 const path = require('path');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
+const csp = require('./csp');
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = parseInt(process.env.PORT || '8081', 10);
@@ -14,7 +15,7 @@ const handle = clientRoutes.getRequestHandler(app);
 
 function createServer() {
   const server = express();
-
+  csp(server);
   server.use(compression());
   server.use(cookieParser());
   server.use(express.json());
