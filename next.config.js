@@ -1,4 +1,3 @@
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
 const nextSourceMaps = require('@zeit/next-source-maps')({
   devtool: 'hidden-source-map',
@@ -26,14 +25,6 @@ module.exports = nextSourceMaps(
       ...require(`./env/${process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'local'}`),
     },
     webpack(config, option) {
-      const { isServer } = option;
-      if (isServer) {
-        config.plugins.push(
-          new ForkTsCheckerWebpackPlugin({
-            tsconfig: '../src/tsconfig.json',
-          }),
-        );
-      }
       config.module.rules.push({
         test: /\.(eot|woff|woff2|ttf|png|jpg|gif)$/,
         use: {
