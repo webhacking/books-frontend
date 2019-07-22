@@ -34,6 +34,9 @@ module.exports = function csp(app) {
           styleSrc,
           scriptSrc,
           connectSrc: [
+            "'self'",
+            'https://*.ridi.io',
+            'https://*.ridibooks.com',
             'sentry.io',
             'www.google-analytics.com',
             'stats.g.doubleclick.net',

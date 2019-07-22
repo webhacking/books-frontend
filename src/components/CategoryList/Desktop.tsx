@@ -150,8 +150,9 @@ const Desktop: React.FC<CategoryListProps> = props => {
       css={css`
         display: flex;
         height: 615px;
-        padding-top: 20px;
-        padding-left: 8px;
+        margin-top: 24px;
+        border-radius: 4px;
+        border: solid 1px #d1d5d9;
       `}>
       <ul
         css={css`
