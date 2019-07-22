@@ -30,8 +30,20 @@ module.exports = function csp(app) {
           baseUri: ["'none'"],
           objectSrc: ["'none'"],
           imgSrc: ["'self'", 'https://*.ridi.io', 'https://*.ridibooks.com'],
+          frameSrc: ['staticxx.facebook.com', 'connect.facebook.net'],
           styleSrc,
           scriptSrc,
+          connectSrc: [
+            'sentry.io',
+            'www.google-analytics.com',
+            'stats.g.doubleclick.net',
+            'www.facebook.com',
+          ],
+          reportUri: [
+            `https://sentry.io/api/1402572/security/?sentry_key=59c8097e9bdc4ec09316cbea89385069&sentry_environment=${
+              process.env.NODE_ENV
+            };`,
+          ],
         },
       },
     }),
