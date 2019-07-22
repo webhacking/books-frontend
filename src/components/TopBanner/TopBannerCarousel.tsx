@@ -427,9 +427,16 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       beforeChange={
         // @ts-ignore
         (prev: number, next: number) => {
-          // Todo fix this awful hack
+          // HACK fix this awful code
           setTimeout(() => {
-            window.dispatchEvent(new Event('resize'));
+            let event = null;
+            if (typeof Event === 'function') {
+              event = new Event('resize');
+            } else {
+              event = document.createEvent('Event');
+              event.initEvent('resize', true, true);
+            }
+            window.dispatchEvent(event);
             setTimeout(() => props.changePosition(next), 200);
           }, 100);
         }
