@@ -3,7 +3,6 @@ const presets = [
     'next/babel',
     {
       'preset-env': {
-        exclude: ['transform-classes'], // jest class invoke 'new' related
         useBuiltIns: 'entry',
         corejs: 3,
       },
