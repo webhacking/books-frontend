@@ -58,7 +58,7 @@ const Contact = styled.ul`
       }
     }
   }
-  margin-right: 74px;
+  margin-right: 80px;
 
   @media (max-width: 999px) {
     margin-bottom: 28px;
@@ -68,7 +68,7 @@ const Contact = styled.ul`
 const serviceNumber = css`
   word-break: keep-all;
   font-size: 20px;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.5px;
   font-weight: bold;
   color: white;
 `;
@@ -93,7 +93,7 @@ const FooterMenu = styled.ul`
     margin-right: 16px;
   }
   li {
-    width: 164px;
+    width: 140px;
     :not(:last-of-type) {
       margin-bottom: 16px;
     }
