@@ -39,11 +39,9 @@ module.exports = function csp(app) {
             'stats.g.doubleclick.net',
             'www.facebook.com',
           ],
-          reportUri: [
-            `https://sentry.io/api/1402572/security/?sentry_key=59c8097e9bdc4ec09316cbea89385069&sentry_environment=${
-              process.env.NODE_ENV
-            };`,
-          ],
+          reportUri: `https://sentry.io/api/1402572/security/?sentry_key=a0a997382844435fa6c89803ef6ce8e5&sentry_environment=${
+            process.env.NODE_ENV
+          };`,
         },
       },
     }),
