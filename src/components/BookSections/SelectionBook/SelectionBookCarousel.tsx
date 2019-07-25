@@ -11,6 +11,7 @@ import {
   SelectionBookLoading,
 } from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
+import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -40,6 +41,7 @@ const CarouselWrapper = styled.div`
 const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
+  const wrapperRef = useRef<HTMLDivElement>();
   // @ts-ignore
   const [isMounted, setMounted] = useState(false);
 
@@ -73,17 +75,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
           items={props.items.slice(0, 6)}
         />
       )}
-      <CarouselWrapper
-        css={
-          carouselInitialize
-            ? css`
-                height: 100%;
-                padding-bottom: 48px;
-              `
-            : css`
-                height: 0;
-              `
-        }>
+      <CarouselWrapper ref={wrapperRef}>
         <ForwardedRefComponent
           ref={slider}
           css={recommendedBookCarouselLoadingCSS}
@@ -129,7 +121,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                     left: -38px;
                   }
                   left: 5px;
-                  top: 37%;
+                  top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
                 `}
               />
             </button>
@@ -142,7 +134,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                     right: -38px;
                   }
                   right: 5px;
-                  top: 37%;
+                  top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
                 `}
               />
             </button>

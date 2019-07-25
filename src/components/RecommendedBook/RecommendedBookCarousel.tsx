@@ -10,6 +10,7 @@ import { BookMeta, BookScheme } from 'src/components/RecommendedBook/Recommended
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
+import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -67,6 +68,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
 const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
+  const wrapperRef = useRef<HTMLDivElement>();
   // @ts-ignore
   const [isMounted, setMounted] = useState(false);
 
@@ -89,7 +91,11 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    if (carouselInitialize) {
+      // @ts-ignore
+      // window.slider = slider;
+    }
+  }, [carouselInitialize]);
 
   return (
     <>
@@ -97,7 +103,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
       {!carouselInitialize && (
         <RecommendedBookCarouselLoading type={props.type} items={props.items.slice(0, 6)} />
       )}
-      <CarouselWrapper>
+      <CarouselWrapper ref={wrapperRef}>
         <ForwardedRefComponent
           ref={slider}
           css={recommendedBookCarouselLoadingCSS}
@@ -150,7 +156,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                     left: -38px;
                   }
                   left: 5px;
-                  top: 37%;
+                  top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
                 `}
               />
             </button>
@@ -164,7 +170,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                     right: -38px;
                   }
                   right: 5px;
-                  top: 37%;
+                  top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
                 `}
               />
             </button>

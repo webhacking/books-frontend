@@ -4,16 +4,21 @@ import RankingBookList from './RankingBook/RankingBookList';
 import { BookScheme } from 'src/types/book';
 import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBook';
 import styled from '@emotion/styled';
+import { css } from '@emotion/core';
 
-export const RankingBookTitle = styled.h3`
-  max-width: 1000px;
-  margin: 0 auto;
+const fontStyle = css`
   height: 21px;
   font-size: 21px;
   font-weight: normal;
   line-height: 1;
   letter-spacing: -0.23px;
   color: #000000;
+`;
+
+export const RankingBookTitle = styled.h3`
+  ${fontStyle};
+  max-width: 1000px;
+  margin: 0 auto;
   margin-bottom: 15px;
   padding-top: 6px;
   padding-left: 24px;
@@ -26,12 +31,7 @@ export const RankingBookTitle = styled.h3`
 `;
 
 export const SectionTitle = styled.h3`
-  height: 21px;
-  font-size: 21px;
-  font-weight: normal;
-  line-height: 1;
-  letter-spacing: -0.23px;
-  color: #000000;
+  ${fontStyle};
   margin-bottom: 21px;
   @media (max-width: 833px) {
     padding-left: 16px;
