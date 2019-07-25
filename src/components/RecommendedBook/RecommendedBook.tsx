@@ -19,26 +19,12 @@ import { useRef } from 'react';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 const { publicRuntimeConfig } = getConfig();
 
-const hotReleaseRecommendedBookWrapperCSS = css`
-  padding-top: 36px;
-  @media (max-width: 833px) {
-    background: url(${`${
-        publicRuntimeConfig.STATIC_CDN_URL
-      }/static/image/recommended_book_background@mobile.png`})
-      center center no-repeat #17202e;
-    background-size: cover;
-  }
-  @media (max-width: 999px) {
-    height: 409px;
-  }
-  height: 458px;
+const backgroundImageCSS = css`
   background: url(${`${
       publicRuntimeConfig.STATIC_CDN_URL
     }/static/image/recommended_book_background@desktop.png`})
     center center no-repeat #17202e;
-  background-size: cover;
-`;
-const recommendedBookWrapperCSS = css`
+  background-size: contain;
   @media (max-width: 833px) {
     background: url(${`${
         publicRuntimeConfig.STATIC_CDN_URL
@@ -46,15 +32,22 @@ const recommendedBookWrapperCSS = css`
       center center no-repeat #17202e;
     background-size: cover;
   }
+`;
+
+const hotReleaseRecommendedBookWrapperCSS = css`
+  ${backgroundImageCSS};
+  @media (max-width: 999px) {
+    height: 409px;
+  }
+  padding-top: 36px;
+  height: 458px;
+`;
+const recommendedBookWrapperCSS = css`
+  ${backgroundImageCSS};
   @media (max-width: 999px) {
     height: 353px;
   }
   height: 406px;
-  background: url(${`${
-      publicRuntimeConfig.STATIC_CDN_URL
-    }/static/image/recommended_book_background@desktop.png`})
-    center center no-repeat #17202e;
-  background-size: cover;
   padding-top: 54px;
 `;
 

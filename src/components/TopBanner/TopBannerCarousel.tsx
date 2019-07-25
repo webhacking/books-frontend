@@ -157,7 +157,7 @@ const sliderCSS = css`
       width: 355px;
       border-radius: 6px;
       height: 100%;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.5);
       transition: background-color 0.1s;
     }
   }
@@ -197,7 +197,7 @@ const sliderCSS = css`
       .slide-overlay {
         width: 430px;
         border-radius: 6px;
-        background: rgba(0, 0, 0, 0.6);
+        background: rgba(0, 0, 0, 0.5);
         transition: all 0.2s;
         transform: scale(0.965);
       }
@@ -279,7 +279,7 @@ const carouselLoadingOverlay = css`
   width: 355px;
   border-radius: 6px;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   @media (min-width: 1000px) {
     width: 430px;
     transform: scale(0.965);
@@ -344,6 +344,15 @@ const TopBannerItem: React.FC<TopBannerItemProps> = props => {
     </TopBannerItemWrapper>
   );
 };
+
+const arrowCSS = css`
+  :hover {
+    opacity: 1;
+  }
+  opacity: 0.5;
+  transition: opacity 0.1s;
+  cursor: pointer;
+`;
 
 const arrowWrapperCSS = css`
   display: none;
@@ -511,6 +520,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
               <button type="submit" onClick={handleClickLeft}>
                 <Arrow
                   side={'left'}
+                  arrowStyle={arrowCSS}
                   wrapperStyle={css`
                     ${arrowWrapperCSS};
                     left: -40px;
@@ -522,6 +532,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
               <button type="submit" onClick={handleClickRight}>
                 <Arrow
                   side={'right'}
+                  arrowStyle={arrowCSS}
                   wrapperStyle={css`
                     ${arrowWrapperCSS};
                     right: -40px;

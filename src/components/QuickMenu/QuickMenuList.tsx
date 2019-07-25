@@ -23,13 +23,13 @@ const MenuList = styled.ul`
   flex-direction: row;
   justify-content: space-between;
   overflow: auto;
-  padding-top: 14px;
+  padding-top: 24px;
   padding-bottom: 32px;
   padding-left: 13px;
   padding-right: 13px;
   @media (max-width: 999px) {
-    padding-left: unset;
-    padding-right: unset;
+    padding-left: 0;
+    padding-right: 0;
   }
   -webkit-overflow-scrolling: touch;
 `;

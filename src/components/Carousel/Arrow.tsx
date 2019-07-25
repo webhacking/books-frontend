@@ -8,12 +8,13 @@ interface ArrowProps {
   side?: 'left' | 'right';
   color?: 'white' | 'dark';
   wrapperStyle?: SerializedStyles;
+  arrowStyle?: SerializedStyles;
   width?: string;
   height?: string;
   fill?: string;
 }
 
-const arrowCSS = css`
+const defaultArrowCSS = css`
   :hover {
     opacity: 0.6;
   }
@@ -27,7 +28,7 @@ const leftRotate = css`
 `;
 
 const Arrow: React.FC<ArrowProps> = props => {
-  const { color, side } = props;
+  const { color, side, arrowStyle } = props;
   return (
     <div
       css={css`
@@ -36,31 +37,19 @@ const Arrow: React.FC<ArrowProps> = props => {
       `}
       tabIndex={1}>
       {color === 'dark' ? (
-        <>
-          {side === 'left' ? (
-            <CarouselArrowDark
-              css={css`
-                ${leftRotate};
-                ${arrowCSS};
-              `}
-            />
-          ) : (
-            <CarouselArrowDark css={arrowCSS} />
-          )}
-        </>
+        <CarouselArrowDark
+          css={css`
+            ${side === 'left' ? leftRotate : ''};
+            ${arrowStyle || defaultArrowCSS};
+          `}
+        />
       ) : (
-        <>
-          {side === 'left' ? (
-            <CarouselArrowWhite
-              css={css`
-                ${leftRotate};
-                ${arrowCSS};
-              `}
-            />
-          ) : (
-            <CarouselArrowWhite css={arrowCSS} />
-          )}
-        </>
+        <CarouselArrowWhite
+          css={css`
+            ${side === 'left' ? leftRotate : ''};
+            ${arrowStyle || defaultArrowCSS};
+          `}
+        />
       )}
     </div>
   );
