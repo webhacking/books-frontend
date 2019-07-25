@@ -12,8 +12,9 @@ interface BrowserLocationContextProps {
 
 const BrowserLocation: React.FC<BrowserLocationContextProps> = props => {
   const [currentPath, setCurrentPath] = useState<string>(props.pathname);
-  if (!props.isPartials) {
-    useEffect(() => {
+
+  useEffect(() => {
+    if (!props.isPartials) {
       setCurrentPath(window.location.pathname);
       const routeChangeCompleteHandler = (url: string) => {
         setCurrentPath(url);
@@ -34,8 +35,8 @@ const BrowserLocation: React.FC<BrowserLocationContextProps> = props => {
           props.router.events.off('routeChangeError', routeErrorHandler);
         }
       };
-    }, []);
-  }
+    }
+  }, []);
   return (
     <BrowserLocationContext.Provider value={currentPath}>
       {props.children}

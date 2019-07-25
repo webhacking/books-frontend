@@ -91,6 +91,7 @@ export default [
     ],
   },
   {
+    title: '지금 사람들이 많이 읽고 있는 책!',
     type: 'ranking',
     option: { type: 'small' },
     items: [

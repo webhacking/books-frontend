@@ -26,10 +26,6 @@ const backgroundImageCSS = css`
     center center no-repeat #17202e;
   background-size: contain;
   @media (max-width: 833px) {
-    background: url(${`${
-        publicRuntimeConfig.STATIC_CDN_URL
-      }/static/image/recommended_book_background@mobile.png`})
-      center center no-repeat #17202e;
     background-size: cover;
   }
 `;
