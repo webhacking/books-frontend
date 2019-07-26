@@ -44,6 +44,10 @@ layers:
         - codecov/**
         - aws-sdk/**
         - prettier/**
+        - typescript/**
+        - jest/**
+        - '@babel/**'
+        - 'eslint/**'
 
 functions:
   server:
