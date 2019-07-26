@@ -12,12 +12,12 @@ package:
     - .cache
     - coverage/**
     - static/**
+    - src/tests/**
     - secrets.json
     - yarn.lock
     - provisioning/**
     - cypress/**
     - src/**
-    - tslint.json
     - tsconfig.json
 
 provider:
@@ -37,6 +37,11 @@ functions:
   server:
     path: /
     handler: server/index.handler
+    warmup:
+      enabled:
+        - development
+        - staging
+        - production
     events:
       - cors: true
       - http:
@@ -53,10 +58,20 @@ plugins:
   - serverless-apigw-binary
   #  - serverless-domain-manager
   - serverless-s3-sync
+  - serverless-plugin-warmup
 
 # Serverless.js Custom Domain 사용하지 않을 경우 다음 이슈 확인
 # https://github.com/Vadorequest/serverless-with-next#known-issues
 custom:
+  warmup:
+    enabled: true
+    folderName: 'books_warmup'
+    cleanFolder: false
+    memorySize: 256
+    timeout: 20
+    prewarm: true
+    concurrency: 1
+
   s3Sync:
     - bucketName: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
       bucketPrefix: static/ # optional
