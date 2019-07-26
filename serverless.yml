@@ -14,7 +14,6 @@ package:
     - cypress/**
     - src/**
     - tsconfig.json
-
 provider:
   name: aws
   runtime: nodejs8.10
@@ -35,6 +34,14 @@ layers:
     compatibleRuntimes:
       - nodejs8.10
     description: sentry + next.js + emotion + ts + redux node_modules
+    package:
+      exclude:
+        - node_modules/.cache/**
+        - node_modules/@types/**
+        - node_modules/serverless/**
+        - node_modules/codecov/**
+        - node_modules/aws-sdk/**
+        - node_modules/prettier/**
 
 functions:
   server:
