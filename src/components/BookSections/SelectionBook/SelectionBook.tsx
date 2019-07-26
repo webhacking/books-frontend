@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { BookScheme } from 'src/types/book';
 import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
@@ -8,10 +8,11 @@ import BookMeta from 'src/components/BookMeta/BookMeta';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import { css } from '@emotion/core';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
-import { useEffect, useState } from 'react';
-import { SectionTitle, SelectionOption } from 'src/components/BookSections/BookSectionContainer';
+import {
+  SectionTitle,
+  SelectionOption,
+} from 'src/components/BookSections/BookSectionContainer';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
-import { useRef } from 'react';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 
 const SectionWrapper = styled.section`

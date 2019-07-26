@@ -6,5 +6,5 @@ export const isOnsetNucleusCoda = (char: string) => {
     throw new Error('Can not get a character');
   }
 
-  return 0x3130 < char.charCodeAt(0) && char.charCodeAt(0) < 0x3190;
+  return char.charCodeAt(0) > 0x3130 && char.charCodeAt(0) < 0x3190;
 };

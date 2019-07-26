@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next-server/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 import { NextComponentType } from 'next';
@@ -6,7 +6,6 @@ import PageTitle from 'src/components/PageTitle/PageTitle';
 import { css } from '@emotion/core';
 import { flexColumnStart, RIDITheme } from 'src/styles';
 import { timeAgo } from 'src/utils/common';
-import { useEffect, useState } from 'react';
 import ArrowLeft from 'src/svgs/ChevronRight.svg';
 
 const sectionCSS = css`
@@ -108,41 +107,47 @@ interface NotificationItemProps {
   createdAtTimeAgo: string;
 }
 
-const NotificationItem: React.FunctionComponent<NotificationItemProps> = React.memo(props => {
-  const { item, createdAtTimeAgo } = props;
-  return (
-    <li css={notiListItemCSS}>
-      <a css={wrapperCSS} href={item.url}>
-        <div css={imageWrapperCSS}>
-          <img
+const NotificationItem: React.FunctionComponent<NotificationItemProps> = React.memo(
+  props => {
+    const { item, createdAtTimeAgo } = props;
+    return (
+      <li css={notiListItemCSS}>
+        <a css={wrapperCSS} href={item.url}>
+          <div css={imageWrapperCSS}>
+            <img
+              alt={item.title}
+              css={css`
+                box-shadow: 0 0 3px 0.5px rgba(0, 0, 0, 0.3);
+              `}
+              width={'56px'}
+              src={item.imageUrl}
+            />
+          </div>
+          <div
             css={css`
-              box-shadow: 0 0 3px 0.5px rgba(0, 0, 0, 0.3);
-            `}
-            width={'56px'}
-            src={item.imageUrl}
-          />
-        </div>
-        <div
-          css={css`
-            ${flexColumnStart};
-          `}>
-          <h3 css={notificationTitleCSS} dangerouslySetInnerHTML={{ __html: item.title }} />
-          <span>{createdAtTimeAgo}</span>
-        </div>
-        <div
-          css={css`
-            padding: 0 15px;
-            margin-left: auto;
-            @media (min-width: 1000px) {
-              display: none;
-            }
-          `}>
-          <ArrowLeft css={arrow} />
-        </div>
-      </a>
-    </li>
-  );
-});
+              ${flexColumnStart};
+            `}>
+            <h3
+              css={notificationTitleCSS}
+              dangerouslySetInnerHTML={{ __html: item.title }}
+            />
+            <span>{createdAtTimeAgo}</span>
+          </div>
+          <div
+            css={css`
+              padding: 0 15px;
+              margin-left: auto;
+              @media (min-width: 1000px) {
+                display: none;
+              }
+            `}>
+            <ArrowLeft css={arrow} />
+          </div>
+        </a>
+      </li>
+    );
+  },
+);
 
 interface NotificationPageProps {
   q?: string;
@@ -170,7 +175,11 @@ const NotificationPage: React.FC<NotificationPageProps> & NextComponentType = pr
         <PageTitle title={'알림'} />
         <ul css={notiListCSS}>
           {notifications.map((item, index) => (
-            <NotificationItem key={index} createdAtTimeAgo={timeAgo(item.createdAt)} item={item} />
+            <NotificationItem
+              key={index}
+              createdAtTimeAgo={timeAgo(item.createdAt)}
+              item={item}
+            />
           ))}
         </ul>
       </section>
@@ -178,9 +187,10 @@ const NotificationPage: React.FC<NotificationPageProps> & NextComponentType = pr
   );
 };
 
-NotificationPage.getInitialProps = async (props: ConnectedInitializeProps) => {
-  // Todo Initial Fetch
-  return { q: props.query.q, notifications: mockList };
-};
+// Todo Initial Fetch
+NotificationPage.getInitialProps = async (props: ConnectedInitializeProps) => ({
+  q: props.query.q,
+  notifications: mockList,
+});
 
 export default NotificationPage;

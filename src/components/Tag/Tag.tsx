@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { css } from '@emotion/core';
 import SomeDealIcon from 'src/svgs/SomeDealBadge.svg';
 
@@ -36,28 +35,25 @@ const someDealCSS = css`
   background-color: #e7e9ff;
 `;
 
-const NovelTag = () => {
-  return <span css={novelCSS}>소설</span>;
-};
-const ComicTag = () => {
-  return <span css={comicCSS}>만화</span>;
-};
-const SomeDealTag = () => {
-  return (
-    <span css={someDealCSS}>
-      <SomeDealIcon
-        css={css`
-          height: 12px;
-        `}
-      />
-    </span>
-  );
-};
+const NovelTag = () => <span css={novelCSS}>소설</span>;
+const ComicTag = () => <span css={comicCSS}>만화</span>;
+const SomeDealTag = () => (
+  <span css={someDealCSS}>
+    <SomeDealIcon
+      css={css`
+        height: 12px;
+      `}
+    />
+  </span>
+);
 
 export default class Tag extends React.Component {
   public static Comic = ComicTag;
+
   public static Novel = NovelTag;
+
   public static SomeDeal = SomeDealTag;
+
   public render() {
     return <Fragment>{this.props.children}</Fragment>;
   }

@@ -27,6 +27,7 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
   }
 
   public state: GNBState = {
+    // eslint-disable-next-line no-invalid-this
     theme: this.props.theme,
     isMounted: false,
   };
@@ -34,6 +35,7 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
   public componentDidMount(): void {
     this.setState({
       isMounted: true,
+      theme: this.props.theme,
     });
   }
 

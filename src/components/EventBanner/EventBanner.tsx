@@ -1,6 +1,5 @@
-import * as React from 'react';
 // import styled from '@emotion/styled';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/core';
 // @ts-ignore
 import { EventBannerList } from 'src/components/EventBanner';
@@ -36,7 +35,7 @@ const EventBanner: React.FC<EventBannerProps> = props => {
     // console.log('mount?', currentGenre, props.genre);
 
     // Todo 장르가 달라져서 마운트 된다면 Fetch
-  });
+  }, [props.genre]);
 
   return (
     <section ref={targetRef} css={eventBannerWrapperCSS}>

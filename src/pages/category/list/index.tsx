@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ConnectedInitializeProps } from 'src/types/common';
 import Head from 'next-server/head';
 import { NextComponentType } from 'next';
@@ -25,7 +24,7 @@ export interface CategoryList {
   curatedCategory: ParentCategory[];
 }
 
-const categoryMock: CategoryList = {
+export const categoryMock: CategoryList = {
   general: [
     {
       id: 1,
@@ -308,7 +307,9 @@ const sectionCSS = css`
 const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = props => {
   const [isMounted, setMounted] = useState(false);
 
-  const [categoryList] = useState(props.categoryList || { general: [], curatedCategory: [] });
+  const [categoryList] = useState(
+    props.categoryList || { general: [], curatedCategory: [] },
+  );
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -337,9 +338,10 @@ const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = pr
   );
 };
 
-CategoryListPage.getInitialProps = async (props: ConnectedInitializeProps) => {
-  // Todo Initial Fetch
-  return { q: props.query.q, categoryList: categoryMock };
-};
+// Todo Initial Fetch
+CategoryListPage.getInitialProps = async (props: ConnectedInitializeProps) => ({
+  q: props.query.q,
+  categoryList: categoryMock,
+});
 
 export default CategoryListPage;

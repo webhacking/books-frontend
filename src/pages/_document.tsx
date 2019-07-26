@@ -1,4 +1,10 @@
-import Document, { Head, Main, NextScript, DocumentProps, DocumentContext } from 'next/document';
+import Document, {
+  Head,
+  Main,
+  NextScript,
+  DocumentProps,
+  DocumentContext,
+} from 'next/document';
 import { extractCritical } from 'emotion-server';
 import { EmotionCritical } from 'create-emotion-server';
 import Favicon from 'src/pages/Favicon';
@@ -24,15 +30,13 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
   public static async getInitialProps(context: DocumentContext) {
     const originalRenderPage = context.renderPage;
 
-    context.renderPage = nonce => {
-      return originalRenderPage({
+    context.renderPage = nonce => originalRenderPage({
         // useful for wrapping the whole react tree
         // @ts-ignore
         enhanceApp: App => props => <App {...props} nonce={nonce} />,
         // useful for wrapping in a per-page basis
         enhanceComponent: Component => props => <Component {...props} />,
       });
-    };
     // @ts-ignore
     const { locals } = context.res;
     const page = context.renderPage(locals.nonce);
@@ -47,8 +51,9 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
     // @ts-ignore
     return { ...page, nonce: locals.nonce };
   }
+
   public render() {
-    const isPartials = !!this.props.__NEXT_DATA__.page.match(/\/partials\//);
+    const isPartials = !!this.props.__NEXT_DATA__.page.match(/\/partials\//u);
     const { nonce } = this.props;
     return (
       <html lang="ko">

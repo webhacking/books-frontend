@@ -8,6 +8,7 @@ declare module 'connected-next-router' {
   }
 
   function routerReducer(): Reducer;
+  // eslint-disable-next-line no-empty-pattern
   function createRouterMiddleware({}): Middleware;
   function initialRouterState(path: string): RouteState;
 

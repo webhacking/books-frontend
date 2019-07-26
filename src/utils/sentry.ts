@@ -18,9 +18,9 @@ export const notifySentry = (
 ) => {
   configureScope((scope: Scope) => {
     if (!req) {
-      scope.setTag(`ssr`, 'false');
+      scope.setTag('ssr', 'false');
     } else {
-      scope.setTag(`ssr`, 'true');
+      scope.setTag('ssr', 'true');
     }
 
     //   scope.setExtra(`url`, req.url);

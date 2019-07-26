@@ -32,26 +32,24 @@ interface SelectionBookListProps {
   isAIRecommendation: boolean;
 }
 
-const SelectionBookList: React.FC<SelectionBookListProps> = props => {
-  return (
-    <ul
-      css={css`
-        ${flexRowStart};
-        padding-bottom: 48px;
-        box-sizing: content-box;
-        overflow: auto;
-      `}>
-      {props.items.map((item, index) => (
-        <li key={index} css={itemCSS}>
-          <SelectionBookItem
-            isAIRecommendation={props.isAIRecommendation}
-            book={item}
-            width={120}
-          />
-        </li>
-      ))}
-    </ul>
-  );
-};
+const SelectionBookList: React.FC<SelectionBookListProps> = props => (
+  <ul
+    css={css`
+      ${flexRowStart};
+      padding-bottom: 48px;
+      box-sizing: content-box;
+      overflow: auto;
+    `}>
+    {props.items.map((item, index) => (
+      <li key={index} css={itemCSS}>
+        <SelectionBookItem
+          isAIRecommendation={props.isAIRecommendation}
+          book={item}
+          width={120}
+        />
+      </li>
+    ))}
+  </ul>
+);
 
 export default SelectionBookList;

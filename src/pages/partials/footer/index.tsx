@@ -19,6 +19,7 @@ export class PartialFooter extends React.Component<FooterProps> {
     // const result = await axios.get('https://randomuser.me/api/');
     return { ...initialProps.query };
   }
+
   public render() {
     return (
       <ThemeProvider theme={!this.props.theme ? defaultTheme : darkTheme}>

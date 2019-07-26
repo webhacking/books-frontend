@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import {
   AuthorInfo as AuthorInfoScheme,
   InstantSearchAuthorResultScheme,
@@ -10,7 +10,6 @@ import { View } from 'libreact/lib/View';
 import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import { RIDITheme } from 'src/styles';
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
 
 const listCSS = css`
   padding-bottom: 10px;
@@ -21,8 +20,7 @@ const listCSS = css`
 
 const listItemCSS = css`
   @media (max-width: 999px) {
-    min-height: 40px;
-    padding: 13px 10px;
+    max-height: 40px;
   }
   cursor: pointer;
 `;
@@ -66,28 +64,40 @@ const listTitleCSS = (theme: RIDITheme) => css`
   margin-bottom: 10px;
 `;
 
+const titleCSS = css`
+  font-size: 14px;
+  line-height: 1.57;
+  letter-spacing: -0.43px;
+  word-break: keep-all;
+`;
+
 const ItemWrapper = styled.div`
   display: flex;
 `;
 
 interface InstantSearchResultProps {
   result: InstantSearchResultScheme;
-  handleKeyDown: (e: React.KeyboardEvent<HTMLLIElement>) => void;
-  handleClickAuthorItem: (e: React.MouseEvent<HTMLLIElement>) => void;
-  handleClickBookItem: (e: React.MouseEvent<HTMLLIElement>) => void;
+  handleKeyDown: (e: React.KeyboardEvent<HTMLLIElement | HTMLButtonElement>) => void;
+  handleClickAuthorItem: (e: React.MouseEvent<HTMLLIElement | HTMLButtonElement>) => void;
+  handleClickBookItem: (e: React.MouseEvent<HTMLLIElement | HTMLButtonElement>) => void;
   focusedPosition: number;
 }
 
 interface InstantSearchResultBookListProps {
   result: InstantSearchResultScheme;
-  handleKeyDown: (e: React.KeyboardEvent<HTMLLIElement>) => void;
-  handleClickBookItem: (e: React.MouseEvent<HTMLLIElement>) => void;
+  handleKeyDown: (e: React.KeyboardEvent<HTMLLIElement | HTMLButtonElement>) => void;
+  handleClickBookItem: (e: React.MouseEvent<HTMLLIElement | HTMLButtonElement>) => void;
 }
 
 const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props => {
   const { author } = props;
+
   return (
-    <div>
+    <div
+      css={css`
+        display: flex;
+        align-items: center;
+      `}>
       <span
         css={css`
           font-size: 14px;
@@ -100,7 +110,7 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
           margin-right: 8px;
         `}
         dangerouslySetInnerHTML={{
-          __html: author.highlight.name_raw! || author.name_raw!,
+          __html: author.highlight.name_raw || author.name_raw,
         }}
       />
       <span
@@ -149,6 +159,7 @@ const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = p
       </span>
     );
   }
+
   return (
     <span
       css={css`
@@ -164,88 +175,100 @@ const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = p
 
 const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props => {
   const { result, handleKeyDown, handleClickBookItem } = props;
+
   return (
     <ListWrapper>
       <p css={listTitleCSS}>도서</p>
       <ul css={listCSS}>
         {result.books.map((book: InstantSearchBookResultScheme, index) => (
-          <li
-            tabIndex={1}
-            data-book-id={book.b_id}
-            onKeyDown={handleKeyDown}
-            onClick={handleClickBookItem}
-            css={bookListItemCSS}
-            key={index}>
-            <WindowWidthQuery>
-              <View maxWidth={1000}>
-                <span
-                  css={css`
-                    margin-right: 4px;
-                  `}
-                  dangerouslySetInnerHTML={{
-                    __html: book.highlight.web_title_title_raw! || book.web_title_title_raw!,
-                  }}
-                />
-                <AuthorLabel author={book.author} authors={book.authors_info} />
-                <span
-                  css={css`
-                    ${authorPublisherCSS};
-                    padding-left: 4px;
-                    border-left: 1px solid #e6e8eb;
-                  `}>
-                  {book.publisher}
-                </span>
-              </View>
-              <View>
-                <div>
-                  <ItemWrapper
+          <li data-book-id={book.b_id} css={bookListItemCSS} key={index}>
+            <button
+              css={css`
+                height: 100%;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                @media (max-width: 999px) {
+                  padding: 9px 10px;
+                }
+              `}
+              data-book-id={book.b_id}
+              onKeyDown={handleKeyDown}
+              onClick={handleClickBookItem}>
+              <WindowWidthQuery>
+                <View maxWidth={1000}>
+                  <span
                     css={css`
-                      padding: 10px;
+                      ${titleCSS};
+                      margin-right: 4px;
+                    `}
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        book.highlight.web_title_title_raw || book.web_title_title_raw,
+                    }}
+                  />
+                  <AuthorLabel author={book.author} authors={book.authors_info} />
+                  <span
+                    css={css`
+                      ${authorPublisherCSS};
+                      padding-left: 4px;
+                      border-left: 1px solid #e6e8eb;
                     `}>
-                    <img
-                      css={(theme: RIDITheme) => css`
-                        margin-right: 12px;
-                        border: 1px solid ${theme.image.border};
-                        flex-shrink: 0;
-                        width: 38px;
-                      `}
-                      width="38px"
-                      height="58px"
-                      src={`https://misc.ridibooks.com/cover/${book.b_id}/small`}
-                    />
-                    <div
+                    {book.publisher}
+                  </span>
+                </View>
+                <View>
+                  <div>
+                    <ItemWrapper
                       css={css`
-                        display: flex;
-                        flex-direction: column;
+                        padding: 10px;
                       `}>
-                      <p
-                        css={css`
-                          font-size: 14px;
-                          line-height: 1.57;
-                          letter-spacing: -0.43px;
-                          word-break: keep-all;
-                          margin-bottom: 4px;
+                      <img
+                        alt={book.web_title_title}
+                        css={(theme: RIDITheme) => css`
+                          margin-right: 12px;
+                          border: 1px solid ${theme.image.border};
+                          flex-shrink: 0;
+                          width: 38px;
                         `}
-                        dangerouslySetInnerHTML={{
-                          __html: book.highlight.web_title_title_raw! || book.web_title_title_raw!,
-                        }}
+                        width="38px"
+                        height="58px"
+                        src={`https://misc.ridibooks.com/cover/${book.b_id}/small`}
                       />
-                      <div>
-                        <AuthorLabel author={book.author} authors={book.authors_info} />
-                        <span
+                      <div
+                        css={css`
+                          display: flex;
+                          flex-direction: column;
+                          align-items: start;
+                        `}>
+                        <p
                           css={css`
-                            ${authorPublisherCSS};
-                            padding-left: 4px;
-                            border-left: 1px solid #e6e8eb;
-                          `}>
-                          {book.publisher}
-                        </span>
+                            ${titleCSS};
+                            margin-bottom: 4px;
+                          `}
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              book.highlight.web_title_title_raw ||
+                              book.web_title_title_raw,
+                          }}
+                        />
+                        <div>
+                          <AuthorLabel author={book.author} authors={book.authors_info} />
+                          <span
+                            css={css`
+                              ${authorPublisherCSS};
+                              padding-left: 4px;
+                              border-left: 1px solid #e6e8eb;
+                            `}>
+                            {book.publisher}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </ItemWrapper>
-                </div>
-              </View>
-            </WindowWidthQuery>
+                    </ItemWrapper>
+                  </div>
+                </View>
+              </WindowWidthQuery>
+            </button>
           </li>
         ))}
       </ul>
@@ -269,7 +292,8 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
         (items[focusedPosition - 1] as HTMLLIElement).focus();
       }
     }
-  }, [focusedPosition, result]);
+  }, [focusedPosition, result, wrapperRef]);
+
   return (
     <div ref={wrapperRef}>
       {result.authors.length > 0 && (
@@ -286,28 +310,34 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
               }
             `}>
             {result.authors.map((author, index) => (
-              <li
-                data-author-id={author.id}
-                tabIndex={1}
-                onKeyDown={handleKeyDown}
-                onClick={handleClickAuthorItem}
-                css={authorListItemCSS}
-                key={index}>
-                <WindowWidthQuery>
-                  <View maxWidth={1000}>
-                    <AuthorInfo author={author} />
-                  </View>
-                  <View>
-                    <div>
-                      <ItemWrapper
-                        css={css`
-                          padding: 5px 0;
-                        `}>
-                        <AuthorInfo author={author} />
-                      </ItemWrapper>
-                    </div>
-                  </View>
-                </WindowWidthQuery>
+              <li css={authorListItemCSS} key={index}>
+                <button
+                  css={css`
+                    width: 100%;
+                    height: 100%;
+                    @media (max-width: 999px) {
+                      padding: 9px 10px;
+                    }
+                  `}
+                  data-author-id={author.id}
+                  onKeyDown={handleKeyDown}
+                  onClick={handleClickAuthorItem}>
+                  <WindowWidthQuery>
+                    <View maxWidth={1000}>
+                      <AuthorInfo author={author} />
+                    </View>
+                    <View>
+                      <div>
+                        <ItemWrapper
+                          css={css`
+                            padding: 5px 0;
+                          `}>
+                          <AuthorInfo author={author} />
+                        </ItemWrapper>
+                      </div>
+                    </View>
+                  </WindowWidthQuery>
+                </button>
               </li>
             ))}
           </ul>

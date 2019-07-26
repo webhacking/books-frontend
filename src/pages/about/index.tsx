@@ -18,6 +18,7 @@ class About extends React.Component<AboutProps> {
   public static async getInitialProps(init: ConnectedInitializeProps) {
     return { id: init.query.id };
   }
+
   public componentDidMount() {
     this.props.dispatchTestAction({ version: 'test' });
   }
@@ -51,11 +52,10 @@ class About extends React.Component<AboutProps> {
   }
 }
 
-const mapStateToProps = (state: StoreRootState) => {
-  return {
-    app: state.app!,
-  };
-};
+const mapStateToProps = (state: StoreRootState) => ({
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  app: state.app!,
+});
 
 const mapDispatchToProps = {
   dispatchTestAction: appActions.initialize,

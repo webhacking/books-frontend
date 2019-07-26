@@ -138,49 +138,48 @@ interface GNBProps {
   isPartials: boolean;
 }
 
-export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
-  return (
-    <GNBWrapper id={props.id}>
-      <Header>
-        <Navigation>
-          <div css={logoAndSearchBox}>
-            <LogoWrapper>
-              <li>
-                <a
-                  href={props.isPartials ? 'https://ridibooks.com' : '/'}
-                  css={css`
-                    display: flex;
-                    align-items: center;
-                  `}>
-                  <RidiLogo css={ridiLogo} />
-                  <span className="a11y">RIDIBOOKS</span>
-                </a>
-              </li>
-              <li>
-                <a href="https://select.ridibooks.com">
-                  <RidiSelectLogo css={ridiSelectLogo} />
-                  <span className="a11y">리디셀렉트</span>
-                </a>
-              </li>
-            </LogoWrapper>
-            <ButtonWrapper>
-              <li>
-                <Button type={'secondary'} label={'회원가입'} />
-              </li>
-              <li>
-                <Button type={'primary'} label={'로그인'} />
-              </li>
-            </ButtonWrapper>
-            <InstantSearch
-              isPartials={props.isPartials}
-              searchKeyword={props.searchKeyword || ''}
-            />
-          </div>
-        </Navigation>
-        <MainTab isPartials={props.isPartials} />
-      </Header>
-    </GNBWrapper>
-  );
-});
+export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => (
+  // @ts-ignore
+  <GNBWrapper id={props.id}>
+    <Header>
+      <Navigation>
+        <div css={logoAndSearchBox}>
+          <LogoWrapper>
+            <li>
+              <a
+                href={props.isPartials ? 'https://ridibooks.com' : '/'}
+                css={css`
+                  display: flex;
+                  align-items: center;
+                `}>
+                <RidiLogo css={ridiLogo} />
+                <span className="a11y">RIDIBOOKS</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://select.ridibooks.com">
+                <RidiSelectLogo css={ridiSelectLogo} />
+                <span className="a11y">리디셀렉트</span>
+              </a>
+            </li>
+          </LogoWrapper>
+          <ButtonWrapper>
+            <li>
+              <Button type={'secondary'} label={'회원가입'} />
+            </li>
+            <li>
+              <Button type={'primary'} label={'로그인'} />
+            </li>
+          </ButtonWrapper>
+          <InstantSearch
+            isPartials={props.isPartials}
+            searchKeyword={props.searchKeyword || ''}
+          />
+        </div>
+      </Navigation>
+      <MainTab isPartials={props.isPartials} />
+    </Header>
+  </GNBWrapper>
+));
 
 export default GNB;

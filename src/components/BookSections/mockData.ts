@@ -95,8 +95,18 @@ export default [
     type: 'ranking',
     option: { type: 'small' },
     items: [
-      { bId: '297021296', imageUrl: '', title: '[연재] 다이아몬드 더스트', author: '김다윗' },
-      { bId: '2259000726', imageUrl: '', title: '[연재] 레인보우 시티', author: '김다윗' },
+      {
+        bId: '297021296',
+        imageUrl: '',
+        title: '[연재] 다이아몬드 더스트',
+        author: '김다윗',
+      },
+      {
+        bId: '2259000726',
+        imageUrl: '',
+        title: '[연재] 레인보우 시티',
+        author: '김다윗',
+      },
       {
         bId: '3684000001',
         imageUrl: '',
@@ -105,7 +115,12 @@ export default [
       },
       { bId: '3425000001', imageUrl: '', title: '[연재] 인터미션', author: '그루' },
       { bId: '2183001015', imageUrl: '', title: '[연재] 갈라테이아', author: '그웬돌린' },
-      { bId: '297020117', imageUrl: '', title: '[연재] 비의도적 연애담', author: '김다윗' },
+      {
+        bId: '297020117',
+        imageUrl: '',
+        title: '[연재] 비의도적 연애담',
+        author: '김다윗',
+      },
       {
         bId: '111017017',
         imageUrl: '',

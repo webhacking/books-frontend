@@ -1,11 +1,10 @@
-import * as React from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 import { BookScheme } from 'src/types/book';
 import { css } from '@emotion/core';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
-import { useRef } from 'react';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 
 const SectionWrapper = styled.section`
@@ -101,41 +100,39 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
             display: inline;
           `}>
           <ul css={listCSS}>
-            {props.items.map((book, index) => {
-              return (
-                <li css={props.type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
-                  <div
-                    css={css`
-                      margin-right: ${props.type === 'big' ? '18px' : '24px'};
-                      height: 100%;
-                      display: flex;
-                      flex-direction: column;
-                      justify-content: center;
-                    `}>
-                    <Book.Thumbnail
-                      thumbnailWidth={props.type === 'big' ? 80 : 50}
-                      thumbnailUrl={
-                        !isIntersecting
-                          ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
-                          : `https://misc.ridibooks.com/cover/${book.bId}/medium`
-                      }
-                      adultBadge={book.isAdult}
-                    />
-                  </div>
-                  <div className={'book-meta-box'}>
-                    <div css={rankCSS}>{index + 1}</div>
-                    <BookMeta
-                      book={book}
-                      showRating={props.type === 'big'}
-                      titleLineClamp={props.type === 'small' ? 1 : 2}
-                      showSomeDeal={false}
-                      isAIRecommendation={false}
-                      width={'177px'}
-                    />
-                  </div>
-                </li>
-              );
-            })}
+            {props.items.map((book, index) => (
+              <li css={props.type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
+                <div
+                  css={css`
+                    margin-right: ${props.type === 'big' ? '18px' : '24px'};
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                  `}>
+                  <Book.Thumbnail
+                    thumbnailWidth={props.type === 'big' ? 80 : 50}
+                    thumbnailUrl={
+                      !isIntersecting
+                        ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
+                        : `https://misc.ridibooks.com/cover/${book.bId}/medium`
+                    }
+                    adultBadge={book.isAdult}
+                  />
+                </div>
+                <div className={'book-meta-box'}>
+                  <div css={rankCSS}>{index + 1}</div>
+                  <BookMeta
+                    book={book}
+                    showRating={props.type === 'big'}
+                    titleLineClamp={props.type === 'small' ? 1 : 2}
+                    showSomeDeal={false}
+                    isAIRecommendation={false}
+                    width={'177px'}
+                  />
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
       </SectionWrapper>

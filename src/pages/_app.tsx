@@ -44,8 +44,10 @@ const Contents = styled.main`
 
 class StoreApp extends App<StoreAppProps> {
   public static async getInitialProps({ ctx, Component, ...rest }) {
-    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
-    const isPartials = !!ctx.pathname.match(/\/partials\//);
+    const pageProps = Component.getInitialProps
+      ? await Component.getInitialProps(ctx)
+      : {};
+    const isPartials = !!ctx.pathname.match(/\/partials\//u);
     return {
       pageProps,
       isPartials,
@@ -53,6 +55,7 @@ class StoreApp extends App<StoreAppProps> {
       ctxPathname: rest.router ? rest.router.asPath : '/',
     };
   }
+
   public componentDidMount(): void {
     if (!this.props.isPartials) {
       initializeSentry();
@@ -60,7 +63,7 @@ class StoreApp extends App<StoreAppProps> {
       const isUpdateAvailable = new Promise(resolve => {
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker
-            .register(`/service-worker.js`)
+            .register('/service-worker.js')
             // @ts-ignore
             .then((registration: ServiceWorkerRegistration) => {
               // registration.onupdatefound = () => {
@@ -95,13 +98,21 @@ class StoreApp extends App<StoreAppProps> {
   }
 
   public render() {
-    // @ts-ignore
-    const { Component, ctxPathname, query, pageProps, isPartials, store, nonce } = this.props;
+    const {
+      Component,
+      ctxPathname,
+      query,
+      pageProps,
+      isPartials,
+      store,
+      // @ts-ignore
+      nonce,
+    } = this.props;
 
     if (isPartials) {
       return (
         <Container>
-          {/*<PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={!this.state.isMounted}>*/}
+          {/* <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={!this.state.isMounted}>*/}
           <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={true}>
             <Global styles={resetStyles} />
           </PartialSeparator>
@@ -109,27 +120,26 @@ class StoreApp extends App<StoreAppProps> {
           <Component {...pageProps} />
         </Container>
       );
-    } else {
-      return (
-        <Container>
-          <CacheProvider value={createCache({ ...cache, nonce })}>
-            <Global styles={resetStyles} />
-            <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
-              <Provider store={store}>
-                {/* Todo Apply Layout */}
-                <ThemeProvider theme={defaultTheme}>
-                  <GNB searchKeyword={query.search || query.q} isPartials={false} />
-                  <Contents>
-                    <Component {...pageProps} />
-                  </Contents>
-                  <Footer />
-                </ThemeProvider>
-              </Provider>
-            </BrowserLocationWithRouter>
-          </CacheProvider>
-        </Container>
-      );
     }
+    return (
+      <Container>
+        <CacheProvider value={createCache({ ...cache, nonce })}>
+          <Global styles={resetStyles} />
+          <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
+            <Provider store={store}>
+              {/* Todo Apply Layout */}
+              <ThemeProvider theme={defaultTheme}>
+                <GNB searchKeyword={query.search || query.q} isPartials={false} />
+                <Contents>
+                  <Component {...pageProps} />
+                </Contents>
+                <Footer />
+              </ThemeProvider>
+            </Provider>
+          </BrowserLocationWithRouter>
+        </CacheProvider>
+      </Container>
+    );
   }
 }
 // @ts-ignore

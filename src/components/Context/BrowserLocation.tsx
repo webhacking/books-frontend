@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextRouter, withRouter } from 'next/router';
 
 export const BrowserLocationContext = React.createContext('/');
@@ -36,7 +35,8 @@ const BrowserLocation: React.FC<BrowserLocationContextProps> = props => {
         }
       };
     }
-  }, []);
+    return () => {};
+  }, [props.isPartials, props.router]);
   return (
     <BrowserLocationContext.Provider value={currentPath}>
       {props.children}

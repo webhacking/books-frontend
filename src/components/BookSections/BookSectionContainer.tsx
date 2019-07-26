@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 import RankingBookList from './RankingBook/RankingBookList';
 import { BookScheme } from 'src/types/book';
 import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBook';
@@ -68,7 +67,7 @@ const BookSectionContainer: React.FC<BookSectionContainerProps> = props => {
       return (
         <RankingBookList
           items={section.items}
-          type={(section.option as RankingOption)!.type || 'big'}
+          type={(section.option as RankingOption).type || 'big'}
           title={section.title}
         />
       );
@@ -86,9 +85,9 @@ const BookSectionContainer: React.FC<BookSectionContainerProps> = props => {
   };
   return (
     <>
-      {props.sections.map((section, index) => {
-        return <Fragment key={index}>{renderSection(section)}</Fragment>;
-      })}
+      {props.sections.map((section, index) => (
+        <Fragment key={index}>{renderSection(section)}</Fragment>
+      ))}
     </>
   );
 };

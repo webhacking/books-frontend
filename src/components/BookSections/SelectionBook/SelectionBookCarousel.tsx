@@ -1,7 +1,5 @@
-import * as React from 'react';
+import React, { useCallback, FormEvent, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/core';
-import { FormEvent, useEffect, useRef, useState } from 'react';
-import { useCallback } from 'react';
 import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
 import SliderCarousel from 'react-slick';
@@ -89,55 +87,54 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
             setInitialized();
           }}
           infinite={true}>
-          {props.items.map((book, index) => {
-            return (
-              <div
-                key={index}
-                css={css`
-                  display: flex;
-                  flex-direction: column;
-                  outline: none;
-                `}>
-                <SelectionBookItem
-                  isAIRecommendation={props.isAIRecommendation}
-                  book={book}
-                  width={140}
-                />
-              </div>
-            );
-          })}
+          {props.items.map((book, index) => (
+            <div
+              key={index}
+              css={css`
+                display: flex;
+                flex-direction: column;
+                outline: none;
+              `}>
+              <SelectionBookItem
+                isAIRecommendation={props.isAIRecommendation}
+                book={book}
+                width={140}
+              />
+            </div>
+          ))}
         </ForwardedRefComponent>
         {carouselInitialize && (
           <form
             css={css`
               height: 0;
             `}>
-            <button type="submit" onClick={handleLeftArrow}>
-              <Arrow
-                side={'left'}
-                wrapperStyle={css`
-                  ${arrowWrapperCSS};
-                  @media (min-width: 1280px) {
-                    left: -38px;
-                  }
-                  left: 5px;
-                  top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
-                `}
-              />
-            </button>
-            <button type="submit" onClick={handleRightArrow}>
-              <Arrow
-                side={'right'}
-                wrapperStyle={css`
-                  ${arrowWrapperCSS};
-                  @media (min-width: 1280px) {
-                    right: -38px;
-                  }
-                  right: 5px;
-                  top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
-                `}
-              />
-            </button>
+            <Arrow
+              label={'이전'}
+              onClickHandler={handleLeftArrow}
+              side={'left'}
+              wrapperStyle={css`
+                ${arrowWrapperCSS};
+                @media (min-width: 1280px) {
+                  left: -38px;
+                }
+                left: 5px;
+                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+              `}
+            />
+
+            <Arrow
+              label={'다음'}
+              side={'right'}
+              onClickHandler={handleRightArrow}
+              wrapperStyle={css`
+                ${arrowWrapperCSS};
+                @media (min-width: 1280px) {
+                  right: -38px;
+                }
+                right: 5px;
+                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+              `}
+            />
           </form>
         )}
       </CarouselWrapper>

@@ -1,5 +1,6 @@
 export default {
-  recentlyVisitedGenre: `recentlyVisitedGenre`,
+  recentlyVisitedGenre: 'recentlyVisitedGenre',
 };
 
-export const DEFAULT_COOKIE_EXPIRES = 7; // day
+// day
+export const DEFAULT_COOKIE_EXPIRES = 7;
