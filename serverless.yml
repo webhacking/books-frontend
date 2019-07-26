@@ -65,7 +65,6 @@ plugins:
 custom:
   warmup:
     enabled: true
-    folderName: 'books_warmup'
     cleanFolder: false
     memorySize: 256
     timeout: 20
