@@ -2,12 +2,7 @@ service: books
 
 package:
   exclude:
-    - node_modules/.cache/**
-    - node_modules/@types/**
-    - node_modules/serverless/**
-    - node_modules/codecov/**
-    - node_modules/aws-sdk/**
-    - node_modules/prettier/**
+    - node_modules/**
     - '*.js.map'
     - .cache
     - coverage/**
@@ -23,6 +18,7 @@ package:
 provider:
   name: aws
   runtime: nodejs8.10
+  NODE_PATH: './:/opt/node_modules'
   region: ${self:custom.secrets.REGION}
   stage: ${opt:stage, 'development'}
   # CloudFormation Name
@@ -35,6 +31,8 @@ provider:
 
 functions:
   server:
+    layers:
+      - { Ref: NodeModulesLambdaLayer }
     path: /
     handler: server/index.handler
     warmup:
@@ -141,3 +139,8 @@ resources:
 #          DNSName: d1dpwi79ahko80.cloudfront.net.
 #          HostedZoneId: Z2FDTNDATAQYW2
 # https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html
+
+layers:
+  nodeModules:
+    path: node_modules
+    description: sentry + next.js + emotion + ts + redux node_modules
