@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { Genre, Genres } from 'src/constants/genres';
 import styled from '@emotion/styled';
 import * as labels from 'src/labels/common.json';
@@ -6,7 +6,6 @@ import GNBCategory from 'src/svgs/GNB_Category.svg';
 import { css, SerializedStyles } from '@emotion/core';
 import { RIDITheme } from 'src/styles';
 import { Link } from 'server/routes';
-import { useContext } from 'react';
 import { BrowserLocationContext } from 'src/components/Context';
 import * as Cookies from 'js-cookie';
 import cookieKeys from 'src/constants/cookies';
@@ -16,16 +15,16 @@ const GenreTabWrapper = styled.ul`
   margin: 0 auto;
 `;
 
-const Ruler = styled.hr`
+const rulerCSS = theme => css`
   position: absolute;
   width: 100vw;
   border: 0 none;
   left: 0;
   height: 1px;
-  background-color: ${props => props.theme.divider2};
+  background-color: ${theme.divider2};
 `;
 
-const GenreList = styled.ul`
+const genreListCSS = theme => css`
   display: flex;
   flex-direction: row;
   height: 47px;
@@ -37,7 +36,7 @@ const GenreList = styled.ul`
     height: 100%;
     letter-spacing: -0.2px;
     text-align: center;
-    color: ${props => props.theme.genreTab.normal};
+    color: ${theme.genreTab.normal};
     cursor: pointer;
     :first-of-type {
       line-height: 56px;
@@ -82,7 +81,7 @@ const iconCSS = (theme: RIDITheme) => css`
   fill: ${theme.genreTab.icon};
 `;
 
-const SubServicesList = styled.ul`
+const subServicesListCSS = theme => css`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -90,7 +89,7 @@ const SubServicesList = styled.ul`
   height: 50px;
   font-size: 17px;
   letter-spacing: -0.2px;
-  color: ${props => props.theme.subServiceTab.normal};
+  color: ${theme.subServiceTab.normal};
   li {
     height: 100%;
     line-height: 50px;
@@ -100,7 +99,7 @@ const SubServicesList = styled.ul`
       height: 100%;
       @media (hover: hover) {
         :hover {
-          color: ${props => props.theme.subServiceTab.hover};
+          color: ${theme.subServiceTab.hover};
         }
       }
       @media (hover: none) {
@@ -115,7 +114,7 @@ const SubServicesList = styled.ul`
         font-size: 13px;
         top: -3px;
         margin: 0 16px;
-        color: ${props => props.theme.divider3};
+        color: ${theme.divider3};
       }
     }
   }
@@ -147,10 +146,12 @@ interface TabItemProps {
 }
 
 const TabItem: React.FC<TabItemProps> = React.memo(props => {
+  // Todo apply lint
+
   const regex =
     props.path !== 'general'
-      ? new RegExp(`^\\/${props.path.replace(/\//g, '\\/')}(\\/|$)`)
-      : new RegExp('(^[^/]*\\/$|^\\/general|\\/genre\\/general$)');
+      ? new RegExp(`^\\/${props.path.replace(/\//gu, '\\/')}(\\/|$)`, 'u')
+      : new RegExp('(^[^/]*\\/$|^\\/general|\\/genre\\/general$)', 'u');
   return (
     <span css={props.currentPath.match(regex) ? props.currentCSS : props.normalCSS}>
       {props.label}
@@ -166,16 +167,14 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
   return (
     <GenreTabWrapper>
       <li>
-        <GenreList>
+        <ul css={genreListCSS}>
           <Link route={'/category/list'}>
             <li>
               <GNBCategory
-                css={(theme: RIDITheme) =>
-                  css`
-                    ${iconCSS(theme)};
-                    ${currentPath === '/category/list' ? `fill:${theme.primaryColor}` : ''};
-                  `
-                }
+                css={(theme: RIDITheme) => css`
+                  ${iconCSS(theme)};
+                  ${currentPath === '/category/list' ? `fill:${theme.primaryColor}` : ''};
+                `}
               />
               <span className={'a11y'}>{labels.category}</span>
             </li>
@@ -184,7 +183,9 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             const visitedService = Cookies.get(
               `${cookieKeys.recentlyVisitedGenre}_${genres[k].key}_Service`,
             );
-            const route = visitedService ? `${genres[k].path}/${visitedService}` : genres[k].path;
+            const route = visitedService
+              ? `${genres[k].path}/${visitedService}`
+              : genres[k].path;
             return (
               <Link
                 replace={!!currentPath.match(genres[k].path)}
@@ -203,13 +204,13 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               </Link>
             );
           })}
-        </GenreList>
+        </ul>
       </li>
-      <Ruler />
+      <hr css={rulerCSS} />
       {hasSubService ? (
         <>
           <li>
-            <SubServicesList>
+            <ul css={subServicesListCSS}>
               {genres[currentGenre].subServices.map((service, index) => (
                 <Link
                   prefetch={true}
@@ -226,7 +227,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                   </li>
                 </Link>
               ))}
-            </SubServicesList>
+            </ul>
           </li>
         </>
       ) : (

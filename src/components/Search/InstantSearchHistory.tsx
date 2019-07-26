@@ -1,11 +1,10 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import * as labels from 'src/labels/instantSearch.json';
 import { RIDITheme } from 'src/styles';
 import Exclamation from 'src/svgs/Exclamation_1.svg';
 import Close from 'src/svgs/Close_2.svg';
-import { useEffect } from 'react';
 
 const turnOffSearchHistory = (theme: RIDITheme) => css`
   text-align: center;
@@ -51,12 +50,12 @@ const exclamation = (theme: RIDITheme) => css`
   height: 14px;
 `;
 
-const SearchHistory = styled.ul`
+const historyListCSS = theme => css`
   li {
     box-sizing: border-box;
     :not(:last-of-type) {
       @media (max-width: 999px) {
-        border-bottom: 1px ${props => props.theme.divider} solid;
+        border-bottom: 1px ${theme.divider} solid;
       }
     }
   }
@@ -90,7 +89,7 @@ const SearchHistoryItem = styled.li`
   }
 `;
 
-const SearchHistoryOptionPanel = styled.div`
+const historyOptionPanelCSS = theme => css`
   padding: 12px 20px;
   cursor: pointer;
   @media (max-width: 999px) {
@@ -98,8 +97,8 @@ const SearchHistoryOptionPanel = styled.div`
   }
   display: flex;
   justify-content: space-between;
-  background-color: ${props => props.theme.divider};
-  color: ${props => props.theme.input.placeholder};
+  background-color: ${theme.divider};
+  color: ${theme.input.placeholder};
   font-size: 13px;
   line-height: 1.31;
   letter-spacing: -0.4px;
@@ -139,24 +138,28 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
         (items[focusedPosition - 1] as HTMLLIElement).focus();
       }
     }
-  }, [searchHistory, focusedPosition]);
+  }, [focusedPosition, wrapperRef]);
   return (
     <>
       <p css={recentHistoryLabel}>{labels.recentKeywords}</p>
-      <SearchHistory ref={wrapperRef}>
+      <ul css={historyListCSS} ref={wrapperRef}>
         {enableSearchHistoryRecord ? (
           <>
             {searchHistory.slice(0, 5).map((history: string, index: number) => (
               <SearchHistoryItem
-                tabIndex={1}
+                tabIndex={0}
                 data-value={history}
                 onClick={handleClickHistoryItem}
                 onKeyDown={handleKeyDown}
                 key={index}>
-                <a href={'#'}>
+                {/* Fixme href */}
+                <a href={'#history'}>
                   <span>{history}</span>
                 </a>
-                <button data-value={history} type={'submit'} onClick={handleRemoveHistory}>
+                <button
+                  data-value={history}
+                  type={'submit'}
+                  onClick={handleRemoveHistory}>
                   <Close css={closeIcon} />
                   <span className={'a11y'}>{labels.removeHistory}</span>
                 </button>
@@ -169,8 +172,8 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
             <span>{labels.turnOffStatus}</span>
           </div>
         )}
-      </SearchHistory>
-      <SearchHistoryOptionPanel>
+      </ul>
+      <div css={historyOptionPanelCSS}>
         <button
           css={css`
             font-size: 13px;
@@ -185,9 +188,11 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
           `}
           type={'submit'}
           onClick={handleToggleSearchHistoryRecord}>
-          {enableSearchHistoryRecord ? labels.turnOffSearchHistory : labels.turnOnSearchHistory}
+          {enableSearchHistoryRecord
+            ? labels.turnOffSearchHistory
+            : labels.turnOnSearchHistory}
         </button>
-      </SearchHistoryOptionPanel>
+      </div>
     </>
   );
 };

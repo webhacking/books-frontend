@@ -10,6 +10,7 @@ export default class Search extends React.Component<SearchProps> {
   public static async getInitialProps(props: ConnectedInitializeProps) {
     return { q: props.query.q };
   }
+
   public render() {
     return (
       <>

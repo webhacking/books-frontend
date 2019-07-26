@@ -17,6 +17,7 @@ export default class ErrorPage extends React.Component<ErrorProps> {
     }
     return { statusCode: NextError.NOT_FOUND };
   }
+
   public render() {
     return !!this.props.statusCode ? this.props.statusCode : 'Error';
   }

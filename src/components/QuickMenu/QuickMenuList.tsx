@@ -2,11 +2,11 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
 import { css } from '@emotion/core';
-const Label = styled.span`
+const labelCSS = theme => css`
   font-size: 13px;
   line-height: 1.23;
   letter-spacing: -0.4px;
-  color: ${props => props.theme.quickMenu.label};
+  color: ${theme.quickMenu.label};
   margin-top: 8px;
   min-width: 76px;
   text-align: center;
@@ -65,25 +65,23 @@ interface QuickMenu {
 interface QuickMenuListProps {
   items: QuickMenu[];
 }
-export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
-  return (
-    <MenuList>
-      {props.items.map((menu, index) => (
-        <MenuItem key={index}>
-          <MenuItemWrapper>
-            <a href={menu.link}>
-              <QuickMenuShape
-                css={css`
-                  height: 44px;
-                  width: 44px;
-                  fill: ${menu.color};
-                `}
-              />
-              <Label>{menu.label}</Label>
-            </a>
-          </MenuItemWrapper>
-        </MenuItem>
-      ))}
-    </MenuList>
-  );
-};
+export const QuickMenuList: React.FC<QuickMenuListProps> = props => (
+  <MenuList>
+    {props.items.map((menu, index) => (
+      <MenuItem key={index}>
+        <MenuItemWrapper>
+          <a href={menu.link}>
+            <QuickMenuShape
+              css={css`
+                height: 44px;
+                width: 44px;
+                fill: ${menu.color};
+              `}
+            />
+            <span css={labelCSS}>{menu.label}</span>
+          </a>
+        </MenuItemWrapper>
+      </MenuItem>
+    ))}
+  </MenuList>
+);

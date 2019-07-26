@@ -1,5 +1,5 @@
 {
-  "**/*.+(ts|tsx)": ["tslint -c tslint.json --fix", "git add"],
+  "**/src/!(tests)/**/*.+(ts|tsx)": ["eslint --fix", "git add"],
   "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|graphql|mdx)": [
     "prettier --write",
     "git add"

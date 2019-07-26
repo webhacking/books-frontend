@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "sourceMap": true,
     "removeComments": true,

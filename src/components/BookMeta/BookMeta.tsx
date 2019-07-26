@@ -49,11 +49,11 @@ const BookMeta: React.FC<BookMetaProps> = props => {
   } = props;
 
   // tslint:disable-next-line:no-shadowed-variable
-  const renderTag = (tag: string) => {
-    if (tag === 'novel') {
+  const renderTag = (tagName: string) => {
+    if (tagName === 'novel') {
       return <Tag.Novel />;
     }
-    if (tag === 'comic') {
+    if (tagName === 'comic') {
       return <Tag.Comic />;
     }
     return null;
@@ -65,11 +65,12 @@ const BookMeta: React.FC<BookMetaProps> = props => {
           ${bookMetaCSS};
           ${props.width ? `width:${props.width}` : 'width: 100%;'};
         `}>
+        {/* Fixme available anchor */}
         <a
           css={css`
             display: inline-block;
           `}
-          href="#">
+          href="#author">
           <h2
             css={css`
               ${bookTitleCSS};

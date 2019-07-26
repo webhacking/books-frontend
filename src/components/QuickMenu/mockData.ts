@@ -1,10 +1,10 @@
 // temporary code
-export function pastelColors() {
+export const pastelColors = () => {
   const r = (Math.round(Math.random() * 127) + 127).toString(16);
   const g = (Math.round(Math.random() * 127) + 127).toString(16);
   const b = (Math.round(Math.random() * 127) + 127).toString(16);
-  return '#' + r + g + b;
-}
+  return `#${r}${g}${b}`;
+};
 
 export const quickMenuItems = [
   { color: pastelColors(), label: '신간', link: '/new-releases' },

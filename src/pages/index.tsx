@@ -29,7 +29,9 @@ export class Home extends React.Component<HomeProps> {
       ? Genre[(query.genre as string).toUpperCase() as keyof typeof Genre]
       : null;
     const service = query.service
-      ? GenreSubService[(query.service as string).toUpperCase() as keyof typeof GenreSubService]
+      ? GenreSubService[
+          (query.service as string).toUpperCase() as keyof typeof GenreSubService
+        ]
       : null;
 
     if (req && res) {
@@ -56,7 +58,9 @@ export class Home extends React.Component<HomeProps> {
         }
         if (visitedGenre) {
           redirect(
-            visitedGenreService ? `/${visitedGenre}/${visitedGenreService}` : `/${visitedGenre}`,
+            visitedGenreService
+              ? `/${visitedGenre}/${visitedGenreService}`
+              : `/${visitedGenre}`,
           );
         }
       } else {
@@ -105,9 +109,13 @@ export class Home extends React.Component<HomeProps> {
       const currentService =
         GenreSubService[service.toUpperCase() as keyof typeof GenreSubService] ||
         GenreSubService.SINGLE;
-      Cookies.set(`${cookieKeys.recentlyVisitedGenre}_${currentGenre}_Service`, currentService, {
-        expires: DEFAULT_COOKIE_EXPIRES,
-      });
+      Cookies.set(
+        `${cookieKeys.recentlyVisitedGenre}_${currentGenre}_Service`,
+        currentService,
+        {
+          expires: DEFAULT_COOKIE_EXPIRES,
+        },
+      );
     }
   };
 
@@ -115,6 +123,7 @@ export class Home extends React.Component<HomeProps> {
     this.setCookie(this.props);
     console.log('First Render. Client Side Fetch Start');
   }
+
   public shouldComponentUpdate(
     nextProps: Readonly<HomeProps>,
     // nextState: Readonly<{}>,
@@ -126,12 +135,13 @@ export class Home extends React.Component<HomeProps> {
       `${cookieKeys.recentlyVisitedGenre}_${visitedGenre}_Service`,
     );
     if (window.location.pathname === '/general') {
-      Router.replaceRoute(`/`);
+      Router.replaceRoute('/');
       return false;
     }
 
     // Todo visitedService value Validation
-    if (!service && genre.match(/(fantasy|romance|bl)/)) {
+    // eslint-disable-next-line prefer-named-capture-group
+    if (!service && genre.match(/(fantasy|romance|bl)/u)) {
       if (visitedService) {
         Router.replaceRoute(`/${genre}/${visitedService}`);
       } else {
@@ -152,7 +162,8 @@ export class Home extends React.Component<HomeProps> {
   public render() {
     const { genre, service } = this.props;
     const currentGenre = Genre[genre.toUpperCase() as keyof typeof Genre];
-    const currentService = GenreSubService[service.toUpperCase() as keyof typeof GenreSubService];
+    const currentService =
+      GenreSubService[service.toUpperCase() as keyof typeof GenreSubService];
     return (
       <>
         <Head>
@@ -160,9 +171,8 @@ export class Home extends React.Component<HomeProps> {
         </Head>
         <GenreTab currentGenre={currentGenre} genres={homeGenres} />
         {/* 일반도서 상단 배너 */}
-        {(currentGenre === Genre.GENERAL || currentService === GenreSubService.SERIAL) && (
-          <TopBannerCarouselContainer />
-        )}
+        {(currentGenre === Genre.GENERAL ||
+          currentService === GenreSubService.SERIAL) && <TopBannerCarouselContainer />}
         {/* 장르 단행본 추천 영역 */}
         {(currentGenre === Genre.FANTASY ||
           currentGenre === Genre.ROMANCE ||

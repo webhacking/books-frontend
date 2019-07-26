@@ -15,25 +15,22 @@ interface RecommendedBookListProps {
   type: 'hot_release' | 'single_book_recommendation';
 }
 
-const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
-  return (
-    <BookList css={props.type === 'hot_release' ? hotReleaseBookListCSS : recommendedBookListCSS}>
-      {props.items.map((book, index) => {
-        return (
-          <PortraitBook key={index}>
-            <ThumbnailWrapper>
-              <Book.Thumbnail
-                adultBadge={true}
-                thumbnailWidth={120}
-                thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
-              />
-            </ThumbnailWrapper>
-            <BookMeta book={book} />
-          </PortraitBook>
-        );
-      })}
-    </BookList>
-  );
-};
+const RecommendedBookList: React.FC<RecommendedBookListProps> = props => (
+  <BookList
+    css={props.type === 'hot_release' ? hotReleaseBookListCSS : recommendedBookListCSS}>
+    {props.items.map((book, index) => (
+      <PortraitBook key={index}>
+        <ThumbnailWrapper>
+          <Book.Thumbnail
+            adultBadge={true}
+            thumbnailWidth={120}
+            thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
+          />
+        </ThumbnailWrapper>
+        <BookMeta book={book} />
+      </PortraitBook>
+    ))}
+  </BookList>
+);
 
 export default RecommendedBookList;

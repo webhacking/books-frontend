@@ -1,9 +1,23 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { css } from '@emotion/core';
 import { RIDITheme } from 'src/styles';
 import ArrowRight from 'src/svgs/Arrow_Right_9.svg';
-import { useState } from 'react';
-import { CategoryList as CategoryListScheme, ParentCategory } from 'src/pages/category/list';
+import {
+  CategoryList as CategoryListScheme,
+  ParentCategory,
+} from 'src/pages/category/list';
+
+const selectedItemArrowCSS = css`
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  border-right: 14px solid #ebf6ff;
+  content: ' ';
+  z-index: 2;
+  transition: all 0.1s;
+`;
 
 const parentCategoryItemCSS = (theme: RIDITheme) => css`
   position: relative;
@@ -26,18 +40,6 @@ const parentCategoryItemCSS = (theme: RIDITheme) => css`
     right: -15px;
     ${selectedItemArrowCSS};
   }
-`;
-
-const selectedItemArrowCSS = css`
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-top: 11px solid transparent;
-  border-bottom: 11px solid transparent;
-  border-right: 14px solid #ebf6ff;
-  content: ' ';
-  z-index: 2;
-  transition: all 0.1s;
 `;
 
 const parentCategoryItemHoverCSS = (theme: RIDITheme) => css`
@@ -81,69 +83,69 @@ const subCategoryItemCSS = (theme: RIDITheme) => css`
   transition: all 0.1s;
 `;
 
-const CuratedCategoryList: React.FC<{ category: ParentCategory }> = React.memo(props => {
-  return (
-    <>
-      <button
+const CuratedCategoryList: React.FC<{ category: ParentCategory }> = React.memo(props => (
+  <>
+    <button
+      css={css`
+        padding: 10px;
+        margin-top: 4px;
+        height: 34px;
+        width: 100%;
+        background-color: #1f8ce6;
+        border-radius: 3px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        :hover {
+          background-color: #0f5e9c;
+        }
+        transition: background-color 0.1s;
+      `}>
+      <h3
         css={css`
-          padding: 10px;
-          margin-top: 4px;
-          height: 34px;
-          width: 100%;
-          background-color: #1f8ce6;
-          border-radius: 3px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          :hover {
-            background-color: #0f5e9c;
-          }
-          transition: background-color 0.1s;
+          color: white;
+          font-weight: 700;
+          font-size: 14px;
+          line-height: 14px;
         `}>
-        <h3
-          css={css`
-            color: white;
-            font-weight: 700;
-            font-size: 14px;
-            line-height: 14px;
-          `}>
-          {props.category.name}
-        </h3>
-        <ArrowRight
-          css={css`
-            fill: white;
-            width: 5.6px;
-            height: 14px;
-            margin-right: -1px;
+        {props.category.name}
+      </h3>
+      <ArrowRight
+        css={css`
+          fill: white;
+          width: 5.6px;
+          height: 14px;
+          margin-right: -1px;
+        `}
+      />
+    </button>
+    <ul>
+      {props.category.subCategory.map((category, index) => (
+        <li
+          css={(theme: RIDITheme) => css`
+            ${subCategoryItemCSS(theme)};
+            padding-left: 10px;
+            padding-right: 10px;
+            :first-of-type {
+              margin-top: 2px;
+            }
           `}
-        />
-      </button>
-      <ul>
-        {props.category.subCategory.map((category, index) => (
-          <li
-            css={(theme: RIDITheme) => css`
-              ${subCategoryItemCSS(theme)};
-              padding-left: 10px;
-              padding-right: 10px;
-              :first-of-type {
-                margin-top: 2px;
-              }
-            `}
-            key={index}>
-            {category.name}
-          </li>
-        ))}
-      </ul>
-    </>
-  );
-});
+          key={index}>
+          {category.name}
+        </li>
+      ))}
+    </ul>
+  </>
+));
 
 export interface CategoryListProps {
   categoryList: CategoryListScheme;
 }
 
 const Desktop: React.FC<CategoryListProps> = props => {
-  const [categoryList] = useState(props.categoryList || { general: [], curatedCategory: [] });
+  const [categoryList] = useState(
+    props.categoryList || { general: [], curatedCategory: [] },
+  );
   const [selectedCategory, setCategory] = useState(categoryList.general[0]);
   return (
     <div
@@ -160,12 +162,10 @@ const Desktop: React.FC<CategoryListProps> = props => {
         `}>
         {categoryList.general.map((item, index) => (
           <li
-            css={(theme: RIDITheme) =>
-              css`
-                ${parentCategoryItemCSS(theme)}
-                ${selectedCategory.id === item.id ? parentCategoryItemHoverCSS(theme) : ''};
-              `
-            }
+            css={(theme: RIDITheme) => css`
+              ${parentCategoryItemCSS(theme)}
+              ${selectedCategory.id === item.id ? parentCategoryItemHoverCSS(theme) : ''};
+            `}
             onMouseEnter={() => setCategory(item)}
             onMouseLeave={() => setCategory(categoryList.general[0])}
             key={index}>

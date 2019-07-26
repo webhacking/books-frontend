@@ -10,6 +10,7 @@ export default class CartPage extends React.Component<CartPageProps> {
   public static async getInitialProps(props: ConnectedInitializeProps) {
     return { q: props.query.q };
   }
+
   public render() {
     return (
       <>

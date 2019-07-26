@@ -1,8 +1,7 @@
-import * as React from 'react';
 import CarouselArrowDark from 'src/svgs/CarouselArrowDark.svg';
 import CarouselArrowWhite from 'src/svgs/CarouselArrowWhite.svg';
 import { css, SerializedStyles } from '@emotion/core';
-import { clearOutline } from 'src/styles';
+import React, { FormEvent } from 'react';
 
 interface ArrowProps {
   side?: 'left' | 'right';
@@ -12,6 +11,8 @@ interface ArrowProps {
   width?: string;
   height?: string;
   fill?: string;
+  label: string;
+  onClickHandler?: (e: FormEvent) => void;
 }
 
 const defaultArrowCSS = css`
@@ -28,14 +29,15 @@ const leftRotate = css`
 `;
 
 const Arrow: React.FC<ArrowProps> = props => {
-  const { color, side, arrowStyle } = props;
+  const { color, side, arrowStyle, onClickHandler } = props;
   return (
-    <div
+    <button
+      type={'submit'}
+      // tabIndex={0}
+      onClick={onClickHandler}
       css={css`
         ${props.wrapperStyle};
-        ${clearOutline}
-      `}
-      tabIndex={1}>
+      `}>
       {color === 'dark' ? (
         <CarouselArrowDark
           css={css`
@@ -51,7 +53,8 @@ const Arrow: React.FC<ArrowProps> = props => {
           `}
         />
       )}
-    </div>
+      <span className={'a11y'}>{props.label}</span>
+    </button>
   );
 };
 

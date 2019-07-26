@@ -1,7 +1,6 @@
-import * as React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
 import { a11y } from 'src/styles';
 import { Anchor } from 'src/components/Misc';
 import { BrowserLocationContext } from 'src/components/Context';
@@ -180,11 +179,13 @@ export const MainTab: React.FC<MainTabProps> = props => {
       ? Cookies.get(`${cookieKeys.recentlyVisitedGenre}_${visitedGenre}_Service`)
       : null;
     if (visitedGenre && visitedGenre !== 'general') {
-      setHomeURL(visitedService ? `/${visitedGenre}/${visitedService}` : `/${visitedGenre}` || '/');
+      setHomeURL(
+        visitedService ? `/${visitedGenre}/${visitedService}` : `/${visitedGenre}` || '/',
+      );
     } else {
       setHomeURL('/');
     }
-  });
+  }, [setHomeURL]);
   return (
     <Tabs>
       <TabItem
@@ -196,7 +197,8 @@ export const MainTab: React.FC<MainTabProps> = props => {
         path={homeURL}
         replace={true}
         pathRegexp={
-          // Hack
+          // Hack, Apply lint
+          // eslint-disable-next-line require-unicode-regexp,prefer-named-capture-group
           /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(author|book|event|search|category|fantasy|romance|bl|general|comic)(\/.*$|$))/
         }
       />
@@ -207,7 +209,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
         currentPath={currentPath}
         label={labels.mainTab.notification}
         path={'/notification'}
-        pathRegexp={/^\/notification/}
+        pathRegexp={/^\/notification/gu}
       />
       <TabItem
         isPartials={isPartials}
@@ -216,7 +218,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
         currentPath={currentPath}
         label={labels.mainTab.cart}
         path={'/cart'}
-        pathRegexp={/^\/cart/}
+        pathRegexp={/^\/cart/gu}
       />
       <TabItem
         isPartials={isPartials}
@@ -225,7 +227,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
         currentPath={currentPath}
         label={labels.mainTab.myRidi}
         path={'/account/myridi'}
-        pathRegexp={/^\/account\/myridi/}
+        pathRegexp={/^\/account\/myridi/gu}
       />
     </Tabs>
   );

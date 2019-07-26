@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { InstantSearch } from 'src/components/Search';
-import { render, cleanup, fireEvent, getByText, getByPlaceholderText } from 'react-testing-library';
+import {
+  render,
+  cleanup,
+  fireEvent,
+  getByText,
+  getByPlaceholderText,
+} from 'react-testing-library';
 import 'jest-dom/extend-expect';
 // @ts-ignore
 import labels from 'src/labels/instantSearch.json';
-import keys from 'src/constants/localStorage';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
 import localStorageKeys from 'src/constants/localStorage';
@@ -56,9 +61,27 @@ describe('test instant search', () => {
     const { container } = renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
     fireEvent.click(inputNode, {});
-    fireEvent.keyDown(inputNode, { key: 'Down', keyCode: 40, code: 40, charCode: 40, which: 40 });
-    fireEvent.keyDown(inputNode, { key: 'Down', keyCode: 40, code: 40, charCode: 40, which: 40 });
-    fireEvent.keyDown(inputNode, { key: 'Up', keyCode: 38, code: 38, charCode: 38, which: 38 });
+    fireEvent.keyDown(inputNode, {
+      key: 'Down',
+      keyCode: 40,
+      code: 40,
+      charCode: 40,
+      which: 40,
+    });
+    fireEvent.keyDown(inputNode, {
+      key: 'Down',
+      keyCode: 40,
+      code: 40,
+      charCode: 40,
+      which: 40,
+    });
+    fireEvent.keyDown(inputNode, {
+      key: 'Up',
+      keyCode: 38,
+      code: 38,
+      charCode: 38,
+      which: 38,
+    });
     expect(document.activeElement).not.toBe(null);
     fireEvent.keyDown(document.activeElement!, {
       key: 'Enter',
@@ -70,7 +93,10 @@ describe('test instant search', () => {
   });
 
   it('should not be render search history', () => {
-    localStorage.setItem(localStorageKeys.instantSearchHistory, 'maybe error be with you');
+    localStorage.setItem(
+      localStorageKeys.instantSearchHistory,
+      'maybe error be with you',
+    );
     const { container } = renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
     fireEvent.click(inputNode, {});
@@ -86,7 +112,7 @@ describe('test instant search', () => {
     // Fixme
     // https://github.com/trojanowski/react-apollo-hooks/issues/84
     // https://github.com/facebook/react/releases/tag/v16.9.0-alpha.0
-    await new Promise(resolve => setTimeout(resolve, 301));
+    // await new Promise(resolve => setTimeout(resolve, 301));
     // const resultNode = getByText(container , 'result');
     // expect(resultNode).not.toBe('a');
   });
@@ -99,7 +125,7 @@ describe('test instant search', () => {
     // Fixme
     // https://github.com/trojanowski/react-apollo-hooks/issues/84
     // https://github.com/facebook/react/releases/tag/v16.9.0-alpha.0
-    await new Promise(resolve => setTimeout(resolve, 301));
+    // await new Promise(resolve => setTimeout(resolve, 301));
     // const resultNode = getByText(container , 'result');
     // expect(resultNode).not.toBe('a');
   });
@@ -116,24 +142,36 @@ describe('test instant search', () => {
     fireEvent.change(inputNode, { target: { value: 'ABC' } });
     fireEvent.submit(searchForm[0]);
 
-    const history = safeJSONParse(localStorage.getItem(keys.instantSearchHistory), []);
+    const history = safeJSONParse(
+      localStorage.getItem(localStorageKeys.instantSearchHistory),
+      [],
+    );
     expect(history).not.toBe([]);
   });
 
   it('should be remove all search history.', () => {
-    localStorage.setItem(localStorageKeys.instantSearchHistory, JSON.stringify(['history_1']));
+    localStorage.setItem(
+      localStorageKeys.instantSearchHistory,
+      JSON.stringify(['history_1']),
+    );
     const { container } = renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
     fireEvent.click(inputNode, {});
     const historyClearNode = getByText(container, labels.clearSearchHistory);
     expect(historyClearNode).not.toBe(null);
     fireEvent.click(historyClearNode, {});
-    const history = safeJSONParse(localStorage.getItem(localStorageKeys.instantSearchHistory), '');
+    const history = safeJSONParse(
+      localStorage.getItem(localStorageKeys.instantSearchHistory),
+      '',
+    );
 
     expect(history.length).toBe(0);
   });
   it('should be toggle search history', () => {
-    localStorage.setItem(localStorageKeys.instantSearchHistory, JSON.stringify(['history_1']));
+    localStorage.setItem(
+      localStorageKeys.instantSearchHistory,
+      JSON.stringify(['history_1']),
+    );
     const { container } = renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
     fireEvent.click(inputNode, {});
@@ -170,7 +208,10 @@ describe('test instant search', () => {
     // @ts-ignore
     fireEvent.click(removeHistoryNode.parentElement, {});
 
-    const history = safeJSONParse(localStorage.getItem(localStorageKeys.instantSearchHistory), []);
+    const history = safeJSONParse(
+      localStorage.getItem(localStorageKeys.instantSearchHistory),
+      [],
+    );
     expect(history.length).toBe(1);
   });
 

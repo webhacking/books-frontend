@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import { View } from 'libreact/lib/View';
 import { css } from '@emotion/core';
@@ -15,7 +14,6 @@ import AtSelectIcon from 'src/svgs/Book1.svg';
 import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedBookCarousel';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
-import { useRef } from 'react';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 const { publicRuntimeConfig } = getConfig();
 
@@ -121,38 +119,36 @@ interface BookMetaProps {
   book: BookScheme;
 }
 
-export const BookMeta: React.FC<BookMetaProps> = props => {
-  return (
-    <div css={bookMetaWrapperCSS}>
-      <BookTitle>{props.book.title || ''}</BookTitle>
-      <BookAuthor>{props.book.author || ''}</BookAuthor>
-      {props.book.serviceAtSelect && (
-        <div
+export const BookMeta: React.FC<BookMetaProps> = props => (
+  <div css={bookMetaWrapperCSS}>
+    <BookTitle>{props.book.title || ''}</BookTitle>
+    <BookAuthor>{props.book.author || ''}</BookAuthor>
+    {props.book.serviceAtSelect && (
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+        `}>
+        <AtSelectIcon
           css={css`
-            display: flex;
-            align-items: center;
+            width: 14px;
+            height: 12px;
+            margin-right: 6px;
+          `}
+        />
+        <span
+          css={css`
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: -0.3px;
+            color: #8e97ff;
           `}>
-          <AtSelectIcon
-            css={css`
-              width: 14px;
-              height: 12px;
-              margin-right: 6px;
-            `}
-          />
-          <span
-            css={css`
-              font-size: 13px;
-              font-weight: bold;
-              letter-spacing: -0.3px;
-              color: #8e97ff;
-            `}>
-            리디셀렉트
-          </span>
-        </div>
-      )}
-    </div>
-  );
-};
+          리디셀렉트
+        </span>
+      </div>
+    )}
+  </div>
+);
 
 export interface BookScheme {
   id: string;
@@ -172,10 +168,9 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
   const [currentGenre, setGenre] = useState(props.genre);
   useEffect(() => {
     setGenre(props.genre);
-    // console.log('mount?', currentGenre, props.genre);
-
     // Todo 장르가 달라져서 마운트 된다면 Fetch
-  });
+  }, [props.genre]);
+
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   return (
@@ -205,23 +200,22 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
       )}
       {!isIntersecting ? (
         <BookList
-          css={props.type === 'hot_release' ? hotReleaseBookListCSS : recommendedBookListCSS}>
-          {props.items.slice(0, 6).map((book, index) => {
-            return (
-              <PortraitBook key={index}>
-                <ThumbnailWrapper>
-                  <Book.Thumbnail
-                    thumbnailUrl={
-                      !isIntersecting
-                        ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
-                        : `https://misc.ridibooks.com/cover/${book.id}/xxlarge`
-                    }
-                  />
-                </ThumbnailWrapper>
-                <BookMeta book={book} />
-              </PortraitBook>
-            );
-          })}
+          css={
+            props.type === 'hot_release' ? hotReleaseBookListCSS : recommendedBookListCSS
+          }>
+          {props.items.slice(0, 6).map((book, index) => (
+            <PortraitBook key={index}>
+              <ThumbnailWrapper>
+                <Book.Thumbnail
+                  thumbnailUrl={
+                    'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
+                    // : `https://misc.ridibooks.com/cover/${book.id}/xxlarge`
+                  }
+                />
+              </ThumbnailWrapper>
+              <BookMeta book={book} />
+            </PortraitBook>
+          ))}
         </BookList>
       ) : (
         <WindowWidthQuery>

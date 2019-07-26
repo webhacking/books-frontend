@@ -1,7 +1,5 @@
-import * as React from 'react';
+import React, { useCallback, FormEvent, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/core';
-import { FormEvent, useEffect, useRef, useState } from 'react';
-import { useCallback } from 'react';
 import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
 import SliderCarousel from 'react-slick';
@@ -41,29 +39,27 @@ interface RecommendedBookCarouselProps {
   type: 'hot_release' | 'single_book_recommendation';
 }
 
-const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = props => {
-  return (
-    <ul
-      css={css`
-        display: flex;
-        padding-left: 3px;
-        justify-content: center;
-        height: 365px;
-      `}>
-      {props.items.map((book, index) => (
-        <PortraitBook key={index}>
-          <ThumbnailWrapper>
-            <Book.Thumbnail
-              thumbnailWidth={140}
-              thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
-            />
-          </ThumbnailWrapper>
-          <BookMeta book={book} />
-        </PortraitBook>
-      ))}
-    </ul>
-  );
-};
+const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = props => (
+  <ul
+    css={css`
+      display: flex;
+      padding-left: 3px;
+      justify-content: center;
+      height: 365px;
+    `}>
+    {props.items.map((book, index) => (
+      <PortraitBook key={index}>
+        <ThumbnailWrapper>
+          <Book.Thumbnail
+            thumbnailWidth={140}
+            thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
+          />
+        </ThumbnailWrapper>
+        <BookMeta book={book} />
+      </PortraitBook>
+    ))}
+  </ul>
+);
 
 const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
@@ -101,7 +97,10 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
     <>
       {/* Flickering 없는 UI 를 위해 추가함 */}
       {!carouselInitialize && (
-        <RecommendedBookCarouselLoading type={props.type} items={props.items.slice(0, 6)} />
+        <RecommendedBookCarouselLoading
+          type={props.type}
+          items={props.items.slice(0, 6)}
+        />
       )}
       <CarouselWrapper ref={wrapperRef}>
         <ForwardedRefComponent
@@ -117,63 +116,61 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
             setInitialized();
           }}
           infinite={true}>
-          {props.items.map((book, index) => {
-            return (
-              <div
-                key={index}
+          {props.items.map((book, index) => (
+            <div
+              key={index}
+              css={css`
+                display: flex;
+                flex-direction: column;
+                height: 355px;
+                outline: none;
+              `}>
+              <PortraitBook
                 css={css`
-                  display: flex;
-                  flex-direction: column;
-                  height: 355px;
-                  outline: none;
+                  height: 100%;
+                  padding-left: 0 !important;
                 `}>
-                <PortraitBook
-                  css={css`
-                    height: 100%;
-                    padding-left: 0 !important;
-                  `}>
-                  <ThumbnailWrapper>
-                    <Book.Thumbnail
-                      thumbnailWidth={140}
-                      thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
-                    />
-                  </ThumbnailWrapper>
-                  <BookMeta book={book} />
-                </PortraitBook>
-              </div>
-            );
-          })}
+                <ThumbnailWrapper>
+                  <Book.Thumbnail
+                    thumbnailWidth={140}
+                    thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
+                  />
+                </ThumbnailWrapper>
+                <BookMeta book={book} />
+              </PortraitBook>
+            </div>
+          ))}
         </ForwardedRefComponent>
         {carouselInitialize && (
           <form>
-            <button type="submit" onClick={handleLeftArrow}>
-              <Arrow
-                color={'dark'}
-                side={'left'}
-                wrapperStyle={css`
-                  ${arrowWrapperCSS};
-                  @media (min-width: 1280px) {
-                    left: -38px;
-                  }
-                  left: 5px;
-                  top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
-                `}
-              />
-            </button>
-            <button type="submit" onClick={handleRightArrow}>
-              <Arrow
-                color={'dark'}
-                side={'right'}
-                wrapperStyle={css`
-                  ${arrowWrapperCSS};
-                  @media (min-width: 1280px) {
-                    right: -38px;
-                  }
-                  right: 5px;
-                  top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
-                `}
-              />
-            </button>
+            <Arrow
+              onClickHandler={handleLeftArrow}
+              label={'이전'}
+              color={'dark'}
+              side={'left'}
+              wrapperStyle={css`
+                ${arrowWrapperCSS};
+                @media (min-width: 1280px) {
+                  left: -38px;
+                }
+                left: 5px;
+                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+              `}
+            />
+            <Arrow
+              label={'다음'}
+              onClickHandler={handleRightArrow}
+              color={'dark'}
+              side={'right'}
+              wrapperStyle={css`
+                ${arrowWrapperCSS};
+                @media (min-width: 1280px) {
+                  right: -38px;
+                }
+                right: 5px;
+                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+              `}
+            />
           </form>
         )}
       </CarouselWrapper>

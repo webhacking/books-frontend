@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { CategoryListProps } from 'src/components/CategoryList/Desktop';
 import { css } from '@emotion/core';
-import { useState } from 'react';
+
 import { ParentCategory } from 'src/pages/category/list';
 import ArrowDown from 'src/svgs/Arrow_Down_9.svg';
 import { RIDITheme } from 'src/styles';
@@ -45,31 +45,38 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
   const { categories, selectedCategory, handleSelectCategory } = props;
   return (
     <ul css={listCSS}>
-      {categories.map((item, index) => {
-        return (
-          <React.Fragment key={index}>
-            <li
-              onClick={handleSelectCategory.bind(null, item)}
+      {categories.map((item, index) => (
+        <React.Fragment key={index}>
+          <li
+            css={css`
+              :first-of-type {
+                border-top: 0;
+              }
+              width: 50%;
+              height: 100%;
+              border-left: 1px solid #e6e8eb;
+              border-bottom: 1px solid #e6e8eb;
+
+              transition: background 0.15s ease-in-out, color 0.15s ease-in-out;
+              span {
+                transition: background 0.15s ease-in-out, color 0.15s ease-in-out;
+                ${selectedCategory && selectedCategory.name === item.name
+                  ? 'color: #fff;'
+                  : ''};
+              }
+              ${selectedCategory && selectedCategory.name === item.name
+                ? 'background: #636c73; color: #fff;'
+                : ''};
+            `}>
+            <button
               css={css`
-                :first-of-type {
-                  border-top: 0;
-                }
-                width: 50%;
-                height: 100%;
-                padding: 10px 5px 10px 15px;
-                border-left: 1px solid #e6e8eb;
-                border-bottom: 1px solid #e6e8eb;
                 display: flex;
                 justify-content: space-between;
-                transition: background 0.15s ease-in-out, color 0.15s ease-in-out;
-                span {
-                  transition: background 0.15s ease-in-out, color 0.15s ease-in-out;
-                  ${selectedCategory && selectedCategory.name === item.name ? 'color: #fff;' : ''};
-                }
-                ${selectedCategory && selectedCategory.name === item.name
-                  ? 'background: #636c73; color: #fff;'
-                  : ''};
-              `}>
+                padding: 10px 5px 10px 15px;
+                height: 100%;
+                width: 100%;
+              `}
+              onClick={handleSelectCategory.bind(null, item)}>
               <span css={parentCategoryNameCSS}>{item.name}</span>
               <ArrowDown
                 css={(theme: RIDITheme) => css`
@@ -85,84 +92,84 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
                   transition: all 0.15s;
                 `}
               />
-            </li>
-            {selectedCategory &&
-              index !== 0 &&
-              index % 2 === 1 &&
-              (selectedCategory.name === item.name ||
-                selectedCategory.name === categories[index - 1].name) && (
-                <li
+            </button>
+          </li>
+          {selectedCategory &&
+            index !== 0 &&
+            index % 2 === 1 &&
+            (selectedCategory.name === item.name ||
+              selectedCategory.name === categories[index - 1].name) && (
+              <li
+                css={css`
+                  width: 100%;
+                  //height: 100%;
+                  background-color: #ebf6ff;
+                  border-top: 1px solid #e6e8eb;
+                  border-bottom: 1px solid #e6e8eb;
+                `}>
+                <ul
                   css={css`
-                    width: 100%;
-                    //height: 100%;
-                    background-color: #ebf6ff;
-                    border-top: 1px solid #e6e8eb;
-                    border-bottom: 1px solid #e6e8eb;
+                    overflow: hidden;
+                    display: flex;
+                    flex-wrap: wrap;
+                    ${selectedCategory.name === item.name
+                      ? css`
+                          display: flex;
+                          max-height: 500px;
+                        `
+                      : 'max-height: 0;'};
+                    //height: auto;
+                    //transition: max-height 0.15s;
                   `}>
-                  <ul
-                    css={css`
-                      overflow: hidden;
-                      display: flex;
-                      flex-wrap: wrap;
-                      ${selectedCategory.name === item.name
-                        ? css`
-                            display: flex;
-                            max-height: 500px;
-                          `
-                        : 'max-height: 0;'};
-                      //height: auto;
-                      //transition: max-height 0.15s;
-                    `}>
+                  <li
+                    css={(theme: RIDITheme) => css`
+                      ${categoryItemCSS(theme, '100%')};
+                    `}>{`${item.name} 전체`}</li>
+                  {item.subCategory.map((subItem, subIndex) => (
                     <li
-                      css={(theme: RIDITheme) => css`
-                        ${categoryItemCSS(theme, '100%')};
-                      `}>{`${item.name} 전체`}</li>
-                    {item.subCategory.map((subItem, subIndex) => (
-                      <li
-                        css={theme => css`
-                          ${categoryItemCSS(theme, '50%')};
-                        `}
-                        key={subIndex}>
-                        {subItem.name}
-                      </li>
-                    ))}
-                  </ul>
-                  <ul
-                    css={css`
-                      overflow: hidden;
-                      display: flex;
-                      flex-wrap: wrap;
-
-                      ${selectedCategory.name === categories[index - 1].name
-                        ? css`
-                            display: flex;
-                            max-height: 500px;
-                          `
-                        : 'max-height: 0;'};
-                      //height: auto;
-                      //transition: max-height 0.15s;
-                    `}>
-                    <li
-                      css={(theme: RIDITheme) => css`
-                        ${categoryItemCSS(theme, '100%')};
-                      `}>
-                      {`${categories[index - 1].name} 전체`}
+                      css={theme => css`
+                        ${categoryItemCSS(theme, '50%')};
+                      `}
+                      key={subIndex}>
+                      {subItem.name}
                     </li>
-                    {categories[index - 1].subCategory.map((subItem, subIndex) => (
-                      <li
-                        css={theme => css`
-                          ${categoryItemCSS(theme, '50%')};
-                        `}
-                        key={subIndex}>
-                        {subItem.name}
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              )}
-          </React.Fragment>
-        );
-      })}
+                  ))}
+                </ul>
+                <ul
+                  css={css`
+                    overflow: hidden;
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    ${selectedCategory.name === categories[index - 1].name
+                      ? css`
+                          display: flex;
+                          max-height: 500px;
+                        `
+                      : 'max-height: 0;'};
+                    //height: auto;
+                    //transition: max-height 0.15s;
+                  `}>
+                  <li
+                    css={(theme: RIDITheme) => css`
+                      ${categoryItemCSS(theme, '100%')};
+                    `}>
+                    {`${categories[index - 1].name} 전체`}
+                  </li>
+                  {categories[index - 1].subCategory.map((subItem, subIndex) => (
+                    <li
+                      css={theme => css`
+                        ${categoryItemCSS(theme, '50%')};
+                      `}
+                      key={subIndex}>
+                      {subItem.name}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            )}
+        </React.Fragment>
+      ))}
     </ul>
   );
 };
@@ -170,7 +177,9 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
 const Mobile: React.FC<CategoryListProps> = props => {
   const [selectedCategory, setCategory] = useState<ParentCategory>(null);
   const handleSelectCategory = (category: ParentCategory) => {
-    setCategory(selectedCategory && selectedCategory.name === category.name ? null : category);
+    setCategory(
+      selectedCategory && selectedCategory.name === category.name ? null : category,
+    );
   };
   return (
     <div
