@@ -3,6 +3,7 @@ service: books
 package:
   exclude:
     - node_modules/**
+    - '!node_modules/serverless-http/**'
     - '*.js.map'
     - .cache
     - coverage/**
@@ -40,7 +41,6 @@ layers:
       exclude:
         - .cache/**
         - types/**
-        - serverless/**
         - codecov/**
         - aws-sdk/**
         - prettier/**
