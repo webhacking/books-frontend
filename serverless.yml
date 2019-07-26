@@ -32,14 +32,16 @@ provider:
 layers:
   nodeModules:
     path: node_modules
+    compatibleRuntimes:
+      - nodejs8.10
     description: sentry + next.js + emotion + ts + redux node_modules
 
 functions:
   server:
-    layers:
-      - { Ref: NodeModulesLambdaLayer }
     path: /
     handler: server/index.handler
+    layers:
+      - { Ref: NodeModulesLambdaLayer }
     warmup:
       enabled:
         - development
