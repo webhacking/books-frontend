@@ -38,12 +38,12 @@ layers:
     description: sentry + next.js + emotion + ts + redux node_modules
     package:
       exclude:
-        - node_modules/.cache/**
-        - node_modules/@types/**
-        - node_modules/serverless/**
-        - node_modules/codecov/**
-        - node_modules/aws-sdk/**
-        - node_modules/prettier/**
+        - .cache/**
+        - types/**
+        - serverless/**
+        - codecov/**
+        - aws-sdk/**
+        - prettier/**
 
 functions:
   server:
