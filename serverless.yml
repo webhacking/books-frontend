@@ -14,6 +14,8 @@ package:
     - cypress/**
     - src/**
     - tsconfig.json
+    - static/**
+
 provider:
   name: aws
   runtime: nodejs8.10
