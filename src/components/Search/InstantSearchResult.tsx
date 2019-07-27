@@ -20,7 +20,7 @@ const listCSS = css`
 
 const listItemCSS = css`
   @media (max-width: 999px) {
-    max-height: 40px;
+    min-height: 40px;
   }
   cursor: pointer;
 `;
@@ -189,7 +189,9 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                 height: 100%;
                 width: 100%;
                 display: flex;
+                flex-wrap: wrap;
                 align-items: center;
+                text-align: left;
                 @media (max-width: 999px) {
                   padding: 9px 10px;
                 }
@@ -318,6 +320,8 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
                   css={css`
                     width: 100%;
                     height: 100%;
+                    text-align: left;
+                    flex-wrap: wrap;
                     @media (max-width: 999px) {
                       padding: 9px 10px;
                     }

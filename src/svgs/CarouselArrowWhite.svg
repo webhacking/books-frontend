@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="44" height="44" viewBox="-2 -2 44 44">
     <defs>
-        <circle id="b" cx="20" cy="20" r="20"/>
-        <filter id="a" width="140%" height="140%" x="-20%" y="-17.5%" filterUnits="objectBoundingBox">
+        <circle cx="20" cy="20" r="20"/>
+        <filter width="140%" height="140%" x="-20%" y="-17.5%" filterUnits="objectBoundingBox">
             <feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"/>
             <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="1.5"/>
             <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>

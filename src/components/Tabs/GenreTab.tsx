@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import * as labels from 'src/labels/common.json';
 import GNBCategory from 'src/svgs/GNB_Category.svg';
 import { css, SerializedStyles } from '@emotion/core';
-import { RIDITheme } from 'src/styles';
+import { clearOutline, RIDITheme } from 'src/styles';
 import { Link } from 'server/routes';
 import { BrowserLocationContext } from 'src/components/Context';
 import * as Cookies from 'js-cookie';
@@ -30,11 +30,16 @@ const genreListCSS = theme => css`
   height: 47px;
   align-items: center;
   li {
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 47px;
+    button {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 47px;
+      height: 100%;
+      width: 100%;
+      letter-spacing: -0.2px;
+      ${clearOutline};
+    }
     height: 100%;
-    letter-spacing: -0.2px;
     text-align: center;
     color: ${theme.genreTab.normal};
     cursor: pointer;
@@ -93,6 +98,10 @@ const subServicesListCSS = theme => css`
   li {
     height: 100%;
     line-height: 50px;
+    button {
+      font-size: 17px;
+      ${clearOutline};
+    }
     span {
       display: inline-block;
       cursor: pointer;
@@ -168,17 +177,21 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
     <GenreTabWrapper>
       <li>
         <ul css={genreListCSS}>
-          <Link route={'/category/list'}>
-            <li>
-              <GNBCategory
-                css={(theme: RIDITheme) => css`
-                  ${iconCSS(theme)};
-                  ${currentPath === '/category/list' ? `fill:${theme.primaryColor}` : ''};
-                `}
-              />
-              <span className={'a11y'}>{labels.category}</span>
-            </li>
-          </Link>
+          <li>
+            <Link route={'/category/list'}>
+              <button>
+                <GNBCategory
+                  css={(theme: RIDITheme) => css`
+                    ${iconCSS(theme)};
+                    ${currentPath === '/category/list'
+                      ? `fill:${theme.primaryColor}`
+                      : ''};
+                  `}
+                />
+                <span className={'a11y'}>{labels.category}</span>
+              </button>
+            </Link>
+          </li>
           {Object.keys(genres).map((k, index) => {
             const visitedService = Cookies.get(
               `${cookieKeys.recentlyVisitedGenre}_${genres[k].key}_Service`,
@@ -187,45 +200,51 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               ? `${genres[k].path}/${visitedService}`
               : genres[k].path;
             return (
-              <Link
-                replace={!!currentPath.match(genres[k].path)}
-                prefetch={true}
-                key={index}
-                route={route}>
-                <li>
-                  <TabItem
-                    normalCSS={normal}
-                    currentCSS={genreTab}
-                    currentPath={currentPath}
-                    path={genres[k].key}
-                    label={genres[k].label}
-                  />
-                </li>
-              </Link>
+              <li>
+                <Link
+                  replace={!!currentPath.match(genres[k].path)}
+                  prefetch={true}
+                  key={index}
+                  route={route}>
+                  <button>
+                    <TabItem
+                      normalCSS={normal}
+                      currentCSS={genreTab}
+                      currentPath={currentPath}
+                      path={genres[k].key}
+                      label={genres[k].label}
+                    />
+                  </button>
+                </Link>
+              </li>
             );
           })}
         </ul>
       </li>
-      <hr css={rulerCSS} />
+      <li>
+        <hr css={rulerCSS} />
+      </li>
       {hasSubService ? (
         <>
           <li>
             <ul css={subServicesListCSS}>
               {genres[currentGenre].subServices.map((service, index) => (
-                <Link
-                  prefetch={true}
-                  key={index}
-                  route={`/${genres[currentGenre].key}/${service.key}`}>
-                  <li>
-                    <TabItem
-                      normalCSS={normal}
-                      currentCSS={subServiceTab}
-                      currentPath={currentPath}
-                      path={`${genres[currentGenre].key}/${service.key}`}
-                      label={service.label}
-                    />
-                  </li>
-                </Link>
+                <li>
+                  <Link
+                    prefetch={true}
+                    key={index}
+                    route={`/${genres[currentGenre].key}/${service.key}`}>
+                    <button>
+                      <TabItem
+                        normalCSS={normal}
+                        currentCSS={subServiceTab}
+                        currentPath={currentPath}
+                        path={`${genres[currentGenre].key}/${service.key}`}
+                        label={service.label}
+                      />
+                    </button>
+                  </Link>
+                </li>
               ))}
             </ul>
           </li>
