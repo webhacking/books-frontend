@@ -145,10 +145,12 @@ const authorPublisherCSS = css`
 
 // Todo 사용 컴포넌트마다 다른 options 사용해서 보여주기
 const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = props => {
-  const viewedAuthors = props.authors
-    .filter(author => author.role === 'author' || author.role === 'illustrator')
-    .map(author => author.name);
-  if (viewedAuthors.length === 0) {
+  const viewedAuthors =
+    props.authors &&
+    props.authors
+      .filter(author => author.role === 'author' || author.role === 'illustrator')
+      .map(author => author.name);
+  if (!viewedAuthors || viewedAuthors.length === 0) {
     return (
       <span
         css={css`
@@ -240,6 +242,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                           display: flex;
                           flex-direction: column;
                           align-items: start;
+                          text-align: left;
                         `}>
                         <p
                           css={css`
@@ -287,8 +290,10 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
   const wrapperRef = React.createRef<HTMLDivElement>();
   useEffect(() => {
     if (wrapperRef.current && !!focusedPosition) {
-      const items = wrapperRef.current.querySelectorAll('li');
+      const items = wrapperRef.current.querySelectorAll('li button');
       if (items.length > 0 && focusedPosition !== 0) {
+        // @ts-ignore
+        window.a = items[focusedPosition - 1];
         (items[focusedPosition - 1] as HTMLLIElement).focus();
       }
     }
