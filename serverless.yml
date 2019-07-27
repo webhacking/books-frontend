@@ -29,7 +29,17 @@ provider:
   environment:
     NODE_ENV: ${self:custom.secrets.NODE_ENV}
     NODE_PATH: './:/opt'
-
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'lambda:InvokeFunction'
+      Resource:
+        - Fn::Join:
+            - ':'
+            - - arn:aws:lambda
+              - Ref: AWS::Region
+              - Ref: AWS::AccountId
+              - function:${self:service}-${opt:stage, self:provider.stage}-*
 layers:
   nodeModules:
     path: node_modules
