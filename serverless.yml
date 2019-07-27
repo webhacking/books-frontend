@@ -45,7 +45,6 @@ layers:
         - prettier/**
         - typescript/**
         - jest/**
-        - '@babel/**'
         - 'eslint/**'
 
 functions:
