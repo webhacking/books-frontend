@@ -3,7 +3,6 @@ service: books
 package:
   exclude:
     - node_modules/**
-    - '!node_modules/serverless-http/**'
     - '*.js.map'
     - .cache
     - coverage/**
@@ -20,7 +19,6 @@ package:
 provider:
   name: aws
   runtime: nodejs8.10
-  NODE_PATH: './:/opt/node_modules'
   region: ${self:custom.secrets.REGION}
   stage: ${opt:stage, 'development'}
   # CloudFormation Name
@@ -30,6 +28,7 @@ provider:
   # serverSideEncryption: AES256
   environment:
     NODE_ENV: ${self:custom.secrets.NODE_ENV}
+    NODE_PATH: './:/opt'
 
 layers:
   nodeModules:
