@@ -1,5 +1,5 @@
 {
-  "**/src/!(tests)/**/*.+(ts|tsx)": ["eslint --fix", "git add"],
+  "**/src/!(tests)/**/*.+(ts|tsx)": ["eslint --fix --fix-type problem", "git add"],
   "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|graphql|mdx)": [
     "prettier --write",
     "git add"

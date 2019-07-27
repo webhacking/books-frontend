@@ -28,7 +28,7 @@ export const useIntersectionObserver = (
       // @ts-ignore
       observer.unobserve(target.current);
     };
-  }, [isIntersecting, rootMargin, target]);
+  }, []);
 
   return isIntersecting;
 };

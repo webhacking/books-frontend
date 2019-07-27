@@ -94,7 +94,7 @@
   "scripts": {
     "format": "yarn prettier --write ",
     "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
-    "lint": "eslint \"./+(!node_modules|src|server)/!(tests)/**/*.+(ts|tsx)\" --fix",
+    "lint": "eslint \"./+(!node_modules|src|server)/!(tests)/**/*.+(ts|tsx)\" --fix --fix-type problem",
     "validate": "yarn lint && yarn format && yarn prettier --list-different \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "build": "next build src",
     "local": "cross-env ENVIRONMENT=local pm2-runtime start ecosystem.config.js --only books-server --env local",
