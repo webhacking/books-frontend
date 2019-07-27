@@ -452,7 +452,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       return () => {
         // Unmount
       };
-    }, [inputRef]);
+    }, []);
 
     const showFooter = useMemo(() => {
       const hasAvailableResult =

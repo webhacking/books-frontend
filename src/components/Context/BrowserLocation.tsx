@@ -36,7 +36,7 @@ const BrowserLocation: React.FC<BrowserLocationContextProps> = props => {
       };
     }
     return () => {};
-  }, [props.isPartials, props.router]);
+  }, [props.isPartials]);
   return (
     <BrowserLocationContext.Provider value={currentPath}>
       {props.children}

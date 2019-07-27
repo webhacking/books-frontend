@@ -138,7 +138,7 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
         (items[focusedPosition - 1] as HTMLLIElement).focus();
       }
     }
-  }, [focusedPosition, wrapperRef]);
+  }, [focusedPosition]);
   return (
     <>
       <p css={recentHistoryLabel}>{labels.recentKeywords}</p>

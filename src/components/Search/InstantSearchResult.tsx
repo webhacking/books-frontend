@@ -292,7 +292,7 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
         (items[focusedPosition - 1] as HTMLLIElement).focus();
       }
     }
-  }, [focusedPosition, result, wrapperRef]);
+  }, [focusedPosition, result]);
 
   return (
     <div ref={wrapperRef}>

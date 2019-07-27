@@ -185,7 +185,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
     } else {
       setHomeURL('/');
     }
-  }, [setHomeURL]);
+  }, []);
   return (
     <Tabs>
       <TabItem

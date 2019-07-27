@@ -18,9 +18,7 @@ import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 const { publicRuntimeConfig } = getConfig();
 
 const backgroundImageCSS = css`
-  background: url(${`${
-      publicRuntimeConfig.STATIC_CDN_URL
-    }/static/image/recommended_book_background@desktop.png`})
+  background: url(${`${publicRuntimeConfig.STATIC_CDN_URL}/static/image/recommended_book_background@desktop.png`})
     center center no-repeat #17202e;
   background-size: contain;
   @media (max-width: 833px) {
@@ -119,7 +117,7 @@ interface BookMetaProps {
   book: BookScheme;
 }
 
-export const BookMeta: React.FC<BookMetaProps> = props => (
+export const BookMeta: React.FC<BookMetaProps> = React.memo(props => (
   <div css={bookMetaWrapperCSS}>
     <BookTitle>{props.book.title || ''}</BookTitle>
     <BookAuthor>{props.book.author || ''}</BookAuthor>
@@ -148,7 +146,7 @@ export const BookMeta: React.FC<BookMetaProps> = props => (
       </div>
     )}
   </div>
-);
+));
 
 export interface BookScheme {
   id: string;

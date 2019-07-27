@@ -327,7 +327,7 @@ interface TopBannerItemProps {
   center?: boolean;
 }
 
-const TopBannerItem: React.FC<TopBannerItemProps> = props => (
+const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => (
   <TopBannerItemWrapper>
     <ItemInner
       className={'slide-item-inner'}
@@ -360,7 +360,7 @@ const TopBannerItem: React.FC<TopBannerItemProps> = props => (
       className={'slide-overlay'}
     />
   </TopBannerItemWrapper>
-);
+));
 
 const arrowCSS = css`
   :hover {
@@ -433,10 +433,10 @@ const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props 
 );
 
 const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => {
-  const { banners } = props;
+  const { banners, forwardRef, setInitialized } = props;
   return (
     <ForwardedRefComponent
-      ref={props.forwardRef}
+      ref={forwardRef}
       className={'center slider variable-width'}
       css={sliderCSS}
       slidesToShow={1}
@@ -466,7 +466,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
         }
       }
       onInit={() => {
-        props.setInitialized();
+        setInitialized();
       }}
       centerMode={true}>
       {banners.map((item, index) => (
@@ -487,7 +487,7 @@ export const TopBannerCarouselContainer: React.FC<
   const [carouselInitialized, setCarouselInitialized] = useState(false);
   const [currentPosition, setCurrentPosition] = useState(0);
   const [banners] = useState(props.banners || items);
-  const slider: React.RefObject<SliderCarousel> = React.createRef();
+  const slider = React.useRef<SliderCarousel>();
   const changePosition = useCallback(item => {
     setCurrentPosition(item || 0);
   }, []);
@@ -507,7 +507,6 @@ export const TopBannerCarouselContainer: React.FC<
       slider.current.slickNext();
     }
   };
-
   return (
     <TopBannerCarouselWrapper>
       {!carouselInitialized && (
