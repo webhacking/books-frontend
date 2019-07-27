@@ -233,8 +233,8 @@ const initialSearchResult = {
 };
 export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
   (props: InstantSearchProps) => {
-    const inputRef = React.createRef<HTMLInputElement>();
-    const listWrapperRef = React.createRef<HTMLDivElement>();
+    const inputRef = React.useRef<HTMLInputElement>();
+    const listWrapperRef = React.useRef<HTMLDivElement>();
     const [isLoaded, setLoaded] = useState(false);
     const [isFocused, setFocus] = useState(false);
     const [keyword, setKeyword] = useState<string>(props.searchKeyword);

@@ -129,7 +129,7 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
     focusedPosition,
   } = props;
 
-  const wrapperRef = React.createRef<HTMLUListElement>();
+  const wrapperRef = React.useRef<HTMLUListElement>();
 
   useEffect(() => {
     if (wrapperRef.current) {

@@ -287,13 +287,11 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
     result,
     handleKeyDown,
   } = props;
-  const wrapperRef = React.createRef<HTMLDivElement>();
+  const wrapperRef = React.useRef<HTMLDivElement>();
   useEffect(() => {
     if (wrapperRef.current && !!focusedPosition) {
       const items = wrapperRef.current.querySelectorAll('li button');
       if (items.length > 0 && focusedPosition !== 0) {
-        // @ts-ignore
-        window.a = items[focusedPosition - 1];
         (items[focusedPosition - 1] as HTMLLIElement).focus();
       }
     }
