@@ -8,7 +8,7 @@ import getConfig from 'next-server/config';
 import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
 import styled from '@emotion/styled';
 import { Book } from '@ridi/web-ui/dist/index.node';
-import { flexRowStart, lineClamp } from 'src/styles';
+import { flexRowStart, lineClamp, scrollBarHidden } from 'src/styles';
 import NewBadge from 'src/svgs/NewBadge.svg';
 import AtSelectIcon from 'src/svgs/Book1.svg';
 import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedBookCarousel';
@@ -33,6 +33,7 @@ const hotReleaseRecommendedBookWrapperCSS = css`
   }
   padding-top: 36px;
   height: 458px;
+  margin-bottom: 48px;
 `;
 const recommendedBookWrapperCSS = css`
   ${backgroundImageCSS};
@@ -61,13 +62,13 @@ export const recommendedBookListCSS = css`
 
 export const BookList = styled.ul`
   overflow: auto;
+  ${scrollBarHidden};
   margin: 0 auto;
   @media (max-width: 999px) {
     ${flexRowStart};
   }
   display: flex;
   justify-content: center;
-  -webkit-overflow-scrolling: touch;
 `;
 
 export const bookMetaWrapperCSS = css`
@@ -79,7 +80,7 @@ export const bookMetaWrapperCSS = css`
 export const BookTitle = styled.h3`
   color: white;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.33;
   letter-spacing: -0.4px;
   margin-bottom: 4px;

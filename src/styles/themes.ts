@@ -57,7 +57,7 @@ export const defaultTheme: RIDITheme = {
   footerTextColor: '#ffffff',
   horizontalRuleColor: colors.slateGray80,
   verticalRuleColor: colors.slateGray70,
-  logoFilter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3))',
+  logoFilter: 'drop-shadow(0 0 1px rgba(0, 0, 0, 0.3))',
   logoFilter2: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2))',
   button: {
     primaryBorderColor: colors.dodgerBlue20,
@@ -107,7 +107,7 @@ export const darkTheme: RIDITheme = {
   footerTextColor: '#ffffff',
   horizontalRuleColor: colors.slateGray80,
   verticalRuleColor: colors.slateGray70,
-  logoFilter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3))',
+  logoFilter: 'drop-shadow(0 0 1px rgba(0, 0, 0, 0.3))',
   logoFilter2: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2))',
   button: {
     primaryBorderColor: colors.dodgerBlue20,

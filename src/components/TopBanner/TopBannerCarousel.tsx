@@ -267,7 +267,7 @@ const TopBannerCurrentPositionInner = styled.div`
   width: 54px;
   height: 24px;
   border-radius: 12px;
-  border: solid 1px rgba(180, 180, 180, 0.1);
+  border: solid 1px rgba(255, 255, 255, 0.2);
   background-color: rgba(0, 0, 0, 0.4);
   @media (min-width: 1000px) {
     right: 16px;
@@ -369,6 +369,11 @@ const arrowCSS = css`
   opacity: 0.5;
   transition: opacity 0.1s;
   cursor: pointer;
+  @media (hover: none) {
+    :hover {
+      opacity: 1;
+    }
+  }
 `;
 
 const arrowWrapperCSS = css`
@@ -434,6 +439,41 @@ const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props 
 
 const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => {
   const { banners, forwardRef, setInitialized } = props;
+  // const [firstClientX, setFirstClientX] = useState();
+  // const [firstClientY, setFirstClientY] = useState();
+  // const [clientX, setClientX] = useState();
+  //
+  // useEffect(() => {
+  //   const touchStart = e => {
+  //     setFirstClientX(e.touches[0].clientX);
+  //     setFirstClientY(e.touches[0].clientY);
+  //   };
+  //
+  //   // eslint-disable-next-line consistent-return
+  //   const preventTouch = e => {
+  //     const minValue = 50; // threshold
+  //
+  //     setClientX(e.touches[0].clientX - firstClientX);
+  //
+  //     // Vertical scrolling does not work when you start swiping horizontally.
+  //     if (Math.abs(clientX) > minValue) {
+  //       e.preventDefault();
+  //       e.returnValue = false;
+  //       return false;
+  //     }
+  //   };
+  //
+  //   window.addEventListener('touchstart', touchStart);
+  //   window.addEventListener('touchmove', preventTouch, { passive: false });
+  //   return () => {
+  //     window.removeEventListener('touchstart', touchStart);
+  //     // @ts-ignore
+  //     window.removeEventListener('touchmove', preventTouch, {
+  //       // @ts-ignore
+  //       passive: false,
+  //     });
+  //   };
+  // }, [clientX, firstClientX, firstClientY, banners, forwardRef, setInitialized]);
   return (
     <ForwardedRefComponent
       ref={forwardRef}

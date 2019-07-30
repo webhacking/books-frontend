@@ -14,6 +14,7 @@ const fontStyle = css`
   color: #000000;
 `;
 
+// Fixme isn't same ? SectionBookTitle
 export const RankingBookTitle = styled.h3`
   ${fontStyle};
   max-width: 1000px;
@@ -27,6 +28,9 @@ export const RankingBookTitle = styled.h3`
   @media (max-width: 833px) {
     padding-left: 16px;
   }
+  a {
+    color: black;
+  }
 `;
 
 export const SectionTitle = styled.h3`
@@ -39,6 +43,10 @@ export const SectionTitle = styled.h3`
     padding-left: 20px;
   }
   padding-left: 24px;
+  display: flex;
+  a {
+    color: black;
+  }
 `;
 
 export interface RankingOption {
@@ -54,6 +62,7 @@ export interface BookSection {
   items: BookScheme[];
   option?: RankingOption | SelectionOption;
   title: string;
+  url?: string;
 }
 
 export interface BookSectionContainerProps {
@@ -69,6 +78,7 @@ const BookSectionContainer: React.FC<BookSectionContainerProps> = props => {
           items={section.items}
           type={(section.option as RankingOption).type || 'big'}
           title={section.title}
+          url={section.url}
         />
       );
     }
@@ -78,6 +88,7 @@ const BookSectionContainer: React.FC<BookSectionContainerProps> = props => {
           option={section.option as SelectionOption}
           items={section.items}
           title={section.title}
+          url={section.url}
         />
       );
     }

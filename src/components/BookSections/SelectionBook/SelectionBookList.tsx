@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { flexRowStart } from 'src/styles';
+import { flexRowStart, scrollBarHidden } from 'src/styles';
 import { BookScheme } from 'src/types/book';
 import { SelectionBookItem } from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { css } from '@emotion/core';
@@ -39,6 +39,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => (
       padding-bottom: 48px;
       box-sizing: content-box;
       overflow: auto;
+      ${scrollBarHidden};
     `}>
     {props.items.map((item, index) => (
       <li key={index} css={itemCSS}>
