@@ -33,7 +33,8 @@ const CarouselWrapper = styled.div`
   margin: 0 auto;
   position: relative;
   padding-left: 24px;
-  height: 372px;
+  height: 100%;
+  padding-bottom: 48px;
 `;
 
 const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {

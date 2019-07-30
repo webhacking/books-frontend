@@ -6,6 +6,8 @@ import { Book } from '@ridi/web-ui/dist/index.node';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
+import ArrowV from 'src/svgs/ArrowV.svg';
+import { scrollBarHidden } from 'src/styles';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -24,7 +26,7 @@ const SectionWrapper = styled.section`
   @media (max-width: 999px) {
     overflow: auto;
   }
-  -webkit-overflow-scrolling: touch;
+  ${scrollBarHidden};
   overflow: hidden;
 `;
 
@@ -81,6 +83,7 @@ interface RankingBookListProps {
   items: BookScheme[];
   type: 'small' | 'big';
   title?: string;
+  url?: string;
 }
 
 const RankingBookList: React.FC<RankingBookListProps> = props => {
@@ -88,7 +91,24 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   return (
     <>
-      {props.title && <RankingBookTitle>{props.title}</RankingBookTitle>}
+      {props.title && (
+        <RankingBookTitle>
+          {props.url ? (
+            // Todo Refactor
+            <a href={props.url}>
+              <span>{props.title}</span>
+              <span
+                css={css`
+                  margin-left: 5px;
+                `}>
+                <ArrowV />
+              </span>
+            </a>
+          ) : (
+            <span>{props.title}</span>
+          )}
+        </RankingBookTitle>
+      )}
       <SectionWrapper
         ref={targetRef}
         css={css`

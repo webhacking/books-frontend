@@ -172,7 +172,7 @@ const NotificationPage: React.FC<NotificationPageProps> & NextComponentType = pr
         <title>리디북스 - 알림</title>
       </Head>
       <section css={sectionCSS}>
-        <PageTitle title={'알림'} />
+        <PageTitle title={'알림'} mobileHidden={true} />
         <ul css={notiListCSS}>
           {notifications.map((item, index) => (
             <NotificationItem

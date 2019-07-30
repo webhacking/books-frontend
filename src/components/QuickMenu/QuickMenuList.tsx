@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
 import { css } from '@emotion/core';
+import { scrollBarHidden } from 'src/styles';
 const labelCSS = theme => css`
   font-size: 13px;
   line-height: 1.23;
@@ -22,7 +23,6 @@ const MenuList = styled.ul`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  overflow: auto;
   padding-top: 24px;
   padding-bottom: 32px;
   padding-left: 13px;
@@ -31,13 +31,15 @@ const MenuList = styled.ul`
     padding-left: 0;
     padding-right: 0;
   }
-  -webkit-overflow-scrolling: touch;
+
+  overflow: auto;
+  ${scrollBarHidden};
 `;
 
 const MenuItem = styled.li`
   display: inline-block;
   :not(:last-of-type) {
-    margin-right: 10px;
+    margin-right: 9px;
   }
   :first-of-type {
     padding-left: 13px;
@@ -48,6 +50,9 @@ const MenuItem = styled.li`
 `;
 
 const MenuItemWrapper = styled.div`
+  @media (max-width: 999px) {
+    max-width: 50px;
+  }
   a {
     display: flex;
     flex-direction: column;

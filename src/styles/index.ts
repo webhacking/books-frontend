@@ -45,3 +45,19 @@ export const lineClamp = (limit: number) => css`
   white-space: normal;
   word-break: keep-all;
 `;
+
+export const scrollBarHidden = css`
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+    display: none !important; // 윈도우 크롬 등
+  }
+  & {
+    overflow: -moz-scrollbars-none;
+  }
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox 64 */
+`;

@@ -14,6 +14,7 @@ import {
 } from 'src/components/BookSections/BookSectionContainer';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
+import ArrowV from 'src/svgs/ArrowV.svg';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -29,6 +30,7 @@ const SectionWrapper = styled.section`
 interface SelectionBookProps {
   items: BookScheme[];
   title: string;
+  url?: string;
   option: SelectionOption;
 }
 
@@ -119,7 +121,22 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   return (
     <SectionWrapper ref={targetRef}>
-      <SectionTitle>{props.title}</SectionTitle>
+      <SectionTitle>
+        {props.url ? (
+          // Todo Refactor
+          <a href={props.url}>
+            <span>{props.title}</span>
+            <span
+              css={css`
+                margin-left: 5px;
+              `}>
+              <ArrowV />
+            </span>
+          </a>
+        ) : (
+          <span>{props.title}</span>
+        )}
+      </SectionTitle>
       {!isIntersecting ? (
         <SelectionBookLoading
           isIntersecting={isIntersecting}

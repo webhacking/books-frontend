@@ -72,7 +72,7 @@ const ridiLogo = (theme: RIDITheme) => css`
   height: 16px;
   fill: white;
   :hover {
-    opacity: 0.7;
+    opacity: 0.8;
   }
   @media (max-width: 999px) {
     width: 88px;
@@ -87,7 +87,7 @@ const ridiLogo = (theme: RIDITheme) => css`
 `;
 
 const ridiSelectLogo = (theme: RIDITheme) => css`
-  filter: ${theme.logoFilter2};
+  filter: ${theme.logoFilter};
   fill: white;
   opacity: 0.6;
   width: 87.5px;
@@ -97,7 +97,7 @@ const ridiSelectLogo = (theme: RIDITheme) => css`
     height: 12px;
   }
   :hover {
-    opacity: 0.7;
+    opacity: 0.8;
   }
 `;
 

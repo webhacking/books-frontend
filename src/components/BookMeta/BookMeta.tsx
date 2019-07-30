@@ -7,7 +7,7 @@ import { BookScheme } from 'src/types/book';
 
 const bookTitleCSS = css`
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.33;
   letter-spacing: -0.43px;
   color: #000000;

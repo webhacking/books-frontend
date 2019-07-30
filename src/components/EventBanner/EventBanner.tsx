@@ -8,7 +8,7 @@ import { Genre } from 'src/constants/genres';
 const eventBannerWrapperCSS = css`
   margin: 0 auto;
   width: 100%;
-  padding-top: 24px;
+  padding: 10px 0 56px 0;
   height: 100%;
 `;
 
