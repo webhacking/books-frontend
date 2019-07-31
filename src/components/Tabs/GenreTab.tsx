@@ -33,6 +33,9 @@ const genreListCSS = theme => css`
   li {
     button {
       padding: 0 22px;
+      @media (max-width: 999px) {
+        padding: 0;
+      }
       font-size: 16px;
       font-weight: 500;
       line-height: 47px;
@@ -50,6 +53,9 @@ const genreListCSS = theme => css`
       margin-right: 0;
       button {
         padding: 0 20px;
+        @media (max-width: 999px) {
+          padding: 0;
+        }
       }
     }
 
