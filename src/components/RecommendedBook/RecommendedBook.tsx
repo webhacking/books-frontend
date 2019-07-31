@@ -29,34 +29,26 @@ const backgroundImageCSS = css`
 const hotReleaseRecommendedBookWrapperCSS = css`
   ${backgroundImageCSS};
   @media (max-width: 999px) {
-    height: 409px;
   }
   padding-top: 36px;
-  height: 458px;
   margin-bottom: 48px;
 `;
 const recommendedBookWrapperCSS = css`
   ${backgroundImageCSS};
   @media (max-width: 999px) {
-    height: 353px;
   }
-  height: 406px;
   padding-top: 54px;
 `;
 
 export const hotReleaseBookListCSS = css`
   @media (max-width: 999px) {
-    height: 322px;
   }
-  height: 372px;
   max-width: 1000px;
   padding-left: 3px;
 `;
 export const recommendedBookListCSS = css`
   @media (max-width: 999px) {
-    height: 300px;
   }
-  height: 406px;
   padding-left: 3px;
 `;
 
@@ -69,6 +61,11 @@ export const BookList = styled.ul`
   }
   display: flex;
   justify-content: center;
+
+  padding-bottom: 48px;
+  @media (max-width: 999px) {
+    padding-bottom: 24px;
+  }
 `;
 
 export const bookMetaWrapperCSS = css`

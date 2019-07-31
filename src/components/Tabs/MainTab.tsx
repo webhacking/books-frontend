@@ -154,15 +154,28 @@ const TabItem: React.FC<TabItemProps> = props => {
     activeIcon,
     normalIcon,
   } = props;
+  const isActiveTab = currentPath.match(pathRegexp);
   return (
-    <TabItemWrapper>
+    <TabItemWrapper
+      css={
+        isActiveTab
+          ? css`
+              :hover {
+                opacity: 1;
+                ${BottomLine} {
+                  opacity: 1;
+                }
+              }
+            `
+          : ''
+      }>
       <Anchor isPartials={isPartials} path={path} shallow={shallow} replace={replace}>
         <StyledAnchor href={isPartials ? path : ''}>
           <TabButton>
-            {currentPath.match(pathRegexp) ? activeIcon : normalIcon}
+            {isActiveTab ? activeIcon : normalIcon}
             <span css={labelStyle}>{label}</span>
           </TabButton>
-          <BottomLine css={currentPath.match(pathRegexp) ? currentTab : css``} />
+          <BottomLine css={isActiveTab ? currentTab : css``} />
         </StyledAnchor>
       </Anchor>
     </TabItemWrapper>

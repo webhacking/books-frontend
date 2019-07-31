@@ -42,10 +42,10 @@ const MenuItem = styled.li`
     margin-right: 9px;
   }
   :first-of-type {
-    padding-left: 13px;
+    padding-left: 10px;
   }
   :last-of-type {
-    padding-right: 13px;
+    padding-right: 10px;
   }
 `;
 

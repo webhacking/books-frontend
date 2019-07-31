@@ -31,7 +31,11 @@ const CarouselWrapper = styled.div`
   margin: 0 auto;
   position: relative;
   padding-left: 24px;
-  height: 372px;
+  padding-bottom: 48px;
+  @media (max-width: 999px) {
+    padding-bottom: 24px;
+  }
+  //height: 372px;
 `;
 
 interface RecommendedBookCarouselProps {
@@ -122,7 +126,6 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
               css={css`
                 display: flex;
                 flex-direction: column;
-                height: 355px;
                 outline: none;
               `}>
               <PortraitBook

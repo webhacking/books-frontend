@@ -371,7 +371,7 @@ const arrowCSS = css`
   cursor: pointer;
   @media (hover: none) {
     :hover {
-      opacity: 1;
+      opacity: 0.5;
     }
   }
 `;

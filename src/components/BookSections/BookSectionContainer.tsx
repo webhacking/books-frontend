@@ -6,12 +6,12 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 
 const fontStyle = css`
-  height: 21px;
   font-size: 21px;
   font-weight: normal;
-  line-height: 1;
+  line-height: 26px;
   letter-spacing: -0.23px;
   color: #000000;
+  word-break: keep-all;
 `;
 
 // Fixme isn't same ? SectionBookTitle
@@ -24,12 +24,20 @@ export const RankingBookTitle = styled.h3`
   padding-left: 24px;
   @media (min-width: 834px) and (max-width: 999px) {
     padding-left: 20px;
+    padding-right: 20px;
   }
   @media (max-width: 833px) {
     padding-left: 16px;
+    padding-right: 16px;
   }
+  display: flex;
   a {
+    display: flex;
     color: black;
+    :link,
+    :active {
+      color: black;
+    }
   }
 `;
 
@@ -38,14 +46,21 @@ export const SectionTitle = styled.h3`
   margin-bottom: 21px;
   @media (max-width: 833px) {
     padding-left: 16px;
+    padding-right: 16px;
   }
   @media (min-width: 834px) and (max-width: 999px) {
     padding-left: 20px;
+    padding-right: 20px;
   }
   padding-left: 24px;
   display: flex;
   a {
+    display: flex;
     color: black;
+    :link,
+    :active {
+      color: black;
+    }
   }
 `;
 
