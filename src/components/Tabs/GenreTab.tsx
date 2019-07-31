@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Genre, Genres } from 'src/constants/genres';
+import { Genre, GenreInfo, Genres } from 'src/constants/genres';
 import styled from '@emotion/styled';
 import * as labels from 'src/labels/common.json';
 import GNBCategory from 'src/svgs/GNB_Category.svg';
@@ -24,6 +24,7 @@ const rulerCSS = theme => css`
   background-color: ${theme.divider2};
 `;
 
+// Todo Refactor css
 const genreListCSS = theme => css`
   display: flex;
   flex-direction: row;
@@ -31,6 +32,7 @@ const genreListCSS = theme => css`
   align-items: center;
   li {
     button {
+      padding: 0 22px;
       font-size: 16px;
       font-weight: 500;
       line-height: 47px;
@@ -45,23 +47,12 @@ const genreListCSS = theme => css`
     cursor: pointer;
     :first-of-type {
       line-height: 56px;
-      padding: 0 20px;
       margin-right: 0;
-    }
-    :hover {
-      opacity: 0.7;
-    }
-    @media (hover: hover) {
-      :hover {
-        opacity: 0.7;
+      button {
+        padding: 0 20px;
       }
     }
-    @media (hover: none) {
-      :hover {
-        opacity: 1;
-      }
-    }
-    padding: 0 22px;
+
     margin-right: 10px;
   }
 
@@ -106,15 +97,6 @@ const subServicesListCSS = theme => css`
       display: inline-block;
       cursor: pointer;
       height: 100%;
-      @media (hover: hover) {
-        :hover {
-          color: ${theme.subServiceTab.hover};
-        }
-      }
-      @media (hover: none) {
-        :hover {
-        }
-      }
     }
     :not(:last-of-type) {
       ::after {
@@ -132,6 +114,9 @@ const subServicesListCSS = theme => css`
 const genreTab = (theme: RIDITheme) => css`
   color: ${theme.primaryColor};
   font-weight: bold;
+  :hover {
+    opacity: 1;
+  }
 `;
 const subServiceTab = (theme: RIDITheme) => css`
   color: ${theme.primaryColor};
@@ -152,19 +137,62 @@ interface TabItemProps {
   currentPath: string;
   currentCSS: (theme: RIDITheme) => SerializedStyles;
   normalCSS: (theme: RIDITheme) => SerializedStyles;
+  labelCSS: (theme: RIDITheme) => SerializedStyles;
+  route?: string;
+  genre: GenreInfo;
 }
+
+// @ts-ignore
+const genreTabLabelCSS = (theme: RIDITheme) => css`
+  :hover {
+    opacity: 0.7;
+  }
+`;
+// @ts-ignore
+const subServiceTabLabelCSS = (theme: RIDITheme) => css`
+  :hover {
+    color: #303538;
+  }
+`;
 
 const TabItem: React.FC<TabItemProps> = React.memo(props => {
   // Todo apply lint
-
+  const { path, route, currentPath, genre } = props;
   const regex =
-    props.path !== 'general'
-      ? new RegExp(`^\\/${props.path.replace(/\//gu, '\\/')}(\\/|$)`, 'u')
-      : new RegExp('(^[^/]*\\/$|^\\/general|\\/genre\\/general$)', 'u');
+    path === 'general'
+      ? new RegExp('(^[^/]*\\/$|^\\/general|\\/genre\\/general$)', 'u')
+      : new RegExp(`^\\/${props.path.replace(/\//gu, '\\/')}(\\/|$)`, 'u');
+  const isActivePath = currentPath.match(regex);
   return (
-    <span css={props.currentPath.match(regex) ? props.currentCSS : props.normalCSS}>
-      {props.label}
-    </span>
+    <li
+      css={theme => css`
+        ${isActivePath
+          ? css`
+              :hover {
+                opacity: 1;
+                color: #1f8ce6;
+              }
+              @media (hover: hover) {
+                :hover {
+                  opacity: 1;
+                }
+              }
+              @media (hover: none) {
+                :hover {
+                  opacity: 1;
+                }
+              }
+            `
+          : props.labelCSS(theme)}
+      `}>
+      <Link replace={!!currentPath.match(genre.path)} prefetch={true} route={route}>
+        <button>
+          <span css={currentPath.match(regex) ? props.currentCSS : props.normalCSS}>
+            {props.label}
+          </span>
+        </button>
+      </Link>
+    </li>
   );
 });
 
@@ -177,14 +205,29 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
     <GenreTabWrapper>
       <li>
         <ul css={genreListCSS}>
-          <li>
+          <li
+            css={css`
+              ${currentPath === '/category/list'
+                ? css`
+                    :hover {
+                      opacity: 1 !important;
+                    }
+                  `
+                : css`
+                    :hover {
+                      opacity: 0.7;
+                    }
+                  `};
+            `}>
             <Link route={'/category/list'}>
               <button>
                 <GNBCategory
                   css={(theme: RIDITheme) => css`
                     ${iconCSS(theme)};
                     ${currentPath === '/category/list'
-                      ? `fill:${theme.primaryColor}`
+                      ? css`
+                          fill: ${theme.primaryColor};
+                        `
                       : ''};
                   `}
                 />
@@ -200,23 +243,17 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               ? `${genres[k].path}/${visitedService}`
               : genres[k].path;
             return (
-              <li>
-                <Link
-                  replace={!!currentPath.match(genres[k].path)}
-                  prefetch={true}
-                  key={index}
-                  route={route}>
-                  <button>
-                    <TabItem
-                      normalCSS={normal}
-                      currentCSS={genreTab}
-                      currentPath={currentPath}
-                      path={genres[k].key}
-                      label={genres[k].label}
-                    />
-                  </button>
-                </Link>
-              </li>
+              <TabItem
+                key={index}
+                normalCSS={normal}
+                currentCSS={genreTab}
+                labelCSS={genreTabLabelCSS}
+                currentPath={currentPath}
+                path={genres[k].key}
+                label={genres[k].label}
+                route={route}
+                genre={genres[k]}
+              />
             );
           })}
         </ul>
@@ -229,22 +266,17 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
           <li>
             <ul css={subServicesListCSS}>
               {genres[currentGenre].subServices.map((service, index) => (
-                <li>
-                  <Link
-                    prefetch={true}
-                    key={index}
-                    route={`/${genres[currentGenre].key}/${service.key}`}>
-                    <button>
-                      <TabItem
-                        normalCSS={normal}
-                        currentCSS={subServiceTab}
-                        currentPath={currentPath}
-                        path={`${genres[currentGenre].key}/${service.key}`}
-                        label={service.label}
-                      />
-                    </button>
-                  </Link>
-                </li>
+                <TabItem
+                  key={index}
+                  route={`/${genres[currentGenre].key}/${service.key}`}
+                  normalCSS={normal}
+                  currentCSS={subServiceTab}
+                  labelCSS={subServiceTabLabelCSS}
+                  currentPath={currentPath}
+                  genre={genres[currentGenre]}
+                  path={`${genres[currentGenre].key}/${service.key}`}
+                  label={service.label}
+                />
               ))}
             </ul>
           </li>

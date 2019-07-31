@@ -124,7 +124,11 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
       <SectionTitle>
         {props.url ? (
           // Todo Refactor
-          <a href={props.url}>
+          <a
+            css={css`
+              display: flex;
+            `}
+            href={props.url}>
             <span>{props.title}</span>
             <span
               css={css`

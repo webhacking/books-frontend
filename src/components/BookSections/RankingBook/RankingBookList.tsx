@@ -148,7 +148,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                     titleLineClamp={props.type === 'small' ? 1 : 2}
                     showSomeDeal={false}
                     isAIRecommendation={false}
-                    width={'177px'}
+                    width={props.type === 'big' ? '177px' : null}
                   />
                 </div>
               </li>
