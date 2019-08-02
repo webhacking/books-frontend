@@ -15,7 +15,6 @@ import Cart_solid from 'src/svgs/Cart_solid.svg';
 import MyRIDI_solid from 'src/svgs/MyRIDI_solid.svg';
 import MyRIDI_regular from 'src/svgs/MyRIDI_regular.svg';
 import cookieKeys from 'src/constants/cookies';
-// import { RIDITheme } from 'src/styles';
 
 const StyledAnchor = styled.a`
   height: 100%;
@@ -33,7 +32,6 @@ const Tabs = styled.ul`
 `;
 
 const TabButton = styled.button`
-  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -43,6 +41,7 @@ const TabButton = styled.button`
   outline: none;
   position: relative;
   top: -1px;
+  margin: 0 auto;
 `;
 
 const iconStyle = () => css`
