@@ -61,11 +61,7 @@ export const BookList = styled.ul`
   }
   display: flex;
   justify-content: center;
-
-  padding-bottom: 48px;
-  @media (max-width: 999px) {
-    padding-bottom: 24px;
-  }
+  padding-bottom: 36px;
 `;
 
 export const bookMetaWrapperCSS = css`
