@@ -167,8 +167,6 @@ const TopBannerItemWrapper = styled.div`
 
 const sliderCSS = css`
   &.slick-slider {
-    overflow: hidden;
-    //height: 237px;
     @media (min-width: 300px) {
       height: calc((100vw - 20px) / 1.5);
     }
@@ -206,7 +204,7 @@ const sliderCSS = css`
       .slide-overlay {
         position: absolute;
         width: 355px;
-        left: unset;
+        left: 0;
         border-radius: 6px;
         height: 100%;
         background: rgba(0, 0, 0, 0.5);

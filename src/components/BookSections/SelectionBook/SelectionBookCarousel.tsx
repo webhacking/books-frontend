@@ -12,13 +12,15 @@ import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel'
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 
 const recommendedBookCarouselLoadingCSS = css`
-  overflow: hidden;
   .slick-slide {
     will-change: transform;
     .slide-item-inner {
       display: inline-block;
       width: 140px;
     }
+  }
+  .slick-list {
+    padding-bottom: 1px; // for iPad
   }
 `;
 
