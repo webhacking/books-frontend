@@ -168,35 +168,67 @@ const TopBannerItemWrapper = styled.div`
 const sliderCSS = css`
   &.slick-slider {
     overflow: hidden;
-    height: 237px;
+    //height: 237px;
+    @media (min-width: 300px) {
+      height: calc((100vw - 20px) / 1.5);
+    }
+    @media (min-width: 375px) {
+      height: calc(355px / 1.5);
+    }
+    @media (min-width: 1000px) {
+      height: calc(430px / 1.5);
+    }
   }
+  @media (min-width: 300px) {
+    .slick-slide {
+      .slide-overlay {
+        position: absolute;
+        left: 0;
+        min-width: 280px;
+        width: calc(100vw - 20px);
+        border-radius: 6px;
+        height: calc((100vw - 20px) / 1.5);
+        background: rgba(0, 0, 0, 0.5);
+        transition: background-color 0.1s;
+      }
+    }
 
-  .slick-slide {
-    .slide-overlay {
-      position: absolute;
-      width: 355px;
-      border-radius: 6px;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      transition: background-color 0.1s;
+    .slick-slide.slick-center {
+      .slide-overlay {
+        background: rgba(0, 0, 0, 0);
+        transition: background-color 0.1s;
+      }
     }
   }
 
-  .slick-slide.slick-center {
-    .slide-overlay {
-      background: rgba(0, 0, 0, 0);
-      transition: background-color 0.1s;
+  @media (min-width: 375px) {
+    .slick-slide {
+      .slide-overlay {
+        position: absolute;
+        width: 355px;
+        left: unset;
+        border-radius: 6px;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        transition: background-color 0.1s;
+      }
+    }
+
+    .slick-slide.slick-center {
+      .slide-overlay {
+        background: rgba(0, 0, 0, 0);
+        transition: background-color 0.1s;
+      }
     }
   }
-
   @media (min-width: 1000px) {
     &.slick-slider {
       overflow: hidden;
-      height: 286px;
+      height: calc(430px / 1.5);
     }
     .slick-slide {
       .slide-item-inner {
-        height: 286px;
+        height: calc(430px / 1.5);
         width: 430px;
         transform: scale(0.965);
         margin: 0 -2.5px;
@@ -206,7 +238,7 @@ const sliderCSS = css`
     .slick-slide.slick-center {
       width: 439px;
       .slide-item-inner {
-        height: 286px;
+        height: calc(430px / 1.5);
         width: 430px;
         transform: scale(1);
         transition: all 0.2s;
@@ -216,6 +248,7 @@ const sliderCSS = css`
     .slick-slide {
       .slide-overlay {
         width: 430px;
+        left: unset;
         border-radius: 6px;
         background: rgba(0, 0, 0, 0.5);
         transition: all 0.2s;
@@ -230,6 +263,9 @@ const sliderCSS = css`
       }
     }
   }
+  .slide-overlay {
+    height: 100%;
+  }
   .slick-position {
     display: none;
   }
@@ -239,36 +275,46 @@ const sliderCSS = css`
     }
   }
   .slick-slide {
-    height: 237px;
     ${flexCenter};
+    //@media (min-width: 300px) {
+    //  height: calc((100vw - 20px) / 1.5);
+    //}
+    @media (min-width: 375px) {
+      height: 237px;
+    }
     @media (min-width: 1000px) {
-      height: 286px;
+      height: calc(430px / 1.5);
     }
   }
 `;
 
 const ItemInner = styled.div`
   border-radius: 6px;
-  height: 286px;
-  @media (max-width: 999px) {
+  @media (min-width: 300px) {
+    width: calc(100vw - 20px);
+    height: calc((100vw - 20px) / 1.5);
+  }
+  @media (min-width: 375px) {
     width: 355px;
-    height: 237px;
+    height: calc(355px / 1.5);
   }
   @media (min-width: 1000px) {
     width: 430px;
+    height: calc(430px / 1.5);
   }
   background-size: cover;
 `;
 
 const TopBannerCurrentPositionInner = styled.div`
   position: absolute;
-  right: 10px;
-  bottom: 11px;
+
   width: 54px;
   height: 24px;
   border-radius: 12px;
   border: solid 1px rgba(255, 255, 255, 0.2);
   background-color: rgba(0, 0, 0, 0.4);
+  right: 10px;
+  bottom: 11px;
   @media (min-width: 1000px) {
     right: 16px;
     bottom: 11px;
@@ -296,13 +342,22 @@ const totalCountCSS = css`
 
 const carouselLoadingOverlay = css`
   position: absolute;
-  width: 355px;
+  top: 0;
+  left: 0;
   border-radius: 6px;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
+  @media (min-width: 300px) {
+    min-width: 280px;
+    width: calc(100vw - 20px);
+  }
+  @media (min-width: 375px) {
+    width: 355px;
+  }
   @media (min-width: 1000px) {
     width: 430px;
     transform: scale(0.965);
+    height: calc(430px / 1.5);
   }
 `;
 
@@ -340,15 +395,22 @@ const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => (
         `}>
       <img
         css={css`
-          width: 430px;
-          height: 286px;
           border-radius: 6px;
           // Fix me 올바른 사이즈 배너가 올 때 다시 테스트
           object-fit: cover; // IE 11 미지원
           object-position: 0 0; // IE 11 미지원
-          @media (max-width: 999px) {
+          @media (min-width: 300px) {
+            width: calc(100vw - 20px);
+            min-width: 280px;
+            height: calc((100vw - 20px) / 1.5);
+          }
+          @media (min-width: 375px) {
             width: 355px;
             height: 237px;
+          }
+          @media (min-width: 1000px) {
+            width: 430px;
+            height: 286px;
           }
         `}
         alt={props.label}
@@ -392,9 +454,15 @@ const PositionOverlay = styled.div`
   bottom: 0;
   height: 0;
   background: transparent;
-  width: 355px;
   left: 50%;
   transform: translate(-50%, 0);
+  @media (min-width: 300px) {
+    width: calc(100vw - 20px);
+    min-width: 280px;
+  }
+  @media (min-width: 375px) {
+    width: 355px;
+  }
   @media (min-width: 1000px) {
     width: 430px;
   }
@@ -404,10 +472,6 @@ const TopBannerCarouselWrapper = styled.section`
   max-width: 100%;
   margin: 0 auto;
   position: relative;
-  min-height: 237px;
-  @media (min-width: 1000px) {
-    min-height: 287px;
-  }
 `;
 
 interface TopBannerCarouselProps {
