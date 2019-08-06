@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { notifySentry } from 'src/utils/sentry';
 import { css, keyframes } from '@emotion/core';
 import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
 import Lens from 'src/svgs/Lens.svg';
 import Clear from 'src/svgs/Clear.svg';
 import { RIDITheme, ZIndexLayer } from 'src/styles';
-
 import { useDebouncedCallback } from 'use-debounce';
 import { Router } from 'server/routes';
 import localStorageKeys from 'src/constants/localStorage';
@@ -15,7 +14,6 @@ import { safeJSONParse } from 'src/utils/common';
 import axios from 'axios';
 import InstantSearchResult from 'src/components/Search/InstantSearchResult';
 import InstantSearchHistory from 'src/components/Search/InstantSearchHistory';
-
 import getConfig from 'next/config';
 import { get } from 'ts-get';
 import { PublicRuntimeConfig } from 'src/types/common';
@@ -60,6 +58,11 @@ const searchWrapper = (theme: RIDITheme) => css`
   }
 
   input {
+    ime-mode: active !important;
+    -ms-ime-mode: active !important;
+    -webkit-ime-mode: active !important;
+    -moz-ime-mode: active !important;
+    -ms-ime-mode: active !important;
     flex-shrink: 0;
     position: relative;
     top: -0.5px;
@@ -241,12 +244,14 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const [searchHistory, setSearchHistory] = useState<string[]>([]);
     const [enableSearchHistoryRecord, toggleSearchHistoryRecord] = useState(true);
     const [focusedPosition, setFocusedPosition] = useState(0);
+    const [, setFetching] = useState(false);
 
     const [searchResult, setSearchResult] = useState<InstantSearchResultScheme>(
       initialSearchResult,
     );
 
     const handleSearch = async (value: string) => {
+      setFetching(true);
       try {
         const result = await axios.get(
           `${
@@ -261,26 +266,33 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         notifySentry(error);
         setSearchResult(initialSearchResult);
         setFocusedPosition(0);
+      } finally {
+        setFetching(false);
       }
     };
-    const [debouncedCallback] = useDebouncedCallback(handleSearch, 300, [keyword]);
+    const [debouncedHandleSearch] = useDebouncedCallback(handleSearch, 300, [keyword]);
 
     const handleOnChange = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
+      (target: React.ChangeEvent<HTMLInputElement>['target']) => {
+        const { value } = target;
         setKeyword(value);
+
         // 초-중-종성 체크
         if (value.length > 0) {
           if (value.length === 1 && isOnsetNucleusCoda(value[0])) {
             setSearchResult(initialSearchResult);
           } else {
-            debouncedCallback(value);
+            debouncedHandleSearch(value);
           }
         }
         setFocusedPosition(0);
       },
-      [debouncedCallback],
+      [debouncedHandleSearch],
     );
+    const [debouncedOnChange] = useDebouncedCallback(handleOnChange, 100, []);
+    const passEventTarget = e => {
+      debouncedOnChange(e.target);
+    };
 
     const handleFocus = (focus: boolean) => {
       setFocus(focus);
@@ -336,10 +348,10 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         setKeyword(label);
         setFocus(false);
         setSearchResult(initialSearchResult);
-        if (!props.isPartials) {
-          Router.pushRoute(`/search/?q=${label}`);
-        } else {
+        if (props.isPartials) {
           window.location.href = `${window.location.origin}/search/?q=${label}`;
+        } else {
+          Router.pushRoute(`/search/?q=${label}`);
         }
       }
     };
@@ -347,20 +359,20 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const handleClickBookItem = (e: React.MouseEvent<HTMLLIElement>) => {
       e.preventDefault();
       const { bookId } = e.currentTarget.dataset;
-      if (!props.isPartials) {
-        Router.pushRoute(`/books/${bookId}?_s=instant&_q=${keyword}`);
-      } else {
+      if (props.isPartials) {
         window.location.href = `${window.location.origin}/books/${bookId}?_s=instant&_q=${keyword}`;
+      } else {
+        Router.pushRoute(`/books/${bookId}?_s=instant&_q=${keyword}`);
       }
       setFocus(false);
     };
     const handleClickAuthorItem = (e: React.MouseEvent<HTMLLIElement>) => {
       e.preventDefault();
       const { authorId } = e.currentTarget.dataset;
-      if (!props.isPartials) {
-        Router.pushRoute(`/author/${authorId}?_s=instant&_q=${keyword}`);
-      } else {
+      if (props.isPartials) {
         window.location.href = `${window.location.origin}/author/${authorId}?_s=instant&_q=${keyword}`;
+      } else {
+        Router.pushRoute(`/author/${authorId}?_s=instant&_q=${keyword}`);
       }
       setFocus(false);
     };
@@ -380,10 +392,10 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         }
         // Move search result page
         // Todo conditional check for partial component
-        if (!props.isPartials) {
-          Router.pushRoute(`/search/?q=${keyword}`);
-        } else {
+        if (props.isPartials) {
           window.location.href = `${window.location.origin}/search/?q=${keyword}`;
+        } else {
+          Router.pushRoute(`/search/?q=${keyword}`);
         }
 
         setFocus(false);
@@ -430,7 +442,6 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         }
       }
     };
-
     useEffect(() => {
       toggleSearchHistoryRecord(
         safeJSONParse(
@@ -454,15 +465,6 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       };
     }, []);
 
-    const showFooter = useMemo(() => {
-      const hasAvailableResult =
-        keyword.length > 0 &&
-        (searchResult.books.length > 0 || searchResult.authors.length > 0);
-      const hasAvailableSearchHistory = keyword.length < 1 && searchHistory.length > 0;
-
-      return isFocused && (hasAvailableResult || hasAvailableSearchHistory);
-    }, [isFocused, keyword, searchResult, searchHistory]);
-
     return (
       <>
         <div
@@ -483,18 +485,20 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                 opacity: ${isFocused ? 1 : 0.6};
               `}
             />
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete={'off'}>
               <input
+                autoComplete={'off'}
                 disabled={!isLoaded}
                 aria-label={labels.searchPlaceHolder}
-                value={keyword}
+                defaultValue={keyword}
                 ref={inputRef}
+                type={'text'}
                 name="instant_search"
                 placeholder={labels.searchPlaceHolder}
                 onFocus={handleFocus.bind(null, true)}
                 onClick={handleFocus.bind(null, true)}
                 onKeyDown={handleKeyDown}
-                onChange={handleOnChange}
+                onChange={passEventTarget}
               />
             </form>
             {keyword.length > 0 && isFocused && (
@@ -515,10 +519,10 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
               </button>
             )}
           </div>
-          {showFooter && (
+          {isFocused && (
             <div ref={listWrapperRef} css={searchFooter}>
               <form>
-                {keyword.length < 1 ? (
+                {keyword.length < 1 && searchHistory.length > 0 ? (
                   <InstantSearchHistory
                     searchHistory={searchHistory}
                     enableSearchHistoryRecord={enableSearchHistoryRecord}
