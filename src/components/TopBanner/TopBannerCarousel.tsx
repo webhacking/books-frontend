@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useState } from 'react';
+import React, { FormEvent, useCallback, useEffect, useState } from 'react';
 import SliderCarousel from 'react-slick';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
@@ -501,41 +501,6 @@ const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props 
 
 const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => {
   const { banners, forwardRef, setInitialized } = props;
-  // const [firstClientX, setFirstClientX] = useState();
-  // const [firstClientY, setFirstClientY] = useState();
-  // const [clientX, setClientX] = useState();
-  //
-  // useEffect(() => {
-  //   const touchStart = e => {
-  //     setFirstClientX(e.touches[0].clientX);
-  //     setFirstClientY(e.touches[0].clientY);
-  //   };
-  //
-  //   // eslint-disable-next-line consistent-return
-  //   const preventTouch = e => {
-  //     const minValue = 50; // threshold
-  //
-  //     setClientX(e.touches[0].clientX - firstClientX);
-  //
-  //     // Vertical scrolling does not work when you start swiping horizontally.
-  //     if (Math.abs(clientX) > minValue) {
-  //       e.preventDefault();
-  //       e.returnValue = false;
-  //       return false;
-  //     }
-  //   };
-  //
-  //   window.addEventListener('touchstart', touchStart);
-  //   window.addEventListener('touchmove', preventTouch, { passive: false });
-  //   return () => {
-  //     window.removeEventListener('touchstart', touchStart);
-  //     // @ts-ignore
-  //     window.removeEventListener('touchmove', preventTouch, {
-  //       // @ts-ignore
-  //       passive: false,
-  //     });
-  //   };
-  // }, [clientX, firstClientX, firstClientY, banners, forwardRef, setInitialized]);
   return (
     <ForwardedRefComponent
       ref={forwardRef}
@@ -583,6 +548,8 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
   );
 });
 
+let firstClientX = 0;
+let clientX = 0;
 export const TopBannerCarouselContainer: React.FC<
   TopBannerCarouselContainerProps
 > = React.memo(props => {
@@ -590,6 +557,7 @@ export const TopBannerCarouselContainer: React.FC<
   const [currentPosition, setCurrentPosition] = useState(0);
   const [banners] = useState(props.banners || items);
   const slider = React.useRef<SliderCarousel>();
+  const wrapper = React.useRef<HTMLElement>();
   const changePosition = useCallback(item => {
     setCurrentPosition(item || 0);
   }, []);
@@ -609,8 +577,47 @@ export const TopBannerCarouselContainer: React.FC<
       slider.current.slickNext();
     }
   };
+
+  const preventTouch = e => {
+    const minValue = 5; // threshold
+
+    clientX = e.touches[0].clientX - firstClientX;
+
+    // Vertical scrolling does not work when you start swiping horizontally.
+    if (Math.abs(clientX) > minValue) {
+      e.preventDefault();
+      e.returnValue = false;
+
+      return false;
+    }
+    return e;
+  };
+
+  const touchStart = e => {
+    firstClientX = e.touches[0].clientX;
+  };
+
+  useEffect(() => {
+    if (wrapper.current) {
+      wrapper.current.addEventListener('touchstart', touchStart);
+      wrapper.current.addEventListener('touchmove', preventTouch, {
+        passive: false,
+      });
+    }
+
+    return () => {
+      if (wrapper.current) {
+        wrapper.current.removeEventListener('touchstart', touchStart);
+        wrapper.current.removeEventListener('touchmove', preventTouch, {
+          // @ts-ignore
+          passive: false,
+        });
+      }
+    };
+  }, [wrapper]);
+
   return (
-    <TopBannerCarouselWrapper>
+    <TopBannerCarouselWrapper ref={wrapper}>
       {!carouselInitialized && (
         <TopBannerCarouselLoading
           left={
