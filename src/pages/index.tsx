@@ -36,7 +36,7 @@ export class Home extends React.Component<HomeProps> {
 
     if (req && res) {
       const redirect = (path: string) => {
-        if (req.path !== path) {
+        if (req.path !== path && !res.finished) {
           res.writeHead(302, {
             Location: path,
           });
@@ -44,7 +44,6 @@ export class Home extends React.Component<HomeProps> {
         }
       };
 
-      // Query Params 에 장르가 없을 경우
       if (!genre) {
         const visitedGenre = req.cookies[cookieKeys.recentlyVisitedGenre];
 
