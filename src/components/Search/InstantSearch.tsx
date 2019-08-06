@@ -31,7 +31,7 @@ const fadeIn = keyframes`
 
 const placeHolderCSS = css`
   opacity: 1;
-  font-size: 15px;
+  font-size: 16px;
   height: 19px;
   line-height: 19px;
   font-weight: 500;
@@ -39,6 +39,7 @@ const placeHolderCSS = css`
 `;
 
 const searchWrapper = (theme: RIDITheme) => css`
+  font-size: 16px;
   background-color: #ffffff;
   box-sizing: border-box;
   min-width: 340px;
@@ -58,18 +59,14 @@ const searchWrapper = (theme: RIDITheme) => css`
   }
 
   input {
-    ime-mode: active !important;
-    -ms-ime-mode: active !important;
-    -webkit-ime-mode: active !important;
-    -moz-ime-mode: active !important;
-    -ms-ime-mode: active !important;
     flex-shrink: 0;
     position: relative;
     top: -0.5px;
-    //margin-top: -2px;
-    padding-right: 4px;
+    padding-right: 3.75px; // 4 * 0.9375
     width: 98%;
-    font-size: 15px;
+    font-size: 16px;
+    transform: scale(0.9375);
+    transform-origin: top left;
     font-weight: 500;
     letter-spacing: -0.46px;
     color: #000000;
@@ -94,7 +91,7 @@ const iconStyle = (theme: RIDITheme) => css`
   fill: ${theme.input.placeholder};
   box-sizing: content-box;
   flex-shrink: 0;
-  padding: 5.5px 3px 5px 6px;
+  padding: 5.5px 2.5px 5px 7.5px;
   width: 24px;
   height: 24px;
   @media (max-width: 999px) {
@@ -332,6 +329,12 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       }
     };
 
+    const handleClearInput = () => {
+      inputRef.current.value = '';
+      setKeyword('');
+      inputRef.current.focus();
+    };
+
     const handleClearHistory = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       if (enableSearchHistoryRecord) {
@@ -465,6 +468,22 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       };
     }, []);
 
+    const showFooter = React.useMemo(
+      () =>
+        // eslint-disable-next-line
+        ((keyword.length < 1 && searchHistory.length > 0) ||
+          searchResult.books.length > 0 ||
+          searchResult.authors.length > 0) &&
+        isFocused,
+      [
+        isFocused,
+        keyword.length,
+        searchHistory.length,
+        searchResult.authors.length,
+        searchResult.books.length,
+      ],
+    );
+
     return (
       <>
         <div
@@ -488,6 +507,8 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
             <form onSubmit={handleSubmit} autoComplete={'off'}>
               <input
                 autoComplete={'off'}
+                autoCapitalize={'off'}
+                autoCorrect={'off'}
                 disabled={!isLoaded}
                 aria-label={labels.searchPlaceHolder}
                 defaultValue={keyword}
@@ -506,7 +527,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                 css={css`
                   outline: none;
                 `}
-                onClick={() => setKeyword('')}>
+                onClick={handleClearInput}>
                 <Clear
                   css={css`
                     position: relative;
@@ -519,7 +540,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
               </button>
             )}
           </div>
-          {isFocused && (
+          {showFooter && (
             <div ref={listWrapperRef} css={searchFooter}>
               <form>
                 {keyword.length < 1 && searchHistory.length > 0 ? (
