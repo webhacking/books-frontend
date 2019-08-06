@@ -37,7 +37,7 @@ const recommendedBookWrapperCSS = css`
   ${backgroundImageCSS};
   @media (max-width: 999px) {
   }
-  padding-top: 54px;
+  padding-top: 36px;
 `;
 
 export const hotReleaseBookListCSS = css`
