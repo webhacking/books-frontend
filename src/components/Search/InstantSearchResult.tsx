@@ -28,6 +28,12 @@ const bookListItemCSS = (theme: RIDITheme) => css`
   ${listItemCSS};
   @media (max-width: 999px) {
     border-bottom: 1px solid ${theme.divider};
+    :hover {
+      background-color: white !important;
+    }
+    :focus {
+      background-color: white !important;
+    }
   }
   :hover {
     background-color: ${theme.instantSearch.itemHover};
@@ -42,6 +48,12 @@ const authorListItemCSS = (theme: RIDITheme) => css`
   @media (max-width: 999px) {
     :not(:last-of-type) {
       border-bottom: 1px solid ${theme.divider};
+    }
+    :hover {
+      background-color: white !important;
+    }
+    :focus {
+      background-color: white !important;
     }
   }
   :hover {

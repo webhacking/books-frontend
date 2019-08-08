@@ -74,6 +74,12 @@ const SearchHistoryItem = styled.li`
   @media (max-width: 999px) {
     height: 40px;
     padding: 12px 15px 12px 20px;
+    :hover {
+      background-color: white !important;
+    }
+    :focus {
+      background-color: white !important;
+    }
   }
   a {
     span {
