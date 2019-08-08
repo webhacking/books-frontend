@@ -245,9 +245,13 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             const visitedService = Cookies.get(
               `${cookieKeys.recentlyVisitedGenre}_${genres[k].key}_Service`,
             );
+            // eslint-disable-next-line no-nested-ternary
             const route = visitedService
               ? `${genres[k].path}/${visitedService}`
+              : genres[k].path.match(/(fantasy|romance|bl)/u)
+              ? `${genres[k].path}/single`
               : genres[k].path;
+
             return (
               <TabItem
                 key={index}

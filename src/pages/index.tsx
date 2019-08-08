@@ -23,6 +23,15 @@ export interface HomeProps {
 }
 
 export class Home extends React.Component<HomeProps> {
+  private static redirect(req, res, path) {
+    if (req.path !== path && !res.finished) {
+      res.writeHead(302, {
+        Location: path,
+      });
+      res.end();
+    }
+  }
+
   public static async getInitialProps(props: ConnectedInitializeProps) {
     const { query, res, req } = props;
     const genre = query.genre
@@ -35,16 +44,32 @@ export class Home extends React.Component<HomeProps> {
       : null;
 
     if (req && res) {
-      const redirect = (path: string) => {
-        if (req.path !== path && !res.finished) {
-          res.writeHead(302, {
-            Location: path,
-          });
-          res.end();
+      if (genre) {
+        // Legacy Genre Fallback
+        if (genre.match(/(fantasy_serial|bl_serial|romance_serial)/u)) {
+          this.redirect(req, res, `/${genre.replace('_', '/')}`);
         }
-      };
+        if (!query.service) {
+          // URL Genre Param 이 있는 경우 저장 된 Sub Service 체크 후 Redirection,
+          const visitedGenreService =
+            req.cookies[`${cookieKeys.recentlyVisitedGenre}_${genre}_Service`];
 
-      if (!genre) {
+          if (`/${genre}/${visitedGenreService}` === req.path) {
+            return {
+              genre: genre || 'general',
+              service: service || 'single',
+              ...props.query,
+            };
+          }
+
+          if (visitedGenreService) {
+            this.redirect(req, res, `/${genre}/${visitedGenreService}`);
+          }
+          if (genre.match(/(fantasy|romance|bl)/u)) {
+            this.redirect(req, res, `/${genre}/single`); // default sub service fallback
+          }
+        }
+      } else {
         const visitedGenre = req.cookies[cookieKeys.recentlyVisitedGenre];
 
         // Todo 서브 서비스(단행본, 연재) API 지원여부 확인
@@ -52,34 +77,17 @@ export class Home extends React.Component<HomeProps> {
           ? req.cookies[`${cookieKeys.recentlyVisitedGenre}_${visitedGenre}_Service`]
           : null;
 
-        if (!visitedGenre || visitedGenre === 'general') {
-          redirect('/');
+        if (visitedGenre === 'general') {
+          this.redirect(req, res, '/');
         }
         if (visitedGenre) {
-          redirect(
+          this.redirect(
+            req,
+            res,
             visitedGenreService
               ? `/${visitedGenre}/${visitedGenreService}`
               : `/${visitedGenre}`,
           );
-        }
-      } else {
-        // Legacy Genre Fallback
-        if (genre === 'fantasy_serial') {
-          redirect('/fantasy/serial');
-        }
-        if (genre === 'bl_serial') {
-          redirect('/bl/serial');
-        }
-        if (genre === 'romance_serial') {
-          redirect('/romance/serial');
-        }
-        if (!query.service) {
-          // URL Genre Param 이 있는 경우 저장 된 Sub Service 체크 후 Redirection,
-          const visitedGenreService =
-            req.cookies[`${cookieKeys.recentlyVisitedGenre}_${genre}_Service`];
-          if (visitedGenreService && `/${genre}/${visitedGenreService}` !== req.path) {
-            redirect(`/${genre}/${visitedGenreService}`);
-          }
         }
       }
       // Todo Fetch Sections
@@ -120,6 +128,15 @@ export class Home extends React.Component<HomeProps> {
 
   public componentDidMount(): void {
     this.setCookie(this.props);
+    const { genre, service } = this.props;
+
+    // SubService 가 pathname 에 없을 경우 추가
+    if (
+      genre.match(/(fantasy|romance|bl)/u) &&
+      window.location.pathname !== `/${genre}/${service}`
+    ) {
+      // Router.replaceRoute(`/${genre}/${service}`);
+    }
     console.log('First Render. Client Side Fetch Start');
   }
 
@@ -155,6 +172,15 @@ export class Home extends React.Component<HomeProps> {
 
   public componentDidUpdate(): void {
     // Todo Fetch
+    const { genre, service } = this.props;
+
+    // SubService 가 pathname 에 없을 경우 추가
+    if (
+      genre.match(/(fantasy|romance|bl)/u) &&
+      window.location.pathname !== `/${genre}/${service}`
+    ) {
+      // Router.replaceRoute(`/${genre}/${service}`);
+    }
     console.log('Client Render Updated. Fetch Start');
   }
 
@@ -163,6 +189,8 @@ export class Home extends React.Component<HomeProps> {
     const currentGenre = Genre[genre.toUpperCase() as keyof typeof Genre];
     const currentService =
       GenreSubService[service.toUpperCase() as keyof typeof GenreSubService];
+
+    console.log('render index');
     return (
       <>
         <Head>
