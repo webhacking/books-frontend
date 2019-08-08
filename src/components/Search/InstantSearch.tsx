@@ -359,7 +359,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       }
     };
 
-    const handleClickBookItem = (e: React.MouseEvent<HTMLLIElement>) => {
+    const handleClickBookItem = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       const { bookId } = e.currentTarget.dataset;
       if (props.isPartials) {
@@ -369,7 +369,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       }
       setFocus(false);
     };
-    const handleClickAuthorItem = (e: React.MouseEvent<HTMLLIElement>) => {
+    const handleClickAuthorItem = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       const { authorId } = e.currentTarget.dataset;
       if (props.isPartials) {

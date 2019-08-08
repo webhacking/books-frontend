@@ -10,6 +10,7 @@ import { View } from 'libreact/lib/View';
 import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import { RIDITheme } from 'src/styles';
 import styled from '@emotion/styled';
+import { getEscapedString } from 'src/utils/highlight';
 
 const listCSS = css`
   padding-bottom: 10px;
@@ -77,16 +78,16 @@ const ItemWrapper = styled.div`
 
 interface InstantSearchResultProps {
   result: InstantSearchResultScheme;
-  handleKeyDown: (e: React.KeyboardEvent<HTMLLIElement | HTMLButtonElement>) => void;
-  handleClickAuthorItem: (e: React.MouseEvent<HTMLLIElement | HTMLButtonElement>) => void;
-  handleClickBookItem: (e: React.MouseEvent<HTMLLIElement | HTMLButtonElement>) => void;
+  handleKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
+  handleClickAuthorItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleClickBookItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
   focusedPosition: number;
 }
 
 interface InstantSearchResultBookListProps {
   result: InstantSearchResultScheme;
-  handleKeyDown: (e: React.KeyboardEvent<HTMLLIElement | HTMLButtonElement>) => void;
-  handleClickBookItem: (e: React.MouseEvent<HTMLLIElement | HTMLButtonElement>) => void;
+  handleKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
+  handleClickBookItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props => {
@@ -110,7 +111,7 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
           margin-right: 8px;
         `}
         dangerouslySetInnerHTML={{
-          __html: author.highlight.name_raw || author.name_raw,
+          __html: getEscapedString(author.highlight.name_raw || author.name_raw),
         }}
       />
       <span
@@ -207,8 +208,9 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                       margin-right: 4px;
                     `}
                     dangerouslySetInnerHTML={{
-                      __html:
+                      __html: getEscapedString(
                         book.highlight.web_title_title_raw || book.web_title_title_raw,
+                      ),
                     }}
                   />
                   <AuthorLabel author={book.author} authors={book.authors_info} />
@@ -252,9 +254,10 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                             margin-bottom: 4px;
                           `}
                           dangerouslySetInnerHTML={{
-                            __html:
+                            __html: getEscapedString(
                               book.highlight.web_title_title_raw ||
-                              book.web_title_title_raw,
+                                book.web_title_title_raw,
+                            ),
                           }}
                         />
                         <div>
