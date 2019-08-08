@@ -36,7 +36,8 @@ export class Home extends React.Component<HomeProps> {
     const { query, res, req } = props;
     const genre = query.genre
       ? Genre[(query.genre as string).toUpperCase() as keyof typeof Genre]
-      : null;
+      : 'general';
+
     const service = query.service
       ? GenreSubService[
           (query.service as string).toUpperCase() as keyof typeof GenreSubService
@@ -70,31 +71,17 @@ export class Home extends React.Component<HomeProps> {
           }
         }
       } else {
-        const visitedGenre = req.cookies[cookieKeys.recentlyVisitedGenre];
-
-        // Todo 서브 서비스(단행본, 연재) API 지원여부 확인
-        const visitedGenreService = visitedGenre
-          ? req.cookies[`${cookieKeys.recentlyVisitedGenre}_${visitedGenre}_Service`]
-          : null;
-
-        if (visitedGenre === 'general') {
-          this.redirect(req, res, '/');
-        }
-        if (visitedGenre) {
-          this.redirect(
-            req,
-            res,
-            visitedGenreService
-              ? `/${visitedGenre}/${visitedGenreService}`
-              : `/${visitedGenre}`,
-          );
-        }
+        res.writeHead(302, {
+          Location: '/',
+        });
+        res.end();
       }
       // Todo Fetch Sections
       if (res.statusCode !== 302) {
         console.log('Server Side Fetch Start');
       }
     } else {
+      // Client Side
       console.log('Initial Fetch Start');
     }
 
@@ -128,15 +115,6 @@ export class Home extends React.Component<HomeProps> {
 
   public componentDidMount(): void {
     this.setCookie(this.props);
-    const { genre, service } = this.props;
-
-    // SubService 가 pathname 에 없을 경우 추가
-    if (
-      genre.match(/(fantasy|romance|bl)/u) &&
-      window.location.pathname !== `/${genre}/${service}`
-    ) {
-      // Router.replaceRoute(`/${genre}/${service}`);
-    }
     console.log('First Render. Client Side Fetch Start');
   }
 
@@ -172,15 +150,6 @@ export class Home extends React.Component<HomeProps> {
 
   public componentDidUpdate(): void {
     // Todo Fetch
-    const { genre, service } = this.props;
-
-    // SubService 가 pathname 에 없을 경우 추가
-    if (
-      genre.match(/(fantasy|romance|bl)/u) &&
-      window.location.pathname !== `/${genre}/${service}`
-    ) {
-      // Router.replaceRoute(`/${genre}/${service}`);
-    }
     console.log('Client Render Updated. Fetch Start');
   }
 
@@ -190,7 +159,6 @@ export class Home extends React.Component<HomeProps> {
     const currentService =
       GenreSubService[service.toUpperCase() as keyof typeof GenreSubService];
 
-    console.log('render index');
     return (
       <>
         <Head>

@@ -109,6 +109,16 @@ class StoreApp extends App<StoreAppProps> {
       nonce,
     } = this.props;
 
+    if (pageProps.statusCode > 400) {
+      return (
+        <Container>
+          <Global styles={resetStyles} />
+          <Contents>
+            <Component {...pageProps} />
+          </Contents>
+        </Container>
+      );
+    }
     if (isPartials) {
       return (
         <Container>
