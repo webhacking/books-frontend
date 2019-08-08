@@ -36,7 +36,7 @@ export class Home extends React.Component<HomeProps> {
     const { query, res, req } = props;
     const genre = query.genre
       ? Genre[(query.genre as string).toUpperCase() as keyof typeof Genre]
-      : 'general';
+      : null;
 
     const service = query.service
       ? GenreSubService[
@@ -71,10 +71,25 @@ export class Home extends React.Component<HomeProps> {
           }
         }
       } else {
-        res.writeHead(302, {
-          Location: '/',
-        });
-        res.end();
+        const visitedGenre = req.cookies[cookieKeys.recentlyVisitedGenre];
+
+        // Todo 서브 서비스(단행본, 연재) API 지원여부 확인
+        const visitedGenreService = visitedGenre
+          ? req.cookies[`${cookieKeys.recentlyVisitedGenre}_${visitedGenre}_Service`]
+          : null;
+
+        if (visitedGenre === 'general') {
+          this.redirect(req, res, '/');
+        }
+        if (visitedGenre) {
+          this.redirect(
+            req,
+            res,
+            visitedGenreService
+              ? `/${visitedGenre}/${visitedGenreService}`
+              : `/${visitedGenre}`,
+          );
+        }
       }
       // Todo Fetch Sections
       if (res.statusCode !== 302) {
