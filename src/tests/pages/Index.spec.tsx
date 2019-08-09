@@ -102,42 +102,6 @@ describe('Home Test', () => {
     expect(mockWriteHead).toHaveBeenCalled();
   });
 
-  it('should be redirection default genre page', async () => {
-    const props = await Index.getInitialProps({
-      ...mockSomeProps,
-      query: { genre: undefined, service: undefined },
-      // @ts-ignore
-      req: {
-        path: '/none-of-genre',
-        cookies: {
-          recentlyVisitedGenre: undefined,
-        },
-      },
-    });
-
-    const node = renderComponent(props);
-    expect(node.container).not.toBe(null);
-    expect(mockWriteHead).toHaveBeenCalled();
-  });
-
-  it('should be redirection visited service page', async () => {
-    const props = await Index.getInitialProps({
-      ...mockSomeProps,
-      query: { genre: 'none-of-genre', service: undefined },
-      // @ts-ignore
-      req: {
-        path: '/none-of-genre',
-        cookies: {
-          recentlyVisitedGenre: 'romance',
-          recentlyVisitedGenre_romance_Service: 'single',
-        },
-      },
-    });
-    const node = renderComponent(props, 'ROMANCE', 'SINGLE');
-    expect(node.container).not.toBe(null);
-    expect(mockWriteHead).toHaveBeenCalled();
-  });
-
   it('should not be call redirect', async () => {
     window.history.pushState({}, 'romance serial', '/romance/serial');
     const props = await Index.getInitialProps({

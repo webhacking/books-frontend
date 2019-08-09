@@ -49,6 +49,7 @@ export class Home extends React.Component<HomeProps> {
         // Legacy Genre Fallback
         if (genre.match(/(fantasy_serial|bl_serial|romance_serial)/u)) {
           this.redirect(req, res, `/${genre.replace('_', '/')}`);
+          return { genre: genre.split('_')[0], service: 'serial', ...props.query };
         }
         if (!query.service) {
           // URL Genre Param 이 있는 경우 저장 된 Sub Service 체크 후 Redirection,

@@ -11,9 +11,14 @@ clientRoutes.add({ page: 'search', pattern: '/search' });
 clientRoutes.add({ page: 'category/list', pattern: '/category/list' });
 clientRoutes.add({
   page: '/',
-  pattern: '/:genre(general|fantasy|romance|bl|comic)/:service',
+  pattern:
+    '/:genre(general|fantasy|romance|bl|comic|fantasy_serial|romance_serial|bl_serial)/:service',
 });
-clientRoutes.add({ page: '/', pattern: '/:genre(general|fantasy|romance|bl|comic)' });
+clientRoutes.add({
+  page: '/',
+  pattern:
+    '/:genre(general|fantasy|romance|bl|comic|fantasy_serial|romance_serial|bl_serial)',
+});
 clientRoutes.add({ page: '/', pattern: '/' });
 
 module.exports = {
