@@ -139,16 +139,23 @@ const searchFooter = css`
   margin-top: 2px;
   @media (max-width: 999px) {
     width: 100vw;
+    left: 6px;
     box-shadow: unset;
     margin-left: -6px;
     top: 48px;
     margin-top: unset;
-    border-radius: unset;
+    border-radius: 0;
+  }
+  // ie11
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    top: 46px;
   }
 `;
 
 const dimmer = css`
+  display: none;
   @media (max-width: 999px) {
+    display: block;
     position: fixed;
     top: 0;
     left: 0;
@@ -296,7 +303,12 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     };
 
     const handleSearchWrapperBlur = (e: React.FocusEvent<HTMLDivElement>) => {
-      if (!e.relatedTarget) {
+      const relatedTarget = e.relatedTarget || document.activeElement; // IE11
+      if (
+        !relatedTarget ||
+        // @ts-ignore
+        !e.currentTarget.contains(relatedTarget)
+      ) {
         handleFocus(false);
         setFocusedPosition(0);
       }
@@ -329,7 +341,8 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       }
     };
 
-    const handleClearInput = () => {
+    const handleClearInput = e => {
+      e.preventDefault();
       inputRef.current.value = '';
       setKeyword('');
       inputRef.current.focus();
@@ -526,12 +539,14 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
               <button
                 css={css`
                   outline: none;
+                  position: relative;
+                  right: 10px;
+                  display: flex;
+                  align-items: center;
                 `}
                 onClick={handleClearInput}>
                 <Clear
                   css={css`
-                    position: relative;
-                    right: 9px;
                     width: 14px;
                     height: 14px;
                   `}

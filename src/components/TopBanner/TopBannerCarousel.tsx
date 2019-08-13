@@ -159,7 +159,7 @@ const items = [
 const TopBannerItemWrapper = styled.div`
   position: relative;
   ${flexCenter};
-
+  flex-shrink: 0;
   @media (max-width: 999px) {
     margin: 0 5px;
   }
@@ -496,7 +496,19 @@ interface TopBannerCarouselLoadingProps {
 }
 
 const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props => (
-  <div css={flexCenter}>
+  <div
+    css={css`
+      ${flexCenter};
+      @media (max-width: 1279px) and (-ms-high-contrast: none),
+        (-ms-high-contrast: active) {
+        // position: relative;
+        //left: calc(100vw - 10px);
+        // transform: translateX(-50%);
+        //display: none;
+
+        //  IE11 flex center 확인
+      }
+    `}>
     <TopBannerItem loading={true} imageUrl={props.left} />
     <TopBannerItem center={true} loading={true} imageUrl={props.center} />
     <TopBannerItem loading={true} imageUrl={props.right} />
