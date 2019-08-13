@@ -74,15 +74,17 @@ export const BookTitle = styled.h3`
   color: white;
   font-size: 15px;
   font-weight: 700;
-  line-height: 1.33;
+  line-height: 1.33em;
   letter-spacing: -0.4px;
+  max-height: 2.66em;
   margin-bottom: 4px;
   ${lineClamp(2)};
 `;
 
 export const BookAuthor = styled.span`
   font-size: 14px;
-  line-height: 1.36;
+  line-height: 1.36em;
+  max-height: 1.36em;
   letter-spacing: -0.4px;
   color: #808991;
   margin-bottom: 5px;

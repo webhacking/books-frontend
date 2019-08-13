@@ -8,9 +8,10 @@ import { BookScheme } from 'src/types/book';
 const bookTitleCSS = css`
   font-size: 15px;
   font-weight: 700;
-  line-height: 1.33;
+  line-height: 1.33em;
   letter-spacing: -0.43px;
   color: #000000;
+  max-height: 2.7em;
   margin-bottom: 4.5px;
 `;
 

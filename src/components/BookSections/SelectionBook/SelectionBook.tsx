@@ -52,7 +52,12 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
           css={css``}
         />
       </ThumbnailWrapper>
-      <BookMeta book={book} showRating={true} isAIRecommendation={false} />
+      <BookMeta
+        book={book}
+        width={`${props.width || 140}px`}
+        showRating={true}
+        isAIRecommendation={false}
+      />
       {isAIRecommendation && (
         <button
           css={css`

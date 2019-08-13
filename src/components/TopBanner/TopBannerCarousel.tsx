@@ -159,7 +159,7 @@ const items = [
 const TopBannerItemWrapper = styled.div`
   position: relative;
   ${flexCenter};
-  margin: 0 5px;
+  // margin: 0 5px;
   @media (min-width: 1000px) {
     margin: unset;
   }
@@ -245,8 +245,9 @@ const sliderCSS = css`
 
     .slick-slide {
       .slide-overlay {
+        top: 0;
         width: 430px;
-        left: unset;
+        left: -2px;
         border-radius: 6px;
         background: rgba(0, 0, 0, 0.5);
         transition: all 0.2s;
@@ -341,7 +342,7 @@ const totalCountCSS = css`
 const carouselLoadingOverlay = css`
   position: absolute;
   top: 0;
-  left: 0;
+  left: 1px;
   border-radius: 6px;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
@@ -439,7 +440,7 @@ const arrowCSS = css`
 const arrowWrapperCSS = css`
   display: none;
   @media (min-width: 1000px) {
-    display: initial;
+    display: block;
     position: absolute;
     opacity: 0.7;
     bottom: 143.5px;
@@ -511,7 +512,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       slidesToScroll={1}
       speed={uiOption.topBannerCarouselSpeed}
       autoplaySpeed={uiOption.topBannerCarouselPlaySpeed}
-      autoplay={true}
+      autoplay={false}
       arrows={false}
       infinite={true}
       variableWidth={true}

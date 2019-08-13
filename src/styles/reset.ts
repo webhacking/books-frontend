@@ -71,6 +71,7 @@ export const resetStyles = css`
   }
   body {
     ${css([resetSpacing])};
+    overflow-x: hidden;
   }
   hr {
     ${css([resetSpacing])};
