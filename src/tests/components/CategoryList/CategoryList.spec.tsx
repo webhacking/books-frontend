@@ -6,7 +6,7 @@ import 'jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
-import { categoryMock } from 'src/pages/category/list';
+import CategoryListPage, { categoryMock } from 'src/pages/category/list';
 jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
 jest.mock('server/routes', () => ({ default: {}, Router: { pushRoute: () => null } }));
 
