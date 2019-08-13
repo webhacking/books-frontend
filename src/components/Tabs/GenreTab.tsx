@@ -166,8 +166,8 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
   const { path, route, currentPath, genre } = props;
   const regex =
     path === 'general'
-      ? new RegExp('(^[^/]*\\/$|^\\/general|\\/genre\\/general$)', 'u')
-      : new RegExp(`^\\/${props.path.replace(/\//gu, '\\/')}(\\/|$)`, 'u');
+      ? new RegExp('(^[^/]*\\/$|^\\/general|\\/genre\\/general$)')
+      : new RegExp(`^\\/${props.path.replace(/\//g, '\\/')}(\\/|$)`);
   const isActivePath = currentPath.match(regex);
   return (
     <li

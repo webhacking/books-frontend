@@ -165,7 +165,7 @@ const eslintRules = {
   quotes: ['error', 'single'],
   radix: 'error',
   'require-jsdoc': 'off',
-  'require-unicode-regexp': 'error',
+  'require-unicode-regexp': 'warn',
   'rest-spread-spacing': 'error',
   semi: 'error',
   'semi-spacing': 'error',

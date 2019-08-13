@@ -221,7 +221,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
         currentPath={currentPath}
         label={labels.mainTab.notification}
         path={'/notification'}
-        pathRegexp={/^\/notification/gu}
+        pathRegexp={/^\/notification/g}
       />
       <TabItem
         isPartials={isPartials}

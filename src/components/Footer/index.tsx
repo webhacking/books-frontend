@@ -149,6 +149,9 @@ const MiscWrapper = styled.div`
     align-items: flex-start;
     justify-content: center;
   }
+  li {
+    flex-shrink: 0;
+  }
 `;
 
 const Copyright = styled.p`
