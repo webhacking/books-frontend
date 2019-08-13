@@ -159,10 +159,11 @@ const items = [
 const TopBannerItemWrapper = styled.div`
   position: relative;
   ${flexCenter};
-  // margin: 0 5px;
-  @media (min-width: 1000px) {
-    margin: unset;
+
+  @media (max-width: 999px) {
+    margin: 0 5px;
   }
+  margin: 0;
 `;
 
 const sliderCSS = css`
@@ -182,6 +183,7 @@ const sliderCSS = css`
       .slide-overlay {
         position: absolute;
         left: 0;
+        top: 0;
         min-width: 280px;
         width: calc(100vw - 20px);
         border-radius: 6px;
@@ -204,6 +206,7 @@ const sliderCSS = css`
       .slide-overlay {
         position: absolute;
         width: 355px;
+        top: 0;
         left: 0;
         border-radius: 6px;
         height: 100%;
