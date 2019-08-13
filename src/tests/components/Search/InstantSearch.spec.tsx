@@ -44,7 +44,7 @@ describe('test instant search', () => {
     );
     const { container } = renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
-    fireEvent.click(inputNode, {});
+    fireEvent.focus(inputNode, {});
     const historyNode = getByText(container, labels.turnOffSearchHistory);
     expect(historyNode).not.toBe(null);
     const historyItems = container.getElementsByTagName('li');
@@ -112,7 +112,7 @@ describe('test instant search', () => {
     // Fixme
     // https://github.com/trojanowski/react-apollo-hooks/issues/84
     // https://github.com/facebook/react/releases/tag/v16.9.0-alpha.0
-    // await new Promise(resolve => setTimeout(resolve, 301));
+    await new Promise(resolve => setTimeout(resolve, 301));
     // const resultNode = getByText(container , 'result');
     // expect(resultNode).not.toBe('a');
   });
@@ -120,14 +120,13 @@ describe('test instant search', () => {
   it('should not be render search result', async () => {
     const { container } = renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
-    fireEvent.change(inputNode, { target: { value: 'ㄱ' } });
-
+    fireEvent.change(inputNode, { target: { value: '가나' } });
+    await new Promise(resolve => setTimeout(resolve, 100));
     // Fixme
     // https://github.com/trojanowski/react-apollo-hooks/issues/84
     // https://github.com/facebook/react/releases/tag/v16.9.0-alpha.0
-    // await new Promise(resolve => setTimeout(resolve, 301));
-    // const resultNode = getByText(container , 'result');
-    // expect(resultNode).not.toBe('a');
+    //
+    expect(inputNode.value).toBe('가나');
   });
 
   it('can be add search history', () => {
@@ -156,7 +155,7 @@ describe('test instant search', () => {
     );
     const { container } = renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
-    fireEvent.click(inputNode, {});
+    fireEvent.focus(inputNode, {});
     const historyClearNode = getByText(container, labels.clearSearchHistory);
     expect(historyClearNode).not.toBe(null);
     fireEvent.click(historyClearNode, {});
@@ -174,7 +173,7 @@ describe('test instant search', () => {
     );
     const { container } = renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
-    fireEvent.click(inputNode, {});
+    fireEvent.focus(inputNode, {});
     const historyToggleNode = getByText(container, labels.turnOffSearchHistory);
     expect(historyToggleNode).not.toBe(null);
     fireEvent.click(historyToggleNode, {});
@@ -202,7 +201,7 @@ describe('test instant search', () => {
     );
     const { container } = renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
-    fireEvent.click(inputNode, {});
+    fireEvent.focus(inputNode, {});
     const removeHistoryNode: HTMLElement = getByText(container, labels.removeHistory);
 
     // @ts-ignore
@@ -222,7 +221,7 @@ describe('test instant search', () => {
     );
     const { container } = renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
-    fireEvent.click(inputNode, {});
+    fireEvent.focus(inputNode, {});
     const removeHistoryNode: HTMLElement = getByText(container, labels.removeHistory);
 
     // history item click
