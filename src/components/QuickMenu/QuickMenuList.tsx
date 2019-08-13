@@ -12,7 +12,7 @@ const labelCSS = theme => css`
   min-width: 76px;
   text-align: center;
   word-break: keep-all;
-  @media (max-width: 999px) {
+  @media (max-width: 833px) {
     min-width: 50px;
   }
 `;
