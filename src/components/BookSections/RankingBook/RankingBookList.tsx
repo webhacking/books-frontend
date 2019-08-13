@@ -70,7 +70,7 @@ const smallItemCSS = css`
 
 const rankCSS = css`
   height: 22px;
-  font-family: 'Helvetica Neue';
+  font-family: 'Roboto';
   font-size: 18px;
   font-weight: 500;
   letter-spacing: -0.52px;
