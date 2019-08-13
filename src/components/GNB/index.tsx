@@ -46,7 +46,7 @@ const LogoWrapper = styled.ul`
 
     ::after {
       position: relative;
-      top: 6px;
+      top: 7px;
       font-size: 14px;
       content: '|';
       color: white;
