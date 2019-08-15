@@ -167,6 +167,9 @@ const TopBannerItemWrapper = styled.div`
 `;
 
 const sliderCSS = css`
+  .slick-list {
+    height: 100%;
+  }
   &.slick-slider {
     @media (min-width: 300px) {
       height: calc((100vw - 20px) / 1.5);
