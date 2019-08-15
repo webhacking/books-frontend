@@ -260,7 +260,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         const result = await axios.get(
           `${
             (publicRuntimeConfig as PublicRuntimeConfig).SEARCH_API
-          }/search?site=ridi-store&where=book&where=author&what=instant&keyword=${value}`,
+          }/search?site=ridi-store&where=book&where=author&what=instant&keyword=${encodeURIComponent(
+            value,
+          )}`,
         );
         setSearchResult({
           books: get(result.data, data => data.book.books, []),
