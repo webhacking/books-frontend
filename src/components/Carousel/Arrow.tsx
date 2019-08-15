@@ -16,7 +16,7 @@ interface ArrowProps {
   onClickHandler?: (e: FormEvent) => void;
 }
 
-const defaultArrowCSS = css`
+const defaultOpacity = css`
   :hover {
     opacity: 0.6;
   }
@@ -43,20 +43,21 @@ const Arrow: React.FC<ArrowProps> = props => {
       onClick={onClickHandler}
       css={css`
         ${clearOutline};
+        ${defaultOpacity}
         ${props.wrapperStyle};
       `}>
       {color === 'dark' ? (
         <CarouselArrowDark
           css={css`
             ${side === 'left' ? leftRotate : ''};
-            ${arrowStyle || defaultArrowCSS};
+            ${arrowStyle || ''};
           `}
         />
       ) : (
         <CarouselArrowWhite
           css={css`
             ${side === 'left' ? leftRotate : ''};
-            ${arrowStyle || defaultArrowCSS};
+            ${arrowStyle || ''};
           `}
         />
       )}

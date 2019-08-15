@@ -663,28 +663,36 @@ export const TopBannerCarouselContainer: React.FC<
             currentPosition={currentPosition + 1}
           />
           <form>
-            <Arrow
-              side={'left'}
-              onClickHandler={handleClickLeft}
-              arrowStyle={arrowCSS}
-              label={'이전'}
-              wrapperStyle={css`
+            <div
+              css={css`
                 ${arrowWrapperCSS};
                 left: -40px;
-                transform: translate(-50%, 50%);
-              `}
-            />
-            <Arrow
-              onClickHandler={handleClickRight}
-              side={'right'}
-              label={'다음'}
-              arrowStyle={arrowCSS}
-              wrapperStyle={css`
+              `}>
+              <Arrow
+                side={'left'}
+                onClickHandler={handleClickLeft}
+                label={'이전'}
+                wrapperStyle={css`
+                  transform: translate(-50%, 50%);
+                  ${arrowCSS};
+                `}
+              />
+            </div>
+            <div
+              css={css`
                 ${arrowWrapperCSS};
                 right: -40px;
-                transform: translate(50%, 50%);
-              `}
-            />
+              `}>
+              <Arrow
+                onClickHandler={handleClickRight}
+                side={'right'}
+                label={'다음'}
+                wrapperStyle={css`
+                  transform: translate(50%, 50%);
+                  ${arrowCSS};
+                `}
+              />
+            </div>
           </form>
         </PositionOverlay>
       </>
