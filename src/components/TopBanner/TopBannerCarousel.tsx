@@ -170,6 +170,9 @@ const sliderCSS = css`
   .slick-list {
     height: 100%;
   }
+  .slick-track {
+    will-change: transform;
+  }
   &.slick-slider {
     @media (min-width: 300px) {
       height: calc((100vw - 20px) / 1.5);
@@ -530,27 +533,21 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       slidesToScroll={1}
       speed={uiOption.topBannerCarouselSpeed}
       autoplaySpeed={uiOption.topBannerCarouselPlaySpeed}
-      autoplay={false}
+      autoplay={true}
       arrows={false}
       infinite={true}
       variableWidth={true}
-      beforeChange={
-        // @ts-ignore
-        (prev: number, next: number) => {
-          // HACK fix this awful code
-          setTimeout(() => {
-            let event = null;
-            if (typeof Event === 'function') {
-              event = new Event('resize');
-            } else {
-              event = document.createEvent('Event');
-              event.initEvent('resize', true, true);
-            }
-            window.dispatchEvent(event);
-            setTimeout(() => props.changePosition(next), 200);
-          }, 100);
+      afterChange={(next: number) => {
+        let event = null;
+        if (typeof Event === 'function') {
+          event = new Event('resize');
+        } else {
+          event = document.createEvent('Event');
+          event.initEvent('resize', true, true);
         }
-      }
+        window.dispatchEvent(event);
+        props.changePosition(next);
+      }}
       onInit={() => {
         setInitialized();
       }}
@@ -667,13 +664,13 @@ export const TopBannerCarouselContainer: React.FC<
               css={css`
                 ${arrowWrapperCSS};
                 left: -40px;
+                transform: translate(-50%, 50%);
               `}>
               <Arrow
                 side={'left'}
                 onClickHandler={handleClickLeft}
                 label={'이전'}
                 wrapperStyle={css`
-                  transform: translate(-50%, 50%);
                   ${arrowCSS};
                 `}
               />
@@ -681,6 +678,7 @@ export const TopBannerCarouselContainer: React.FC<
             <div
               css={css`
                 ${arrowWrapperCSS};
+                transform: translate(50%, 50%);
                 right: -40px;
               `}>
               <Arrow
@@ -688,7 +686,6 @@ export const TopBannerCarouselContainer: React.FC<
                 side={'right'}
                 label={'다음'}
                 wrapperStyle={css`
-                  transform: translate(50%, 50%);
                   ${arrowCSS};
                 `}
               />
