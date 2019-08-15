@@ -32,7 +32,7 @@ const LogoWrapper = styled.ul`
   min-height: 30px;
   margin-right: -2.5px;
   order: 1;
-  margin-bottom: unset;
+  margin-bottom: 0;
   @media (max-width: 999px) {
     //margin-bottom: 9x;
   }
@@ -78,7 +78,7 @@ const ridiLogo = (theme: RIDITheme) => css`
     width: 88px;
     height: 14px;
     :hover {
-      opacity: unset;
+      opacity: 1;
     }
     :active {
       opacity: 0.7;

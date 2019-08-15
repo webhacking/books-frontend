@@ -27,7 +27,7 @@ const Tabs = styled.ul`
 
   padding: 0 20px;
   @media (max-width: 999px) {
-    padding: unset;
+    padding: 0;
   }
 `;
 
@@ -89,7 +89,7 @@ const TabItemWrapper = styled.li`
     height: 40px;
     width: 25%;
     :not(:last-of-type) {
-      margin-right: unset;
+      margin-right: 0;
     }
   }
   transition: opacity 0.2s;
