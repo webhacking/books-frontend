@@ -49,7 +49,7 @@ const iconStyle = () => css`
   fill: white;
   width: 20px;
   height: 20px;
-  top: 3px;
+  // top: 3px;
   @media (max-width: 999px) {
     width: 24px;
     height: 24px;
