@@ -147,7 +147,7 @@ const searchFooter = css`
     border-radius: 0;
   }
   // ie11
-  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  @media (max-width: 999px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     top: 46px;
   }
 `;
