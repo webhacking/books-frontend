@@ -81,7 +81,16 @@ export const resetStyles = css`
   }
   button {
     cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     ${css([inheritFont, resetAppearance, resetSpacing])};
+    * {
+      position: relative;
+      top: 0;
+      left: 0;
+    }
   }
   input {
     ${inheritFont};
