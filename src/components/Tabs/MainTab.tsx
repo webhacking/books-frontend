@@ -106,6 +106,16 @@ const TabItemWrapper = styled.li`
       opacity: 0.7;
     }
   }
+  :hover {
+    ${BottomLine} {
+      background-color: #99d1ff;
+      position: relative;
+      top: 1px;
+      opacity: 0.7;
+      width: 100%;
+    }
+    opacity: 0.7;
+  }
   @media (hover: none) {
     :hover {
       opacity: 1;
