@@ -80,6 +80,7 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
               <span css={parentCategoryNameCSS}>{item.name}</span>
               <ArrowDown
                 css={(theme: RIDITheme) => css`
+                  width: 16px;
                   height: 16px;
                   fill: ${selectedCategory && selectedCategory.name === item.name
                     ? 'white'
