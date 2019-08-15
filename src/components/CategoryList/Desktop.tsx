@@ -9,6 +9,7 @@ import {
 
 const selectedItemArrowCSS = css`
   position: absolute;
+  top: 6px;
   width: 0;
   height: 0;
   border-top: 11px solid transparent;
@@ -178,6 +179,9 @@ const Desktop: React.FC<CategoryListProps> = props => {
             <ArrowRight
               css={(theme: RIDITheme) => css`
                 fill: ${theme.primaryColor};
+                position: absolute;
+                top: 10px;
+                right: 14px;
                 width: 5.6px;
                 height: 14px;
                 margin-right: -1px;
