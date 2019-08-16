@@ -19,6 +19,7 @@ const FNBWrapper = styled.section`
   hr {
     display: none;
   }
+  margin-top: 24px;
 `;
 
 const FooterWrapper = styled.footer`
