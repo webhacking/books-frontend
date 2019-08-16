@@ -322,11 +322,7 @@ const TopBannerCurrentPositionInner = styled.div`
   border: solid 1px rgba(255, 255, 255, 0.2);
   background-color: rgba(0, 0, 0, 0.4);
   right: 10px;
-  bottom: 11px;
-  @media (min-width: 1000px) {
-    right: 16px;
-    bottom: 11px;
-  }
+  bottom: 10px;
   ${flexCenter};
 `;
 
