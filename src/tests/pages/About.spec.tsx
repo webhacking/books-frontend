@@ -1,7 +1,7 @@
 import * as React from 'react';
 import About from 'src/pages/about';
-import { render, cleanup } from 'react-testing-library';
-import 'jest-dom/extend-expect';
+import { render, cleanup } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../store/config';
 import { Provider } from 'react-redux';
 jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));

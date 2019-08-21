@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cleanup, render } from 'react-testing-library';
+import { cleanup, render } from '@testing-library/react';
 import { MainTab } from 'src/components/Tabs';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';

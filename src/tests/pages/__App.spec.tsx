@@ -2,8 +2,8 @@ import * as React from 'react';
 import App from 'src/pages/_app';
 import Index from 'src/pages';
 import GNB from 'src/pages/partials/gnb';
-import { render, cleanup } from 'react-testing-library';
-import 'jest-dom/extend-expect';
+import { render, cleanup } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../store/config';
 jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
 jest.mock('server/routes', () => {

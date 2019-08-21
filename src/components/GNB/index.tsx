@@ -10,7 +10,7 @@ import RidiSelectLogo from 'src/svgs/RidiSelectLogo_1.svg';
 
 const GNBWrapper = styled.div`
   width: 100%;
-  background-color: ${props => props.theme.primaryColor};
+  background-color: ${(props: { theme: RIDITheme }) => props.theme.primaryColor};
 `;
 
 const Header = styled.header`

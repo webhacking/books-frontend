@@ -15,7 +15,7 @@ const ridiMeta = {
 const FNBWrapper = styled.section`
   width: 100%;
   //min-width: 375px;
-  color: ${props => props.theme.footerTextColor};
+  color: ${(props: { theme: RIDITheme }) => props.theme.footerTextColor};
   hr {
     display: none;
   }
@@ -171,7 +171,7 @@ const Copyright = styled.p`
   }
 `;
 
-const menuListCSS = theme => css`
+const menuListCSS = (theme: RIDITheme) => css`
   display: flex;
   li {
     :not(:last-of-type) {

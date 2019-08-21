@@ -12,13 +12,6 @@ import { RIDITheme } from 'src/styles';
 import styled from '@emotion/styled';
 import { getEscapedString } from 'src/utils/highlight';
 
-const listCSS = css`
-  padding-bottom: 10px;
-  @media (max-width: 999px) {
-    padding: 0;
-  }
-`;
-
 const listItemCSS = css`
   @media (max-width: 999px) {
     min-height: 40px;
@@ -28,12 +21,22 @@ const listItemCSS = css`
 const bookListItemCSS = (theme: RIDITheme) => css`
   ${listItemCSS};
   @media (max-width: 999px) {
-    border-bottom: 1px solid ${theme.divider};
+    // border-bottom: 1px solid ${theme.divider};
     :hover {
       background-color: white !important;
     }
     :focus {
       background-color: white !important;
+    }
+  }
+  @media (min-width: 1000px) {
+    :first-of-type {
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+    }
+    :last-of-type {
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
     }
   }
   :hover {
@@ -46,15 +49,19 @@ const bookListItemCSS = (theme: RIDITheme) => css`
 
 const authorListItemCSS = (theme: RIDITheme) => css`
   ${listItemCSS};
+  display: flex;
   @media (max-width: 999px) {
-    :not(:last-of-type) {
-      border-bottom: 1px solid ${theme.divider};
-    }
     :hover {
       background-color: white !important;
     }
     :focus {
       background-color: white !important;
+    }
+  }
+  @media (min-width: 1000px) {
+    :first-of-type {
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
     }
   }
   :hover {
@@ -65,22 +72,10 @@ const authorListItemCSS = (theme: RIDITheme) => css`
   }
 `;
 
-const listTitleCSS = (theme: RIDITheme) => css`
-  @media (max-width: 999px) {
-    display: none;
-  }
-  padding-top: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: -0.3px;
-  color: ${theme.label};
-  margin-bottom: 10px;
-`;
-
 const titleCSS = css`
-  font-size: 14px;
-  line-height: 1.57;
-  letter-spacing: -0.43px;
+  font-size: 15px;
+  line-height: 1.33;
+  letter-spacing: 0.43px;
   word-break: keep-all;
 `;
 
@@ -110,12 +105,13 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
       css={css`
         display: flex;
         align-items: center;
+        width: 100%;
       `}>
       <span
         css={css`
-          font-size: 14px;
-          line-height: 1.57;
-          letter-spacing: -0.43px;
+          font-size: 15px;
+          line-height: 1.33;
+          letter-spacing: 0.43px;
           flex-shrink: 0;
           @media (max-width: 999px) {
             margin-right: 3px;
@@ -128,7 +124,7 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
       />
       <span
         css={(theme: RIDITheme) => css`
-          font-size: 13px;
+          font-size: 14px;
           letter-spacing: -0.4px;
           word-break: keep-all;
           color: ${theme.label2};
@@ -142,15 +138,14 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
 };
 
 const ListWrapper = styled.div`
-  padding: 0 20px;
   @media (max-width: 999px) {
     padding: 0;
   }
 `;
 
 const authorPublisherCSS = css`
-  font-size: 13px;
-  line-height: 1.08;
+  font-size: 14px;
+  line-height: 1.36;
   letter-spacing: -0.4px;
   color: #808991;
   -webkit-font-smoothing: antialiased;
@@ -193,8 +188,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
 
   return (
     <ListWrapper>
-      <p css={listTitleCSS}>도서</p>
-      <ul css={listCSS}>
+      <ul>
         {result.books.map((book: InstantSearchBookResultScheme, index) => (
           <li data-book-id={book.b_id} css={bookListItemCSS} key={index}>
             <button
@@ -203,11 +197,9 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                 width: 100%;
                 display: flex;
                 flex-wrap: wrap;
-                align-items: center;
+                //align-items: center;
                 text-align: left;
-                @media (max-width: 999px) {
-                  padding: 9px 10px;
-                }
+                padding: 14px 16px;
               `}
               data-book-id={book.b_id}
               onKeyDown={handleKeyDown}
@@ -218,6 +210,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                     css={css`
                       ${titleCSS};
                       margin-right: 4px;
+                      margin-bottom: 3px;
                     `}
                     dangerouslySetInnerHTML={{
                       __html: getEscapedString(
@@ -237,10 +230,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                 </View>
                 <View>
                   <div>
-                    <ItemWrapper
-                      css={css`
-                        padding: 10px;
-                      `}>
+                    <ItemWrapper>
                       <img
                         alt={book.web_title_title}
                         css={(theme: RIDITheme) => css`
@@ -259,6 +249,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                           flex-direction: column;
                           align-items: start;
                           text-align: left;
+                          justify-content: center;
                         `}>
                         <p
                           css={css`
@@ -317,14 +308,9 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
   return (
     <div ref={wrapperRef}>
       {result.authors.length > 0 && (
-        <ListWrapper
-          css={theme => css`
-            border-bottom: 1px solid ${theme.divider3};
-          `}>
-          <p css={listTitleCSS}>저자/역자</p>
+        <ListWrapper>
           <ul
             css={css`
-              ${listCSS};
               @media (max-width: 999px) {
                 padding: 0;
               }
@@ -335,11 +321,9 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
                   css={css`
                     width: 100%;
                     height: 100%;
+                    padding: 13px 16px;
                     text-align: left;
                     flex-wrap: wrap;
-                    @media (max-width: 999px) {
-                      padding: 9px 10px;
-                    }
                   `}
                   data-author-id={author.id}
                   onKeyDown={handleKeyDown}
@@ -350,10 +334,7 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
                     </View>
                     <View>
                       <div>
-                        <ItemWrapper
-                          css={css`
-                            padding: 5px 0;
-                          `}>
+                        <ItemWrapper>
                           <AuthorInfo author={author} />
                         </ItemWrapper>
                       </div>
@@ -363,6 +344,14 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
               </li>
             ))}
           </ul>
+          <hr
+            css={css`
+              height: 1px;
+              border: 0;
+              border-top: 1px solid #e6e8e0;
+              margin: 8px 16px;
+            `}
+          />
         </ListWrapper>
       )}
       {result.books.length > 0 && (

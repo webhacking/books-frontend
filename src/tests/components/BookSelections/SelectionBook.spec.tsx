@@ -1,8 +1,8 @@
 import * as React from 'react';
 import BookSelectionContainer from 'src/components/BookSections/BookSectionContainer';
 import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
-import { render, cleanup, getAllByAltText } from 'react-testing-library';
-import 'jest-dom/extend-expect';
+import { render, cleanup, getAllByAltText } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
