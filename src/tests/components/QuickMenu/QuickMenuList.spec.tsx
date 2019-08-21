@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { QuickMenuList } from 'src/components/QuickMenu';
-import { render, cleanup, getByText } from 'react-testing-library';
-import 'jest-dom/extend-expect';
+import { render, cleanup, getByText } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';

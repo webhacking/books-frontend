@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Index from 'src/pages/notification';
-import { render, cleanup } from 'react-testing-library';
-import 'jest-dom/extend-expect';
+import { render, cleanup } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 // import makeStore from 'src/store/config';
 // const store = makeStore({}, { asPath: 'test', isServer: false });
 jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
@@ -16,7 +16,7 @@ test('should be render Index Component', async () => {
     query: { theme: 'dark' },
   });
 
-  const { getByText } = render(<Index {...props} />);
+  const { getAllByText } = render(<Index {...props} />);
 
-  expect(getByText(/알림/)).toHaveTextContent('알림');
+  expect(getAllByText(/알림/)[0]).toHaveTextContent('알림');
 });

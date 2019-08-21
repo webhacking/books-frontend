@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Index from 'src/pages';
-import { render, cleanup } from 'react-testing-library';
-import 'jest-dom/extend-expect';
+import { render, cleanup } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../store/config';
 import { Genre, GenreSubService } from '../../constants/genres';
 import { ThemeProvider } from 'emotion-theming';

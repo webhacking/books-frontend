@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Index from 'src/pages/partials/footer';
-import { render, cleanup } from 'react-testing-library';
-import 'jest-dom/extend-expect';
+import { render, cleanup } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../../../store/config';
 const store = makeStore({}, { asPath: 'test', isServer: false });
 jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));

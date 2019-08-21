@@ -16,31 +16,23 @@ const turnOffSearchHistory = (theme: RIDITheme) => css`
   align-items: center;
   vertical-align: middle;
   box-sizing: content-box;
-  font-size: 13px;
-  letter-spacing: -0.3px;
-  color: ${theme.label};
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  color: ${theme.label3};
 `;
 
 const recentHistoryLabel = (theme: RIDITheme) => css`
-  padding: 18px 20px 10px 20px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: -0.3px;
-  color: ${theme.label};
-
-  @media (max-width: 999px) {
-    display: none;
-  }
+  padding: 13px 0 13px 16px;
+  font-size: 14px;
+  font-weight: normal;
+  letter-spacing: -0.43px;
+  color: ${theme.label2};
 `;
 
 const closeIcon = (theme: RIDITheme) => css`
   fill: ${theme.icon.warn};
-  width: 8px;
-  height: 8px;
-  @media (max-width: 999px) {
-    width: 10px;
-    height: 10px;
-  }
+  width: 12px;
+  height: 12px;
 `;
 
 const exclamation = (theme: RIDITheme) => css`
@@ -50,30 +42,23 @@ const exclamation = (theme: RIDITheme) => css`
   height: 14px;
 `;
 
-const historyListCSS = theme => css`
+const historyListCSS = () => css`
   li {
     box-sizing: border-box;
-    :not(:last-of-type) {
-      @media (max-width: 999px) {
-        border-bottom: 1px ${theme.divider} solid;
-      }
-    }
   }
 `;
 
 const SearchHistoryItem = styled.li`
   cursor: pointer;
   box-sizing: border-box;
-  padding: 8px 20px;
-  font-size: 14px;
+  padding: 13px 16px;
+  font-size: 15px;
   line-height: 1;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.43px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   @media (max-width: 999px) {
-    height: 40px;
-    padding: 12px 15px 12px 20px;
     :hover {
       background-color: white !important;
     }
@@ -83,33 +68,36 @@ const SearchHistoryItem = styled.li`
   }
   a {
     span {
-      color: black;
-      font-size: 14px;
+      color: #303538;
+      font-size: 15px;
+      letter-spacing: -0.46px;
+      line-height: 1.33;
     }
   }
   :hover {
-    background-color: #ebf6ff;
+    background-color: #f7fafc;
   }
   :focus {
-    background-color: #ebf6ff;
+    background-color: #f7fafc;
   }
 `;
 
 const historyOptionPanelCSS = theme => css`
-  padding: 12px 20px;
+  padding: 13px 16px;
   cursor: pointer;
-  @media (max-width: 999px) {
-    height: 40px;
-  }
   display: flex;
   justify-content: space-between;
   background-color: ${theme.divider};
   color: ${theme.input.placeholder};
-  font-size: 13px;
-  line-height: 1.31;
+  font-size: 14px;
+  line-height: 1;
   letter-spacing: -0.4px;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
+  button {
+    color: ${theme.label3};
+    opacity: 0.7;
+  }
 `;
 
 interface InstantSearchHistoryProps {
@@ -163,6 +151,9 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
                   <span>{history}</span>
                 </a>
                 <button
+                  css={css`
+                    margin-left: 16px;
+                  `}
                   data-value={history}
                   type={'submit'}
                   onClick={handleRemoveHistory}>
@@ -175,28 +166,35 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
         ) : (
           <div css={turnOffSearchHistory}>
             <Exclamation css={exclamation} />
-            <span>{labels.turnOffStatus}</span>
+            <span
+              css={css`
+                color: #9ea7ad;
+              `}>
+              {labels.turnOffStatus}
+            </span>
           </div>
         )}
       </ul>
       <div css={historyOptionPanelCSS}>
         <button
           css={css`
-            font-size: 13px;
-          `}
-          type={'submit'}
-          onClick={handleClearHistory}>
-          {enableSearchHistoryRecord && labels.clearSearchHistory}
-        </button>
-        <button
-          css={css`
-            font-size: 13px;
+            font-size: 14px;
+            letter-spacing: -0.43px;
           `}
           type={'submit'}
           onClick={handleToggleSearchHistoryRecord}>
           {enableSearchHistoryRecord
             ? labels.turnOffSearchHistory
             : labels.turnOnSearchHistory}
+        </button>
+        <button
+          css={css`
+            font-size: 14px;
+            letter-spacing: -0.43px;
+          `}
+          type={'submit'}
+          onClick={handleClearHistory}>
+          {enableSearchHistoryRecord && labels.clearSearchHistory}
         </button>
       </div>
     </>

@@ -33,6 +33,7 @@ export interface RIDITheme {
   };
   label: string;
   label2: string;
+  label3: string;
   etc: {
     slot1: string;
   };
@@ -73,6 +74,7 @@ export const defaultTheme: RIDITheme = {
   divider3: colors.slateGray20,
   label: colors.slateGray40,
   label2: colors.slateGray50,
+  label3: colors.slateGray80,
   genreTab: {
     icon: colors.slateGray60,
     normal: colors.slateGray80,
@@ -93,7 +95,7 @@ export const defaultTheme: RIDITheme = {
     label: colors.slateGray70,
   },
   instantSearch: {
-    itemHover: colors.dodgerBlue5,
+    itemHover: colors.lightSteelBlue5,
   },
   image: {
     border: colors.slateGray30,
@@ -133,6 +135,7 @@ export const darkTheme: RIDITheme = {
   },
   label: colors.slateGray40,
   label2: colors.slateGray50,
+  label3: colors.slateGray80,
   etc: {
     slot1: colors.slateGray20,
   },
@@ -143,7 +146,7 @@ export const darkTheme: RIDITheme = {
     label: colors.slateGray70,
   },
   instantSearch: {
-    itemHover: colors.dodgerBlue5,
+    itemHover: colors.lightSteelBlue5,
   },
   image: {
     border: colors.slateGray30,

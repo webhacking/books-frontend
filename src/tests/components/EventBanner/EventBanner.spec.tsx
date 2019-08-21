@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { EventBanner, EventBannerList } from 'src/components/EventBanner';
-import { render, cleanup, getByAltText } from 'react-testing-library';
-import 'jest-dom/extend-expect';
+import { render, cleanup, getByAltText } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
