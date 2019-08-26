@@ -53,7 +53,7 @@ const LogoWrapper = styled.ul`
       opacity: 0.4;
       margin: 0 8.5px 0 10px;
       @media (max-width: 999px) {
-        margin: 0 5px 0 4px;
+        margin: 0 6px 0 5px;
         top: 7px;
         font-size: 12px;
       }
