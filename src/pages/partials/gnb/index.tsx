@@ -46,6 +46,7 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
           <PartialSeparator name={'GNB'} wrapped={!this.state.isMounted}>
             <GNB
               id={'gnb'}
+              pathname={this.props.pathname}
               isPartials={true}
               type={this.props.type}
               searchKeyword={this.props.q || ''}

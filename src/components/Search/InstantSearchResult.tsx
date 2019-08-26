@@ -8,7 +8,7 @@ import {
 import { css } from '@emotion/core';
 import { View } from 'libreact/lib/View';
 import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
-import { RIDITheme } from 'src/styles';
+import { lineClamp, RIDITheme } from 'src/styles';
 import styled from '@emotion/styled';
 import { getEscapedString } from 'src/utils/highlight';
 
@@ -75,7 +75,6 @@ const authorListItemCSS = (theme: RIDITheme) => css`
 const titleCSS = css`
   font-size: 15px;
   line-height: 1.33;
-  letter-spacing: 0.43px;
   word-break: keep-all;
 `;
 
@@ -111,7 +110,6 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
         css={css`
           font-size: 15px;
           line-height: 1.33;
-          letter-spacing: 0.43px;
           flex-shrink: 0;
           @media (max-width: 999px) {
             margin-right: 3px;
@@ -125,9 +123,9 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
       <span
         css={(theme: RIDITheme) => css`
           font-size: 14px;
-          letter-spacing: -0.4px;
           word-break: keep-all;
           color: ${theme.label2};
+          ${lineClamp(1)};
         `}>
         {`<${author.popular_book_title}>${
           author.book_count > 1 ? ` 외 ${author.book_count - 1}권` : ''
@@ -146,7 +144,6 @@ const ListWrapper = styled.div`
 const authorPublisherCSS = css`
   font-size: 14px;
   line-height: 1.36;
-  letter-spacing: -0.4px;
   color: #808991;
   -webkit-font-smoothing: antialiased;
 `;

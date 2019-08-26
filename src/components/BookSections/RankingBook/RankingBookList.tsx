@@ -73,7 +73,6 @@ const rankCSS = css`
   font-family: 'Roboto';
   font-size: 18px;
   font-weight: 500;
-  letter-spacing: -0.52px;
   text-align: center;
   color: #000000;
   margin-right: 21px;

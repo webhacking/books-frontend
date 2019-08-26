@@ -17,7 +17,6 @@ const totalReviewerCSS = css`
   font-family: Helvetica;
   font-size: 11px;
   line-height: 1.09;
-  letter-spacing: -0.32px;
   color: #999999;
 `;
 

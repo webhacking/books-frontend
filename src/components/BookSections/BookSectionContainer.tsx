@@ -9,7 +9,6 @@ const fontStyle = css`
   font-size: 21px;
   font-weight: normal;
   line-height: 26px;
-  letter-spacing: -0.23px;
   color: #000000;
   word-break: keep-all;
 `;

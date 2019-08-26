@@ -70,7 +70,6 @@ const contactListCSS = (theme: RIDITheme) => css`
 const serviceNumber = css`
   word-break: keep-all;
   font-size: 20px;
-  letter-spacing: -0.5px;
   font-weight: bold;
   color: white;
 `;
@@ -103,7 +102,6 @@ const FooterMenu = styled.ul`
 `;
 const FooterMenuLabel = styled.span`
   font-size: 14px;
-  letter-spacing: -0.2px;
 `;
 
 const hiddenMenu = css`
@@ -136,7 +134,6 @@ const address = css`
   font-style: normal;
   font-stretch: normal;
   line-height: 1.82;
-  letter-spacing: -0.2px;
   margin-right: 8px;
   color: #7e8992;
 `;
@@ -163,7 +160,6 @@ const Copyright = styled.p`
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: normal;
   color: #7e8992;
   margin-right: 24px;
   @media (max-width: 999px) {
@@ -195,7 +191,6 @@ const MiscMenuLabel = styled.span`
   font-style: normal;
   font-stretch: normal;
   line-height: 1.82;
-  letter-spacing: -0.2px;
   color: #7e8992;
 `;
 

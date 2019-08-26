@@ -6,9 +6,10 @@ clientRoutes.add({ page: 'partials/footer', pattern: '/partials/footer' });
 clientRoutes.add({ page: 'notification', pattern: '/notification' });
 clientRoutes.add({ page: 'cart', pattern: '/cart' });
 clientRoutes.add({ page: 'account/myridi', pattern: '/account/myridi' });
-clientRoutes.add({ page: 'about', pattern: '/about/:id' });
 clientRoutes.add({ page: 'search', pattern: '/search' });
 clientRoutes.add({ page: 'category/list', pattern: '/category/list' });
+clientRoutes.add({ page: 'selection/:id', pattern: '/selection' });
+clientRoutes.add({ page: 'special-room/:id', pattern: '/special-room' });
 clientRoutes.add({
   page: '/',
   pattern:

@@ -11,7 +11,6 @@ const tagWrapper = css`
   font-size: 13px;
   font-weight: bold;
   line-height: 21px;
-  letter-spacing: -0.37px;
   text-align: center;
 `;
 

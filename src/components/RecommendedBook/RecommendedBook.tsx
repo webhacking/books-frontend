@@ -75,7 +75,6 @@ export const BookTitle = styled.h3`
   font-size: 15px;
   font-weight: 700;
   line-height: 1.33em;
-  letter-spacing: -0.4px;
   max-height: 2.66em;
   margin-bottom: 4px;
   ${lineClamp(2)};
@@ -85,7 +84,6 @@ export const BookAuthor = styled.span`
   font-size: 14px;
   line-height: 1.36em;
   max-height: 1.36em;
-  letter-spacing: -0.4px;
   color: #808991;
   margin-bottom: 5px;
   ${lineClamp(1)};
@@ -104,7 +102,6 @@ const hotReleaseTitleCSS = css`
   height: 21px;
   line-height: 21px;
   font-size: 21px;
-  letter-spacing: -0.2px;
   color: white;
   margin-bottom: 30px;
 `;
@@ -134,7 +131,6 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => (
           css={css`
             font-size: 13px;
             font-weight: bold;
-            letter-spacing: -0.3px;
             color: #8e97ff;
           `}>
           리디셀렉트

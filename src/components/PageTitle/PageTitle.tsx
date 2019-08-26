@@ -2,7 +2,6 @@ import * as React from 'react';
 import { css } from '@emotion/core';
 
 const pageTitleCSS = css`
-  letter-spacing: -0.29px;
   font-size: 18px;
   color: #333;
   font-weight: 700;

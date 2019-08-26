@@ -9,7 +9,6 @@ const bookTitleCSS = css`
   font-size: 15px;
   font-weight: 700;
   line-height: 1.33em;
-  letter-spacing: -0.43px;
   color: #000000;
   max-height: 2.7em;
   margin-bottom: 4.5px;
@@ -24,7 +23,6 @@ const authorCSS = css`
   height: 19px;
   font-size: 14px;
   line-height: 1.36;
-  letter-spacing: -0.4px;
   color: #808991;
   margin-bottom: 2px;
   ${lineClamp(1)};

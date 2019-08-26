@@ -6,7 +6,6 @@ import { scrollBarHidden } from 'src/styles';
 const labelCSS = theme => css`
   font-size: 13px;
   line-height: 1.23;
-  letter-spacing: -0.4px;
   color: ${theme.quickMenu.label};
   margin-top: 8px;
   min-width: 76px;

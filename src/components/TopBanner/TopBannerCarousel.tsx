@@ -330,7 +330,6 @@ const positionLabelCSS = css`
   color: white;
   font-size: 12px;
   line-height: 22px;
-  letter-spacing: -0.3px;
   font-family: 'museo_sans', 'Helvetica Neue';
 `;
 

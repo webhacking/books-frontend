@@ -56,7 +56,7 @@ export const resetFont = css`
   color: black;
   font-family: ${fontFamily};
   font-weight: 400;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.03em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 `;
@@ -136,5 +136,16 @@ export const resetStyles = css`
   #__next {
     overflow-y: hidden;
     overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  button,
+  input,
+  p,
+  span {
+    letter-spacing: -0.03em;
   }
 `;

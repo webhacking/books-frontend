@@ -62,7 +62,6 @@ const labelStyle = css`
   font-size: 16px;
   font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.4px;
   text-align: center;
   color: #ffffff;
   @media (max-width: 999px) {

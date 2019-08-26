@@ -35,7 +35,6 @@ const placeHolderCSS = css`
   height: 19px;
   line-height: 19px;
   font-weight: 500;
-  letter-spacing: -0.65px;
 `;
 
 const searchWrapper = (theme: RIDITheme) => css`
@@ -68,7 +67,6 @@ const searchWrapper = (theme: RIDITheme) => css`
     transform: scale(0.9375);
     transform-origin: top left;
     font-weight: 500;
-    letter-spacing: -0.46px;
     color: #000000;
     ::placeholder {
       ${placeHolderCSS};

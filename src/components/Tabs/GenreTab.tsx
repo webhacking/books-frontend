@@ -41,7 +41,6 @@ const genreListCSS = theme => css`
       line-height: 47px;
       height: 100%;
       width: 100%;
-      letter-spacing: -0.2px;
       ${clearOutline};
     }
     height: 100%;
@@ -90,7 +89,6 @@ const subServicesListCSS = theme => css`
   align-items: center;
   height: 50px;
   font-size: 17px;
-  letter-spacing: -0.2px;
   color: ${theme.subServiceTab.normal};
   li {
     height: 100%;

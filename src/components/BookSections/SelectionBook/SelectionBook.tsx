@@ -68,7 +68,6 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
             font-size: 10px;
             font-weight: bold;
             line-height: 1;
-            letter-spacing: -0.7px;
             color: #aaaaaa;
             outline: none;
           `}>

@@ -17,7 +17,6 @@ const turnOffSearchHistory = (theme: RIDITheme) => css`
   vertical-align: middle;
   box-sizing: content-box;
   font-size: 14px;
-  letter-spacing: 0.3px;
   color: ${theme.label3};
 `;
 
@@ -25,7 +24,6 @@ const recentHistoryLabel = (theme: RIDITheme) => css`
   padding: 13px 0 13px 16px;
   font-size: 14px;
   font-weight: normal;
-  letter-spacing: -0.43px;
   color: ${theme.label2};
 `;
 
@@ -54,7 +52,6 @@ const SearchHistoryItem = styled.li`
   padding: 13px 16px;
   font-size: 15px;
   line-height: 1;
-  letter-spacing: -0.43px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -70,7 +67,6 @@ const SearchHistoryItem = styled.li`
     span {
       color: #303538;
       font-size: 15px;
-      letter-spacing: -0.46px;
       line-height: 1.33;
     }
   }
@@ -91,7 +87,6 @@ const historyOptionPanelCSS = theme => css`
   color: ${theme.input.placeholder};
   font-size: 14px;
   line-height: 1;
-  letter-spacing: -0.4px;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   button {
@@ -179,7 +174,6 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
         <button
           css={css`
             font-size: 14px;
-            letter-spacing: -0.43px;
           `}
           type={'submit'}
           onClick={handleToggleSearchHistoryRecord}>
@@ -190,7 +184,6 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
         <button
           css={css`
             font-size: 14px;
-            letter-spacing: -0.43px;
           `}
           type={'submit'}
           onClick={handleClearHistory}>
