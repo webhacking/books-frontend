@@ -208,6 +208,8 @@ module.exports = {
     'prettier',
     'plugin:@typescript-eslint/recommended',
     'plugin:jsx-a11y/recommended',
+    'plugin:import/errors',
+    'plugin:import/typescript',
   ],
   globals: {
     Atomics: 'readonly',
@@ -222,7 +224,7 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'jsx-a11y'],
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'jsx-a11y', 'import'],
   rules: {
     ...eslintRules,
     ...hooksRule,
@@ -230,6 +232,11 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      'babel-module': {},
+    },
   },
   overrides: [
     {

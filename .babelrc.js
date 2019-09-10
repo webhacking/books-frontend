@@ -28,6 +28,7 @@ const plugins = [
         src: './src',
         server: './server',
       },
+      extensions: ['.js', '.ts', '.tsx'],
     },
   ],
 ];
