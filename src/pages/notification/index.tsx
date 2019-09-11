@@ -7,14 +7,18 @@ import { css } from '@emotion/core';
 import { flexColumnStart, RIDITheme } from 'src/styles';
 import { timeAgo } from 'src/utils/common';
 import ArrowLeft from 'src/svgs/ChevronRight.svg';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 const sectionCSS = css`
   padding: 31px 50px 0 50px;
   max-width: 1000px;
   margin: 0 auto;
-  @media (max-width: 999px) {
-    padding: 0;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      padding: 0;
+    `,
+  )};
 `;
 
 const mockList = [
@@ -49,9 +53,12 @@ const mockList = [
 
 const notiListCSS = css`
   margin-bottom: 70px;
-  @media (max-width: 999px) {
-    margin-bottom: 0;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      margin-bottom: 0;
+    `,
+  )};
 `;
 
 const notiListItemCSS = css`
@@ -77,9 +84,13 @@ const imageWrapperCSS = css`
   width: 100px;
   text-align: center;
   flex-shrink: 0;
-  @media (max-width: 999px) {
-    width: 90px;
-  }
+
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      width: 90px;
+    `,
+  )};
 `;
 
 const notificationTitleCSS = css`
@@ -137,9 +148,12 @@ const NotificationItem: React.FunctionComponent<NotificationItemProps> = React.m
             css={css`
               padding: 0 15px;
               margin-left: auto;
-              @media (min-width: 1000px) {
-                display: none;
-              }
+              ${orBelow(
+                BreakPoint.LG + 1,
+                css`
+                  display: none;
+                `,
+              )};
             `}>
             <ArrowLeft css={arrow} />
           </div>

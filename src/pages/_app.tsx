@@ -1,4 +1,4 @@
-import App, { Container } from 'next/app';
+import App from 'next/app';
 import { Provider } from 'react-redux';
 import { Store } from 'redux';
 import withRedux from 'next-redux-wrapper';
@@ -112,44 +112,42 @@ class StoreApp extends App<StoreAppProps> {
 
     if (pageProps.statusCode > 400) {
       return (
-        <Container>
+        <>
           <Global styles={resetStyles} />
           <Contents>
             <Component {...pageProps} />
           </Contents>
-        </Container>
+        </>
       );
     }
     if (isPartials) {
       return (
-        <Container>
+        <>
           {/* <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={!this.state.isMounted}>*/}
           <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={true}>
             <Global styles={resetStyles} />
           </PartialSeparator>
           {/* Todo Apply Layout */}
           <Component {...pageProps} />
-        </Container>
+        </>
       );
     }
     return (
-      <Container>
-        <CacheProvider value={createCache({ ...cache, nonce })}>
-          <Global styles={resetStyles} />
-          <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
-            <Provider store={store}>
-              {/* Todo Apply Layout */}
-              <ThemeProvider theme={defaultTheme}>
-                <GNB searchKeyword={query.search || query.q} isPartials={false} />
-                <Contents>
-                  <Component {...pageProps} />
-                </Contents>
-                <Footer />
-              </ThemeProvider>
-            </Provider>
-          </BrowserLocationWithRouter>
-        </CacheProvider>
-      </Container>
+      <CacheProvider value={createCache({ ...cache, nonce })}>
+        <Global styles={resetStyles} />
+        <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
+          <Provider store={store}>
+            {/* Todo Apply Layout */}
+            <ThemeProvider theme={defaultTheme}>
+              <GNB searchKeyword={query.search || query.q} isPartials={false} />
+              <Contents>
+                <Component {...pageProps} />
+              </Contents>
+              <Footer />
+            </ThemeProvider>
+          </Provider>
+        </BrowserLocationWithRouter>
+      </CacheProvider>
     );
   }
 }

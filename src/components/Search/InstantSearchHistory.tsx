@@ -5,6 +5,7 @@ import * as labels from 'src/labels/instantSearch.json';
 import { RIDITheme } from 'src/styles';
 import Exclamation from 'src/svgs/Exclamation_1.svg';
 import Close from 'src/svgs/Close_2.svg';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 const turnOffSearchHistory = (theme: RIDITheme) => css`
   text-align: center;
@@ -55,14 +56,17 @@ const SearchHistoryItem = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  @media (max-width: 999px) {
-    :hover {
-      background-color: white !important;
-    }
-    :focus {
-      background-color: white !important;
-    }
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      :hover {
+        background-color: white !important;
+      }
+      :focus {
+        background-color: white !important;
+      }
+    `,
+  )};
   a {
     span {
       color: #303538;

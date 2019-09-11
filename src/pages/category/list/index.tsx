@@ -9,6 +9,7 @@ import { css } from '@emotion/core';
 import Desktop from 'src/components/CategoryList/Desktop';
 import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import Mobile from 'src/components/CategoryList/Mobile';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 export interface Category {
   id: number;
@@ -300,9 +301,12 @@ const sectionCSS = css`
   max-width: 1000px;
   margin: 0 auto;
   margin-top: -20px;
-  @media (max-width: 999px) {
-    padding: 0;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      padding: 0;
+    `,
+  )}
 `;
 const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = props => {
   const [isMounted, setMounted] = useState(false);

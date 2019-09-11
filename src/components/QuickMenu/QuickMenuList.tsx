@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
 import { css } from '@emotion/core';
 import { scrollBarHidden } from 'src/styles';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 const labelCSS = theme => css`
   font-size: 13px;
   line-height: 1.23;
@@ -11,11 +12,13 @@ const labelCSS = theme => css`
   min-width: 76px;
   text-align: center;
   word-break: keep-all;
-  @media (max-width: 833px) {
-    min-width: 55px;
-    // max-width: 76px;
-    width: 100%;
-  }
+  ${orBelow(
+    BreakPoint.MD,
+    css`
+      min-width: 55px;
+      width: 100%;
+    `,
+  )};
 `;
 
 const MenuList = styled.ul`
@@ -28,10 +31,14 @@ const MenuList = styled.ul`
   padding-bottom: 32px;
   padding-left: 13px;
   padding-right: 13px;
-  @media (max-width: 999px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
+
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      padding-left: 0;
+      padding-right: 0;
+    `,
+  )};
 
   overflow: auto;
   ${scrollBarHidden};
@@ -51,9 +58,12 @@ const MenuItem = styled.li`
 `;
 
 const MenuItemWrapper = styled.div`
-  @media (max-width: 999px) {
-    max-width: 50px;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      max-width: 50px;
+    `,
+  )};
   a {
     display: flex;
     flex-direction: column;

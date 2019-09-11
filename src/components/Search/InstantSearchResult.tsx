@@ -11,34 +11,43 @@ import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import { lineClamp, RIDITheme } from 'src/styles';
 import styled from '@emotion/styled';
 import { getEscapedString } from 'src/utils/highlight';
+import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 
 const listItemCSS = css`
-  @media (max-width: 999px) {
-    min-height: 40px;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      min-height: 40px;
+    `,
+  )};
   cursor: pointer;
 `;
 const bookListItemCSS = (theme: RIDITheme) => css`
   ${listItemCSS};
-  @media (max-width: 999px) {
-    // border-bottom: 1px solid ${theme.divider};
-    :hover {
-      background-color: white !important;
-    }
-    :focus {
-      background-color: white !important;
-    }
-  }
-  @media (min-width: 1000px) {
-    :first-of-type {
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-    }
-    :last-of-type {
-      border-bottom-left-radius: 3px;
-      border-bottom-right-radius: 3px;
-    }
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      :hover {
+        background-color: white !important;
+      }
+      :focus {
+        background-color: white !important;
+      }
+    `,
+  )};
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+      :first-of-type {
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+      }
+      :last-of-type {
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+      }
+    `,
+  )}
   :hover {
     background-color: ${theme.instantSearch.itemHover};
   }
@@ -50,20 +59,26 @@ const bookListItemCSS = (theme: RIDITheme) => css`
 const authorListItemCSS = (theme: RIDITheme) => css`
   ${listItemCSS};
   display: flex;
-  @media (max-width: 999px) {
-    :hover {
-      background-color: white !important;
-    }
-    :focus {
-      background-color: white !important;
-    }
-  }
-  @media (min-width: 1000px) {
-    :first-of-type {
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-    }
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      :hover {
+        background-color: white !important;
+      }
+      :focus {
+        background-color: white !important;
+      }
+    `,
+  )};
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+      :first-of-type {
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+      }
+    `,
+  )};
   :hover {
     background-color: ${theme.instantSearch.itemHover};
   }
@@ -111,9 +126,12 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
           font-size: 15px;
           line-height: 1.33;
           flex-shrink: 0;
-          @media (max-width: 999px) {
-            margin-right: 3px;
-          }
+          ${orBelow(
+            BreakPoint.LG,
+            css`
+              margin-right: 3px;
+            `,
+          )};
           margin-right: 8px;
         `}
         dangerouslySetInnerHTML={{
@@ -134,12 +152,6 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
     </div>
   );
 };
-
-const ListWrapper = styled.div`
-  @media (max-width: 999px) {
-    padding: 0;
-  }
-`;
 
 const authorPublisherCSS = css`
   font-size: 14px;
@@ -184,7 +196,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
   const { result, handleKeyDown, handleClickBookItem } = props;
 
   return (
-    <ListWrapper>
+    <>
       <ul>
         {result.books.map((book: InstantSearchBookResultScheme, index) => (
           <li data-book-id={book.b_id} css={bookListItemCSS} key={index}>
@@ -280,7 +292,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
           </li>
         ))}
       </ul>
-    </ListWrapper>
+    </>
   );
 });
 
@@ -305,13 +317,8 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
   return (
     <div ref={wrapperRef}>
       {result.authors.length > 0 && (
-        <ListWrapper>
-          <ul
-            css={css`
-              @media (max-width: 999px) {
-                padding: 0;
-              }
-            `}>
+        <>
+          <ul>
             {result.authors.map((author, index) => (
               <li css={authorListItemCSS} key={index}>
                 <button
@@ -349,7 +356,7 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
               margin: 8px 16px;
             `}
           />
-        </ListWrapper>
+        </>
       )}
       {result.books.length > 0 && (
         <BookList

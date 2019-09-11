@@ -17,6 +17,7 @@ import InstantSearchHistory from 'src/components/Search/InstantSearchHistory';
 import getConfig from 'next/config';
 import { get } from 'ts-get';
 import { PublicRuntimeConfig } from 'src/types/common';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 const { publicRuntimeConfig } = getConfig();
 
 const fadeIn = keyframes`
@@ -45,16 +46,17 @@ const searchWrapper = (theme: RIDITheme) => css`
   border-radius: 3px;
   height: 32px;
   line-height: 32px;
-  @media (max-width: 999px) {
-    height: 36px;
-    line-height: 36px;
-    min-width: unset;
-    width: 100%;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      height: 36px;
+      line-height: 36px;
+      min-width: unset;
+      width: 100%;
+    `,
+  )};
   form {
     width: 100%;
-    @media (max-width: 999px) {
-    }
   }
 
   input {
@@ -92,27 +94,28 @@ const iconStyle = (theme: RIDITheme) => css`
   padding: 5.5px 2.5px 5px 7.5px;
   width: 24px;
   height: 24px;
-  @media (max-width: 999px) {
-  }
 `;
 
 const focused = (theme: RIDITheme) => css`
   order: 2;
-  @media (max-width: 999px) {
-    margin-top: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: ${ZIndexLayer.LEVEL_9};
-    background: ${theme.primaryColor};
-    width: 100%;
-    padding: 6px;
-    box-sizing: border-box;
-    animation: ${fadeIn} 0.2s ease-in-out;
-    display: flex;
-    align-items: center;
-    order: 3;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      margin-top: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: ${ZIndexLayer.LEVEL_9};
+      background: ${theme.primaryColor};
+      width: 100%;
+      padding: 6px;
+      box-sizing: border-box;
+      animation: ${fadeIn} 0.2s ease-in-out;
+      display: flex;
+      align-items: center;
+      order: 3;
+    `,
+  )};
 `;
 
 const initial = () => css`
@@ -120,10 +123,13 @@ const initial = () => css`
   margin-top: unset;
   outline: unset;
   order: 2;
-  @media (max-width: 999px) {
-    margin-top: 10px;
-    order: 3;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      margin-top: 10px;
+      order: 3;
+    `,
+  )};
 `;
 
 const searchFooter = css`
@@ -135,15 +141,18 @@ const searchFooter = css`
   border-radius: 3px;
   z-index: ${ZIndexLayer.LEVEL_9};
   margin-top: 2px;
-  @media (max-width: 999px) {
-    width: 100vw;
-    left: 6px;
-    box-shadow: unset;
-    margin-left: -6px;
-    top: 48px;
-    margin-top: unset;
-    border-radius: 0;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      width: 100vw;
+      left: 6px;
+      box-shadow: unset;
+      margin-left: -6px;
+      top: 48px;
+      margin-top: unset;
+      border-radius: 0;
+    `,
+  )};
   // ie11
   @media (max-width: 999px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     top: 46px;
@@ -152,16 +161,19 @@ const searchFooter = css`
 
 const dimmer = css`
   display: none;
-  @media (max-width: 999px) {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: ${ZIndexLayer.LEVEL_8};
-    background: rgba(0, 0, 0, 0.5);
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: ${ZIndexLayer.LEVEL_8};
+      background: rgba(0, 0, 0, 0.5);
+    `,
+  )};
 `;
 
 const arrow = css`
@@ -170,17 +182,23 @@ const arrow = css`
   fill: white;
   width: 16px;
   height: 16px;
-  @media (max-width: 999px) {
-    display: block;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      display: block;
+    `,
+  )};
 `;
 
 const arrowWrapperButton = css`
   display: none;
-  @media (max-width: 999px) {
-    display: block;
-    padding: 0 11px 0 5px;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      display: block;
+      padding: 0 11px 0 5px;
+    `,
+  )};
 `;
 
 export interface AuthorInfo {

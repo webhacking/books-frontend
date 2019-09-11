@@ -8,24 +8,35 @@ import { RankingBookTitle } from 'src/components/BookSections/BookSectionContain
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import ArrowV from 'src/svgs/ArrowV.svg';
 import { scrollBarHidden } from 'src/styles';
+import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;
   padding-left: 16px;
   padding-right: 16px;
-  @media (min-width: 834px) {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  @media (min-width: 1000px) {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
+  ${greaterThanOrEqualTo(
+    BreakPoint.MD + 1,
+    css`
+      padding-left: 20px;
+      padding-right: 20px;
+    `,
+  )};
 
-  @media (max-width: 999px) {
-    overflow: auto;
-  }
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+      padding-left: 24px;
+      padding-right: 24px;
+    `,
+  )};
+
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG,
+    css`
+      overflow: auto;
+    `,
+  )};
   ${scrollBarHidden};
   overflow: hidden;
 `;

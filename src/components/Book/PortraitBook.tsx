@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import { css } from '@emotion/core';
 
 export const PortraitBook = styled.li`
   display: flex;
@@ -17,17 +19,20 @@ export const PortraitBook = styled.li`
     margin-right: 24px;
   }
 
-  @media (max-width: 999px) {
-    min-width: 120px;
-    width: 120px;
-    :first-of-type {
-      padding-left: 16px;
-    }
-    :last-of-type {
-      padding-right: 16px;
-    }
-    :not(:last-of-type) {
-      margin-right: 20px;
-    }
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      min-width: 120px;
+      width: 120px;
+      :first-of-type {
+        padding-left: 16px;
+      }
+      :last-of-type {
+        padding-right: 16px;
+      }
+      :not(:last-of-type) {
+        margin-right: 20px;
+      }
+    `,
+  )}
 `;

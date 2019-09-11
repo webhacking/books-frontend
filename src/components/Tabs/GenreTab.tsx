@@ -9,6 +9,7 @@ import { Link } from 'server/routes';
 import { BrowserLocationContext } from 'src/components/Context';
 import * as Cookies from 'js-cookie';
 import cookieKeys from 'src/constants/cookies';
+import { orBelow } from 'src/utils/mediaQuery';
 
 const GenreTabWrapper = styled.ul`
   max-width: 1000px;
@@ -33,9 +34,12 @@ const genreListCSS = theme => css`
   li {
     button {
       padding: 0 22px;
-      @media (max-width: 999px) {
-        padding: 0;
-      }
+      ${orBelow(
+        999,
+        css`
+          padding: 0;
+        `,
+      )};
       font-size: 16px;
       font-weight: 500;
       line-height: 47px;
@@ -52,26 +56,31 @@ const genreListCSS = theme => css`
       margin-right: 0;
       button {
         padding: 0 20px;
-        @media (max-width: 999px) {
-          padding: 0;
-        }
+        ${orBelow(
+          999,
+          css`
+            padding: 0;
+          `,
+        )};
       }
     }
-
     margin-right: 10px;
   }
 
-  @media (max-width: 999px) {
-    justify-content: space-around;
-    li {
-      flex-grow: 1;
-      padding: 0;
-      margin: 0;
-      :first-of-type {
+  ${orBelow(
+    999,
+    css`
+      justify-content: space-around;
+      li {
+        flex-grow: 1;
         padding: 0;
+        margin: 0;
+        :first-of-type {
+          padding: 0;
+        }
       }
-    }
-  }
+    `,
+  )};
 `;
 
 const iconCSS = (theme: RIDITheme) => css`

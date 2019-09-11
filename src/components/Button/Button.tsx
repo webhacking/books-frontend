@@ -1,6 +1,7 @@
 import { css } from '@emotion/core';
 import * as React from 'react';
 import { RIDITheme } from 'src/styles';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 interface ButtonProps {
   label: string | React.ReactNode;
@@ -19,9 +20,12 @@ const createCSS = (theme: RIDITheme) => css`
   font-size: 13px;
   height: 30px;
 
-  @media (max-width: 999px) {
-    padding: 6px 8px;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      padding: 6px 8px;
+    `,
+  )};
   :hover {
     opacity: 0.7;
   }

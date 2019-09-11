@@ -6,6 +6,7 @@ import { flexCenter } from 'src/styles';
 import Arrow from 'src/components/Carousel/Arrow';
 import uiOption from 'src/constants/ui';
 import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
+import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 const items = [
   {
     label: '1',
@@ -156,13 +157,33 @@ const items = [
   },
 ];
 
+const TOP_BANNER_LG_WIDTH = 430;
+const TOP_BANNER_SM_WIDTH = 355;
+
+const slideOverlayCSS = css`
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.5);
+  transition: background-color 0.1s;
+`;
+
+const slideCenterOverlayCSS = css`
+  background: rgba(0, 0, 0, 0);
+  transition: background-color 0.1s;
+`;
+
 const TopBannerItemWrapper = styled.div`
   position: relative;
   ${flexCenter};
   flex-shrink: 0;
-  @media (max-width: 999px) {
-    margin: 0 5px;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      margin: 0 5px;
+    `,
+  )};
   margin: 0;
 `;
 
@@ -174,103 +195,112 @@ const sliderCSS = css`
     will-change: transform;
   }
   &.slick-slider {
-    @media (min-width: 300px) {
-      height: calc((100vw - 20px) / 1.5);
-    }
-    @media (min-width: 375px) {
-      height: calc(355px / 1.5);
-    }
-    @media (min-width: 1000px) {
-      height: calc(430px / 1.5);
-    }
-  }
-  @media (min-width: 300px) {
-    .slick-slide {
-      .slide-overlay {
-        position: absolute;
-        left: 0;
-        top: 0;
-        min-width: 280px;
-        width: calc(100vw - 20px);
-        border-radius: 6px;
+    ${greaterThanOrEqualTo(
+      BreakPoint.XS + 1,
+      css`
         height: calc((100vw - 20px) / 1.5);
-        background: rgba(0, 0, 0, 0.5);
-        transition: background-color 0.1s;
-      }
-    }
+      `,
+    )};
 
-    .slick-slide.slick-center {
-      .slide-overlay {
-        background: rgba(0, 0, 0, 0);
-        transition: background-color 0.1s;
-      }
-    }
+    ${greaterThanOrEqualTo(
+      BreakPoint.SM + 1,
+      css`
+        height: calc(${TOP_BANNER_SM_WIDTH}px / 1.5);
+      `,
+    )};
+
+    ${greaterThanOrEqualTo(
+      BreakPoint.LG + 1,
+      css`
+        height: calc(${TOP_BANNER_LG_WIDTH}px / 1.5);
+      `,
+    )};
   }
+  ${greaterThanOrEqualTo(
+    BreakPoint.XS + 1,
+    css`
+      .slick-slide {
+        .slide-overlay {
+          ${slideOverlayCSS};
+          min-width: 280px;
+          width: calc(100vw - 20px);
+          height: calc((100vw - 20px) / 1.5);
+        }
+      }
 
-  @media (min-width: 375px) {
-    .slick-slide {
-      .slide-overlay {
-        position: absolute;
-        width: 355px;
-        top: 0;
-        left: 0;
-        border-radius: 6px;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        transition: background-color 0.1s;
+      .slick-slide.slick-center {
+        .slide-overlay {
+          ${slideCenterOverlayCSS};
+        }
       }
-    }
+    `,
+  )};
 
-    .slick-slide.slick-center {
-      .slide-overlay {
-        background: rgba(0, 0, 0, 0);
-        transition: background-color 0.1s;
+  ${greaterThanOrEqualTo(
+    BreakPoint.SM + 1,
+    css`
+      .slick-slide {
+        .slide-overlay {
+          ${slideOverlayCSS};
+          height: 100%;
+          width: ${TOP_BANNER_SM_WIDTH}px;
+        }
       }
-    }
-  }
-  @media (min-width: 1000px) {
-    &.slick-slider {
-      overflow: hidden;
-      height: calc(430px / 1.5);
-    }
-    .slick-slide {
-      .slide-item-inner {
-        height: calc(430px / 1.5);
-        width: 430px;
-        transform: scale(0.965);
-        margin: 0 -2.5px;
-        transition: all 0.2s;
-      }
-    }
-    .slick-slide.slick-center {
-      width: 439px;
-      .slide-item-inner {
-        height: calc(430px / 1.5);
-        width: 430px;
-        transform: scale(1);
-        transition: all 0.2s;
-      }
-    }
 
-    .slick-slide {
-      .slide-overlay {
-        top: 0;
-        width: 430px;
-        left: -2px;
-        border-radius: 6px;
-        background: rgba(0, 0, 0, 0.5);
-        transition: all 0.2s;
-        transform: scale(0.965);
+      .slick-slide.slick-center {
+        .slide-overlay {
+          ${slideCenterOverlayCSS};
+        }
       }
-    }
-    .slick-slide.slick-center {
-      .slide-overlay {
-        width: 430px;
-        transform: scale(1);
-        transition: all 0.2s;
+    `,
+  )};
+
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+      &.slick-slider {
+        overflow: hidden;
+        height: calc(${TOP_BANNER_LG_WIDTH}px / 1.5);
       }
-    }
-  }
+      .slick-slide {
+        .slide-item-inner {
+          height: calc(${TOP_BANNER_LG_WIDTH}px / 1.5);
+          width: ${TOP_BANNER_LG_WIDTH}px;
+          transform: scale(0.965);
+          margin: 0 -2.5px;
+          transition: all 0.2s;
+        }
+      }
+      .slick-slide.slick-center {
+        width: 439px;
+        .slide-item-inner {
+          height: calc(${TOP_BANNER_LG_WIDTH}px / 1.5);
+          width: ${TOP_BANNER_LG_WIDTH}px;
+          transform: scale(1);
+          transition: all 0.2s;
+        }
+      }
+
+      .slick-slide {
+        .slide-overlay {
+          top: 0;
+          width: ${TOP_BANNER_LG_WIDTH}px;
+          left: -2px;
+          border-radius: 6px;
+          background: rgba(0, 0, 0, 0.5);
+          transition: all 0.2s;
+          transform: scale(0.965);
+        }
+      }
+      .slick-slide.slick-center {
+        .slide-overlay {
+          width: ${TOP_BANNER_LG_WIDTH}px;
+          transform: scale(1);
+          transition: all 0.2s;
+        }
+      }
+    `,
+  )};
   .slide-overlay {
     height: 100%;
   }
@@ -284,38 +314,56 @@ const sliderCSS = css`
   }
   .slick-slide {
     ${flexCenter};
-    //@media (min-width: 300px) {
-    //  height: calc((100vw - 20px) / 1.5);
-    //}
-    @media (min-width: 375px) {
-      height: 237px;
-    }
-    @media (min-width: 1000px) {
-      height: calc(430px / 1.5);
-    }
+    ${greaterThanOrEqualTo(
+      BreakPoint.SM + 1,
+      css`
+        height: 237px;
+      `,
+    )};
+    ${greaterThanOrEqualTo(
+      BreakPoint.LG + 1,
+      css`
+        height: calc(${TOP_BANNER_LG_WIDTH}px / 1.5);
+      `,
+    )};
   }
+`;
+
+const slideCSS = css`
+  ${greaterThanOrEqualTo(
+    BreakPoint.XS + 1,
+    css`
+      min-width: 280px;
+      width: calc(100vw - 20px);
+      height: calc((100vw - 20px) / 1.5);
+    `,
+  )};
+  ${greaterThanOrEqualTo(
+    BreakPoint.SM + 1,
+    css`
+      width: ${TOP_BANNER_SM_WIDTH}px;
+      height: calc(${TOP_BANNER_SM_WIDTH}px / 1.5);
+    `,
+  )};
+
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+      width: ${TOP_BANNER_LG_WIDTH}px;
+      transform: scale(0.965);
+      height: calc(${TOP_BANNER_LG_WIDTH}px / 1.5);
+    `,
+  )}
 `;
 
 const ItemInner = styled.div`
   border-radius: 6px;
-  @media (min-width: 300px) {
-    width: calc(100vw - 20px);
-    height: calc((100vw - 20px) / 1.5);
-  }
-  @media (min-width: 375px) {
-    width: 355px;
-    height: calc(355px / 1.5);
-  }
-  @media (min-width: 1000px) {
-    width: 430px;
-    height: calc(430px / 1.5);
-  }
   background-size: cover;
+  ${slideCSS};
 `;
 
 const TopBannerCurrentPositionInner = styled.div`
   position: absolute;
-
   width: 54px;
   height: 24px;
   border-radius: 12px;
@@ -330,7 +378,7 @@ const positionLabelCSS = css`
   color: white;
   font-size: 12px;
   line-height: 22px;
-  font-family: 'museo_sans', 'Helvetica Neue';
+  font-family: 'Roboto';
 `;
 
 const currentPosCSS = css`
@@ -350,18 +398,7 @@ const carouselLoadingOverlay = css`
   border-radius: 6px;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  @media (min-width: 300px) {
-    min-width: 280px;
-    width: calc(100vw - 20px);
-  }
-  @media (min-width: 375px) {
-    width: 355px;
-  }
-  @media (min-width: 1000px) {
-    width: 430px;
-    transform: scale(0.965);
-    height: calc(430px / 1.5);
-  }
+  ${slideCSS};
 `;
 
 interface TopBannerCurrentPositionProps {
@@ -390,31 +427,44 @@ const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => (
     <ItemInner
       className={'slide-item-inner'}
       css={css`
-          @media (min-width: 1000px) {
+        ${greaterThanOrEqualTo(
+          BreakPoint.LG + 1,
+          css`
             transform: ${props.loading && !props.center ? 'scale(0.965)' : 'scale(1)'};
             margin: ${props.loading ? '0 1px' : '0'};
-          }
-          //background-image: url(${props.imageUrl});
-        `}>
+          `,
+        )};
+      `}>
       <img
         css={css`
           border-radius: 6px;
           // Fix me 올바른 사이즈 배너가 올 때 다시 테스트
           object-fit: cover; // IE 11 미지원
           object-position: 0 0; // IE 11 미지원
-          @media (min-width: 300px) {
-            width: calc(100vw - 20px);
-            min-width: 280px;
-            height: calc((100vw - 20px) / 1.5);
-          }
-          @media (min-width: 375px) {
-            width: 355px;
-            height: 237px;
-          }
-          @media (min-width: 1000px) {
-            width: 430px;
-            height: 286px;
-          }
+
+          ${greaterThanOrEqualTo(
+            BreakPoint.XS,
+            css`
+              width: calc(100vw - 20px);
+              min-width: 280px;
+              height: calc((100vw - 20px) / 1.5);
+            `,
+          )};
+          ${greaterThanOrEqualTo(
+            BreakPoint.SM + 1,
+            css`
+              width: ${TOP_BANNER_SM_WIDTH}px;
+              height: 237px;
+            `,
+          )};
+
+          ${greaterThanOrEqualTo(
+            BreakPoint.LG + 1,
+            css`
+              width: ${TOP_BANNER_LG_WIDTH}px;
+              height: 286px;
+            `,
+          )}
         `}
         alt={props.label}
         src={props.imageUrl}
@@ -443,12 +493,15 @@ const arrowCSS = css`
 
 const arrowWrapperCSS = css`
   display: none;
-  @media (min-width: 1000px) {
-    display: block;
-    position: absolute;
-    opacity: 0.7;
-    bottom: 143.5px;
-  }
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+      display: block;
+      position: absolute;
+      opacity: 0.7;
+      bottom: 143.5px;
+    `,
+  )};
 `;
 
 const PositionOverlay = styled.div`
@@ -459,16 +512,25 @@ const PositionOverlay = styled.div`
   background: transparent;
   left: 50%;
   transform: translate(-50%, 0);
-  @media (min-width: 300px) {
-    width: calc(100vw - 20px);
-    min-width: 280px;
-  }
-  @media (min-width: 375px) {
-    width: 355px;
-  }
-  @media (min-width: 1000px) {
-    width: 430px;
-  }
+  ${greaterThanOrEqualTo(
+    BreakPoint.XS + 1,
+    css`
+      width: calc(100vw - 20px);
+      min-width: 280px;
+    `,
+  )};
+  ${greaterThanOrEqualTo(
+    BreakPoint.SM + 1,
+    css`
+      width: ${TOP_BANNER_SM_WIDTH}px;
+    `,
+  )};
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+      width: ${TOP_BANNER_LG_WIDTH}px;
+    `,
+  )};
 `;
 
 const TopBannerCarouselWrapper = styled.section`
@@ -559,8 +621,6 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
   );
 });
 
-let firstClientX = 0;
-let clientX = 0;
 export const TopBannerCarouselContainer: React.FC<
   TopBannerCarouselContainerProps
 > = React.memo(props => {
@@ -569,6 +629,10 @@ export const TopBannerCarouselContainer: React.FC<
   const [banners] = useState(props.banners || items);
   const slider = React.useRef<SliderCarousel>();
   const wrapper = React.useRef<HTMLElement>();
+
+  let firstClientX = 0;
+  let clientX = 0;
+
   const changePosition = useCallback(item => {
     setCurrentPosition(item || 0);
   }, []);
