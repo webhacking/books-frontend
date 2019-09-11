@@ -10,6 +10,7 @@ import {
 } from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
+import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 
 const recommendedBookCarouselLoadingCSS = css`
   .slick-slide {
@@ -117,9 +118,12 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
               side={'left'}
               wrapperStyle={css`
                 ${arrowWrapperCSS};
-                @media (min-width: 1280px) {
-                  left: -38px;
-                }
+                ${greaterThanOrEqualTo(
+                  BreakPoint.XL + 1,
+                  css`
+                    left: -38px;
+                  `,
+                )};
                 left: 5px;
                 top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
               `}
@@ -131,9 +135,12 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
               onClickHandler={handleRightArrow}
               wrapperStyle={css`
                 ${arrowWrapperCSS};
-                @media (min-width: 1280px) {
-                  right: -38px;
-                }
+                ${greaterThanOrEqualTo(
+                  BreakPoint.XL + 1,
+                  css`
+                    right: -38px;
+                  `,
+                )};
                 right: 5px;
                 top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
               `}

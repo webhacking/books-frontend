@@ -4,6 +4,7 @@ import { BookScheme } from 'src/types/book';
 import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBook';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
+import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 const fontStyle = css`
   font-size: 21px;
@@ -13,22 +14,23 @@ const fontStyle = css`
   word-break: keep-all;
 `;
 
-// Fixme isn't same ? SectionBookTitle
-export const RankingBookTitle = styled.h3`
-  ${fontStyle};
-  max-width: 1000px;
-  margin: 0 auto;
-  margin-bottom: 15px;
-  padding-top: 6px;
+const titleCSS = css`
+  ${between(
+    BreakPoint.MD + 1,
+    BreakPoint.LG,
+    css`
+      padding-left: 20px;
+      padding-right: 20px;
+    `,
+  )};
+  ${orBelow(
+    BreakPoint.MD,
+    css`
+      padding-left: 16px;
+      padding-right: 16px;
+    `,
+  )};
   padding-left: 24px;
-  @media (min-width: 834px) and (max-width: 999px) {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  @media (max-width: 833px) {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
   display: flex;
   a {
     display: flex;
@@ -39,28 +41,20 @@ export const RankingBookTitle = styled.h3`
     }
   }
 `;
+// Fixme isn't same ? SectionBookTitle
+export const RankingBookTitle = styled.h3`
+  ${fontStyle};
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  padding-top: 6px;
+  ${titleCSS};
+`;
 
 export const SectionTitle = styled.h3`
   ${fontStyle};
   margin-bottom: 21px;
-  @media (max-width: 833px) {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  @media (min-width: 834px) and (max-width: 999px) {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  padding-left: 24px;
-  display: flex;
-  a {
-    display: flex;
-    color: black;
-    :link,
-    :active {
-      color: black;
-    }
-  }
+  ${titleCSS};
 `;
 
 export interface RankingOption {

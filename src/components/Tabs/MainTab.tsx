@@ -15,6 +15,7 @@ import Cart_solid from 'src/svgs/Cart_solid.svg';
 import MyRIDI_solid from 'src/svgs/MyRIDI_solid.svg';
 import MyRIDI_regular from 'src/svgs/MyRIDI_regular.svg';
 import cookieKeys from 'src/constants/cookies';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 const StyledAnchor = styled.a`
   height: 100%;
@@ -26,9 +27,12 @@ const Tabs = styled.ul`
   flex-direction: row;
 
   padding: 0 20px;
-  @media (max-width: 999px) {
-    padding: 0;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      padding: 0;
+    `,
+  )};
 `;
 
 const TabButton = styled.button`
@@ -50,11 +54,15 @@ const iconStyle = () => css`
   width: 20px;
   height: 20px;
   // top: 3px;
-  @media (max-width: 999px) {
-    width: 24px;
-    height: 24px;
-    margin-right: 0;
-  }
+
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      width: 24px;
+      height: 24px;
+      margin-right: 0;
+    `,
+  )};
 `;
 
 const labelStyle = css`
@@ -64,9 +72,8 @@ const labelStyle = css`
   line-height: 1;
   text-align: center;
   color: #ffffff;
-  @media (max-width: 999px) {
-    ${a11y}
-  }
+
+  ${orBelow(BreakPoint.LG, a11y)};
 `;
 
 const BottomLine = styled.span`
@@ -84,13 +91,17 @@ const TabItemWrapper = styled.li`
   :not(:last-of-type) {
     margin-right: 50px;
   }
-  @media (max-width: 999px) {
-    height: 40px;
-    width: 25%;
-    :not(:last-of-type) {
-      margin-right: 0;
-    }
-  }
+
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      height: 40px;
+      width: 25%;
+      :not(:last-of-type) {
+        margin-right: 0;
+      }
+    `,
+  )};
   transition: opacity 0.2s;
 
   @media (hover: hover) {

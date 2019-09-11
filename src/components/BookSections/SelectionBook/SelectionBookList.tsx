@@ -3,6 +3,7 @@ import { flexRowStart, scrollBarHidden } from 'src/styles';
 import { BookScheme } from 'src/types/book';
 import { SelectionBookItem } from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { css } from '@emotion/core';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 const itemCSS = css`
   display: flex;
@@ -16,14 +17,17 @@ const itemCSS = css`
   }
   box-sizing: content-box;
 
-  @media (max-width: 833px) {
-    :last-of-type {
-      padding-right: 16px;
-    }
-    :first-of-type {
-      padding-left: 16px;
-    }
-  }
+  ${orBelow(
+    BreakPoint.MD,
+    css`
+      :last-of-type {
+        padding-right: 16px;
+      }
+      :first-of-type {
+        padding-left: 16px;
+      }
+    `,
+  )};
   align-items: flex-start;
 `;
 

@@ -7,6 +7,7 @@ import { InstantSearch } from 'src/components/Search';
 import { MainTab } from 'src/components/Tabs';
 import RidiLogo from 'src/svgs/RidiLogo_1.svg';
 import RidiSelectLogo from 'src/svgs/RidiSelectLogo_1.svg';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 const GNBWrapper = styled.div`
   width: 100%;
@@ -23,9 +24,12 @@ const Navigation = styled.nav`
   padding: 16px 16px 24px 20px;
   display: flex;
   flex-direction: column;
-  @media (max-width: 999px) {
-    padding: 9px 10px;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      padding: 9px 10px;
+    `,
+  )};
 `;
 
 const LogoWrapper = styled.ul`
@@ -33,9 +37,6 @@ const LogoWrapper = styled.ul`
   margin-right: -2.5px;
   order: 1;
   margin-bottom: 0;
-  @media (max-width: 999px) {
-    //margin-bottom: 9x;
-  }
   display: inline-flex;
   li {
     display: inline-flex;
@@ -52,11 +53,15 @@ const LogoWrapper = styled.ul`
       color: white;
       opacity: 0.4;
       margin: 0 8.5px 0 10px;
-      @media (max-width: 999px) {
-        margin: 0 6px 0 5px;
-        top: 7px;
-        font-size: 12px;
-      }
+
+      ${orBelow(
+        BreakPoint.LG,
+        css`
+          margin: 0 6px 0 5px;
+          top: 7px;
+          font-size: 12px;
+        `,
+      )};
     }
     :last-of-type {
       ::after {
@@ -74,16 +79,19 @@ const ridiLogo = (theme: RIDITheme) => css`
   :hover {
     opacity: 0.8;
   }
-  @media (max-width: 999px) {
-    width: 88px;
-    height: 14px;
-    :hover {
-      opacity: 1;
-    }
-    :active {
-      opacity: 0.7;
-    }
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      width: 88px;
+      height: 14px;
+      :hover {
+        opacity: 1;
+      }
+      :active {
+        opacity: 0.7;
+      }
+    `,
+  )};
 `;
 
 const ridiSelectLogo = (theme: RIDITheme) => css`
@@ -92,10 +100,14 @@ const ridiSelectLogo = (theme: RIDITheme) => css`
   opacity: 0.6;
   width: 87.5px;
   height: 14px;
-  @media (max-width: 999px) {
-    width: 73px;
-    height: 12px;
-  }
+
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      width: 73px;
+      height: 12px;
+    `,
+  )};
   :hover {
     opacity: 0.8;
   }
@@ -105,19 +117,26 @@ const ButtonWrapper = styled.ul`
   margin-left: auto;
   display: flex;
   order: 3;
-  @media (max-width: 999px) {
-    right: 10px;
-    top: 8px;
-    order: 2;
-    position: absolute;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      right: 10px;
+      top: 8px;
+      order: 2;
+      position: absolute;
+    `,
+  )};
 
   li {
     :not(:last-of-type) {
       margin-right: 6px;
-      @media (max-width: 999px) {
-        margin-right: 3px;
-      }
+
+      ${orBelow(
+        BreakPoint.LG,
+        css`
+          margin-right: 3px;
+        `,
+      )};
     }
   }
 `;
@@ -125,9 +144,12 @@ const ButtonWrapper = styled.ul`
 const logoAndSearchBox = css`
   display: flex;
   flex-direction: row;
-  @media (max-width: 999px) {
-    flex-direction: column;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      flex-direction: column;
+    `,
+  )};
 `;
 
 interface GNBProps {

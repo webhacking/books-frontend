@@ -15,40 +15,36 @@ import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedB
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 const { publicRuntimeConfig } = getConfig();
 
 const backgroundImageCSS = css`
   background: url(${`${publicRuntimeConfig.STATIC_CDN_URL}/static/image/recommended_book_background@desktop.png`})
     center center no-repeat #17202e;
   background-size: contain;
-  @media (max-width: 833px) {
-    background-size: cover;
-  }
+  ${orBelow(
+    BreakPoint.MD,
+    css`
+      background-size: cover;
+    `,
+  )};
 `;
 
 const hotReleaseRecommendedBookWrapperCSS = css`
   ${backgroundImageCSS};
-  @media (max-width: 999px) {
-  }
   padding-top: 36px;
   margin-bottom: 48px;
 `;
 const recommendedBookWrapperCSS = css`
   ${backgroundImageCSS};
-  @media (max-width: 999px) {
-  }
   padding-top: 36px;
 `;
 
 export const hotReleaseBookListCSS = css`
-  @media (max-width: 999px) {
-  }
   max-width: 1000px;
   padding-left: 3px;
 `;
 export const recommendedBookListCSS = css`
-  @media (max-width: 999px) {
-  }
   padding-left: 3px;
 `;
 
@@ -56,9 +52,7 @@ export const BookList = styled.ul`
   overflow: auto;
   ${scrollBarHidden};
   margin: 0 auto;
-  @media (max-width: 999px) {
-    ${flexRowStart};
-  }
+  ${orBelow(BreakPoint.LG, flexRowStart)};
   display: flex;
   justify-content: center;
   padding-bottom: 36px;
@@ -95,9 +89,13 @@ const hotReleaseTitleCSS = css`
   display: flex;
   align-items: center;
   padding-left: 20px;
-  @media (max-width: 999px) {
-    padding-left: 16px;
-  }
+
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      padding-left: 16px;
+    `,
+  )};
 
   height: 21px;
   line-height: 21px;

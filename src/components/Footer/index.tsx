@@ -4,6 +4,7 @@ import * as React from 'react';
 import PaperIcon from 'src/svgs/Paper.svg';
 import NewIcon from 'src/svgs/New_1.svg';
 import { RIDITheme } from 'src/styles';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 const ridiMeta = {
   serviceCenterNumber: '1644-0331',
@@ -32,11 +33,14 @@ const FlexBox = styled.div`
   display: flex;
   align-items: start;
   justify-content: unset;
-  @media (max-width: 999px) {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: unset;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: unset;
+    `,
+  )};
 `;
 
 const contactListCSS = (theme: RIDITheme) => css`
@@ -62,9 +66,12 @@ const contactListCSS = (theme: RIDITheme) => css`
   }
   margin-right: 80px;
 
-  @media (max-width: 999px) {
-    margin-bottom: 28px;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      margin-bottom: 28px;
+    `,
+  )}
 `;
 
 const serviceNumber = css`
@@ -84,9 +91,12 @@ const FooterMenuWrapper = styled.ul`
   display: flex;
   padding-top: 6px;
   margin-bottom: 48px;
-  @media (max-width: 999px) {
-    margin-bottom: 24px;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      margin-bottom: 24px;
+    `,
+  )};
 `;
 
 const FooterMenu = styled.ul`
@@ -105,9 +115,12 @@ const FooterMenuLabel = styled.span`
 `;
 
 const hiddenMenu = css`
-  @media (max-width: 999px) {
-    display: none;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      display: none;
+    `,
+  )}
 `;
 
 const anchorHover = css`
@@ -121,10 +134,13 @@ const InformationWrapper = styled.address`
   display: flex;
   flex-direction: row;
   margin-bottom: 10px;
-  @media (max-width: 999px) {
-    flex-direction: column;
-    margin-bottom: 16px;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      flex-direction: column;
+      margin-bottom: 16px;
+    `,
+  )};
 `;
 
 const address = css`
@@ -142,11 +158,14 @@ const MiscWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
-  @media (max-width: 999px) {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+    `,
+  )}
   li {
     flex-shrink: 0;
   }
@@ -162,9 +181,12 @@ const Copyright = styled.p`
   line-height: normal;
   color: #7e8992;
   margin-right: 24px;
-  @media (max-width: 999px) {
-    margin-bottom: 16px;
-  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      margin-bottom: 16px;
+    `,
+  )};
 `;
 
 const menuListCSS = (theme: RIDITheme) => css`
@@ -200,20 +222,9 @@ const paperIcon = css`
   fill: white;
 `;
 
-interface NoticeItem {
-  title: string;
-  url: string;
-}
-
-interface FooterProps {
-  // Fix me
-  // tslint:disable-next-line
-  noticeItems?: NoticeItem[];
-}
-
-const Footer: React.FC<FooterProps> = () => (
+const Footer: React.FC<{}> = () => (
   // @ts-ignore
-  <FNBWrapper css={theme => ({ backgroundColor: theme.secondaryColor })}>
+  <FNBWrapper css={(theme: RIDITheme) => ({ backgroundColor: theme.secondaryColor })}>
     <FooterWrapper>
       <FlexBox>
         <ul css={contactListCSS}>

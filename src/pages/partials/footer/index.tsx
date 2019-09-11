@@ -24,13 +24,7 @@ export class PartialFooter extends React.Component<FooterProps> {
     return (
       <ThemeProvider theme={!this.props.theme ? defaultTheme : darkTheme}>
         <PartialSeparator name={'FOOTER'} wrapped={true}>
-          <Footer
-            noticeItems={[
-              { title: 'Do you have the time', url: 'url...' },
-              { title: 'to listen to me whine', url: 'url...' },
-              { title: 'About nothing and everything at all once', url: 'url...' },
-            ]}
-          />
+          <Footer />
         </PartialSeparator>
       </ThemeProvider>
     );

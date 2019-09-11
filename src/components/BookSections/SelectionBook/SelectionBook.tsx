@@ -20,10 +20,6 @@ const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;
   padding-top: 6px;
-  //padding-bottom: 48px;
-  //@media (max-width: 999px) {
-  //  overflow: auto;
-  //}
   -webkit-overflow-scrolling: touch;
 `;
 
