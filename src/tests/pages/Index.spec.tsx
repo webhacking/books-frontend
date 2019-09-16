@@ -8,6 +8,7 @@ import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from '../../styles';
 import { HomeProps } from '../../pages';
 import { Router } from 'server/routes';
+import { Provider } from 'react-redux';
 
 jest.mock('next/dynamic', () => () => {
   const DynamicComponent = () => null;
@@ -49,15 +50,24 @@ const mockSomeProps = {
   res: mockRes,
 };
 
+const providerWrap = (
+  // @ts-ignore
+  children,
+) => (
+  <ThemeProvider theme={defaultTheme}>
+    <Provider store={store}>{children}</Provider>
+  </ThemeProvider>
+);
+
 const renderComponent = (
   props: HomeProps,
   genre?: keyof typeof Genre,
   service?: keyof typeof GenreSubService,
 ) =>
   render(
-    <ThemeProvider theme={defaultTheme}>
-      <Index {...props} genre={genre || 'GENERAL'} service={service || 'SINGLE'} />
-    </ThemeProvider>,
+    providerWrap(
+      <Index {...props} genre={genre || 'GENERAL'} service={service || 'SINGLE'} />,
+    ),
   );
 
 describe('Home Test', () => {
@@ -116,11 +126,7 @@ describe('Home Test', () => {
         },
       },
     });
-    render(
-      <ThemeProvider theme={defaultTheme}>
-        <Index {...props} genre={'romance'} service={'serial'} />
-      </ThemeProvider>,
-    );
+    render(providerWrap(<Index {...props} genre={'romance'} service={'serial'} />));
     expect(mockWriteHead).toHaveBeenCalledTimes(0);
   });
 
@@ -138,32 +144,18 @@ describe('Home Test', () => {
       },
     });
     const { rerender } = render(
-      <ThemeProvider theme={defaultTheme}>
-        <Index {...props} genre={'romance'} service={'serial'} />
-      </ThemeProvider>,
+      providerWrap(<Index {...props} genre={'romance'} service={'serial'} />),
     );
     // Client Side 페이지 이동
     window.history.pushState({}, 'Test', '/general');
-    rerender(
-      <ThemeProvider theme={defaultTheme}>
-        <Index {...props} genre={'romance'} service={''} />
-      </ThemeProvider>,
-    );
+    rerender(providerWrap(<Index {...props} genre={'romance'} service={''} />));
     // Client Side 페이지 이동
     window.history.pushState({}, 'Test', '/fantasy');
-    rerender(
-      <ThemeProvider theme={defaultTheme}>
-        <Index {...props} genre={'fantasy'} service={''} />
-      </ThemeProvider>,
-    );
+    rerender(providerWrap(<Index {...props} genre={'fantasy'} service={''} />));
 
     // Client Side 페이지 이동
     window.history.pushState({}, 'Test', '/');
-    rerender(
-      <ThemeProvider theme={defaultTheme}>
-        <Index {...props} genre={'general'} service={''} />
-      </ThemeProvider>,
-    );
+    rerender(providerWrap(<Index {...props} genre={'general'} service={''} />));
 
     expect(Router.replaceRoute).toHaveBeenCalledTimes(2);
   });
@@ -178,11 +170,7 @@ describe('Home Test', () => {
         cookies: {},
       },
     });
-    render(
-      <ThemeProvider theme={defaultTheme}>
-        <Index {...props} genre={'bl'} service={'serial'} />
-      </ThemeProvider>,
-    );
+    render(providerWrap(<Index {...props} genre={'bl'} service={'serial'} />));
 
     expect(mockWriteHead).toHaveBeenCalledTimes(1);
   });
@@ -196,11 +184,7 @@ describe('Home Test', () => {
         cookies: {},
       },
     });
-    render(
-      <ThemeProvider theme={defaultTheme}>
-        <Index {...props} genre={'romance'} service={'serial'} />
-      </ThemeProvider>,
-    );
+    render(providerWrap(<Index {...props} genre={'romance'} service={'serial'} />));
 
     expect(mockWriteHead).toHaveBeenCalledTimes(1);
   });
@@ -214,12 +198,7 @@ describe('Home Test', () => {
         cookies: {},
       },
     });
-    render(
-      <ThemeProvider theme={defaultTheme}>
-        <Index {...props} genre={'fantasy'} service={'serial'} />
-      </ThemeProvider>,
-    );
-
+    render(providerWrap(<Index {...props} genre={'fantasy'} service={'serial'} />));
     expect(mockWriteHead).toHaveBeenCalledTimes(1);
   });
 });
