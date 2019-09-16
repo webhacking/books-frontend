@@ -198,7 +198,7 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
             `
           : props.labelCSS(theme)}
       `}>
-      <Link replace={!!currentPath.match(genre.path)} prefetch={true} route={route}>
+      <Link replace={!!currentPath.match(genre.path)} route={route}>
         <button>
           <span css={currentPath.match(regex) ? props.currentCSS : props.normalCSS}>
             {props.label}
