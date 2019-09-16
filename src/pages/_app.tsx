@@ -2,7 +2,7 @@ import App from 'next/app';
 import { Provider } from 'react-redux';
 import { Store } from 'redux';
 import withRedux from 'next-redux-wrapper';
-import makeStore, { StoreRootState } from 'src/store/config';
+import makeStore, { RootState } from 'src/store/config';
 import { ConnectedRouter } from 'connected-next-router';
 import { notifySentry, initializeSentry } from 'src/utils/sentry';
 import { CacheProvider, Global } from '@emotion/core';
@@ -21,7 +21,7 @@ import createCache from '@emotion/cache';
 // import { Tracker, DeviceType } from '@ridi/event-tracker';
 
 interface StoreAppProps {
-  store: Store<StoreRootState>;
+  store: Store<RootState>;
   // tslint:disable-next-line
   pageProps: any;
   isPartials?: boolean;
@@ -68,9 +68,6 @@ class StoreApp extends App<StoreAppProps> {
         }
       });
     }
-    this.setState({
-      isMounted: true,
-    });
   }
 
   public render() {

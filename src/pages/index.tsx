@@ -16,6 +16,8 @@ import bookSectionsMockItems from 'src/components/BookSections/mockData';
 import RecommendedBook from 'src/components/RecommendedBook/RecommendedBook';
 import BookSectionContainer from 'src/components/BookSections/BookSectionContainer';
 import titleGenerator from 'src/utils/titleGenerator';
+import { connect } from 'react-redux';
+import { RootState } from 'src/store/config';
 
 export interface HomeProps {
   genre: keyof typeof Genre;
@@ -32,8 +34,10 @@ export class Home extends React.Component<HomeProps> {
     }
   }
 
+  // eslint-disable-next-line complexity
   public static async getInitialProps(props: ConnectedInitializeProps) {
-    const { query, res, req } = props;
+    // @ts-ignore
+    const { query, res, req, store } = props;
     const genre = query.genre
       ? Genre[(query.genre as string).toUpperCase() as keyof typeof Genre]
       : null;
@@ -94,14 +98,19 @@ export class Home extends React.Component<HomeProps> {
       }
       // Todo Fetch Sections
       if (res.statusCode !== 302) {
-        console.log('Server Side Fetch Start');
+        return {
+          genre: genre || 'general',
+          service: service || 'single',
+          ...props.query,
+        };
       }
-    } else {
-      // Client Side
-      console.log('Initial Fetch Start');
     }
-
-    return { genre: genre || 'general', service: service || 'single', ...props.query };
+    // Client Side
+    return {
+      genre: genre || 'general',
+      service: service || 'single',
+      ...props.query,
+    };
   }
 
   private setCookie = (props: HomeProps) => {
@@ -114,7 +123,6 @@ export class Home extends React.Component<HomeProps> {
       expires: DEFAULT_COOKIE_EXPIRES,
     });
 
-    // Fix me subService Length 체크 말고 다른 방법은 없는지
     if (service && homeGenres[currentGenre].subServices.length > 0) {
       const currentService =
         GenreSubService[service.toUpperCase() as keyof typeof GenreSubService] ||
@@ -131,7 +139,6 @@ export class Home extends React.Component<HomeProps> {
 
   public componentDidMount(): void {
     this.setCookie(this.props);
-    console.log('First Render. Client Side Fetch Start');
   }
 
   public shouldComponentUpdate(
@@ -148,7 +155,6 @@ export class Home extends React.Component<HomeProps> {
       Router.replaceRoute('/');
       return false;
     }
-
     // Todo visitedService value Validation
     // eslint-disable-next-line prefer-named-capture-group
     if (!service && genre.match(/(fantasy|romance|bl)/u)) {
@@ -164,13 +170,9 @@ export class Home extends React.Component<HomeProps> {
     return true;
   }
 
-  public componentDidUpdate(): void {
-    // Todo Fetch
-    console.log('Client Render Updated. Fetch Start');
-  }
-
   public render() {
-    const { genre, service } = this.props;
+    // @ts-ignore
+    const { genre, service, app } = this.props;
     const currentGenre = Genre[genre.toUpperCase() as keyof typeof Genre];
     const currentService =
       GenreSubService[service.toUpperCase() as keyof typeof GenreSubService];
@@ -223,4 +225,9 @@ export class Home extends React.Component<HomeProps> {
   }
 }
 
-export default Home;
+// Temporary code for redux connect
+const mapStateToProps = ({ app }: RootState) => ({
+  app,
+});
+
+export default connect(mapStateToProps)(Home);
