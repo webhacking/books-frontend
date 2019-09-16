@@ -3,6 +3,16 @@ const { publicRuntimeConfig } = getConfig();
 
 export default () => (
   <>
+    <meta
+      name="msapplication-TileImage"
+      content={`${publicRuntimeConfig.STATIC_CDN_URL}/static/favicon/favicon_win8.png`}
+    />
+    <meta name="msapplication-TileColor" content="#1f8ee6" />
+    <link
+      rel="shortcut icon"
+      href={`${publicRuntimeConfig.STATIC_CDN_URL}/static/favicon/favicon.ico`}
+    />
+
     <link
       rel="apple-touch-icon"
       sizes="57x57"
@@ -53,6 +63,30 @@ export default () => (
       type="image/png"
       sizes="192x192"
       href={`${publicRuntimeConfig.STATIC_CDN_URL}/static/favicon/android-icon-192x192.png?150320`}
+    />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href={`${publicRuntimeConfig.STATIC_CDN_URL}/static/favicon/apple-touch-icon.png?190528`}
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href={`${publicRuntimeConfig.STATIC_CDN_URL}/static/favicon/favicon-32x32.png?190528`}
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href={`${publicRuntimeConfig.STATIC_CDN_URL}/static/favicon/favicon-16x16.png?190528`}
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href={`${publicRuntimeConfig.STATIC_CDN_URL}/static/favicon/android-chrome-192x192.png?190528`}
     />
   </>
 );

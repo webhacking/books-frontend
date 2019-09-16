@@ -1,5 +1,3 @@
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 export default () => (
   <>
     <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
@@ -10,10 +8,5 @@ export default () => (
     />
     <meta name="theme-color" content="#339CF2" />
     <meta name="format-detection" content="telephone=no" />
-    <meta
-      name="msapplication-TileImage"
-      content={`${publicRuntimeConfig.STATIC_CDN_URL}/static/favicon/favicon_win8.png`}
-    />
-    <meta name="msapplication-TileColor" content="#1f8ee6" />
   </>
 );

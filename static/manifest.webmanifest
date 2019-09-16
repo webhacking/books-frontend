@@ -8,12 +8,12 @@
   "description": "리디북스 서점",
   "icons": [
     {
-      "src": "<path>/static/favicon/android-icon-192x192.png",
+      "src": "<path>/static/favicon/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "<path>/static/favicon/android-icon-192x192.png",
+      "src": "<path>/static/favicon/android-chrome-192x192.png",
       "sizes": "512x512",
       "type": "image/png"
     }
