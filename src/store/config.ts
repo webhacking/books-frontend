@@ -12,10 +12,15 @@ import rootSaga from 'src/store/sagas';
 // @ts-ignore
 import { Router } from 'server/routes';
 import { initialState } from 'src/store/initialState';
+import {
+  createRouterMiddleware,
+  initialRouterState,
+  RouteState,
+} from 'connected-next-router';
 
 export interface StoreRootState {
   app?: AppState;
-  // router?: RouteState;
+  router?: RouteState;
 }
 
 interface MakeStoreOption {
@@ -32,31 +37,28 @@ interface MakeStoreOption {
 }
 
 const sagaMiddleware = createSagaMiddleware();
-// const routerMiddleware = createRouterMiddleware({
-//   Router,
-//   method: {
-//     push: 'pushRoute',
-//     replace: 'replaceRoute',
-//     prefetch: 'prefetchRoute',
-//   },
-// });
+const routerMiddleware = createRouterMiddleware({
+  Router,
+  method: {
+    push: 'pushRoute',
+    replace: 'replaceRoute',
+    prefetch: 'prefetchRoute',
+  },
+});
 
-// next-redux-saga
-// next-redux-wrapper
-// connected-next-router
 const makeStore = (
   preLoadedState: StoreRootState = initialState,
   makeStoreOption?: MakeStoreOption,
 ) => {
   // @ts-ignore
   if (makeStoreOption && makeStoreOption.asPath) {
-    // preLoadedState.router = initialRouterState(makeStoreOption.asPath);
+    preLoadedState.router = initialRouterState(makeStoreOption.asPath);
   }
 
   const store = createStore(
     rootReducers,
     preLoadedState,
-    composeWithDevTools(applyMiddleware(sagaMiddleware)),
+    composeWithDevTools(applyMiddleware(routerMiddleware, sagaMiddleware)),
   );
 
   (store as Store & { sagaTask: Task }).sagaTask = sagaMiddleware.run(rootSaga);

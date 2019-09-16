@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import { appReducer } from 'src/services';
-// import { routerReducer } from 'connected-next-router';
+import { routerReducer } from 'connected-next-router';
 
 export const rootReducers = combineReducers({
   app: appReducer,
-  // router: routerReducer,
+  router: routerReducer,
   // append more reducers
 });
