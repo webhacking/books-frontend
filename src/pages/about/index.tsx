@@ -3,7 +3,7 @@ import { Book } from '@ridi/web-ui/dist/index.node';
 import { css } from '@emotion/core';
 import { Link } from 'server/routes';
 import { connect } from 'react-redux';
-import { StoreRootState } from 'src/store/config';
+import { RootState } from 'src/store/config';
 import { appActions } from 'src/services';
 import { AppState } from 'src/services/app/reducer';
 import { ConnectedInitializeProps } from 'src/types/common';
@@ -52,7 +52,7 @@ class About extends React.Component<AboutProps> {
   }
 }
 
-const mapStateToProps = (state: StoreRootState) => ({
+const mapStateToProps = (state: RootState) => ({
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   app: state.app!,
 });

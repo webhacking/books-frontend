@@ -5,7 +5,6 @@ import createSagaMiddleware, { Task } from 'redux-saga';
 import { rootReducers } from 'src/store/reducers';
 import { AppState } from 'src/services/app/reducer';
 import { ServerResponse } from 'http';
-// import { createRouterMiddleware, initialRouterState, RouteState } from 'connected-next-router';
 
 import rootSaga from 'src/store/sagas';
 
@@ -18,7 +17,7 @@ import {
   RouteState,
 } from 'connected-next-router';
 
-export interface StoreRootState {
+export interface RootState {
   app?: AppState;
   router?: RouteState;
 }
@@ -47,7 +46,7 @@ const routerMiddleware = createRouterMiddleware({
 });
 
 const makeStore = (
-  preLoadedState: StoreRootState = initialState,
+  preLoadedState: RootState = initialState,
   makeStoreOption?: MakeStoreOption,
 ) => {
   // @ts-ignore
