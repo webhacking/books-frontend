@@ -9,12 +9,22 @@ import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import ArrowV from 'src/svgs/ArrowV.svg';
 import { scrollBarHidden } from 'src/styles';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
+import Arrow from 'src/components/Carousel/Arrow';
+import { useScrollSlider } from 'src/hooks/useScrollSlider';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;
+`;
+
+const listCSS = css`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100%;
   padding-left: 16px;
   padding-right: 16px;
+
   ${greaterThanOrEqualTo(
     BreakPoint.MD + 1,
     css`
@@ -34,18 +44,11 @@ const SectionWrapper = styled.section`
   ${greaterThanOrEqualTo(
     BreakPoint.LG,
     css`
-      overflow: auto;
+      //overflow: auto;
     `,
   )};
   ${scrollBarHidden};
-  overflow: hidden;
-`;
-
-const listCSS = css`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  height: 100%;
+  overflow-x: auto;
 `;
 
 const itemCSS = css`
@@ -99,6 +102,9 @@ interface RankingBookListProps {
 const RankingBookList: React.FC<RankingBookListProps> = props => {
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
+  const ref = useRef<HTMLUListElement>(null);
+  const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
+
   return (
     <>
       {props.title && (
@@ -122,6 +128,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
       <SectionWrapper
         ref={targetRef}
         css={css`
+          position: relative;
           padding-top: ${props.type === 'big' ? '6px' : '7px'};
           height: ${props.type === 'big' ? '464px' : '311px'};
         `}>
@@ -129,7 +136,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
           css={css`
             display: inline;
           `}>
-          <ul css={listCSS}>
+          <ul css={listCSS} ref={ref}>
             {props.items.map((book, index) => (
               <li css={props.type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
                 <div
@@ -164,6 +171,42 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
               </li>
             ))}
           </ul>
+          <form
+            css={css`
+              height: 0;
+              @media (hover: none) {
+                display: none;
+              }
+              @media (min-width: 1000px) {
+                display: none;
+              }
+            `}>
+            {isOnTheLeft && (
+              <Arrow
+                label={'이전'}
+                side={'left'}
+                onClickHandler={moveLeft}
+                wrapperStyle={css`
+                  position: absolute;
+                  left: 5px;
+                  top: ${props.type === 'big' ? '40%' : '35%'};
+                `}
+              />
+            )}
+            {isOnTheRight && (
+              <Arrow
+                label={'다음'}
+                side={'right'}
+                onClickHandler={moveRight}
+                arrowStyle={css``}
+                wrapperStyle={css`
+                  position: absolute;
+                  right: 5px;
+                  top: ${props.type === 'big' ? '40%' : '35%'};
+                `}
+              />
+            )}
+          </form>
         </div>
       </SectionWrapper>
     </>

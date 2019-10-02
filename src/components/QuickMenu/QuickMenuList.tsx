@@ -1,9 +1,11 @@
-import * as React from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
 import { css } from '@emotion/core';
 import { scrollBarHidden } from 'src/styles';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import Arrow from 'src/components/Carousel/Arrow';
+import { useScrollSlider } from 'src/hooks/useScrollSlider';
 const labelCSS = theme => css`
   font-size: 13px;
   line-height: 1.23;
@@ -71,7 +73,6 @@ const MenuItemWrapper = styled.div`
   }
 `;
 
-// tslint:disable-next-line:no-empty-interface
 interface QuickMenu {
   label: string;
   color: string;
@@ -81,23 +82,65 @@ interface QuickMenu {
 interface QuickMenuListProps {
   items: QuickMenu[];
 }
-export const QuickMenuList: React.FC<QuickMenuListProps> = props => (
-  <MenuList>
-    {props.items.map((menu, index) => (
-      <MenuItem key={index}>
-        <MenuItemWrapper>
-          <a href={menu.link}>
-            <QuickMenuShape
-              css={css`
-                height: 44px;
-                width: 44px;
-                fill: ${menu.color};
-              `}
-            />
-            <span css={labelCSS}>{menu.label}</span>
-          </a>
-        </MenuItemWrapper>
-      </MenuItem>
-    ))}
-  </MenuList>
-);
+export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
+  const ref = useRef<HTMLUListElement>(null);
+  const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
+
+  return (
+    <section
+      css={css`
+        position: relative;
+      `}>
+      <MenuList ref={ref}>
+        {props.items.map((menu, index) => (
+          <MenuItem key={index}>
+            <MenuItemWrapper>
+              <a href={menu.link}>
+                <QuickMenuShape
+                  css={css`
+                    height: 44px;
+                    width: 44px;
+                    fill: ${menu.color};
+                  `}
+                />
+                <span css={labelCSS}>{menu.label}</span>
+              </a>
+            </MenuItemWrapper>
+          </MenuItem>
+        ))}
+      </MenuList>
+      <form
+        css={css`
+          height: 0;
+          @media (hover: none) {
+            display: none;
+          }
+        `}>
+        {isOnTheLeft && (
+          <Arrow
+            label={'이전'}
+            side={'left'}
+            onClickHandler={moveLeft}
+            wrapperStyle={css`
+              position: absolute;
+              left: 5px;
+              top: 30px;
+            `}
+          />
+        )}
+        {isOnTheRight && (
+          <Arrow
+            label={'다음'}
+            side={'right'}
+            onClickHandler={moveRight}
+            wrapperStyle={css`
+              position: absolute;
+              right: 5px;
+              top: 30px;
+            `}
+          />
+        )}
+      </form>
+    </section>
+  );
+};
