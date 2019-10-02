@@ -731,6 +731,7 @@ export const TopBannerCarouselContainer: React.FC<
                 label={'이전'}
                 wrapperStyle={css`
                   ${arrowCSS};
+                  opacity: 0.5;
                 `}
               />
             </div>
@@ -746,6 +747,7 @@ export const TopBannerCarouselContainer: React.FC<
                 label={'다음'}
                 wrapperStyle={css`
                   ${arrowCSS};
+                  opacity: 0.5;
                 `}
               />
             </div>
