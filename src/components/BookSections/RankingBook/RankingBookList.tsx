@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { BookScheme } from 'src/types/book';
-import { css } from '@emotion/core';
+import { css, keyframes } from '@emotion/core';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
@@ -9,8 +9,15 @@ import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import ArrowV from 'src/svgs/ArrowV.svg';
 import { scrollBarHidden } from 'src/styles';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
-import Arrow from 'src/components/Carousel/Arrow';
+import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
+import Clock from 'src/svgs/Clock.svg';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
+
+const timerGradient = keyframes`
+  100% {
+    background-position: 100% 60%;
+  }
+`;
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -92,12 +99,85 @@ const rankCSS = css`
   margin-right: 21px;
 `;
 
+const timerWrapperCSS = css`
+  border-radius: 14px;
+  width: 128px;
+  height: 30px;
+  background: linear-gradient(60deg, #1f8ce6, #eb5847);
+  background-size: 400% 400%;
+  animation: ${timerGradient} 1.3s ease infinite alternate;
+  font-family: Roboto;
+  font-size: 13px;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 9px;
+  margin-bottom: 16px;
+  transition: opacity 0.3s;
+`;
+
+const arrowPosition = (side: 'left' | 'right') => css`
+  ${side}: 5px;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  transition: opacity 0.2s;
+`;
+
 interface RankingBookListProps {
   items: BookScheme[];
   type: 'small' | 'big';
   title?: string;
   url?: string;
+  timer: boolean;
 }
+
+const Timer: React.FC = () => {
+  const [label, setLabel] = useState(null);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const date = new Date();
+      const sec = date
+        .getSeconds()
+        .toString()
+        .padStart(2, '0');
+      const hour = date
+        .getHours()
+        .toString()
+        .padStart(2, '0');
+      const min = date
+        .getMinutes()
+        .toString()
+        .padStart(2, '0');
+
+      setLabel(`${hour}시 ${min}분 ${sec}초`);
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [label, setLabel]);
+  return (
+    <div
+      css={[
+        timerWrapperCSS,
+        !label &&
+          css`
+            opacity: 0;
+          `,
+      ]}>
+      <Clock />
+      <span
+        css={css`
+          margin-left: 7px;
+        `}>
+        {label}
+      </span>
+    </div>
+  );
+};
 
 const RankingBookList: React.FC<RankingBookListProps> = props => {
   const targetRef = useRef(null);
@@ -107,34 +187,31 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
 
   return (
     <>
-      {props.title && (
-        <RankingBookTitle>
-          {props.url ? (
-            // Todo Refactor
-            <a href={props.url}>
+      <SectionWrapper ref={targetRef}>
+        {props.title && (
+          <RankingBookTitle>
+            {props.timer && <Timer />}
+            {props.url ? (
+              // Todo Refactor
+              <a href={props.url}>
+                <span>{props.title}</span>
+                <span
+                  css={css`
+                    margin-left: 5px;
+                  `}>
+                  <ArrowV />
+                </span>
+              </a>
+            ) : (
               <span>{props.title}</span>
-              <span
-                css={css`
-                  margin-left: 5px;
-                `}>
-                <ArrowV />
-              </span>
-            </a>
-          ) : (
-            <span>{props.title}</span>
-          )}
-        </RankingBookTitle>
-      )}
-      <SectionWrapper
-        ref={targetRef}
-        css={css`
-          position: relative;
-          padding-top: ${props.type === 'big' ? '6px' : '7px'};
-          height: ${props.type === 'big' ? '464px' : '311px'};
-        `}>
+            )}
+          </RankingBookTitle>
+        )}
         <div
           css={css`
-            display: inline;
+            position: relative;
+            height: ${props.type === 'big' ? '402px' : '249px'};
+            margin-bottom: 62px;
           `}>
           <ul css={listCSS} ref={ref}>
             {props.items.map((book, index) => (
@@ -181,31 +258,18 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                 display: none;
               }
             `}>
-            {isOnTheLeft && (
-              <Arrow
-                label={'이전'}
-                side={'left'}
-                onClickHandler={moveLeft}
-                wrapperStyle={css`
-                  position: absolute;
-                  left: 5px;
-                  top: ${props.type === 'big' ? '40%' : '35%'};
-                `}
-              />
-            )}
-            {isOnTheRight && (
-              <Arrow
-                label={'다음'}
-                side={'right'}
-                onClickHandler={moveRight}
-                arrowStyle={css``}
-                wrapperStyle={css`
-                  position: absolute;
-                  right: 5px;
-                  top: ${props.type === 'big' ? '40%' : '35%'};
-                `}
-              />
-            )}
+            <Arrow
+              label={'이전'}
+              side={'left'}
+              onClickHandler={moveLeft}
+              wrapperStyle={[arrowPosition('left'), !isOnTheLeft && arrowTransition]}
+            />
+            <Arrow
+              label={'다음'}
+              side={'right'}
+              onClickHandler={moveRight}
+              wrapperStyle={[arrowPosition('right'), !isOnTheRight && arrowTransition]}
+            />
           </form>
         </div>
       </SectionWrapper>

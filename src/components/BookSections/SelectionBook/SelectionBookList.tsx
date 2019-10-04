@@ -4,7 +4,7 @@ import { BookScheme } from 'src/types/book';
 import { SelectionBookItem } from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { css } from '@emotion/core';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import Arrow from 'src/components/Carousel/Arrow';
+import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 
@@ -74,30 +74,35 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
             display: none;
           }
         `}>
-        {isOnTheLeft && (
-          <Arrow
-            label={'이전'}
-            side={'left'}
-            onClickHandler={moveLeft}
-            wrapperStyle={css`
+        <Arrow
+          label={'이전'}
+          side={'left'}
+          onClickHandler={moveLeft}
+          wrapperStyle={[
+            css`
               position: absolute;
               left: 5px;
+              transition: opacity 0.2s;
               top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
-            `}
-          />
-        )}
-        {isOnTheRight && (
-          <Arrow
-            label={'다음'}
-            side={'right'}
-            onClickHandler={moveRight}
-            wrapperStyle={css`
+            `,
+            !isOnTheLeft && arrowTransition,
+          ]}
+        />
+
+        <Arrow
+          label={'다음'}
+          side={'right'}
+          onClickHandler={moveRight}
+          wrapperStyle={[
+            css`
               position: absolute;
               right: 5px;
+              transition: opacity 0.2s;
               top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
-            `}
-          />
-        )}
+            `,
+            !isOnTheRight && arrowTransition,
+          ]}
+        />
       </form>
     </div>
   );

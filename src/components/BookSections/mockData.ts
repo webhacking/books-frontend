@@ -91,7 +91,7 @@ export default [
     ],
   },
   {
-    title: '지금 사람들이 많이 읽고 있는 책!',
+    title: '사람들이 지금 많이 읽고 있는 책!',
     url: '#',
     type: 'ranking',
     option: { type: 'small' },

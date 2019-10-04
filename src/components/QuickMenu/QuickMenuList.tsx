@@ -4,7 +4,7 @@ import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
 import { css } from '@emotion/core';
 import { scrollBarHidden } from 'src/styles';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import Arrow from 'src/components/Carousel/Arrow';
+import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 const labelCSS = theme => css`
   font-size: 13px;
@@ -116,30 +116,34 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
             display: none;
           }
         `}>
-        {isOnTheLeft && (
-          <Arrow
-            label={'이전'}
-            side={'left'}
-            onClickHandler={moveLeft}
-            wrapperStyle={css`
+        <Arrow
+          label={'이전'}
+          side={'left'}
+          onClickHandler={moveLeft}
+          wrapperStyle={[
+            css`
               position: absolute;
               left: 5px;
               top: 30px;
-            `}
-          />
-        )}
-        {isOnTheRight && (
-          <Arrow
-            label={'다음'}
-            side={'right'}
-            onClickHandler={moveRight}
-            wrapperStyle={css`
+              transition: opacity 0.2s;
+            `,
+            !isOnTheLeft && arrowTransition,
+          ]}
+        />
+        <Arrow
+          label={'다음'}
+          side={'right'}
+          onClickHandler={moveRight}
+          wrapperStyle={[
+            css`
               position: absolute;
               right: 5px;
               top: 30px;
-            `}
-          />
-        )}
+              transition: opacity 0.2s;
+            `,
+            !isOnTheRight && arrowTransition,
+          ]}
+        />
       </form>
     </section>
   );
