@@ -6,7 +6,7 @@ import { clearOutline } from 'src/styles';
 interface ArrowProps {
   side?: 'left' | 'right';
   color?: 'white' | 'dark';
-  wrapperStyle?: SerializedStyles;
+  wrapperStyle?: SerializedStyles | SerializedStyles[];
   arrowStyle?: SerializedStyles;
   width?: string;
   height?: string;
@@ -34,6 +34,11 @@ const leftRotate = css`
   transform: rotateX(180deg) translate(-2%, 0) rotate(180deg);
 `;
 
+export const arrowTransition = css`
+  opacity: 0;
+  pointer-events: none;
+`;
+
 const Arrow: React.FC<ArrowProps> = props => {
   const { color, side, arrowStyle, onClickHandler } = props;
   const handleClick = e => {
@@ -52,9 +57,6 @@ const Arrow: React.FC<ArrowProps> = props => {
       type={'submit'}
       onClick={handleClick}
       css={[
-        clearOutline,
-        defaultOpacity,
-        props.wrapperStyle,
         css`
           background: ${color === 'dark' ? '#384252' : 'white'};
           width: 40px;
@@ -62,6 +64,9 @@ const Arrow: React.FC<ArrowProps> = props => {
           border-radius: 40px;
           box-shadow: 0 0.8px 3px rgba(0, 0, 0, 0.33);
         `,
+        clearOutline,
+        defaultOpacity,
+        props.wrapperStyle,
       ]}>
       <ArrowV css={mergedStyle} />
 

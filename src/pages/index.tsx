@@ -217,8 +217,6 @@ export class Home extends React.Component<HomeProps> {
             <EventBanner items={eventBannerItems} genre={currentGenre} />
           )}
 
-        {/* Todo Belt Banner */}
-
         <BookSectionContainer sections={bookSectionsMockItems} />
       </>
     );

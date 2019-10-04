@@ -9,7 +9,7 @@ import {
 } from 'src/components/RecommendedBook/RecommendedBook';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
-import Arrow from 'src/components/Carousel/Arrow';
+import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { css } from '@emotion/core';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
@@ -52,32 +52,36 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
             display: none;
           }
         `}>
-        {isOnTheLeft && (
-          <Arrow
-            onClickHandler={moveLeft}
-            label={'이전'}
-            color={'dark'}
-            side={'left'}
-            wrapperStyle={css`
+        <Arrow
+          onClickHandler={moveLeft}
+          label={'이전'}
+          color={'dark'}
+          side={'left'}
+          wrapperStyle={[
+            css`
               left: 5px;
               position: absolute;
+              transition: opacity 0.2s;
               top: calc(${getArrowVerticalCenterPosition(ref, '30px')});
-            `}
-          />
-        )}
-        {isOnTheRight && (
-          <Arrow
-            label={'다음'}
-            onClickHandler={moveRight}
-            color={'dark'}
-            side={'right'}
-            wrapperStyle={css`
+            `,
+            !isOnTheLeft && arrowTransition,
+          ]}
+        />
+        <Arrow
+          label={'다음'}
+          onClickHandler={moveRight}
+          color={'dark'}
+          side={'right'}
+          wrapperStyle={[
+            css`
               right: 5px;
               position: absolute;
+              transition: opacity 0.2s;
               top: calc(${getArrowVerticalCenterPosition(ref, '30px')});
-            `}
-          />
-        )}
+            `,
+            !isOnTheRight && arrowTransition,
+          ]}
+        />
       </form>
     </div>
   );

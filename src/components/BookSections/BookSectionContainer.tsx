@@ -32,6 +32,7 @@ const titleCSS = css`
   )};
   padding-left: 24px;
   display: flex;
+  flex-direction: column;
   a {
     display: flex;
     color: black;
@@ -46,7 +47,7 @@ export const RankingBookTitle = styled.h3`
   ${fontStyle};
   max-width: 1000px;
   margin: 0 auto;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   padding-top: 6px;
   ${titleCSS};
 `;
@@ -59,6 +60,7 @@ export const SectionTitle = styled.h3`
 
 export interface RankingOption {
   type: 'big' | 'small';
+  timer: boolean;
 }
 
 export interface SelectionOption {
@@ -85,6 +87,7 @@ const BookSectionContainer: React.FC<BookSectionContainerProps> = props => {
         <RankingBookList
           items={section.items}
           type={(section.option as RankingOption).type || 'big'}
+          timer={(section.option as RankingOption).type === 'small' || false}
           title={section.title}
           url={section.url}
         />
