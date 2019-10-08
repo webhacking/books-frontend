@@ -101,7 +101,7 @@ const rankCSS = css`
 
 const timerWrapperCSS = css`
   border-radius: 14px;
-  width: 128px;
+  width: 86px;
   height: 30px;
   background: linear-gradient(60deg, #1f8ce6, #eb5847);
   background-size: 400% 400%;
@@ -139,10 +139,6 @@ const Timer: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       const date = new Date();
-      const sec = date
-        .getSeconds()
-        .toString()
-        .padStart(2, '0');
       const hour = date
         .getHours()
         .toString()
@@ -152,8 +148,8 @@ const Timer: React.FC = () => {
         .toString()
         .padStart(2, '0');
 
-      setLabel(`${hour}시 ${min}분 ${sec}초`);
-    }, 1000);
+      setLabel(`${hour}시 ${min}분`);
+    }, 10000);
 
     return () => {
       clearInterval(timer);
