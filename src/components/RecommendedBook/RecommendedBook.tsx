@@ -2,9 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import { View } from 'libreact/lib/View';
 import { css } from '@emotion/core';
-// @ts-ignore
 import { Genre } from 'src/constants/genres';
-import getConfig from 'next-server/config';
+import getConfig from 'next/config';
 import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
 import styled from '@emotion/styled';
 import { Book } from '@ridi/web-ui/dist/index.node';
@@ -152,8 +151,7 @@ interface RecommendedBookProps {
 }
 
 const RecommendedBook: React.FC<RecommendedBookProps> = props => {
-  // @ts-ignore
-  const [currentGenre, setGenre] = useState(props.genre);
+  const [, setGenre] = useState(props.genre);
   useEffect(() => {
     setGenre(props.genre);
     // Todo 장르가 달라져서 마운트 된다면 Fetch

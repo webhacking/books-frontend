@@ -4,7 +4,6 @@ import { darkTheme, defaultTheme } from 'src/styles/themes';
 import { ThemeProvider } from 'emotion-theming';
 import Footer from 'src/components/Footer';
 import { PartialSeparator } from 'src/components/Misc';
-// import axios from 'axios';
 
 interface FooterProps {
   theme?: string;

@@ -2,9 +2,7 @@ import * as React from 'react';
 import Index from 'src/pages/notification';
 import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-// import makeStore from 'src/store/config';
-// const store = makeStore({}, { asPath: 'test', isServer: false });
-jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
+
 afterEach(cleanup);
 
 test('should be render Index Component', async () => {

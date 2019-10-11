@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Head from 'next-server/head';
+import Head from 'next/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 import { GenreTab } from 'src/components/Tabs';
 import { Genre, GenreSubService, homeGenres } from 'src/constants/genres';
@@ -36,8 +36,7 @@ export class Home extends React.Component<HomeProps> {
 
   // eslint-disable-next-line complexity
   public static async getInitialProps(props: ConnectedInitializeProps) {
-    // @ts-ignore
-    const { query, res, req, store } = props;
+    const { query, res, req } = props;
     const genre = query.genre
       ? Genre[(query.genre as string).toUpperCase() as keyof typeof Genre]
       : null;
@@ -171,8 +170,7 @@ export class Home extends React.Component<HomeProps> {
   }
 
   public render() {
-    // @ts-ignore
-    const { genre, service, app } = this.props;
+    const { genre, service } = this.props;
     const currentGenre = Genre[genre.toUpperCase() as keyof typeof Genre];
     const currentService =
       GenreSubService[service.toUpperCase() as keyof typeof GenreSubService];

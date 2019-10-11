@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ConnectedInitializeProps } from 'src/types/common';
-import Head from 'next-server/head';
+import Head from 'next/head';
 import { NextComponentType } from 'next';
 import { Genre, homeGenres } from 'src/constants/genres';
 import { GenreTab } from 'src/components/Tabs';

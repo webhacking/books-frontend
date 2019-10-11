@@ -26,13 +26,26 @@ const parentCategoryNameCSS = css`
   font-size: 14px;
 `;
 
-// @ts-ignore
-const categoryItemCSS = (theme: RIDITheme, width: string) => css`
-  width: ${width};
+const categoryItemCSS = css`
   padding: 10px 10px 10px 15px;
   text-indent: 5px;
   color: #636c73;
   font-size: 14px;
+`;
+
+const categoryCollapsedItem = css`
+  :first-of-type {
+    border-top: 0;
+  }
+  width: 50%;
+  height: 100%;
+  border-left: 1px solid #e6e8eb;
+  border-bottom: 1px solid #e6e8eb;
+
+  transition: background 0.15s ease-in-out, color 0.15s ease-in-out;
+  span {
+    transition: background 0.15s ease-in-out, color 0.15s ease-in-out;
+  }
 `;
 
 interface CategoryCollapseProps {
@@ -48,26 +61,18 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
       {categories.map((item, index) => (
         <React.Fragment key={index}>
           <li
-            css={css`
-              :first-of-type {
-                border-top: 0;
-              }
-              width: 50%;
-              height: 100%;
-              border-left: 1px solid #e6e8eb;
-              border-bottom: 1px solid #e6e8eb;
-
-              transition: background 0.15s ease-in-out, color 0.15s ease-in-out;
-              span {
-                transition: background 0.15s ease-in-out, color 0.15s ease-in-out;
-                ${selectedCategory && selectedCategory.name === item.name
-                  ? 'color: #fff;'
-                  : ''};
-              }
-              ${selectedCategory && selectedCategory.name === item.name
-                ? 'background: #636c73; color: #fff;'
-                : ''};
-            `}>
+            css={[
+              categoryCollapsedItem,
+              selectedCategory &&
+                selectedCategory.name === item.name &&
+                css`
+                  span {
+                    color: #fff;
+                  }
+                  background: #636c73;
+                  color: #fff;
+                `,
+            ]}>
             <button
               css={css`
                 display: flex;
@@ -103,7 +108,6 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
               <li
                 css={css`
                   width: 100%;
-                  //height: 100%;
                   background-color: #ebf6ff;
                   border-top: 1px solid #e6e8eb;
                   border-bottom: 1px solid #e6e8eb;
@@ -119,18 +123,22 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
                           max-height: 500px;
                         `
                       : 'max-height: 0;'};
-                    //height: auto;
-                    //transition: max-height 0.15s;
                   `}>
                   <li
-                    css={(theme: RIDITheme) => css`
-                      ${categoryItemCSS(theme, '100%')};
-                    `}>{`${item.name} 전체`}</li>
+                    css={[
+                      categoryItemCSS,
+                      css`
+                        width: 100%;
+                      `,
+                    ]}>{`${item.name} 전체`}</li>
                   {item.subCategory.map((subItem, subIndex) => (
                     <li
-                      css={theme => css`
-                        ${categoryItemCSS(theme, '50%')};
-                      `}
+                      css={[
+                        categoryItemCSS,
+                        css`
+                          width: 50%;
+                        `,
+                      ]}
                       key={subIndex}>
                       {subItem.name}
                     </li>
@@ -148,20 +156,24 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
                           max-height: 500px;
                         `
                       : 'max-height: 0;'};
-                    //height: auto;
-                    //transition: max-height 0.15s;
                   `}>
                   <li
-                    css={(theme: RIDITheme) => css`
-                      ${categoryItemCSS(theme, '100%')};
-                    `}>
+                    css={[
+                      categoryItemCSS,
+                      css`
+                        width: 100%;
+                      `,
+                    ]}>
                     {`${categories[index - 1].name} 전체`}
                   </li>
                   {categories[index - 1].subCategory.map((subItem, subIndex) => (
                     <li
-                      css={theme => css`
-                        ${categoryItemCSS(theme, '50%')};
-                      `}
+                      css={[
+                        categoryItemCSS,
+                        css`
+                          width: 50%;
+                        `,
+                      ]}
                       key={subIndex}>
                       {subItem.name}
                     </li>

@@ -10,27 +10,6 @@ import { HomeProps } from '../../pages';
 import { Router } from 'server/routes';
 import { Provider } from 'react-redux';
 
-jest.mock('next/dynamic', () => () => {
-  const DynamicComponent = () => null;
-  DynamicComponent.displayName = 'LoadableComponent';
-  DynamicComponent.preload = jest.fn();
-  return DynamicComponent;
-});
-jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
-jest.mock('server/routes', () => {
-  require('react');
-  return {
-    default: {},
-    // @ts-ignore
-    Link: props => <div>{props.children}</div>,
-    Router: {
-      pushRoute: () => null,
-      push: () => null,
-      replace: () => null,
-      replaceRoute: () => null,
-    },
-  };
-});
 Router.replaceRoute = jest.fn(() => null);
 // @ts-ignore
 const mockWriteHead = jest.fn((code, header) => {

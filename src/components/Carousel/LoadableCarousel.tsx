@@ -22,5 +22,4 @@ export const ForwardedRefComponent = React.forwardRef<
   <DynamicSlider {...props} forwardedRef={ref} />
 ));
 
-// @ts-ignore
 export default LoadableCarousel;

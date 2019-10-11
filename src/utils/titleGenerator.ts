@@ -13,12 +13,9 @@ const subServices = {
   serial: '연재',
 };
 
-// @ts-ignore
 export default (genre: string, subService: string) => {
   if (genre === 'general' || genre === 'comic') {
     return genres[genre];
   }
-
-  // @ts-ignore
   return `${genres[genre]} ${subServices[subService]}`;
 };

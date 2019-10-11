@@ -68,7 +68,6 @@ const horizontalAnimateScroll = (
       }
       const now = 'now' in window.performance ? performance.now() : new Date().getTime();
       const time = Math.min(1, (now - startTime) / duration);
-      // @ts-ignore
       const timeFunction = easings[easing](time);
       element.current.scroll(
         Math.ceil(
