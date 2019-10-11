@@ -1,7 +1,4 @@
 import { safeJSONParse, isJSON } from '../../utils/common';
-jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
-jest.mock('server/routes', () => ({ default: {}, Router: { push: () => null } }));
-jest.mock('src/utils/sentry', () => ({ notifySentry: () => null }));
 
 describe('test common utilities', () => {
   it('should be return default value', () => {

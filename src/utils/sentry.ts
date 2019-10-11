@@ -1,6 +1,6 @@
 import * as http from 'http';
 import { captureException, init, configureScope, Scope } from '@sentry/browser';
-import getConfig from 'next-server/config';
+import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 
 export const initializeSentry = () => {

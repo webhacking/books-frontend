@@ -269,8 +269,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const [searchResult, setSearchResult] = useState<InstantSearchResultScheme>(
       initialSearchResult,
     );
+    const { isPartials } = props;
 
-    const handleSearch = async (value: string) => {
+    const handleSearch = useCallback(async (value: string) => {
       setFetching(true);
       try {
         const result = await axios.get(
@@ -291,14 +292,13 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       } finally {
         setFetching(false);
       }
-    };
-    const [debouncedHandleSearch] = useDebouncedCallback(handleSearch, 300, [keyword]);
+    }, []);
+    const [debouncedHandleSearch] = useDebouncedCallback(handleSearch, 300);
 
     const handleOnChange = useCallback(
       (target: React.ChangeEvent<HTMLInputElement>['target']) => {
         const { value } = target;
         setKeyword(value);
-
         // 초-중-종성 체크
         if (value.length > 0) {
           if (value.length === 1 && isOnsetNucleusCoda(value[0])) {
@@ -311,171 +311,195 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       },
       [debouncedHandleSearch],
     );
-    const [debouncedOnChange] = useDebouncedCallback(handleOnChange, 100, []);
+    const [debouncedOnChange] = useDebouncedCallback(handleOnChange, 100, {});
     const passEventTarget = e => {
       debouncedOnChange(e.target);
     };
 
-    const handleFocus = (focus: boolean) => {
-      setFocus(focus);
-    };
-
-    const handleSearchWrapperBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    const handleSearchWrapperBlur = useCallback((e: React.FocusEvent<HTMLDivElement>) => {
       const relatedTarget = e.relatedTarget || document.activeElement; // IE11
-      if (
-        !relatedTarget ||
-        // @ts-ignore
-        !e.currentTarget.contains(relatedTarget)
-      ) {
-        handleFocus(false);
-        setFocusedPosition(0);
-      }
-    };
-
-    const handleToggleSearchHistoryRecord = (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      localStorage.setItem(
-        localStorageKeys.instantSearchHistoryOption,
-        JSON.stringify(!enableSearchHistoryRecord),
-      );
-      toggleSearchHistoryRecord(!enableSearchHistoryRecord);
-      setFocusedPosition(0);
-    };
-
-    const handleRemoveHistory = (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const label = e.currentTarget.getAttribute('data-value');
-      if (label) {
-        const historySet = new Set<string>([...searchHistory]);
-        historySet.delete(label);
-        const newHistory: string[] = Array<string>(...historySet);
-        setSearchHistory(newHistory);
-        // setFocusedPosition(0);
-        localStorage.setItem(
-          localStorageKeys.instantSearchHistory,
-          JSON.stringify(newHistory.slice(0, 10)),
-        );
-      }
-    };
-
-    const handleClearInput = e => {
-      e.preventDefault();
-      inputRef.current.value = '';
-      setKeyword('');
-      inputRef.current.focus();
-    };
-
-    const handleClearHistory = (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      if (enableSearchHistoryRecord) {
-        localStorage.setItem(localStorageKeys.instantSearchHistory, JSON.stringify([]));
-        setSearchHistory([]);
-        setFocusedPosition(0);
-      }
-    };
-
-    const handleClickHistoryItem = (e: React.MouseEvent<HTMLElement>) => {
-      e.preventDefault();
-      const label = e.currentTarget.getAttribute('data-value');
-      if (label) {
-        setKeyword(label);
+      if (!relatedTarget || !e.currentTarget.contains(relatedTarget as Element)) {
         setFocus(false);
-        setSearchResult(initialSearchResult);
-        if (props.isPartials) {
-          window.location.href = `${window.location.origin}/search/?q=${label}`;
-        } else {
-          Router.pushRoute(`/search/?q=${label}`);
-        }
+        setFocusedPosition(0);
       }
-    };
+    }, []);
 
-    const handleClickBookItem = (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      const { bookId } = e.currentTarget.dataset;
-      if (props.isPartials) {
-        window.location.href = `${window.location.origin}/books/${bookId}?_s=instant&_q=${keyword}`;
-      } else {
-        Router.pushRoute(`/books/${bookId}?_s=instant&_q=${keyword}`);
-      }
-      setFocus(false);
-    };
-    const handleClickAuthorItem = (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      const { authorId } = e.currentTarget.dataset;
-      if (props.isPartials) {
-        window.location.href = `${window.location.origin}/author/${authorId}?_s=instant&_q=${keyword}`;
-      } else {
-        Router.pushRoute(`/author/${authorId}?_s=instant&_q=${keyword}`);
-      }
-      setFocus(false);
-    };
+    const handleToggleSearchHistoryRecord = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        localStorage.setItem(
+          localStorageKeys.instantSearchHistoryOption,
+          JSON.stringify(!enableSearchHistoryRecord),
+        );
+        toggleSearchHistoryRecord(!enableSearchHistoryRecord);
+        setFocusedPosition(0);
+      },
+      [enableSearchHistoryRecord, toggleSearchHistoryRecord],
+    );
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      if (keyword.length > 0) {
-        if (enableSearchHistoryRecord) {
-          const newHistory = Array<string>(
-            ...new Set<string>([keyword, ...searchHistory]),
-          ).slice(0, 10);
+    const handleRemoveHistory = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const label = e.currentTarget.getAttribute('data-value');
+        if (label) {
+          const historySet = new Set<string>([...searchHistory]);
+          historySet.delete(label);
+          const newHistory: string[] = Array<string>(...historySet);
           setSearchHistory(newHistory);
+          // setFocusedPosition(0);
           localStorage.setItem(
             localStorageKeys.instantSearchHistory,
-            JSON.stringify(newHistory),
+            JSON.stringify(newHistory.slice(0, 10)),
           );
         }
-        // Move search result page
-        // Todo conditional check for partial component
-        if (props.isPartials) {
-          window.location.href = `${window.location.origin}/search/?q=${keyword}`;
+      },
+      [searchHistory],
+    );
+
+    const handleClearInput = useCallback(
+      e => {
+        e.preventDefault();
+        inputRef.current.value = '';
+        setKeyword('');
+        inputRef.current.focus();
+      },
+      [inputRef],
+    );
+
+    const handleClearHistory = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        if (enableSearchHistoryRecord) {
+          localStorage.setItem(localStorageKeys.instantSearchHistory, JSON.stringify([]));
+          setSearchHistory([]);
+          setFocusedPosition(0);
+        }
+      },
+      [enableSearchHistoryRecord],
+    );
+
+    const handleClickHistoryItem = useCallback(
+      (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        const label = e.currentTarget.getAttribute('data-value');
+        if (label) {
+          setKeyword(label);
+          setFocus(false);
+          setSearchResult(initialSearchResult);
+          if (isPartials) {
+            window.location.href = `${window.location.origin}/search/?q=${label}`;
+          } else {
+            Router.pushRoute(`/search/?q=${label}`);
+          }
+        }
+      },
+      [isPartials],
+    );
+
+    const handleClickBookItem = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        const { bookId } = e.currentTarget.dataset;
+        if (isPartials) {
+          window.location.href = `${window.location.origin}/books/${bookId}?_s=instant&_q=${keyword}`;
         } else {
-          Router.pushRoute(`/search/?q=${keyword}`);
+          Router.pushRoute(`/books/${bookId}?_s=instant&_q=${keyword}`);
         }
-
         setFocus(false);
-        if (inputRef.current) {
-          inputRef.current.blur();
+      },
+      [keyword, isPartials],
+    );
+    const handleClickAuthorItem = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        const { authorId } = e.currentTarget.dataset;
+        if (isPartials) {
+          window.location.href = `${window.location.origin}/author/${authorId}?_s=instant&_q=${keyword}`;
+        } else {
+          Router.pushRoute(`/author/${authorId}?_s=instant&_q=${keyword}`);
         }
-      }
-    };
+        setFocus(false);
+      },
+      [keyword, isPartials],
+    );
 
-    const handleSetCurrentPosition = (pos: number) => {
+    const handleSubmit = useCallback(
+      (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (keyword.length > 0) {
+          if (enableSearchHistoryRecord) {
+            const newHistory = Array<string>(
+              ...new Set<string>([keyword, ...searchHistory]),
+            ).slice(0, 10);
+            setSearchHistory(newHistory);
+            localStorage.setItem(
+              localStorageKeys.instantSearchHistory,
+              JSON.stringify(newHistory),
+            );
+          }
+          // Move search result page
+          // Todo conditional check for partial component
+          if (isPartials) {
+            window.location.href = `${window.location.origin}/search/?q=${keyword}`;
+          } else {
+            Router.pushRoute(`/search/?q=${keyword}`);
+          }
+
+          setFocus(false);
+          if (inputRef.current) {
+            inputRef.current.blur();
+          }
+        }
+      },
+      [keyword, enableSearchHistoryRecord, isPartials, searchHistory],
+    );
+
+    const handleSetCurrentPosition = useCallback((pos: number) => {
       setFocusedPosition(pos);
       if (pos === 0 && inputRef.current) {
         inputRef.current.focus();
       }
-    };
+    }, []);
 
-    const handleKeyDown = (e: React.KeyboardEvent | KeyboardEvent) => {
-      if (!inputRef.current) {
-        return;
-      }
-      if (e.which === 13 && e.target) {
-        (e.target as HTMLLIElement).click();
-      }
-      if (e.which === 40 || e.which === 38) {
-        e.preventDefault();
-
-        const history = safeJSONParse(
-          window.localStorage.getItem(localStorageKeys.instantSearchHistory),
-          [],
-        ).slice(0, 5);
-        const total =
-          inputRef.current.value.length < 1
-            ? history.length
-            : searchResult.authors.length + searchResult.books.length;
-        if (e.which === 40) {
-          // keyDown
-          const nextPos = focusedPosition + 1;
-          const pos = nextPos > total ? 0 : nextPos;
-          handleSetCurrentPosition(pos);
-        } else {
-          const prevPos = focusedPosition - 1;
-          const pos = prevPos < 0 ? total : prevPos;
-          handleSetCurrentPosition(pos);
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent | KeyboardEvent) => {
+        if (!inputRef.current) {
+          return;
         }
-      }
-    };
+        if (e.which === 13 && e.target) {
+          (e.target as HTMLLIElement).click();
+        }
+        if (e.which === 40 || e.which === 38) {
+          e.preventDefault();
+
+          const history = safeJSONParse(
+            window.localStorage.getItem(localStorageKeys.instantSearchHistory),
+            [],
+          ).slice(0, 5);
+          const total =
+            inputRef.current.value.length < 1
+              ? history.length
+              : searchResult.authors.length + searchResult.books.length;
+          if (e.which === 40) {
+            // keyDown
+            const nextPos = focusedPosition + 1;
+            const pos = nextPos > total ? 0 : nextPos;
+            handleSetCurrentPosition(pos);
+          } else {
+            const prevPos = focusedPosition - 1;
+            const pos = prevPos < 0 ? total : prevPos;
+            handleSetCurrentPosition(pos);
+          }
+        }
+      },
+      [
+        handleSetCurrentPosition,
+        focusedPosition,
+        searchResult.authors.length,
+        searchResult.books.length,
+      ],
+    );
     useEffect(() => {
       toggleSearchHistoryRecord(
         safeJSONParse(
@@ -523,7 +547,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           onBlur={handleSearchWrapperBlur}
           css={isFocused ? focused : initial}>
           {isFocused && (
-            <button css={arrowWrapperButton} onClick={handleFocus.bind(null, false)}>
+            <button css={arrowWrapperButton} onClick={setFocus.bind(null, false)}>
               <ArrowLeft css={arrow} />
               <span className={'a11y'}>{labels.goBack}</span>
             </button>
@@ -547,8 +571,8 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                 type={'text'}
                 name="instant_search"
                 placeholder={labels.searchPlaceHolder}
-                onFocus={handleFocus.bind(null, true)}
-                onClick={handleFocus.bind(null, true)}
+                onFocus={setFocus.bind(null, true)}
+                onClick={setFocus.bind(null, true)}
                 onKeyDown={handleKeyDown}
                 onChange={passEventTarget}
               />
@@ -601,7 +625,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           )}
         </div>
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
-        {isFocused && <div onClick={handleFocus.bind(null, false)} css={dimmer} />}
+        {isFocused && <div onClick={setFocus.bind(null, false)} css={dimmer} />}
       </>
     );
   },

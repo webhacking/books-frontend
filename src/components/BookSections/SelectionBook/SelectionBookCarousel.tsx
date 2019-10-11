@@ -44,8 +44,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
   const wrapperRef = useRef<HTMLDivElement>();
-  // @ts-ignore
-  const [isMounted, setMounted] = useState(false);
+  const [, setMounted] = useState(false);
 
   const setInitialized = useCallback(() => {
     setCarouselInitialized(true);

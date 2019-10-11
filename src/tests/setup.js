@@ -1,4 +1,7 @@
 require('intersection-observer');
+const { initModules } = require('./__mocks__/mockModules');
+
+initModules();
 
 window.matchMedia =
   window.matchMedia ||

@@ -1,5 +1,5 @@
 import { createActionCreators, createReducerFunction, ImmerReducer } from 'immer-reducer';
-import getConfig from 'next-server/config';
+import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 export interface AppState {
   version: string;

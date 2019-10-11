@@ -3,7 +3,6 @@ import Index from 'src/pages/partials/gnb';
 import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../../../store/config';
-jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
 afterEach(cleanup);
 const store = makeStore({}, { asPath: 'test', isServer: false });
 

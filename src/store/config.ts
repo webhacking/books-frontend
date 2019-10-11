@@ -8,7 +8,6 @@ import { ServerResponse } from 'http';
 
 import rootSaga from 'src/store/sagas';
 
-// @ts-ignore
 import { Router } from 'server/routes';
 import { initialState } from 'src/store/initialState';
 import {
@@ -49,7 +48,6 @@ const makeStore = (
   preLoadedState: RootState = initialState,
   makeStoreOption?: MakeStoreOption,
 ) => {
-  // @ts-ignore
   if (makeStoreOption && makeStoreOption.asPath) {
     preLoadedState.router = initialRouterState(makeStoreOption.asPath);
   }

@@ -13,14 +13,14 @@ const ridiMeta = {
     '리디 (주) 대표 배기식 사업자등록번호 120-87-27435 통신판매업신고 제 2009-서울강남 35-02139호',
 };
 
-const FNBWrapper = styled.section`
+const sectionStyle = (theme: RIDITheme) => css`
   width: 100%;
-  //min-width: 375px;
-  color: ${(props: { theme: RIDITheme }) => props.theme.footerTextColor};
+  color: ${theme.footerTextColor};
   hr {
     display: none;
   }
   margin-top: 24px;
+  background: ${theme.secondaryColor};
 `;
 
 const FooterWrapper = styled.footer`
@@ -223,8 +223,7 @@ const paperIcon = css`
 `;
 
 const Footer: React.FC<{}> = () => (
-  // @ts-ignore
-  <FNBWrapper css={(theme: RIDITheme) => ({ backgroundColor: theme.secondaryColor })}>
+  <section css={sectionStyle}>
     <FooterWrapper>
       <FlexBox>
         <ul css={contactListCSS}>
@@ -406,7 +405,7 @@ const Footer: React.FC<{}> = () => (
         </ul>
       </MiscWrapper>
     </FooterWrapper>
-  </FNBWrapper>
+  </section>
 );
 
 export default Footer;

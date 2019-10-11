@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Head from 'next-server/head';
+import Head from 'next/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 
 interface CartPageProps {

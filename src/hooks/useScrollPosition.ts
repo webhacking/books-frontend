@@ -4,8 +4,8 @@ import horizontalAnimateScroll from 'src/utils/scrollTo';
 
 export const useScrollPosition = (
   ref: React.RefObject<HTMLElement>,
-  listenResizeEvent: boolean = false,
-  debounceDelay: number = 50,
+  listenResizeEvent = false,
+  debounceDelay = 50,
 ): [boolean, boolean, (leftValue: number) => void, () => void] => {
   const [isOnTheLeft, setIsOnTheLeft] = useState(false);
   const [isOnTheRight, setIsOnTheRight] = useState(false);
@@ -46,8 +46,8 @@ export const useScrollPosition = (
     },
     [rafId],
   );
-  const [debouncedHScrollHandler] = useDebounce(computePosition, debounceDelay, [ref]);
-  const [debouncedResizeHandler] = useDebounce(computePosition, 500, [ref]);
+  const [debouncedHScrollHandler] = useDebounce(computePosition, debounceDelay);
+  const [debouncedResizeHandler] = useDebounce(computePosition, 500);
   useEffect(() => {
     if (window && ref.current) {
       ref.current.addEventListener('scroll', debouncedHScrollHandler);

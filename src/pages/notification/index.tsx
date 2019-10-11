@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Head from 'next-server/head';
+import Head from 'next/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 import { NextComponentType } from 'next';
 import PageTitle from 'src/components/PageTitle/PageTitle';
@@ -169,8 +169,7 @@ interface NotificationPageProps {
 }
 
 const NotificationPage: React.FC<NotificationPageProps> & NextComponentType = props => {
-  // @ts-ignore
-  const [notifications, setNotifications] = useState(props.notifications || []);
+  const [notifications] = useState(props.notifications || []);
   useEffect(() => {
     const timer = setInterval(() => {
       // Todo ReFetch

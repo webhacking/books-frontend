@@ -6,11 +6,6 @@ import '@testing-library/jest-dom/extend-expect';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
 import { Genre } from '../../../constants/genres';
-// import { act } from 'react-dom/test-utils';
-// import axiosMock from 'axios';
-jest.mock('next-server/config', () => () => ({ publicRuntimeConfig: {} }));
-jest.mock('server/routes', () => ({ default: {}, Router: { pushRoute: () => null } }));
-jest.mock('src/utils/sentry', () => ({ notifySentry: () => null }));
 
 afterEach(cleanup);
 
