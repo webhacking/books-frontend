@@ -1,20 +1,20 @@
 service: books
 
 package:
+  excludeDevDependencies: true
   exclude:
-    - node_modules/**
-    - '*.js.map'
+    - '**/*.map'
     - .cache
-    - coverage/**
-    - static/**
-    - src/tests/**
+    - 'static/**'
+    - 'src/tests/**'
+    - 'provisioning/**'
+    - 'cypress/**'
+    - 'src/**'
+    - 'dist/**'
     - secrets.json
+    - coverage/**
     - yarn.lock
-    - provisioning/**
-    - cypress/**
-    - src/**
     - tsconfig.json
-    - static/**
 
 provider:
   name: aws
@@ -40,29 +40,11 @@ provider:
               - Ref: AWS::Region
               - Ref: AWS::AccountId
               - function:${self:service}-${opt:stage, self:provider.stage}-*
-layers:
-  nodeModules:
-    path: node_modules
-    compatibleRuntimes:
-      - nodejs8.10
-    description: sentry + next.js + emotion + ts + redux node_modules
-    package:
-      exclude:
-        - .cache/**
-        - types/**
-        - codecov/**
-        - aws-sdk/**
-        - prettier/**
-        - typescript/**
-        - jest/**
-        - 'eslint/**'
 
 functions:
   server:
     path: /
     handler: server/index.handler
-    layers:
-      - { Ref: NodeModulesLambdaLayer }
     warmup:
       enabled:
         - development
