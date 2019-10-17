@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const csp = require('./csp');
 
 const dev = process.env.NODE_ENV !== 'production';
+console.log(dev);
 const port = parseInt(process.env.PORT || '8081', 10);
 const app = next({ dev, dir: path.resolve(__dirname, dev ? '../src' : '../build') });
 
