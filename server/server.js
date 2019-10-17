@@ -7,7 +7,7 @@ const csp = require('./csp');
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = parseInt(process.env.PORT || '8081', 10);
-const app = next({ dev, dir: path.resolve(__dirname, '../src') });
+const app = next({ dev, dir: path.resolve(__dirname, dev ? '../src' : '../build') });
 
 const { clientRoutes } = require('./routes');
 
