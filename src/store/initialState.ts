@@ -3,7 +3,7 @@ import { appStateInitialState } from 'src/services/app/reducer';
 
 export const initialState: RootState = {
   app: appStateInitialState,
-  // router: {
-  //   action: '',
-  // },
+  account: {
+    loggedUser: null,
+  },
 };

@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { RIDITheme } from 'src/styles/themes';
 import { Button } from 'src/components/Button';
 import { InstantSearch } from 'src/components/Search';
@@ -8,7 +8,12 @@ import { MainTab } from 'src/components/Tabs';
 import RidiLogo from 'src/svgs/RidiLogo_1.svg';
 import RidiSelectLogo from 'src/svgs/RidiSelectLogo_1.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { accountActions } from 'src/services/accounts';
+import { RootState } from 'src/store/config';
+import { AccountState } from 'src/services/accounts/reducer';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 const GNBWrapper = styled.div`
   width: 100%;
   background-color: ${(props: { theme: RIDITheme }) => props.theme.primaryColor};
@@ -160,10 +165,19 @@ interface GNBProps {
   isPartials: boolean;
   pathname?: string;
 }
-
 export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
-  // @ts-ignore
-  const { pathname } = props;
+  const { loggedUser } = useSelector<RootState, AccountState>(state => state.account);
+  const [path, setPath] = useState(null);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: accountActions.checkLogged.type });
+    setPath(window.location.href);
+    return () => {};
+  }, []);
+
+  const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_HOST);
+  loginPath.searchParams.append('return_url', path || publicRuntimeConfig.BOOKS_HOST);
 
   return (
     // @ts-ignore
@@ -191,12 +205,24 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               </li>
             </LogoWrapper>
             <ButtonWrapper>
-              <li>
-                <Button type={'secondary'} label={'회원가입'} />
-              </li>
-              <li>
-                <Button type={'primary'} label={'로그인'} />
-              </li>
+              {loggedUser ? (
+                // Todo add promotion buttons ex) 캐시충전, 123 충전
+                <li>
+                  <Button type={'primary'} label={'내 서재'} />
+                </li>
+              ) : (
+                <>
+                  <li>
+                    <Button type={'secondary'} label={'회원가입'} />
+                  </li>
+                  <li>
+                    {/* Todo fix correct path by env */}
+                    <a href={loginPath.toString()}>
+                      <Button type={'primary'} label={'로그인'} />
+                    </a>
+                  </li>
+                </>
+              )}
             </ButtonWrapper>
             <InstantSearch
               isPartials={props.isPartials}
@@ -204,7 +230,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
             />
           </div>
         </Navigation>
-        <MainTab isPartials={props.isPartials} />
+        <MainTab isPartials={props.isPartials} loggedUserInfo={loggedUser} />
       </Header>
     </GNBWrapper>
   );

@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { BookScheme } from 'src/types/book';
+import { Book as BookScheme } from 'src/types/sections';
 import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
 import SelectionBookCarousel from 'src/components/BookSections/SelectionBook/SelectionBookCarousel';
-import BookMeta from 'src/components/BookMeta/BookMeta';
+// import BookMeta from 'src/components/BookMeta/BookMeta';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import { css } from '@emotion/core';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
@@ -43,17 +43,17 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
       <ThumbnailWrapper>
         <Book.Thumbnail
           thumbnailWidth={props.width || 140}
-          thumbnailUrl={`https://misc.ridibooks.com/cover/${book.bId}/xxlarge`}
-          adultBadge={book.isAdult}
+          thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
+          // adultBadge={book.isAdult}
           css={css``}
         />
       </ThumbnailWrapper>
-      <BookMeta
-        book={book}
-        width={`${props.width || 140}px`}
-        showRating={true}
-        isAIRecommendation={false}
-      />
+      {/* <BookMeta */}
+      {/*  book={book}*/}
+      {/*  width={`${props.width || 140}px`}*/}
+      {/*  showRating={true}*/}
+      {/*  isAIRecommendation={false}*/}
+      {/* </> */}
       {isAIRecommendation && (
         <button
           css={css`
@@ -96,11 +96,11 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
               thumbnailUrl={
                 !isIntersecting
                   ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
-                  : `https://misc.ridibooks.com/cover/${book.bId}/xxlarge`
+                  : `https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`
               }
             />
           </ThumbnailWrapper>
-          <BookMeta book={book} showRating={true} />
+          {/* <BookMeta book={book} showRating={true} /> */}
         </PortraitBook>
       ))}
     </ul>

@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import { flexRowStart, scrollBarHidden } from 'src/styles';
-import { BookScheme } from 'src/types/book';
 import { SelectionBookItem } from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { css } from '@emotion/core';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
+import { Book } from 'src/types/sections';
 
 const listCSS = css`
   padding-bottom: 48px;
@@ -41,7 +41,7 @@ const itemCSS = css`
 `;
 
 interface SelectionBookListProps {
-  items: BookScheme[];
+  items: Book[];
   isAIRecommendation: boolean;
 }
 

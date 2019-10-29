@@ -11,7 +11,11 @@ afterEach(cleanup);
 const renderComponent = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <QuickMenuList items={[{ label: '신간', color: '#ffffff', link: '/' }]} />
+      <QuickMenuList
+        items={[
+          { id: 1, name: '신간', icon: '/', bg_color: '#ffffff', url: '/', order: 1 },
+        ]}
+      />
     </ThemeProvider>,
   );
 

@@ -6,6 +6,7 @@ import { scrollBarHidden } from 'src/styles';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
+import { QuickMenu } from 'src/types/sections';
 const labelCSS = theme => css`
   font-size: 13px;
   line-height: 1.23;
@@ -73,12 +74,6 @@ const MenuItemWrapper = styled.div`
   }
 `;
 
-interface QuickMenu {
-  label: string;
-  color: string;
-  link: string;
-}
-
 interface QuickMenuListProps {
   items: QuickMenu[];
 }
@@ -95,15 +90,30 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
         {props.items.map((menu, index) => (
           <MenuItem key={index}>
             <MenuItemWrapper>
-              <a href={menu.link}>
-                <QuickMenuShape
+              <a href={menu.url}>
+                <div
                   css={css`
-                    height: 44px;
-                    width: 44px;
-                    fill: ${menu.color};
-                  `}
-                />
-                <span css={labelCSS}>{menu.label}</span>
+                    position: relative;
+                  `}>
+                  <QuickMenuShape
+                    css={css`
+                      height: 44px;
+                      width: 44px;
+                      fill: ${menu.bg_color};
+                    `}
+                  />
+                  <img
+                    css={css`
+                      position: absolute;
+                      transform: translate(-50%, -54%);
+                      top: 50%;
+                      left: 50%;
+                    `}
+                    alt={menu.name}
+                    src={menu.icon}
+                  />
+                </div>
+                <span css={labelCSS}>{menu.name}</span>
               </a>
             </MenuItemWrapper>
           </MenuItem>

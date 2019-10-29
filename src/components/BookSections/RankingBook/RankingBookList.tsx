@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { BookScheme } from 'src/types/book';
 import { css, keyframes } from '@emotion/core';
 import { Book } from '@ridi/web-ui/dist/index.node';
-import BookMeta from 'src/components/BookMeta/BookMeta';
+// import BookMeta from 'src/components/BookMeta/BookMeta';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import ArrowV from 'src/svgs/ArrowV.svg';
@@ -12,6 +11,8 @@ import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import Clock from 'src/svgs/Clock.svg';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
+import { createTimeLabel } from 'src/utils/dateTime';
+import { ReadingRanking } from 'src/types/sections';
 
 const timerGradient = keyframes`
   100% {
@@ -101,11 +102,10 @@ const rankCSS = css`
 
 const timerWrapperCSS = css`
   border-radius: 14px;
-  width: 86px;
+  width: 96px;
   height: 30px;
-  background: linear-gradient(60deg, #1f8ce6, #eb5847);
-  background-size: 400% 400%;
-  animation: ${timerGradient} 1.3s ease infinite alternate;
+  background-image: linear-gradient(255deg, #0077d9 4%, #72d2e0);
+  // animation: ${timerGradient} 1.3s ease infinite alternate;
   font-family: Roboto;
   font-size: 13px;
   color: white;
@@ -127,28 +127,18 @@ const arrowPosition = (side: 'left' | 'right') => css`
 `;
 
 interface RankingBookListProps {
-  items: BookScheme[];
+  items: ReadingRanking[];
   type: 'small' | 'big';
   title?: string;
   url?: string;
-  timer: boolean;
+  showTimer: boolean;
 }
 
 const Timer: React.FC = () => {
-  const [label, setLabel] = useState(null);
+  const [label, setLabel] = useState(createTimeLabel);
   useEffect(() => {
     const timer = setInterval(() => {
-      const date = new Date();
-      const hour = date
-        .getHours()
-        .toString()
-        .padStart(2, '0');
-      const min = date
-        .getMinutes()
-        .toString()
-        .padStart(2, '0');
-
-      setLabel(`${hour}시 ${min}분`);
+      setLabel(createTimeLabel());
     }, 10000);
 
     return () => {
@@ -180,13 +170,12 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
-
   return (
     <>
       <SectionWrapper ref={targetRef}>
         {props.title && (
           <RankingBookTitle>
-            {props.timer && <Timer />}
+            {props.showTimer && <Timer />}
             {props.url ? (
               // Todo Refactor
               <a href={props.url}>
@@ -210,7 +199,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
             margin-bottom: 62px;
           `}>
           <ul css={listCSS} ref={ref}>
-            {props.items.map((book, index) => (
+            {props.items.slice(0, 9).map((book, index) => (
               <li css={props.type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
                 <div
                   css={css`
@@ -225,21 +214,21 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                     thumbnailUrl={
                       !isIntersecting
                         ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
-                        : `https://misc.ridibooks.com/cover/${book.bId}/medium`
+                        : `https://misc.ridibooks.com/cover/${book.b_id}/medium`
                     }
-                    adultBadge={book.isAdult}
+                    adultBadge={false}
                   />
                 </div>
                 <div className={'book-meta-box'}>
                   <div css={rankCSS}>{index + 1}</div>
-                  <BookMeta
-                    book={book}
-                    showRating={props.type === 'big'}
-                    titleLineClamp={props.type === 'small' ? 1 : 2}
-                    showSomeDeal={false}
-                    isAIRecommendation={false}
-                    width={props.type === 'big' ? '177px' : null}
-                  />
+                  {/* <BookMeta> */}
+                  {/*  book={book}*/}
+                  {/*  showRating={props.type === 'big'}*/}
+                  {/*  titleLineClamp={props.type === 'small' ? 1 : 2}*/}
+                  {/*  showSomeDeal={false}*/}
+                  {/*  isAIRecommendation={false}*/}
+                  {/*  width={props.type === 'big' ? '177px' : null}*/}
+                  {/*  </> */}
                 </div>
               </li>
             ))}

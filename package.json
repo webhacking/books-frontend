@@ -34,6 +34,7 @@
     "next-redux-saga": "^4.0.1",
     "next-redux-wrapper": "^3.0.0",
     "next-routes": "^1.4.2",
+    "p-retry": "^4.1.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-redux": "^7.1.1",
@@ -46,7 +47,8 @@
     "ts-get": "^1.0.5",
     "use-debounce": "^3.1.0",
     "uuid": "^3.3.3",
-    "workbox-webpack-plugin": "^4.3.1"
+    "workbox-webpack-plugin": "^4.3.1",
+    "workbox-window": "^4.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -72,7 +74,7 @@
     "babel-plugin-module-resolver": "^3.2.0",
     "codecov": "^3.6.1",
     "core-js": "^3.1.4",
-    "cross-env": "^5.2.0",
+    "cross-env": "^6.0.3",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
     "eslint-import-resolver-babel-module": "^5.1.0",
