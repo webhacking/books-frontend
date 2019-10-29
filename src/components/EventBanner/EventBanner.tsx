@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from '@emotion/core';
 import { EventBannerList } from 'src/components/EventBanner';
-import { Genre } from 'src/constants/genres';
+import { EventBanner as EventBannerItem } from 'src/types/sections';
 
 const eventBannerWrapperCSS = css`
   margin: 0 auto;
@@ -10,15 +10,8 @@ const eventBannerWrapperCSS = css`
   height: 100%;
 `;
 
-export interface BannerItem {
-  link: string;
-  imageUrl: string;
-  label: string;
-}
-
 interface EventBannerProps {
-  items: BannerItem[];
-  genre: Genre;
+  items: EventBannerItem[];
 }
 
 const EventBanner: React.FC<EventBannerProps> = props => (

@@ -15,10 +15,12 @@ import {
   initialRouterState,
   RouteState,
 } from 'connected-next-router';
+import { AccountState } from 'src/services/accounts/reducer';
 
 export interface RootState {
   app?: AppState;
   router?: RouteState;
+  account: AccountState;
 }
 
 interface MakeStoreOption {

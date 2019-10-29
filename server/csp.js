@@ -8,14 +8,10 @@ module.exports = function csp(app) {
 
   const nonce = (req, res) => `'nonce-${res.locals.nonce}'`;
 
-  const scriptSrc = [
-    nonce,
-    "'strict-dynamic'",
-    "'self'",
-    'https://*.ridi.io',
-    'https://*.ridibooks.com',
-  ];
-  const styleSrc = ["'self'", "'unsafe-inline'", 'https://*.ridi.io', 'https://*.ridibooks.com'];
+  const whiteList = ['https://*.ridi.io', 'https://*.ridibooks.com'];
+
+  const scriptSrc = [nonce, "'strict-dynamic'", "'self'", ...whiteList];
+  const styleSrc = ["'self'", "'unsafe-inline'", ...whiteList];
 
   if (process.env.NODE_ENV !== 'production') {
     scriptSrc.push("'unsafe-eval'");
@@ -29,22 +25,19 @@ module.exports = function csp(app) {
         directives: {
           baseUri: ["'none'"],
           objectSrc: ["'none'"],
-          imgSrc: ["'self'", 'https://*.ridi.io', 'https://*.ridibooks.com'],
+          imgSrc: ["'self'", 'https://*.amazonaws.com', ...whiteList],
           frameSrc: ['staticxx.facebook.com', 'connect.facebook.net'],
           styleSrc,
           scriptSrc,
           connectSrc: [
             "'self'",
-            'https://*.ridi.io',
-            'https://*.ridibooks.com',
             'sentry.io',
             'www.google-analytics.com',
             'stats.g.doubleclick.net',
             'www.facebook.com',
+            ...whiteList,
           ],
-          reportUri: `https://sentry.io/api/1402572/security/?sentry_key=a0a997382844435fa6c89803ef6ce8e5&sentry_environment=${
-            process.env.NODE_ENV
-          };`,
+          reportUri: `https://sentry.io/api/1402572/security/?sentry_key=a0a997382844435fa6c89803ef6ce8e5&sentry_environment=${process.env.NODE_ENV};`,
         },
       },
     }),

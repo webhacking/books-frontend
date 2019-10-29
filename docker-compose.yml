@@ -3,13 +3,12 @@ version: '3.7'
 # ssl dependent by traefik (https://github.com/ridi/traefik)
 services:
   books:
-    image: node:8.10
     build:
       dockerfile: $PWD/provisioning/local/Dockerfile
       context: ./
     container_name: books
     volumes:
-      - .:/books
+      - .:/books:cached
     working_dir: /books
     init: true
     environment:

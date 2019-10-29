@@ -6,22 +6,23 @@ import { Genre, GenreSubService, homeGenres } from 'src/constants/genres';
 import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
 import { Router } from 'server/routes';
 import * as Cookies from 'js-cookie';
-import { QuickMenuList } from 'src/components/QuickMenu';
-import { quickMenuItems } from 'src/components/QuickMenu/mockData';
-import { TopBannerCarouselContainer } from 'src/components/TopBanner';
-import { EventBanner } from 'src/components/EventBanner';
-import { eventBannerItems } from 'src/components/EventBanner/mockData';
-import recommendedBookMockItems from 'src/components/RecommendedBook/mockData';
-import bookSectionsMockItems from 'src/components/BookSections/mockData';
-import RecommendedBook from 'src/components/RecommendedBook/RecommendedBook';
-import BookSectionContainer from 'src/components/BookSections/BookSectionContainer';
 import titleGenerator from 'src/utils/titleGenerator';
 import { connect } from 'react-redux';
 import { RootState } from 'src/store/config';
+import axios from 'src/utils/axios';
+
+import getConfig from 'next/config';
+import { notifySentry } from 'src/utils/sentry';
+import { Page, Section } from 'src/types/sections';
+import { HomeSectionRenderer } from 'src/components/Section/HomeSectionRenderer';
+import pRetry from 'p-retry';
+
+const { publicRuntimeConfig } = getConfig();
 
 export interface HomeProps {
   genre: keyof typeof Genre;
   service: keyof typeof GenreSubService;
+  branches: Section[];
 }
 
 export class Home extends React.Component<HomeProps> {
@@ -34,9 +35,46 @@ export class Home extends React.Component<HomeProps> {
     }
   }
 
+  private static createHomeSlug(genre: Genre, service: GenreSubService) {
+    if (!genre || genre === 'general') {
+      return 'home-general';
+    }
+    if (genre === 'comic') {
+      return 'home-comic';
+    }
+    if (service === 'single') {
+      return `home-${genre}`;
+    }
+    return `home-${genre}-${service}`;
+  }
+
+  private static async fetchHomeSections(genre: Genre, service: GenreSubService) {
+    const url = new URL(
+      `/pages/${this.createHomeSlug(genre, service)}`,
+      publicRuntimeConfig.STORE_API,
+    );
+
+    const result = await pRetry(() => axios.get<Page>(url.toString()), {
+      retries: 2,
+      minTimeout: 2000,
+    });
+    return result.data;
+    // Todo fetch books
+    // const bIds = keyToArray(data.branches, 'b_id');
+    //
+    // if (bIds.length > 0) {
+    //   axios
+    //     .get(`https://book-api.dev.ridi.io/books?b_ids=${bIds.join()}`)
+    //     .then(result => {
+    //       console.log(result.data);
+    //     });
+    // }
+  }
+
   // eslint-disable-next-line complexity
   public static async getInitialProps(props: ConnectedInitializeProps) {
     const { query, res, req } = props;
+
     const genre = query.genre
       ? Genre[(query.genre as string).toUpperCase() as keyof typeof Genre]
       : null;
@@ -48,9 +86,10 @@ export class Home extends React.Component<HomeProps> {
       : null;
 
     if (req && res) {
+      // Fixme 서버 사이드 장르 폴백 삭제 예정
       if (genre) {
         // Legacy Genre Fallback
-        if (genre.match(/(fantasy_serial|bl_serial|romance_serial)/u)) {
+        if (genre.match(/^(fantasy_serial|bl_serial|romance_serial)$/u)) {
           this.redirect(req, res, `/${genre.replace('_', '/')}`);
           return { genre: genre.split('_')[0], service: 'serial', ...props.query };
         }
@@ -97,17 +136,44 @@ export class Home extends React.Component<HomeProps> {
       }
       // Todo Fetch Sections
       if (res.statusCode !== 302) {
+        try {
+          const result = await this.fetchHomeSections(
+            genre || Genre.GENERAL,
+            service || GenreSubService.SINGLE,
+          );
+          return {
+            genre: genre || Genre.GENERAL,
+            service: service || GenreSubService.SINGLE,
+            ...query,
+            ...result,
+          };
+        } catch (error) {
+          notifySentry(error);
+          this.redirect(req, res, '/error');
+        }
+      }
+    } else {
+      // Client Side
+      try {
+        const result = await this.fetchHomeSections(
+          genre || Genre.GENERAL,
+          service || GenreSubService.SINGLE,
+        );
         return {
-          genre: genre || 'general',
-          service: service || 'single',
-          ...props.query,
+          genre: genre || Genre.GENERAL,
+          service: service || GenreSubService.SINGLE,
+          ...query,
+          ...result,
         };
+      } catch (error) {
+        notifySentry(error);
+        Router.pushRoute('/error');
       }
     }
-    // Client Side
     return {
       genre: genre || 'general',
       service: service || 'single',
+      branches: [],
       ...props.query,
     };
   }
@@ -181,41 +247,12 @@ export class Home extends React.Component<HomeProps> {
           <title>{`${titleGenerator(genre, currentService)} - 리디북스`}</title>
         </Head>
         <GenreTab currentGenre={currentGenre} genres={homeGenres} />
-        {/* 일반도서 상단 배너 */}
-        {(currentGenre === Genre.GENERAL ||
-          currentService === GenreSubService.SERIAL) && <TopBannerCarouselContainer />}
-        {/* 장르 단행본 추천 영역 */}
-        {(currentGenre === Genre.FANTASY ||
-          currentGenre === Genre.ROMANCE ||
-          currentGenre === Genre.BL) &&
-          currentService === GenreSubService.SINGLE && (
-            <RecommendedBook
-              type={'single_book_recommendation'}
-              items={recommendedBookMockItems}
-              genre={currentGenre}
-            />
-          )}
-
-        <QuickMenuList items={quickMenuItems} />
-
-        {/* Todo 상단 추천영역 조건 확인 */}
-        {currentGenre === Genre.GENERAL && (
-          <RecommendedBook
-            type={'hot_release'}
-            items={recommendedBookMockItems}
-            genre={currentGenre}
-          />
-        )}
-
-        {/* Todo 이벤트 배너 출력 조건 확인 */}
-        {(currentGenre === Genre.FANTASY ||
-          currentGenre === Genre.ROMANCE ||
-          currentGenre === Genre.BL) &&
-          currentService === GenreSubService.SINGLE && (
-            <EventBanner items={eventBannerItems} genre={currentGenre} />
-          )}
-
-        <BookSectionContainer sections={bookSectionsMockItems} />
+        {this.props.branches &&
+          this.props.branches.map((section, index) => (
+            <React.Fragment key={index}>
+              <HomeSectionRenderer section={section} />
+            </React.Fragment>
+          ))}
       </>
     );
   }

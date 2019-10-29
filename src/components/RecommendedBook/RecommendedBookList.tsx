@@ -2,8 +2,6 @@ import React, { useRef } from 'react';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import {
   BookList,
-  BookMeta,
-  BookScheme,
   hotReleaseBookListCSS,
   recommendedBookListCSS,
 } from 'src/components/RecommendedBook/RecommendedBook';
@@ -13,10 +11,11 @@ import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { css } from '@emotion/core';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
+import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 
 interface RecommendedBookListProps {
-  items: BookScheme[];
-  type: 'hot_release' | 'single_book_recommendation';
+  items: TodayRecommendation[] | HotRelease[];
+  type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
 }
 
 const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
@@ -31,7 +30,9 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
       <BookList
         ref={ref}
         css={
-          props.type === 'hot_release' ? hotReleaseBookListCSS : recommendedBookListCSS
+          props.type === DisplayType.HotRelease
+            ? hotReleaseBookListCSS
+            : recommendedBookListCSS
         }>
         {props.items.map((book, index) => (
           <PortraitBook key={index}>
@@ -39,10 +40,10 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
               <Book.Thumbnail
                 adultBadge={true}
                 thumbnailWidth={120}
-                thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
+                thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
               />
             </ThumbnailWrapper>
-            <BookMeta book={book} />
+            {/* <BookMeta book={book} /> */}
           </PortraitBook>
         ))}
       </BookList>

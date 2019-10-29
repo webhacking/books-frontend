@@ -4,7 +4,7 @@ import { Store } from 'redux';
 import withRedux from 'next-redux-wrapper';
 import makeStore, { RootState } from 'src/store/config';
 import { ConnectedRouter } from 'connected-next-router';
-import { notifySentry, initializeSentry } from 'src/utils/sentry';
+import { initializeSentry } from 'src/utils/sentry';
 import { CacheProvider, Global } from '@emotion/core';
 import { defaultTheme, resetStyles } from 'src/styles';
 import GNB from 'src/components/GNB';
@@ -35,7 +35,6 @@ const Contents = styled.main`
 `;
 
 class StoreApp extends App<StoreAppProps> {
-  // @ts-ignore
   public static async getInitialProps({ ctx, Component, ...rest }) {
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
@@ -49,24 +48,21 @@ class StoreApp extends App<StoreAppProps> {
     };
   }
 
-  public componentDidMount(): void {
+  public async serviceWorkerInit() {
+    if ('serviceWorker' in navigator) {
+      const { Workbox } = await import('workbox-window');
+      const wb = new Workbox('/service-worker.js');
+      // wb.addEventListener('waiting', event => {});
+      // wb.addEventListener('activated', event => {});
+      // wb.addEventListener('installed', event => {});
+      wb.register();
+    }
+  }
+
+  public componentDidMount() {
     if (!this.props.isPartials) {
       initializeSentry();
-      // @ts-ignore
-      const isUpdateAvailable = new Promise(resolve => {
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker
-            .register('/service-worker.js')
-            // @ts-ignore
-            .then((registration: ServiceWorkerRegistration) => {
-              console.log('service worker registration successful');
-            })
-            .catch((err: Error) => {
-              console.warn('service worker registration failed', err.message);
-              notifySentry(err);
-            });
-        }
-      });
+      this.serviceWorkerInit();
     }
   }
 
@@ -99,11 +95,14 @@ class StoreApp extends App<StoreAppProps> {
             <Global styles={resetStyles} />
           </PartialSeparator>
           {/* Todo Apply Layout */}
-          <Component {...pageProps} />
+          <Provider store={store}>
+            <Component {...pageProps} />
+          </Provider>
         </>
       );
     }
     return (
+      // CacheProvider 올바르게 동작하는지 확인하기
       <CacheProvider value={createCache({ ...cache, nonce })}>
         <Global styles={resetStyles} />
         <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
@@ -124,5 +123,4 @@ class StoreApp extends App<StoreAppProps> {
     );
   }
 }
-// @ts-ignore
 export default withRedux(makeStore, { debug: false })(StoreApp);

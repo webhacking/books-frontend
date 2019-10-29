@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { BannerItem } from 'src/components/EventBanner/EventBanner';
 import { EventBannerItem } from 'src/components/EventBanner/index';
 import { css } from '@emotion/core';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import { EventBanner } from 'src/types/sections';
 
 interface EventBannerListProps {
-  items: BannerItem[];
+  items: EventBanner[];
 }
 
 const EventBannerList: React.FC<EventBannerListProps> = props => (

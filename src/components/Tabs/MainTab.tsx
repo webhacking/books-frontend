@@ -16,6 +16,7 @@ import MyRIDI_solid from 'src/svgs/MyRIDI_solid.svg';
 import MyRIDI_regular from 'src/svgs/MyRIDI_regular.svg';
 import cookieKeys from 'src/constants/cookies';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import { LoggedUser } from 'src/types/account';
 
 const StyledAnchor = styled.a`
   height: 100%;
@@ -143,6 +144,7 @@ const currentTab = css`
 
 interface MainTabProps {
   isPartials: boolean;
+  loggedUserInfo: null | LoggedUser;
 }
 
 interface TabItemProps {
@@ -217,6 +219,8 @@ export const MainTab: React.FC<MainTabProps> = props => {
     } else {
       setHomeURL('/');
     }
+
+    // Todo dispatch notification info, cart count
   }, [currentPath]);
   return (
     <Tabs>

@@ -4,12 +4,12 @@ import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
 import SliderCarousel from 'react-slick';
 import { Book } from '@ridi/web-ui/dist/index.node';
-import { BookMeta, BookScheme } from 'src/components/RecommendedBook/RecommendedBook';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
+import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -36,8 +36,8 @@ const CarouselWrapper = styled.div`
 `;
 
 interface RecommendedBookCarouselProps {
-  items: BookScheme[];
-  type: 'hot_release' | 'single_book_recommendation';
+  items: TodayRecommendation[] | HotRelease[];
+  type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
 }
 
 const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = props => (
@@ -53,10 +53,10 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
         <ThumbnailWrapper>
           <Book.Thumbnail
             thumbnailWidth={140}
-            thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
+            thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
           />
         </ThumbnailWrapper>
-        <BookMeta book={book} />
+        {/* <BookMeta book={book} /> */}
       </PortraitBook>
     ))}
   </ul>
@@ -94,6 +94,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
     }
   }, [carouselInitialize]);
 
+  // @ts-ignore
   return (
     <>
       {/* Flickering 없는 UI 를 위해 추가함 */}
@@ -108,16 +109,15 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
           ref={slider}
           css={recommendedBookCarouselLoadingCSS}
           className={'slider'}
-          slidesToShow={6}
+          slidesToShow={props.items.length < 6 ? props.items.length : 6}
           slidesToScroll={6}
           speed={200}
           autoplay={false}
           arrows={false}
-          onInit={() => {
-            setInitialized();
-          }}
+          onInit={setInitialized}
           infinite={true}>
           {props.items.map((book, index) => (
+            // @ts-ignore
             <div
               key={index}
               css={css`
@@ -133,10 +133,10 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                 <ThumbnailWrapper>
                   <Book.Thumbnail
                     thumbnailWidth={140}
-                    thumbnailUrl={`https://misc.ridibooks.com/cover/${book.id}/xxlarge`}
+                    thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
                   />
                 </ThumbnailWrapper>
-                <BookMeta book={book} />
+                {/* <BookMeta book={book} /> */}
               </PortraitBook>
             </div>
           ))}

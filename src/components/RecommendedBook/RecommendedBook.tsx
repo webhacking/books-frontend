@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import { View } from 'libreact/lib/View';
 import { css } from '@emotion/core';
-import { Genre } from 'src/constants/genres';
 import getConfig from 'next/config';
 import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
 import styled from '@emotion/styled';
@@ -15,6 +14,7 @@ import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper'
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 const { publicRuntimeConfig } = getConfig();
 
 const backgroundImageCSS = css`
@@ -145,30 +145,24 @@ export interface BookScheme {
 }
 
 interface RecommendedBookProps {
-  items: BookScheme[];
-  genre: Genre;
-  type: 'hot_release' | 'single_book_recommendation';
+  items: TodayRecommendation[] | HotRelease[];
+  title: string;
+  type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
 }
 
 const RecommendedBook: React.FC<RecommendedBookProps> = props => {
-  const [, setGenre] = useState(props.genre);
-  useEffect(() => {
-    setGenre(props.genre);
-    // Todo 장르가 달라져서 마운트 된다면 Fetch
-  }, [props.genre]);
-
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   return (
     <section
       ref={targetRef}
       css={
-        props.type === 'hot_release'
+        props.type === DisplayType.HotRelease
           ? hotReleaseRecommendedBookWrapperCSS
           : recommendedBookWrapperCSS
       }>
       {/* Todo split hot release title */}
-      {props.type === 'hot_release' && (
+      {props.type === DisplayType.HotRelease && (
         <p css={hotReleaseTitleCSS}>
           <span
             css={css`
@@ -187,9 +181,12 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
       {!isIntersecting ? (
         <BookList
           css={
-            props.type === 'hot_release' ? hotReleaseBookListCSS : recommendedBookListCSS
+            props.type === DisplayType.HotRelease
+              ? hotReleaseBookListCSS
+              : recommendedBookListCSS
           }>
-          {props.items.slice(0, 6).map((book, index) => (
+          {/* // @ts-ignore */}
+          {props.items.slice(0, 6).map((_book, index) => (
             <PortraitBook key={index}>
               <ThumbnailWrapper>
                 <Book.Thumbnail
@@ -199,7 +196,8 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
                   }
                 />
               </ThumbnailWrapper>
-              <BookMeta book={book} />
+              {/* Temporary */}
+              {/* <BookMeta book={book} /> */}
             </PortraitBook>
           ))}
         </BookList>

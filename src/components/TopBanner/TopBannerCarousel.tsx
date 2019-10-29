@@ -7,155 +7,7 @@ import Arrow from 'src/components/Carousel/Arrow';
 import uiOption from 'src/constants/ui';
 import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
-const items = [
-  {
-    label: '1',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603112320_1559528600505.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603112320_1559528600505.jpg',
-  },
-  {
-    label: '2',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-  },
-  {
-    label: '3',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-  },
-  {
-    label: '19',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-  },
-  {
-    label: '20',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-  },
-  {
-    label: '2',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-  },
-  {
-    label: '3',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-  },
-  {
-    label: '19',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-  },
-  {
-    label: '20',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-  },
-  {
-    label: '2',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-  },
-  {
-    label: '3',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-  },
-  {
-    label: '19',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-  },
-  {
-    label: '20',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-  },
-  {
-    label: '2',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-  },
-  {
-    label: '3',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-  },
-  {
-    label: '19',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-  },
-  {
-    label: '20',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-  },
-  {
-    label: '2',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg',
-  },
-  {
-    label: '3',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603114451_1559529891097.jpg',
-  },
-  {
-    label: '19',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190604175023_1559638223869.jpg',
-  },
-  {
-    label: '20',
-    url:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-    imageUrl:
-      'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg',
-  },
-];
+import { TopBanner } from 'src/types/sections';
 
 const TOP_BANNER_LG_WIDTH = 430;
 const TOP_BANNER_SM_WIDTH = 355;
@@ -415,9 +267,7 @@ const TopBannerCurrentPosition: React.FC<TopBannerCurrentPositionProps> = props 
 );
 
 interface TopBannerItemProps {
-  label?: string;
-  url?: string;
-  imageUrl?: string;
+  item: TopBanner;
   loading?: boolean;
   center?: boolean;
 }
@@ -466,8 +316,8 @@ const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => (
             `,
           )}
         `}
-        alt={props.label}
-        src={props.imageUrl}
+        alt={props.item.title}
+        src={props.item.main_image_url}
       />
     </ItemInner>
     <div
@@ -540,22 +390,19 @@ const TopBannerCarouselWrapper = styled.section`
 `;
 
 interface TopBannerCarouselProps {
-  // tslint:disable-next-line:no-any
-  banners: any[];
+  banners: TopBanner[];
   changePosition: (pos: number) => void;
   setInitialized: () => void;
   forwardRef: React.RefObject<SliderCarousel>;
 }
 interface TopBannerCarouselContainerProps {
-  // Todo ANY 타입 수정
-  // tslint:disable-next-line:no-any
-  banners?: any[];
+  banners: TopBanner[];
 }
 
 interface TopBannerCarouselLoadingProps {
-  left: string;
-  center: string;
-  right: string;
+  left: TopBanner;
+  center: TopBanner;
+  right: TopBanner;
 }
 
 const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props => (
@@ -572,9 +419,9 @@ const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props 
         //  IE11 flex center 확인
       }
     `}>
-    <TopBannerItem loading={true} imageUrl={props.left} />
-    <TopBannerItem center={true} loading={true} imageUrl={props.center} />
-    <TopBannerItem loading={true} imageUrl={props.right} />
+    <TopBannerItem loading={true} item={props.left} />
+    <TopBannerItem center={true} loading={true} item={props.center} />
+    <TopBannerItem loading={true} item={props.right} />
   </div>
 );
 
@@ -610,12 +457,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       }}
       centerMode={true}>
       {banners.map((item, index) => (
-        <TopBannerItem
-          key={index}
-          label={item.label}
-          url={item.url}
-          imageUrl={item.imageUrl}
-        />
+        <TopBannerItem key={index} item={item} />
       ))}
     </ForwardedRefComponent>
   );
@@ -626,7 +468,7 @@ export const TopBannerCarouselContainer: React.FC<
 > = React.memo(props => {
   const [carouselInitialized, setCarouselInitialized] = useState(false);
   const [currentPosition, setCurrentPosition] = useState(0);
-  const [banners] = useState(props.banners || items);
+  const { banners } = props;
   const slider = React.useRef<SliderCarousel>();
   const wrapper = React.useRef<HTMLElement>();
 
@@ -691,19 +533,16 @@ export const TopBannerCarouselContainer: React.FC<
     };
   }, [wrapper]);
 
+  if (banners.length < 3) {
+    return null;
+  }
   return (
     <TopBannerCarouselWrapper ref={wrapper}>
       {!carouselInitialized && (
         <TopBannerCarouselLoading
-          left={
-            'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603171131_1559549491672.jpg'
-          }
-          center={
-            'https://active.ridibooks.com/ridibooks_top_banner/pc/20190603112320_1559528600505.jpg'
-          }
-          right={
-            'https://active.ridibooks.com/ridibooks_top_banner/pc/20190521173618_1558427778288.jpg'
-          }
+          left={banners[banners.length - 1]}
+          center={banners[0]}
+          right={banners[1]}
         />
       )}
       <>
