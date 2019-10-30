@@ -35,6 +35,7 @@ module.exports = function csp(app) {
             'www.google-analytics.com',
             'stats.g.doubleclick.net',
             'www.facebook.com',
+            'https://*.amazonaws.com',
             ...whiteList,
           ],
           reportUri: `https://sentry.io/api/1402572/security/?sentry_key=a0a997382844435fa6c89803ef6ce8e5&sentry_environment=${process.env.NODE_ENV};`,
