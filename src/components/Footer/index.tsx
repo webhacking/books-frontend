@@ -229,9 +229,7 @@ const Footer: React.FC<{}> = () => (
         <ul css={contactListCSS}>
           <li>
             <span className={'a11y'}>전화번호 : </span>
-            <span css={serviceNumber} className={'museo_sans'}>
-              {ridiMeta.serviceCenterNumber}
-            </span>
+            <span css={serviceNumber}>{ridiMeta.serviceCenterNumber}</span>
           </li>
           <li>
             <a

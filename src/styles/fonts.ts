@@ -4,58 +4,26 @@ const { publicRuntimeConfig } = getConfig();
 
 export default css`
   @font-face {
-    font-family: 'best_num';
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-    src: url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/best_num.woff2)
-        format('woff'),
-      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/best_num.woff) format('woff'),
-      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/best_num.ttf)
-        format('truetype');
-  }
-
-  @font-face {
-    font-family: 'review_num';
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-    src: url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/review_num.woff2)
+    font-family: 'ridi-roboto';
+    src: url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/ridi-roboto-regular-webfont.woff2)
         format('woff2'),
-      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/review_num.woff)
+      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/ridi-roboto-regular-webfont.woff)
         format('woff'),
-      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/review_num.ttf)
+      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/ridi-roboto-regular.ttf)
         format('truetype');
-  }
-
-  @font-face {
-    font-family: 'museo_sans';
-    font-style: normal;
-    font-weight: normal;
     font-display: swap;
-    src: url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/museo_sans_500.woff2)
-        format('woff2'),
-      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/museo_sans_500.woff)
-        format('woff'),
-      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/museo_sans_500.ttf)
-        format('truetype');
+    font-weight: normal;
   }
 
   @font-face {
-    font-family: 'museo_sans';
-    font-style: normal;
+    font-family: 'ridi-roboto';
+    src: url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/ridi-roboto-bold-webfont.woff2)
+        format('woff2'),
+      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/ridi-roboto-bold-webfont.woff)
+        format('woff'),
+      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/ridi-roboto-bold.ttf)
+        format('truetype');
+    font-display: swap;
     font-weight: bold;
-    font-display: swap;
-    src: url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/museo_sans_700.woff2)
-        format('woff2'),
-      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/museo_sans_700.woff)
-        format('woff'),
-      url(${publicRuntimeConfig.STATIC_CDN_URL}/static/fonts/museo_sans_700.ttf)
-        format('truetype');
-  }
-
-  .museo_sans {
-    font-family: 'museo_sans', 'Apple SD Gothic Neo', Helvetica, arial, '나눔고딕',
-      'Nanum Gothic', '돋움', Dotum, Tahoma, Geneva, sans-serif;
   }
 `;

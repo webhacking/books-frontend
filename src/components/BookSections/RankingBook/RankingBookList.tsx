@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { css, keyframes } from '@emotion/core';
+import { css } from '@emotion/core';
 import { Book } from '@ridi/web-ui/dist/index.node';
 // import BookMeta from 'src/components/BookMeta/BookMeta';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
@@ -13,12 +13,6 @@ import Clock from 'src/svgs/Clock.svg';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { createTimeLabel } from 'src/utils/dateTime';
 import { ReadingRanking } from 'src/types/sections';
-
-const timerGradient = keyframes`
-  100% {
-    background-position: 100% 60%;
-  }
-`;
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -92,7 +86,6 @@ const smallItemCSS = css`
 
 const rankCSS = css`
   height: 22px;
-  font-family: 'Roboto';
   font-size: 18px;
   font-weight: 500;
   text-align: center;
@@ -105,8 +98,6 @@ const timerWrapperCSS = css`
   width: 96px;
   height: 30px;
   background-image: linear-gradient(255deg, #0077d9 4%, #72d2e0);
-  // animation: ${timerGradient} 1.3s ease infinite alternate;
-  font-family: Roboto;
   font-size: 13px;
   color: white;
   font-weight: bold;
