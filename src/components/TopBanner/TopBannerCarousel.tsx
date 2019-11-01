@@ -230,7 +230,6 @@ const positionLabelCSS = css`
   color: white;
   font-size: 12px;
   line-height: 22px;
-  font-family: 'Roboto';
 `;
 
 const currentPosCSS = css`

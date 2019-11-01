@@ -40,15 +40,14 @@ export const clearOutline = css`
 `;
 
 export const fontFamily = [
-  'Helvetica Neue',
+  'ridi-roboto',
   'Apple SD Gothic Neo',
-  'arial',
   '"나눔고딕"',
   'Nanum Gothic',
   '"돋움"',
   'Dotum',
-  'Tahoma',
-  'Geneva',
+  'Helvetica Neue',
+  'arial',
   'sans-serif',
 ].join(', ');
 
