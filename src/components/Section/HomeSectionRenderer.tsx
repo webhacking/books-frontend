@@ -25,18 +25,20 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     // @ts-ignore  Todo declare item_metadata type
     section: { items, item_metadata, type, name },
   } = props;
-
+  if (!items) {
+    return null;
+  }
   switch (type) {
     case DisplayType.Page:
       return null;
     case DisplayType.HomeCarouselBanner:
       return (
         <TopBannerCarouselContainer
-          banners={(items as TopBanner[]) || []} /* options={item_metadata} */
+          banners={items as TopBanner[]} /* options={item_metadata} */
         />
       );
     case DisplayType.HomeEventBanner:
-      return <EventBanner items={(items as EventBannerItem[]) || []} />;
+      return <EventBanner items={items as EventBannerItem[]} />;
     case DisplayType.ReadingBooksRanking:
       return (
         <RankingBookList
@@ -59,19 +61,24 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
         />
       );
     case DisplayType.HomeQuickMenu: {
-      return <QuickMenuList items={(items as QuickMenu[]) || []} />;
+      return <QuickMenuList items={items as QuickMenu[]} />;
     }
     case DisplayType.HomeMdSelection: {
       return (
         <>
-          {(items as MdSelection[]).map((item, index) => (
-            <SelectionBook
-              items={item.books}
-              title={item.title}
-              key={index}
-              option={{ isAIRecommendation: false }}
-            />
-          ))}
+          {(items as MdSelection[]).map((item, index) => {
+            if (!item.books) {
+              return null;
+            }
+            return (
+              <SelectionBook
+                items={item.books}
+                title={item.title}
+                key={index}
+                option={{ isAIRecommendation: false }}
+              />
+            );
+          })}
         </>
       );
     }
