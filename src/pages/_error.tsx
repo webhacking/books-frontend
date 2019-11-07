@@ -1,23 +1,47 @@
 import { ErrorProps } from 'next/error';
 import { NextPageContext } from 'next';
-import * as React from 'react';
+import React, { ErrorInfo } from 'react';
 import { NextError } from 'src/constants/nextError';
 
-import { notifySentry } from 'src/utils/sentry';
 import { css } from '@emotion/core';
+import sentry from 'src/utils/sentry';
+import { AxiosError, AxiosResponse } from 'axios';
 
-export default class ErrorPage extends React.Component<ErrorProps> {
+const { captureException } = sentry();
+
+interface CustomErrorProps extends ErrorProps {
+  error?: Error | ErrorInfo;
+}
+
+export default class ErrorPage extends React.Component<CustomErrorProps> {
   public static getInitialProps(context: NextPageContext) {
     const { res, req, err } = context;
-    if (res && res.statusCode) {
+
+    if (req && res && res.statusCode >= 400) {
+      captureException(err || new Error(NextError[res.statusCode]), context);
       return { statusCode: res.statusCode };
     }
     if (err) {
-      // Todo Sentry send error
-      notifySentry(err, req);
+      captureException(err, context);
       return { statusCode: NextError.INTERNAL };
     }
-    return { statusCode: NextError.NOT_FOUND };
+    return {};
+  }
+
+  public errorCodeRender() {
+    if (this.props.statusCode && this.props.statusCode >= 400) {
+      return this.props.statusCode;
+    }
+    const { error } = this.props;
+    // @ts-ignore
+    if (error && error.isAxiosError) {
+      // @ts-ignore
+      if ((error as AxiosError).response) {
+        // @ts-ignore
+        return (error.response as AxiosResponse).status;
+      }
+    }
+    return null;
   }
 
   public render() {
@@ -28,6 +52,7 @@ export default class ErrorPage extends React.Component<ErrorProps> {
           display: flex;
           justify-content: center;
         `}>
+        {this.errorCodeRender()}
         <button
           css={css`
             color: #808991;

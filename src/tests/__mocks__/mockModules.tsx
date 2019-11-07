@@ -7,6 +7,9 @@ export const initModules = () => {
       timeout: 1000,
     },
     create: () => ({
+      get: () => {
+        return { data: {} };
+      },
       interceptors: {
         request: {},
         response: {
@@ -22,11 +25,13 @@ export const initModules = () => {
     return DynamicComponent;
   });
 
+  jest.mock('src/utils/sentry', () => () => ({}));
+
   jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {
       BOOKS_HOST: 'https://books.local.ridi.io',
       STORE_HOST: 'https://master.test.ridi.io',
-      STORE_API: 'https://books-api.dev.ridi.io',
+      STORE_API: 'https://store-api.dev.ridi.io',
     },
   }));
   jest.mock('server/routes', () => {

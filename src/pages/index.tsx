@@ -11,10 +11,11 @@ import { connect } from 'react-redux';
 import { RootState } from 'src/store/config';
 import axios from 'src/utils/axios';
 import getConfig from 'next/config';
-import { notifySentry } from 'src/utils/sentry';
 import { Page, Section } from 'src/types/sections';
 import { HomeSectionRenderer } from 'src/components/Section/HomeSectionRenderer';
 import pRetry from 'p-retry';
+import { Request } from 'express';
+import { ServerResponse } from 'http';
 // import { keyToArray } from 'src/utils/common';
 // import { booksActions } from 'src/services/books';
 
@@ -27,7 +28,7 @@ export interface HomeProps {
 }
 
 export class Home extends React.Component<HomeProps> {
-  private static redirect(req, res, path) {
+  private static redirect(req: Request, res: ServerResponse, path: string) {
     if (req.path !== path && !res.finished) {
       res.writeHead(302, {
         Location: path,
@@ -137,31 +138,8 @@ export class Home extends React.Component<HomeProps> {
       }
       // Todo Fetch Sections
       if (res.statusCode !== 302) {
-        try {
-          const result = await this.fetchHomeSections(
-            genre || Genre.GENERAL,
-            service || GenreSubService.SINGLE,
-          );
-
-          // Todo books Fetch
-          // const bIds = keyToArray(result.branches, 'b_id');
-          // store.dispatch({ type: booksActions.fetchBooks.type, payload: bIds });
-
-          return {
-            genre: genre || Genre.GENERAL,
-            service: service || GenreSubService.SINGLE,
-            ...query,
-            ...result,
-          };
-        } catch (error) {
-          notifySentry(error, req);
-          this.redirect(req, res, '/error');
-        }
-      }
-    } else {
-      // Client Side
-      try {
         const result = await this.fetchHomeSections(
+          // @ts-ignore
           genre || Genre.GENERAL,
           service || GenreSubService.SINGLE,
         );
@@ -171,10 +149,20 @@ export class Home extends React.Component<HomeProps> {
           ...query,
           ...result,
         };
-      } catch (error) {
-        notifySentry(error);
-        Router.pushRoute('/error');
       }
+    } else {
+      // Client Side
+      const result = await this.fetchHomeSections(
+        // @ts-ignore
+        genre || Genre.GENERAL,
+        service || GenreSubService.SINGLE,
+      );
+      return {
+        genre: genre || Genre.GENERAL,
+        service: service || GenreSubService.SINGLE,
+        ...query,
+        ...result,
+      };
     }
     return {
       genre: genre || 'general',

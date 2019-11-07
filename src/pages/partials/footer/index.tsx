@@ -31,7 +31,3 @@ export class PartialFooter extends React.Component<FooterProps> {
 }
 
 export default PartialFooter;
-
-export const config = {
-  amp: 'true',
-};

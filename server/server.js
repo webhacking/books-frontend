@@ -15,11 +15,13 @@ const handle = clientRoutes.getRequestHandler(app);
 
 function createServer() {
   const server = express();
+  const { Sentry } = require('../src/utils/sentry')(app.buildId);
+
   csp(server);
   server.use(compression());
+  server.use(Sentry.Handlers.requestHandler());
   server.use(cookieParser());
   server.use(express.json());
-
   server.use('/_next', express.static(path.join(__dirname, '../build')));
   server.use('/static', express.static(path.join(__dirname, '../static')));
   server.get('*', async (req, res) => {
@@ -36,9 +38,7 @@ function createServer() {
     }
     return handle(req, res);
   });
-  server.use(function(err, req, res, next) {
-    console.log(err);
-  });
+  server.use(Sentry.Handlers.errorHandler());
   return server;
 }
 

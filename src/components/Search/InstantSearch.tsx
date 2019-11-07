@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { notifySentry } from 'src/utils/sentry';
 import { css, keyframes } from '@emotion/core';
 import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
 import Lens from 'src/svgs/Lens.svg';
@@ -286,7 +285,6 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           authors: get(result.data, data => data.author.authors, []),
         });
       } catch (error) {
-        notifySentry(error);
         setSearchResult(initialSearchResult);
         setFocusedPosition(0);
       } finally {
