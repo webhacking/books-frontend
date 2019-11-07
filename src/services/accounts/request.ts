@@ -1,13 +1,15 @@
-import axios from 'src/utils/axios';
+import axios, { OAuthRequestType } from 'src/utils/axios';
 import { LoggedUser } from 'src/types/account';
 import getConfig from 'next/config';
+
 const { publicRuntimeConfig } = getConfig();
-export function* checkLoggedIn() {
-  const { data } = yield axios.get<LoggedUser>(
-    new URL('/accounts/me', publicRuntimeConfig.ACCOUNT_API).toString(),
-    {
-      withCredentials: true,
+export const checkLoggedIn = async () => {
+  const { data } = await axios.get<LoggedUser>('/accounts/me', {
+    baseURL: publicRuntimeConfig.ACCOUNT_API,
+    withCredentials: true,
+    custom: {
+      authorizationRequestType: OAuthRequestType.CHECK,
     },
-  );
+  });
   return data;
-}
+};

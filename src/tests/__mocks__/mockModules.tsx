@@ -3,7 +3,17 @@ import * as React from 'react';
 export const initModules = () => {
   // jest.mock('src/utils/sentry', () => ({ notifySentry: () => null }));
   jest.mock('axios', () => ({
-    create: () => {},
+    defaults: {
+      timeout: 1000,
+    },
+    create: () => ({
+      interceptors: {
+        request: {},
+        response: {
+          use: () => null,
+        },
+      },
+    }),
   }));
   jest.mock('next/dynamic', () => () => {
     const DynamicComponent = () => null;
@@ -16,9 +26,11 @@ export const initModules = () => {
     publicRuntimeConfig: {
       BOOKS_HOST: 'https://books.local.ridi.io',
       STORE_HOST: 'https://master.test.ridi.io',
+      STORE_API: 'https://books-api.dev.ridi.io',
     },
   }));
   jest.mock('server/routes', () => {
+    // eslint-disable-next-line global-require
     require('react');
     return {
       default: {},
