@@ -1,12 +1,14 @@
 const { InjectManifest } = require('workbox-webpack-plugin');
 const nextSourceMaps = require('@zeit/next-source-maps')({
-  devtool: 'hidden-source-map',
+  devtool:
+    process.env.ENVIRONMENT !== 'production' ? 'inline-source-map' : 'hidden-source-map',
 });
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const { parsed: localEnv = {} } = require('dotenv').config();
 const CopyPlugin = require('copy-webpack-plugin');
 const withCSS = require('@zeit/next-css');
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
+const webpack = require('webpack');
 
 module.exports = withBundleAnalyzer(
   nextSourceMaps(
@@ -14,9 +16,6 @@ module.exports = withBundleAnalyzer(
       distDir: '../build',
       assetPrefix: localEnv.STATIC_CDN_URL || 'https://books.local.ridi.io',
       useFileSystemPublicRoutes: false,
-      experimental: {
-        amp: true,
-      },
       exportPathMap: () => {
         return {};
       },
@@ -27,6 +26,10 @@ module.exports = withBundleAnalyzer(
         ...require(`./env/${process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'local'}`),
       },
       webpack(config, option) {
+        const { isServer, buildId } = option;
+        if (!isServer) {
+          config.resolve.alias['@sentry/node'] = '@sentry/browser';
+        }
         config.module.rules.push({
           test: /\.(eot|woff|woff2|ttf|png|jpg|gif)$/,
           use: {
@@ -101,6 +104,12 @@ module.exports = withBundleAnalyzer(
               /build-manifest.json/,
               /manifest.webmanifest/,
             ],
+          }),
+        );
+
+        config.plugins.push(
+          new webpack.DefinePlugin({
+            'process.env.SENTRY_RELEASE': JSON.stringify(buildId),
           }),
         );
 

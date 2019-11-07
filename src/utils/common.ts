@@ -1,5 +1,3 @@
-import { notifySentry } from './sentry';
-
 // tslint:disable-next-line
 export const safeJSONParse = (source: string | null, defaultValue: any) => {
   if (!source) {
@@ -8,7 +6,6 @@ export const safeJSONParse = (source: string | null, defaultValue: any) => {
   try {
     return JSON.parse(source);
   } catch (err) {
-    notifySentry(err);
     return defaultValue;
   }
 };

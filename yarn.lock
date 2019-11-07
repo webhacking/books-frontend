@@ -1599,7 +1599,7 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@sentry/browser@^5.7.0":
+"@sentry/browser@^5.7.1":
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.7.1.tgz#1f8435e2a325d7a09f830065ebce40a2b3c708a4"
   integrity sha512-K0x1XhsHS8PPdtlVOLrKZyYvi5Vexs9WApdd214bO6KaGF296gJvH1mG8XOY0+7aA5i2A7T3ttcaJNDYS49lzw==
@@ -1641,6 +1641,15 @@
     "@sentry/utils" "5.7.1"
     tslib "^1.9.3"
 
+"@sentry/integrations@^5.7.1":
+  version "5.7.1"
+  resolved "https://registry.yarnpkg.com/@sentry/integrations/-/integrations-5.7.1.tgz#53ff804e2cb4f069d69c491cf20190f6aac6682e"
+  integrity sha512-LMKVVfB4VlpPE5I8OyD2soj/iNaicnpWObpBxfPDfsJAnXo5sV7zkWwEfvCia2dcXCXkpE2Xz77tiZubK7zrMQ==
+  dependencies:
+    "@sentry/types" "5.7.1"
+    "@sentry/utils" "5.7.1"
+    tslib "^1.9.3"
+
 "@sentry/minimal@5.7.1":
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-5.7.1.tgz#56afc537737586929e25349765e37a367958c1e1"
@@ -1648,6 +1657,20 @@
   dependencies:
     "@sentry/hub" "5.7.1"
     "@sentry/types" "5.7.1"
+    tslib "^1.9.3"
+
+"@sentry/node@^5.7.1":
+  version "5.7.1"
+  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-5.7.1.tgz#94e2fbac94f6cc061be3bc14b22813536c59698d"
+  integrity sha512-hVM10asFStrOhYZzMqFM7V1lrHkr1ydc2n/SFG0ZmIQxfTjCVElyXV/BJASIdqadM1fFIvvtD/EfgkTcZmub1g==
+  dependencies:
+    "@sentry/core" "5.7.1"
+    "@sentry/hub" "5.7.1"
+    "@sentry/types" "5.7.1"
+    "@sentry/utils" "5.7.1"
+    cookie "^0.3.1"
+    https-proxy-agent "^3.0.0"
+    lru_map "^0.3.3"
     tslib "^1.9.3"
 
 "@sentry/types@5.7.1":
@@ -2290,6 +2313,11 @@
   dependencies:
     "@types/react-dom" "*"
     "@types/testing-library__dom" "*"
+
+"@types/workbox-window@^4.3.2":
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/@types/workbox-window/-/workbox-window-4.3.2.tgz#700daeaf029918ef1143896c8cbee63d6d357523"
+  integrity sha512-q1uvj0T2gYNivUSZjuZmSnmDqX+TzCOQw6Q8Tnk/3RApUIf3phDXBNCDAMhxOODhQnh/ba8s7xTNXPpX6Z3WxQ==
 
 "@types/xml2js@0.4.3":
   version "0.4.3"
@@ -4207,7 +4235,7 @@ cookie-signature@1.0.6:
   resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
   integrity sha1-4wOogrNCzD7oylE6eZmXNNqzriw=
 
-cookie@0.3.1:
+cookie@0.3.1, cookie@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
   integrity sha1-5+Ch+e9DtMi6klxcWpboBtFoc7s=
@@ -8668,6 +8696,11 @@ lru-queue@0.1:
   dependencies:
     es5-ext "~0.10.2"
 
+lru_map@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/lru_map/-/lru_map-0.3.3.tgz#b5c8351b9464cbd750335a79650a0ec0e56118dd"
+  integrity sha1-tcg1G5Rky9dQM1p5ZQoOwOVhGN0=
+
 lsmod@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/lsmod/-/lsmod-1.0.0.tgz#9a00f76dca36eb23fa05350afe1b585d4299e64b"
@@ -11540,6 +11573,11 @@ send@0.17.1:
     on-finished "~2.3.0"
     range-parser "~1.2.1"
     statuses "~1.5.0"
+
+sentry-testkit@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/sentry-testkit/-/sentry-testkit-3.0.2.tgz#cfed7537b574ee1c2e741d916ac1e37a0f8727f9"
+  integrity sha512-t0UgrVaGrhJi0v61nn7vma2VmmwGhRYFFaD+HBTnw+QZY5QLrYwdHTSwBgezx6BULmx0WgkEPklWM2BAbEcYVA==
 
 serialize-javascript@^1.7.0:
   version "1.9.1"
