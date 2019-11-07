@@ -5,7 +5,7 @@ const genres = {
   general: '일반도서',
   bl: 'BL',
   romance: '로맨스',
-  comic: '만화',
+  comics: '만화',
 };
 
 const subServices = {
@@ -14,7 +14,7 @@ const subServices = {
 };
 
 export default (genre: string, subService: string) => {
-  if (genre === 'general' || genre === 'comic') {
+  if (genre === 'general' || genre === 'comics') {
     return genres[genre];
   }
   return `${genres[genre]} ${subServices[subService]}`;

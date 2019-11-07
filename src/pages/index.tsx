@@ -40,8 +40,8 @@ export class Home extends React.Component<HomeProps> {
     if (!genre || genre === 'general') {
       return 'home-general';
     }
-    if (genre === 'comic') {
-      return 'home-comic';
+    if (genre === 'comics') {
+      return 'home-comics';
     }
     if (service === 'single') {
       return `home-${genre}`;

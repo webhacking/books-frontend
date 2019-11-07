@@ -2,7 +2,7 @@ export enum Genre {
   GENERAL = 'general',
   ROMANCE = 'romance',
   FANTASY = 'fantasy',
-  COMIC = 'comic',
+  COMICS = 'comics',
   BL = 'bl',
   // Legacy
   FANTASY_SERIAL = 'fantasy_serial',
@@ -69,10 +69,10 @@ export const homeGenres: Genres = {
       },
     ],
   },
-  comic: {
-    key: Genre.COMIC,
+  comics: {
+    key: Genre.COMICS,
     label: '만화',
-    path: '/comic',
+    path: '/comics',
     subServices: [],
   },
   bl: {
