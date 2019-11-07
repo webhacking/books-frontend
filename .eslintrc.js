@@ -37,7 +37,7 @@ const eslintRules = {
   'handle-callback-err': 'error',
   'id-blacklist': 'error',
   'id-match': 'error',
-  'implicit-arrow-linebreak': 'error',
+  'implicit-arrow-linebreak': 'off',
   indent: 'off',
   'indent-legacy': 'off',
   'init-declarations': 'error',
@@ -202,6 +202,7 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
+    'jest/globals': true,
   },
   extends: [
     'eslint:recommended',
@@ -224,7 +225,7 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'jsx-a11y', 'import'],
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'jsx-a11y', 'import', 'jest'],
   rules: {
     ...eslintRules,
     ...hooksRule,
