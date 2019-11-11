@@ -13,4 +13,4 @@ services:
     init: true
     environment:
       ENVIRONMENT: local
-    command: ['make', 'docker-start-local']
+    command: ['yarn', 'local']
