@@ -15,8 +15,12 @@ import InstantSearchResult from 'src/components/Search/InstantSearchResult';
 import InstantSearchHistory from 'src/components/Search/InstantSearchHistory';
 import getConfig from 'next/config';
 import { get } from 'ts-get';
-import { PublicRuntimeConfig } from 'src/types/common';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import pRetry from 'p-retry';
+import sentry from 'src/utils/sentry';
+
+const { captureException } = sentry();
+
 const { publicRuntimeConfig } = getConfig();
 
 const fadeIn = keyframes`
@@ -273,13 +277,14 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const handleSearch = useCallback(async (value: string) => {
       setFetching(true);
       try {
-        const result = await axios.get(
-          `${
-            (publicRuntimeConfig as PublicRuntimeConfig).SEARCH_API
-          }/search?site=ridi-store&where=book&where=author&what=instant&keyword=${encodeURIComponent(
-            value,
-          )}`,
-        );
+        const url = new URL('/search', publicRuntimeConfig.SEARCH_API);
+        url.searchParams.append('site', 'ridi-store');
+        url.searchParams.append('where', 'book');
+        url.searchParams.append('where', 'author');
+        url.searchParams.append('what', 'instant');
+        url.searchParams.append('keyword', value);
+
+        const result = await pRetry(() => axios.get(url.toString()), { retries: 2 });
         setSearchResult({
           books: get(result.data, data => data.book.books, []),
           authors: get(result.data, data => data.author.authors, []),
@@ -287,6 +292,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       } catch (error) {
         setSearchResult(initialSearchResult);
         setFocusedPosition(0);
+        captureException(error);
       } finally {
         setFetching(false);
       }
