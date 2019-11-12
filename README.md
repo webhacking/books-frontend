@@ -94,20 +94,6 @@ $ export CYPRESS_BASE_URL=[baseURL]
 $ docker-compose -f ./docker-compose.cypress.yml up --force-recreate --build
 ```
 
-_or_
-
-**Run by Installed Cypress**
-
-```bash
-$ yarn cypress run
-```
-
-_Alternatively, you can use the cypress app to create test cases_
-
-```bash
-$ yarn cypress open
-```
-
 ### Branches
 
 #### [master](https://gitlab.com/ridicorp/frontend/books/tree/master)
