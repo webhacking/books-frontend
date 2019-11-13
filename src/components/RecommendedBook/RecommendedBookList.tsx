@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import {
   BookList,
+  BookMeta,
   hotReleaseBookListCSS,
   recommendedBookListCSS,
 } from 'src/components/RecommendedBook/RecommendedBook';
@@ -43,7 +44,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                 thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
               />
             </ThumbnailWrapper>
-            {/* <BookMeta book={book} /> */}
+            {book.detail && <BookMeta book={book.detail} />}
           </PortraitBook>
         ))}
       </BookList>

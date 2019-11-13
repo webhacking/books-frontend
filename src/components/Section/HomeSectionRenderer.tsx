@@ -63,6 +63,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     case DisplayType.HomeQuickMenu: {
       return <QuickMenuList items={items as QuickMenu[]} />;
     }
+    case DisplayType.UserPreferredBestseller:
     case DisplayType.HomeMdSelection: {
       return (
         <>

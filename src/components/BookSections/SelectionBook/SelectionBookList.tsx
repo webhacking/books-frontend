@@ -6,7 +6,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
-import { Book } from 'src/types/sections';
+import { MdBook } from 'src/types/sections';
 
 const listCSS = css`
   padding-bottom: 48px;
@@ -41,7 +41,7 @@ const itemCSS = css`
 `;
 
 interface SelectionBookListProps {
-  items: Book[];
+  items: MdBook[];
   isAIRecommendation: boolean;
 }
 

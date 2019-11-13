@@ -5,14 +5,16 @@ import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
-import mockData from 'src/components/BookSections/mockData';
 
 afterEach(cleanup);
 
 const renderSelectionBookList = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <SelectionBookList isAIRecommendation={false} items={mockData[3].items} />
+      <SelectionBookList
+        isAIRecommendation={false}
+        items={[{ b_id: '12345666', type: 'test', detail: null }]}
+      />
     </ThemeProvider>,
   );
 

@@ -1,3 +1,5 @@
+import * as BookApi from 'src/types/book';
+
 export enum DisplayType {
   HomeQuickMenu = 'HomeQuickMenu',
   Page = 'Page',
@@ -9,6 +11,7 @@ export enum DisplayType {
   HomeMdSelection = 'HomeMdSelection',
   ReadingBooksRanking = 'ReadingBooksRanking',
   HomeEventBanner = 'HomeEventBanner',
+  UserPreferredBestseller = 'UserPreferredBestseller',
 }
 
 interface BaseResult {
@@ -36,6 +39,7 @@ export interface Page extends BaseResult {
 }
 
 export interface BestSeller {
+  detail: BookApi.Book | null;
   b_id: string;
   period: string;
   options: [];
@@ -43,11 +47,13 @@ export interface BestSeller {
 }
 
 export interface ReadingRanking {
+  detail: BookApi.Book | null;
   b_id: string;
   type: string;
 }
 
 export interface HotRelease {
+  detail: BookApi.Book | null;
   b_id: string;
   type: string;
   order: number;
@@ -82,7 +88,8 @@ export interface EventBanner {
   link: string;
 }
 
-export interface Book {
+export interface MdBook {
+  detail: BookApi.Book | null;
   b_id: string;
   type: string;
 }
@@ -91,5 +98,12 @@ export interface MdSelection {
   id: number;
   title: string;
   order: number;
-  books: Book[];
+  books: MdBook[];
 }
+
+export type BookItem =
+  | MdBook
+  | TodayRecommendation
+  | HotRelease
+  | ReadingRanking
+  | BestSeller;

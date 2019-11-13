@@ -9,15 +9,16 @@ import * as Cookies from 'js-cookie';
 import titleGenerator from 'src/utils/titleGenerator';
 import { connect } from 'react-redux';
 import { RootState } from 'src/store/config';
-import axios from 'src/utils/axios';
+
 import getConfig from 'next/config';
 import { Page, Section } from 'src/types/sections';
 import { HomeSectionRenderer } from 'src/components/Section/HomeSectionRenderer';
 import pRetry from 'p-retry';
+import { keyToArray } from 'src/utils/common';
+import axios from 'src/utils/axios';
+import { booksActions } from 'src/services/books';
 import { Request } from 'express';
 import { ServerResponse } from 'http';
-// import { keyToArray } from 'src/utils/common';
-// import { booksActions } from 'src/services/books';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -60,21 +61,11 @@ export class Home extends React.Component<HomeProps> {
       minTimeout: 2000,
     });
     return result.data;
-    // Todo fetch books
-
-    //
-    // if (bIds.length > 0) {
-    //   axios
-    //     .get(`https://book-api.dev.ridi.io/books?b_ids=${bIds.join()}`)
-    //     .then(result => {
-    //       console.log(result.data);
-    //     });
-    // }
   }
 
   // eslint-disable-next-line complexity
   public static async getInitialProps(props: ConnectedInitializeProps) {
-    const { query, res, req } = props;
+    const { query, res, req, store } = props;
 
     const genre = query.genre
       ? Genre[(query.genre as string).toUpperCase() as keyof typeof Genre]
@@ -143,6 +134,8 @@ export class Home extends React.Component<HomeProps> {
           genre || Genre.GENERAL,
           service || GenreSubService.SINGLE,
         );
+        const bIds = keyToArray(result.branches, 'b_id');
+        store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
         return {
           genre: genre || Genre.GENERAL,
           service: service || GenreSubService.SINGLE,
@@ -157,6 +150,8 @@ export class Home extends React.Component<HomeProps> {
         genre || Genre.GENERAL,
         service || GenreSubService.SINGLE,
       );
+      const bIds = keyToArray(result.branches, 'b_id');
+      store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
       return {
         genre: genre || Genre.GENERAL,
         service: service || GenreSubService.SINGLE,

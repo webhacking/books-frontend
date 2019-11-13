@@ -50,3 +50,33 @@ export const timeAgo = (timestamp: number) => {
 
   return `${diff}개월 전`;
 };
+
+export const keyToArray = (target: any[] | Record<string, any>, key: string): any[] => {
+  if (!target || !key) {
+    return [];
+  }
+
+  const arr = [];
+  if (Array.isArray(target)) {
+    target.forEach(item => arr.push(...keyToArray(item, key)));
+  } else if (typeof target === 'object' && target) {
+    Object.keys(target).forEach(innerKey => {
+      if (innerKey === key) {
+        arr.push(target[key]);
+      } else {
+        arr.push(...keyToArray(target[innerKey], key));
+      }
+    });
+  }
+  return arr;
+};
+
+export const splitArrayToChunk = (array: any[], size: number) => {
+  const chunked_arr = [];
+  let index = 0;
+  while (index < array.length) {
+    chunked_arr.push(array.slice(index, size + index));
+    index += size;
+  }
+  return chunked_arr;
+};

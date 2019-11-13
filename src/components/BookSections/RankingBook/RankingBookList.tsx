@@ -13,6 +13,8 @@ import Clock from 'src/svgs/Clock.svg';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { createTimeLabel } from 'src/utils/dateTime';
 import { ReadingRanking } from 'src/types/sections';
+import BookMeta from 'src/components/BookMeta/BookMeta';
+import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -160,6 +162,8 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   const ref = useRef<HTMLUListElement>(null);
+  const [books] = useBookDetailSelector(props.items);
+
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   return (
     <>
@@ -190,7 +194,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
             margin-bottom: 62px;
           `}>
           <ul css={listCSS} ref={ref}>
-            {props.items.slice(0, 9).map((book, index) => (
+            {books.slice(0, 9).map((book, index) => (
               <li css={props.type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
                 <div
                   css={css`
@@ -212,14 +216,16 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                 </div>
                 <div className={'book-meta-box'}>
                   <div css={rankCSS}>{index + 1}</div>
-                  {/* <BookMeta> */}
-                  {/*  book={book}*/}
-                  {/*  showRating={props.type === 'big'}*/}
-                  {/*  titleLineClamp={props.type === 'small' ? 1 : 2}*/}
-                  {/*  showSomeDeal={false}*/}
-                  {/*  isAIRecommendation={false}*/}
-                  {/*  width={props.type === 'big' ? '177px' : null}*/}
-                  {/*  </> */}
+                  {book.detail && (
+                    <BookMeta
+                      book={book.detail}
+                      showRating={props.type === 'big'}
+                      titleLineClamp={props.type === 'small' ? 1 : 2}
+                      showSomeDeal={false}
+                      isAIRecommendation={false}
+                      width={props.type === 'big' ? '177px' : null}
+                    />
+                  )}
                 </div>
               </li>
             ))}

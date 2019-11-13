@@ -10,6 +10,7 @@ import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel'
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
+import { BookMeta } from 'src/components/RecommendedBook/RecommendedBook';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -136,7 +137,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                     thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
                   />
                 </ThumbnailWrapper>
-                {/* <BookMeta book={book} /> */}
+                {book.detail && <BookMeta book={book.detail} />}
               </PortraitBook>
             </div>
           ))}
