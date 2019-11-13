@@ -46,15 +46,33 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
             pathname,
             ...rest
           } = ctx;
+
+          // isAxiosError
+          if (error.config) {
+            if (error.response) {
+              scope.setExtra('Axios Response Url', error.config.url);
+              scope.setTag('AXIOS_RESPONSE_CODE', error.response.status);
+              scope.setTag('API_URL', error.config.url);
+              scope.setFingerprint([
+                error.config.url,
+                error.response.status,
+                error.message,
+              ]);
+            }
+          }
           scope.setTag('isServer', isServer);
           scope.setExtra('path', asPath);
           scope.setExtra('NEXT_JS_ERROR', err);
           scope.setExtra('query', query);
-          // Todo add extra store information
           const state = store.getState();
+          if (state.account && state.account.loggedUser) {
+            // SSR 에 유저 정보가 없으니 늘 빈 값일 거 같다.
+            // Fixme CSR 하다 에러가 났을 때 store 를 어디서 받아올지 고민
+            scope.setExtras(state.account.loggedUser);
+          }
 
           if (req && res) {
-            scope.setExtra('RES_STATUS_CODE', res.statusCode);
+            scope.setExtra('NEXT_JS_RES_STATUS_CODE', res.statusCode);
           }
         }
       });

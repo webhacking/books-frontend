@@ -17,6 +17,8 @@ import axios from 'src/utils/axios';
 import { booksActions } from 'src/services/books';
 import { Request } from 'express';
 import { ServerResponse } from 'http';
+import sentry from 'src/utils/sentry';
+const { captureException } = sentry();
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -62,8 +64,8 @@ export class Home extends React.Component<HomeProps> {
   }
 
   // eslint-disable-next-line complexity
-  public static async getInitialProps(props: ConnectedInitializeProps) {
-    const { query, res, req, store } = props;
+  public static async getInitialProps(ctx: ConnectedInitializeProps) {
+    const { query, res, req, store } = ctx;
 
     const genre = query.genre
       ? Genre[(query.genre as string).toUpperCase() as keyof typeof Genre]
@@ -81,7 +83,7 @@ export class Home extends React.Component<HomeProps> {
         // Legacy Genre Fallback
         if (genre.match(/^(fantasy_serial|bl_serial|romance_serial)$/u)) {
           this.redirect(req, res, `/${genre.replace('_', '/')}`);
-          return { genre: genre.split('_')[0], service: 'serial', ...props.query };
+          return { genre: genre.split('_')[0], service: 'serial', ...ctx.query };
         }
         if (!query.service) {
           // URL Genre Param 이 있는 경우 저장 된 Sub Service 체크 후 Redirection,
@@ -92,7 +94,7 @@ export class Home extends React.Component<HomeProps> {
             return {
               genre: genre || 'general',
               service: service || 'single',
-              ...props.query,
+              ...ctx.query,
               branches: [],
             };
           }
@@ -127,6 +129,28 @@ export class Home extends React.Component<HomeProps> {
       }
       // Todo Fetch Sections
       if (res.statusCode !== 302) {
+        try {
+          const result = await this.fetchHomeSections(
+            // @ts-ignore
+            genre || Genre.GENERAL,
+            service || GenreSubService.SINGLE,
+          );
+          const bIds = keyToArray(result.branches, 'b_id');
+          store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+          return {
+            genre: genre || Genre.GENERAL,
+            service: service || GenreSubService.SINGLE,
+            ...query,
+            ...result,
+          };
+        } catch (error) {
+          captureException(error, ctx);
+          this.redirect(req, res, '/error');
+        }
+      }
+    } else {
+      // Client Side
+      try {
         const result = await this.fetchHomeSections(
           // @ts-ignore
           genre || Genre.GENERAL,
@@ -139,28 +163,16 @@ export class Home extends React.Component<HomeProps> {
           ...query,
           ...result,
         };
+      } catch (error) {
+        captureException(error, ctx);
+        Router.pushRoute('/error');
       }
-    } else {
-      // Client Side
-      const result = await this.fetchHomeSections(
-        // @ts-ignore
-        genre || Genre.GENERAL,
-        service || GenreSubService.SINGLE,
-      );
-      const bIds = keyToArray(result.branches, 'b_id');
-      store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
-      return {
-        genre: genre || Genre.GENERAL,
-        service: service || GenreSubService.SINGLE,
-        ...query,
-        ...result,
-      };
     }
     return {
       genre: genre || 'general',
       service: service || 'single',
       branches: [],
-      ...props.query,
+      ...ctx.query,
     };
   }
 
