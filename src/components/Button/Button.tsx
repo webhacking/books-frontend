@@ -12,7 +12,7 @@ const createCSS = (theme: RIDITheme) => css`
   box-sizing: border-box;
   background-color: ${theme.button.primaryBackground};
   border: 1px solid ${theme.button.primaryBorderColor};
-  border-radius: 2px;
+  border-radius: 3px;
   padding: 6px 16px;
   font-weight: bold;
   color: white;
