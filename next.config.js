@@ -1,7 +1,6 @@
 const { InjectManifest } = require('workbox-webpack-plugin');
 const nextSourceMaps = require('@zeit/next-source-maps')({
-  devtool:
-    process.env.ENVIRONMENT !== 'production' ? 'inline-source-map' : 'hidden-source-map',
+  devtool: 'hidden-source-map',
 });
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const { parsed: localEnv = {} } = require('dotenv').config();
