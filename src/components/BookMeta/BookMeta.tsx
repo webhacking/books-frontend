@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { css } from '@emotion/core';
 import { lineClamp } from 'src/styles';
-import StarRating from 'src/components/StarRating/StarRating';
+// import StarRating from 'src/components/StarRating/StarRating';
 import Tag from 'src/components/Tag/Tag';
-import { BookScheme } from 'src/types/book';
+import * as BookApi from 'src/types/book';
 
 const bookTitleCSS = css`
   font-size: 15px;
@@ -29,7 +29,7 @@ const authorCSS = css`
 `;
 
 interface BookMetaProps {
-  book: BookScheme;
+  book: BookApi.Book;
   titleLineClamp?: number;
   showRating: boolean;
   showSomeDeal?: boolean;
@@ -39,22 +39,26 @@ interface BookMetaProps {
 
 const BookMeta: React.FC<BookMetaProps> = props => {
   const {
-    book: { totalReviewer, isSomeDeal, tag, title, author, avgRating },
+    book: {
+      title,
+      authors_ordered,
+      property: { is_somedeal, is_novel },
+    },
     // isAIRecommendation,
-    showSomeDeal,
     titleLineClamp,
-
+    showSomeDeal,
     showRating,
   } = props;
 
-  // tslint:disable-next-line:no-shadowed-variable
-  const renderTag = (tagName: string) => {
-    if (tagName === 'novel') {
+  // Todo split code
+  // is_comic 은 어디있나?
+  const renderTag = () => {
+    if (is_novel) {
       return <Tag.Novel />;
     }
-    if (tagName === 'comic') {
-      return <Tag.Comic />;
-    }
+    // if (tagName === 'comic') {
+    //   return <Tag.Comic />;
+    // }
     return null;
   };
   return (
@@ -75,28 +79,30 @@ const BookMeta: React.FC<BookMetaProps> = props => {
               ${bookTitleCSS};
               ${lineClamp(titleLineClamp || 2)}
             `}>
-            {title}
+            {title.main}
           </h2>
         </a>
         {/* Todo Author Anchor Generator */}
-        <span css={authorCSS}>{author}</span>
+        <span css={authorCSS}>{authors_ordered[0].name}</span>
         {showRating && (
           <>
-            <span
-              css={css`
-                margin-bottom: 6px;
-              `}>
-              <StarRating totalReviewer={totalReviewer} rating={avgRating || 0} />
-            </span>
-            <span
-              css={css`
-                display: flex;
-              `}>
-              {tag && renderTag(tag)}
-              {showSomeDeal && isSomeDeal && <Tag.SomeDeal />}
-            </span>
+            {/* <span */}
+            {/*  css={css`*/}
+            {/*    margin-bottom: 6px;*/}
+            {/*  `}>*/}
+            {/*  <StarRating totalReviewer={totalReviewer} rating={avgRating || 0} />*/}
+            {/* </span> */}
           </>
         )}
+        <>
+          <span
+            css={css`
+              display: flex;
+            `}>
+            {renderTag()}
+            {showSomeDeal && is_somedeal && <Tag.SomeDeal />}
+          </span>
+        </>
       </div>
     </>
   );

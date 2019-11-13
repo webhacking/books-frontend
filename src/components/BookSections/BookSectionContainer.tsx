@@ -1,8 +1,7 @@
-import { BookScheme } from 'src/types/book';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import { ReadingRanking } from 'src/types/sections';
+import { BookItem } from 'src/types/sections';
 
 const fontStyle = css`
   font-size: 21px;
@@ -67,7 +66,7 @@ export interface SelectionOption {
 
 export interface BookSection {
   type: 'ranking' | 'selection';
-  items: BookScheme[] | ReadingRanking[];
+  items: BookItem[];
   option?: RankingOption | SelectionOption;
   title: string;
   url?: string;

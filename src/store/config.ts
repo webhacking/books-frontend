@@ -16,11 +16,13 @@ import {
   RouteState,
 } from 'connected-next-router';
 import { AccountState } from 'src/services/accounts/reducer';
+import { BooksState } from 'src/services/books/reducer';
 
 export interface RootState {
   app?: AppState;
   router?: RouteState;
   account: AccountState;
+  books: BooksState;
 }
 
 interface MakeStoreOption {
@@ -36,7 +38,6 @@ interface MakeStoreOption {
   isServer: boolean;
 }
 
-const sagaMiddleware = createSagaMiddleware();
 const routerMiddleware = createRouterMiddleware({
   Router,
   method: {
@@ -53,7 +54,7 @@ const makeStore = (
   if (makeStoreOption && makeStoreOption.asPath) {
     preLoadedState.router = initialRouterState(makeStoreOption.asPath);
   }
-
+  const sagaMiddleware = createSagaMiddleware();
   const store = createStore(
     rootReducers,
     preLoadedState,

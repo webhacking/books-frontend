@@ -6,4 +6,8 @@ export const initialState: RootState = {
   account: {
     loggedUser: null,
   },
+  books: {
+    isFetching: false,
+    items: {},
+  },
 };

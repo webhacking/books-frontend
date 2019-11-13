@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Book as BookScheme } from 'src/types/sections';
+import { MdBook } from 'src/types/sections';
 import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
 import SelectionBookCarousel from 'src/components/BookSections/SelectionBook/SelectionBookCarousel';
@@ -15,6 +15,8 @@ import {
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import ArrowV from 'src/svgs/ArrowV.svg';
+import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
+import BookMeta from 'src/components/BookMeta/BookMeta';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -24,14 +26,14 @@ const SectionWrapper = styled.section`
 `;
 
 interface SelectionBookProps {
-  items: BookScheme[];
+  items: MdBook[];
   title: string;
   url?: string;
   option: SelectionOption;
 }
 
 interface SelectionBookItemProps {
-  book: BookScheme;
+  book: MdBook;
   isAIRecommendation: boolean;
   width: number;
 }
@@ -48,12 +50,15 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
           css={css``}
         />
       </ThumbnailWrapper>
-      {/* <BookMeta */}
-      {/*  book={book}*/}
-      {/*  width={`${props.width || 140}px`}*/}
-      {/*  showRating={true}*/}
-      {/*  isAIRecommendation={false}*/}
-      {/* </> */}
+      {book.detail && (
+        <BookMeta
+          book={book.detail}
+          width={`${props.width || 140}px`}
+          showRating={true}
+          isAIRecommendation={false}
+        />
+      )}
+
       {isAIRecommendation && (
         <button
           css={css`
@@ -75,7 +80,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
 };
 
 export interface SelectionBookCarouselProps {
-  items: BookScheme[];
+  items: MdBook[]; // Fixme Md 타입 말고 comics UserPreferredSection 타입이 API 결과로 오는데 이 부분 확인해야 함
   isAIRecommendation: boolean;
   isIntersecting?: boolean;
 }
@@ -100,7 +105,7 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
               }
             />
           </ThumbnailWrapper>
-          {/* <BookMeta book={book} showRating={true} /> */}
+          {book.detail && <BookMeta book={book.detail} showRating={true} />}
         </PortraitBook>
       ))}
     </ul>
@@ -109,6 +114,9 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
 
 const SelectionBook: React.FC<SelectionBookProps> = props => {
   const [, setMounted] = useState(false);
+
+  const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -141,24 +149,24 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
           <span>{props.title}</span>
         )}
       </SectionTitle>
-      {!isIntersecting ? (
+      {!isIntersecting || isFetching ? (
         <SelectionBookLoading
           isIntersecting={isIntersecting}
           isAIRecommendation={props.option.isAIRecommendation}
-          items={props.items.slice(0, 6)}
+          items={books.slice(0, 6)}
         />
       ) : (
         <WindowWidthQuery>
           <View maxWidth={1000}>
             <SelectionBookList
               isAIRecommendation={props.option.isAIRecommendation}
-              items={props.items}
+              items={books}
             />
           </View>
           <View>
             <SelectionBookCarousel
               isAIRecommendation={props.option.isAIRecommendation}
-              items={props.items}
+              items={books}
             />
           </View>
         </WindowWidthQuery>

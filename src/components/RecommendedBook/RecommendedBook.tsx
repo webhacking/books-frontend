@@ -7,7 +7,7 @@ import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookL
 import styled from '@emotion/styled';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import { flexRowStart, lineClamp, scrollBarHidden } from 'src/styles';
-import NewBadge from 'src/svgs/NewBadge.svg';
+// import NewBadge from 'src/svgs/NewBadge.svg';
 import AtSelectIcon from 'src/svgs/Book1.svg';
 import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedBookCarousel';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
@@ -15,6 +15,9 @@ import { PortraitBook } from 'src/components/Book/PortraitBook';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
+import * as BookApi from 'src/types/book';
+import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
+
 const { publicRuntimeConfig } = getConfig();
 
 const backgroundImageCSS = css`
@@ -104,48 +107,50 @@ const hotReleaseTitleCSS = css`
 `;
 
 interface BookMetaProps {
-  book: BookScheme;
+  book: BookApi.Book;
+  showSelect?: boolean;
 }
 
-export const BookMeta: React.FC<BookMetaProps> = React.memo(props => (
-  <div css={bookMetaWrapperCSS}>
-    <BookTitle>{props.book.title || ''}</BookTitle>
-    <BookAuthor>{props.book.author || ''}</BookAuthor>
-    {props.book.serviceAtSelect && (
-      <div
-        css={css`
-          display: flex;
-          align-items: center;
-        `}>
-        <AtSelectIcon
+// eslint-disable-next-line
+export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
+  // @ts-ignore
+  return (
+    <div css={bookMetaWrapperCSS}>
+      {props.book.title && <BookTitle>{props.book.title.main || ''}</BookTitle>}
+      {props.book.authors && props.book.authors.author && (
+        <BookAuthor>{props.book.authors.author[0].name || ''}</BookAuthor>
+      )}
+      {props.book.isAvailableSelect && (
+        <div
           css={css`
-            width: 14px;
-            height: 12px;
-            margin-right: 6px;
-          `}
-        />
-        <span
-          css={css`
-            font-size: 13px;
-            font-weight: bold;
-            color: #8e97ff;
+            display: flex;
+            align-items: center;
           `}>
-          리디셀렉트
-        </span>
-      </div>
-    )}
-  </div>
-));
+          <AtSelectIcon
+            css={css`
+              width: 14px;
+              height: 12px;
+              margin-right: 6px;
+            `}
+          />
+          <span
+            css={css`
+              font-size: 13px;
+              font-weight: bold;
+              color: #8e97ff;
+            `}>
+            리디셀렉트
+          </span>
+        </div>
+      )}
+    </div>
+  );
+});
 
-export interface BookScheme {
-  id: string;
-  title: string;
-  author: string;
-  serviceAtSelect: boolean;
-}
+type RecommendedBookType = TodayRecommendation[] | HotRelease[];
 
 interface RecommendedBookProps {
-  items: TodayRecommendation[] | HotRelease[];
+  items: RecommendedBookType;
   title: string;
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
 }
@@ -153,6 +158,9 @@ interface RecommendedBookProps {
 const RecommendedBook: React.FC<RecommendedBookProps> = props => {
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
+
+  const [books, isFetching] = useBookDetailSelector(props.items);
+
   return (
     <section
       ref={targetRef}
@@ -162,23 +170,15 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           : recommendedBookWrapperCSS
       }>
       {/* Todo split hot release title */}
-      {props.type === DisplayType.HotRelease && (
-        <p css={hotReleaseTitleCSS}>
-          <span
-            css={css`
-              margin-right: 8px;
-            `}>
-            집 앞 서점에 방금 나온 신간!
-          </span>
-          <NewBadge
-            css={css`
-              width: 36px;
-              height: 20px;
-            `}
-          />
-        </p>
-      )}
-      {!isIntersecting ? (
+      <p css={hotReleaseTitleCSS}>
+        <span
+          css={css`
+            margin-right: 8px;
+          `}>
+          {props.title}
+        </span>
+      </p>
+      {!isIntersecting || isFetching ? (
         <BookList
           css={
             props.type === DisplayType.HotRelease
@@ -186,28 +186,33 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
               : recommendedBookListCSS
           }>
           {/* // @ts-ignore */}
-          {props.items.slice(0, 6).map((_book, index) => (
+          {books.slice(0, 6).map((book, index) => (
             <PortraitBook key={index}>
               <ThumbnailWrapper>
                 <Book.Thumbnail
                   thumbnailUrl={
-                    'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
-                    // : `https://misc.ridibooks.com/cover/${book.id}/xxlarge`
+                    isIntersecting
+                      ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
+                      : `https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`
                   }
                 />
               </ThumbnailWrapper>
-              {/* Temporary */}
-              {/* <BookMeta book={book} /> */}
+              {book.detail && (
+                <BookMeta
+                  book={book.detail}
+                  showSelect={props.type === DisplayType.HotRelease}
+                />
+              )}
             </PortraitBook>
           ))}
         </BookList>
       ) : (
         <WindowWidthQuery>
           <View maxWidth={1000}>
-            <RecommendedBookList type={props.type} items={props.items} />
+            <RecommendedBookList type={props.type} items={books as HotRelease[]} />
           </View>
           <View>
-            <RecommendedBookCarousel type={props.type} items={props.items} />
+            <RecommendedBookCarousel type={props.type} items={books as HotRelease[]} />
           </View>
         </WindowWidthQuery>
       )}

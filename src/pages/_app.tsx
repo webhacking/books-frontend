@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { Store } from 'redux';
 import withRedux from 'next-redux-wrapper';
 import makeStore, { RootState } from 'src/store/config';
+import withReduxSaga from 'next-redux-saga';
 import { ConnectedRouter } from 'connected-next-router';
 import { CacheProvider, Global } from '@emotion/core';
 import { defaultTheme, resetStyles } from 'src/styles';
@@ -195,4 +196,4 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     );
   }
 }
-export default withRedux(makeStore, { debug: false })(StoreApp);
+export default withRedux(makeStore, { debug: false })(withReduxSaga(StoreApp));
