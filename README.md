@@ -56,7 +56,7 @@
 - Install packages
 
 ```bash
-$ make install
+$ yarn install --frozen-lockfile
 ```
 
 **Serve with TLS**
@@ -91,21 +91,7 @@ $ export CYPRESS_BASE_URL=[baseURL]
 **Run by Docker**
 
 ```bash
-$ make docker-e2e
-```
-
-_or_
-
-**Run by Installed Cypress**
-
-```bash
-$ npx cypress run
-```
-
-_Alternatively, you can use the cypress app to create test cases_
-
-```bash
-$ npx cypress open
+$ docker-compose -f ./docker-compose.cypress.yml up --force-recreate --build
 ```
 
 ### Branches
