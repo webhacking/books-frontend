@@ -8,7 +8,8 @@ import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
 const { captureException } = sentry();
 
-const DEFAULT_BOOKS_ID_CHUNK_SIZE = 40;
+// 임시 청크
+const DEFAULT_BOOKS_ID_CHUNK_SIZE = 10;
 
 function* fetchBooks(bIds: string[]) {
   const data = yield call(pRetry, () => requestBooks(bIds), { retries: 2 });
