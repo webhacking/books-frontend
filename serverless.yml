@@ -57,11 +57,9 @@ functions:
       - http:
           method: ANY
           path: /
-          async: true
       - http:
           method: ANY
           path: /{proxy+}
-          async: true
 
 plugins:
   - serverless-offline

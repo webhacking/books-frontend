@@ -8,8 +8,6 @@ import { Router } from 'server/routes';
 import * as Cookies from 'js-cookie';
 import titleGenerator from 'src/utils/titleGenerator';
 import { connect } from 'react-redux';
-import { RootState } from 'src/store/config';
-
 import getConfig from 'next/config';
 import { Page, Section } from 'src/types/sections';
 import { HomeSectionRenderer } from 'src/components/Section/HomeSectionRenderer';
@@ -134,8 +132,7 @@ export class Home extends React.Component<HomeProps> {
           genre || Genre.GENERAL,
           service || GenreSubService.SINGLE,
         );
-        const bIds = keyToArray(result.branches, 'b_id');
-        store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+
         return {
           genre: genre || Genre.GENERAL,
           service: service || GenreSubService.SINGLE,
@@ -193,6 +190,9 @@ export class Home extends React.Component<HomeProps> {
 
   public componentDidMount(): void {
     this.setCookie(this.props);
+    const bIds = keyToArray(this.props.branches, 'b_id');
+    // @ts-ignore
+    this.props.insertBookIds(bIds);
   }
 
   public shouldComponentUpdate(
@@ -246,9 +246,12 @@ export class Home extends React.Component<HomeProps> {
   }
 }
 
-// Temporary code for redux connect
-const mapStateToProps = ({ app }: RootState) => ({
-  app,
+const mapDispatchToProps = dispatch => ({
+  insertBookIds: (bIds: string[]) =>
+    dispatch({ type: booksActions.insertBookIds.type, payload: bIds }),
 });
 
-export default connect(mapStateToProps)(Home);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Home);
