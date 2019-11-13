@@ -49,6 +49,7 @@ const Arrow: React.FC<ArrowProps> = props => {
     side === 'left' ? leftRotate : null,
     arrowStyle,
     css`
+      top: 1.5px;
       fill: ${color === 'dark' ? '#b8bfc4' : '#808991'};
     `,
   ];
