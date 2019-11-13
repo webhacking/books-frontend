@@ -18,6 +18,7 @@ export const initModules = () => {
       },
     }),
   }));
+  // jest.mock('next/router', () => () => ({ useRouter: () => {} }));
   jest.mock('next/dynamic', () => () => {
     const DynamicComponent = () => null;
     DynamicComponent.displayName = 'LoadableComponent';
@@ -25,7 +26,9 @@ export const initModules = () => {
     return DynamicComponent;
   });
 
-  jest.mock('src/utils/sentry', () => () => ({}));
+  jest.mock('src/utils/sentry', () => () => ({
+    captureException: () => null,
+  }));
 
   jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {

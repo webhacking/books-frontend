@@ -4,6 +4,8 @@ import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../../../store/config';
 import { Provider } from 'react-redux';
+import { RouterContext } from 'next/dist/next-server/lib/router-context';
+
 afterEach(cleanup);
 const store = makeStore(
   { account: { loggedUser: null } },
@@ -21,7 +23,9 @@ test('should be render Index Component', async () => {
 
   const { getByText } = render(
     <Provider store={store}>
-      <Index {...props} />
+      <RouterContext.Provider value={{ asPath: '' }}>
+        <Index {...props} />
+      </RouterContext.Provider>
     </Provider>,
   );
 

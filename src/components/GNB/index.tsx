@@ -13,6 +13,11 @@ import { accountActions } from 'src/services/accounts';
 import { RootState } from 'src/store/config';
 import { AccountState } from 'src/services/accounts/reducer';
 import getConfig from 'next/config';
+import { LoggedUser } from 'src/types/account';
+import { useRouter } from 'next/router';
+
+import CashIcon from 'src/svgs/Cash.svg';
+
 const { publicRuntimeConfig } = getConfig();
 const GNBWrapper = styled.div`
   width: 100%;
@@ -157,6 +162,88 @@ const logoAndSearchBox = css`
   )};
 `;
 
+interface GNBButtonsProps {
+  loggedUser: null | LoggedUser;
+}
+const GNBButtons: React.FC<GNBButtonsProps> = props => {
+  const { loggedUser } = props;
+  const route = useRouter();
+  const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_HOST);
+  const signUpPath = new URL('/account/signup', publicRuntimeConfig.STORE_HOST);
+  const cashOrderPath = new URL('/order/checkout/cash', publicRuntimeConfig.STORE_HOST);
+
+  const returnUrl = new URL(route.asPath, publicRuntimeConfig.BOOKS_HOST);
+  loginPath.searchParams.append(
+    'return_url',
+    returnUrl.toString() || publicRuntimeConfig.BOOKS_HOST,
+  );
+  signUpPath.searchParams.append(
+    'return_url',
+    returnUrl.toString() || publicRuntimeConfig.BOOKS_HOST,
+  );
+
+  return (
+    <>
+      {loggedUser ? (
+        // Todo add promotion buttons ex) calc date 123 충전
+        <>
+          <li>
+            <a href={cashOrderPath.toString()}>
+              <Button
+                type={'primary'}
+                label={
+                  <div
+                    css={css`
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    `}>
+                    <span
+                      css={css`
+                        margin-right: 2px;
+                      `}>
+                      캐시
+                      <span
+                        css={orBelow(
+                          330,
+                          css`
+                            display: none;
+                          `,
+                        )}>
+                        충전
+                      </span>
+                    </span>
+                    <CashIcon />
+                  </div>
+                }
+              />
+            </a>
+          </li>
+          <li>
+            <a href={publicRuntimeConfig.LIBRARY_HOST}>
+              <Button type={'primary'} label={'내 서재'} />
+            </a>
+          </li>
+        </>
+      ) : (
+        <>
+          <li>
+            <a href={signUpPath.toString()}>
+              <Button type={'secondary'} label={'회원가입'} />
+            </a>
+          </li>
+          <li>
+            {/* Todo fix correct path by env */}
+            <a href={loginPath.toString()}>
+              <Button type={'primary'} label={'로그인'} />
+            </a>
+          </li>
+        </>
+      )}
+    </>
+  );
+};
+
 interface GNBProps {
   type?: string;
   id?: string;
@@ -205,24 +292,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               </li>
             </LogoWrapper>
             <ButtonWrapper>
-              {loggedUser ? (
-                // Todo add promotion buttons ex) 캐시충전, 123 충전
-                <li>
-                  <Button type={'primary'} label={'내 서재'} />
-                </li>
-              ) : (
-                <>
-                  <li>
-                    <Button type={'secondary'} label={'회원가입'} />
-                  </li>
-                  <li>
-                    {/* Todo fix correct path by env */}
-                    <a href={loginPath.toString()}>
-                      <Button type={'primary'} label={'로그인'} />
-                    </a>
-                  </li>
-                </>
-              )}
+              <GNBButtons loggedUser={loggedUser} />
             </ButtonWrapper>
             <InstantSearch
               isPartials={props.isPartials}
