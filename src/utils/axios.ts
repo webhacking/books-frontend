@@ -12,7 +12,7 @@ export interface CustomRequestConfig {
 }
 
 // eslint-disable-next-line no-process-env
-const TIME_OUT = process.env.NODE_ENV !== 'production' ? 15000 : 8000;
+const TIME_OUT = 7000;
 
 const globalAxiosConfig = () => {
   axios.defaults.timeout = TIME_OUT;

@@ -136,6 +136,8 @@ export class Home extends React.Component<HomeProps> {
             service || GenreSubService.SINGLE,
           );
 
+          const bIds = keyToArray(result.branches, 'b_id');
+          store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
           return {
             genre: genre || Genre.GENERAL,
             service: service || GenreSubService.SINGLE,
@@ -202,9 +204,6 @@ export class Home extends React.Component<HomeProps> {
 
   public componentDidMount(): void {
     this.setCookie(this.props);
-    const bIds = keyToArray(this.props.branches, 'b_id');
-    // @ts-ignore
-    this.props.insertBookIds(bIds);
   }
 
   public shouldComponentUpdate(
