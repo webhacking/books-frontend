@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { ConnectedInitializeProps } from 'src/types/common';
 import Head from 'next/head';
 import { NextComponentType } from 'next';
-import { Genre, homeGenres } from 'src/constants/genres';
 import { GenreTab } from 'src/components/Tabs';
 import PageTitle from 'src/components/PageTitle/PageTitle';
 import { css } from '@emotion/core';
@@ -322,7 +321,7 @@ const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = pr
       <Head>
         <title>카테고리 - 리디북스</title>
       </Head>
-      <GenreTab currentGenre={Genre.GENERAL} genres={homeGenres} />
+      <GenreTab currentGenre={'general'} />
       <section css={sectionCSS}>
         <PageTitle title={'카테고리'} mobileHidden={true} />
         {isMounted ? (

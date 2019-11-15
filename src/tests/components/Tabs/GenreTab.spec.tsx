@@ -3,7 +3,6 @@ import { cleanup, render, getByText } from '@testing-library/react';
 import { GenreTab } from 'src/components/Tabs';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
-import { Genre, homeGenres } from '../../../constants/genres';
 import * as labels from 'src/labels/common.json';
 
 afterEach(cleanup);
@@ -11,7 +10,7 @@ afterEach(cleanup);
 const renderComponent = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <GenreTab genres={homeGenres} currentGenre={Genre.FANTASY} />
+      <GenreTab currentGenre={'fantasy'} />
     </ThemeProvider>,
   );
 
