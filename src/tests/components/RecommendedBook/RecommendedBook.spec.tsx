@@ -9,7 +9,6 @@ import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
-import { Genre } from '../../../constants/genres';
 import { Provider } from 'react-redux';
 import makeStore from 'src/store/config';
 
@@ -37,7 +36,7 @@ const renderRecommendedBookWrapper = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
       <Provider store={store}>
-        <RecommendedBook type={'hot_release'} genre={Genre.GENERAL} items={books} />
+        <RecommendedBook type={'hot_release'} currentGenre={'general'} items={books} />
       </Provider>
     </ThemeProvider>,
   );

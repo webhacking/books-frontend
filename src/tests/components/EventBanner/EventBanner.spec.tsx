@@ -5,7 +5,6 @@ import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
-import { Genre } from '../../../constants/genres';
 
 afterEach(cleanup);
 
@@ -13,7 +12,7 @@ const renderEventBannerWrapper = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
       <EventBanner
-        genre={Genre.FANTASY}
+        genre={'general'}
         items={[{ label: '화끈한 포인트백 외전 완전 무료', imageUrl: '/', link: '/' }]}
       />
     </ThemeProvider>,

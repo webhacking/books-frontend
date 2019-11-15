@@ -1,5 +1,5 @@
 export default {
-  recentlyVisitedGenre: 'recentlyVisitedGenre',
+  main_genre: 'main_genre',
 };
 
 // day

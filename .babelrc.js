@@ -31,6 +31,7 @@ const plugins = [
       extensions: ['.js', '.ts', '.tsx'],
     },
   ],
+  '@babel/plugin-proposal-optional-chaining',
 ];
 
 module.exports = { plugins, presets };

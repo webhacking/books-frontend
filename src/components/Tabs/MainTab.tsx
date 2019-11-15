@@ -208,9 +208,9 @@ export const MainTab: React.FC<MainTabProps> = props => {
   const currentPath = useContext(BrowserLocationContext);
   const [homeURL, setHomeURL] = useState('/');
   useEffect(() => {
-    const visitedGenre = Cookies.get(`${cookieKeys.recentlyVisitedGenre}`);
+    const visitedGenre = Cookies.get(`${cookieKeys.main_genre}`);
     const visitedService = visitedGenre
-      ? Cookies.get(`${cookieKeys.recentlyVisitedGenre}_${visitedGenre}_Service`)
+      ? Cookies.get(`${cookieKeys.main_genre}_${visitedGenre}_Service`)
       : null;
     if (visitedGenre && visitedGenre !== 'general') {
       setHomeURL(
@@ -235,7 +235,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
         pathRegexp={
           // Hack, Apply lint
           // eslint-disable-next-line require-unicode-regexp,prefer-named-capture-group
-          /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(author|book|event|search|category|fantasy|romance|bl|general|comics)(\/.*$|$))/
+          /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(author|book|event|search|category|fantasy|romance|bl|bl-serial|fantasy-serial|romance-serial|comics)(\/.*$|$))/
         }
       />
       <TabItem

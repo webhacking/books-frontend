@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Genre, GenreInfo, Genres } from 'src/constants/genres';
 import styled from '@emotion/styled';
 import * as labels from 'src/labels/common.json';
 import GNBCategory from 'src/svgs/GNB_Category.svg';
@@ -7,8 +6,6 @@ import { css, SerializedStyles } from '@emotion/core';
 import { clearOutline, RIDITheme } from 'src/styles';
 import { Link } from 'server/routes';
 import { BrowserLocationContext } from 'src/components/Context';
-import * as Cookies from 'js-cookie';
-import cookieKeys from 'src/constants/cookies';
 import { orBelow } from 'src/utils/mediaQuery';
 
 const GenreTabWrapper = styled.ul`
@@ -139,20 +136,14 @@ const subServiceTab = (theme: RIDITheme) => css`
 // @ts-ignore
 const normal = (theme: RIDITheme) => css``;
 
-interface GenreTabProps {
-  genres: Genres;
-  currentGenre: Genre;
-}
-
 interface TabItemProps {
   label: string;
-  path: string;
+  activePath: string[];
   currentPath: string;
   currentCSS: (theme: RIDITheme) => SerializedStyles;
   normalCSS: (theme: RIDITheme) => SerializedStyles;
   labelCSS: (theme: RIDITheme) => SerializedStyles;
   route?: string;
-  genre: GenreInfo;
 }
 
 // @ts-ignore
@@ -168,13 +159,72 @@ const subServiceTabLabelCSS = (theme: RIDITheme) => css`
   }
 `;
 
+const genres = {
+  general: {
+    path: '/',
+    activePaths: '/',
+    services: [],
+  },
+  bl: {
+    path: '/bl',
+    activePaths: ['/bl', '/bl-serial'],
+    services: [
+      { name: '단행본', path: '/bl', activePaths: ['/bl'] },
+      { name: '연재', path: '/bl-serial', activePaths: ['/bl-serial'] },
+    ],
+  },
+  'bl-serial': {
+    path: '/bl-serial',
+    activePaths: ['/bl', '/bl-serial'],
+    services: [
+      { name: '단행본', path: '/bl', activePaths: ['/bl'] },
+      { name: '연재', path: '/bl-serial', activePaths: ['/bl-serial'] },
+    ],
+  },
+  fantasy: {
+    path: '/fantasy',
+    activePaths: ['/fantasy', '/fantasy-serial'],
+    services: [
+      { name: '단행본', path: '/fantasy', activePaths: ['/fantasy'] },
+      { name: '연재', path: '/fantasy-serial', activePaths: ['/fantasy-serial'] },
+    ],
+  },
+  'fantasy-serial': {
+    path: '/fantasy-serial',
+    activePaths: ['/fantasy', '/fantasy-serial'],
+    services: [
+      { name: '단행본', path: '/fantasy', activePaths: ['/fantasy'] },
+      { name: '연재', path: '/fantasy-serial', activePaths: ['/fantasy-serial'] },
+    ],
+  },
+  romance: {
+    path: '/romance',
+    activePaths: ['romance', 'romance-serial'],
+    services: [
+      { name: '단행본', path: '/romance', activePaths: ['/romance'] },
+      { name: '연재', path: '/romance-serial', activePaths: ['/romance-serial'] },
+    ],
+  },
+  'romance-serial': {
+    path: 'romance-serial',
+    activePaths: ['/romance', '/romance-serial'],
+    services: [
+      { name: '단행본', path: '/romance', activePaths: ['/romance'] },
+      { name: '연재', path: '/romance-serial', activePaths: ['/romance-serial'] },
+    ],
+  },
+  comics: {
+    path: '/comics',
+    activePaths: ['comics'],
+    services: [],
+  },
+};
+
 const TabItem: React.FC<TabItemProps> = React.memo(props => {
   // Todo apply lint
-  const { path, route, currentPath, genre } = props;
-  const regex =
-    path === 'general'
-      ? new RegExp('(^[^/]*\\/$|^\\/general|\\/genre\\/general$)')
-      : new RegExp(`^\\/${props.path.replace(/\//g, '\\/')}(\\/|$)`);
+  const { route, currentPath, activePath } = props;
+  // eslint-disable-next-line require-unicode-regexp
+  const regex = new RegExp(`^${activePath.join('|')}$`, 'g');
   const isActivePath = currentPath.match(regex);
   return (
     <li
@@ -198,9 +248,9 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
             `
           : props.labelCSS(theme)}
       `}>
-      <Link replace={!!currentPath.match(genre.path)} route={route}>
+      <Link replace={false} route={route}>
         <button>
-          <span css={currentPath.match(regex) ? props.currentCSS : props.normalCSS}>
+          <span css={isActivePath ? props.currentCSS : props.normalCSS}>
             {props.label}
           </span>
         </button>
@@ -209,10 +259,15 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
   );
 });
 
+interface GenreTabProps {
+  currentGenre: string;
+}
+
 const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
-  const { genres, currentGenre } = props;
-  const genre = genres[currentGenre];
-  const hasSubService = genre ? genre.subServices.length > 0 : false;
+  const { currentGenre } = props;
+  const genreInfo = genres[currentGenre || 'general'];
+
+  const showSubGenre = genreInfo.services.length > 1;
   const currentPath = useContext(BrowserLocationContext);
   return (
     <GenreTabWrapper>
@@ -230,7 +285,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                     :hover {
                       opacity: 0.7;
                     }
-                  `};
+                  `}
             `}>
             <Link route={'/category/list'}>
               <button>
@@ -248,51 +303,70 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               </button>
             </Link>
           </li>
-          {Object.keys(genres).map((k, index) => {
-            const visitedService = Cookies.get(
-              `${cookieKeys.recentlyVisitedGenre}_${genres[k].key}_Service`,
-            );
-            // eslint-disable-next-line no-nested-ternary
-            const route = visitedService
-              ? `${genres[k].path}/${visitedService}`
-              : genres[k].path.match(/(fantasy|romance|bl)/u)
-              ? `${genres[k].path}/single`
-              : genres[k].path;
-
-            return (
-              <TabItem
-                key={index}
-                normalCSS={normal}
-                currentCSS={genreTab}
-                labelCSS={genreTabLabelCSS}
-                currentPath={currentPath}
-                path={genres[k].key}
-                label={genres[k].label}
-                route={route}
-                genre={genres[k]}
-              />
-            );
-          })}
+          <TabItem
+            normalCSS={normal}
+            currentCSS={genreTab}
+            labelCSS={genreTabLabelCSS}
+            currentPath={currentPath}
+            activePath={['/']}
+            label={'일반'}
+            route={'/'}
+          />
+          <TabItem
+            normalCSS={normal}
+            currentCSS={genreTab}
+            labelCSS={genreTabLabelCSS}
+            currentPath={currentPath}
+            activePath={['/romance', '/romance-serial']}
+            label={'로맨스'}
+            route={'/romance'}
+          />
+          <TabItem
+            normalCSS={normal}
+            currentCSS={genreTab}
+            labelCSS={genreTabLabelCSS}
+            currentPath={currentPath}
+            activePath={['/fantasy', '/fantasy-serial']}
+            label={'판타지'}
+            route={'/fantasy'}
+          />
+          <TabItem
+            normalCSS={normal}
+            currentCSS={genreTab}
+            labelCSS={genreTabLabelCSS}
+            currentPath={currentPath}
+            activePath={['/comics']}
+            label={'만화'}
+            route={'/comics'}
+          />
+          <TabItem
+            normalCSS={normal}
+            currentCSS={genreTab}
+            labelCSS={genreTabLabelCSS}
+            currentPath={currentPath}
+            activePath={['/bl', '/bl-serial']}
+            label={'BL'}
+            route={'/bl'}
+          />
         </ul>
       </li>
       <li>
         <hr css={rulerCSS} />
       </li>
-      {hasSubService ? (
+      {showSubGenre ? (
         <>
           <li>
             <ul css={subServicesListCSS}>
-              {genres[currentGenre].subServices.map((service, index) => (
+              {genreInfo.services.map((service, index) => (
                 <TabItem
                   key={index}
-                  route={`/${genres[currentGenre].key}/${service.key}`}
+                  route={service.path}
                   normalCSS={normal}
                   currentCSS={subServiceTab}
                   labelCSS={subServiceTabLabelCSS}
                   currentPath={currentPath}
-                  genre={genres[currentGenre]}
-                  path={`${genres[currentGenre].key}/${service.key}`}
-                  label={service.label}
+                  activePath={service.activePaths}
+                  label={service.name}
                 />
               ))}
             </ul>

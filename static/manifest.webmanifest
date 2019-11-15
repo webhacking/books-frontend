@@ -1,7 +1,7 @@
 {
   "name": "리디북스",
   "short_name": "리디북스",
-  "start_url": "/general",
+  "start_url": "/",
   "display": "fullscreen",
   "background_color": "#f0f0f0",
   "theme_color": "#339CF2",

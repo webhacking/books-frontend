@@ -2,7 +2,6 @@ import * as React from 'react';
 import Head from 'next/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 import { GenreTab } from 'src/components/Tabs';
-import { Genre, GenreSubService, homeGenres } from 'src/constants/genres';
 import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
 import { Router } from 'server/routes';
 import * as Cookies from 'js-cookie';
@@ -18,14 +17,14 @@ import { booksActions } from 'src/services/books';
 import { Request } from 'express';
 import { ServerResponse } from 'http';
 import sentry from 'src/utils/sentry';
+
 const { captureException } = sentry();
 
 const { publicRuntimeConfig } = getConfig();
 
 export interface HomeProps {
-  genre: keyof typeof Genre;
-  service: keyof typeof GenreSubService;
   branches: Section[];
+  genre: string;
 }
 
 export class Home extends React.Component<HomeProps> {
@@ -38,22 +37,16 @@ export class Home extends React.Component<HomeProps> {
     }
   }
 
-  private static createHomeSlug(genre: Genre, service: GenreSubService) {
+  private static createHomeSlug(genre: string) {
     if (!genre || genre === 'general') {
       return 'home-general';
     }
-    if (genre === 'comics') {
-      return 'home-comics';
-    }
-    if (service === 'single') {
-      return `home-${genre}`;
-    }
-    return `home-${genre}-${service}`;
+    return `home-${genre}`;
   }
 
-  private static async fetchHomeSections(genre: Genre, service: GenreSubService) {
+  private static async fetchHomeSections(genre: string) {
     const url = new URL(
-      `/pages/${this.createHomeSlug(genre, service)}/`,
+      `/pages/${this.createHomeSlug(genre)}/`,
       publicRuntimeConfig.STORE_API,
     );
     const result = await pRetry(() => axios.get<Page>(url.toString()), {
@@ -66,81 +59,20 @@ export class Home extends React.Component<HomeProps> {
   // eslint-disable-next-line complexity
   public static async getInitialProps(ctx: ConnectedInitializeProps) {
     const { query, res, req, store } = ctx;
-
-    const genre = query.genre
-      ? Genre[(query.genre as string).toUpperCase() as keyof typeof Genre]
-      : null;
-
-    const service = query.service
-      ? GenreSubService[
-          (query.service as string).toUpperCase() as keyof typeof GenreSubService
-        ]
-      : null;
+    const genre = query?.genre || 'general';
 
     if (req && res) {
-      // Fixme 서버 사이드 장르 폴백 삭제 예정
-      if (genre) {
-        // Legacy Genre Fallback
-        if (genre.match(/^(fantasy_serial|bl_serial|romance_serial)$/u)) {
-          this.redirect(req, res, `/${genre.replace('_', '/')}`);
-          return { genre: genre.split('_')[0], service: 'serial', ...ctx.query };
-        }
-        if (!query.service) {
-          // URL Genre Param 이 있는 경우 저장 된 Sub Service 체크 후 Redirection,
-          const visitedGenreService =
-            req.cookies[`${cookieKeys.recentlyVisitedGenre}_${genre}_Service`];
-
-          if (`/${genre}/${visitedGenreService}` === req.path) {
-            return {
-              genre: genre || 'general',
-              service: service || 'single',
-              ...ctx.query,
-              branches: [],
-            };
-          }
-
-          if (visitedGenreService) {
-            this.redirect(req, res, `/${genre}/${visitedGenreService}`);
-          }
-          if (genre.match(/(fantasy|romance|bl)/u)) {
-            this.redirect(req, res, `/${genre}/single`); // default sub service fallback
-          }
-        }
-      } else {
-        const visitedGenre = req.cookies[cookieKeys.recentlyVisitedGenre];
-
-        // Todo 서브 서비스(단행본, 연재) API 지원여부 확인
-        const visitedGenreService = visitedGenre
-          ? req.cookies[`${cookieKeys.recentlyVisitedGenre}_${visitedGenre}_Service`]
-          : null;
-
-        if (visitedGenre === 'general') {
-          this.redirect(req, res, '/');
-        }
-        if (visitedGenre) {
-          this.redirect(
-            req,
-            res,
-            visitedGenreService
-              ? `/${visitedGenre}/${visitedGenreService}`
-              : `/${visitedGenre}`,
-          );
-        }
-      }
-      // Todo Fetch Sections
       if (res.statusCode !== 302) {
         try {
           const result = await this.fetchHomeSections(
             // @ts-ignore
-            genre || Genre.GENERAL,
-            service || GenreSubService.SINGLE,
+            genre,
           );
 
           const bIds = keyToArray(result.branches, 'b_id');
           store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
           return {
-            genre: genre || Genre.GENERAL,
-            service: service || GenreSubService.SINGLE,
+            genre,
             ...query,
             ...result,
           };
@@ -154,14 +86,12 @@ export class Home extends React.Component<HomeProps> {
       try {
         const result = await this.fetchHomeSections(
           // @ts-ignore
-          genre || Genre.GENERAL,
-          service || GenreSubService.SINGLE,
+          genre || 'general',
         );
         const bIds = keyToArray(result.branches, 'b_id');
         store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
         return {
-          genre: genre || Genre.GENERAL,
-          service: service || GenreSubService.SINGLE,
+          genre,
           ...query,
           ...result,
         };
@@ -171,35 +101,17 @@ export class Home extends React.Component<HomeProps> {
       }
     }
     return {
-      genre: genre || 'general',
-      service: service || 'single',
+      genre,
       branches: [],
       ...ctx.query,
     };
   }
 
   private setCookie = (props: HomeProps) => {
-    const { genre, service } = props;
-    const currentGenre =
-      genre && Genre[genre.toUpperCase() as keyof typeof Genre]
-        ? Genre[genre.toUpperCase() as keyof typeof Genre]
-        : Genre.GENERAL;
-    Cookies.set(cookieKeys.recentlyVisitedGenre, currentGenre, {
+    const { genre } = props;
+    Cookies.set(cookieKeys.main_genre, genre, {
       expires: DEFAULT_COOKIE_EXPIRES,
     });
-
-    if (service && homeGenres[currentGenre].subServices.length > 0) {
-      const currentService =
-        GenreSubService[service.toUpperCase() as keyof typeof GenreSubService] ||
-        GenreSubService.SINGLE;
-      Cookies.set(
-        `${cookieKeys.recentlyVisitedGenre}_${currentGenre}_Service`,
-        currentService,
-        {
-          expires: DEFAULT_COOKIE_EXPIRES,
-        },
-      );
-    }
   };
 
   public componentDidMount(): void {
@@ -211,41 +123,24 @@ export class Home extends React.Component<HomeProps> {
     // nextState: Readonly<{}>,
     // nextContext: any,
   ): boolean {
-    const { genre, service } = nextProps;
-    const visitedGenre = Cookies.get(`${cookieKeys.recentlyVisitedGenre}`);
-    const visitedService = Cookies.get(
-      `${cookieKeys.recentlyVisitedGenre}_${visitedGenre}_Service`,
-    );
-    if (window.location.pathname === '/general') {
-      Router.replaceRoute('/');
+    const { genre } = nextProps;
+    if (window.location.pathname === '/' && genre === 'GENERAL') {
       return false;
     }
-    // Todo visitedService value Validation
-    // eslint-disable-next-line prefer-named-capture-group
-    if (!service && genre.match(/(fantasy|romance|bl)/u)) {
-      if (visitedService) {
-        Router.replaceRoute(`/${genre}/${visitedService}`);
-      } else {
-        Router.replaceRoute(`/${genre}/${GenreSubService.SINGLE}`);
-      }
-      return false;
-    }
-
+    // Router.replaceRoute(`/${genre || visitedGenre || '/'}`);
     this.setCookie(nextProps);
     return true;
   }
 
   public render() {
-    const { genre, service } = this.props;
-    const currentGenre = Genre[genre.toUpperCase() as keyof typeof Genre];
-    const currentService =
-      GenreSubService[service.toUpperCase() as keyof typeof GenreSubService];
+    const { genre } = this.props;
+    const currentGenre = genre || 'general';
     return (
       <>
         <Head>
-          <title>{`${titleGenerator(genre, currentService)} - 리디북스`}</title>
+          <title>{`${titleGenerator(genre || 'general')} - 리디북스`}</title>
         </Head>
-        <GenreTab currentGenre={currentGenre} genres={homeGenres} />
+        <GenreTab currentGenre={currentGenre} />
         {this.props.branches &&
           this.props.branches.map((section, index) => (
             <React.Fragment key={index}>
@@ -262,7 +157,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: booksActions.insertBookIds.type, payload: bIds }),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(Home);
+export default connect(null, mapDispatchToProps)(Home);

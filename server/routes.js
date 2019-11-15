@@ -12,13 +12,7 @@ clientRoutes.add({ page: 'selection/:id', pattern: '/selection' });
 clientRoutes.add({ page: 'special-room/:id', pattern: '/special-room' });
 clientRoutes.add({
   page: '/',
-  pattern:
-    '/:genre(general|fantasy|romance|bl|comics|fantasy_serial|romance_serial|bl_serial)/:service(single|serial)',
-});
-clientRoutes.add({
-  page: '/',
-  pattern:
-    '/:genre(general|fantasy|romance|bl|comics|fantasy_serial|romance_serial|bl_serial)',
+  pattern: '/:genre(fantasy|fantasy-serial|romance|romance-serial|bl|bl-serial|comics)',
 });
 clientRoutes.add({ page: '/', pattern: '/' });
 
