@@ -197,6 +197,9 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
                       display: flex;
                       justify-content: center;
                       align-items: center;
+                      color: white;
+                      font-size: 13px;
+                      font-weight: 700;
                     `}>
                     <span
                       css={css`
