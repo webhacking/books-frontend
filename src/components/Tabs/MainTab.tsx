@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { a11y } from 'src/styles';
-import { Anchor } from 'src/components/Misc';
 import { BrowserLocationContext } from 'src/components/Context';
 import * as labels from 'src/labels/menus.json';
 import * as Cookies from 'js-cookie';
@@ -169,8 +168,6 @@ const TabItem: React.FC<TabItemProps> = props => {
     path,
     pathRegexp,
     currentPath,
-    shallow,
-    replace,
     label,
     activeIcon,
     normalIcon,
@@ -190,15 +187,13 @@ const TabItem: React.FC<TabItemProps> = props => {
             `
           : ''
       }>
-      <Anchor isPartials={true} path={path} shallow={shallow} replace={replace}>
-        <StyledAnchor href={path}>
-          <TabButton>
-            {isActiveTab ? activeIcon : normalIcon}
-            <span css={labelStyle}>{label}</span>
-          </TabButton>
-          <BottomLine css={isActiveTab ? currentTab : css``} />
-        </StyledAnchor>
-      </Anchor>
+      <StyledAnchor href={path}>
+        <TabButton>
+          {isActiveTab ? activeIcon : normalIcon}
+          <span css={labelStyle}>{label}</span>
+        </TabButton>
+        <BottomLine css={isActiveTab ? currentTab : css``} />
+      </StyledAnchor>
     </TabItemWrapper>
   );
 };
