@@ -8,7 +8,11 @@ module.exports = function csp(app) {
 
   const nonce = (req, res) => `'nonce-${res.locals.nonce}'`;
 
-  const whiteList = ['https://*.ridi.io', 'https://*.ridibooks.com'];
+  const whiteList = [
+    'https://*.ridi.io',
+    'https://*.ridibooks.com',
+    'https://*.ridicdn.net',
+  ];
 
   const scriptSrc = [nonce, "'strict-dynamic'", "'self'", ...whiteList];
   const styleSrc = ["'self'", "'unsafe-inline'", ...whiteList];
