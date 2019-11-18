@@ -5,7 +5,6 @@
   "BOOK_API": "https://book-api.ridibooks.com",
   "SELECT_API": "https://select-api.dev.ridi.io/api",
   "STORE_API": "https://store-api.dev.ridi.io",
-  "RIDI_TOKEN_AUTHORIZE_URL": "https://account.dev.ridi.io/ridi/authorize",
   "RIDI_OAUTH2_CLIENT_ID": "Nkt2Xdc0zMuWmye6MSkYgqCh9q6JjeMCsUiH1kgL",
   "ACCOUNT_API": "https://account.dev.ridi.io",
   "STORE_HOST": "https://master.test.ridi.io",

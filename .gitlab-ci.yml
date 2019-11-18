@@ -105,9 +105,12 @@ deploy-production:
   when: manual
   variables:
     ENVIRONMENT: 'production'
-    AWS_ACCESS_KEY_ID: $PRODUCTION_AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY: $PRODUCTION_AWS_SECRET_ACCESS_KEY
-    STATIC_CDN_URL: $DEV_STATIC_CDN_URL
+    AWS_ACCESS_KEY_ID: $PROD_AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $PROD_AWS_SECRET_ACCESS_KEY
+    STATIC_CDN_URL: $PROD_STATIC_CDN_URL
+  environment:
+    name: production
+    url: https://books.ridibooks.com
 
 .e2e:
   tags:
@@ -152,7 +155,7 @@ e2e-staging:
   only:
     - staging
   variables:
-    CYPRESS_BASE_URL: https://web-staging.crying.dance
+    CYPRESS_BASE_URL: https://ridibooks.com
     ENVIRONMENT: 'staging'
 
 e2e-production:
@@ -161,5 +164,5 @@ e2e-production:
   only:
     - master
   variables:
-    CYPRESS_BASE_URL: https://web-production.crying.dance
+    CYPRESS_BASE_URL: https://ridibooks.com
     ENVIRONMENT: 'production'
