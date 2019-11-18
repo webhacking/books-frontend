@@ -165,7 +165,7 @@ interface TabItemProps {
 // 반응형 레거시 코드 작업이 종료되면 이 부분 개선 해야 함.
 const TabItem: React.FC<TabItemProps> = props => {
   const {
-    isPartials,
+    // isPartials,
     path,
     pathRegexp,
     currentPath,
@@ -190,8 +190,8 @@ const TabItem: React.FC<TabItemProps> = props => {
             `
           : ''
       }>
-      <Anchor isPartials={isPartials} path={path} shallow={shallow} replace={replace}>
-        <StyledAnchor href={isPartials ? path : ''}>
+      <Anchor isPartials={true} path={path} shallow={shallow} replace={replace}>
+        <StyledAnchor href={path}>
           <TabButton>
             {isActiveTab ? activeIcon : normalIcon}
             <span css={labelStyle}>{label}</span>
