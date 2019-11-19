@@ -2,6 +2,7 @@ import {
   DisplayType,
   EventBanner as EventBannerItem,
   HotRelease,
+  MdBook,
   MdSelection,
   QuickMenu,
   ReadingRanking,
@@ -105,6 +106,19 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
           })}
         </>
       );
+    }
+    case DisplayType.TodayNewBook:
+    case DisplayType.NewSerialBook: {
+      if (items) {
+        return (
+          <SelectionBook
+            items={items as MdBook[]}
+            title={name}
+            option={{ isAIRecommendation: false }}
+          />
+        );
+      }
+      return null;
     }
     default:
       return null;

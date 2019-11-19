@@ -81,7 +81,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
           ref={slider}
           css={recommendedBookCarouselLoadingCSS}
           className={'slider'}
-          slidesToShow={6}
+          slidesToShow={Math.min(props.items.length, 6)}
           slidesToScroll={6}
           speed={200}
           autoplay={false}
@@ -106,7 +106,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
             </div>
           ))}
         </ForwardedRefComponent>
-        {carouselInitialize && (
+        {carouselInitialize && props.items.length > 6 && (
           <form
             css={css`
               height: 0;

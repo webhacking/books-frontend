@@ -148,7 +148,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
             </div>
           ))}
         </ForwardedRefComponent>
-        {carouselInitialize && (
+        {carouselInitialize && props.items.length > 6 && (
           <form>
             <Arrow
               onClickHandler={handleLeftArrow}
