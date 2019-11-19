@@ -138,13 +138,13 @@ export class Home extends React.Component<HomeProps> {
     return (
       <>
         <Head>
-          <title>{`${titleGenerator(genre || 'general')} - 리디북스`}</title>
+          <title>{`${titleGenerator(currentGenre)} - 리디북스`}</title>
         </Head>
         <GenreTab currentGenre={currentGenre} />
         {this.props.branches &&
           this.props.branches.map((section, index) => (
             <React.Fragment key={index}>
-              <HomeSectionRenderer section={section} />
+              <HomeSectionRenderer section={section} order={index} genre={currentGenre} />
             </React.Fragment>
           ))}
       </>

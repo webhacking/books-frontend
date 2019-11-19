@@ -6,6 +6,7 @@ import {
   QuickMenu,
   ReadingRanking,
   Section,
+  TodayRecommendation,
   TopBanner,
 } from 'src/types/sections';
 import { TopBannerCarouselContainer } from 'src/components/TopBanner';
@@ -18,12 +19,15 @@ import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBo
 
 interface HomeSectionRendererProps {
   section: Section;
+  genre: string;
+  order: number;
 }
 
 export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => {
   const {
     // @ts-ignore  Todo declare item_metadata type
     section: { items, item_metadata, type, name },
+    genre,
   } = props;
   if (!items) {
     return null;
@@ -48,9 +52,28 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
           showTimer={true}
         />
       );
-    case DisplayType.HotRelease:
-    case DisplayType.TodayRecommendation:
-      return <RecommendedBook title={name} items={items as HotRelease[]} type={type} />;
+    case DisplayType.HotRelease: {
+      return (
+        <RecommendedBook
+          title={name}
+          items={items as HotRelease[]}
+          type={type}
+          theme={'dark'}
+        />
+      );
+    }
+
+    case DisplayType.TodayRecommendation: {
+      return (
+        <RecommendedBook
+          title={name}
+          items={items as TodayRecommendation[]}
+          type={type}
+          theme={['bl', 'romance', 'fantasy'].includes(genre) ? 'dark' : 'white'}
+        />
+      );
+    }
+
     case DisplayType.BestSeller:
       return (
         <RankingBookList

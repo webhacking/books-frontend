@@ -5,7 +5,7 @@ export enum DisplayType {
   Page = 'Page',
   HomeCarouselBanner = 'HomeCarouselBanner',
   HotRelease = 'HotRelease',
-  TodayRecommendation = 'TodayRecommendation',
+  TodayRecommendation = 'TodayRecommendation', // 오늘 리디의 발견
   BestSeller = 'BestSeller',
   HowAboutThis = 'HowAboutThis',
   HomeMdSelection = 'HomeMdSelection',
