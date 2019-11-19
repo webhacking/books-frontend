@@ -12,6 +12,8 @@ export enum DisplayType {
   ReadingBooksRanking = 'ReadingBooksRanking',
   HomeEventBanner = 'HomeEventBanner',
   UserPreferredBestseller = 'UserPreferredBestseller',
+  TodayNewBook = 'TodayNewBook', // 최신 단행본
+  NewSerialBook = 'NewSerialBook', // 최신 연재
 }
 
 interface BaseResult {
