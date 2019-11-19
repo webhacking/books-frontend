@@ -39,6 +39,7 @@ const CarouselWrapper = styled.div`
 interface RecommendedBookCarouselProps {
   items: TodayRecommendation[] | HotRelease[];
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
+  theme: 'dark' | 'white';
 }
 
 const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = props => (
@@ -57,7 +58,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
             thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
           />
         </ThumbnailWrapper>
-        {/* <BookMeta book={book} /> */}
+        {book.detail && <BookMeta book={book.detail} />}
       </PortraitBook>
     ))}
   </ul>
@@ -67,6 +68,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
   const wrapperRef = useRef<HTMLDivElement>();
+  const { theme, type } = props;
   // @ts-ignore
   const [isMounted, setMounted] = useState(false);
 
@@ -101,6 +103,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
       {/* Flickering 없는 UI 를 위해 추가함 */}
       {!carouselInitialize && (
         <RecommendedBookCarouselLoading
+          theme={theme}
           type={props.type}
           items={props.items.slice(0, 6)}
         />
@@ -137,7 +140,10 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                     thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
                   />
                 </ThumbnailWrapper>
-                {book.detail && <BookMeta book={book.detail} />}
+                {/* Todo show sentence */}
+                {book.detail && type === DisplayType.HotRelease && (
+                  <BookMeta book={book.detail} />
+                )}
               </PortraitBook>
             </div>
           ))}
@@ -147,7 +153,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
             <Arrow
               onClickHandler={handleLeftArrow}
               label={'이전'}
-              color={'dark'}
+              color={theme}
               side={'left'}
               wrapperStyle={css`
                 ${arrowWrapperCSS};
@@ -164,7 +170,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
             <Arrow
               label={'다음'}
               onClickHandler={handleRightArrow}
-              color={'dark'}
+              color={theme}
               side={'right'}
               wrapperStyle={css`
                 ${arrowWrapperCSS};

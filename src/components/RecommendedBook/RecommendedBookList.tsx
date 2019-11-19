@@ -17,12 +17,13 @@ import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
+  theme: 'dark' | 'white';
 }
 
 const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
-
+  const { theme, type } = props;
   return (
     <div
       css={css`
@@ -44,7 +45,10 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                 thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
               />
             </ThumbnailWrapper>
-            {book.detail && <BookMeta book={book.detail} />}
+            {/* Todo show sentence */}
+            {book.detail && type === DisplayType.HotRelease && (
+              <BookMeta book={book.detail} />
+            )}
           </PortraitBook>
         ))}
       </BookList>
@@ -57,7 +61,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
         <Arrow
           onClickHandler={moveLeft}
           label={'이전'}
-          color={'dark'}
+          color={theme}
           side={'left'}
           wrapperStyle={[
             css`
@@ -72,7 +76,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
         <Arrow
           label={'다음'}
           onClickHandler={moveRight}
-          color={'dark'}
+          color={theme}
           side={'right'}
           wrapperStyle={[
             css`

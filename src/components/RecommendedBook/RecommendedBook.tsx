@@ -33,12 +33,10 @@ const backgroundImageCSS = css`
 `;
 
 const hotReleaseRecommendedBookWrapperCSS = css`
-  ${backgroundImageCSS};
   padding-top: 36px;
   margin-bottom: 48px;
 `;
 const recommendedBookWrapperCSS = css`
-  ${backgroundImageCSS};
   padding-top: 36px;
 `;
 
@@ -129,6 +127,7 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
           <AtSelectIcon
             css={css`
               width: 14px;
+              fill: #22b8cf;
               height: 12px;
               margin-right: 6px;
             `}
@@ -137,7 +136,7 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
             css={css`
               font-size: 13px;
               font-weight: bold;
-              color: #8e97ff;
+              color: #22b8cf;
             `}>
             리디셀렉트
           </span>
@@ -153,9 +152,11 @@ interface RecommendedBookProps {
   items: RecommendedBookType;
   title: string;
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
+  theme: 'white' | 'dark';
 }
 
 const RecommendedBook: React.FC<RecommendedBookProps> = props => {
+  const { theme, type } = props;
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
 
@@ -164,13 +165,21 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
   return (
     <section
       ref={targetRef}
-      css={
+      css={[
         props.type === DisplayType.HotRelease
           ? hotReleaseRecommendedBookWrapperCSS
-          : recommendedBookWrapperCSS
-      }>
+          : recommendedBookWrapperCSS,
+        theme === 'dark' && backgroundImageCSS,
+      ]}>
       {/* Todo split hot release title */}
-      <p css={hotReleaseTitleCSS}>
+      <p
+        css={[
+          hotReleaseTitleCSS,
+          theme === 'white' &&
+            css`
+              color: black;
+            `,
+        ]}>
         <span
           css={css`
             margin-right: 8px;
@@ -197,11 +206,9 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
                   }
                 />
               </ThumbnailWrapper>
-              {book.detail && (
-                <BookMeta
-                  book={book.detail}
-                  showSelect={props.type === DisplayType.HotRelease}
-                />
+              {/* Todo show sentence */}
+              {book.detail && type === DisplayType.HotRelease && (
+                <BookMeta book={book.detail} showSelect={true} />
               )}
             </PortraitBook>
           ))}
@@ -209,10 +216,18 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
       ) : (
         <WindowWidthQuery>
           <View maxWidth={1000}>
-            <RecommendedBookList type={props.type} items={books as HotRelease[]} />
+            <RecommendedBookList
+              type={props.type}
+              items={books as HotRelease[]}
+              theme={theme}
+            />
           </View>
           <View>
-            <RecommendedBookCarousel type={props.type} items={books as HotRelease[]} />
+            <RecommendedBookCarousel
+              type={props.type}
+              items={books as HotRelease[]}
+              theme={theme}
+            />
           </View>
         </WindowWidthQuery>
       )}
