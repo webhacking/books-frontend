@@ -105,6 +105,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
                 title={item.title}
                 genre={genre}
                 key={index}
+                type={type}
                 option={{ isAIRecommendation: false }}
               />
             );
@@ -121,6 +122,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
             items={items as MdBook[]}
             title={name}
             genre={genre}
+            type={type}
             option={{ isAIRecommendation: false }}
           />
         );

@@ -48,12 +48,20 @@ export interface BestSeller {
   period: string;
   options: [];
   rank: number;
+  rating: StarRating;
+}
+
+export interface StarRating {
+  total_rating_count: number;
+  buyer_rating_count: number;
+  buyer_rating_score: number;
 }
 
 export interface ReadingRanking {
   detail: BookApi.Book | null;
   b_id: string;
   type: string;
+  rating: StarRating;
 }
 
 export interface HotRelease {
@@ -62,6 +70,7 @@ export interface HotRelease {
   type: string;
   order: number;
   sentence: string;
+  rating: StarRating;
 }
 export type TodayRecommendation = HotRelease;
 
@@ -98,6 +107,7 @@ export interface MdBook {
   detail: BookApi.Book | null;
   b_id: string;
   type: string;
+  rating: StarRating;
 }
 
 export interface MdSelection {
