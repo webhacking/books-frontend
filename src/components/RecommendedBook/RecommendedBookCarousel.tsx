@@ -55,7 +55,8 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
         <ThumbnailWrapper>
           <Book.Thumbnail
             thumbnailWidth={140}
-            thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
+            thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
+              book.b_id}/xxlarge`}
           />
         </ThumbnailWrapper>
         {book.detail && <BookMeta book={book.detail} />}
@@ -137,7 +138,8 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                 <ThumbnailWrapper>
                   <Book.Thumbnail
                     thumbnailWidth={140}
-                    thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
+                    thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail
+                      ?.thumbnailId ?? book.b_id}/xxlarge`}
                   />
                 </ThumbnailWrapper>
                 {/* Todo show sentence */}

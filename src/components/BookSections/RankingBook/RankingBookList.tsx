@@ -209,7 +209,8 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                     thumbnailUrl={
                       !isIntersecting
                         ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
-                        : `https://misc.ridibooks.com/cover/${book.b_id}/medium`
+                        : `https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
+                            book.b_id}/medium`
                     }
                     adultBadge={false}
                   />
