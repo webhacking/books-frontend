@@ -110,6 +110,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
         </>
       );
     }
+    case DisplayType.WaitFree:
     case DisplayType.TodayNewBook:
     case DisplayType.NewSerialBook: {
       if (items) {
