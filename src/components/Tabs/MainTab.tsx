@@ -241,12 +241,14 @@ export const MainTab: React.FC<MainTabProps> = props => {
       if (tokenResult) {
         try {
           const notificationUrl = new URL('/notification', publicRuntimeConfig.STORE_API);
-          const notificationResult = await pRetry(() =>
-            axios.post(
-              notificationUrl.toString(),
-              {},
-              { headers: { Authorization: tokenResult.data.token } },
-            ),
+          const notificationResult = await pRetry(
+            () =>
+              axios.post(
+                notificationUrl.toString(),
+                {},
+                { headers: { Authorization: `Bearer ${tokenResult.data.token}` } },
+              ),
+            { retries: 2 },
           );
           console.log(notificationResult);
         } catch (error) {
