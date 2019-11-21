@@ -16,6 +16,12 @@ import MyRIDI_regular from 'src/svgs/MyRIDI_regular.svg';
 import cookieKeys from 'src/constants/cookies';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { LoggedUser } from 'src/types/account';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
+import pRetry from 'p-retry';
+import axios from 'axios';
+import sentry from 'src/utils/sentry';
+const { captureException } = sentry();
 
 const StyledAnchor = styled.a`
   height: 100%;
@@ -199,24 +205,53 @@ const TabItem: React.FC<TabItemProps> = props => {
 };
 
 export const MainTab: React.FC<MainTabProps> = props => {
-  const { isPartials } = props;
+  const { isPartials, loggedUserInfo } = props;
   const currentPath = useContext(BrowserLocationContext);
   const [homeURL, setHomeURL] = useState('/');
   useEffect(() => {
     const visitedGenre = Cookies.get(`${cookieKeys.main_genre}`);
-    const visitedService = visitedGenre
-      ? Cookies.get(`${cookieKeys.main_genre}_${visitedGenre}_Service`)
-      : null;
-    if (visitedGenre && visitedGenre !== 'general') {
-      setHomeURL(
-        visitedService ? `/${visitedGenre}/${visitedService}` : `/${visitedGenre}` || '/',
-      );
-    } else {
-      setHomeURL('/');
-    }
-
-    // Todo dispatch notification info, cart count
+    setHomeURL(visitedGenre && visitedGenre !== 'general' ? visitedGenre : '/');
   }, [currentPath]);
+
+  // Todo dispatch notification info, cart count
+  useEffect(() => {
+    const requestNotificationAuth = async () => {
+      let tokenResult = null;
+      try {
+        const tokenUrl = new URL(
+          '/users/me/notification-token/',
+          publicRuntimeConfig.STORE_API,
+        );
+
+        tokenResult = await pRetry(
+          () => axios.get(tokenUrl.toString(), { withCredentials: true }),
+          { retries: 2 },
+        );
+      } catch (error) {
+        captureException(error);
+      }
+
+      if (tokenResult) {
+        try {
+          const notificationUrl = new URL('/notification', publicRuntimeConfig.STORE_API);
+          const notificationResult = await pRetry(() =>
+            axios.post(
+              notificationUrl.toString(),
+              {},
+              { headers: { Authorization: tokenResult.data.token } },
+            ),
+          );
+          console.log(notificationResult);
+        } catch (error) {
+          captureException(error);
+        }
+      }
+    };
+    if (loggedUserInfo) {
+      requestNotificationAuth();
+    }
+  }, [loggedUserInfo]);
+
   return (
     <Tabs>
       <TabItem
