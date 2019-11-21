@@ -89,7 +89,7 @@ const smallItemCSS = css`
 const rankCSS = css`
   height: 22px;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 700;
   text-align: center;
   color: #000000;
   margin-right: 21px;
@@ -222,12 +222,13 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                   {book.detail && (
                     <BookMeta
                       book={book.detail}
-                      showRating={props.type === 'big'}
+                      showRating={props.type === 'big' || !!book.rating}
                       titleLineClamp={props.type === 'small' ? 1 : 2}
                       showSomeDeal={false}
                       isAIRecommendation={false}
                       showTag={['bl', 'bl-serial'].includes(genre)}
                       width={props.type === 'big' ? '177px' : null}
+                      ratingInfo={book.rating}
                     />
                   )}
                 </div>

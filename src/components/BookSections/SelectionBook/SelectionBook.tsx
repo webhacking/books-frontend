@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { MdBook } from 'src/types/sections';
+import { DisplayType, MdBook } from 'src/types/sections';
 import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
 import SelectionBookCarousel from 'src/components/BookSections/SelectionBook/SelectionBookCarousel';
@@ -31,6 +31,7 @@ interface SelectionBookProps {
   url?: string;
   option: SelectionOption;
   genre: string;
+  type: DisplayType;
 }
 
 interface SelectionBookItemProps {
@@ -38,10 +39,11 @@ interface SelectionBookItemProps {
   genre: string;
   isAIRecommendation: boolean;
   width: number;
+  type: DisplayType;
 }
 
 export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
-  const { book, isAIRecommendation, genre } = props;
+  const { book, isAIRecommendation, genre, type } = props;
   return (
     <>
       <ThumbnailWrapper>
@@ -58,8 +60,9 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
           showTag={['bl', 'bl-serial'].includes(genre)}
           book={book.detail}
           width={`${props.width || 140}px`}
-          showRating={true}
+          showRating={type === DisplayType.HomeMdSelection}
           isAIRecommendation={false}
+          ratingInfo={book.rating}
         />
       )}
 
@@ -87,11 +90,12 @@ export interface SelectionBookCarouselProps {
   items: MdBook[]; // Fixme Md 타입 말고 comics UserPreferredSection 타입이 API 결과로 오는데 이 부분 확인해야 함
   isAIRecommendation: boolean;
   genre: string;
+  type: DisplayType;
   isIntersecting?: boolean;
 }
 
 export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props => {
-  const { isIntersecting, genre } = props;
+  const { isIntersecting, genre, type } = props;
   return (
     <ul
       css={css`
@@ -115,7 +119,8 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
             <BookMeta
               showTag={['bl', 'bl-serial'].includes(genre)}
               book={book.detail}
-              showRating={true}
+              showRating={type === DisplayType.HomeMdSelection}
+              ratingInfo={book.rating}
             />
           )}
         </PortraitBook>
@@ -125,7 +130,7 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
 };
 
 const SelectionBook: React.FC<SelectionBookProps> = props => {
-  const { genre } = props;
+  const { genre, type } = props;
   const [, setMounted] = useState(false);
 
   const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
@@ -165,6 +170,7 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
       {!isIntersecting || isFetching ? (
         <SelectionBookLoading
           genre={genre}
+          type={type}
           isIntersecting={isIntersecting}
           isAIRecommendation={props.option.isAIRecommendation}
           items={books.slice(0, 6)}
@@ -173,6 +179,7 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
         <WindowWidthQuery>
           <View maxWidth={1000}>
             <SelectionBookList
+              type={type}
               genre={genre}
               isAIRecommendation={props.option.isAIRecommendation}
               items={books}
@@ -180,6 +187,7 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
           </View>
           <View>
             <SelectionBookCarousel
+              type={type}
               genre={genre}
               isAIRecommendation={props.option.isAIRecommendation}
               items={books}

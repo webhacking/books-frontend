@@ -6,7 +6,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
-import { MdBook } from 'src/types/sections';
+import { DisplayType, MdBook } from 'src/types/sections';
 
 const listCSS = css`
   padding-bottom: 48px;
@@ -43,6 +43,7 @@ const itemCSS = css`
 interface SelectionBookListProps {
   items: MdBook[];
   isAIRecommendation: boolean;
+  type: DisplayType;
   genre: string;
 }
 
@@ -50,7 +51,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
   const ref = useRef<HTMLUListElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
-  const { genre } = props;
+  const { genre, type } = props;
 
   return (
     <div
@@ -63,6 +64,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
           <li key={index} css={itemCSS}>
             <SelectionBookItem
               genre={genre}
+              type={type}
               isAIRecommendation={props.isAIRecommendation}
               book={item}
               width={120}

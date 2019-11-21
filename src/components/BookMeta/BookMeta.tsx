@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { css, SerializedStyles } from '@emotion/core';
 import { lineClamp } from 'src/styles';
-// import StarRating from 'src/components/StarRating/StarRating';
+import StarRating from 'src/components/StarRating/StarRating';
 import Tag from 'src/components/Tag/Tag';
 import * as BookApi from 'src/types/book';
+import { StarRating as StarRatingType } from 'src/types/sections';
 
 const bookTitleCSS = css`
   font-size: 15px;
@@ -37,6 +38,7 @@ interface BookMetaProps {
   showTag: boolean;
   width?: string;
   wrapperCSS?: SerializedStyles;
+  ratingInfo?: StarRatingType;
 }
 
 interface RenderBookTagProps {
@@ -70,6 +72,7 @@ const BookMeta: React.FC<BookMetaProps> = props => {
     showSomeDeal,
     showRating,
     wrapperCSS,
+    ratingInfo,
   } = props;
 
   return (
@@ -102,14 +105,17 @@ const BookMeta: React.FC<BookMetaProps> = props => {
         </a>
         {/* Todo Author Anchor Generator */}
         <span css={authorCSS}>{authors_ordered[0].name}</span>
-        {showRating && (
+        {showRating && ratingInfo && (
           <>
-            {/* <span */}
-            {/*  css={css`*/}
-            {/*    margin-bottom: 6px;*/}
-            {/*  `}>*/}
-            {/*  <StarRating totalReviewer={totalReviewer} rating={avgRating || 0} />*/}
-            {/* </span> */}
+            <span
+              css={css`
+                margin-bottom: 6px;
+              `}>
+              <StarRating
+                totalReviewer={ratingInfo.buyer_rating_count}
+                rating={ratingInfo.buyer_rating_score || 0}
+              />
+            </span>
           </>
         )}
         <>

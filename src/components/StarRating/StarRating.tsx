@@ -10,11 +10,13 @@ interface StarRatingProps {
 const wrapperCSS = css`
   display: inline-flex;
   align-items: center;
+  font-size: 11px;
+  color: #999999;
+  line-height: 1.09;
 `;
 
 const totalReviewerCSS = css`
   height: 10px;
-  font-family: Helvetica;
   font-size: 11px;
   line-height: 1.09;
   color: #999999;
