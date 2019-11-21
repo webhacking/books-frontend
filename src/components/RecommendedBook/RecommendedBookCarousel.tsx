@@ -114,7 +114,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
           ref={slider}
           css={recommendedBookCarouselLoadingCSS}
           className={'slider'}
-          slidesToShow={props.items.length < 6 ? props.items.length : 6}
+          slidesToShow={Math.min(props.items.length, 6)}
           slidesToScroll={6}
           speed={200}
           autoplay={false}

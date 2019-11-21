@@ -43,12 +43,14 @@ const itemCSS = css`
 interface SelectionBookListProps {
   items: MdBook[];
   isAIRecommendation: boolean;
+  genre: string;
 }
 
 const SelectionBookList: React.FC<SelectionBookListProps> = props => {
   const ref = useRef<HTMLUListElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
+  const { genre } = props;
 
   return (
     <div
@@ -60,6 +62,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
         {props.items.map((item, index) => (
           <li key={index} css={itemCSS}>
             <SelectionBookItem
+              genre={genre}
               isAIRecommendation={props.isAIRecommendation}
               book={item}
               width={120}
