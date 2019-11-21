@@ -76,6 +76,7 @@ const labelStyle = css`
   font-size: 16px;
   font-weight: 600;
   line-height: 1;
+  top: 1px;
   text-align: center;
   color: #ffffff;
 
@@ -162,6 +163,7 @@ interface TabItemProps {
   normalIcon: React.ReactNode;
   label: string;
   pathRegexp: RegExp;
+  addOn?: React.ReactNode;
 }
 
 // Todo
@@ -177,6 +179,7 @@ const TabItem: React.FC<TabItemProps> = props => {
     label,
     activeIcon,
     normalIcon,
+    addOn,
   } = props;
   const isActiveTab = currentPath.match(pathRegexp);
   return (
@@ -196,6 +199,7 @@ const TabItem: React.FC<TabItemProps> = props => {
       <StyledAnchor href={path}>
         <TabButton>
           {isActiveTab ? activeIcon : normalIcon}
+          {addOn}
           <span css={labelStyle}>{label}</span>
         </TabButton>
         <BottomLine css={isActiveTab ? currentTab : css``} />
@@ -208,6 +212,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
   const { isPartials, loggedUserInfo } = props;
   const currentPath = useContext(BrowserLocationContext);
   const [homeURL, setHomeURL] = useState('/');
+  const [cartCount, setCartCount] = useState<null | number>(null);
   useEffect(() => {
     const visitedGenre = Cookies.get(`${cookieKeys.main_genre}`);
     setHomeURL(visitedGenre && visitedGenre !== 'general' ? visitedGenre : '/');
@@ -255,6 +260,27 @@ export const MainTab: React.FC<MainTabProps> = props => {
     }
   }, [loggedUserInfo]);
 
+  useEffect(() => {
+    const requestCartCount = async () => {
+      try {
+        const cartUrl = new URL('/users/me/cart-count/', publicRuntimeConfig.STORE_API);
+
+        const result = await pRetry(
+          () => axios.get(cartUrl.toString(), { withCredentials: true }),
+          { retries: 2 },
+        );
+        if (result.status === 200) {
+          setCartCount(result.data.count);
+        }
+      } catch (error) {
+        captureException(error);
+      }
+    };
+    if (loggedUserInfo) {
+      requestCartCount();
+    }
+  }, [loggedUserInfo]);
+
   return (
     <Tabs>
       <TabItem
@@ -288,6 +314,39 @@ export const MainTab: React.FC<MainTabProps> = props => {
         label={labels.mainTab.cart}
         path={'/cart'}
         pathRegexp={/^\/cart/gu}
+        addOn={
+          cartCount && (
+            <div
+              css={css`
+                height: 19px;
+                border-radius: 3px;
+                background: white;
+                margin-left: -5px;
+                top: -0.5px;
+                margin-right: 9px;
+                display: flex;
+                align-items: center;
+                ${orBelow(
+                  BreakPoint.LG,
+                  css`
+                    margin-left: 4px;
+                  `,
+                )}
+              `}>
+              <span
+                css={css`
+                  padding: 2.5px;
+                  padding-right: 3.2px;
+                  font-weight: bold;
+                  font-size: 13px;
+                  line-height: 13px;
+                  color: #1f8ce6;
+                `}>
+                {cartCount}
+              </span>
+            </div>
+          )
+        }
       />
       <TabItem
         isPartials={isPartials}
