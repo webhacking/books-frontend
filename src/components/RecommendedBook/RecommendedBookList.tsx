@@ -50,6 +50,31 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
             {book.detail && type === DisplayType.HotRelease && (
               <BookMeta book={book.detail} />
             )}
+            {book.detail && type === DisplayType.TodayRecommendation && (
+              <div
+                css={[
+                  css`
+                    margin-top: 2px;
+                    font-size: 13px;
+                    line-height: 16px;
+                    text-align: center;
+                    font-weight: bold;
+                  `,
+                  theme === 'dark' &&
+                    css`
+                      color: white;
+                    `,
+                ]}>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: (book as HotRelease).sentence.replace(
+                      /(?:\r\n|\r|\n)/g,
+                      '<br />',
+                    ),
+                  }}
+                />
+              </div>
+            )}
           </PortraitBook>
         ))}
       </BookList>

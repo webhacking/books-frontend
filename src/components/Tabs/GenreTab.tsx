@@ -287,7 +287,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                     }
                   `}
             `}>
-            <Link route={'/category/list'}>
+            <a href={'/category/list'}>
               <button>
                 <GNBCategory
                   css={(theme: RIDITheme) => css`
@@ -301,7 +301,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                 />
                 <span className={'a11y'}>{labels.category}</span>
               </button>
-            </Link>
+            </a>
           </li>
           <TabItem
             normalCSS={normal}
