@@ -11,10 +11,11 @@ import { RankingBookTitle } from 'src/components/BookSections/BookSectionContain
 interface MultipleLineBooks {
   items: MdBook[];
   title: string;
+  genre: string;
 }
 
 export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
-  const { title, items } = props;
+  const { title, items, genre } = props;
   const [books] = useBookDetailSelector(items);
   return (
     <section
@@ -140,6 +141,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
             {item.detail && (
               <BookMeta
                 book={item.detail}
+                showTag={['bl', 'bl-serial'].includes(genre)}
                 wrapperCSS={css`
                   ${between(
                     BreakPoint.M + 1,

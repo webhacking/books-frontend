@@ -127,7 +127,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
       return null;
     }
     case DisplayType.RecommendedBook: {
-      return <MultipleLineBooks title={name} items={items as MdBook[]} />;
+      return <MultipleLineBooks genre={genre} title={name} items={items as MdBook[]} />;
     }
     default:
       return null;
