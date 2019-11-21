@@ -42,6 +42,7 @@ const BookMeta: React.FC<BookMetaProps> = props => {
     book: {
       title,
       authors_ordered,
+      series,
       property: { is_somedeal, is_novel },
     },
     // isAIRecommendation,
@@ -79,7 +80,7 @@ const BookMeta: React.FC<BookMetaProps> = props => {
               ${bookTitleCSS};
               ${lineClamp(titleLineClamp || 2)}
             `}>
-            {title.main}
+            {series?.property.title ?? title.main}
           </h2>
         </a>
         {/* Todo Author Anchor Generator */}
