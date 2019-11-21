@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from '@emotion/core';
+import { css, SerializedStyles } from '@emotion/core';
 import { lineClamp } from 'src/styles';
 // import StarRating from 'src/components/StarRating/StarRating';
 import Tag from 'src/components/Tag/Tag';
@@ -36,6 +36,7 @@ interface BookMetaProps {
   isAIRecommendation?: boolean;
   showTag: boolean;
   width?: string;
+  wrapperCSS?: SerializedStyles;
 }
 
 interface RenderBookTagProps {
@@ -68,15 +69,23 @@ const BookMeta: React.FC<BookMetaProps> = props => {
     titleLineClamp,
     showSomeDeal,
     showRating,
+    wrapperCSS,
   } = props;
 
   return (
     <>
       <div
-        css={css`
-          ${bookMetaCSS};
-          ${props.width ? `width:${props.width}` : 'width: 100%;'};
-        `}>
+        css={[
+          bookMetaCSS,
+          props.width
+            ? css`
+                width: ${props.width};
+              `
+            : css`
+                width: 100%;
+              `,
+          wrapperCSS,
+        ]}>
         {/* Fixme available anchor */}
         <a
           css={css`

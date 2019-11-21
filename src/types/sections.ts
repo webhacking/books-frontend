@@ -7,7 +7,7 @@ export enum DisplayType {
   HotRelease = 'HotRelease',
   TodayRecommendation = 'TodayRecommendation', // 오늘 리디의 발견
   BestSeller = 'BestSeller',
-  HowAboutThis = 'HowAboutThis',
+  RecommendedBook = 'RecommendedBook', // 이 책 어때요
   HomeMdSelection = 'HomeMdSelection',
   ReadingBooksRanking = 'ReadingBooksRanking',
   HomeEventBanner = 'HomeEventBanner',

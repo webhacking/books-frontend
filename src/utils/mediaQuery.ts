@@ -3,6 +3,7 @@ import { css, SerializedStyles } from '@emotion/core';
 export enum BreakPoint {
   XS = 299,
   SM = 374,
+  M = 432,
   MD = 833,
   LG = 999,
   XL = 1279,
