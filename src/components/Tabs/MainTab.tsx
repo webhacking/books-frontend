@@ -227,7 +227,9 @@ export const MainTab: React.FC<MainTabProps> = props => {
           () => axios.get(tokenUrl.toString(), { withCredentials: true }),
           { retries: 2 },
         );
+        console.log(tokenResult);
       } catch (error) {
+        console.log(error);
         captureException(error);
       }
 
@@ -243,6 +245,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           );
           console.log(notificationResult);
         } catch (error) {
+          console.log(error);
           captureException(error);
         }
       }
