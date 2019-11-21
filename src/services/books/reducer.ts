@@ -45,7 +45,9 @@ export class BooksReducer extends ImmerReducer<BooksState> {
         seriesBooks[bid] = this.draftState.items[bid];
         if (!this.draftState.items[bid].series.property.is_completed) {
           seriesBooks[bid].thumbnailId =
-            seriesBooks[bid].series.property.opened_last_volume_id;
+            seriesBooks[bid].series.property.opened_last_volume_id.length === 0
+              ? bid
+              : seriesBooks[bid].series.property.opened_last_volume_id;
         }
       }
     });
