@@ -42,7 +42,8 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
               <Book.Thumbnail
                 adultBadge={true}
                 thumbnailWidth={120}
-                thumbnailUrl={`https://misc.ridibooks.com/cover/${book.b_id}/xxlarge`}
+                thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail
+                  ?.thumbnailId ?? book.b_id}/xxlarge`}
               />
             </ThumbnailWrapper>
             {/* Todo show sentence */}

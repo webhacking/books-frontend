@@ -39,6 +39,7 @@ function* watchInsertBookIds(action: Actions<typeof BooksReducer>) {
 
       yield all(arrays.map(array => fetchBooks(array)));
       yield all(arrays.map(array => isAvailableAtSelect(array)));
+      yield put({ type: booksActions.setThumbnailId.type });
       yield put({ type: booksActions.setFetching.type, payload: false });
     }
   } catch (error) {

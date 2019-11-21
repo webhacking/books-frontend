@@ -34,6 +34,27 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     this.draftState.items = { ...this.draftState.items, ...books };
   }
 
+  // 시리즈 도서 썸네일 확인 및 지정
+  // https://rididev.slack.com/archives/CE55MTQH2/p1574134223004000
+  // is_serial_complete 는 바라보지 않아도 됨
+  // Todo series 만 따로 reducer 를 작성할지 고민해보기
+  public setThumbnailId() {
+    const seriesBooks: BooksState['items'] = {};
+    Object.keys(this.draftState.items).forEach(bid => {
+      if (this.draftState.items[bid] && this.draftState.items[bid].series) {
+        seriesBooks[bid] = this.draftState.items[bid];
+        if (!this.draftState.items[bid].series.property.is_completed) {
+          seriesBooks[bid].thumbnailId =
+            seriesBooks[bid].series.property.opened_last_volume_id;
+        }
+      }
+    });
+    this.draftState.items = {
+      ...this.draftState.items,
+      ...seriesBooks,
+    };
+  }
+
   public setSelectBook(payload: string[]) {
     payload.forEach(bId => {
       if (this.draftState.items[bId]) {
