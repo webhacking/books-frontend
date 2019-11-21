@@ -17,7 +17,7 @@ const store = makeStore(
   {
     books: {
       itmes: {
-        '1669000008': null,
+        '12345': null,
       },
       isFetching: false,
     },
@@ -28,7 +28,9 @@ const store = makeStore(
 const books = [
   {
     b_id: '12345',
-    detail: {},
+    detail: {
+      title: { main: '와' },
+    },
   },
 ];
 

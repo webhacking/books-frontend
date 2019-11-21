@@ -111,10 +111,10 @@ interface BookMetaProps {
 
 // eslint-disable-next-line
 export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
-  // @ts-ignore
+  const { series, title } = props.book;
   return (
     <div css={bookMetaWrapperCSS}>
-      {props.book.title && <BookTitle>{props.book.title.main || ''}</BookTitle>}
+      <BookTitle>{series?.property.title ?? title.main}</BookTitle>
       {props.book.authors && props.book.authors.author && (
         <BookAuthor>{props.book.authors.author[0].name || ''}</BookAuthor>
       )}
