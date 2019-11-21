@@ -112,7 +112,6 @@ interface BookMetaProps {
 // eslint-disable-next-line
 export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
   const { series, title } = props.book;
-  console.log(title, props.book);
   return (
     <div css={bookMetaWrapperCSS}>
       <BookTitle>{series?.property.title ?? title.main}</BookTitle>
