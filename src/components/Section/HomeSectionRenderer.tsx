@@ -17,6 +17,7 @@ import * as React from 'react';
 import RankingBookList from 'src/components/BookSections/RankingBook/RankingBookList';
 import { RecommendedBook } from 'src/components/RecommendedBook';
 import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBook';
+import HomeKeywordFinderSection from 'src/components/KeywordFinder/HomeKeywordFinderSection';
 import { MultipleLineBooks } from 'src/components/MultipleLineBooks/MultipleLineBooks';
 
 interface HomeSectionRendererProps {
@@ -125,6 +126,9 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
         );
       }
       return null;
+    }
+    case DisplayType.Keywordfinder: {
+      return <HomeKeywordFinderSection genre={genre} />;
     }
     case DisplayType.RecommendedBook: {
       return <MultipleLineBooks genre={genre} title={name} items={items as MdBook[]} />;
