@@ -17,6 +17,7 @@ import * as React from 'react';
 import RankingBookList from 'src/components/BookSections/RankingBook/RankingBookList';
 import { RecommendedBook } from 'src/components/RecommendedBook';
 import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBook';
+import { MultipleLineBooks } from 'src/components/MultipleLineBooks/MultipleLineBooks';
 
 interface HomeSectionRendererProps {
   section: Section;
@@ -124,6 +125,9 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
         );
       }
       return null;
+    }
+    case DisplayType.RecommendedBook: {
+      return <MultipleLineBooks title={name} items={items as MdBook[]} />;
     }
     default:
       return null;
