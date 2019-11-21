@@ -85,9 +85,11 @@ export interface QuickMenu {
 
 export interface EventBanner {
   id: number;
-  label: string;
-  imageUrl: string;
-  link: string;
+  title: string;
+  sort_order: number;
+  image_url: string;
+  url: string;
+  badge: string;
 }
 
 export interface MdBook {

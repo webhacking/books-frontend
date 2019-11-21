@@ -29,10 +29,10 @@ const EventBannerList: React.FC<EventBannerListProps> = props => (
         `,
       )};
     `}>
-    {props.items.map((item, index) => (
+    {props.items.slice(0, 4).map((item, index) => (
       <EventBannerItem key={index}>
-        <a href={item.link}>
-          <img width="100%" height="100%" src={item.imageUrl} alt={item.label} />
+        <a href={item.url}>
+          <img width="100%" height="100%" src={item.image_url} alt={item.title} />
         </a>
       </EventBannerItem>
     ))}

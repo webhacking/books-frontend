@@ -13,7 +13,7 @@ const renderEventBannerWrapper = () =>
     <ThemeProvider theme={defaultTheme}>
       <EventBanner
         genre={'general'}
-        items={[{ label: '화끈한 포인트백 외전 완전 무료', imageUrl: '/', link: '/' }]}
+        items={[{ title: '화끈한 포인트백 외전 완전 무료', image_url: '/', url: '/' }]}
       />
     </ThemeProvider>,
   );
@@ -22,7 +22,7 @@ const renderEventBannerList = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
       <EventBannerList
-        items={[{ label: '화끈한 포인트백 외전 완전 무료', imageUrl: '/', link: '/' }]}
+        items={[{ title: '화끈한 포인트백 외전 완전 무료', image_url: '/', url: '/' }]}
       />
     </ThemeProvider>,
   );
