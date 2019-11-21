@@ -34,8 +34,25 @@ interface BookMetaProps {
   showRating: boolean;
   showSomeDeal?: boolean;
   isAIRecommendation?: boolean;
+  showTag: boolean;
   width?: string;
 }
+
+interface RenderBookTagProps {
+  isNovel: boolean;
+  isComic: boolean;
+}
+
+const RenderBookTag: React.FC<RenderBookTagProps> = props => {
+  const { isComic, isNovel } = props;
+  if (isComic) {
+    return <Tag.Comic />;
+  }
+  if (isNovel) {
+    return <Tag.Novel />;
+  }
+  return null;
+};
 
 const BookMeta: React.FC<BookMetaProps> = props => {
   const {
@@ -44,24 +61,15 @@ const BookMeta: React.FC<BookMetaProps> = props => {
       authors_ordered,
       series,
       property: { is_somedeal, is_novel },
+      file: { is_comic, is_comic_hd },
     },
     // isAIRecommendation,
+    showTag,
     titleLineClamp,
     showSomeDeal,
     showRating,
   } = props;
 
-  // Todo split code
-  // is_comic 은 어디있나?
-  const renderTag = () => {
-    if (is_novel) {
-      return <Tag.Novel />;
-    }
-    // if (tagName === 'comic') {
-    //   return <Tag.Comic />;
-    // }
-    return null;
-  };
   return (
     <>
       <div
@@ -100,7 +108,9 @@ const BookMeta: React.FC<BookMetaProps> = props => {
             css={css`
               display: flex;
             `}>
-            {renderTag()}
+            {showTag && (
+              <RenderBookTag isComic={is_comic_hd || is_comic} isNovel={is_novel} />
+            )}
             {showSomeDeal && is_somedeal && <Tag.SomeDeal />}
           </span>
         </>

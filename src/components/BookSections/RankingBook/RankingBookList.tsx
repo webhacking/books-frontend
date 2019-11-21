@@ -125,6 +125,7 @@ interface RankingBookListProps {
   title?: string;
   url?: string;
   showTimer: boolean;
+  genre: string;
 }
 
 const Timer: React.FC = () => {
@@ -163,6 +164,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   const ref = useRef<HTMLUListElement>(null);
   const [books] = useBookDetailSelector(props.items);
+  const { genre } = props;
 
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   return (
@@ -224,6 +226,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                       titleLineClamp={props.type === 'small' ? 1 : 2}
                       showSomeDeal={false}
                       isAIRecommendation={false}
+                      showTag={['bl', 'bl-serial'].includes(genre)}
                       width={props.type === 'big' ? '177px' : null}
                     />
                   )}

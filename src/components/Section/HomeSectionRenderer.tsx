@@ -49,6 +49,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
         <RankingBookList
           items={items as ReadingRanking[]}
           type={'small'}
+          genre={genre}
           title={name}
           showTimer={true}
         />
@@ -80,6 +81,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
         <RankingBookList
           items={items as ReadingRanking[]}
           title={name}
+          genre={genre}
           type={'big'}
           showTimer={false}
         />
@@ -99,6 +101,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
               <SelectionBook
                 items={item.books}
                 title={item.title}
+                genre={genre}
                 key={index}
                 option={{ isAIRecommendation: false }}
               />
@@ -114,6 +117,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
           <SelectionBook
             items={items as MdBook[]}
             title={name}
+            genre={genre}
             option={{ isAIRecommendation: false }}
           />
         );

@@ -43,6 +43,7 @@ const CarouselWrapper = styled.div`
 const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
+  const { genre } = props;
   const wrapperRef = useRef<HTMLDivElement>();
   const [, setMounted] = useState(false);
 
@@ -72,6 +73,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
       {/* Flickering 없는 UI 를 위해 추가함 */}
       {!carouselInitialize && (
         <SelectionBookLoading
+          genre={genre}
           isAIRecommendation={props.isAIRecommendation}
           items={props.items.slice(0, 6)}
         />
@@ -99,6 +101,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                 outline: none;
               `}>
               <SelectionBookItem
+                genre={genre}
                 isAIRecommendation={props.isAIRecommendation}
                 book={book}
                 width={140}
