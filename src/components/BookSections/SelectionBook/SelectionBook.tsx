@@ -56,6 +56,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
             book.b_id}/xxlarge`}
           // adultBadge={book.isAdult}
           css={css``}
+          adultBadge={book.detail?.property.is_adult_only}
         />
       </ThumbnailWrapper>
       {book.detail && (
@@ -110,6 +111,7 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
         <PortraitBook key={index}>
           <ThumbnailWrapper>
             <Book.Thumbnail
+              adultBadge={book.detail?.property.is_adult_only}
               thumbnailUrl={
                 !isIntersecting
                   ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'

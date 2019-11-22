@@ -40,7 +40,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
           <PortraitBook key={index}>
             <ThumbnailWrapper>
               <Book.Thumbnail
-                adultBadge={true}
+                adultBadge={book.detail?.property.is_adult_only}
                 thumbnailWidth={120}
                 thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail
                   ?.thumbnailId ?? book.b_id}/xxlarge`}

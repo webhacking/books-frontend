@@ -199,6 +199,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
             <PortraitBook key={index}>
               <ThumbnailWrapper>
                 <Book.Thumbnail
+                  adultBadge={book.detail?.property.is_adult_only}
                   thumbnailUrl={
                     isIntersecting
                       ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'

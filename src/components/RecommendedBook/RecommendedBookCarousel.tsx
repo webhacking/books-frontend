@@ -54,6 +54,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
       <PortraitBook key={index}>
         <ThumbnailWrapper>
           <Book.Thumbnail
+            adultBadge={book.detail?.property.is_adult_only}
             thumbnailWidth={140}
             thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
               book.b_id}/xxlarge`}
@@ -137,6 +138,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                 `}>
                 <ThumbnailWrapper>
                   <Book.Thumbnail
+                    adultBadge={book.detail?.property.is_adult_only}
                     thumbnailWidth={140}
                     thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail
                       ?.thumbnailId ?? book.b_id}/xxlarge`}

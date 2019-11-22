@@ -144,7 +144,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                     : `https://misc.ridibooks.com/cover/${item.detail?.thumbnailId ??
                         item.b_id}/xxlarge`
                 }
-                adultBadge={item.detail.property.is_adult_only}
+                adultBadge={item.detail?.property.is_adult_only}
               />
             </ThumbnailWrapper>
             {item.detail && (

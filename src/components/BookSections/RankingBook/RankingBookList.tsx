@@ -214,7 +214,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                         : `https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
                             book.b_id}/medium`
                     }
-                    adultBadge={false}
+                    adultBadge={book.detail?.property.is_adult_only}
                   />
                 </div>
                 <div className={'book-meta-box'}>
