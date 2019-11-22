@@ -239,9 +239,7 @@ const genres = {
 const TabItem: React.FC<TabItemProps> = React.memo(props => {
   // Todo apply lint
   const { route, currentPath, activePath } = props;
-  // eslint-disable-next-line require-unicode-regexp
-  const regex = new RegExp(`^${activePath.join('|')}$`, 'g');
-  const isActivePath = currentPath.match(regex);
+  const isActivePath = activePath.includes(currentPath);
   return (
     <li
       css={theme => css`
@@ -333,7 +331,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             currentCSS={genreTab}
             labelCSS={genreTabLabelCSS}
             currentPath={currentPath}
-            activePath={['/romance', '/romance-serial']}
+            activePath={['/romance', '/romance-serial', '/romance/', '/romance-serial/']}
             label={'로맨스'}
             route={'/romance'}
           />
@@ -342,7 +340,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             currentCSS={genreTab}
             labelCSS={genreTabLabelCSS}
             currentPath={currentPath}
-            activePath={['/fantasy', '/fantasy-serial']}
+            activePath={['/fantasy', '/fantasy-serial', '/fantasy/', '/fantasy-serial/']}
             label={'판타지'}
             route={'/fantasy'}
           />
@@ -351,7 +349,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             currentCSS={genreTab}
             labelCSS={genreTabLabelCSS}
             currentPath={currentPath}
-            activePath={['/comics']}
+            activePath={['/comics', '/comics/']}
             label={'만화'}
             route={'/comics'}
           />
@@ -360,7 +358,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             currentCSS={genreTab}
             labelCSS={genreTabLabelCSS}
             currentPath={currentPath}
-            activePath={['/bl', '/bl-serial']}
+            activePath={['/bl', '/bl-serial', '/bl/', '/bl-serial/']}
             label={'BL'}
             route={'/bl'}
           />
