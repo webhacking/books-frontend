@@ -59,6 +59,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                     line-height: 16px;
                     text-align: center;
                     font-weight: bold;
+                    white-space: nowrap;
                   `,
                   theme === 'dark' &&
                     css`

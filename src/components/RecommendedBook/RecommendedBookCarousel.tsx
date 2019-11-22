@@ -157,6 +157,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                         line-height: 16px;
                         text-align: center;
                         font-weight: 700;
+                        white-space: nowrap;
                       `,
                       theme === 'dark' &&
                         css`

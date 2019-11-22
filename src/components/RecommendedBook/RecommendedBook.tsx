@@ -220,6 +220,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
                       line-height: 16px;
                       text-align: center;
                       font-weight: bold;
+                      white-space: nowrap;
                     `,
                     theme === 'dark' &&
                       css`
