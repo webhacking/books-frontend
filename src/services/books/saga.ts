@@ -9,7 +9,7 @@ import sentry from 'src/utils/sentry';
 const { captureException } = sentry();
 
 // 임시 청크
-const DEFAULT_BOOKS_ID_CHUNK_SIZE = 30;
+const DEFAULT_BOOKS_ID_CHUNK_SIZE = 50;
 
 function* fetchBooks(bIds: string[]) {
   const data = yield call(pRetry, () => requestBooks(bIds), { retries: 2 });

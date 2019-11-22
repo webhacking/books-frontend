@@ -17,12 +17,14 @@ import {
 } from 'connected-next-router';
 import { AccountState } from 'src/services/accounts/reducer';
 import { BooksState } from 'src/services/books/reducer';
+import { CategoryState } from 'src/services/category/reducer';
 
 export interface RootState {
   app?: AppState;
   router?: RouteState;
   account: AccountState;
   books: BooksState;
+  categories: CategoryState;
 }
 
 interface MakeStoreOption {

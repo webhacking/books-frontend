@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { DisplayType, MdBook } from 'src/types/sections';
 import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
@@ -17,6 +17,8 @@ import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import ArrowV from 'src/svgs/ArrowV.svg';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import BookMeta from 'src/components/BookMeta/BookMeta';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/store/config';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -32,6 +34,7 @@ interface SelectionBookProps {
   option: SelectionOption;
   genre: string;
   type: DisplayType;
+  categoryId?: number;
 }
 
 interface SelectionBookItemProps {
@@ -129,8 +132,27 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
   );
 };
 
+interface SectionTitleProps {
+  type: DisplayType;
+  categoryId?: number;
+  title: string;
+}
+
+const SectionTitleRenderer: React.FC<SectionTitleProps> = props => {
+  const { type, categoryId, title } = props;
+  const { items: categories, isFetching: isCategoryFetching } = useSelector(
+    (state: RootState) => state.categories,
+  );
+
+  const isShowCategoryName = type === DisplayType.UserPreferredBestseller && !!categoryId;
+  if (isShowCategoryName) {
+    return !isCategoryFetching && <span>{categories[categoryId].name} 베스트셀러</span>;
+  }
+  return <span>{title}</span>;
+};
+
 const SelectionBook: React.FC<SelectionBookProps> = props => {
-  const { genre, type } = props;
+  const { genre, type, categoryId, title } = props;
   const [, setMounted] = useState(false);
 
   const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
@@ -164,7 +186,7 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
             </span>
           </a>
         ) : (
-          <span>{props.title}</span>
+          <SectionTitleRenderer type={type} categoryId={categoryId} title={title} />
         )}
       </SectionTitle>
       {!isIntersecting || isFetching ? (

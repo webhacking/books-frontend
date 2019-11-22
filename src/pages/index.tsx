@@ -17,6 +17,7 @@ import { booksActions } from 'src/services/books';
 import { Request } from 'express';
 import { ServerResponse } from 'http';
 import sentry from 'src/utils/sentry';
+import { categoryActions } from 'src/services/category';
 
 const { captureException } = sentry();
 
@@ -71,6 +72,11 @@ export class Home extends React.Component<HomeProps> {
 
           const bIds = keyToArray(result.branches, 'b_id');
           store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+          const categoryIds = keyToArray(result.branches, 'category_id');
+          store.dispatch({
+            type: categoryActions.insertCategoryIds.type,
+            payload: categoryIds,
+          });
           return {
             genre,
             ...query,
@@ -90,6 +96,12 @@ export class Home extends React.Component<HomeProps> {
         );
         const bIds = keyToArray(result.branches, 'b_id');
         store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+
+        const categoryIds = keyToArray(result.branches, 'category_id');
+        store.dispatch({
+          type: categoryActions.insertCategoryIds.type,
+          payload: categoryIds,
+        });
         return {
           genre,
           ...query,
