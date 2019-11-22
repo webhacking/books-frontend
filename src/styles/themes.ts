@@ -12,8 +12,10 @@ export interface RIDITheme {
   button: {
     primaryBackground: string;
     secondaryBackground: string;
+    primaryFontColor: string;
     primaryBorderColor: string;
     secondaryBorderColor: string;
+    secondaryFontColor: string;
   };
   input: {
     placeholder: string;
@@ -63,8 +65,10 @@ export const defaultTheme: RIDITheme = {
   button: {
     primaryBorderColor: colors.dodgerBlue20,
     primaryBackground: colors.dodgerBlue50,
+    primaryFontColor: '#ffffff',
     secondaryBackground: '#ffffff',
     secondaryBorderColor: '#ffffff',
+    secondaryFontColor: colors.dodgerBlue50,
   },
   input: {
     placeholder: colors.slateGray50,
@@ -114,8 +118,10 @@ export const darkTheme: RIDITheme = {
   button: {
     primaryBorderColor: colors.dodgerBlue20,
     primaryBackground: colors.dodgerBlue50,
+    primaryFontColor: '#ffffff',
     secondaryBackground: '#ffffff',
     secondaryBorderColor: '#ffffff',
+    secondaryFontColor: colors.dodgerBlue50,
   },
   input: {
     placeholder: colors.slateGray50,

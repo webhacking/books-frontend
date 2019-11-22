@@ -8,14 +8,14 @@ interface ButtonProps {
   type: 'primary' | 'secondary';
 }
 
-const createCSS = (theme: RIDITheme) => css`
+const createCSS = (theme: RIDITheme, type: 'primary' | 'secondary') => css`
   box-sizing: border-box;
-  background-color: ${theme.button.primaryBackground};
-  border: 1px solid ${theme.button.primaryBorderColor};
+  background-color: ${theme.button[`${type}Background`]};
+  border: 1px solid ${theme.button[`${type}BorderColor`]};
   border-radius: 3px;
   padding: 6px 16px;
   font-weight: bold;
-  color: white;
+  color: ${theme.button[`${type}FontColor`]};
   word-break: keep-all;
   font-size: 13px;
   height: 30px;
@@ -32,5 +32,5 @@ const createCSS = (theme: RIDITheme) => css`
 `;
 
 export const Button: React.FC<ButtonProps> = props => (
-  <button css={createCSS}>{props.label}</button>
+  <button css={theme => [createCSS(theme, props.type)]}>{props.label}</button>
 );
