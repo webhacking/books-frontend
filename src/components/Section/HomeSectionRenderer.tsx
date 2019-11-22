@@ -91,7 +91,28 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     case DisplayType.HomeQuickMenu: {
       return <QuickMenuList items={items as QuickMenu[]} />;
     }
-    case DisplayType.UserPreferredBestseller:
+    case DisplayType.UserPreferredBestseller: {
+      return (
+        <>
+          {(items as MdSelection[]).map((item, index) => {
+            if (!item.books) {
+              return null;
+            }
+            return (
+              <SelectionBook
+                items={item.books}
+                title={item.title}
+                categoryId={item.category_id}
+                genre={genre}
+                key={index}
+                type={type}
+                option={{ isAIRecommendation: false }}
+              />
+            );
+          })}
+        </>
+      );
+    }
     case DisplayType.HomeMdSelection: {
       return (
         <>

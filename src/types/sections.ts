@@ -114,6 +114,7 @@ export interface MdSelection {
   id: number;
   title: string;
   order: number;
+  category_id?: number;
   books: MdBook[];
 }
 

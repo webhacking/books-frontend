@@ -10,4 +10,8 @@ export const initialState: RootState = {
     isFetching: false,
     items: {},
   },
+  categories: {
+    isFetching: false,
+    items: {},
+  },
 };
