@@ -213,6 +213,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
   const currentPath = useContext(BrowserLocationContext);
   const [homeURL, setHomeURL] = useState('/');
   const [cartCount, setCartCount] = useState<null | number>(null);
+  const [hasNotification, setNotification] = useState(0);
   useEffect(() => {
     const visitedGenre = Cookies.get(`${cookieKeys.main_genre}`);
     setHomeURL(visitedGenre && visitedGenre !== 'general' ? visitedGenre : '/');
@@ -232,9 +233,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           () => axios.get(tokenUrl.toString(), { withCredentials: true }),
           { retries: 2 },
         );
-        console.log(tokenResult);
       } catch (error) {
-        console.log(error);
         captureException(error);
       }
 
@@ -244,16 +243,15 @@ export const MainTab: React.FC<MainTabProps> = props => {
           const notificationResult = await pRetry(
             () =>
               axios.get(notificationUrl.toString(), {
-                params: { limit: 10 },
+                params: { limit: 5 },
                 headers: {
                   Authorization: `Bearer ${tokenResult.data.token}`,
                 },
               }),
             { retries: 2 },
           );
-          console.log(notificationResult);
+          setNotification(notificationResult.data.unreadCount || 0);
         } catch (error) {
-          console.log(error);
           captureException(error);
         }
       }
@@ -308,6 +306,22 @@ export const MainTab: React.FC<MainTabProps> = props => {
         label={labels.mainTab.notification}
         path={'/notification'}
         pathRegexp={/^\/notification/g}
+        addOn={
+          hasNotification > 0 && (
+            <div
+              css={css`
+                position: absolute;
+                left: 13px;
+                top: 3.5px;
+                border: 2px solid #1f8ce6;
+                width: 11px;
+                height: 11px;
+                background: #ffde24;
+                border-radius: 11px;
+              `}
+            />
+          )
+        }
       />
       <TabItem
         isPartials={isPartials}
