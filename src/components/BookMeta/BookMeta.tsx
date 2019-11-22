@@ -5,6 +5,7 @@ import StarRating from 'src/components/StarRating/StarRating';
 import Tag from 'src/components/Tag/Tag';
 import * as BookApi from 'src/types/book';
 import { StarRating as StarRatingType } from 'src/types/sections';
+import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 
 const bookTitleCSS = css`
   font-size: 15px;
@@ -60,9 +61,7 @@ const RenderBookTag: React.FC<RenderBookTagProps> = props => {
 const BookMeta: React.FC<BookMetaProps> = props => {
   const {
     book: {
-      title,
       authors_ordered,
-      series,
       property: { is_somedeal, is_novel },
       file: { is_comic, is_comic_hd },
     },
@@ -100,7 +99,7 @@ const BookMeta: React.FC<BookMetaProps> = props => {
               ${bookTitleCSS};
               ${lineClamp(titleLineClamp || 2)}
             `}>
-            {series?.property.title ?? title.main}
+            {bookTitleGenerator(props.book)}
           </h2>
         </a>
         {/* Todo Author Anchor Generator */}

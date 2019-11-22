@@ -19,6 +19,7 @@ export enum AuthorRole {
 export interface Title {
   main: string;
   prefix?: string;
+  sub?: string;
 }
 export interface Category {
   id: number;

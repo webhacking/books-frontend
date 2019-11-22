@@ -17,6 +17,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import * as BookApi from 'src/types/book';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
+import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -111,10 +112,9 @@ interface BookMetaProps {
 
 // eslint-disable-next-line
 export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
-  const { series, title } = props.book;
   return (
     <div css={bookMetaWrapperCSS}>
-      <BookTitle>{series?.property.title ?? title.main}</BookTitle>
+      <BookTitle>{bookTitleGenerator(props.book)}</BookTitle>
       {props.book.authors && props.book.authors.author && (
         <BookAuthor>{props.book.authors.author[0].name || ''}</BookAuthor>
       )}
