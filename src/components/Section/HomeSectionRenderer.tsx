@@ -29,7 +29,7 @@ interface HomeSectionRendererProps {
 export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => {
   const {
     // @ts-ignore  Todo declare item_metadata type
-    section: { items, item_metadata, type, name },
+    section: { items, item_metadata, type, title },
     genre,
   } = props;
   if (!items) {
@@ -52,14 +52,14 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
           items={items as ReadingRanking[]}
           type={'small'}
           genre={genre}
-          title={name}
+          title={title}
           showTimer={true}
         />
       );
     case DisplayType.HotRelease: {
       return (
         <RecommendedBook
-          title={name}
+          title={title}
           items={items as HotRelease[]}
           type={type}
           theme={'dark'}
@@ -70,7 +70,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     case DisplayType.TodayRecommendation: {
       return (
         <RecommendedBook
-          title={name}
+          title={title}
           items={items as TodayRecommendation[]}
           type={type}
           theme={['bl', 'romance', 'fantasy'].includes(genre) ? 'dark' : 'white'}
@@ -82,7 +82,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
       return (
         <RankingBookList
           items={items as ReadingRanking[]}
-          title={name}
+          title={title}
           genre={genre}
           type={'big'}
           showTimer={false}
@@ -120,7 +120,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
         return (
           <SelectionBook
             items={items as MdBook[]}
-            title={name}
+            title={title}
             genre={genre}
             type={type}
             option={{ isAIRecommendation: false }}
@@ -133,7 +133,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
       return <HomeKeywordFinderSection genre={genre} />;
     }
     case DisplayType.RecommendedBook: {
-      return <MultipleLineBooks genre={genre} title={name} items={items as MdBook[]} />;
+      return <MultipleLineBooks genre={genre} title={title} items={items as MdBook[]} />;
     }
     default:
       return null;

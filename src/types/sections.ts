@@ -21,7 +21,7 @@ export enum DisplayType {
 interface BaseResult {
   slug: string;
   type: DisplayType;
-  name: string;
+  title: string;
   total: number;
 }
 
