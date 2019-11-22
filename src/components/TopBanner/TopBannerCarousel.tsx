@@ -456,8 +456,8 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       }}
       centerMode={true}>
       {banners.map((item, index) => (
-        <a href={item.landing_url} aria-label={item.title}>
-          <TopBannerItem key={index} item={item} />
+        <a href={item.landing_url} key={index} aria-label={item.title}>
+          <TopBannerItem item={item} />
         </a>
       ))}
     </ForwardedRefComponent>

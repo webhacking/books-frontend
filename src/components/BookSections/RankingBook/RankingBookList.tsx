@@ -12,7 +12,7 @@ import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import Clock from 'src/svgs/Clock.svg';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { createTimeLabel } from 'src/utils/dateTime';
-import { ReadingRanking } from 'src/types/sections';
+import { ReadingRanking, SectionExtra } from 'src/types/sections';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 
@@ -123,9 +123,9 @@ interface RankingBookListProps {
   items: ReadingRanking[];
   type: 'small' | 'big';
   title?: string;
-  url?: string;
   showTimer: boolean;
   genre: string;
+  extra?: SectionExtra;
 }
 
 const Timer: React.FC = () => {
@@ -173,9 +173,9 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
         {props.title && (
           <RankingBookTitle>
             {props.showTimer && <Timer />}
-            {props.url ? (
+            {props.extra?.detail_link ? (
               // Todo Refactor
-              <a href={props.url}>
+              <a href={props.extra.detail_link}>
                 <span>{props.title}</span>
                 <span
                   css={css`

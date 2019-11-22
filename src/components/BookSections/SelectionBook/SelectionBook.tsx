@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { DisplayType, MdBook } from 'src/types/sections';
+import { DisplayType, MdBook, SectionExtra } from 'src/types/sections';
 import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
 import SelectionBookCarousel from 'src/components/BookSections/SelectionBook/SelectionBookCarousel';
@@ -30,11 +30,11 @@ const SectionWrapper = styled.section`
 interface SelectionBookProps {
   items: MdBook[];
   title: string;
-  url?: string;
   option: SelectionOption;
   genre: string;
   type: DisplayType;
   categoryId?: number;
+  extra?: SectionExtra;
 }
 
 interface SelectionBookItemProps {
@@ -156,13 +156,16 @@ const SectionTitleRenderer: React.FC<SectionTitleProps> = props => {
 };
 
 const SelectionBook: React.FC<SelectionBookProps> = props => {
-  const { genre, type, categoryId, title } = props;
+  const { genre, type, categoryId, title, extra, option } = props;
   const [, setMounted] = useState(false);
 
   const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
 
   useEffect(() => {
     setMounted(true);
+    if (option.isAIRecommendation) {
+      // Todo
+    }
   }, []);
 
   // Todo
@@ -175,13 +178,13 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
   return (
     <SectionWrapper ref={targetRef}>
       <SectionTitle>
-        {props.url ? (
+        {extra?.detail_link ? (
           // Todo Refactor
           <a
             css={css`
               display: flex;
             `}
-            href={props.url}>
+            href={extra.detail_link}>
             <span>{props.title}</span>
             <span
               css={css`

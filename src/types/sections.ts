@@ -16,6 +16,7 @@ export enum DisplayType {
   NewSerialBook = 'NewSerialBook', // 최신 연재
   Keywordfinder = 'Keywordfinder',
   WaitFree = 'WaitFree', // 리디 기다리면 무료
+  AiRecommendation = 'AiRecommendation', // AI 추천
 }
 
 interface BaseResult {
@@ -33,9 +34,19 @@ export type SectionResult =
   | ReadingRanking
   | MdSelection;
 
+export interface SectionExtra {
+  detail_link?: string;
+  genre?: string;
+  options?: string;
+  period?: string;
+  type?: string;
+  is_placeholder?: string;
+}
+
 export interface Section extends BaseResult {
   items?: SectionResult[];
-  item_metadata?: {};
+  item_metadata: {};
+  extra: SectionExtra;
 }
 
 export interface Page extends BaseResult {

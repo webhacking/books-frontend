@@ -20,6 +20,7 @@ import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBo
 import HomeKeywordFinderSection from 'src/components/KeywordFinder/HomeKeywordFinderSection';
 import { MultipleLineBooks } from 'src/components/MultipleLineBooks/MultipleLineBooks';
 import UserPreferredSection from 'src/components/Section/UserPreferredSection';
+import AiRecommendationSection from 'src/components/Section/AIRecommendationSection';
 
 interface HomeSectionRendererProps {
   section: Section;
@@ -27,13 +28,15 @@ interface HomeSectionRendererProps {
   order: number;
 }
 
+// eslint-disable-next-line complexity
 export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => {
   const {
     // @ts-ignore  Todo declare item_metadata type
-    section: { items, item_metadata, type, title },
+    section: { items, item_metadata, type, title, extra },
     genre,
   } = props;
-  if (!items) {
+  // Todo '1'? 스토어팀에게 물어보자
+  if (!items && extra.is_placeholder !== '1') {
     return null;
   }
   switch (type) {
@@ -55,6 +58,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
           genre={genre}
           title={title}
           showTimer={true}
+          extra={extra}
         />
       );
     case DisplayType.HotRelease: {
@@ -87,6 +91,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
           genre={genre}
           type={'big'}
           showTimer={false}
+          extra={extra}
         />
       );
     case DisplayType.HomeQuickMenu: {
@@ -129,10 +134,22 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
             genre={genre}
             type={type}
             option={{ isAIRecommendation: false }}
+            extra={extra}
           />
         );
       }
       return null;
+    }
+    case DisplayType.AiRecommendation: {
+      return (
+        <AiRecommendationSection
+          items={items as MdBook[]}
+          genre={genre}
+          type={type}
+          extra={extra}
+          title={title}
+        />
+      );
     }
     case DisplayType.Keywordfinder: {
       return <HomeKeywordFinderSection genre={genre} />;
