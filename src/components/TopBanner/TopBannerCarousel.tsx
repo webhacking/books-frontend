@@ -456,142 +456,144 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       }}
       centerMode={true}>
       {banners.map((item, index) => (
-        <TopBannerItem key={index} item={item} />
+        <a href={item.landing_url} aria-label={item.title}>
+          <TopBannerItem key={index} item={item} />
+        </a>
       ))}
     </ForwardedRefComponent>
   );
 });
 
-export const TopBannerCarouselContainer: React.FC<
-  TopBannerCarouselContainerProps
-> = React.memo(props => {
-  const [carouselInitialized, setCarouselInitialized] = useState(false);
-  const [currentPosition, setCurrentPosition] = useState(0);
-  const { banners } = props;
-  const slider = React.useRef<SliderCarousel>();
-  const wrapper = React.useRef<HTMLElement>();
+export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProps> = React.memo(
+  props => {
+    const [carouselInitialized, setCarouselInitialized] = useState(false);
+    const [currentPosition, setCurrentPosition] = useState(0);
+    const { banners } = props;
+    const slider = React.useRef<SliderCarousel>();
+    const wrapper = React.useRef<HTMLElement>();
 
-  let firstClientX = 0;
-  let clientX = 0;
+    let firstClientX = 0;
+    let clientX = 0;
 
-  const changePosition = useCallback(item => {
-    setCurrentPosition(item || 0);
-  }, []);
-  const setInitialized = useCallback(() => {
-    setCarouselInitialized(true);
-  }, []);
+    const changePosition = useCallback(item => {
+      setCurrentPosition(item || 0);
+    }, []);
+    const setInitialized = useCallback(() => {
+      setCarouselInitialized(true);
+    }, []);
 
-  const handleClickLeft = (e: FormEvent) => {
-    e.preventDefault();
-    if (slider.current) {
-      slider.current.slickPrev();
-    }
-  };
-  const handleClickRight = (e: FormEvent) => {
-    e.preventDefault();
-    if (slider.current) {
-      slider.current.slickNext();
-    }
-  };
-
-  const preventTouch = e => {
-    const minValue = 5; // threshold
-
-    clientX = e.touches[0].clientX - firstClientX;
-
-    // Vertical scrolling does not work when you start swiping horizontally.
-    if (Math.abs(clientX) > minValue) {
+    const handleClickLeft = (e: FormEvent) => {
       e.preventDefault();
-      e.returnValue = false;
+      if (slider.current) {
+        slider.current.slickPrev();
+      }
+    };
+    const handleClickRight = (e: FormEvent) => {
+      e.preventDefault();
+      if (slider.current) {
+        slider.current.slickNext();
+      }
+    };
 
-      return false;
-    }
-    return e;
-  };
+    const preventTouch = e => {
+      const minValue = 5; // threshold
 
-  const touchStart = e => {
-    firstClientX = e.touches[0].clientX;
-  };
+      clientX = e.touches[0].clientX - firstClientX;
 
-  useEffect(() => {
-    if (wrapper.current) {
-      wrapper.current.addEventListener('touchstart', touchStart);
-      wrapper.current.addEventListener('touchmove', preventTouch, {
-        passive: false,
-      });
-    }
+      // Vertical scrolling does not work when you start swiping horizontally.
+      if (Math.abs(clientX) > minValue) {
+        e.preventDefault();
+        e.returnValue = false;
 
-    return () => {
+        return false;
+      }
+      return e;
+    };
+
+    const touchStart = e => {
+      firstClientX = e.touches[0].clientX;
+    };
+
+    useEffect(() => {
       if (wrapper.current) {
-        wrapper.current.removeEventListener('touchstart', touchStart);
-        wrapper.current.removeEventListener('touchmove', preventTouch, {
-          // @ts-ignore
+        wrapper.current.addEventListener('touchstart', touchStart);
+        wrapper.current.addEventListener('touchmove', preventTouch, {
           passive: false,
         });
       }
-    };
-  }, [wrapper]);
 
-  if (banners.length < 3) {
-    return null;
-  }
-  return (
-    <TopBannerCarouselWrapper ref={wrapper}>
-      {!carouselInitialized && (
-        <TopBannerCarouselLoading
-          left={banners[banners.length - 1]}
-          center={banners[0]}
-          right={banners[1]}
-        />
-      )}
-      <>
-        <TopBannerCarousel
-          forwardRef={slider}
-          banners={banners}
-          changePosition={changePosition}
-          setInitialized={setInitialized}
-        />
-        <PositionOverlay>
-          <TopBannerCurrentPosition
-            total={banners.length}
-            currentPosition={currentPosition + 1}
+      return () => {
+        if (wrapper.current) {
+          wrapper.current.removeEventListener('touchstart', touchStart);
+          wrapper.current.removeEventListener('touchmove', preventTouch, {
+            // @ts-ignore
+            passive: false,
+          });
+        }
+      };
+    }, [wrapper]);
+
+    if (banners.length < 3) {
+      return null;
+    }
+    return (
+      <TopBannerCarouselWrapper ref={wrapper}>
+        {!carouselInitialized && (
+          <TopBannerCarouselLoading
+            left={banners[banners.length - 1]}
+            center={banners[0]}
+            right={banners[1]}
           />
-          <form>
-            <div
-              css={css`
-                ${arrowWrapperCSS};
-                left: -40px;
-                transform: translate(-50%, 50%);
-              `}>
-              <Arrow
-                side={'left'}
-                onClickHandler={handleClickLeft}
-                label={'이전'}
-                wrapperStyle={css`
-                  ${arrowCSS};
-                  opacity: 0.5;
-                `}
-              />
-            </div>
-            <div
-              css={css`
-                ${arrowWrapperCSS};
-                transform: translate(50%, 50%);
-                right: -40px;
-              `}>
-              <Arrow
-                onClickHandler={handleClickRight}
-                side={'right'}
-                label={'다음'}
-                wrapperStyle={css`
-                  ${arrowCSS};
-                  opacity: 0.5;
-                `}
-              />
-            </div>
-          </form>
-        </PositionOverlay>
-      </>
-    </TopBannerCarouselWrapper>
-  );
-});
+        )}
+        <>
+          <TopBannerCarousel
+            forwardRef={slider}
+            banners={banners}
+            changePosition={changePosition}
+            setInitialized={setInitialized}
+          />
+          <PositionOverlay>
+            <TopBannerCurrentPosition
+              total={banners.length}
+              currentPosition={currentPosition + 1}
+            />
+            <form>
+              <div
+                css={css`
+                  ${arrowWrapperCSS};
+                  left: -40px;
+                  transform: translate(-50%, 50%);
+                `}>
+                <Arrow
+                  side={'left'}
+                  onClickHandler={handleClickLeft}
+                  label={'이전'}
+                  wrapperStyle={css`
+                    ${arrowCSS};
+                    opacity: 0.5;
+                  `}
+                />
+              </div>
+              <div
+                css={css`
+                  ${arrowWrapperCSS};
+                  transform: translate(50%, 50%);
+                  right: -40px;
+                `}>
+                <Arrow
+                  onClickHandler={handleClickRight}
+                  side={'right'}
+                  label={'다음'}
+                  wrapperStyle={css`
+                    ${arrowCSS};
+                    opacity: 0.5;
+                  `}
+                />
+              </div>
+            </form>
+          </PositionOverlay>
+        </>
+      </TopBannerCarouselWrapper>
+    );
+  },
+);

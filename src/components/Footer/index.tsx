@@ -228,10 +228,6 @@ const Footer: React.FC<{}> = () => (
       <FlexBox>
         <ul css={contactListCSS}>
           <li>
-            <span className={'a11y'}>전화번호 : </span>
-            <span css={serviceNumber}>{ridiMeta.serviceCenterNumber}</span>
-          </li>
-          <li>
             <a
               css={anchorHover}
               href="https://help.ridibooks.com/hc/ko"
@@ -250,9 +246,11 @@ const Footer: React.FC<{}> = () => (
           <li>
             <FooterMenu>
               <li>
-                <a css={anchorHover} href="https://paper.ridibooks.com">
+                <a
+                  css={anchorHover}
+                  href="https://paper.ridibooks.com"
+                  aria-label={'리디 페이퍼'}>
                   <PaperIcon css={paperIcon} />
-                  <span className={'a11y'}>페이퍼</span>
                 </a>
               </li>
               <li>
