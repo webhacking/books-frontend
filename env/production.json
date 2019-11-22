@@ -7,6 +7,7 @@
   "STORE_API": "https://store-api.ridibooks.com",
   "RIDI_OAUTH2_CLIENT_ID": "ePgbKKRyPvdAFzTvFg2DvrS7GenfstHdkQ2uvFNd",
   "ACCOUNT_API": "https://account.ridibooks.com",
+  "STORE_MASTER_HOST": "https://ridibooks.com",
   "STORE_HOST": "https://ridibooks.com",
   "LIBRARY_HOST": "https://library.ridibooks.com"
 }

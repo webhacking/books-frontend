@@ -168,9 +168,12 @@ interface GNBButtonsProps {
 const GNBButtons: React.FC<GNBButtonsProps> = props => {
   const { loggedUser } = props;
   const route = useRouter();
-  const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_HOST);
-  const signUpPath = new URL('/account/signup', publicRuntimeConfig.STORE_HOST);
-  const cashOrderPath = new URL('/order/checkout/cash', publicRuntimeConfig.STORE_HOST);
+  const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_MASTER_HOST);
+  const signUpPath = new URL('/account/signup', publicRuntimeConfig.STORE_MASTER_HOST);
+  const cashOrderPath = new URL(
+    '/order/checkout/cash',
+    publicRuntimeConfig.STORE_MASTER_HOST,
+  );
 
   const returnUrl = new URL(route.asPath, publicRuntimeConfig.STORE_HOST);
   loginPath.searchParams.append(
