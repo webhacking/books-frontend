@@ -9,7 +9,7 @@ export enum DisplayType {
   BestSeller = 'BestSeller',
   RecommendedBook = 'RecommendedBook', // 이 책 어때요
   HomeMdSelection = 'HomeMdSelection',
-  ReadingBooksRanking = 'ReadingBooksRanking',
+  ReadingBooksRanking = 'ReadingBooksRanking', // 지금 사람들이 많이 읽는 책
   HomeEventBanner = 'HomeEventBanner',
   UserPreferredBestseller = 'UserPreferredBestseller',
   TodayNewBook = 'TodayNewBook', // 최신 단행본

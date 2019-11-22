@@ -57,6 +57,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
           type={'small'}
           genre={genre}
           title={title}
+          showSomeDeal={true}
           showTimer={true}
           extra={extra}
         />

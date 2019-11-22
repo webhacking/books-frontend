@@ -126,6 +126,7 @@ interface RankingBookListProps {
   showTimer: boolean;
   genre: string;
   extra?: SectionExtra;
+  showSomeDeal?: boolean;
 }
 
 const Timer: React.FC = () => {
@@ -164,7 +165,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   const ref = useRef<HTMLUListElement>(null);
   const [books] = useBookDetailSelector(props.items);
-  const { genre } = props;
+  const { genre, type, showSomeDeal } = props;
 
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   return (
@@ -192,12 +193,12 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
         <div
           css={css`
             position: relative;
-            height: ${props.type === 'big' ? '402px' : '249px'};
+            height: ${type === 'big' ? '402px' : '249px'};
             margin-bottom: 62px;
           `}>
           <ul css={listCSS} ref={ref}>
             {books.slice(0, 9).map((book, index) => (
-              <li css={props.type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
+              <li css={type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
                 <div
                   css={css`
                     margin-right: ${props.type === 'big' ? '18px' : '24px'};
@@ -207,7 +208,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                     justify-content: center;
                   `}>
                   <Book.Thumbnail
-                    thumbnailWidth={props.type === 'big' ? 80 : 50}
+                    thumbnailWidth={type === 'big' ? 80 : 50}
                     thumbnailUrl={
                       !isIntersecting
                         ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
@@ -224,8 +225,8 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                       book={book.detail}
                       showRating={props.type === 'big' || !!book.rating}
                       titleLineClamp={props.type === 'small' ? 1 : 2}
-                      showSomeDeal={false}
                       isAIRecommendation={false}
+                      showSomeDeal={showSomeDeal}
                       showTag={['bl', 'bl-serial'].includes(genre)}
                       width={props.type === 'big' ? '177px' : null}
                       ratingInfo={book.rating}
