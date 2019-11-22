@@ -32,7 +32,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
     const requestAiRecommendationItems = async () => {
       try {
         const requestUrl = new URL(
-          `/sections/home-${genre}-user-preferred-bestseller`,
+          `/sections/home-${genre}-ai-recommendation`,
           publicRuntimeConfig.STORE_API,
         );
         const result = await axios.get(requestUrl.toString(), { withCredentials: true });
