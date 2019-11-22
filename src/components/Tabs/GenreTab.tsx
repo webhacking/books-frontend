@@ -263,7 +263,7 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
           : props.labelCSS(theme)}
       `}>
       <Link replace={false} route={route}>
-        <button>
+        <button aria-label={props.label}>
           <span css={isActivePath ? props.currentCSS : props.normalCSS}>
             {props.label}
           </span>
@@ -301,7 +301,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                     }
                   `}
             `}>
-            <a href={'/category/list'}>
+            <a href={'/category/list'} aria-label={'카테고리 목록'}>
               <button>
                 <GNBCategory
                   css={(theme: RIDITheme) => css`

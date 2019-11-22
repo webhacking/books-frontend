@@ -196,7 +196,7 @@ const TabItem: React.FC<TabItemProps> = props => {
             `
           : ''
       }>
-      <StyledAnchor href={path}>
+      <StyledAnchor href={path} aria-label={label}>
         <TabButton>
           {isActiveTab ? activeIcon : normalIcon}
           {addOn}
@@ -294,7 +294,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
         pathRegexp={
           // Hack, Apply lint
           // eslint-disable-next-line require-unicode-regexp,prefer-named-capture-group
-          /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(author|book|event|search|category|fantasy|romance|bl|bl-serial|fantasy-serial|romance-serial|comics)(\/.*$|$))/
+          /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(support|keyword-finder|new-release|bestsellers|author|book|event|search|category|fantasy|romance|bl|bl-serial|fantasy-serial|romance-serial|comics)(\/.*$|$))/
         }
       />
       <TabItem

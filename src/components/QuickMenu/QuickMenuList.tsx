@@ -90,7 +90,7 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
         {props.items.map((menu, index) => (
           <MenuItem key={index}>
             <MenuItemWrapper>
-              <a href={menu.url}>
+              <a href={menu.url} aria-label={menu.name}>
                 <div
                   css={css`
                     position: relative;

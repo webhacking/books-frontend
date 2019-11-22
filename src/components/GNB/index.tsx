@@ -201,7 +201,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
         // Todo add promotion buttons ex) calc date 123 충전
         <>
           <li>
-            <a href={cashOrderPath.toString()}>
+            <a href={cashOrderPath.toString()} aria-label={'리디 캐시 충전'}>
               <Button
                 type={'primary'}
                 label={
@@ -236,7 +236,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
             </a>
           </li>
           <li>
-            <a href={publicRuntimeConfig.LIBRARY_HOST}>
+            <a href={publicRuntimeConfig.LIBRARY_HOST} aria-label={'내 서재 홈'}>
               <Button type={'primary'} label={'내 서재'} />
             </a>
           </li>
@@ -244,14 +244,14 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
       ) : (
         <>
           <li>
-            <a href={signUpPath.toString()}>
-              <Button type={'secondary'} label={'회원가입'} />
+            <a href={signUpPath.toString()} aria-label={'회원가입'}>
+              <Button type={'primary'} label={'회원가입'} />
             </a>
           </li>
           <li>
             {/* Todo fix correct path by env */}
-            <a href={loginPath.toString()}>
-              <Button type={'primary'} label={'로그인'} />
+            <a href={loginPath.toString()} aria-label={'로그인'}>
+              <Button type={'secondary'} label={'로그인'} />
             </a>
           </li>
         </>
@@ -282,6 +282,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_HOST);
   loginPath.searchParams.append('return_url', path || publicRuntimeConfig.BOOKS_HOST);
 
+  const homePath = new URL('/', publicRuntimeConfig.STORE_HOST);
   return (
     // @ts-ignore
     <GNBWrapper id={props.id}>
@@ -291,7 +292,8 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
             <LogoWrapper>
               <li>
                 <a
-                  href={props.isPartials ? 'https://ridibooks.com' : '/'}
+                  href={homePath.toString()}
+                  aria-label={'리디북스 홈'}
                   css={css`
                     display: flex;
                     align-items: center;
@@ -301,7 +303,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
                 </a>
               </li>
               <li>
-                <a href="https://select.ridibooks.com">
+                <a href="https://select.ridibooks.com" aria-label={'리디셀렉트 홈'}>
                   <RidiSelectLogo css={ridiSelectLogo} />
                   <span className="a11y">리디셀렉트</span>
                 </a>

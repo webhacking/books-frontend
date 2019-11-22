@@ -417,7 +417,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
             color: black;
           }
         `}>
-        <a href={keywordFinderUrl.toString()}>
+        <a href={keywordFinderUrl.toString()} aria-label={'키워드 파인더'}>
           <span
             css={css`
               margin-right: 8px;
@@ -461,7 +461,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
                 `}>
                 <a
                   href={keywordFinderUrl.toString()}
-                  title={keyword.name}
+                  aria-label={keyword.name}
                   css={css`
                     border: 1px solid #b8bfc4;
                     height: 30px;
