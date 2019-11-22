@@ -3,6 +3,8 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import * as React from 'react';
 import ArrowV from 'src/svgs/ArrowV.svg';
 import { scrollBarHidden } from 'src/styles';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 interface Keyword {
   genre: string;
@@ -379,7 +381,15 @@ interface HomeKeywordFinderSectionProps {
 }
 
 const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props => {
-  const genreKeywords = popularKeywords[props.genre];
+  const { genre } = props;
+  const genreKeywords = popularKeywords[genre];
+  const parentGenre = genre.replace('-serial', '');
+  // https://ridibooks.com/keyword-finder/romance?from=romance
+  const keywordFinderUrl = new URL(
+    `/keyword-finder/${parentGenre}`,
+    publicRuntimeConfig.STORE_HOST,
+  );
+  keywordFinderUrl.searchParams.append('from', genre);
   return (
     <section
       css={css`
@@ -396,7 +406,6 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
           `,
         )};
       `}>
-      {/* Todo 올바른 링크 달기 */}
       <h3
         css={css`
           font-weight: normal;
@@ -404,19 +413,24 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
           line-height: 21px;
           font-size: 21px;
           margin-bottom: 26px;
+          a {
+            color: black;
+          }
         `}>
-        <span
-          css={css`
-            margin-right: 8px;
-          `}>
-          키워드로 검색하기
-        </span>
-        <span
-          css={css`
-            margin-left: 7px;
-          `}>
-          <ArrowV />
-        </span>
+        <a href={keywordFinderUrl.toString()}>
+          <span
+            css={css`
+              margin-right: 8px;
+            `}>
+            키워드로 검색하기
+          </span>
+          <span
+            css={css`
+              margin-left: 7px;
+            `}>
+            <ArrowV />
+          </span>
+        </a>
       </h3>
       <div>
         <ul
@@ -426,35 +440,46 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
             ${scrollBarHidden};
             -webkit-overflow-scrolling: touch;
           `}>
-          {genreKeywords.map((keyword, index) => (
-            <li
-              key={index}
-              css={css`
-                flex-shrink: 0;
-                :not(:last-of-type) {
-                  margin-right: 6px;
-                }
-              `}>
-              {/* Todo 올바른 링크 달기 */}
-              <a
-                href={'#test'}
+          {genreKeywords.map((keyword, index) => {
+            if (keywordFinderUrl.searchParams.has('set_id')) {
+              keywordFinderUrl.searchParams.delete('set_id');
+            }
+            if (keywordFinderUrl.searchParams.has('tag_ids[]')) {
+              keywordFinderUrl.searchParams.delete('tag_ids[]');
+            }
+
+            keywordFinderUrl.searchParams.append('set_id', keyword.set_id.toString());
+            keywordFinderUrl.searchParams.append('tag_ids[]', keyword.tag_id.toString());
+            return (
+              <li
+                key={index}
                 css={css`
-                  border: 1px solid #b8bfc4;
-                  height: 30px;
-                  border-radius: 20px;
-                  display: block;
+                  flex-shrink: 0;
+                  :not(:last-of-type) {
+                    margin-right: 6px;
+                  }
                 `}>
-                <span
+                <a
+                  href={keywordFinderUrl.toString()}
+                  title={keyword.name}
                   css={css`
-                    font-size: 14px;
-                    line-height: 29px;
-                    font-weight: bold;
-                    color: #525a61;
-                    padding: 0 10px;
-                  `}>{`#${keyword.name}`}</span>
-              </a>
-            </li>
-          ))}
+                    border: 1px solid #b8bfc4;
+                    height: 30px;
+                    border-radius: 20px;
+                    display: block;
+                  `}>
+                  <span
+                    css={css`
+                      font-size: 14px;
+                      line-height: 29px;
+                      font-weight: bold;
+                      color: #525a61;
+                      padding: 0 10px;
+                    `}>{`#${keyword.name}`}</span>
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </section>
