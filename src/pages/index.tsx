@@ -50,16 +50,16 @@ export class Home extends React.Component<HomeProps> {
       `/pages/${this.createHomeSlug(genre)}/`,
       publicRuntimeConfig.STORE_API,
     );
+    const headers = req && {
+      Cookie: `ridi-at=${req.cookies['ridi-at'] ?? ''}; ridi-rt=${req.cookies[
+        'ridi-rt'
+      ] ?? ''};`,
+    };
     const result = await pRetry(
       () =>
         axios.get<Page>(url.toString(), {
           withCredentials: true,
-          // Todo refactor
-          headers: {
-            Cookie: `ridi-at=${req?.cookies['ridi-at'] ?? ''}; ridi-rt=${req?.cookies[
-              'ridi-rt'
-            ] ?? ''};`,
-          },
+          headers,
         }),
       {
         retries: 2,
