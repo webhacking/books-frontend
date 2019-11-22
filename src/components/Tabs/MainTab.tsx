@@ -219,7 +219,6 @@ export const MainTab: React.FC<MainTabProps> = props => {
     setHomeURL(visitedGenre && visitedGenre !== 'general' ? visitedGenre : '/');
   }, [currentPath]);
 
-  // Todo dispatch notification info, cart count
   useEffect(() => {
     const requestNotificationAuth = async () => {
       let tokenResult = null;
