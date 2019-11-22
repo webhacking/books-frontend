@@ -317,6 +317,12 @@ export const MainTab: React.FC<MainTabProps> = props => {
                 height: 11px;
                 background: #ffde24;
                 border-radius: 11px;
+                ${orBelow(
+                  BreakPoint.LG,
+                  css`
+                    left: 16px;
+                  `,
+                )}
               `}
             />
           )
