@@ -172,15 +172,25 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
   const signUpPath = new URL('/account/signup', publicRuntimeConfig.STORE_HOST);
   const cashOrderPath = new URL('/order/checkout/cash', publicRuntimeConfig.STORE_HOST);
 
-  const returnUrl = new URL(route.asPath, publicRuntimeConfig.BOOKS_HOST);
+  const returnUrl = new URL(route.asPath, publicRuntimeConfig.STORE_HOST);
   loginPath.searchParams.append(
     'return_url',
-    returnUrl.toString() || publicRuntimeConfig.BOOKS_HOST,
+    returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
   );
   signUpPath.searchParams.append(
     'return_url',
-    returnUrl.toString() || publicRuntimeConfig.BOOKS_HOST,
+    returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
   );
+  useEffect(() => {
+    loginPath.searchParams.append(
+      'return_url',
+      new URL(route.asPath, publicRuntimeConfig.STORE_HOST).toString(),
+    );
+    signUpPath.searchParams.append(
+      'return_url',
+      new URL(route.asPath, publicRuntimeConfig.STORE_HOST).toString(),
+    );
+  }, [route.asPath]);
 
   return (
     <>
