@@ -310,8 +310,8 @@ export const MainTab: React.FC<MainTabProps> = props => {
             <div
               css={css`
                 position: absolute;
-                left: 13px;
-                top: 3.5px;
+                left: 13.5px;
+                top: 4px;
                 border: 2px solid #1f8ce6;
                 width: 11px;
                 height: 11px;
@@ -320,7 +320,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
                 ${orBelow(
                   BreakPoint.LG,
                   css`
-                    left: 16px;
+                    left: 17.5px;
                   `,
                 )}
               `}
