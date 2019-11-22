@@ -169,53 +169,69 @@ const genres = {
     path: '/bl',
     activePaths: ['/bl', '/bl-serial'],
     services: [
-      { name: '단행본', path: '/bl', activePaths: ['/bl'] },
-      { name: '연재', path: '/bl-serial', activePaths: ['/bl-serial'] },
+      { name: '단행본', path: '/bl', activePaths: ['/bl', '/bl/'] },
+      { name: '연재', path: '/bl-serial', activePaths: ['/bl-serial', '/bl-serial/'] },
     ],
   },
   'bl-serial': {
     path: '/bl-serial',
     activePaths: ['/bl', '/bl-serial'],
     services: [
-      { name: '단행본', path: '/bl', activePaths: ['/bl'] },
-      { name: '연재', path: '/bl-serial', activePaths: ['/bl-serial'] },
+      { name: '단행본', path: '/bl', activePaths: ['/bl', '/bl/'] },
+      { name: '연재', path: '/bl-serial', activePaths: ['/bl-serial', '/bl-serial/'] },
     ],
   },
   fantasy: {
     path: '/fantasy',
     activePaths: ['/fantasy', '/fantasy-serial'],
     services: [
-      { name: '단행본', path: '/fantasy', activePaths: ['/fantasy'] },
-      { name: '연재', path: '/fantasy-serial', activePaths: ['/fantasy-serial'] },
+      { name: '단행본', path: '/fantasy', activePaths: ['/fantasy', '/fantasy/'] },
+      {
+        name: '연재',
+        path: '/fantasy-serial',
+        activePaths: ['/fantasy-serial', '/fantasy-serial/'],
+      },
     ],
   },
   'fantasy-serial': {
     path: '/fantasy-serial',
     activePaths: ['/fantasy', '/fantasy-serial'],
     services: [
-      { name: '단행본', path: '/fantasy', activePaths: ['/fantasy'] },
-      { name: '연재', path: '/fantasy-serial', activePaths: ['/fantasy-serial'] },
+      { name: '단행본', path: '/fantasy', activePaths: ['/fantasy', '/fantasy/'] },
+      {
+        name: '연재',
+        path: '/fantasy-serial',
+        activePaths: ['/fantasy-serial', '/fantasy-serial/'],
+      },
     ],
   },
   romance: {
     path: '/romance',
     activePaths: ['romance', 'romance-serial'],
     services: [
-      { name: '단행본', path: '/romance', activePaths: ['/romance'] },
-      { name: '연재', path: '/romance-serial', activePaths: ['/romance-serial'] },
+      { name: '단행본', path: '/romance', activePaths: ['/romance', '/romance/'] },
+      {
+        name: '연재',
+        path: '/romance-serial',
+        activePaths: ['/romance-serial', '/romance-serial/'],
+      },
     ],
   },
   'romance-serial': {
     path: 'romance-serial',
     activePaths: ['/romance', '/romance-serial'],
     services: [
-      { name: '단행본', path: '/romance', activePaths: ['/romance'] },
-      { name: '연재', path: '/romance-serial', activePaths: ['/romance-serial'] },
+      { name: '단행본', path: '/romance', activePaths: ['/romance', '/romance/'] },
+      {
+        name: '연재',
+        path: '/romance-serial',
+        activePaths: ['/romance-serial', '/romance-serial/'],
+      },
     ],
   },
   comics: {
     path: '/comics',
-    activePaths: ['comics'],
+    activePaths: ['/comics', 'comics', '/comics/'],
     services: [],
   },
 };
