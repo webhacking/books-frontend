@@ -9,5 +9,5 @@ export const bookTitleGenerator = (book: BookApi.Book) => {
       return `${book.title.prefix} ${book.title.main}`;
     }
   }
-  return book.title;
+  return book.title.main;
 };
