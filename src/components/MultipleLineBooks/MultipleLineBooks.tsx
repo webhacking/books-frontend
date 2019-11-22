@@ -4,9 +4,10 @@ import { MdBook } from 'src/types/sections';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import BookMeta from 'src/components/BookMeta/BookMeta';
-import * as React from 'react';
+import React, { useRef } from 'react';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
+import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 
 interface MultipleLineBooks {
   items: MdBook[];
@@ -17,8 +18,11 @@ interface MultipleLineBooks {
 export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
   const { title, items, genre } = props;
   const [books] = useBookDetailSelector(items);
+  const targetRef = useRef(null);
+  const isIntersecting = useIntersectionObserver(targetRef, '50px');
   return (
     <section
+      ref={targetRef}
       css={css`
         max-width: 1000px;
         margin: 0 auto;
@@ -134,7 +138,12 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                 )};
               `}>
               <Book.Thumbnail
-                thumbnailUrl={`https://misc.ridibooks.com/cover/${item.b_id}/xxlarge`}
+                thumbnailUrl={
+                  !isIntersecting
+                    ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
+                    : `https://misc.ridibooks.com/cover/${item.detail?.thumbnailId ??
+                        item.b_id}/xxlarge`
+                }
                 adultBadge={item.detail.property.is_adult_only}
               />
             </ThumbnailWrapper>
