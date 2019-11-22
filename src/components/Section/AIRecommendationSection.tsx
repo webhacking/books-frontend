@@ -50,6 +50,9 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
       // requestAiRecommendationItems();
     }
   }, [genre, loggedUser]);
+  if (!loggedUser) {
+    return null;
+  }
   return (
     <SelectionBook
       items={[]}
