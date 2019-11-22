@@ -147,7 +147,7 @@ const SectionTitleRenderer: React.FC<SectionTitleProps> = props => {
   const isShowCategoryName = type === DisplayType.UserPreferredBestseller && !!categoryId;
   if (isShowCategoryName && categories[categoryId]) {
     return (
-      !isCategoryFetching && <span>{categories[categoryId].name && ''} 베스트셀러</span>
+      !isCategoryFetching && <span>{categories[categoryId].name ?? ''} 베스트셀러</span>
     );
   }
   return <span>{title}</span>;
@@ -169,6 +169,7 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
   // }
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
+
   return (
     <SectionWrapper ref={targetRef}>
       <SectionTitle>

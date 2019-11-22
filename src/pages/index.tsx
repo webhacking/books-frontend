@@ -45,15 +45,27 @@ export class Home extends React.Component<HomeProps> {
     return `home-${genre}`;
   }
 
-  private static async fetchHomeSections(genre: string) {
+  private static async fetchHomeSections(genre: string, req?: Request) {
     const url = new URL(
       `/pages/${this.createHomeSlug(genre)}/`,
       publicRuntimeConfig.STORE_API,
     );
-    const result = await pRetry(() => axios.get<Page>(url.toString()), {
-      retries: 2,
-      minTimeout: 2000,
-    });
+    const result = await pRetry(
+      () =>
+        axios.get<Page>(url.toString(), {
+          withCredentials: true,
+          // Todo refactor
+          headers: {
+            Cookie: `ridi-at=${req?.cookies['ridi-at'] ?? ''}; ridi-rt=${req?.cookies[
+              'ridi-rt'
+            ] ?? ''};`,
+          },
+        }),
+      {
+        retries: 2,
+        minTimeout: 2000,
+      },
+    );
     return result.data;
   }
 
@@ -61,15 +73,14 @@ export class Home extends React.Component<HomeProps> {
   public static async getInitialProps(ctx: ConnectedInitializeProps) {
     const { query, res, req, store } = ctx;
     const genre = query?.genre || 'general';
-
     if (req && res) {
       if (res.statusCode !== 302) {
         try {
           const result = await this.fetchHomeSections(
             // @ts-ignore
             genre,
+            req,
           );
-
           const bIds = keyToArray(result.branches, 'b_id');
           store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
           const categoryIds = keyToArray(result.branches, 'category_id');

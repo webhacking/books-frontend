@@ -8,6 +8,6 @@
   "RIDI_OAUTH2_CLIENT_ID": "Nkt2Xdc0zMuWmye6MSkYgqCh9q6JjeMCsUiH1kgL",
   "ACCOUNT_API": "https://account.dev.ridi.io",
   "STORE_MASTER_HOST": "https://master.test.ridi.io",
-  "STORE_HOST": "https://responsive-web.test.ridi.io",
+  "STORE_HOST": "https://books.local.ridi.io",
   "LIBRARY_HOST": "https://library.ridi.io"
 }

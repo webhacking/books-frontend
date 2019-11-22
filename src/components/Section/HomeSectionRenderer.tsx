@@ -19,6 +19,7 @@ import { RecommendedBook } from 'src/components/RecommendedBook';
 import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBook';
 import HomeKeywordFinderSection from 'src/components/KeywordFinder/HomeKeywordFinderSection';
 import { MultipleLineBooks } from 'src/components/MultipleLineBooks/MultipleLineBooks';
+import UserPreferredSection from 'src/components/Section/UserPreferredSection';
 
 interface HomeSectionRendererProps {
   section: Section;
@@ -93,24 +94,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     }
     case DisplayType.UserPreferredBestseller: {
       return (
-        <>
-          {(items as MdSelection[]).map((item, index) => {
-            if (!item.books) {
-              return null;
-            }
-            return (
-              <SelectionBook
-                items={item.books}
-                title={item.title}
-                categoryId={item.category_id}
-                genre={genre}
-                key={index}
-                type={type}
-                option={{ isAIRecommendation: false }}
-              />
-            );
-          })}
-        </>
+        <UserPreferredSection items={items as MdSelection[]} genre={genre} type={type} />
       );
     }
     case DisplayType.HomeMdSelection: {
