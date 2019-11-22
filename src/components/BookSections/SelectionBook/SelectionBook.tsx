@@ -145,9 +145,9 @@ const SectionTitleRenderer: React.FC<SectionTitleProps> = props => {
   );
 
   const isShowCategoryName = type === DisplayType.UserPreferredBestseller && !!categoryId;
-  if (isShowCategoryName) {
+  if (isShowCategoryName && categories[categoryId]) {
     return (
-      !isCategoryFetching && <span>{categories[categoryId]?.name && ''} 베스트셀러</span>
+      !isCategoryFetching && <span>{categories[categoryId].name && ''} 베스트셀러</span>
     );
   }
   return <span>{title}</span>;
