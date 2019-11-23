@@ -11,6 +11,7 @@ import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import { BookMeta } from 'src/components/RecommendedBook/RecommendedBook';
+import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -32,7 +33,8 @@ const CarouselWrapper = styled.div`
   width: 1005px;
   margin: 0 auto;
   position: relative;
-  padding-left: 24px;
+  padding-left: 17px;
+  padding-right: 9px;
   padding-bottom: 36px;
 `;
 
@@ -49,6 +51,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
       padding-left: 3px;
       justify-content: center;
       height: 365px;
+      margin-left: -18px;
     `}>
     {props.items.map((book, index) => (
       <PortraitBook key={index}>
@@ -60,7 +63,9 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
               book.b_id}/xxlarge`}
           />
         </ThumbnailWrapper>
-        {book.detail && <BookMeta book={book.detail} />}
+        {book.detail && props.type === DisplayType.HotRelease && (
+          <BookMeta book={book.detail} />
+        )}
       </PortraitBook>
     ))}
   </ul>
@@ -141,8 +146,20 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                     adultBadge={book.detail?.property.is_adult_only}
                     thumbnailWidth={140}
                     thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail
-                      ?.thumbnailId ?? book.b_id}/xxlarge`}
-                  />
+                      ?.thumbnailId ?? book.b_id}/xxlarge`}>
+                    <div
+                      css={css`
+                        position: absolute;
+                        display: block;
+                        top: -7px;
+                        left: -7px;
+                      `}>
+                      <BookBadgeRenderer
+                        wrapperCSS={css``}
+                        isWaitFree={book.detail?.series?.property.is_wait_free}
+                      />
+                    </div>
+                  </Book.Thumbnail>
                 </ThumbnailWrapper>
                 {/* Todo show sentence */}
                 {book.detail && type === DisplayType.HotRelease && (
@@ -152,6 +169,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                   <div
                     css={[
                       css`
+                        padding-left: 14px;
                         margin-top: 2px;
                         font-size: 13px;
                         line-height: 16px;

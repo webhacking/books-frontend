@@ -38,8 +38,8 @@ const MenuList = styled.ul`
   ${orBelow(
     BreakPoint.LG,
     css`
-      padding-left: 0;
-      padding-right: 0;
+      padding-left: 3px;
+      padding-right: 3px;
     `,
   )};
 
@@ -106,6 +106,8 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
                     css={css`
                       position: absolute;
                       transform: translate(-50%, -54%);
+                      width: 44px;
+                      height: 44px;
                       top: 50%;
                       left: 50%;
                     `}

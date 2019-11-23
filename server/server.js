@@ -17,7 +17,9 @@ function createServer() {
   const server = express();
   const { Sentry } = require('../src/utils/sentry')(app.buildId);
 
-  csp(server);
+  if (!dev) {
+    csp(server);
+  }
   server.use(compression());
   server.use(Sentry.Handlers.requestHandler());
   server.use(cookieParser());

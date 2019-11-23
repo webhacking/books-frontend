@@ -31,11 +31,14 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
       `}>
       <BookList
         ref={ref}
-        css={
+        css={[
           props.type === DisplayType.HotRelease
             ? hotReleaseBookListCSS
-            : recommendedBookListCSS
-        }>
+            : recommendedBookListCSS,
+          css`
+            padding-left: 0 !important;
+          `,
+        ]}>
         {props.items.map((book, index) => (
           <PortraitBook key={index}>
             <ThumbnailWrapper>
@@ -54,6 +57,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
               <div
                 css={[
                   css`
+                    padding-left: 14px;
                     margin-top: 2px;
                     font-size: 13px;
                     line-height: 16px;

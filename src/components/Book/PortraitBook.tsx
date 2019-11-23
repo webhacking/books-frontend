@@ -10,13 +10,13 @@ export const PortraitBook = styled.li`
   width: 140px;
 
   :first-of-type {
-    padding-left: 20px;
+    //padding-left: 15px;
   }
   :last-of-type {
     padding-right: 20px;
   }
   :not(:last-of-type) {
-    margin-right: 24px;
+    margin-right: 22px;
   }
 
   ${orBelow(
@@ -25,7 +25,7 @@ export const PortraitBook = styled.li`
       min-width: 120px;
       width: 120px;
       :first-of-type {
-        padding-left: 16px;
+        //padding-left: 16px;
       }
       :last-of-type {
         padding-right: 16px;

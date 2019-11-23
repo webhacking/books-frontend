@@ -1,4 +1,4 @@
-const THUMBNAIL_MAX_HEIGHT = 216 / 2;
+const THUMBNAIL_MAX_HEIGHT = 223 / 2;
 
 export const getArrowVerticalCenterPosition = (
   ref: React.RefObject<HTMLDivElement | HTMLElement>,

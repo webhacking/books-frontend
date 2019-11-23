@@ -35,8 +35,8 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
           display: flex;
           flex-wrap: wrap;
           flex-shrink: 0;
-          justify-content: space-between;
-          padding: 0 24px;
+          justify-content: space-around;
+          padding: 0 19px;
           ${orBelow(
             432,
             css`
@@ -47,7 +47,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
             BreakPoint.M + 1,
             BreakPoint.LG,
             css`
-              padding: 0 20px;
+              padding: 0 20px 0 10px;
             `,
           )}
         `}>
@@ -92,6 +92,14 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                     margin-right: 2.1%;
                   }
                   width: 120px;
+                `,
+              )};
+              ${greaterThanOrEqualTo(
+                1001,
+                css`
+                  :not(:nth-of-type(6n)) {
+                    margin-right: 20px;
+                  }
                 `,
               )};
               margin-bottom: 20px;

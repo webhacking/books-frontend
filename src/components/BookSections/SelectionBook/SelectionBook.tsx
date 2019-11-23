@@ -19,6 +19,8 @@ import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
+import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -54,11 +56,23 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
           thumbnailWidth={props.width || 140}
           thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
             book.b_id}/xxlarge`}
-          // adultBadge={book.isAdult}
           css={css``}
-          adultBadge={book.detail?.property.is_adult_only}
-        />
+          adultBadge={book.detail?.property.is_adult_only}>
+          <div
+            css={css`
+              position: absolute;
+              display: block;
+              top: -7px;
+              left: -7px;
+            `}>
+            <BookBadgeRenderer
+              wrapperCSS={css``}
+              isWaitFree={book.detail?.series?.property.is_wait_free}
+            />
+          </div>
+        </Book.Thumbnail>
       </ThumbnailWrapper>
+
       {book.detail && (
         <BookMeta
           showTag={['bl', 'bl-serial'].includes(genre)}
@@ -104,8 +118,14 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
     <ul
       css={css`
         display: flex;
-        padding-left: 4px;
         padding-bottom: 48px;
+        padding-left: 18px;
+        ${orBelow(
+          BreakPoint.LG,
+          css`
+            padding-left: 13px;
+          `,
+        )}
       `}>
       {props.items.map((book, index) => (
         <PortraitBook key={index}>
