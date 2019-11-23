@@ -155,8 +155,12 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                         left: -7px;
                       `}>
                       <BookBadgeRenderer
+                        type={type}
                         wrapperCSS={css``}
                         isWaitFree={book.detail?.series?.property.is_wait_free}
+                        discountPercentage={
+                          book.detail?.price_info?.buy.discount_percentage || 0
+                        }
                       />
                     </div>
                   </Book.Thumbnail>
