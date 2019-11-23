@@ -21,6 +21,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -69,9 +70,12 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
               type={type}
               wrapperCSS={css``}
               isWaitFree={book.detail?.series?.property.is_wait_free}
-              discountPercentage={book.detail?.price_info.buy.discount_percentage || 0}
+              discountPercentage={book.detail?.price_info?.buy?.discount_percentage || 0}
             />
           </div>
+          <FreeBookRenderer
+            freeBookCount={book.detail?.series?.price_info?.buy?.free_book_count || 0}
+          />
         </Book.Thumbnail>
       </ThumbnailWrapper>
 

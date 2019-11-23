@@ -9,6 +9,7 @@ import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
+import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 
 interface MultipleLineBooks {
   items: MdBook[];
@@ -170,6 +171,11 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                     }
                   />
                 </div>
+                <FreeBookRenderer
+                  freeBookCount={
+                    item.detail?.series?.price_info?.buy?.free_book_count || 0
+                  }
+                />
               </Book.Thumbnail>
             </ThumbnailWrapper>
             {item.detail && (
