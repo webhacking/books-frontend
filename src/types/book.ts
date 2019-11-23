@@ -131,6 +131,10 @@ export interface ThumbnailInfo {
   xxlarge: string;
 }
 
+export interface SetBook {
+  member_books_count: number;
+}
+
 export interface Book {
   id: string;
   authors: any; // will remove
@@ -146,6 +150,7 @@ export interface Book {
   series?: Series;
   support: DeviceSupport;
   thumbnail: ThumbnailInfo;
+  setbook?: SetBook;
 
   //
   is_deleted?: boolean;
