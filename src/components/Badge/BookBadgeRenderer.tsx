@@ -65,7 +65,7 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = props => {
             top: 1.6px;
             transform: scale(0.92);
             font-weight: bold;
-            margin-left: 0.5px;
+            margin-left: 0.7px;
             font-size: 11px;
             position: relative;
             line-height: 9px;

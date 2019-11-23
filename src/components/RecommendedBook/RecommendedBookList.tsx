@@ -13,6 +13,7 @@ import { css } from '@emotion/core';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
+import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
@@ -46,8 +47,24 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                 adultBadge={book.detail?.property.is_adult_only}
                 thumbnailWidth={120}
                 thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail
-                  ?.thumbnailId ?? book.b_id}/xxlarge`}
-              />
+                  ?.thumbnailId ?? book.b_id}/xxlarge`}>
+                <div
+                  css={css`
+                    position: absolute;
+                    display: block;
+                    top: -7px;
+                    left: -7px;
+                  `}>
+                  <BookBadgeRenderer
+                    type={type}
+                    wrapperCSS={css``}
+                    isWaitFree={book.detail?.series?.property.is_wait_free}
+                    discountPercentage={
+                      book.detail?.price_info?.buy.discount_percentage || 0
+                    }
+                  />
+                </div>
+              </Book.Thumbnail>
             </ThumbnailWrapper>
             {/* Todo show sentence */}
             {book.detail && type === DisplayType.HotRelease && (
