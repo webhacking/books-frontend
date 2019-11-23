@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import { between, BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
-import { MdBook } from 'src/types/sections';
+import { DisplayType, MdBook } from 'src/types/sections';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import BookMeta from 'src/components/BookMeta/BookMeta';
@@ -8,6 +8,7 @@ import React, { useRef } from 'react';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
+import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 
 interface MultipleLineBooks {
   items: MdBook[];
@@ -152,8 +153,24 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                     : `https://misc.ridibooks.com/cover/${item.detail?.thumbnailId ??
                         item.b_id}/xxlarge`
                 }
-                adultBadge={item.detail?.property.is_adult_only}
-              />
+                adultBadge={item.detail?.property.is_adult_only}>
+                <div
+                  css={css`
+                    position: absolute;
+                    display: block;
+                    top: -7px;
+                    left: -7px;
+                  `}>
+                  <BookBadgeRenderer
+                    type={DisplayType.RecommendedBook}
+                    wrapperCSS={css``}
+                    isWaitFree={item.detail?.series?.property.is_wait_free}
+                    discountPercentage={
+                      item.detail?.price_info.buy.discount_percentage || 0
+                    }
+                  />
+                </div>
+              </Book.Thumbnail>
             </ThumbnailWrapper>
             {item.detail && (
               <BookMeta
