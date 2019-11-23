@@ -12,9 +12,10 @@ import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import Clock from 'src/svgs/Clock.svg';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { createTimeLabel } from 'src/utils/dateTime';
-import { ReadingRanking, SectionExtra } from 'src/types/sections';
+import { DisplayType, ReadingRanking, SectionExtra } from 'src/types/sections';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
+import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -206,6 +207,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
+                    position: relative;
                   `}>
                   <Book.Thumbnail
                     thumbnailWidth={type === 'big' ? 80 : 50}
@@ -215,8 +217,24 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                         : `https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
                             book.b_id}/medium`
                     }
-                    adultBadge={book.detail?.property.is_adult_only}
-                  />
+                    adultBadge={book.detail?.property.is_adult_only}>
+                    <div
+                      css={css`
+                        position: absolute;
+                        display: block;
+                        top: -7px;
+                        left: -7px;
+                      `}>
+                      <BookBadgeRenderer
+                        type={DisplayType.BestSeller}
+                        wrapperCSS={css``}
+                        isWaitFree={book.detail?.series?.property.is_wait_free}
+                        discountPercentage={
+                          book.detail?.price_info.buy.discount_percentage || 0
+                        }
+                      />
+                    </div>
+                  </Book.Thumbnail>
                 </div>
                 <div className={'book-meta-box'}>
                   <div css={rankCSS}>{index + 1}</div>
