@@ -53,7 +53,14 @@ export const BookList = styled.ul`
   overflow: auto;
   ${scrollBarHidden};
   margin: 0 auto;
-  ${orBelow(BreakPoint.LG, flexRowStart)};
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      padding-left: 9px !important;
+      margin-right: 8px;
+      ${flexRowStart}
+    `,
+  )};
   display: flex;
   justify-content: center;
   padding-bottom: 36px;
@@ -63,6 +70,7 @@ export const bookMetaWrapperCSS = css`
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding-left: 7px;
 `;
 
 export const BookTitle = styled.h3`
@@ -189,14 +197,21 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
       </p>
       {!isIntersecting || isFetching ? (
         <BookList
-          css={
+          css={[
             props.type === DisplayType.HotRelease
               ? hotReleaseBookListCSS
-              : recommendedBookListCSS
-          }>
+              : recommendedBookListCSS,
+            css`
+              padding-left: 0 !important;
+            `,
+          ]}>
           {/* // @ts-ignore */}
           {books.slice(0, 6).map((book, index) => (
-            <PortraitBook key={index}>
+            <PortraitBook
+              css={css`
+                padding-left: 0 !important;
+              `}
+              key={index}>
               <ThumbnailWrapper>
                 <Book.Thumbnail
                   adultBadge={book.detail?.property.is_adult_only}

@@ -12,6 +12,13 @@ const listCSS = css`
   padding-bottom: 48px;
   box-sizing: content-box;
   overflow: auto;
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      margin-left: -4px;
+      margin-right: 6px;
+    `,
+  )}
 `;
 
 const itemCSS = css`

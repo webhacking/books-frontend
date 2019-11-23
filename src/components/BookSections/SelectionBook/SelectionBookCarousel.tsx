@@ -22,6 +22,7 @@ const recommendedBookCarouselLoadingCSS = css`
   }
   .slick-list {
     padding-bottom: 1px; // for iPad
+    position: relative;
   }
 `;
 
@@ -35,9 +36,11 @@ const CarouselWrapper = styled.div`
   max-width: 1005px;
   margin: 0 auto;
   position: relative;
-  padding-left: 24px;
   height: 100%;
   padding-bottom: 48px;
+  padding-left: 22px;
+  padding-right: 9px;
+  margin-left: -6px;
 `;
 
 const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
@@ -46,7 +49,9 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
   const { genre, type } = props;
   const wrapperRef = useRef<HTMLDivElement>();
   const [, setMounted] = useState(false);
-
+  const [arrowPosition, setArrowPosition] = useState(
+    getArrowVerticalCenterPosition(wrapperRef),
+  );
   const setInitialized = useCallback(() => {
     setCarouselInitialized(true);
   }, []);
@@ -66,7 +71,8 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    setArrowPosition(getArrowVerticalCenterPosition(wrapperRef));
+  }, [wrapperRef]);
 
   return (
     <>
@@ -100,6 +106,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                 display: flex;
                 flex-direction: column;
                 outline: none;
+                margin-right: -3px;
               `}>
               <SelectionBookItem
                 genre={genre}
@@ -129,7 +136,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                   `,
                 )};
                 left: 5px;
-                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+                top: calc(${arrowPosition});
               `}
             />
 
@@ -146,7 +153,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                   `,
                 )};
                 right: 5px;
-                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+                top: calc(${arrowPosition});
               `}
             />
           </form>

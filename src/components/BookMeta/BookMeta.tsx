@@ -19,6 +19,7 @@ const bookTitleCSS = css`
 const bookMetaCSS = css`
   display: flex;
   flex-direction: column;
+  padding-left: 7px;
 `;
 
 const authorCSS = css`
