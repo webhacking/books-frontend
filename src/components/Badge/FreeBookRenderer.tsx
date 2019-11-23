@@ -7,7 +7,6 @@ interface FreeBookRendererProps {
 
 // 무료책 권수 썸네일에 표시하는 컴포넌트
 const FreeBookRenderer: React.FC<FreeBookRendererProps> = props => {
-  console.log(props.freeBookCount);
   if (props.freeBookCount && props.freeBookCount > 0) {
     return (
       <div
