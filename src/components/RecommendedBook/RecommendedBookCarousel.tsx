@@ -12,6 +12,7 @@ import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import { BookMeta } from 'src/components/RecommendedBook/RecommendedBook';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
+import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -163,6 +164,11 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                         }
                       />
                     </div>
+                    <FreeBookRenderer
+                      freeBookCount={
+                        book.detail?.series?.price_info?.buy?.free_book_count || 0
+                      }
+                    />
                   </Book.Thumbnail>
                 </ThumbnailWrapper>
                 {/* Todo show sentence */}

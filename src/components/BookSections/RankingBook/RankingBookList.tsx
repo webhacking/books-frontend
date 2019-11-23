@@ -16,6 +16,7 @@ import { DisplayType, ReadingRanking, SectionExtra } from 'src/types/sections';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
+import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -234,6 +235,11 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                         }
                       />
                     </div>
+                    <FreeBookRenderer
+                      freeBookCount={
+                        book.detail?.series?.price_info?.buy?.free_book_count || 0
+                      }
+                    />
                   </Book.Thumbnail>
                 </div>
                 <div className={'book-meta-box'}>

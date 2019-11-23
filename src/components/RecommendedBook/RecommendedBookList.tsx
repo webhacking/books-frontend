@@ -14,6 +14,7 @@ import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
+import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
@@ -64,6 +65,11 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                     }
                   />
                 </div>
+                <FreeBookRenderer
+                  freeBookCount={
+                    book.detail?.series?.price_info?.buy?.free_book_count || 0
+                  }
+                />
               </Book.Thumbnail>
             </ThumbnailWrapper>
             {/* Todo show sentence */}
