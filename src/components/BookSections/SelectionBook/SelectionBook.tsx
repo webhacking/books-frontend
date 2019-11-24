@@ -5,7 +5,6 @@ import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
 import SelectionBookCarousel from 'src/components/BookSections/SelectionBook/SelectionBookCarousel';
 // import BookMeta from 'src/components/BookMeta/BookMeta';
-import { Book } from '@ridi/web-ui/dist/index.node';
 import { css } from '@emotion/core';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import {
@@ -23,6 +22,7 @@ import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
+import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -47,19 +47,19 @@ interface SelectionBookItemProps {
   isAIRecommendation: boolean;
   width: number;
   type: DisplayType;
+  isIntersecting: boolean;
 }
 
 export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
-  const { book, isAIRecommendation, genre, type } = props;
+  const { book, isAIRecommendation, genre, type, isIntersecting } = props;
   return (
     <>
       <ThumbnailWrapper>
-        <Book.Thumbnail
-          thumbnailWidth={props.width || 140}
-          thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
-            book.b_id}/xxlarge`}
-          css={css``}
-          adultBadge={book.detail?.property.is_adult_only}>
+        <ThumbnailRenderer
+          width={props.width || 140}
+          book={{ b_id: book.b_id, detail: book.detail }}
+          imgSize={'xxlarge'}
+          isIntersecting={isIntersecting}>
           <div
             css={css`
               position: absolute;
@@ -78,7 +78,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
             freeBookCount={book.detail?.series?.price_info?.buy?.free_book_count || 0}
           />
           <SetBookRenderer setBookCount={book.detail?.setbook?.member_books_count} />
-        </Book.Thumbnail>
+        </ThumbnailRenderer>
       </ThumbnailWrapper>
 
       {book.detail && (
@@ -139,14 +139,10 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
       {props.items.map((book, index) => (
         <PortraitBook key={index}>
           <ThumbnailWrapper>
-            <Book.Thumbnail
-              adultBadge={book.detail?.property.is_adult_only}
-              thumbnailUrl={
-                !isIntersecting
-                  ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
-                  : `https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
-                      book.b_id}/xxlarge`
-              }
+            <ThumbnailRenderer
+              book={{ b_id: book.b_id, detail: book.detail }}
+              imgSize={'xxlarge'}
+              isIntersecting={isIntersecting}
             />
           </ThumbnailWrapper>
           {book.detail && (
@@ -238,6 +234,7 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
         <WindowWidthQuery>
           <View maxWidth={1000}>
             <SelectionBookList
+              isIntersecting={isIntersecting}
               type={type}
               genre={genre}
               isAIRecommendation={props.option.isAIRecommendation}
@@ -247,6 +244,7 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
           <View>
             <SelectionBookCarousel
               type={type}
+              isIntersecting={isIntersecting}
               genre={genre}
               isAIRecommendation={props.option.isAIRecommendation}
               items={books}

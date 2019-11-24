@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
-import { Book } from '@ridi/web-ui/dist/index.node';
 // import BookMeta from 'src/components/BookMeta/BookMeta';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
@@ -18,6 +17,7 @@ import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
+import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -79,7 +79,7 @@ const itemCSS = css`
 
 const bigItemCSS = css`
   ${itemCSS};
-  height: 133.7px;
+  height: 134px;
   width: 308px;
 `;
 
@@ -211,15 +211,11 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                     justify-content: center;
                     position: relative;
                   `}>
-                  <Book.Thumbnail
-                    thumbnailWidth={type === 'big' ? 80 : 50}
-                    thumbnailUrl={
-                      !isIntersecting
-                        ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
-                        : `https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
-                            book.b_id}/medium`
-                    }
-                    adultBadge={book.detail?.property.is_adult_only}>
+                  <ThumbnailRenderer
+                    width={type === 'big' ? 80 : 50}
+                    book={{ b_id: book.b_id, detail: book.detail }}
+                    imgSize={'medium'}
+                    isIntersecting={isIntersecting}>
                     <div
                       css={css`
                         position: absolute;
@@ -248,7 +244,7 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                         />
                       </>
                     )}
-                  </Book.Thumbnail>
+                  </ThumbnailRenderer>
                 </div>
                 <div className={'book-meta-box'}>
                   <div css={rankCSS}>{index + 1}</div>

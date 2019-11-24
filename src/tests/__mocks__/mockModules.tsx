@@ -36,6 +36,7 @@ export const initModules = () => {
       STORE_HOST: 'https://master.test.ridi.io',
       STORE_MASTER_HOST: 'https://master.test.ridi.io',
       STORE_API: 'https://store-api.dev.ridi.io',
+      STATIC_CDN_URL: 'https://books.ridicdn.net',
     },
   }));
   jest.mock('server/routes', () => {

@@ -2,13 +2,13 @@ import { css } from '@emotion/core';
 import { between, BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import { DisplayType, MdBook } from 'src/types/sections';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
-import { Book } from '@ridi/web-ui/dist/index.node';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import React, { useRef } from 'react';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
+import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 
 interface MultipleLineBooks {
   items: MdBook[];
@@ -211,14 +211,10 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                   `,
                 )};
               `}>
-              <Book.Thumbnail
-                thumbnailUrl={
-                  !isIntersecting
-                    ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
-                    : `https://misc.ridibooks.com/cover/${item.detail?.thumbnailId ??
-                        item.b_id}/xxlarge`
-                }
-                adultBadge={item.detail?.property.is_adult_only}>
+              <ThumbnailRenderer
+                book={{ b_id: item.b_id, detail: item.detail }}
+                imgSize={'medium'}
+                isIntersecting={isIntersecting}>
                 <div
                   css={css`
                     position: absolute;
@@ -240,7 +236,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                     item.detail?.series?.price_info?.buy?.free_book_count || 0
                   }
                 />
-              </Book.Thumbnail>
+              </ThumbnailRenderer>
             </ThumbnailWrapper>
             {item.detail && (
               <BookMeta

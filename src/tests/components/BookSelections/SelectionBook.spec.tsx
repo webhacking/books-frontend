@@ -5,16 +5,41 @@ import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
+import { Provider } from 'react-redux';
+import makeStore from 'src/store/config';
 
 afterEach(cleanup);
-
+const store = makeStore(
+  {
+    books: {
+      itmes: {
+        '12345': null,
+      },
+      isFetching: false,
+    },
+  },
+  { asPath: 'test', isServer: false },
+);
 const renderSelectionBookList = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <SelectionBookList
-        isAIRecommendation={false}
-        items={[{ b_id: '12345666', type: 'test', detail: null }]}
-      />
+      <Provider store={store}>
+        <SelectionBookList
+          isAIRecommendation={false}
+          items={[
+            {
+              b_id: '12345666',
+              type: 'test',
+              detail: {
+                title: { main: 'hey' },
+                authors_ordered: [{ name: 'hi' }],
+                property: { is_adult_only: false },
+                file: { is_comic: false },
+              },
+            },
+          ]}
+        />
+      </Provider>
     </ThemeProvider>,
   );
 

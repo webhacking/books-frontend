@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { Book } from '@ridi/web-ui/dist/index.node';
 import {
   BookList,
   BookMeta,
@@ -17,11 +16,13 @@ import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
+import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
   theme: 'dark' | 'white';
+  isIntersecting: boolean;
 }
 
 const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
@@ -46,11 +47,11 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
         {props.items.map((book, index) => (
           <PortraitBook key={index}>
             <ThumbnailWrapper>
-              <Book.Thumbnail
-                adultBadge={book.detail?.property.is_adult_only}
-                thumbnailWidth={120}
-                thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail
-                  ?.thumbnailId ?? book.b_id}/xxlarge`}>
+              <ThumbnailRenderer
+                width={120}
+                book={{ b_id: book.b_id, detail: book.detail }}
+                imgSize={'xxlarge'}
+                isIntersecting={props.isIntersecting}>
                 <div
                   css={css`
                     position: absolute;
@@ -75,7 +76,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                 <SetBookRenderer
                   setBookCount={book.detail?.setbook?.member_books_count}
                 />
-              </Book.Thumbnail>
+              </ThumbnailRenderer>
             </ThumbnailWrapper>
             {/* Todo show sentence */}
             {book.detail && type === DisplayType.HotRelease && (

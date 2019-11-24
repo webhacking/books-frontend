@@ -3,7 +3,6 @@ import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
 import SliderCarousel from 'react-slick';
-import { Book } from '@ridi/web-ui/dist/index.node';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
@@ -14,6 +13,7 @@ import { BookMeta } from 'src/components/RecommendedBook/RecommendedBook';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
+import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -53,6 +53,7 @@ interface RecommendedBookCarouselProps {
   items: TodayRecommendation[] | HotRelease[];
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
   theme: 'dark' | 'white';
+  isIntersecting: boolean;
 }
 
 const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = props => (
@@ -67,11 +68,11 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
     {props.items.map((book, index) => (
       <PortraitBook key={index}>
         <ThumbnailWrapper>
-          <Book.Thumbnail
-            adultBadge={book.detail?.property.is_adult_only}
-            thumbnailWidth={147}
-            thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
-              book.b_id}/xxlarge`}
+          <ThumbnailRenderer
+            width={147}
+            book={{ b_id: book.b_id, detail: book.detail }}
+            imgSize={'xxlarge'}
+            isIntersecting={props.isIntersecting}
           />
         </ThumbnailWrapper>
         {book.detail && props.type === DisplayType.HotRelease && (
@@ -152,6 +153,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
           theme={theme}
           type={props.type}
           items={props.items.slice(0, 6)}
+          isIntersecting={props.isIntersecting}
         />
       )}
       <CarouselWrapper ref={wrapperRef}>
@@ -181,11 +183,11 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                   padding-left: 0 !important;
                 `}>
                 <ThumbnailWrapper>
-                  <Book.Thumbnail
-                    adultBadge={book.detail?.property.is_adult_only}
-                    thumbnailWidth={140}
-                    thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail
-                      ?.thumbnailId ?? book.b_id}/xxlarge`}>
+                  <ThumbnailRenderer
+                    width={140}
+                    book={{ b_id: book.b_id, detail: book.detail }}
+                    imgSize={'xxlarge'}
+                    isIntersecting={props.isIntersecting}>
                     <div
                       css={css`
                         position: absolute;
@@ -210,7 +212,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                     <SetBookRenderer
                       setBookCount={book.detail?.setbook?.member_books_count}
                     />
-                  </Book.Thumbnail>
+                  </ThumbnailRenderer>
                 </ThumbnailWrapper>
                 {/* Todo show sentence */}
                 {book.detail && type === DisplayType.HotRelease && (

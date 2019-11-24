@@ -5,7 +5,6 @@ import { css } from '@emotion/core';
 import getConfig from 'next/config';
 import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
 import styled from '@emotion/styled';
-import { Book } from '@ridi/web-ui/dist/index.node';
 import { flexRowStart, lineClamp, scrollBarHidden } from 'src/styles';
 // import NewBadge from 'src/svgs/NewBadge.svg';
 import AtSelectIcon from 'src/svgs/Book1.svg';
@@ -18,6 +17,7 @@ import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections
 import * as BookApi from 'src/types/book';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
+import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -213,14 +213,10 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
               `}
               key={index}>
               <ThumbnailWrapper>
-                <Book.Thumbnail
-                  adultBadge={book.detail?.property.is_adult_only}
-                  thumbnailUrl={
-                    isIntersecting
-                      ? 'https://static.ridibooks.com/books/dist/images/book_cover/cover_lazyload.png'
-                      : `https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
-                          book.b_id}/xxlarge`
-                  }
+                <ThumbnailRenderer
+                  book={{ b_id: book.b_id, detail: book.detail }}
+                  imgSize={'xxlarge'}
+                  isIntersecting={isIntersecting}
                 />
               </ThumbnailWrapper>
               {book.detail && type === DisplayType.HotRelease && (
@@ -274,6 +270,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
               type={props.type}
               items={books as HotRelease[]}
               theme={theme}
+              isIntersecting={isIntersecting}
             />
           </View>
           <View>
@@ -281,6 +278,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
               type={props.type}
               items={books as HotRelease[]}
               theme={theme}
+              isIntersecting={isIntersecting}
             />
           </View>
         </WindowWidthQuery>
