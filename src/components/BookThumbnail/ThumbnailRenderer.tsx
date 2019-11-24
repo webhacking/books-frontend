@@ -58,7 +58,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = props => {
   return (
     <Book.Thumbnail
       adultBadge={book.detail?.property.is_adult_only}
-      thumbnailWidth={width || 140}
+      thumbnailWidth={width}
       thumbnailUrl={imageUrl}>
       {children}
     </Book.Thumbnail>
