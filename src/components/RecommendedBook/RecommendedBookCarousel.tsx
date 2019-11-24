@@ -16,12 +16,17 @@ import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
+  left: -18px;
   .slick-slide {
+    width: 162px !important;
     will-change: transform;
     .slide-item-inner {
       display: inline-block;
       width: 140px;
     }
+  }
+  div[aria-hidden='true'] .badge {
+    display: none;
   }
 `;
 
@@ -34,8 +39,7 @@ const CarouselWrapper = styled.div`
   width: 1005px;
   margin: 0 auto;
   position: relative;
-  padding-left: 17px;
-  padding-right: 9px;
+  padding-left: 36px;
   padding-bottom: 36px;
 `;
 
@@ -59,7 +63,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
         <ThumbnailWrapper>
           <Book.Thumbnail
             adultBadge={book.detail?.property.is_adult_only}
-            thumbnailWidth={140}
+            thumbnailWidth={147}
             thumbnailUrl={`https://misc.ridibooks.com/cover/${book.detail?.thumbnailId ??
               book.b_id}/xxlarge`}
           />
@@ -79,7 +83,9 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
   const { theme, type } = props;
   // @ts-ignore
   const [isMounted, setMounted] = useState(false);
-
+  const [arrowPosition, setArrowPosition] = useState(
+    getArrowVerticalCenterPosition(wrapperRef),
+  );
   const setInitialized = useCallback(() => {
     setCarouselInitialized(true);
   }, []);
@@ -100,8 +106,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
   useEffect(() => {
     setMounted(true);
     if (carouselInitialize) {
-      // @ts-ignore
-      // window.slider = slider;
+      setArrowPosition(getArrowVerticalCenterPosition(wrapperRef));
     }
   }, [carouselInitialize]);
 
@@ -218,11 +223,11 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                 ${greaterThanOrEqualTo(
                   BreakPoint.XL + 1,
                   css`
-                    left: -38px;
+                    left: -31px;
                   `,
                 )};
                 left: 5px;
-                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+                top: calc(${arrowPosition});
               `}
             />
             <Arrow
@@ -235,11 +240,11 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                 ${greaterThanOrEqualTo(
                   BreakPoint.XL + 1,
                   css`
-                    right: -38px;
+                    right: -27px;
                   `,
                 )};
                 right: 5px;
-                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+                top: calc(${arrowPosition});
               `}
             />
           </form>

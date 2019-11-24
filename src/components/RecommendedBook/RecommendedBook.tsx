@@ -230,12 +230,23 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
                 <div
                   css={[
                     css`
+                      padding-left: 13px;
                       margin-top: 2px;
                       font-size: 13px;
                       line-height: 16px;
                       text-align: center;
                       font-weight: bold;
                       white-space: nowrap;
+                      width: 140px;
+                      display: flex;
+                      justify-content: center;
+                      ${orBelow(
+                        BreakPoint.LG,
+                        css`
+   display: flex;
+    width: 120px;
+}`,
+                      )};
                     `,
                     theme === 'dark' &&
                       css`
@@ -243,6 +254,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
                       `,
                   ]}>
                   <span
+                    className={'test'}
                     dangerouslySetInnerHTML={{
                       __html: (book as HotRelease).sentence.replace(
                         /(?:\r\n|\r|\n)/g,

@@ -42,14 +42,16 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
           ${orBelow(
             432,
             css`
-              padding: 0 16px;
+              justify-content: space-between;
+              padding: 0 13px 0 10px;
             `,
           )};
           ${between(
             BreakPoint.M + 1,
             BreakPoint.LG,
             css`
-              padding: 0 20px 0 10px;
+              justify-content: space-between;
+              padding: 0 24px 0 11px;
             `,
           )}
         `}>

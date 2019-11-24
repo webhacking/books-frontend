@@ -3,8 +3,8 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { css } from '@emotion/core';
 
 export const ThumbnailWrapper = styled.div`
-  max-height: 223px; // 배지 관련
-  height: 223px; // 배지 관련 216 + 7
+  max-height: 234.9px; // 배지 관련
+  height: 234.9px; // 배지 관련 216 + 7
   display: flex;
   align-items: flex-end;
   min-width: 140px;
@@ -16,8 +16,8 @@ export const ThumbnailWrapper = styled.div`
     BreakPoint.LG,
     css`
       min-width: 120px;
-      max-height: 191px; //  배지 관련 184 + 7
-      height: 191px; //  배지 관련 184 + 7
+      max-height: 202px; //  배지 관련 184 + 7
+      height: 202px; //  배지 관련 184 + 7
     `,
   )};
   img {

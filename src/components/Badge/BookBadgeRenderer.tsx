@@ -14,6 +14,7 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = props => {
   if (isWaitFree) {
     return (
       <div
+        className={'badge'}
         css={[
           css`
             width: 34px;
@@ -35,6 +36,7 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = props => {
   if (discountPercentage && discountPercentage >= 10) {
     return (
       <div
+        className={'badge'}
         css={[
           css`
             width: 34px;

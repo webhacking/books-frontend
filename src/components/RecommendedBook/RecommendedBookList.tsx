@@ -15,6 +15,7 @@ import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
@@ -87,6 +88,14 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                     text-align: center;
                     font-weight: bold;
                     white-space: nowrap;
+                    ${orBelow(
+                      BreakPoint.LG,
+                      css`padding-left: 13px;
+   display: flex;
+    width: 120px;
+    justify-content: center;
+}`,
+                    )};
                   `,
                   theme === 'dark' &&
                     css`

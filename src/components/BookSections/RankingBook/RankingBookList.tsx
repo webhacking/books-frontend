@@ -235,11 +235,13 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                         }
                       />
                     </div>
-                    <FreeBookRenderer
-                      freeBookCount={
-                        book.detail?.series?.price_info?.buy?.free_book_count || 0
-                      }
-                    />
+                    {type === 'big' && (
+                      <FreeBookRenderer
+                        freeBookCount={
+                          book.detail?.series?.price_info?.buy?.free_book_count || 0
+                        }
+                      />
+                    )}
                   </Book.Thumbnail>
                 </div>
                 <div className={'book-meta-box'}>
