@@ -98,6 +98,7 @@ const hotReleaseTitleCSS = css`
   display: flex;
   align-items: center;
   padding-left: 20px;
+  font-weight: normal;
 
   ${orBelow(
     BreakPoint.LG,
@@ -180,7 +181,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
         theme === 'dark' && backgroundImageCSS,
       ]}>
       {/* Todo split hot release title */}
-      <p
+      <h3
         css={[
           hotReleaseTitleCSS,
           theme === 'white' &&
@@ -194,7 +195,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           `}>
           {props.title}
         </span>
-      </p>
+      </h3>
       {!isIntersecting || isFetching ? (
         <BookList
           css={[
