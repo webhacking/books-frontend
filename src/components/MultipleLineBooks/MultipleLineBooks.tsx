@@ -211,32 +211,44 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                   `,
                 )};
               `}>
-              <ThumbnailRenderer
-                book={{ b_id: item.b_id, detail: item.detail }}
-                imgSize={'medium'}
-                isIntersecting={isIntersecting}>
-                <div
-                  css={css`
-                    position: absolute;
-                    display: block;
-                    top: -7px;
-                    left: -7px;
-                  `}>
-                  <BookBadgeRenderer
-                    type={DisplayType.RecommendedBook}
-                    wrapperCSS={css``}
-                    isWaitFree={item.detail?.series?.property.is_wait_free}
-                    discountPercentage={
-                      item.detail?.price_info.buy.discount_percentage || 0
+              <div
+                css={css`
+                  ${greaterThanOrEqualTo(
+                    BreakPoint.LG,
+                    css`
+                      img {
+                        width: 140px;
+                      }
+                    `,
+                  )}
+                `}>
+                <ThumbnailRenderer
+                  book={{ b_id: item.b_id, detail: item.detail }}
+                  imgSize={'medium'}
+                  isIntersecting={isIntersecting}>
+                  <div
+                    css={css`
+                      position: absolute;
+                      display: block;
+                      top: -7px;
+                      left: -7px;
+                    `}>
+                    <BookBadgeRenderer
+                      type={DisplayType.RecommendedBook}
+                      wrapperCSS={css``}
+                      isWaitFree={item.detail?.series?.property.is_wait_free}
+                      discountPercentage={
+                        item.detail?.price_info.buy.discount_percentage || 0
+                      }
+                    />
+                  </div>
+                  <FreeBookRenderer
+                    freeBookCount={
+                      item.detail?.series?.price_info?.buy?.free_book_count || 0
                     }
                   />
-                </div>
-                <FreeBookRenderer
-                  freeBookCount={
-                    item.detail?.series?.price_info?.buy?.free_book_count || 0
-                  }
-                />
-              </ThumbnailRenderer>
+                </ThumbnailRenderer>
+              </div>
             </ThumbnailWrapper>
             {item.detail && (
               <BookMeta
