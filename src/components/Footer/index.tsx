@@ -217,8 +217,6 @@ const MiscMenuLabel = styled.span`
 `;
 
 const paperIcon = css`
-  width: 45px;
-  height: 12px;
   fill: white;
 `;
 
