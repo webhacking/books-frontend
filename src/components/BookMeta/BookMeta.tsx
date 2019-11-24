@@ -6,6 +6,8 @@ import Tag from 'src/components/Tag/Tag';
 import * as BookApi from 'src/types/book';
 import { StarRating as StarRatingType } from 'src/types/sections';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 const bookTitleCSS = css`
   font-size: 15px;
@@ -94,7 +96,10 @@ const BookMeta: React.FC<BookMetaProps> = props => {
           css={css`
             display: inline-block;
           `}
-          href="#author">
+          href={new URL(
+            `/books/${props.book.id}`,
+            publicRuntimeConfig.STORE_HOST,
+          ).toString()}>
           <h2
             css={css`
               ${bookTitleCSS};

@@ -11,7 +11,6 @@ const labelCSS = theme => css`
   font-size: 13px;
   line-height: 1.23;
   color: ${theme.quickMenu.label};
-  margin-top: 8px;
   min-width: 76px;
   text-align: center;
   word-break: keep-all;
@@ -95,22 +94,27 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
                 <div
                   css={css`
                     position: relative;
+                    height: 44px;
+                    margin-bottom: 8px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                   `}>
                   <QuickMenuShape
                     css={css`
                       height: 44px;
                       width: 44px;
+                      position: absolute;
+                      z-index: 1;
                       fill: ${menu.bg_color};
                     `}
                   />
                   <img
                     css={css`
                       position: absolute;
-                      transform: translate(-50%, -54%);
                       width: 44px;
                       height: 44px;
-                      top: 50%;
-                      left: 50%;
+                      z-index: 2;
                     `}
                     alt={menu.name}
                     src={menu.icon}

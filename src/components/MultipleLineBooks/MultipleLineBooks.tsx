@@ -224,7 +224,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                 `}>
                 <ThumbnailRenderer
                   book={{ b_id: item.b_id, detail: item.detail }}
-                  imgSize={'medium'}
+                  imgSize={'xxlarge'}
                   isIntersecting={isIntersecting}>
                   <div
                     css={css`
