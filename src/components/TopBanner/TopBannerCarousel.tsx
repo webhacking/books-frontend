@@ -538,7 +538,6 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
     }
     return (
       <TopBannerCarouselWrapper ref={wrapper}>
-        <h3 className={'a11y'}>상단 배너 영역</h3>
         {!carouselInitialized && (
           <TopBannerCarouselLoading
             left={banners[banners.length - 1]}

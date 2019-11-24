@@ -282,104 +282,106 @@ export const MainTab: React.FC<MainTabProps> = props => {
   }, [loggedUserInfo]);
 
   return (
-    <Tabs>
-      <TabItem
-        isPartials={isPartials}
-        activeIcon={<HomeSolid css={iconStyle} />}
-        normalIcon={<Home css={iconStyle} />}
-        currentPath={currentPath}
-        label={labels.mainTab.home}
-        path={`/${homeURL}`}
-        replace={true}
-        pathRegexp={
-          // Hack, Apply lint
-          // eslint-disable-next-line require-unicode-regexp,prefer-named-capture-group
-          /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(personalized-recommendation|support|keyword-finder|new-release|bestsellers|author|book|event|search|category|fantasy|romance|bl|bl-serial|fantasy-serial|romance-serial|comics)(\/.*$|$))/
-        }
-      />
-      <TabItem
-        isPartials={isPartials}
-        activeIcon={<Notification_solid css={iconStyle} />}
-        normalIcon={<Notification_regular css={iconStyle} />}
-        currentPath={currentPath}
-        label={labels.mainTab.notification}
-        path={'/notification'}
-        pathRegexp={/^\/notification/g}
-        addOn={
-          hasNotification > 0 && (
-            <div
-              css={css`
-                position: absolute;
-                left: 13.5px;
-                top: 4px;
-                border: 2px solid #1f8ce6;
-                width: 11px;
-                height: 11px;
-                background: #ffde24;
-                border-radius: 11px;
-                ${orBelow(
-                  BreakPoint.LG,
-                  css`
-                    left: 17.5px;
-                  `,
-                )}
-              `}
-            />
-          )
-        }
-      />
-      <TabItem
-        isPartials={isPartials}
-        activeIcon={<Cart_solid css={iconStyle} />}
-        normalIcon={<Cart_regular css={iconStyle} />}
-        currentPath={currentPath}
-        label={labels.mainTab.cart}
-        path={'/cart'}
-        pathRegexp={/^\/cart/gu}
-        addOn={
-          cartCount && (
-            <div
-              css={css`
-                height: 19px;
-                border-radius: 3px;
-                background: white;
-                margin-left: -5px;
-                top: -0.5px;
-                margin-right: 9px;
-                display: flex;
-                align-items: center;
-                ${orBelow(
-                  BreakPoint.LG,
-                  css`
-                    margin-left: 4px;
-                  `,
-                )}
-              `}>
-              <span
+    <>
+      <Tabs>
+        <TabItem
+          isPartials={isPartials}
+          activeIcon={<HomeSolid css={iconStyle} />}
+          normalIcon={<Home css={iconStyle} />}
+          currentPath={currentPath}
+          label={labels.mainTab.home}
+          path={`/${homeURL}`}
+          replace={true}
+          pathRegexp={
+            // Hack, Apply lint
+            // eslint-disable-next-line require-unicode-regexp,prefer-named-capture-group
+            /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(personalized-recommendation|support|keyword-finder|new-release|bestsellers|author|book|event|search|category|fantasy|romance|bl|bl-serial|fantasy-serial|romance-serial|comics)(\/.*$|$))/
+          }
+        />
+        <TabItem
+          isPartials={isPartials}
+          activeIcon={<Notification_solid css={iconStyle} />}
+          normalIcon={<Notification_regular css={iconStyle} />}
+          currentPath={currentPath}
+          label={labels.mainTab.notification}
+          path={'/notification'}
+          pathRegexp={/^\/notification/g}
+          addOn={
+            hasNotification > 0 && (
+              <div
                 css={css`
-                  padding: 2.5px;
-                  padding-right: 3.2px;
-                  font-weight: bold;
-                  font-size: 13px;
-                  line-height: 13px;
-                  color: #1f8ce6;
+                  position: absolute;
+                  left: 13.5px;
+                  top: 4px;
+                  border: 2px solid #1f8ce6;
+                  width: 11px;
+                  height: 11px;
+                  background: #ffde24;
+                  border-radius: 11px;
+                  ${orBelow(
+                    BreakPoint.LG,
+                    css`
+                      left: 17.5px;
+                    `,
+                  )}
+                `}
+              />
+            )
+          }
+        />
+        <TabItem
+          isPartials={isPartials}
+          activeIcon={<Cart_solid css={iconStyle} />}
+          normalIcon={<Cart_regular css={iconStyle} />}
+          currentPath={currentPath}
+          label={labels.mainTab.cart}
+          path={'/cart'}
+          pathRegexp={/^\/cart/gu}
+          addOn={
+            cartCount && (
+              <div
+                css={css`
+                  height: 19px;
+                  border-radius: 3px;
+                  background: white;
+                  margin-left: -5px;
+                  top: -0.5px;
+                  margin-right: 9px;
+                  display: flex;
+                  align-items: center;
+                  ${orBelow(
+                    BreakPoint.LG,
+                    css`
+                      margin-left: 4px;
+                    `,
+                  )}
                 `}>
-                {cartCount}
-              </span>
-            </div>
-          )
-        }
-      />
-      <TabItem
-        isPartials={isPartials}
-        activeIcon={<MyRIDI_solid css={iconStyle} />}
-        normalIcon={<MyRIDI_regular css={iconStyle} />}
-        currentPath={currentPath}
-        label={labels.mainTab.myRidi}
-        path={'/account/myridi'}
-        pathRegexp={/^\/account\/myridi/gu}
-      />
-    </Tabs>
+                <span
+                  css={css`
+                    padding: 2.5px;
+                    padding-right: 3.2px;
+                    font-weight: bold;
+                    font-size: 13px;
+                    line-height: 13px;
+                    color: #1f8ce6;
+                  `}>
+                  {cartCount}
+                </span>
+              </div>
+            )
+          }
+        />
+        <TabItem
+          isPartials={isPartials}
+          activeIcon={<MyRIDI_solid css={iconStyle} />}
+          normalIcon={<MyRIDI_regular css={iconStyle} />}
+          currentPath={currentPath}
+          label={labels.mainTab.myRidi}
+          path={'/account/myridi'}
+          pathRegexp={/^\/account\/myridi/gu}
+        />
+      </Tabs>
+    </>
   );
 };
 

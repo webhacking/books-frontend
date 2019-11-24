@@ -180,8 +180,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           : recommendedBookWrapperCSS,
         theme === 'dark' && backgroundImageCSS,
       ]}>
-      {/* Todo split hot release title */}
-      <h3
+      <h2
         css={[
           hotReleaseTitleCSS,
           theme === 'white' &&
@@ -195,7 +194,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           `}>
           {props.title}
         </span>
-      </h3>
+      </h2>
       {!isIntersecting || isFetching ? (
         <BookList
           css={[

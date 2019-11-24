@@ -406,7 +406,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
           `,
         )};
       `}>
-      <h3
+      <h2
         css={css`
           font-weight: normal;
           height: 21px;
@@ -431,7 +431,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
             <ArrowV />
           </span>
         </a>
-      </h3>
+      </h2>
       <div>
         <ul
           css={css`

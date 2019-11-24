@@ -40,7 +40,7 @@ const titleCSS = css`
   }
 `;
 // Fixme isn't same ? SectionBookTitle
-export const RankingBookTitle = styled.h3`
+export const RankingBookTitle = styled.h2`
   ${fontStyle};
   max-width: 1000px;
   margin: 0 auto;
@@ -49,7 +49,7 @@ export const RankingBookTitle = styled.h3`
   ${titleCSS};
 `;
 
-export const SectionTitle = styled.h3`
+export const SectionTitle = styled.h2`
   ${fontStyle};
   margin-bottom: 21px;
   ${titleCSS};

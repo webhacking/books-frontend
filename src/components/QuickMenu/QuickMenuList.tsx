@@ -86,7 +86,7 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
       css={css`
         position: relative;
       `}>
-      <h3 className={'a11y'}>퀵 메뉴 목록</h3>
+      <h2 className={'a11y'}>퀵 메뉴</h2>
       <MenuList ref={ref}>
         {props.items.map((menu, index) => (
           <MenuItem key={index}>

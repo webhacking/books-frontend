@@ -49,7 +49,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
           `,
         )}
       `}>
-      <h3
+      <h2
         css={css`
           font-size: 21px;
           font-weight: normal;
@@ -65,7 +65,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
           )}
         `}>
         <span>{title}</span>
-      </h3>
+      </h2>
       <ul
         css={css`
           display: flex;
