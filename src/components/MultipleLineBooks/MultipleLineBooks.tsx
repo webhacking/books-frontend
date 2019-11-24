@@ -6,7 +6,6 @@ import { Book } from '@ridi/web-ui/dist/index.node';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import React, { useRef } from 'react';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
-import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
@@ -28,30 +27,79 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
       css={css`
         max-width: 1000px;
         margin: 0 auto;
+        ${orBelow(
+          433,
+          css`
+            justify-content: space-between;
+            padding: 0 10px;
+            padding-right: 20px !important;
+          `,
+        )};
+        ${orBelow(
+          BreakPoint.LG,
+          css`
+            padding-left: 20px;
+            padding-right: 27px;
+          `,
+        )}
+        ${greaterThanOrEqualTo(
+          BreakPoint.LG + 1,
+          css`
+            padding-left: 24px;
+          `,
+        )}
       `}>
-      <RankingBookTitle>
+      <h3
+        css={css`
+          font-size: 21px;
+          font-weight: normal;
+          line-height: 26px;
+          margin-bottom: 20px;
+          color: #000000;
+          word-break: keep-all;
+          ${orBelow(
+            BreakPoint.MD,
+            css`
+              margin-left: -2px;
+            `,
+          )}
+        `}>
         <span>{title}</span>
-      </RankingBookTitle>
+      </h3>
       <ul
         css={css`
           display: flex;
           flex-wrap: wrap;
           flex-shrink: 0;
           justify-content: space-around;
-          padding: 0 19px;
           ${orBelow(
             432,
             css`
               justify-content: space-between;
-              padding: 0 13px 0 10px;
+              margin-left: -10px;
             `,
           )};
+           ${between(
+             BreakPoint.M + 1,
+             BreakPoint.MD,
+             css`
+               justify-content: space-between;
+               margin-left: -10px;
+             `,
+           )}
           ${between(
-            BreakPoint.M + 1,
+            BreakPoint.MD + 1,
             BreakPoint.LG,
             css`
               justify-content: space-between;
-              padding: 0 24px 0 11px;
+              margin-left: -6px;
+            `,
+          )}
+          ${greaterThanOrEqualTo(
+            BreakPoint.LG + 1,
+            css`
+              left: -19px;
+              position: relative;
             `,
           )}
         `}>
@@ -60,12 +108,23 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
             key={index}
             css={css`
               ${orBelow(
-                432,
+                426,
                 css`
+                  margin-right: 3px;
                   :not(:nth-of-type(3n)) {
                     margin-right: 20px;
                   }
-                  width: 27.5%;
+                  width: 22%;
+                `,
+              )};
+              ${orBelow(
+                432,
+                css`
+                  margin-right: 3px;
+                  :not(:nth-of-type(3n)) {
+                    margin-right: 20px;
+                  }
+                  width: 27%;
                 `,
               )};
               ${between(
@@ -102,8 +161,11 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                 1001,
                 css`
                   :not(:nth-of-type(6n)) {
-                    margin-right: 20px;
+                    //margin-right: 20px;
+                    flex-grow: 0;
                   }
+                  margin: 0 1px 20px 1px;
+                  width: 140px;
                 `,
               )};
               margin-bottom: 20px;
@@ -113,8 +175,8 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                 ${orBelow(
                   BreakPoint.SM,
                   css`
-                    width: 23%;
-                    min-width: 80px;
+                    width: 100%;
+                    min-width: 70px;
                     height: calc(90px * 1.618 - 10px);
                   `,
                 )};
@@ -122,7 +184,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                   BreakPoint.SM + 1,
                   BreakPoint.M,
                   css`
-                    width: 25%;
+                    width: 100%;
                     min-width: 100px;
                     height: calc(100px * 1.618 - 10px);
                   `,

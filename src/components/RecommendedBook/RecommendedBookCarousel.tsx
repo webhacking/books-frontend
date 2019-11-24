@@ -26,7 +26,12 @@ const recommendedBookCarouselLoadingCSS = css`
     }
   }
   div[aria-hidden='true'] .badge {
-    display: none;
+    //opacity: 0;
+    transition: all 3s;
+  }
+  div[aria-hidden='false'] .badge {
+    opacity: 1;
+    //transition: all .3s;
   }
 `;
 

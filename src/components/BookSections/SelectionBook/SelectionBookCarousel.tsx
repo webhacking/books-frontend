@@ -132,7 +132,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                 ${greaterThanOrEqualTo(
                   BreakPoint.XL + 1,
                   css`
-                    left: -38px;
+                    left: -29px;
                   `,
                 )};
                 left: 5px;
@@ -149,7 +149,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                 ${greaterThanOrEqualTo(
                   BreakPoint.XL + 1,
                   css`
-                    right: -38px;
+                    right: -36px;
                   `,
                 )};
                 right: 5px;
