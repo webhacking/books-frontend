@@ -418,15 +418,10 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
           }
         `}>
         <a href={keywordFinderUrl.toString()} aria-label={'키워드 파인더'}>
+          <span css={css``}>키워드로 검색하기</span>
           <span
             css={css`
-              margin-right: 8px;
-            `}>
-            키워드로 검색하기
-          </span>
-          <span
-            css={css`
-              margin-left: 7px;
+              margin-left: 7.8px;
             `}>
             <ArrowV />
           </span>

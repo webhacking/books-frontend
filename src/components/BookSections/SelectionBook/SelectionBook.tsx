@@ -214,7 +214,7 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
             <span>{props.title}</span>
             <span
               css={css`
-                margin-left: 5px;
+                margin-left: 7.8px;
               `}>
               <ArrowV />
             </span>
