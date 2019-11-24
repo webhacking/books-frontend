@@ -111,7 +111,7 @@ const hotReleaseTitleCSS = css`
   line-height: 21px;
   font-size: 21px;
   color: white;
-  margin-bottom: 30px;
+  margin-bottom: 14px;
 `;
 
 interface BookMetaProps {

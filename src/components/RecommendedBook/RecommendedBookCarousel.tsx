@@ -13,6 +13,7 @@ import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections
 import { BookMeta } from 'src/components/RecommendedBook/RecommendedBook';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
+import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -75,6 +76,33 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
         </ThumbnailWrapper>
         {book.detail && props.type === DisplayType.HotRelease && (
           <BookMeta book={book.detail} />
+        )}
+        {book.detail && props.type === DisplayType.TodayRecommendation && (
+          <div
+            css={[
+              css`
+                padding-left: 14px;
+                margin-top: 2px;
+                font-size: 13px;
+                line-height: 16px;
+                text-align: center;
+                font-weight: 700;
+                white-space: nowrap;
+              `,
+              props.theme === 'dark' &&
+                css`
+                  color: white;
+                `,
+            ]}>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: (book as HotRelease).sentence.replace(
+                  /(?:\r\n|\r|\n)/g,
+                  '<br />',
+                ),
+              }}
+            />
+          </div>
         )}
       </PortraitBook>
     ))}
@@ -178,6 +206,9 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                       freeBookCount={
                         book.detail?.series?.price_info?.buy?.free_book_count || 0
                       }
+                    />
+                    <SetBookRenderer
+                      setBookCount={book.detail?.setbook?.member_books_count}
                     />
                   </Book.Thumbnail>
                 </ThumbnailWrapper>

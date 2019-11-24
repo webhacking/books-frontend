@@ -22,6 +22,7 @@ import { RootState } from 'src/store/config';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
+import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -76,6 +77,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
           <FreeBookRenderer
             freeBookCount={book.detail?.series?.price_info?.buy?.free_book_count || 0}
           />
+          <SetBookRenderer setBookCount={book.detail?.setbook?.member_books_count} />
         </Book.Thumbnail>
       </ThumbnailWrapper>
 
@@ -116,6 +118,7 @@ export interface SelectionBookCarouselProps {
   genre: string;
   type: DisplayType;
   isIntersecting?: boolean;
+  bookFetching?: boolean;
 }
 
 export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props => {
@@ -247,6 +250,7 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
               genre={genre}
               isAIRecommendation={props.option.isAIRecommendation}
               items={books}
+              bookFetching={isFetching}
             />
           </View>
         </WindowWidthQuery>

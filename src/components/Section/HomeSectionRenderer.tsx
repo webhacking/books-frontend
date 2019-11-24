@@ -106,7 +106,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     case DisplayType.HomeMdSelection: {
       return (
         <>
-          {(items as MdSelection[]).map((item, index) => {
+          {(items as MdSelection[]).map(item => {
             if (!item.books) {
               return null;
             }
@@ -115,7 +115,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
                 items={item.books}
                 title={item.title}
                 genre={genre}
-                key={index}
+                key={item.id}
                 type={type}
                 option={{ isAIRecommendation: false }}
               />

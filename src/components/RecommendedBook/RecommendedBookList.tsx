@@ -16,6 +16,7 @@ import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
@@ -70,6 +71,9 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                   freeBookCount={
                     book.detail?.series?.price_info?.buy?.free_book_count || 0
                   }
+                />
+                <SetBookRenderer
+                  setBookCount={book.detail?.setbook?.member_books_count}
                 />
               </Book.Thumbnail>
             </ThumbnailWrapper>
@@ -131,7 +135,12 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
               left: 5px;
               position: absolute;
               transition: opacity 0.2s;
-              top: calc(${getArrowVerticalCenterPosition(ref, '30px')});
+              top: calc(
+                ${getArrowVerticalCenterPosition(
+                  ref,
+                  type === DisplayType.HotRelease ? '30px' : '0px',
+                )}
+              );
             `,
             !isOnTheLeft && arrowTransition,
           ]}
@@ -143,10 +152,15 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
           side={'right'}
           wrapperStyle={[
             css`
-              right: 5px;
+              right: 9px;
               position: absolute;
               transition: opacity 0.2s;
-              top: calc(${getArrowVerticalCenterPosition(ref, '30px')});
+              top: calc(
+                ${getArrowVerticalCenterPosition(
+                  ref,
+                  type === DisplayType.HotRelease ? '30px' : '0px',
+                )}
+              );
             `,
             !isOnTheRight && arrowTransition,
           ]}

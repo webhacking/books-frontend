@@ -50,7 +50,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
   }, [genre, items.length, loggedUser]);
   return (
     <>
-      {(sections as MdSelection[]).map((item, index) => {
+      {(sections as MdSelection[]).map(item => {
         if (!item.books) {
           return null;
         }
@@ -60,7 +60,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
             title={item.title}
             categoryId={item.category_id}
             genre={genre}
-            key={index}
+            key={item.id}
             type={type}
             option={{ isAIRecommendation: false }}
           />
