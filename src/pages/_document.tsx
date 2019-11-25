@@ -12,6 +12,7 @@ import Meta from 'src/pages/Meta';
 import { PartialSeparator } from 'src/components/Misc';
 // import cheerio from 'cheerio';
 import * as React from 'react';
+import { css } from '@emotion/core';
 
 interface StoreDocumentProps extends DocumentProps, EmotionCritical {
   nonce: string;
@@ -30,7 +31,8 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
   public static async getInitialProps(context: DocumentContext) {
     const originalRenderPage = context.renderPage;
 
-    context.renderPage = nonce => originalRenderPage({
+    context.renderPage = nonce =>
+      originalRenderPage({
         // useful for wrapping the whole react tree
         // @ts-ignore
         enhanceApp: App => props => <App {...props} nonce={nonce} />,
@@ -70,6 +72,72 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
           </Head>
         </PartialSeparator>
         <body>
+          {/* eslint-disable-next-line no-process-env */}
+          {process.env.NODE_ENV !== 'production' && (
+            <p
+              title={'Enjoy Development!'}
+              css={css`
+                //filter: grayscale(2%);
+                text-align: center;
+                font-size: 14px;
+                font-weight: 700;
+                color: #fff;
+                padding: 4px 0;
+                letter-spacing: 1px;
+
+                background: linear-gradient(200deg, #3a9537, #35dc3f, #3159);
+                background-size: 600% 600%;
+
+                animation: AnimationName 10s ease infinite;
+
+                @-webkit-keyframes AnimationName {
+                  0% {
+                    background-position: 74% 0%;
+                  }
+                  50% {
+                    background-position: 27% 100%;
+                  }
+                  100% {
+                    background-position: 74% 0%;
+                  }
+                }
+                @-moz-keyframes AnimationName {
+                  0% {
+                    background-position: 74% 0%;
+                  }
+                  50% {
+                    background-position: 27% 100%;
+                  }
+                  100% {
+                    background-position: 74% 0%;
+                  }
+                }
+                @-o-keyframes AnimationName {
+                  0% {
+                    background-position: 74% 0%;
+                  }
+                  50% {
+                    background-position: 27% 100%;
+                  }
+                  100% {
+                    background-position: 74% 0%;
+                  }
+                }
+                @keyframes AnimationName {
+                  0% {
+                    background-position: 74% 0%;
+                  }
+                  50% {
+                    background-position: 27% 100%;
+                  }
+                  100% {
+                    background-position: 74% 0%;
+                  }
+                }
+              `}>
+              DEVELOPMENT
+            </p>
+          )}
           <PartialSeparator name={'CONTENT'} wrapped={isPartials}>
             <Main />
           </PartialSeparator>
