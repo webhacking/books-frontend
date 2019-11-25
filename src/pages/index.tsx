@@ -137,6 +137,10 @@ export class Home extends React.Component<HomeProps> {
     });
   };
 
+  public componentDidUpdate(): void {
+    this.setCookie(this.props);
+  }
+
   public componentDidMount(): void {
     this.setCookie(this.props);
   }

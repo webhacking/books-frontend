@@ -19,7 +19,7 @@ import { LoggedUser } from 'src/types/account';
 import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 import pRetry from 'p-retry';
-import axios from 'axios';
+import axios, { OAuthRequestType } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 const { captureException } = sentry();
 
@@ -243,6 +243,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
             () =>
               axios.get(notificationUrl.toString(), {
                 params: { limit: 5 },
+                custom: { authorizationRequestType: OAuthRequestType.CHECK },
                 headers: {
                   Authorization: `Bearer ${tokenResult.data.token}`,
                 },
@@ -266,7 +267,11 @@ export const MainTab: React.FC<MainTabProps> = props => {
         const cartUrl = new URL('/users/me/cart-count/', publicRuntimeConfig.STORE_API);
 
         const result = await pRetry(
-          () => axios.get(cartUrl.toString(), { withCredentials: true }),
+          () =>
+            axios.get(cartUrl.toString(), {
+              withCredentials: true,
+              custom: { authorizationRequestType: OAuthRequestType.CHECK },
+            }),
           { retries: 2 },
         );
         if (result.status === 200) {
