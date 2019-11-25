@@ -300,7 +300,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           pathRegexp={
             // Hack, Apply lint
             // eslint-disable-next-line require-unicode-regexp,prefer-named-capture-group
-            /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(personalized-recommendation|support|keyword-finder|new-release|bestsellers|author|book|event|search|category|fantasy|romance|bl|bl-serial|fantasy-serial|romance-serial|comics)(\/.*$|$))/
+            /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(personalized-recommendation|support|keyword-finder|new-release|bestsellers|author|books|event|search|category|fantasy|romance|bl|bl-serial|fantasy-serial|romance-serial|comics)(\/.*$|$))/
           }
         />
         <TabItem
