@@ -18,7 +18,8 @@ import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
-
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;
@@ -211,40 +212,49 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                     justify-content: center;
                     position: relative;
                   `}>
-                  <ThumbnailRenderer
-                    width={type === 'big' ? 80 : 50}
-                    book={{ b_id: book.b_id, detail: book.detail }}
-                    imgSize={'medium'}
-                    isIntersecting={isIntersecting}>
-                    <div
-                      css={css`
-                        position: absolute;
-                        display: block;
-                        top: -7px;
-                        left: -7px;
-                      `}>
-                      <BookBadgeRenderer
-                        type={DisplayType.BestSeller}
-                        wrapperCSS={css``}
-                        isWaitFree={book.detail?.series?.property.is_wait_free}
-                        discountPercentage={
-                          book.detail?.price_info.buy.discount_percentage || 0
-                        }
-                      />
-                    </div>
-                    {type === 'big' && (
-                      <>
-                        <FreeBookRenderer
-                          freeBookCount={
-                            book.detail?.series?.price_info?.buy?.free_book_count || 0
+                  <a
+                    css={css`
+                      display: inline-block;
+                    `}
+                    href={new URL(
+                      `/books/${book.b_id}`,
+                      publicRuntimeConfig.STORE_HOST,
+                    ).toString()}>
+                    <ThumbnailRenderer
+                      width={type === 'big' ? 80 : 50}
+                      book={{ b_id: book.b_id, detail: book.detail }}
+                      imgSize={'medium'}
+                      isIntersecting={isIntersecting}>
+                      <div
+                        css={css`
+                          position: absolute;
+                          display: block;
+                          top: -7px;
+                          left: -7px;
+                        `}>
+                        <BookBadgeRenderer
+                          type={DisplayType.BestSeller}
+                          wrapperCSS={css``}
+                          isWaitFree={book.detail?.series?.property.is_wait_free}
+                          discountPercentage={
+                            book.detail?.price_info.buy.discount_percentage || 0
                           }
                         />
-                        <SetBookRenderer
-                          setBookCount={book.detail?.setbook?.member_books_count}
-                        />
-                      </>
-                    )}
-                  </ThumbnailRenderer>
+                      </div>
+                      {type === 'big' && (
+                        <>
+                          <FreeBookRenderer
+                            freeBookCount={
+                              book.detail?.series?.price_info?.buy?.free_book_count || 0
+                            }
+                          />
+                          <SetBookRenderer
+                            setBookCount={book.detail?.setbook?.member_books_count}
+                          />
+                        </>
+                      )}
+                    </ThumbnailRenderer>
+                  </a>
                 </div>
                 <div className={'book-meta-box'}>
                   <div css={rankCSS}>{index + 1}</div>

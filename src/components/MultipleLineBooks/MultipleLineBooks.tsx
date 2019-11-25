@@ -9,7 +9,8 @@ import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
-
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 interface MultipleLineBooks {
   items: MdBook[];
   title: string;
@@ -222,32 +223,41 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                     `,
                   )}
                 `}>
-                <ThumbnailRenderer
-                  book={{ b_id: item.b_id, detail: item.detail }}
-                  imgSize={'xxlarge'}
-                  isIntersecting={isIntersecting}>
-                  <div
-                    css={css`
-                      position: absolute;
-                      display: block;
-                      top: -7px;
-                      left: -7px;
-                    `}>
-                    <BookBadgeRenderer
-                      type={DisplayType.RecommendedBook}
-                      wrapperCSS={css``}
-                      isWaitFree={item.detail?.series?.property.is_wait_free}
-                      discountPercentage={
-                        item.detail?.price_info.buy.discount_percentage || 0
+                <a
+                  css={css`
+                    display: inline-block;
+                  `}
+                  href={new URL(
+                    `/books/${item.b_id}`,
+                    publicRuntimeConfig.STORE_HOST,
+                  ).toString()}>
+                  <ThumbnailRenderer
+                    book={{ b_id: item.b_id, detail: item.detail }}
+                    imgSize={'xxlarge'}
+                    isIntersecting={isIntersecting}>
+                    <div
+                      css={css`
+                        position: absolute;
+                        display: block;
+                        top: -7px;
+                        left: -7px;
+                      `}>
+                      <BookBadgeRenderer
+                        type={DisplayType.RecommendedBook}
+                        wrapperCSS={css``}
+                        isWaitFree={item.detail?.series?.property.is_wait_free}
+                        discountPercentage={
+                          item.detail?.price_info.buy.discount_percentage || 0
+                        }
+                      />
+                    </div>
+                    <FreeBookRenderer
+                      freeBookCount={
+                        item.detail?.series?.price_info?.buy?.free_book_count || 0
                       }
                     />
-                  </div>
-                  <FreeBookRenderer
-                    freeBookCount={
-                      item.detail?.series?.price_info?.buy?.free_book_count || 0
-                    }
-                  />
-                </ThumbnailRenderer>
+                  </ThumbnailRenderer>
+                </a>
               </div>
             </ThumbnailWrapper>
             {item.detail && (

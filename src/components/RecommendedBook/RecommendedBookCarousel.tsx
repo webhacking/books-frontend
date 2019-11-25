@@ -14,6 +14,8 @@ import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -182,38 +184,47 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                   height: 100%;
                   padding-left: 0 !important;
                 `}>
-                <ThumbnailWrapper>
-                  <ThumbnailRenderer
-                    width={140}
-                    book={{ b_id: book.b_id, detail: book.detail }}
-                    imgSize={'xxlarge'}
-                    isIntersecting={props.isIntersecting}>
-                    <div
-                      css={css`
-                        position: absolute;
-                        display: block;
-                        top: -7px;
-                        left: -7px;
-                      `}>
-                      <BookBadgeRenderer
-                        type={type}
-                        wrapperCSS={css``}
-                        isWaitFree={book.detail?.series?.property.is_wait_free}
-                        discountPercentage={
-                          book.detail?.price_info?.buy.discount_percentage || 0
+                <a
+                  css={css`
+                    display: inline-block;
+                  `}
+                  href={new URL(
+                    `/books/${book.b_id}`,
+                    publicRuntimeConfig.STORE_HOST,
+                  ).toString()}>
+                  <ThumbnailWrapper>
+                    <ThumbnailRenderer
+                      width={140}
+                      book={{ b_id: book.b_id, detail: book.detail }}
+                      imgSize={'xxlarge'}
+                      isIntersecting={props.isIntersecting}>
+                      <div
+                        css={css`
+                          position: absolute;
+                          display: block;
+                          top: -7px;
+                          left: -7px;
+                        `}>
+                        <BookBadgeRenderer
+                          type={type}
+                          wrapperCSS={css``}
+                          isWaitFree={book.detail?.series?.property.is_wait_free}
+                          discountPercentage={
+                            book.detail?.price_info?.buy.discount_percentage || 0
+                          }
+                        />
+                      </div>
+                      <FreeBookRenderer
+                        freeBookCount={
+                          book.detail?.series?.price_info?.buy?.free_book_count || 0
                         }
                       />
-                    </div>
-                    <FreeBookRenderer
-                      freeBookCount={
-                        book.detail?.series?.price_info?.buy?.free_book_count || 0
-                      }
-                    />
-                    <SetBookRenderer
-                      setBookCount={book.detail?.setbook?.member_books_count}
-                    />
-                  </ThumbnailRenderer>
-                </ThumbnailWrapper>
+                      <SetBookRenderer
+                        setBookCount={book.detail?.setbook?.member_books_count}
+                      />
+                    </ThumbnailRenderer>
+                  </ThumbnailWrapper>
+                </a>
                 {/* Todo show sentence */}
                 {book.detail && type === DisplayType.HotRelease && (
                   <BookMeta book={book.detail} />

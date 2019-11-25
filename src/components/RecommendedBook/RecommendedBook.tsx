@@ -73,7 +73,7 @@ export const bookMetaWrapperCSS = css`
   padding-left: 7px;
 `;
 
-export const BookTitle = styled.h3`
+export const BookTitle = styled.h2`
   color: white;
   font-size: 15px;
   font-weight: 700;
@@ -123,7 +123,16 @@ interface BookMetaProps {
 export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
   return (
     <div css={bookMetaWrapperCSS}>
-      <BookTitle>{bookTitleGenerator(props.book)}</BookTitle>
+      <a
+        css={css`
+          display: inline-block;
+        `}
+        href={new URL(
+          `/books/${props.book.id}`,
+          publicRuntimeConfig.STORE_HOST,
+        ).toString()}>
+        <BookTitle>{bookTitleGenerator(props.book)}</BookTitle>
+      </a>
       {props.book.authors && props.book.authors.author && (
         <BookAuthor>{props.book.authors.author[0].name || ''}</BookAuthor>
       )}
