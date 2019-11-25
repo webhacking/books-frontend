@@ -1,13 +1,17 @@
 import * as BookApi from 'src/types/book';
+import { getEscapedString } from 'src/utils/highlight';
 
 export const bookTitleGenerator = (book: BookApi.Book) => {
   if (book.series) {
-    return book.series.property.title;
+    if (book.title.prefix) {
+      return getEscapedString(`${book.title.prefix} ${book.series.property.title}`);
+    }
+    return getEscapedString(book.series.property.title);
   }
   if (book.title) {
     if (book.title.prefix) {
-      return `${book.title.prefix} ${book.title.main}`;
+      return getEscapedString(`${book.title.prefix} ${book.title.main}`);
     }
   }
-  return book.title.main;
+  return getEscapedString(book.title.main);
 };
