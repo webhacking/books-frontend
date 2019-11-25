@@ -29,7 +29,7 @@ const books = [
   {
     b_id: '12345',
     detail: {
-      title: { main: '와' },
+      title: { main: '도서 표지' },
       property: {},
     },
   },

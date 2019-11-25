@@ -31,7 +31,7 @@ const renderSelectionBookList = () =>
               b_id: '12345666',
               type: 'test',
               detail: {
-                title: { main: 'hey' },
+                title: { main: '도서 표지' },
                 authors_ordered: [{ name: 'hi' }],
                 property: { is_adult_only: false },
                 file: { is_comic: false },
