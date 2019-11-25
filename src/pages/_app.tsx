@@ -5,7 +5,7 @@ import withRedux from 'next-redux-wrapper';
 import makeStore, { RootState } from 'src/store/config';
 import withReduxSaga from 'next-redux-saga';
 import { ConnectedRouter } from 'connected-next-router';
-import { CacheProvider, Global } from '@emotion/core';
+import { CacheProvider, css, Global } from '@emotion/core';
 import { defaultTheme, resetStyles } from 'src/styles';
 import GNB from 'src/components/GNB';
 import { ThemeProvider } from 'emotion-theming';
@@ -163,6 +163,72 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     if (isPartials) {
       return (
         <>
+          {/* eslint-disable-next-line no-process-env */}
+          {process.env.NODE_ENV !== 'production' && (
+            <p
+              title={'Enjoy Development!'}
+              css={css`
+                //filter: grayscale(2%);
+                text-align: center;
+                font-size: 14px;
+                font-weight: 700;
+                color: #fff;
+                padding: 4px 0;
+                letter-spacing: 1px;
+
+                background: linear-gradient(200deg, #3a9537, #35dc3f, #3159);
+                background-size: 600% 600%;
+
+                animation: AnimationName 10s ease infinite;
+
+                @-webkit-keyframes AnimationName {
+                  0% {
+                    background-position: 74% 0%;
+                  }
+                  50% {
+                    background-position: 27% 100%;
+                  }
+                  100% {
+                    background-position: 74% 0%;
+                  }
+                }
+                @-moz-keyframes AnimationName {
+                  0% {
+                    background-position: 74% 0%;
+                  }
+                  50% {
+                    background-position: 27% 100%;
+                  }
+                  100% {
+                    background-position: 74% 0%;
+                  }
+                }
+                @-o-keyframes AnimationName {
+                  0% {
+                    background-position: 74% 0%;
+                  }
+                  50% {
+                    background-position: 27% 100%;
+                  }
+                  100% {
+                    background-position: 74% 0%;
+                  }
+                }
+                @keyframes AnimationName {
+                  0% {
+                    background-position: 74% 0%;
+                  }
+                  50% {
+                    background-position: 27% 100%;
+                  }
+                  100% {
+                    background-position: 74% 0%;
+                  }
+                }
+              `}>
+              DEVELOPMENT
+            </p>
+          )}
           <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={true}>
             <Global styles={resetStyles} />
           </PartialSeparator>
@@ -177,6 +243,72 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       // CacheProvider 올바르게 동작하는지 확인하기
       <CacheProvider value={createCache({ ...cache, nonce })}>
         <Global styles={resetStyles} />
+        {/* eslint-disable-next-line no-process-env */}
+        {process.env.NODE_ENV !== 'production' && (
+          <p
+            title={'Enjoy Development!'}
+            css={css`
+              //filter: grayscale(2%);
+              text-align: center;
+              font-size: 14px;
+              font-weight: 700;
+              color: #fff;
+              padding: 4px 0;
+              letter-spacing: 1px;
+
+              background: linear-gradient(200deg, #3a9537, #35dc3f, #3159);
+              background-size: 600% 600%;
+
+              animation: AnimationName 10s ease infinite;
+
+              @-webkit-keyframes AnimationName {
+                0% {
+                  background-position: 74% 0%;
+                }
+                50% {
+                  background-position: 27% 100%;
+                }
+                100% {
+                  background-position: 74% 0%;
+                }
+              }
+              @-moz-keyframes AnimationName {
+                0% {
+                  background-position: 74% 0%;
+                }
+                50% {
+                  background-position: 27% 100%;
+                }
+                100% {
+                  background-position: 74% 0%;
+                }
+              }
+              @-o-keyframes AnimationName {
+                0% {
+                  background-position: 74% 0%;
+                }
+                50% {
+                  background-position: 27% 100%;
+                }
+                100% {
+                  background-position: 74% 0%;
+                }
+              }
+              @keyframes AnimationName {
+                0% {
+                  background-position: 74% 0%;
+                }
+                50% {
+                  background-position: 27% 100%;
+                }
+                100% {
+                  background-position: 74% 0%;
+                }
+              }
+            `}>
+            DEVELOPMENT
+          </p>
+        )}
         <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
           <Provider store={store}>
             <ConnectedRouter>
