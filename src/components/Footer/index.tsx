@@ -221,7 +221,7 @@ const paperIcon = css`
 `;
 
 const Footer: React.FC<{}> = () => (
-  <section css={sectionStyle}>
+  <section id="new_footer" css={sectionStyle}>
     <FooterWrapper>
       <FlexBox>
         <ul css={contactListCSS}>

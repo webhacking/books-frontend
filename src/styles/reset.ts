@@ -114,15 +114,6 @@ export const resetStyles = css`
     line-height: initial;
   }
 
-  a {
-    ${inheritFont};
-    &:link,
-    &:visited {
-      text-decoration: none;
-      color: white;
-    }
-    cursor: pointer;
-  }
   * {
     .a11y {
       ${css([a11y])};
@@ -131,6 +122,20 @@ export const resetStyles = css`
     padding: 0;
     box-sizing: border-box;
   }
+
+  a {
+    ${inheritFont};
+    &:link,
+    &:visited {
+      text-decoration: none;
+      .new_gnb &,
+      #new_footer & {
+        color: white;
+      }
+    }
+    cursor: pointer;
+  }
+
   ${fonts};
   #__next {
     overflow-y: hidden;

@@ -285,7 +285,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   const homePath = new URL('/', publicRuntimeConfig.STORE_HOST);
   return (
     // @ts-ignore
-    <GNBWrapper id={props.id}>
+    <GNBWrapper className={'new_gnb'} id={props.id}>
       <Header>
         <Navigation>
           <div css={logoAndSearchBox}>
