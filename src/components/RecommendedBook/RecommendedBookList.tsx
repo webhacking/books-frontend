@@ -93,7 +93,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
               <BookMeta book={book.detail} />
             )}
             {book.detail && type === DisplayType.TodayRecommendation && (
-              <div
+              <h4
                 css={[
                   css`
                     padding-left: 14px;
@@ -125,7 +125,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                     ),
                   }}
                 />
-              </div>
+              </h4>
             )}
           </PortraitBook>
         ))}

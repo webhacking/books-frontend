@@ -3,7 +3,10 @@ import { Book } from '@ridi/web-ui/dist/index.node';
 import * as BookApi from 'src/types/book';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
+import AdultBadge from 'src/svgs/AdultBadge.svg';
 import getConfig from 'next/config';
+import { css } from '@emotion/core';
+import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 const { publicRuntimeConfig } = getConfig();
 
 interface ThumbnailRendererProps {
@@ -57,10 +60,22 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = props => {
   );
   return (
     <Book.Thumbnail
-      adultBadge={book.detail?.property.is_adult_only}
       thumbnailWidth={width}
+      thumbnailTitle={bookTitleGenerator(book.detail)}
       thumbnailUrl={imageUrl}>
       {children}
+      {book.detail?.property.is_adult_only && (
+        <AdultBadge
+          css={css`
+            display: block;
+            position: absolute;
+            right: 3px;
+            top: 3px;
+            width: 20px;
+            height: 20px;
+          `}
+        />
+      )}
     </Book.Thumbnail>
   );
 };

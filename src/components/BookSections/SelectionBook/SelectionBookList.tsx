@@ -15,7 +15,7 @@ const listCSS = css`
   ${orBelow(
     BreakPoint.LG,
     css`
-      margin-left: -4px;
+      margin-left: -5px;
       margin-right: 6px;
     `,
   )}

@@ -81,7 +81,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
           <BookMeta book={book.detail} />
         )}
         {book.detail && props.type === DisplayType.TodayRecommendation && (
-          <div
+          <h4
             css={[
               css`
                 padding-left: 14px;
@@ -105,7 +105,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
                 ),
               }}
             />
-          </div>
+          </h4>
         )}
       </PortraitBook>
     ))}

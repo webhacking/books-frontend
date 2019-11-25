@@ -232,7 +232,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
                 <BookMeta book={book.detail} showSelect={true} />
               )}
               {book.detail && type === DisplayType.TodayRecommendation && (
-                <div
+                <h4
                   css={[
                     css`
                       padding-left: 13px;
@@ -259,7 +259,6 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
                       `,
                   ]}>
                   <span
-                    className={'test'}
                     dangerouslySetInnerHTML={{
                       __html: (book as HotRelease).sentence.replace(
                         /(?:\r\n|\r|\n)/g,
@@ -267,7 +266,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
                       ),
                     }}
                   />
-                </div>
+                </h4>
               )}
             </PortraitBook>
           ))}
