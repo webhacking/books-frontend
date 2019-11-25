@@ -18,7 +18,6 @@ import 'slick-carousel/slick/slick.css';
 import { PartialSeparator } from 'src/components/Misc';
 import { cache } from 'emotion';
 import createCache from '@emotion/cache';
-// import { Tracker, DeviceType } from '@ridi/event-tracker';
 
 import sentry from 'src/utils/sentry';
 import ErrorPage from 'src/pages/_error';

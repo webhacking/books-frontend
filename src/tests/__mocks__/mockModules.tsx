@@ -18,6 +18,20 @@ export const initModules = () => {
       },
     }),
   }));
+  jest.mock('@ridi/event-tracker', () => {
+    const DeviceType = {
+      PC: 'pc',
+    };
+    return {
+      DeviceType: {
+        PC: 'pc',
+      },
+      Tracker: class Tracker {
+        constructor() {}
+        initialize() {}
+      },
+    };
+  });
   // jest.mock('next/router', () => () => ({ useRouter: () => {} }));
   jest.mock('next/dynamic', () => () => {
     const DynamicComponent = () => null;
