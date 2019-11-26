@@ -80,7 +80,7 @@ const Home: NextPage<HomeProps> = props => {
     setCookie(props.genre);
     if (tracker) {
       try {
-        tracker.set({ userId: loggedUser.id || null });
+        tracker.set({ userId: loggedUser?.id || null });
         tracker.sendPageView(window.location.href, document.referrer);
       } catch (error) {
         captureException(error);
