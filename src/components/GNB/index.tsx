@@ -131,7 +131,6 @@ const ButtonWrapper = styled.ul`
     BreakPoint.LG,
     css`
       right: 10px;
-      top: 8px;
       order: 2;
       position: absolute;
     `,
