@@ -14,7 +14,15 @@ module.exports = function csp(app) {
     'https://*.ridicdn.net',
   ];
 
-  const scriptSrc = [nonce, "'strict-dynamic'", "'self'", ...whiteList];
+  const scriptSrc = [
+    nonce,
+    "'strict-dynamic'",
+    "'self'",
+    'www.google-analytics.com',
+    'www.googletagmanager.com',
+    'connect.facebook.net',
+    ...whiteList,
+  ];
   const styleSrc = ["'self'", "'unsafe-inline'", ...whiteList];
 
   if (process.env.NODE_ENV !== 'production') {
@@ -39,6 +47,9 @@ module.exports = function csp(app) {
             'www.google-analytics.com',
             'stats.g.doubleclick.net',
             'www.facebook.com',
+            'www.google-analytics.com',
+            'www.googletagmanager.com',
+            'connect.facebook.net',
             'https://*.amazonaws.com',
             ...whiteList,
           ],
