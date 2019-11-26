@@ -19,7 +19,7 @@ import { ServerResponse } from 'http';
 import sentry from 'src/utils/sentry';
 import { categoryActions } from 'src/services/category';
 import { NextPage } from 'next';
-import useEventTracker from 'src/hooks/useEveneTracker';
+import { createTracker } from 'src/hooks/useEveneTracker';
 import { RootState } from 'src/store/config';
 
 const { captureException } = sentry();
@@ -67,6 +67,11 @@ const fetchHomeSections = async (genre: string, req?: Request) => {
   return result.data;
 };
 
+// Lambda 에서 올바르게 동작할까. 공유되지 않을까?
+const tracker = createTracker(null);
+if (tracker) {
+  tracker.initialize();
+}
 const setCookie = (genre: string) => {
   Cookies.set(cookieKeys.main_genre, genre || 'general', {
     expires: DEFAULT_COOKIE_EXPIRES,
@@ -75,7 +80,6 @@ const setCookie = (genre: string) => {
 const Home: NextPage<HomeProps> = props => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
 
-  const [tracker] = useEventTracker(loggedUser);
   useEffect(() => {
     setCookie(props.genre);
     if (tracker) {
@@ -86,7 +90,7 @@ const Home: NextPage<HomeProps> = props => {
         captureException(error);
       }
     }
-  }, [props.genre]);
+  }, [props.genre, loggedUser]);
   const { genre } = props;
   const currentGenre = genre || 'general';
   return (
