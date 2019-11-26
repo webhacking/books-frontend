@@ -61,9 +61,23 @@ export interface PaperBuyInfo {
   price: number;
 }
 
+export interface RentInfo {
+  regular_price: number;
+  price: number;
+  rent_days: number;
+  discount_percentage: number;
+}
+
+export interface PointBackInfo {
+  pointback_amount: number;
+  point_duration: number;
+}
+
 export interface PriceInfo {
-  buy: BuyInfo;
+  buy?: BuyInfo;
   paper?: PaperBuyInfo;
+  rentInfo?: RentInfo;
+  pointBackInfo?: PointBackInfo;
 }
 
 export interface Property {
