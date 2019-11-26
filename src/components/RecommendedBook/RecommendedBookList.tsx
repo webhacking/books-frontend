@@ -73,7 +73,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                       wrapperCSS={css``}
                       isWaitFree={book.detail?.series?.property.is_wait_free}
                       discountPercentage={
-                        book.detail?.price_info?.buy.discount_percentage || 0
+                        book?.detail?.price_info?.buy?.discount_percentage || 0
                       }
                     />
                   </div>

@@ -247,7 +247,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
                         wrapperCSS={css``}
                         isWaitFree={item.detail?.series?.property.is_wait_free}
                         discountPercentage={
-                          item.detail?.price_info.buy.discount_percentage || 0
+                          item?.detail?.price_info?.buy?.discount_percentage || 0
                         }
                       />
                     </div>
