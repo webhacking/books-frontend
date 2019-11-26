@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import { DeviceType, Tracker } from '@ridi/event-tracker';
 import { FB_KEYS, GA_KEY, GTM_KEY } from 'src/constants/eventTracking';
+import { LoggedUser } from 'src/types/account';
 
-const initTracker = (userId: string) => {
+const initTracker = (userId: string | null) => {
   if (typeof window !== 'undefined') {
     const tracker = new Tracker({
+      // @ts-ignore
       userId: userId || null,
       // Todo device 판단  User-Agent ?
       deviceType: window.innerWidth > 999 ? DeviceType.PC : DeviceType.Mobile, // user agent 판단? 아니면?
       beaconOptions: {
         use: true, // Todo CSP Check
+        beaconSrc: 'beacon-ridibooks',
       },
       // eslint-disable-next-line no-process-env
       debug: process.env.NODE_ENV !== 'production',
@@ -36,9 +39,9 @@ const initTracker = (userId: string) => {
   return null;
 };
 
-const useEventTracker = (loggedUser): [Tracker] => {
+const useEventTracker = (loggedUser: LoggedUser): [Tracker] => {
   // @ts-ignore
-  const [tracker, setTracker] = useState(initTracker(loggedUser?.id));
+  const [tracker, setTracker] = useState(initTracker(loggedUser?.id || null));
   useEffect(() => {}, [loggedUser]);
 
   return [tracker];
