@@ -12,7 +12,8 @@ const initTracker = (userId: string | null) => {
       deviceType: window.innerWidth > 999 ? DeviceType.PC : DeviceType.Mobile, // user agent 판단? 아니면?
       beaconOptions: {
         use: true, // Todo CSP Check
-        beaconSrc: 'beacon-ridibooks',
+        beaconSrc:
+          'https://s3.ap-northeast-2.amazonaws.com/beacon-ridibooks/beacon_ridibooks.gif',
       },
       // eslint-disable-next-line no-process-env
       debug: process.env.NODE_ENV !== 'production',
