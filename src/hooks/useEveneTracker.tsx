@@ -24,7 +24,7 @@ const initTracker = (userId: string | null) => {
         },
       },
       pixelOptions: {
-        pixelId: FB_KEYS, // Multiple Keys?
+        pixelId: FB_KEYS,
       },
       tagManagerOptions: {
         trackingId: GTM_KEY,
