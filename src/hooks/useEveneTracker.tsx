@@ -19,7 +19,6 @@ const initTracker = (userId: string | null) => {
       debug: process.env.NODE_ENV !== 'production',
       gaOptions: {
         trackingId: GA_KEY,
-        pathPrefix: window.location.pathname,
         fields: {
           campaignName: 'RENEWAL',
         },
