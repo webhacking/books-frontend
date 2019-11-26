@@ -244,7 +244,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       <CacheProvider value={createCache({ ...cache, nonce })}>
         <Global styles={resetStyles} />
         {/* eslint-disable-next-line no-process-env */}
-        {process.env.NODE_ENV !== 'production' && (
+        {process?.env?.ENVIRONMENT !== 'production' && (
           <p
             title={'Enjoy Development!'}
             css={css`

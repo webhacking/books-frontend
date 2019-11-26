@@ -163,9 +163,10 @@ const logoAndSearchBox = css`
 
 interface GNBButtonsProps {
   loggedUser: null | LoggedUser;
+  isPartialsLogin?: 'true' | 'false';
 }
 const GNBButtons: React.FC<GNBButtonsProps> = props => {
-  const { loggedUser } = props;
+  const { loggedUser, isPartialsLogin } = props;
   const route = useRouter();
   const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_MASTER_HOST);
   const signUpPath = new URL('/account/signup', publicRuntimeConfig.STORE_MASTER_HOST);
@@ -196,7 +197,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
 
   return (
     <>
-      {loggedUser ? (
+      {loggedUser || isPartialsLogin === 'true' ? (
         // Todo add promotion buttons ex) calc date 123 충전
         <>
           <li>
@@ -266,6 +267,7 @@ interface GNBProps {
   searchKeyword?: string;
   isPartials: boolean;
   pathname?: string;
+  isLoginForPartials?: 'true' | 'false';
 }
 export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   const { loggedUser } = useSelector<RootState, AccountState>(state => state.account);
@@ -309,7 +311,10 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               </li>
             </LogoWrapper>
             <ButtonWrapper>
-              <GNBButtons loggedUser={loggedUser} />
+              <GNBButtons
+                loggedUser={loggedUser}
+                isPartialsLogin={props.isLoginForPartials}
+              />
             </ButtonWrapper>
             <InstantSearch
               isPartials={props.isPartials}

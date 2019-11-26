@@ -17,6 +17,7 @@ interface GNBProps {
   search?: string;
   isLogin?: string;
   pathname?: string;
+  is_login?: 'true' | 'false';
 
   // 기존 서점의 search query params 이 'q'
   q?: string;
@@ -48,6 +49,7 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
               id={'gnb'}
               pathname={this.props.pathname}
               isPartials={true}
+              isLoginForPartials={this.props.is_login}
               type={this.props.type}
               searchKeyword={this.props.q || ''}
             />
