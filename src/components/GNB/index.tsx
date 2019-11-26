@@ -197,6 +197,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
 
   return (
     <>
+      {/* isPartialsLogin Partials 뿐만 아니라 값이 있으면 그냥 로그인 표시 */}
       {loggedUser || isPartialsLogin === 'true' ? (
         // Todo add promotion buttons ex) calc date 123 충전
         <>

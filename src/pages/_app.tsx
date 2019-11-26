@@ -314,7 +314,11 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
             <ConnectedRouter>
               {/* Todo Apply Layout */}
               <ThemeProvider theme={defaultTheme}>
-                <GNB searchKeyword={query.search || query.q} isPartials={false} />
+                <GNB
+                  searchKeyword={query.search || query.q}
+                  isPartials={false}
+                  isLoginForPartials={query.is_login}
+                />
                 <Contents>
                   <Component {...pageProps} />
                 </Contents>
