@@ -164,7 +164,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       return (
         <>
           {/* eslint-disable-next-line no-process-env */}
-          {process.env.NODE_ENV !== 'production' && (
+          {process?.env?.ENVIRONMENT !== 'production' && (
             <p
               title={'Enjoy Development!'}
               css={css`
