@@ -37,7 +37,13 @@ module.exports = function csp(app) {
         directives: {
           baseUri: ["'none'"],
           objectSrc: ["'none'"],
-          imgSrc: ["'self'", 'https://*.amazonaws.com', ...whiteList],
+          imgSrc: [
+            "'self'",
+            'https://*.amazonaws.com',
+            'www.facebook.com',
+            'www.google-analytics.com',
+            ...whiteList,
+          ],
           frameSrc: ['staticxx.facebook.com', 'connect.facebook.net'],
           styleSrc,
           scriptSrc,
