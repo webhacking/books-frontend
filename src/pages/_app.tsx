@@ -75,10 +75,10 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
 
   public static async getInitialProps({ ctx, Component, ...rest }: AppContext) {
     const isPartials = !!ctx.pathname.match(/\/partials\//u);
+    // eslint-disable-next-line init-declarations
+    let pageProps;
     try {
-      const pageProps = Component.getInitialProps
-        ? await Component.getInitialProps(ctx)
-        : {};
+      pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
 
       // @ts-ignore
       const at = ctx?.req?.cookies['ridi-at'] ?? ''; // access token
@@ -98,7 +98,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         hasError: true,
         sentryErrorEventId,
         query: ctx.query,
-        pageProps: {},
+        pageProps,
         error,
       };
     }
@@ -156,6 +156,20 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       nonce,
     } = this.props;
 
+    if (!pageProps) {
+      return (
+        <>
+          <Global styles={resetStyles} />
+          <Contents>
+            {/* 여기서는 statusCode 를 모름 */}
+            <ErrorPage
+              statusCode={0}
+              error={this.props.error || (this.state as StoreAppState).error}
+            />
+          </Contents>
+        </>
+      );
+    }
     if (pageProps.statusCode && pageProps.statusCode >= 400) {
       return (
         <>
