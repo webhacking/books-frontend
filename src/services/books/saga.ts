@@ -28,6 +28,23 @@ function* isAvailableAtSelect(bIds: string[]) {
   }
 }
 
+function* watchCheckSelectBookIds(action: Actions<typeof BooksReducer>) {
+  try {
+    if (action.type === booksActions.checkSelectBook.type && action.payload.length > 0) {
+      const uniqIds = [...new Set(action.payload)];
+      const { items }: BooksState = yield select((state: RootState) => state.books);
+      const excludedIds = uniqIds.filter(id => !items[id].isAvailableSelect);
+      const arrays = splitArrayToChunk(excludedIds, DEFAULT_BOOKS_ID_CHUNK_SIZE);
+
+      yield all(arrays.map(array => isAvailableAtSelect(array)));
+      yield put({ type: booksActions.setFetching.type, payload: false });
+    }
+  } catch (error) {
+    yield put({ type: booksActions.setFetching.type, payload: false });
+    captureException(error);
+  }
+}
+
 function* watchInsertBookIds(action: Actions<typeof BooksReducer>) {
   try {
     if (action.type === booksActions.insertBookIds.type && action.payload.length > 0) {
@@ -38,7 +55,6 @@ function* watchInsertBookIds(action: Actions<typeof BooksReducer>) {
       const arrays = splitArrayToChunk(excludedIds, DEFAULT_BOOKS_ID_CHUNK_SIZE);
 
       yield all(arrays.map(array => fetchBooks(array)));
-      yield all(arrays.map(array => isAvailableAtSelect(array)));
       yield put({ type: booksActions.setThumbnailId.type });
       yield put({ type: booksActions.setFetching.type, payload: false });
     }
@@ -49,5 +65,8 @@ function* watchInsertBookIds(action: Actions<typeof BooksReducer>) {
 }
 
 export function* booksRootSaga() {
-  yield all([takeEvery(booksActions.insertBookIds.type, watchInsertBookIds)]);
+  yield all([
+    takeEvery(booksActions.checkSelectBook.type, watchCheckSelectBookIds),
+    takeEvery(booksActions.insertBookIds.type, watchInsertBookIds),
+  ]);
 }

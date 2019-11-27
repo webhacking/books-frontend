@@ -6,7 +6,7 @@ import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
 import { Router } from 'server/routes';
 import * as Cookies from 'js-cookie';
 import titleGenerator from 'src/utils/titleGenerator';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import getConfig from 'next/config';
 import { Page, Section } from 'src/types/sections';
 import { HomeSectionRenderer } from 'src/components/Section/HomeSectionRenderer';
@@ -80,6 +80,8 @@ const setCookie = (genre: string) => {
 const Home: NextPage<HomeProps> = props => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setCookie(props.genre);
     if (tracker) {
@@ -90,6 +92,10 @@ const Home: NextPage<HomeProps> = props => {
         captureException(error);
       }
     }
+
+    // 2번 호출을 어떻게 막을까
+    const bIds = keyToArray(props.branches, 'b_id');
+    dispatch({ type: booksActions.checkSelectBook.type, payload: bIds });
   }, [props.genre, loggedUser]);
   const { genre } = props;
   const currentGenre = genre || 'general';

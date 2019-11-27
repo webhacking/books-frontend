@@ -65,6 +65,9 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  public checkSelectBook() {}
+
   public setFetching(payload: boolean) {
     this.draftState.isFetching = payload;
   }
