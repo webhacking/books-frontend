@@ -33,7 +33,9 @@ function* watchCheckSelectBookIds(action: Actions<typeof BooksReducer>) {
     if (action.type === booksActions.checkSelectBook.type && action.payload.length > 0) {
       const uniqIds = [...new Set(action.payload)];
       const { items }: BooksState = yield select((state: RootState) => state.books);
-      const excludedIds = uniqIds.filter(id => !items[id].isAvailableSelect);
+      const excludedIds = uniqIds.filter(
+        id => items[id] && !items[id]?.isAvailableSelect,
+      );
       const arrays = splitArrayToChunk(excludedIds, DEFAULT_BOOKS_ID_CHUNK_SIZE);
 
       yield all(arrays.map(array => isAvailableAtSelect(array)));
