@@ -3,7 +3,7 @@
   "STATIC_CDN_URL": "https://books.ridicdn.net",
   "SEARCH_API": "https://search-api.ridibooks.com",
   "BOOK_API": "https://book-api.ridibooks.com",
-  "SELECT_API": "https://select.ridibooks.com/api",
+  "SELECT_API": "https://select-api.ridibooks.com/api",
   "STORE_API": "https://store-api.ridibooks.com",
   "RIDI_OAUTH2_CLIENT_ID": "ePgbKKRyPvdAFzTvFg2DvrS7GenfstHdkQ2uvFNd",
   "ACCOUNT_API": "https://account.ridibooks.com",

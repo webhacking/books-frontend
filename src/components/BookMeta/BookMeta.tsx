@@ -77,6 +77,8 @@ const BookMeta: React.FC<BookMetaProps> = props => {
     ratingInfo,
   } = props;
 
+  // authors_ordered
+
   return (
     <>
       <div
