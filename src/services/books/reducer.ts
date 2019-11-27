@@ -1,5 +1,7 @@
 import { createActionCreators, createReducerFunction, ImmerReducer } from 'immer-reducer';
 import * as BookApi from 'src/types/book';
+import sentry from 'src/utils/sentry';
+const { captureException } = sentry();
 
 export interface BooksState {
   items: { [key: string]: BookApi.Book | null };
@@ -58,11 +60,13 @@ export class BooksReducer extends ImmerReducer<BooksState> {
   }
 
   public setSelectBook(payload: string[]) {
-    payload.forEach(bId => {
-      if (this.draftState.items[bId]) {
+    try {
+      payload.forEach(bId => {
         this.draftState.items[bId].isAvailableSelect = true;
-      }
-    });
+      });
+    } catch (error) {
+      captureException(error);
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

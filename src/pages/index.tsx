@@ -92,8 +92,6 @@ const Home: NextPage<HomeProps> = props => {
         captureException(error);
       }
     }
-
-    // 2번 호출을 어떻게 막을까
     const bIds = keyToArray(props.branches, 'b_id');
     dispatch({ type: booksActions.checkSelectBook.type, payload: bIds });
   }, [props.genre, loggedUser]);
@@ -152,7 +150,6 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
       );
       const bIds = keyToArray(result.branches, 'b_id');
       store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
-
       const categoryIds = keyToArray(result.branches, 'category_id');
       store.dispatch({
         type: categoryActions.insertCategoryIds.type,

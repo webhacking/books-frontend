@@ -1,4 +1,4 @@
-import { takeEvery, all, call, put, select } from 'redux-saga/effects';
+import { takeEvery, all, call, put, select, takeLatest, delay } from 'redux-saga/effects';
 import { checkAvailableAtRidiSelect, requestBooks } from 'src/services/books/request';
 import pRetry from 'p-retry';
 import { booksActions, BooksReducer, BooksState } from 'src/services/books/reducer';
@@ -17,19 +17,26 @@ function* fetchBooks(bIds: string[]) {
 }
 
 function* isAvailableAtSelect(bIds: string[]) {
-  const books: BooksState = yield select((state: RootState) => state.books);
-  const availableBIds = bIds.filter(bId => books.items[bId]);
-  if (availableBIds.length > 0) {
-    const data = yield call(pRetry, () => checkAvailableAtRidiSelect(availableBIds), {
-      retries: 2,
-    });
-    const ids = Object.keys(data).map(key => data[key]);
-    yield put({ type: booksActions.setSelectBook.type, payload: ids });
+  try {
+    const books: BooksState = yield select((state: RootState) => state.books);
+    const availableBIds = bIds.filter(
+      bId => books.items[bId] && !books.items[bId].isAvailableSelect,
+    );
+    if (availableBIds.length > 0) {
+      const data = yield call(pRetry, () => checkAvailableAtRidiSelect(bIds), {
+        retries: 2,
+      });
+      const ids = Object.keys(data).map(key => data[key]);
+      yield put({ type: booksActions.setSelectBook.type, payload: ids });
+    }
+  } catch (e) {
+    captureException(e);
   }
 }
 
 function* watchCheckSelectBookIds(action: Actions<typeof BooksReducer>) {
   try {
+    yield delay(500);
     if (action.type === booksActions.checkSelectBook.type && action.payload.length > 0) {
       const uniqIds = [...new Set(action.payload)];
       const { items }: BooksState = yield select((state: RootState) => state.books);
@@ -68,7 +75,7 @@ function* watchInsertBookIds(action: Actions<typeof BooksReducer>) {
 
 export function* booksRootSaga() {
   yield all([
-    takeEvery(booksActions.checkSelectBook.type, watchCheckSelectBookIds),
     takeEvery(booksActions.insertBookIds.type, watchInsertBookIds),
+    takeLatest(booksActions.checkSelectBook.type, watchCheckSelectBookIds),
   ]);
 }
