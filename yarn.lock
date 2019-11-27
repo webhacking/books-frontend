@@ -2139,10 +2139,10 @@
   resolved "https://registry.yarnpkg.com/@ridi/colors/-/colors-0.7.1.tgz#53d58909bc25ea9405cf486d38b9e3b06d02208f"
   integrity sha512-/j9/xRGSu7AmGHva9H2NMPa2/jCzL01tN4HoxpvWTtQAHpSWdYTNNAfOsYFM9WBUv884SWVCRsRetC0Z6ot8GA==
 
-"@ridi/event-tracker@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@ridi/event-tracker/-/event-tracker-0.8.0.tgz#8cd0dc160aaffaad423607326fd191a28cfb574a"
-  integrity sha512-AYpaH28LgCnFwTtTzOVUuaWnIuj6pKtLFGvCyLf0WioMLYHygTPSghTec7gAm6ezCWa0FcjW4hTWaukEvVLRiw==
+"@ridi/event-tracker@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@ridi/event-tracker/-/event-tracker-0.8.1.tgz#b54e2076063be2779f477044c936c79549ab1ce6"
+  integrity sha512-pN/7jS1cONCnKKrPZQhXlzSJfGkXU0Omi5LxcLKMQXmZBzO00oQ+h9hCSDKEmwYl9sHAAkMvWEoDyUYhmXX8Fg==
   dependencies:
     "@types/google.analytics" "0.0.39"
     js-cookie "^2.2.0"
