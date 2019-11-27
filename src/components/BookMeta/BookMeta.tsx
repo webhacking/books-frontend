@@ -7,6 +7,7 @@ import * as BookApi from 'src/types/book';
 import { StarRating as StarRatingType } from 'src/types/sections';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import getConfig from 'next/config';
+
 const { publicRuntimeConfig } = getConfig();
 
 const bookTitleCSS = css`
@@ -61,6 +62,61 @@ const RenderBookTag: React.FC<RenderBookTagProps> = props => {
   return null;
 };
 
+export const authorsRenderer = (authors: BookApi.Author[]) => {
+  if (authors.length === 1) {
+    return (
+      <a
+        href={
+          authors[0].id
+            ? `/author/${authors[0].id}`
+            : `/search?q=${encodeURIComponent(authors[0].name)}`
+        }>
+        {authors[0].name}
+      </a>
+    );
+  }
+  if (authors.length > 2) {
+    return (
+      <>
+        {authors.slice(0, 2).map((author, index) => (
+          <React.Fragment key={index}>
+            <a
+              href={
+                author.id
+                  ? `/author/${author.id}`
+                  : `/search?q=${encodeURIComponent(author.name)}`
+              }>
+              {author.name}
+            </a>
+            {index !== 1 && ', '}
+          </React.Fragment>
+        ))}
+        <span> 외 {authors.length - 2}명></span>
+      </>
+    );
+  }
+  if (authors.length === 2) {
+    return (
+      <>
+        {authors.map((author, index) => (
+          <React.Fragment key={index}>
+            <a
+              href={
+                author.id
+                  ? `/author/${author.id}`
+                  : `/search?q=${encodeURIComponent(author.name)}`
+              }>
+              {author.name}
+            </a>
+            {index !== 1 && ', '}
+          </React.Fragment>
+        ))}
+      </>
+    );
+  }
+  return '';
+};
+
 const BookMeta: React.FC<BookMetaProps> = props => {
   const {
     book: {
@@ -77,7 +133,11 @@ const BookMeta: React.FC<BookMetaProps> = props => {
     ratingInfo,
   } = props;
 
-  // authors_ordered
+  const authors = authors_ordered.filter(author =>
+    ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author'].includes(
+      author.role,
+    ),
+  );
 
   return (
     <>
@@ -106,12 +166,12 @@ const BookMeta: React.FC<BookMetaProps> = props => {
             css={css`
               ${bookTitleCSS};
               ${lineClamp(titleLineClamp || 2)}
-            `}>
-            {bookTitleGenerator(props.book)}
-          </h2>
+            `}
+            dangerouslySetInnerHTML={{ __html: bookTitleGenerator(props.book) }}
+          />
         </a>
         {/* Todo Author Anchor Generator */}
-        <span css={authorCSS}>{authors_ordered[0].name}</span>
+        <span css={authorCSS}>{authorsRenderer(authors)}</span>
         {showRating && ratingInfo && (
           <>
             <span

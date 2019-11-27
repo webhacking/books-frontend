@@ -18,6 +18,7 @@ import * as BookApi from 'src/types/book';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
+import { authorsRenderer } from 'src/components/BookMeta/BookMeta';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -121,6 +122,16 @@ interface BookMetaProps {
 
 // eslint-disable-next-line
 export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
+  const authors =
+    props.book?.authors_ordered.filter(author =>
+      [
+        'author',
+        'comic_author',
+        'story_writer',
+        'illustrator',
+        'original_author',
+      ].includes(author.role),
+    ) ?? [];
   return (
     <div css={bookMetaWrapperCSS}>
       <a
@@ -133,9 +144,7 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
         ).toString()}>
         <BookTitle>{bookTitleGenerator(props.book)}</BookTitle>
       </a>
-      {props.book.authors && props.book.authors.author && (
-        <BookAuthor>{props.book.authors.author[0].name || ''}</BookAuthor>
-      )}
+      {props.book.authors_ordered && <BookAuthor>{authorsRenderer(authors)}</BookAuthor>}
       {props.book.isAvailableSelect && (
         <div
           css={css`
