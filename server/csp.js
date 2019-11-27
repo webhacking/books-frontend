@@ -41,6 +41,8 @@ module.exports = function csp(app) {
             "'self'",
             'https://*.amazonaws.com',
             'www.facebook.com',
+            'www.google.com',
+            'www.google.co.kr',
             'www.google-analytics.com',
             'stats.g.doubleclick.net',
             ...whiteList,
