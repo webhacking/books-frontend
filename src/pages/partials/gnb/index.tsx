@@ -24,6 +24,10 @@ interface GNBProps {
 }
 export default class PartialGNB extends React.Component<GNBProps, GNBState> {
   public static async getInitialProps(initialProps: ConnectedInitializeProps) {
+    if (initialProps.req) {
+      const at = initialProps.req.cookies['ridi-at'] ?? '';
+      return { ...initialProps.query, is_login: at?.length > 0 ? 'true' : 'false' };
+    }
     return { ...initialProps.query };
   }
 

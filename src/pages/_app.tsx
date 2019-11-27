@@ -80,11 +80,17 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         ? await Component.getInitialProps(ctx)
         : {};
 
+      // @ts-ignore
+      const at = ctx?.req?.cookies['ridi-at'] ?? ''; // access token
       return {
         pageProps,
         isPartials,
-        query: ctx.query,
         ctxPathname: rest.router ? rest.router.asPath : '/',
+        query: {
+          ...ctx.query,
+          // @ts-ignore
+          is_login: at.length > 0 ? 'true' : 'false',
+        },
       };
     } catch (error) {
       const sentryErrorEventId = captureException(error, ctx);
