@@ -156,7 +156,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       nonce,
     } = this.props;
 
-    if (pageProps.statusCode && pageProps.statusCode > 400) {
+    if (pageProps.statusCode && pageProps.statusCode >= 400) {
       return (
         <>
           <Global styles={resetStyles} />
