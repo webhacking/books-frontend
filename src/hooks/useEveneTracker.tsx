@@ -11,7 +11,10 @@ export const createTracker = (userId: string | null) => {
       beaconOptions: {
         use: true,
         beaconSrc:
-          'https://s3.ap-northeast-2.amazonaws.com/beacon-ridibooks/beacon_ridibooks.gif',
+          // eslint-disable-next-line no-process-env
+          process.env.NODE_ENV !== 'production'
+            ? 'https://s3.ap-northeast-2.amazonaws.com/beacon-ridibooks-test/beacon_ridibooks_test.gif'
+            : 'https://s3.ap-northeast-2.amazonaws.com/beacon-ridibooks/beacon_ridibooks.gif',
       },
       // eslint-disable-next-line no-process-env
       debug: process.env.NODE_ENV !== 'production',

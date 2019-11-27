@@ -21,6 +21,7 @@ import { categoryActions } from 'src/services/category';
 import { NextPage } from 'next';
 import { createTracker } from 'src/hooks/useEveneTracker';
 import { RootState } from 'src/store/config';
+import { DeviceType } from '@ridi/event-tracker';
 
 const { captureException } = sentry();
 
@@ -86,7 +87,10 @@ const Home: NextPage<HomeProps> = props => {
     setCookie(props.genre);
     if (tracker) {
       try {
-        tracker.set({ userId: loggedUser?.id || null });
+        tracker.set({
+          userId: loggedUser?.id || null,
+          deviceType: window.innerWidth > 999 ? DeviceType.PC : DeviceType.Mobile,
+        });
         tracker.sendPageView(window.location.href, document.referrer);
       } catch (error) {
         captureException(error);
