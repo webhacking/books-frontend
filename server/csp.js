@@ -42,6 +42,7 @@ module.exports = function csp(app) {
             'https://*.amazonaws.com',
             'www.facebook.com',
             'www.google-analytics.com',
+            'stats.g.doubleclick.net',
             ...whiteList,
           ],
           frameSrc: ['staticxx.facebook.com', 'connect.facebook.net'],
