@@ -8,6 +8,8 @@ import { defaultTheme } from '../../styles';
 import { HomeProps } from '../../pages';
 import { Router } from 'server/routes';
 import { Provider } from 'react-redux';
+import { BrowserLocationWithRouter } from 'src/components/Context';
+import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
 Router.replaceRoute = jest.fn(() => null);
 // @ts-ignore
@@ -77,7 +79,15 @@ describe('Home Test', () => {
         },
       },
     });
-    render(providerWrap(<Index {...props} genre={'romance'} />));
+    render(
+      providerWrap(
+        <RouterContext.Provider value={{ asPath: '' }}>
+          <BrowserLocationWithRouter isPartials={false} pathname={'/'}>
+            <Index {...props} genre={'romance'} />
+          </BrowserLocationWithRouter>
+        </RouterContext.Provider>,
+      ),
+    );
     expect(mockWriteHead).toHaveBeenCalledTimes(0);
   });
 });

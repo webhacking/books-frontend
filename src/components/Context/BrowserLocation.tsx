@@ -31,9 +31,12 @@ const BrowserLocation: React.FC<BrowserLocationContextProps> = props => {
     try {
       if (!props.isPartials) {
         setCurrentPath(window.location.pathname);
+
         if (props.router) {
-          props.router.events.on('routeChangeComplete', routeChangeCompleteHandler);
-          props.router.events.on('routeChangeError', routeErrorHandler);
+          // eslint-disable-next-line no-unused-expressions
+          props.router?.events?.on('routeChangeComplete', routeChangeCompleteHandler);
+          // eslint-disable-next-line no-unused-expressions
+          props.router?.events?.on('routeChangeError', routeErrorHandler);
         }
       }
     } catch (error) {
@@ -42,8 +45,10 @@ const BrowserLocation: React.FC<BrowserLocationContextProps> = props => {
 
     return () => {
       if (props.router) {
-        props.router.events.off('routeChangeComplete', routeChangeCompleteHandler);
-        props.router.events.off('routeChangeError', routeErrorHandler);
+        // eslint-disable-next-line no-unused-expressions
+        props.router?.events?.off('routeChangeComplete', routeChangeCompleteHandler);
+        // eslint-disable-next-line no-unused-expressions
+        props.router?.events?.off('routeChangeError', routeErrorHandler);
       }
     };
   }, [props.router, props.isPartials, routeChangeCompleteHandler, routeErrorHandler]);
