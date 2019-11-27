@@ -5,7 +5,7 @@ import Lens from 'src/svgs/Lens.svg';
 import Clear from 'src/svgs/Clear.svg';
 import { RIDITheme, ZIndexLayer } from 'src/styles';
 import { useDebouncedCallback } from 'use-debounce';
-import { Router } from 'server/routes';
+// import { Router } from 'server/routes';
 import localStorageKeys from 'src/constants/localStorage';
 import * as labels from 'src/labels/instantSearch.json';
 import { isOnsetNucleusCoda } from 'src/utils/hangle';
@@ -391,11 +391,16 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           setKeyword(label);
           setFocus(false);
           setSearchResult(initialSearchResult);
-          if (isPartials) {
-            window.location.href = `${window.location.origin}/search/?q=${label}`;
-          } else {
-            Router.pushRoute(`/search/?q=${label}`);
-          }
+
+          const url = new URL('/search/', publicRuntimeConfig.STORE_HOST);
+          url.searchParams.append('q', label);
+
+          window.location.href = url.toString();
+          // if (isPartials) {
+          //   window.location.href = `${window.location.origin}/search/?q=${label}`;
+          // } else {
+          //   Router.pushRoute(`/search/?q=${label}`);
+          // }
         }
       },
       [isPartials],
@@ -405,11 +410,17 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const { bookId } = e.currentTarget.dataset;
-        if (isPartials) {
-          window.location.href = `${window.location.origin}/books/${bookId}?_s=instant&_q=${keyword}`;
-        } else {
-          Router.pushRoute(`/books/${bookId}?_s=instant&_q=${keyword}`);
-        }
+
+        const url = new URL(`/books/${bookId}`, publicRuntimeConfig.STORE_HOST);
+        url.searchParams.append('_s', 'instant');
+        url.searchParams.append('_q', keyword);
+
+        window.location.href = url.toString();
+        // if (isPartials) {
+        //   window.location.href = `${window.location.origin}/books/${bookId}?_s=instant&_q=${keyword}`;
+        // } else {
+        //   Router.pushRoute(`/books/${bookId}?_s=instant&_q=${keyword}`);
+        // }
         setFocus(false);
       },
       [keyword, isPartials],
@@ -418,11 +429,16 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const { authorId } = e.currentTarget.dataset;
-        if (isPartials) {
-          window.location.href = `${window.location.origin}/author/${authorId}?_s=instant&_q=${keyword}`;
-        } else {
-          Router.pushRoute(`/author/${authorId}?_s=instant&_q=${keyword}`);
-        }
+        const url = new URL(`/author/${authorId}`, publicRuntimeConfig.STORE_HOST);
+        url.searchParams.append('_s', 'instant');
+        url.searchParams.append('_q', keyword);
+
+        window.location.href = url.toString();
+        // if (isPartials) {
+        //   window.location.href = `${window.location.origin}/author/${authorId}?_s=instant&_q=${keyword}`;
+        // } else {
+        //   Router.pushRoute(`/author/${authorId}?_s=instant&_q=${keyword}`);
+        // }
         setFocus(false);
       },
       [keyword, isPartials],
@@ -444,11 +460,15 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           }
           // Move search result page
           // Todo conditional check for partial component
-          if (isPartials) {
-            window.location.href = `${window.location.origin}/search/?q=${keyword}`;
-          } else {
-            Router.pushRoute(`/search/?q=${keyword}`);
-          }
+
+          const url = new URL('/search/', publicRuntimeConfig.STORE_HOST);
+          url.searchParams.append('q', keyword);
+          //
+          // if (isPartials) {
+          //   window.location.href = `${window.location.origin}/search/?q=${keyword}`;
+          // } else {
+          //   Router.pushRoute(`/search/?q=${keyword}`);
+          // }
 
           setFocus(false);
           if (inputRef.current) {
