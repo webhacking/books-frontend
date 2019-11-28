@@ -45,6 +45,7 @@ module.exports = function csp(app) {
             'www.google.com',
             'www.google.co.kr',
             'www.google-analytics.com',
+            'www.googletagmanager.com',
             'stats.g.doubleclick.net',
             ...whiteList,
           ],
