@@ -5,7 +5,7 @@ import withRedux from 'next-redux-wrapper';
 import makeStore, { RootState } from 'src/store/config';
 import withReduxSaga from 'next-redux-saga';
 import { ConnectedRouter } from 'connected-next-router';
-import { CacheProvider, css, Global } from '@emotion/core';
+import { CacheProvider, Global } from '@emotion/core';
 import { defaultTheme, resetStyles } from 'src/styles';
 import GNB from 'src/components/GNB';
 import { ThemeProvider } from 'emotion-theming';
