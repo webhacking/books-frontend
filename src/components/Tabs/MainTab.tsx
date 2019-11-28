@@ -75,6 +75,7 @@ const labelStyle = css`
   height: 16px;
   font-size: 16px;
   font-weight: 600;
+  margin-left: 5px;
   line-height: 1;
   top: 1px;
   text-align: center;
@@ -346,32 +347,51 @@ export const MainTab: React.FC<MainTabProps> = props => {
             cartCount && (
               <div
                 css={css`
-                  height: 19px;
-                  border-radius: 3px;
-                  background: white;
-                  margin-left: -5px;
-                  top: -0.5px;
-                  margin-right: 9px;
-                  display: flex;
+                  position: absolute;
+                  justify-content: flex-end;
+                  margin-left: auto;
+                  width: 26px;
                   align-items: center;
+                  top: -5px;
+                  left: 13.5px;
+                  display: flex;
+                  max-height: 30px;
+                  height: auto;
                   ${orBelow(
                     BreakPoint.LG,
                     css`
-                      margin-left: 4px;
+                      left: 18.5px;
+                      top: -3.5px;
                     `,
                   )}
                 `}>
-                <span
+                <div
                   css={css`
-                    padding: 2.5px;
-                    padding-right: 3.2px;
-                    font-weight: bold;
-                    font-size: 13px;
-                    line-height: 13px;
-                    color: #1f8ce6;
+                    align-items: center;
+                    border-radius: 6px;
+                    border: 2px solid #1f8ce6;
+                    background: white;
+                    height: 20px;
+                    display: flex;
+                    ${orBelow(
+                      BreakPoint.LG,
+                      css`
+                        margin-left: 4px;
+                      `,
+                    )}
                   `}>
-                  {cartCount}
-                </span>
+                  <span
+                    css={css`
+                      font-weight: bold;
+                      padding: 1.5px 2.4px;
+                      margin-top: 0.9px;
+                      font-size: 11.5px;
+                      line-height: 11.5px;
+                      color: #1f8ce6;
+                    `}>
+                    {cartCount}
+                  </span>
+                </div>
               </div>
             )
           }

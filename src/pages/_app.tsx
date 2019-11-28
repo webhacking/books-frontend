@@ -110,13 +110,11 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     } = this.props;
 
     if (!pageProps) {
-      console.error(pageProps, Component, store.getState(), query, ctxPathname);
       return (
         <>
           <Global styles={resetStyles} />
           <Contents>
-            {/* 여기서는 statusCode 를 모름 */}
-            no page props
+            <Component {...pageProps} />
           </Contents>
         </>
       );
