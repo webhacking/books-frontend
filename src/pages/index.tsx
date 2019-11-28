@@ -99,7 +99,7 @@ export const Home: NextPage<HomeProps> = props => {
     }
     const bIds = keyToArray(props.branches, 'b_id');
     dispatch({ type: booksActions.checkSelectBook.type, payload: bIds });
-  }, [props.genre, loggedUser]);
+  }, [props.genre, loggedUser, props.branches, dispatch]);
   const { genre } = props;
   const currentGenre = genre || 'general';
   return (
