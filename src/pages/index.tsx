@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Head from 'next/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 import { GenreTab } from 'src/components/Tabs';
@@ -6,7 +6,7 @@ import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
 import { Router } from 'server/routes';
 import * as Cookies from 'js-cookie';
 import titleGenerator from 'src/utils/titleGenerator';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import getConfig from 'next/config';
 import { Page, Section } from 'src/types/sections';
@@ -23,6 +23,7 @@ import { NextPage } from 'next';
 import { createTracker } from 'src/hooks/useEveneTracker';
 import { RootState } from 'src/store/config';
 import { DeviceType } from '@ridi/event-tracker';
+import useIsSelectFetch from 'src/hooks/useIsSelectFetch';
 // import { DeviceType } from '@ridi/event-tracker';
 
 const { captureException } = sentry();
@@ -83,14 +84,13 @@ const setCookie = (genre: string) => {
 };
 export const Home: NextPage<HomeProps> = props => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
-  const dispatch = useDispatch();
+  const bIds = keyToArray(props.branches, 'b_id');
 
-  useEffect(() => {
-    setCookie(props.genre);
+  const setPageView = useCallback(userId => {
     if (tracker) {
       try {
         tracker.set({
-          userId: loggedUser?.id || null,
+          userId: userId || null,
           deviceType: window.innerWidth > 999 ? DeviceType.PC : DeviceType.Mobile,
         });
         tracker.sendPageView(window.location.href, document.referrer);
@@ -98,9 +98,14 @@ export const Home: NextPage<HomeProps> = props => {
         captureException(error);
       }
     }
-    const bIds = keyToArray(props.branches, 'b_id');
-    dispatch({ type: booksActions.checkSelectBook.type, payload: bIds });
-  }, [props.genre, loggedUser, props.branches, dispatch]);
+  }, []);
+
+  useIsSelectFetch(bIds);
+  useEffect(() => {
+    setCookie(props.genre);
+    setPageView(loggedUser?.id || null);
+  }, [props.genre, loggedUser, props.branches, setPageView]);
+
   const { genre } = props;
   const currentGenre = genre || 'general';
   return (
@@ -156,12 +161,13 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
         genre || 'general',
       );
       const bIds = keyToArray(result.branches, 'b_id');
-      await store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+      store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
       const categoryIds = keyToArray(result.branches, 'category_id');
-      await store.dispatch({
+      store.dispatch({
         type: categoryActions.insertCategoryIds.type,
         payload: categoryIds,
       });
+      store.dispatch({ type: booksActions.checkSelectBook.type, payload: bIds });
       return {
         genre,
         store,
