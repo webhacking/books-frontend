@@ -49,7 +49,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
     if (!items && loggedUser) {
       // requestAiRecommendationItems();
     }
-  }, [genre, loggedUser]);
+  }, [dispatch, items, genre, loggedUser]);
   if (!loggedUser) {
     return null;
   }

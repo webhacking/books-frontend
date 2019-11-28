@@ -22,7 +22,7 @@ import { categoryActions } from 'src/services/category';
 import { NextPage } from 'next';
 import { createTracker } from 'src/hooks/useEveneTracker';
 import { RootState } from 'src/store/config';
-import { DeviceType } from '@ridi/event-tracker';
+// import { DeviceType } from '@ridi/event-tracker';
 
 const { captureException } = sentry();
 
@@ -86,19 +86,19 @@ export const Home: NextPage<HomeProps> = props => {
 
   useEffect(() => {
     setCookie(props.genre);
-    if (tracker) {
-      try {
-        tracker.set({
-          userId: loggedUser?.id || null,
-          deviceType: window.innerWidth > 999 ? DeviceType.PC : DeviceType.Mobile,
-        });
-        tracker.sendPageView(window.location.href, document.referrer);
-      } catch (error) {
-        captureException(error);
-      }
-    }
-    const bIds = keyToArray(props.branches, 'b_id');
-    dispatch({ type: booksActions.checkSelectBook.type, payload: bIds });
+    // if (tracker) {
+    //   try {
+    //     tracker.set({
+    //       userId: loggedUser?.id || null,
+    //       deviceType: window.innerWidth > 999 ? DeviceType.PC : DeviceType.Mobile,
+    //     });
+    //     tracker.sendPageView(window.location.href, document.referrer);
+    //   } catch (error) {
+    //     captureException(error);
+    //   }
+    // }
+    // const bIds = keyToArray(props.branches, 'b_id');
+    // dispatch({ type: booksActions.checkSelectBook.type, payload: bIds });
   }, [props.genre, loggedUser, props.branches, dispatch]);
   const { genre } = props;
   const currentGenre = genre || 'general';
