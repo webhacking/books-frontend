@@ -29,7 +29,7 @@ export class BooksReducer extends ImmerReducer<BooksState> {
   public setBooks(payload: BookApi.Book[]) {
     const books: BooksState['items'] = {};
     payload.forEach(book => {
-      if (this.draftState.items[book.id] === null && !book.is_deleted) {
+      if (this.draftState.items[book.id] === null) {
         books[book.id] = book;
       }
     });
