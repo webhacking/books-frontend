@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import * as labels from 'src/labels/common.json';
 import GNBCategory from 'src/svgs/GNB_Category.svg';
 import { css, SerializedStyles } from '@emotion/core';
 import { clearOutline, RIDITheme } from 'src/styles';
 import { Link } from 'server/routes';
-import { BrowserLocationContext } from 'src/components/Context';
 import { orBelow } from 'src/utils/mediaQuery';
+import { useRouter } from 'next/router';
 
 const GenreTabWrapper = styled.ul`
   max-width: 1000px;
@@ -282,14 +282,15 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
   const genreInfo = genres[currentGenre] ?? genres.general;
 
   const showSubGenre = genreInfo.services.length > 1;
-  const currentPath = useContext(BrowserLocationContext);
+  const router = useRouter();
+  console.log(router.asPath);
   return (
     <GenreTabWrapper>
       <li>
         <ul css={genreListCSS}>
           <li
             css={css`
-              ${currentPath === '/category/list'
+              ${router.asPath === '/category/list'
                 ? css`
                     :hover {
                       opacity: 1 !important;
@@ -306,7 +307,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                 <GNBCategory
                   css={(theme: RIDITheme) => css`
                     ${iconCSS(theme)};
-                    ${currentPath === '/category/list'
+                    ${router.asPath === '/category/list'
                       ? css`
                           fill: ${theme.primaryColor};
                         `
@@ -321,7 +322,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             normalCSS={normal}
             currentCSS={genreTab}
             labelCSS={genreTabLabelCSS}
-            currentPath={currentPath}
+            currentPath={router.asPath}
             activePath={['/']}
             label={'일반'}
             route={'/'}
@@ -330,7 +331,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             normalCSS={normal}
             currentCSS={genreTab}
             labelCSS={genreTabLabelCSS}
-            currentPath={currentPath}
+            currentPath={router.asPath}
             activePath={['/romance', '/romance-serial', '/romance/', '/romance-serial/']}
             label={'로맨스'}
             route={'/romance'}
@@ -339,7 +340,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             normalCSS={normal}
             currentCSS={genreTab}
             labelCSS={genreTabLabelCSS}
-            currentPath={currentPath}
+            currentPath={router.asPath}
             activePath={['/fantasy', '/fantasy-serial', '/fantasy/', '/fantasy-serial/']}
             label={'판타지'}
             route={'/fantasy'}
@@ -348,7 +349,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             normalCSS={normal}
             currentCSS={genreTab}
             labelCSS={genreTabLabelCSS}
-            currentPath={currentPath}
+            currentPath={router.asPath}
             activePath={['/comics', '/comics/']}
             label={'만화'}
             route={'/comics'}
@@ -357,7 +358,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             normalCSS={normal}
             currentCSS={genreTab}
             labelCSS={genreTabLabelCSS}
-            currentPath={currentPath}
+            currentPath={router.asPath}
             activePath={['/bl', '/bl-serial', '/bl/', '/bl-serial/']}
             label={'BL'}
             route={'/bl'}
@@ -378,7 +379,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                   normalCSS={normal}
                   currentCSS={subServiceTab}
                   labelCSS={subServiceTabLabelCSS}
-                  currentPath={currentPath}
+                  currentPath={router.asPath}
                   activePath={service.activePaths}
                   label={service.name}
                 />
