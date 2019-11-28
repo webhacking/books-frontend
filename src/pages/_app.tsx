@@ -72,12 +72,12 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   public async serviceWorkerInit() {
     try {
       if ('serviceWorker' in navigator) {
-        const { Workbox } = await import('workbox-window');
-        const wb = new Workbox('/service-worker.js');
+        // const { Workbox } = await import('workbox-window');
+        // const wb = new Workbox('/service-worker.js');
         // wb.addEventListener('waiting', event => {});
         // wb.addEventListener('activated', event => {});
         // wb.addEventListener('installed', event => {});
-        wb.register();
+        // wb.register();
       }
     } catch (error) {
       captureException(error);

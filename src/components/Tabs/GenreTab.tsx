@@ -277,7 +277,7 @@ interface GenreTabProps {
   currentGenre: string;
 }
 
-const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
+const GenreTab: React.FC<GenreTabProps> = props => {
   const { currentGenre } = props;
   const genreInfo = genres[currentGenre] ?? genres.general;
 
@@ -395,6 +395,6 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
       )}
     </GenreTabWrapper>
   );
-});
+};
 
 export default GenreTab;

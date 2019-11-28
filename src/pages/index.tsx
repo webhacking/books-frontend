@@ -130,9 +130,9 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
           req,
         );
         const bIds = keyToArray(result.branches, 'b_id');
-        store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+        await store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
         const categoryIds = keyToArray(result.branches, 'category_id');
-        store.dispatch({
+        await store.dispatch({
           type: categoryActions.insertCategoryIds.type,
           payload: categoryIds,
         });
@@ -154,9 +154,9 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
         genre || 'general',
       );
       const bIds = keyToArray(result.branches, 'b_id');
-      store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+      await store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
       const categoryIds = keyToArray(result.branches, 'category_id');
-      store.dispatch({
+      await store.dispatch({
         type: categoryActions.insertCategoryIds.type,
         payload: categoryIds,
       });
