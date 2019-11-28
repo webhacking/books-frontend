@@ -224,61 +224,64 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
             `,
           ]}>
           {/* // @ts-ignore */}
-          {books.slice(0, 6).map((book, index) => (
-            <PortraitBook
-              css={css`
-                padding-left: 0 !important;
-              `}
-              key={index}>
-              <ThumbnailWrapper>
-                <ThumbnailRenderer
-                  book={{ b_id: book.b_id, detail: book.detail }}
-                  imgSize={'xxlarge'}
-                  isIntersecting={isIntersecting}
-                />
-              </ThumbnailWrapper>
-              {book.detail && type === DisplayType.HotRelease && (
-                <BookMeta book={book.detail} showSelect={true} />
-              )}
-              {book.detail && type === DisplayType.TodayRecommendation && (
-                <h4
-                  css={[
-                    css`
-                      padding-left: 13px;
-                      margin-top: 2px;
-                      font-size: 13px;
-                      line-height: 16px;
-                      text-align: center;
-                      font-weight: bold;
-                      white-space: nowrap;
-                      width: 140px;
-                      display: flex;
-                      justify-content: center;
-                      ${orBelow(
-                        BreakPoint.LG,
-                        css`
+          {books
+            .filter(book => book.detail)
+            .slice(0, 6)
+            .map((book, index) => (
+              <PortraitBook
+                css={css`
+                  padding-left: 0 !important;
+                `}
+                key={index}>
+                <ThumbnailWrapper>
+                  <ThumbnailRenderer
+                    book={{ b_id: book.b_id, detail: book.detail }}
+                    imgSize={'xxlarge'}
+                    isIntersecting={isIntersecting}
+                  />
+                </ThumbnailWrapper>
+                {book.detail && type === DisplayType.HotRelease && (
+                  <BookMeta book={book.detail} showSelect={true} />
+                )}
+                {book.detail && type === DisplayType.TodayRecommendation && (
+                  <h4
+                    css={[
+                      css`
+                        padding-left: 13px;
+                        margin-top: 2px;
+                        font-size: 13px;
+                        line-height: 16px;
+                        text-align: center;
+                        font-weight: bold;
+                        white-space: nowrap;
+                        width: 140px;
+                        display: flex;
+                        justify-content: center;
+                        ${orBelow(
+                          BreakPoint.LG,
+                          css`
    display: flex;
     width: 120px;
 }`,
-                      )};
-                    `,
-                    theme === 'dark' &&
-                      css`
-                        color: white;
+                        )};
                       `,
-                  ]}>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: (book as HotRelease).sentence.replace(
-                        /(?:\r\n|\r|\n)/g,
-                        '<br />',
-                      ),
-                    }}
-                  />
-                </h4>
-              )}
-            </PortraitBook>
-          ))}
+                      theme === 'dark' &&
+                        css`
+                          color: white;
+                        `,
+                    ]}>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: (book as HotRelease).sentence.replace(
+                          /(?:\r\n|\r|\n)/g,
+                          '<br />',
+                        ),
+                      }}
+                    />
+                  </h4>
+                )}
+              </PortraitBook>
+            ))}
         </BookList>
       ) : (
         <WindowWidthQuery>

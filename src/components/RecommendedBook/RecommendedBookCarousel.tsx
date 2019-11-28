@@ -67,48 +67,50 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = p
       height: 365px;
       margin-left: -18px;
     `}>
-    {props.items.map((book, index) => (
-      <PortraitBook key={index}>
-        <ThumbnailWrapper>
-          <ThumbnailRenderer
-            width={147}
-            book={{ b_id: book.b_id, detail: book.detail }}
-            imgSize={'xxlarge'}
-            isIntersecting={props.isIntersecting}
-          />
-        </ThumbnailWrapper>
-        {book.detail && props.type === DisplayType.HotRelease && (
-          <BookMeta book={book.detail} />
-        )}
-        {book.detail && props.type === DisplayType.TodayRecommendation && (
-          <h4
-            css={[
-              css`
-                padding-left: 14px;
-                margin-top: 2px;
-                font-size: 13px;
-                line-height: 16px;
-                text-align: center;
-                font-weight: 700;
-                white-space: nowrap;
-              `,
-              props.theme === 'dark' &&
-                css`
-                  color: white;
-                `,
-            ]}>
-            <span
-              dangerouslySetInnerHTML={{
-                __html: (book as HotRelease).sentence.replace(
-                  /(?:\r\n|\r|\n)/g,
-                  '<br />',
-                ),
-              }}
+    {props.items
+      .filter(book => book.detail)
+      .map((book, index) => (
+        <PortraitBook key={index}>
+          <ThumbnailWrapper>
+            <ThumbnailRenderer
+              width={147}
+              book={{ b_id: book.b_id, detail: book.detail }}
+              imgSize={'xxlarge'}
+              isIntersecting={props.isIntersecting}
             />
-          </h4>
-        )}
-      </PortraitBook>
-    ))}
+          </ThumbnailWrapper>
+          {book.detail && props.type === DisplayType.HotRelease && (
+            <BookMeta book={book.detail} />
+          )}
+          {book.detail && props.type === DisplayType.TodayRecommendation && (
+            <h4
+              css={[
+                css`
+                  padding-left: 14px;
+                  margin-top: 2px;
+                  font-size: 13px;
+                  line-height: 16px;
+                  text-align: center;
+                  font-weight: 700;
+                  white-space: nowrap;
+                `,
+                props.theme === 'dark' &&
+                  css`
+                    color: white;
+                  `,
+              ]}>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: (book as HotRelease).sentence.replace(
+                    /(?:\r\n|\r|\n)/g,
+                    '<br />',
+                  ),
+                }}
+              />
+            </h4>
+          )}
+        </PortraitBook>
+      ))}
   </ul>
 );
 
@@ -170,95 +172,97 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
           arrows={false}
           onInit={setInitialized}
           infinite={true}>
-          {props.items.map((book, index) => (
-            // @ts-ignore
-            <div
-              key={index}
-              css={css`
-                display: flex;
-                flex-direction: column;
-                outline: none;
-              `}>
-              <PortraitBook
+          {props.items
+            .filter(book => book.detail)
+            .map((book, index) => (
+              // @ts-ignore
+              <div
+                key={index}
                 css={css`
-                  height: 100%;
-                  padding-left: 0 !important;
+                  display: flex;
+                  flex-direction: column;
+                  outline: none;
                 `}>
-                <a
+                <PortraitBook
                   css={css`
-                    display: inline-block;
-                  `}
-                  href={new URL(
-                    `/books/${book.b_id}`,
-                    publicRuntimeConfig.STORE_HOST,
-                  ).toString()}>
-                  <ThumbnailWrapper>
-                    <ThumbnailRenderer
-                      width={140}
-                      book={{ b_id: book.b_id, detail: book.detail }}
-                      imgSize={'xxlarge'}
-                      isIntersecting={props.isIntersecting}>
-                      <div
-                        css={css`
-                          position: absolute;
-                          display: block;
-                          top: -7px;
-                          left: -7px;
-                        `}>
-                        <BookBadgeRenderer
-                          type={type}
-                          wrapperCSS={css``}
-                          isWaitFree={book.detail?.series?.property.is_wait_free}
-                          discountPercentage={
-                            book?.detail?.price_info?.buy?.discount_percentage || 0
+                    height: 100%;
+                    padding-left: 0 !important;
+                  `}>
+                  <a
+                    css={css`
+                      display: inline-block;
+                    `}
+                    href={new URL(
+                      `/books/${book.b_id}`,
+                      publicRuntimeConfig.STORE_HOST,
+                    ).toString()}>
+                    <ThumbnailWrapper>
+                      <ThumbnailRenderer
+                        width={140}
+                        book={{ b_id: book.b_id, detail: book.detail }}
+                        imgSize={'xxlarge'}
+                        isIntersecting={props.isIntersecting}>
+                        <div
+                          css={css`
+                            position: absolute;
+                            display: block;
+                            top: -7px;
+                            left: -7px;
+                          `}>
+                          <BookBadgeRenderer
+                            type={type}
+                            wrapperCSS={css``}
+                            isWaitFree={book.detail?.series?.property.is_wait_free}
+                            discountPercentage={
+                              book?.detail?.price_info?.buy?.discount_percentage || 0
+                            }
+                          />
+                        </div>
+                        <FreeBookRenderer
+                          freeBookCount={
+                            book.detail?.series?.price_info?.buy?.free_book_count || 0
                           }
                         />
-                      </div>
-                      <FreeBookRenderer
-                        freeBookCount={
-                          book.detail?.series?.price_info?.buy?.free_book_count || 0
-                        }
-                      />
-                      <SetBookRenderer
-                        setBookCount={book.detail?.setbook?.member_books_count}
-                      />
-                    </ThumbnailRenderer>
-                  </ThumbnailWrapper>
-                </a>
-                {/* Todo show sentence */}
-                {book.detail && type === DisplayType.HotRelease && (
-                  <BookMeta book={book.detail} />
-                )}
-                {book.detail && type === DisplayType.TodayRecommendation && (
-                  <div
-                    css={[
-                      css`
-                        padding-left: 14px;
-                        margin-top: 2px;
-                        font-size: 13px;
-                        line-height: 16px;
-                        text-align: center;
-                        font-weight: 700;
-                        white-space: nowrap;
-                      `,
-                      theme === 'dark' &&
+                        <SetBookRenderer
+                          setBookCount={book.detail?.setbook?.member_books_count}
+                        />
+                      </ThumbnailRenderer>
+                    </ThumbnailWrapper>
+                  </a>
+                  {/* Todo show sentence */}
+                  {book.detail && type === DisplayType.HotRelease && (
+                    <BookMeta book={book.detail} />
+                  )}
+                  {book.detail && type === DisplayType.TodayRecommendation && (
+                    <div
+                      css={[
                         css`
-                          color: white;
+                          padding-left: 14px;
+                          margin-top: 2px;
+                          font-size: 13px;
+                          line-height: 16px;
+                          text-align: center;
+                          font-weight: 700;
+                          white-space: nowrap;
                         `,
-                    ]}>
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: (book as HotRelease).sentence.replace(
-                          /(?:\r\n|\r|\n)/g,
-                          '<br />',
-                        ),
-                      }}
-                    />
-                  </div>
-                )}
-              </PortraitBook>
-            </div>
-          ))}
+                        theme === 'dark' &&
+                          css`
+                            color: white;
+                          `,
+                      ]}>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: (book as HotRelease).sentence.replace(
+                            /(?:\r\n|\r|\n)/g,
+                            '<br />',
+                          ),
+                        }}
+                      />
+                    </div>
+                  )}
+                </PortraitBook>
+              </div>
+            ))}
         </ForwardedRefComponent>
         {carouselInitialize && props.items.length > 6 && (
           <form>

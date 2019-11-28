@@ -22,5 +22,5 @@ export const useBookDetailSelector = (bookItems: BookItem[]): [BookItem[], boole
   );
 
   const isFetching: boolean = useSelector((state: RootState) => state.books.isFetching);
-  return [books, isFetching];
+  return [books.filter(book => book.detail), isFetching];
 };

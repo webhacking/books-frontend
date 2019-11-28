@@ -201,78 +201,81 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
             margin-bottom: 62px;
           `}>
           <ul css={listCSS} ref={ref}>
-            {books.slice(0, 9).map((book, index) => (
-              <li css={type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
-                <div
-                  css={css`
-                    margin-right: ${props.type === 'big' ? '18px' : '24px'};
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    position: relative;
-                  `}>
-                  <a
+            {books
+              .filter(book => book.detail)
+              .slice(0, 9)
+              .map((book, index) => (
+                <li css={type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
+                  <div
                     css={css`
-                      display: inline-block;
-                    `}
-                    href={new URL(
-                      `/books/${book.b_id}`,
-                      publicRuntimeConfig.STORE_HOST,
-                    ).toString()}>
-                    <ThumbnailRenderer
-                      width={type === 'big' ? 80 : 50}
-                      book={{ b_id: book.b_id, detail: book.detail }}
-                      imgSize={'medium'}
-                      isIntersecting={isIntersecting}>
-                      <div
-                        css={css`
-                          position: absolute;
-                          display: block;
-                          top: -7px;
-                          left: -7px;
-                        `}>
-                        <BookBadgeRenderer
-                          type={DisplayType.BestSeller}
-                          wrapperCSS={css``}
-                          isWaitFree={book.detail?.series?.property.is_wait_free}
-                          discountPercentage={
-                            book?.detail?.price_info?.buy?.discount_percentage || 0
-                          }
-                        />
-                      </div>
-                      {type === 'big' && (
-                        <>
-                          <FreeBookRenderer
-                            freeBookCount={
-                              book.detail?.series?.price_info?.buy?.free_book_count || 0
+                      margin-right: ${props.type === 'big' ? '18px' : '24px'};
+                      height: 100%;
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
+                      position: relative;
+                    `}>
+                    <a
+                      css={css`
+                        display: inline-block;
+                      `}
+                      href={new URL(
+                        `/books/${book.b_id}`,
+                        publicRuntimeConfig.STORE_HOST,
+                      ).toString()}>
+                      <ThumbnailRenderer
+                        width={type === 'big' ? 80 : 50}
+                        book={{ b_id: book.b_id, detail: book.detail }}
+                        imgSize={'medium'}
+                        isIntersecting={isIntersecting}>
+                        <div
+                          css={css`
+                            position: absolute;
+                            display: block;
+                            top: -7px;
+                            left: -7px;
+                          `}>
+                          <BookBadgeRenderer
+                            type={DisplayType.BestSeller}
+                            wrapperCSS={css``}
+                            isWaitFree={book.detail?.series?.property.is_wait_free}
+                            discountPercentage={
+                              book?.detail?.price_info?.buy?.discount_percentage || 0
                             }
                           />
-                          <SetBookRenderer
-                            setBookCount={book.detail?.setbook?.member_books_count}
-                          />
-                        </>
-                      )}
-                    </ThumbnailRenderer>
-                  </a>
-                </div>
-                <div className={'book-meta-box'}>
-                  <div css={rankCSS}>{index + 1}</div>
-                  {book.detail && (
-                    <BookMeta
-                      book={book.detail}
-                      showRating={props.type === 'big' || !!book.rating}
-                      titleLineClamp={props.type === 'small' ? 1 : 2}
-                      isAIRecommendation={false}
-                      showSomeDeal={showSomeDeal}
-                      showTag={['bl', 'bl-serial'].includes(genre)}
-                      width={props.type === 'big' ? '177px' : null}
-                      ratingInfo={book.rating}
-                    />
-                  )}
-                </div>
-              </li>
-            ))}
+                        </div>
+                        {type === 'big' && (
+                          <>
+                            <FreeBookRenderer
+                              freeBookCount={
+                                book.detail?.series?.price_info?.buy?.free_book_count || 0
+                              }
+                            />
+                            <SetBookRenderer
+                              setBookCount={book.detail?.setbook?.member_books_count}
+                            />
+                          </>
+                        )}
+                      </ThumbnailRenderer>
+                    </a>
+                  </div>
+                  <div className={'book-meta-box'}>
+                    <div css={rankCSS}>{index + 1}</div>
+                    {book.detail && (
+                      <BookMeta
+                        book={book.detail}
+                        showRating={props.type === 'big' || !!book.rating}
+                        titleLineClamp={props.type === 'small' ? 1 : 2}
+                        isAIRecommendation={false}
+                        showSomeDeal={showSomeDeal}
+                        showTag={['bl', 'bl-serial'].includes(genre)}
+                        width={props.type === 'big' ? '177px' : null}
+                        ratingInfo={book.rating}
+                      />
+                    )}
+                  </div>
+                </li>
+              ))}
           </ul>
           <form
             css={css`

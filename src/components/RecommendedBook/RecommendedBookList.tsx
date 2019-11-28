@@ -45,90 +45,92 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
             padding-left: 0 !important;
           `,
         ]}>
-        {props.items.map((book, index) => (
-          <PortraitBook key={index}>
-            <a
-              css={css`
-                display: inline-block;
-              `}
-              href={new URL(
-                `/books/${book.b_id}`,
-                publicRuntimeConfig.STORE_HOST,
-              ).toString()}>
-              <ThumbnailWrapper>
-                <ThumbnailRenderer
-                  width={120}
-                  book={{ b_id: book.b_id, detail: book.detail }}
-                  imgSize={'xxlarge'}
-                  isIntersecting={props.isIntersecting}>
-                  <div
-                    css={css`
-                      position: absolute;
-                      display: block;
-                      top: -7px;
-                      left: -7px;
-                    `}>
-                    <BookBadgeRenderer
-                      type={type}
-                      wrapperCSS={css``}
-                      isWaitFree={book.detail?.series?.property.is_wait_free}
-                      discountPercentage={
-                        book?.detail?.price_info?.buy?.discount_percentage || 0
+        {props.items
+          .filter(book => book.detail)
+          .map((book, index) => (
+            <PortraitBook key={index}>
+              <a
+                css={css`
+                  display: inline-block;
+                `}
+                href={new URL(
+                  `/books/${book.b_id}`,
+                  publicRuntimeConfig.STORE_HOST,
+                ).toString()}>
+                <ThumbnailWrapper>
+                  <ThumbnailRenderer
+                    width={120}
+                    book={{ b_id: book.b_id, detail: book.detail }}
+                    imgSize={'xxlarge'}
+                    isIntersecting={props.isIntersecting}>
+                    <div
+                      css={css`
+                        position: absolute;
+                        display: block;
+                        top: -7px;
+                        left: -7px;
+                      `}>
+                      <BookBadgeRenderer
+                        type={type}
+                        wrapperCSS={css``}
+                        isWaitFree={book.detail?.series?.property.is_wait_free}
+                        discountPercentage={
+                          book?.detail?.price_info?.buy?.discount_percentage || 0
+                        }
+                      />
+                    </div>
+                    <FreeBookRenderer
+                      freeBookCount={
+                        book.detail?.series?.price_info?.buy?.free_book_count || 0
                       }
                     />
-                  </div>
-                  <FreeBookRenderer
-                    freeBookCount={
-                      book.detail?.series?.price_info?.buy?.free_book_count || 0
-                    }
-                  />
-                  <SetBookRenderer
-                    setBookCount={book.detail?.setbook?.member_books_count}
-                  />
-                </ThumbnailRenderer>
-              </ThumbnailWrapper>
-            </a>
-            {/* Todo show sentence */}
-            {book.detail && type === DisplayType.HotRelease && (
-              <BookMeta book={book.detail} />
-            )}
-            {book.detail && type === DisplayType.TodayRecommendation && (
-              <h4
-                css={[
-                  css`
-                    padding-left: 14px;
-                    margin-top: 2px;
-                    font-size: 13px;
-                    line-height: 16px;
-                    text-align: center;
-                    font-weight: bold;
-                    white-space: nowrap;
-                    ${orBelow(
-                      BreakPoint.LG,
-                      css`padding-left: 13px;
+                    <SetBookRenderer
+                      setBookCount={book.detail?.setbook?.member_books_count}
+                    />
+                  </ThumbnailRenderer>
+                </ThumbnailWrapper>
+              </a>
+              {/* Todo show sentence */}
+              {book.detail && type === DisplayType.HotRelease && (
+                <BookMeta book={book.detail} />
+              )}
+              {book.detail && type === DisplayType.TodayRecommendation && (
+                <h4
+                  css={[
+                    css`
+                      padding-left: 14px;
+                      margin-top: 2px;
+                      font-size: 13px;
+                      line-height: 16px;
+                      text-align: center;
+                      font-weight: bold;
+                      white-space: nowrap;
+                      ${orBelow(
+                        BreakPoint.LG,
+                        css`padding-left: 13px;
    display: flex;
     width: 120px;
     justify-content: center;
 }`,
-                    )};
-                  `,
-                  theme === 'dark' &&
-                    css`
-                      color: white;
+                      )};
                     `,
-                ]}>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: (book as HotRelease).sentence.replace(
-                      /(?:\r\n|\r|\n)/g,
-                      '<br />',
-                    ),
-                  }}
-                />
-              </h4>
-            )}
-          </PortraitBook>
-        ))}
+                    theme === 'dark' &&
+                      css`
+                        color: white;
+                      `,
+                  ]}>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: (book as HotRelease).sentence.replace(
+                        /(?:\r\n|\r|\n)/g,
+                        '<br />',
+                      ),
+                    }}
+                  />
+                </h4>
+              )}
+            </PortraitBook>
+          ))}
       </BookList>
       <form
         css={css`

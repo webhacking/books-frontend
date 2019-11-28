@@ -99,25 +99,27 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
             setInitialized();
           }}
           infinite={true}>
-          {props.items.map((book, index) => (
-            <div
-              key={index}
-              css={css`
-                display: flex;
-                flex-direction: column;
-                outline: none;
-                margin-right: -3px;
-              `}>
-              <SelectionBookItem
-                genre={genre}
-                isIntersecting={isIntersecting}
-                isAIRecommendation={props.isAIRecommendation}
-                book={book}
-                type={type}
-                width={140}
-              />
-            </div>
-          ))}
+          {props.items
+            .filter(book => book.detail)
+            .map((book, index) => (
+              <div
+                key={index}
+                css={css`
+                  display: flex;
+                  flex-direction: column;
+                  outline: none;
+                  margin-right: -3px;
+                `}>
+                <SelectionBookItem
+                  genre={genre}
+                  isIntersecting={isIntersecting}
+                  isAIRecommendation={props.isAIRecommendation}
+                  book={book}
+                  type={type}
+                  width={140}
+                />
+              </div>
+            ))}
         </ForwardedRefComponent>
         {carouselInitialize && props.items.length > 6 && !bookFetching && (
           <form

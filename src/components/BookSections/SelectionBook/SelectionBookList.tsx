@@ -68,18 +68,20 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
         position: relative;
       `}>
       <ul ref={ref} css={[flexRowStart, scrollBarHidden, listCSS]}>
-        {props.items.map((item, index) => (
-          <li key={index} css={itemCSS}>
-            <SelectionBookItem
-              isIntersecting={isIntersecting}
-              genre={genre}
-              type={type}
-              isAIRecommendation={props.isAIRecommendation}
-              book={item}
-              width={120}
-            />
-          </li>
-        ))}
+        {props.items
+          .filter(item => item.detail)
+          .map((item, index) => (
+            <li key={index} css={itemCSS}>
+              <SelectionBookItem
+                isIntersecting={isIntersecting}
+                genre={genre}
+                type={type}
+                isAIRecommendation={props.isAIRecommendation}
+                book={item}
+                width={120}
+              />
+            </li>
+          ))}
       </ul>
       <form
         css={css`
