@@ -111,6 +111,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     } = this.props;
 
     if (!pageProps) {
+      console.error(Component, query, ctxPathname);
       return (
         <>
           <Global styles={resetStyles} />
