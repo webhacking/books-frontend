@@ -35,8 +35,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     section: { items, item_metadata, type, title, extra },
     genre,
   } = props;
-  // Todo '1'? 스토어팀에게 물어보자
-  if (!items && extra.is_placeholder !== '1') {
+  if (!items && extra.is_placeholder === false) {
     return null;
   }
   switch (type) {

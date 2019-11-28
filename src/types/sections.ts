@@ -41,7 +41,7 @@ export interface SectionExtra {
   options?: string;
   period?: string;
   type?: string;
-  is_placeholder?: string;
+  is_placeholder?: boolean;
 }
 
 export interface Section extends BaseResult {
