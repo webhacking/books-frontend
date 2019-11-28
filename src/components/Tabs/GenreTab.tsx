@@ -283,7 +283,6 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
 
   const showSubGenre = genreInfo.services.length > 1;
   const router = useRouter();
-  console.log(router.asPath);
   return (
     <GenreTabWrapper>
       <li>

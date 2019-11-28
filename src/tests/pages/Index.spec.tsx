@@ -35,7 +35,9 @@ const providerWrap = (
   children,
 ) => (
   <ThemeProvider theme={defaultTheme}>
-    <Provider store={store}>{children}</Provider>
+    <RouterContext.Provider value={{ asPath: '/bl' }}>
+      <Provider store={store}>{children}</Provider>
+    </RouterContext.Provider>
   </ThemeProvider>
 );
 

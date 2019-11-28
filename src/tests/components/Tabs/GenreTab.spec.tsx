@@ -4,13 +4,16 @@ import { GenreTab } from 'src/components/Tabs';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
 import * as labels from 'src/labels/common.json';
+import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
 afterEach(cleanup);
 
 const renderComponent = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <GenreTab currentGenre={'fantasy'} />
+      <RouterContext.Provider value={{ asPath: '/bl' }}>
+        <GenreTab currentGenre={'fantasy'} />
+      </RouterContext.Provider>
     </ThemeProvider>,
   );
 
