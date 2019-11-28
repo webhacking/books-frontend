@@ -57,6 +57,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
 
     // @ts-ignore
     const at = ctx?.req?.cookies['ridi-at'] ?? ''; // access token
+    console.log(pageProps);
     return {
       pageProps,
       isPartials,
@@ -72,12 +73,12 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   public async serviceWorkerInit() {
     try {
       if ('serviceWorker' in navigator) {
-        // const { Workbox } = await import('workbox-window');
-        // const wb = new Workbox('/service-worker.js');
+        const { Workbox } = await import('workbox-window');
+        const wb = new Workbox('/service-worker.js');
         // wb.addEventListener('waiting', event => {});
         // wb.addEventListener('activated', event => {});
         // wb.addEventListener('installed', event => {});
-        // wb.register();
+        wb.register();
       }
     } catch (error) {
       captureException(error);
@@ -111,13 +112,13 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     } = this.props;
 
     if (!pageProps) {
-      console.error(Component, query, ctxPathname);
+      console.error(pageProps, Component, store.getState(), query, ctxPathname);
       return (
         <>
           <Global styles={resetStyles} />
           <Contents>
             {/* 여기서는 statusCode 를 모름 */}
-            <ErrorPage statusCode={0} error={new Error('no pageProps from _app')} />
+            no page props
           </Contents>
         </>
       );

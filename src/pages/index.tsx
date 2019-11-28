@@ -173,7 +173,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
   return {
     genre,
     branches: [],
-    ...ctx.query,
+    ...query,
   };
 };
 
