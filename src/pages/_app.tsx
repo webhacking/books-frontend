@@ -20,7 +20,6 @@ import { cache } from 'emotion';
 import createCache from '@emotion/cache';
 
 import sentry from 'src/utils/sentry';
-import ErrorPage from 'src/pages/_error';
 
 const { captureException } = sentry();
 
