@@ -139,6 +139,7 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
           onClickHandler={moveLeft}
           wrapperStyle={[
             css`
+              z-index: 2;
               position: absolute;
               left: 5px;
               top: 30px;
@@ -153,6 +154,7 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
           onClickHandler={moveRight}
           wrapperStyle={[
             css`
+              z-index: 2;
               position: absolute;
               right: 5px;
               top: 30px;
