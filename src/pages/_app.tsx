@@ -56,7 +56,6 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
 
     // @ts-ignore
     const at = ctx?.req?.cookies['ridi-at'] ?? ''; // access token
-    console.log(pageProps);
     return {
       pageProps,
       isPartials,

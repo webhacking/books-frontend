@@ -6,7 +6,8 @@ import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
 import { Router } from 'server/routes';
 import * as Cookies from 'js-cookie';
 import titleGenerator from 'src/utils/titleGenerator';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 import getConfig from 'next/config';
 import { Page, Section } from 'src/types/sections';
 import { HomeSectionRenderer } from 'src/components/Section/HomeSectionRenderer';
@@ -79,9 +80,8 @@ const setCookie = (genre: string) => {
     expires: DEFAULT_COOKIE_EXPIRES,
   });
 };
-const Home: NextPage<HomeProps> = props => {
+export const Home: NextPage<HomeProps> = props => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -138,6 +138,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
         });
         return {
           genre,
+          store,
           ...query,
           ...result,
         };
@@ -162,6 +163,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
       });
       return {
         genre,
+        store,
         ...query,
         ...result,
       };
@@ -172,14 +174,10 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
   }
   return {
     genre,
+    store,
     branches: [],
     ...query,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  insertBookIds: (bIds: string[]) =>
-    dispatch({ type: booksActions.insertBookIds.type, payload: bIds }),
-});
-
-export default connect(null, mapDispatchToProps)(Home);
+export default Home;
