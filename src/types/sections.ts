@@ -8,6 +8,7 @@ export enum DisplayType {
   TodayRecommendation = 'TodayRecommendation', // 오늘 리디의 발견
   BestSeller = 'BestSeller',
   RecommendedBook = 'RecommendedBook', // 이 책 어때요
+  RecommendedNewBook = 'RecommendedNewBook', // 금주의 신간
   HomeMdSelection = 'HomeMdSelection',
   ReadingBooksRanking = 'ReadingBooksRanking', // 지금 사람들이 많이 읽는 책
   HomeEventBanner = 'HomeEventBanner',

@@ -124,6 +124,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
         </>
       );
     }
+    case DisplayType.RecommendedNewBook:
     case DisplayType.WaitFree:
     case DisplayType.TodayNewBook:
     case DisplayType.NewSerialBook: {
