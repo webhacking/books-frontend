@@ -48,31 +48,6 @@ const Contents = styled.main`
 `;
 
 class StoreApp extends App<StoreAppProps, StoreAppState> {
-  constructor(props: StoreAppProps) {
-    // @ts-ignore
-    super(props);
-    this.state = {
-      hasError: false,
-      // eslint-disable-next-line no-undefined
-      errorEventId: undefined,
-      // eslint-disable-next-line no-undefined
-      error: undefined,
-    };
-  }
-
-  static getDerivedStateFromProps(props: StoreAppProps, state: StoreAppState) {
-    return {
-      hasError: props.hasError || state.hasError || false,
-      // eslint-disable-next-line no-undefined
-      errorEventId: props.sentryErrorEventId || state.sentryErrorEventId || undefined,
-      error: props.error || state.error || null,
-    };
-  }
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
   public static async getInitialProps({ ctx, Component, ...rest }: AppContext) {
     const isPartials = !!ctx.pathname.match(/\/partials\//u);
     // eslint-disable-next-line init-declarations
@@ -116,30 +91,14 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    const errorEventId = captureException(error, {
+    captureException(error, {
       err: errorInfo,
       ...this.props,
     });
-
     super.componentDidCatch(error, errorInfo);
-    this.setState({ hasError: true, errorEventId, error: error });
   }
 
   public render() {
-    if ((this.state as StoreAppState).hasError) {
-      return (
-        <>
-          <Global styles={resetStyles} />
-          <Contents>
-            {/* 여기서는 statusCode 를 모름 */}
-            <ErrorPage
-              statusCode={0}
-              error={this.props.error || (this.state as StoreAppState).error}
-            />
-          </Contents>
-        </>
-      );
-    }
     const {
       Component,
       ctxPathname,
@@ -152,6 +111,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     } = this.props;
 
     if (!pageProps) {
+      captureException(new Error('no pageProps'));
       return (
         <>
           <Global styles={resetStyles} />

@@ -36,7 +36,7 @@ function* isAvailableAtSelect(bIds: string[]) {
 
 function* watchCheckSelectBookIds(action: Actions<typeof BooksReducer>) {
   try {
-    yield delay(500);
+    yield delay(1000);
     if (action.type === booksActions.checkSelectBook.type && action.payload.length > 0) {
       const uniqIds = [...new Set(action.payload)];
       const { items }: BooksState = yield select((state: RootState) => state.books);
