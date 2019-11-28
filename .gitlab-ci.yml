@@ -61,6 +61,8 @@ build:
     - yarn deploy
     - aws cloudfront create-invalidation --distribution-id $LAMBDA_CDN_DISTRIBUTION_ID
       --paths "/*"
+    - aws cloudfront create-invalidation --distribution-id $STATIC_CDN_DISTRIBUTION_ID
+      --paths "/*"
     - LATEST_SLS_DEPLOY_TIMESTAMP=$(./node_modules/.bin/serverless deploy list | awk
       '/Timestamp/' | awk '{print $3}' | awk END{print})
     - LATEST_COMMIT_HASH=$(git rev-parse HEAD)
@@ -107,7 +109,7 @@ deploy-production:
     ENVIRONMENT: 'production'
     AWS_ACCESS_KEY_ID: $PROD_AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $PROD_AWS_SECRET_ACCESS_KEY
-    STATIC_CDN_URL: $PROD_STATIC_CDN_URL
+    STATIC_CDN_DISTRIBUTION_ID: $PROD_STATIC_CDN_ID
     LAMBDA_CDN_DISTRIBUTION_ID: $PROD_LAMBDA_CDN_DISTRIBUTION_ID
   environment:
     name: production
