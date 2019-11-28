@@ -108,6 +108,7 @@ deploy-production:
     AWS_ACCESS_KEY_ID: $PROD_AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $PROD_AWS_SECRET_ACCESS_KEY
     STATIC_CDN_URL: $PROD_STATIC_CDN_URL
+    LAMBDA_CDN_DISTRIBUTION_ID: $PROD_LAMBDA_CDN_DISTRIBUTION_ID
   environment:
     name: production
     url: https://books.ridibooks.com
