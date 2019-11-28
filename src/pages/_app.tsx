@@ -76,32 +76,22 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   public static async getInitialProps({ ctx, Component, ...rest }: AppContext) {
     const isPartials = !!ctx.pathname.match(/\/partials\//u);
     // eslint-disable-next-line init-declarations
-    let pageProps;
-    try {
-      pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+    const pageProps = Component.getInitialProps
+      ? await Component.getInitialProps(ctx)
+      : {};
 
-      // @ts-ignore
-      const at = ctx?.req?.cookies['ridi-at'] ?? ''; // access token
-      return {
-        pageProps,
-        isPartials,
-        ctxPathname: rest.router ? rest.router.asPath : '/',
-        query: {
-          ...ctx.query,
-          // @ts-ignore
-          is_login: at.length > 0 ? 'true' : 'false',
-        },
-      };
-    } catch (error) {
-      const sentryErrorEventId = captureException(error, ctx);
-      return {
-        hasError: true,
-        sentryErrorEventId,
-        query: ctx.query,
-        pageProps,
-        error,
-      };
-    }
+    // @ts-ignore
+    const at = ctx?.req?.cookies['ridi-at'] ?? ''; // access token
+    return {
+      pageProps,
+      isPartials,
+      ctxPathname: rest.router ? rest.router.asPath : '/',
+      query: {
+        ...ctx.query,
+        // @ts-ignore
+        is_login: at.length > 0 ? 'true' : 'false',
+      },
+    };
   }
 
   public async serviceWorkerInit() {
@@ -131,6 +121,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       ...this.props,
     });
 
+    super.componentDidCatch(error, errorInfo);
     this.setState({ hasError: true, errorEventId, error: error });
   }
 
