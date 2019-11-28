@@ -384,7 +384,6 @@ export const MainTab: React.FC<MainTabProps> = props => {
                     css={css`
                       font-weight: bold;
                       padding: 1.5px 2.4px;
-                      margin-top: 0.9px;
                       font-size: 11.5px;
                       line-height: 11.5px;
                       color: #1f8ce6;
