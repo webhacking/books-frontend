@@ -11,6 +11,7 @@ module.exports = function csp(app) {
   const whiteList = [
     'https://*.ridi.io',
     'https://*.ridibooks.com',
+    'https://books.ridibooks.com',
     'https://*.ridicdn.net',
   ];
 
