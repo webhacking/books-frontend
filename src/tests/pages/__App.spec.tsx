@@ -5,6 +5,8 @@ import GNB from 'src/pages/partials/gnb';
 import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../store/config';
+import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { Provider } from 'react-redux';
 
 afterEach(cleanup);
 
@@ -33,7 +35,11 @@ test('should be render Index Component', async () => {
     Component: Index,
   });
 
-  render(<App Component={Index} router={{}} {...props} />);
+  render(
+    <RouterContext.Provider value={{ asPath: '' }}>
+      <App Component={Index} router={{}} {...props} />
+    </RouterContext.Provider>,
+  );
   // expect(getByText(/general/)).toHaveTextContent('general');
 });
 test('should be render Partials Component', async () => {
@@ -55,7 +61,11 @@ test('should be render Partials Component', async () => {
     Component: GNB,
   });
 
-  const { container } = render(<App Component={GNB} router={{}} {...props} />);
+  const { container } = render(
+    <RouterContext.Provider value={{ asPath: '' }}>
+      <App Component={GNB} router={{}} {...props} />
+    </RouterContext.Provider>,
+  );
 
   const input = container.getElementsByTagName('input');
   expect(input).not.toBe('null');

@@ -279,7 +279,7 @@ interface GenreTabProps {
 
 const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
   const { currentGenre } = props;
-  const genreInfo = genres[currentGenre || 'general'];
+  const genreInfo = genres[currentGenre] ?? genres.general;
 
   const showSubGenre = genreInfo.services.length > 1;
   const currentPath = useContext(BrowserLocationContext);
