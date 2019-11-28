@@ -15,25 +15,33 @@ export const booksInitialState: BooksState = {
 
 export class BooksReducer extends ImmerReducer<BooksState> {
   public insertBookIds(payload: string[]) {
-    const uniqIds = [...new Set(payload)];
-    const books: BooksState['items'] = {};
-    uniqIds.forEach((item: string) => {
-      if (!this.draftState.items[item]) {
-        books[item] = null;
-      }
-    });
-    this.draftState.isFetching = true;
-    this.draftState.items = { ...this.draftState.items, ...books };
+    try {
+      const uniqIds = [...new Set(payload)];
+      const books: BooksState['items'] = {};
+      uniqIds.forEach((item: string) => {
+        if (!this.draftState.items[item]) {
+          books[item] = null;
+        }
+      });
+      this.draftState.isFetching = true;
+      this.draftState.items = { ...this.draftState.items, ...books };
+    } catch (error) {
+      captureException(error);
+    }
   }
 
   public setBooks(payload: BookApi.Book[]) {
-    const books: BooksState['items'] = {};
-    payload.forEach(book => {
-      if (this.draftState.items[book.id] === null) {
-        books[book.id] = book;
-      }
-    });
-    this.draftState.items = { ...this.draftState.items, ...books };
+    try {
+      const books: BooksState['items'] = {};
+      payload.forEach(book => {
+        if (this.draftState.items[book.id] === null) {
+          books[book.id] = book;
+        }
+      });
+      this.draftState.items = { ...this.draftState.items, ...books };
+    } catch (error) {
+      captureException(error);
+    }
   }
 
   // 시리즈 도서 썸네일 확인 및 지정
