@@ -17,7 +17,7 @@ interface MultipleLineBooks {
   genre: string;
 }
 
-export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
+export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props => {
   const { title, items, genre } = props;
   const [books] = useBookDetailSelector(items);
   const targetRef = useRef(null);
@@ -288,4 +288,4 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
       </ul>
     </section>
   );
-};
+});

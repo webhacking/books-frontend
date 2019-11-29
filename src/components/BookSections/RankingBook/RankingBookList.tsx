@@ -164,7 +164,7 @@ const Timer: React.FC = () => {
   );
 };
 
-const RankingBookList: React.FC<RankingBookListProps> = props => {
+const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   const ref = useRef<HTMLUListElement>(null);
@@ -304,6 +304,6 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
       </SectionWrapper>
     </>
   );
-};
+});
 
 export default RankingBookList;

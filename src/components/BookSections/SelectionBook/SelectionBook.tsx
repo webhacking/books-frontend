@@ -51,7 +51,7 @@ interface SelectionBookItemProps {
   isIntersecting: boolean;
 }
 
-export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
+export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(props => {
   const { book, isAIRecommendation, genre, type, isIntersecting } = props;
   return (
     <>
@@ -119,7 +119,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = props => {
       )}
     </>
   );
-};
+});
 
 export interface SelectionBookCarouselProps {
   items: MdBook[]; // Fixme Md 타입 말고 comics UserPreferredSection 타입이 API 결과로 오는데 이 부분 확인해야 함
@@ -189,7 +189,7 @@ const SectionTitleRenderer: React.FC<SectionTitleProps> = props => {
   return <span>{title}</span>;
 };
 
-const SelectionBook: React.FC<SelectionBookProps> = props => {
+const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
   const { genre, type, categoryId, title, extra, option } = props;
   const [, setMounted] = useState(false);
 
@@ -264,6 +264,6 @@ const SelectionBook: React.FC<SelectionBookProps> = props => {
       )}
     </SectionWrapper>
   );
-};
+});
 
 export default SelectionBook;
