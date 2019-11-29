@@ -32,7 +32,7 @@ interface HomeSectionRendererProps {
 export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => {
   const {
     // @ts-ignore  Todo declare item_metadata type
-    section: { items, item_metadata, type, title, extra },
+    section: { items, item_metadata, type, title, extra, slug },
     genre,
   } = props;
   if (!items && extra.is_placeholder === false) {
@@ -48,7 +48,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
         />
       );
     case DisplayType.HomeEventBanner:
-      return <EventBanner items={items as EventBannerItem[]} />;
+      return <EventBanner items={items as EventBannerItem[]} genre={genre} slug={slug} />;
     case DisplayType.ReadingBooksRanking:
       return (
         <RankingBookList

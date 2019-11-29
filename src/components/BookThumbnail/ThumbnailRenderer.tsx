@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import * as BookApi from 'src/types/book';
 import { useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import AdultBadge from 'src/svgs/AdultBadge.svg';
 import getConfig from 'next/config';
 import { css } from '@emotion/core';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
+import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 const { publicRuntimeConfig } = getConfig();
 
 export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
@@ -49,37 +50,58 @@ const computeThumbnailUrl = (
 // 썸네일을 보여줄 수 있는 상태 ( intersecting 되거나 fetch 종료 ) 일 때도 체크
 // loggedUser 가 성인 인증 상태일 경우는 정상 렌더링
 // 아닌 경우는 성인 도서 Placeholder 표지
-const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = props => {
-  const { book, isIntersecting, imgSize, width, children } = props;
-  const { loggedUser } = useSelector((state: RootState) => state.account);
-  const { is_adult_only } = book.detail?.property;
-  const imageUrl = computeThumbnailUrl(
-    is_adult_only,
-    isIntersecting,
-    loggedUser?.is_verified_adult,
-    book.b_id,
-    imgSize,
-  );
-  return (
-    <Book.Thumbnail
-      thumbnailWidth={width}
-      thumbnailTitle={bookTitleGenerator(book.detail)}
-      thumbnailUrl={imageUrl}>
-      {children}
-      {book.detail?.property.is_adult_only && (
-        <AdultBadge
-          css={css`
-            display: block;
-            position: absolute;
-            right: 3px;
-            top: 3px;
-            width: 20px;
-            height: 20px;
-          `}
-        />
-      )}
-    </Book.Thumbnail>
-  );
-};
+const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
+  props => {
+    const { book, isIntersecting, imgSize, width, children } = props;
+    const { loggedUser } = useSelector((state: RootState) => state.account);
+
+    // Todo WIP 노출 여부
+    const targetRef = useRef(null);
+    const bookIsIntersecting = useIntersectionObserver(targetRef, '0px');
+
+    const { is_adult_only } = book.detail?.property;
+    const imageUrl = computeThumbnailUrl(
+      is_adult_only,
+      isIntersecting,
+      loggedUser?.is_verified_adult,
+      book.b_id,
+      imgSize,
+    );
+    useEffect(() => {
+      if (bookIsIntersecting) {
+        // console.log(book.b_id);
+        // Todo Impression
+      }
+    }, [bookIsIntersecting]);
+    return (
+      <div ref={targetRef}>
+        <Book.Thumbnail
+          thumbnailWidth={width}
+          thumbnailTitle={bookTitleGenerator(book.detail)}
+          thumbnailUrl={imageUrl}>
+          {children}
+          {book.detail?.property.is_adult_only && (
+            <AdultBadge
+              css={css`
+                display: block;
+                position: absolute;
+                right: 3px;
+                top: 3px;
+                width: 20px;
+                height: 20px;
+              `}
+            />
+          )}
+        </Book.Thumbnail>
+      </div>
+    );
+  },
+  (prev, next) => {
+    if (prev.isIntersecting !== next.isIntersecting) {
+      return false;
+    }
+    return prev.imgSize === next.imgSize;
+  },
+);
 
 export default ThumbnailRenderer;

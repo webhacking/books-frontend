@@ -20,11 +20,9 @@ import { ServerResponse } from 'http';
 import sentry from 'src/utils/sentry';
 import { categoryActions } from 'src/services/category';
 import { NextPage } from 'next';
-import { createTracker } from 'src/hooks/useEveneTracker';
+import { useEventTracker } from 'src/hooks/useEveneTracker';
 import { RootState } from 'src/store/config';
-import { DeviceType } from '@ridi/event-tracker';
 import useIsSelectFetch from 'src/hooks/useIsSelectFetch';
-// import { DeviceType } from '@ridi/event-tracker';
 
 const { captureException } = sentry();
 
@@ -73,10 +71,6 @@ const fetchHomeSections = async (genre: string, req?: Request) => {
 };
 
 // Lambda 에서 올바르게 동작할까. 공유되지 않을까?
-const tracker = createTracker(null);
-if (tracker) {
-  tracker.initialize();
-}
 const setCookie = (genre: string) => {
   Cookies.set(cookieKeys.main_genre, genre || 'general', {
     expires: DEFAULT_COOKIE_EXPIRES,
@@ -85,25 +79,22 @@ const setCookie = (genre: string) => {
 export const Home: NextPage<HomeProps> = props => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const bIds = keyToArray(props.branches, 'b_id');
+  const [tracker] = useEventTracker();
 
-  const setPageView = useCallback(userId => {
+  const setPageView = useCallback(() => {
     if (tracker) {
       try {
-        tracker.set({
-          userId: userId || null,
-          deviceType: window.innerWidth > 999 ? DeviceType.PC : DeviceType.Mobile,
-        });
         tracker.sendPageView(window.location.href, document.referrer);
       } catch (error) {
         captureException(error);
       }
     }
-  }, []);
+  }, [tracker]);
 
   useIsSelectFetch(bIds);
   useEffect(() => {
     setCookie(props.genre);
-    setPageView(loggedUser?.id || null);
+    setPageView();
   }, [props.genre, loggedUser, props.branches, setPageView]);
 
   const { genre } = props;

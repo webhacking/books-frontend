@@ -5,25 +5,42 @@ import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
+import { Provider } from 'react-redux';
+import makeStore from 'src/store/config';
 
 afterEach(cleanup);
+const store = makeStore(
+  {
+    books: {
+      itmes: {
+        '12345': null,
+      },
+      isFetching: false,
+    },
+  },
+  { asPath: 'test', isServer: false },
+);
 
 const renderEventBannerWrapper = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <EventBanner
-        genre={'general'}
-        items={[{ title: '화끈한 포인트백 외전 완전 무료', image_url: '/', url: '/' }]}
-      />
+      <Provider store={store}>
+        <EventBanner
+          genre={'general'}
+          items={[{ title: '화끈한 포인트백 외전 완전 무료', image_url: '/', url: '/' }]}
+        />
+      </Provider>
     </ThemeProvider>,
   );
 
 const renderEventBannerList = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <EventBannerList
-        items={[{ title: '화끈한 포인트백 외전 완전 무료', image_url: '/', url: '/' }]}
-      />
+      <Provider store={store}>
+        <EventBannerList
+          items={[{ title: '화끈한 포인트백 외전 완전 무료', image_url: '/', url: '/' }]}
+        />
+      </Provider>
     </ThemeProvider>,
   );
 

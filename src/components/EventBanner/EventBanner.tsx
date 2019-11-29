@@ -12,11 +12,13 @@ const eventBannerWrapperCSS = css`
 
 interface EventBannerProps {
   items: EventBannerItem[];
+  genre: string;
+  slug: string;
 }
 
 const EventBanner: React.FC<EventBannerProps> = props => (
   <section css={eventBannerWrapperCSS}>
-    <EventBannerList items={props.items} />
+    <EventBannerList items={props.items} genre={props.genre} slug={props.slug} />
   </section>
 );
 
