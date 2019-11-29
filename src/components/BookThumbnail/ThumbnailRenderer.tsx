@@ -100,6 +100,9 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
     if (prev.isIntersecting !== next.isIntersecting) {
       return false;
     }
+    if (prev.book.b_id !== next.book.b_id) {
+      return false;
+    }
     return prev.imgSize === next.imgSize;
   },
 );
