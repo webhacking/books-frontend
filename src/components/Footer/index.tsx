@@ -5,6 +5,7 @@ import PaperIcon from 'src/svgs/Paper.svg';
 import NewIcon from 'src/svgs/New_1.svg';
 import { RIDITheme } from 'src/styles';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import * as colors from '@ridi/colors';
 
 const ridiMeta = {
   serviceCenterNumber: '1644-0331',
@@ -56,11 +57,11 @@ const contactListCSS = (theme: RIDITheme) => css`
     :not(:last-of-type) {
       ::after {
         position: relative;
-        font-size: 13px;
-        content: '|';
+        font-size: 11px;
+        content: ' ';
         top: -3px;
-        color: ${theme.verticalRuleColor};
         margin: 0 10px;
+        border-left: 1px solid ${theme.verticalRuleColor};
       }
     }
   }
@@ -120,7 +121,7 @@ const hiddenMenu = css`
     css`
       display: none;
     `,
-  )}
+  )};
 `;
 
 const anchorHover = css`
@@ -133,7 +134,7 @@ const anchorHover = css`
 const InformationWrapper = styled.address`
   display: flex;
   flex-direction: row;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   ${orBelow(
     BreakPoint.LG,
     css`
@@ -150,7 +151,6 @@ const address = css`
   font-style: normal;
   font-stretch: normal;
   line-height: 1.82;
-  margin-right: 8px;
   color: #7e8992;
 `;
 
@@ -197,7 +197,7 @@ const menuListCSS = (theme: RIDITheme) => css`
         position: relative;
         font-size: 10px;
         content: '|';
-        top: -1px;
+        top: -0.3px;
         color: ${theme.verticalRuleColor};
         margin: 0 5.5px;
       }
@@ -350,6 +350,22 @@ const Footer: React.FC<{}> = () => (
 
       <InformationWrapper>
         <span css={address}>{ridiMeta.address}</span>
+        <span
+          css={css`
+            position: relative;
+            line-height: 10px;
+            height: 10px;
+            top: 5px;
+            margin: 0 6px 0 8px;
+            border-left: 1px solid ${colors.slateGray70};
+            ${orBelow(
+              BreakPoint.LG,
+              css`
+                display: none;
+              `,
+            )};
+          `}
+        />
         <span css={address}>{ridiMeta.info}</span>
       </InformationWrapper>
       <MiscWrapper>
