@@ -1,5 +1,10 @@
 import { DeviceType, Tracker } from '@ridi/event-tracker';
 import { FB_KEYS, GA_KEY, GTM_KEY } from 'src/constants/eventTracking';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/store/config';
+import sentry from 'src/utils/sentry';
+const { captureException } = sentry();
 
 export const createTracker = (userId: string | null) => {
   if (typeof window !== 'undefined') {
@@ -36,4 +41,27 @@ export const createTracker = (userId: string | null) => {
     return tracker;
   }
   return null;
+};
+
+const tracker = createTracker(null);
+if (tracker) {
+  tracker.initialize();
+}
+
+export const useEventTracker = () => {
+  if (tracker) {
+    createTracker(null);
+  }
+  const { loggedUser } = useSelector((state: RootState) => state.account);
+  useEffect(() => {
+    try {
+      tracker.set({
+        userId: loggedUser?.id || null,
+        deviceType: window.innerWidth > 999 ? DeviceType.PC : DeviceType.Mobile,
+      });
+    } catch (error) {
+      captureException(error);
+    }
+  }, [loggedUser]);
+  return [tracker];
 };
