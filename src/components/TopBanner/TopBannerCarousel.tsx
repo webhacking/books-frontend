@@ -516,7 +516,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
 
     useEffect(() => {
       if (wrapper.current) {
-        wrapper.current.addEventListener('touchstart', touchStart);
+        wrapper.current.addEventListener('touchstart', touchStart, { passive: false });
         wrapper.current.addEventListener('touchmove', preventTouch, {
           passive: false,
         });

@@ -51,7 +51,7 @@ export const useScrollPosition = (
   useEffect(() => {
     if (window && ref.current) {
       ref.current.addEventListener('scroll', debouncedHScrollHandler);
-      ref.current.addEventListener('wheel', handleWheelEvent);
+      ref.current.addEventListener('wheel', handleWheelEvent, { passive: false });
 
       if (listenResizeEvent) {
         window.addEventListener('resize', debouncedResizeHandler);
