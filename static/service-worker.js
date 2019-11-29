@@ -35,6 +35,21 @@ if ('workbox' in self) {
           statuses: [0, 200],
         }),
         new workbox.expiration.Plugin({
+          maxEntries: 250,
+          maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        }),
+      ],
+    }),
+  );
+  workbox.routing.registerRoute(
+    /.*(?:ridicdn)\.net.*$/,
+    new workbox.strategies.CacheFirst({
+      cacheName: 'img-cdn-cache',
+      plugins: [
+        new workbox.cacheableResponse.Plugin({
+          statuses: [0, 200],
+        }),
+        new workbox.expiration.Plugin({
           maxEntries: 1000,
           maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
         }),

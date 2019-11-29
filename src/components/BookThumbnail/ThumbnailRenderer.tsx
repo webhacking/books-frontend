@@ -9,6 +9,8 @@ import { css } from '@emotion/core';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 const { publicRuntimeConfig } = getConfig();
 
+export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
+
 interface ThumbnailRendererProps {
   book: {
     b_id: string;
@@ -40,7 +42,7 @@ const computeThumbnailUrl = (
   }
   return new URL(
     imageSize ? `/cover/${bId}/${imageSize}` : `/cover/${bId}/xxlarge`,
-    'https://misc.ridibooks.com',
+    IMG_RIDI_CDN_URL,
   ).toString();
 };
 

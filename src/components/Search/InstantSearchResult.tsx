@@ -36,19 +36,19 @@ const bookListItemCSS = (theme: RIDITheme) => css`
     `,
   )};
   ${greaterThanOrEqualTo(
-    BreakPoint.LG + 1,
-    css`
-      :first-of-type {
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-      }
-      :last-of-type {
-        border-bottom-left-radius: 3px;
-        border-bottom-right-radius: 3px;
-      }
-    `,
-  )}
-  :hover {
+      BreakPoint.LG + 1,
+      css`
+        :first-of-type {
+          border-top-left-radius: 3px;
+          border-top-right-radius: 3px;
+        }
+        :last-of-type {
+          border-bottom-left-radius: 3px;
+          border-bottom-right-radius: 3px;
+        }
+      `,
+    )}
+    :hover {
     background-color: ${theme.instantSearch.itemHover};
   }
   :focus {
@@ -250,7 +250,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                         `}
                         width="38px"
                         height="58px"
-                        src={`https://misc.ridibooks.com/cover/${book.b_id}/small`}
+                        src={`https://img.ridicdn.net/cover/${book.b_id}/small`}
                       />
                       <div
                         css={css`

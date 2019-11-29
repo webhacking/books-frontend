@@ -24,7 +24,7 @@ const sectionCSS = css`
 const mockList = [
   {
     id: 1,
-    imageUrl: 'https://misc.ridibooks.com/cover/1242000373/large',
+    imageUrl: 'https://img.ridicdn.net/cover/1242000373/large',
     title:
       '<strong>[10%▼]</strong> 올여름 휴가 때는 완독 챌린지! <strong>&lt;죽음&gt;, &lt;핑거스미스&gt; 등 소설/인문 26종 할인!</strong> 할인할 때 쟁여놓고, 이번 휴가 때 완독 가즈아!',
     createdAt: 1562906721836,
@@ -33,7 +33,7 @@ const mockList = [
   },
   {
     id: 2,
-    imageUrl: 'https://misc.ridibooks.com/cover/852000573/',
+    imageUrl: 'https://img.ridicdn.net/cover/852000573/',
     title:
       '신간알림 | <strong>에드워드 W. 사이드의 신간 &lt;경계의 음악&gt;</strong>이 출간되었습니다.',
     createdAt: 1562906701836,
@@ -42,7 +42,7 @@ const mockList = [
   },
   {
     id: 3,
-    imageUrl: 'https://misc.ridibooks.com/cover/2200027720/large',
+    imageUrl: 'https://img.ridicdn.net/cover/2200027720/large',
     title:
       '<strong>[전원 500P!] 네 마음 속 공에 #빙의해 &lt;모노크롬 루머&gt;</strong> 상황에 맞는 공들의 반응 댓글로 남기면 전원 포인트!',
     createdAt: 1562906621836,
