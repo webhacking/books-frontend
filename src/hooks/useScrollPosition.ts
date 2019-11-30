@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDebouncedCallback as useDebounce } from 'use-debounce';
 import horizontalAnimateScroll from 'src/utils/scrollTo';
 
@@ -85,5 +85,8 @@ export const useScrollPosition = (
     rafId,
   ]);
 
-  return [isOnTheLeft, isOnTheRight, horizontalScrollTo, computePosition];
+  const memoizeIsOnTheLeft = useMemo(() => isOnTheLeft, [isOnTheLeft]);
+  const memoizeIsOnTheRight = useMemo(() => isOnTheRight, [isOnTheRight]);
+
+  return [memoizeIsOnTheLeft, memoizeIsOnTheRight, horizontalScrollTo, computePosition];
 };
