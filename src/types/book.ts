@@ -149,6 +149,11 @@ export interface SetBook {
   member_books_count: number;
 }
 
+export interface ClientBookFields {
+  isAvailableSelect: boolean;
+  isAlreadyCheckedAtSelect: boolean;
+}
+
 export interface Book {
   id: string;
   authors: any; // will remove
@@ -172,6 +177,8 @@ export interface Book {
   // client field
   isAvailableSelect?: boolean;
   thumbnailId?: string; // 시리즈 여부, 완결 여부 판단해서 최종적으로 보여 줄 thumbnail Id
+
+  clientBookFields: ClientBookFields | null;
 }
 
 export interface Author {

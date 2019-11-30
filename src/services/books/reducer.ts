@@ -36,6 +36,10 @@ export class BooksReducer extends ImmerReducer<BooksState> {
       payload.forEach(book => {
         if (this.draftState.items[book.id] === null) {
           books[book.id] = book;
+          books[book.id].clientBookFields = {
+            isAlreadyCheckedAtSelect: false,
+            isAvailableSelect: false,
+          };
         }
       });
       this.draftState.items = { ...this.draftState.items, ...books };
@@ -67,10 +71,16 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     };
   }
 
-  public setSelectBook(payload: string[]) {
+  public setSelectBook(payload: { checkedIds: string[]; isSelectedId: string[] }) {
+    // brute force
+    // Todo 개선 필요
     try {
-      payload.forEach(bId => {
-        this.draftState.items[bId].isAvailableSelect = true;
+      payload.checkedIds.forEach(bId => {
+        this.draftState.items[bId].clientBookFields = {
+          isAvailableSelect: payload.isSelectedId.includes(bId),
+          isAlreadyCheckedAtSelect: true,
+        };
+        // this.draftState.items[bId].isAvailableSelect = true;
       });
     } catch (error) {
       captureException(error);

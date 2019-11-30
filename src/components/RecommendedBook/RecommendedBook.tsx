@@ -145,7 +145,7 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
         <BookTitle>{bookTitleGenerator(props.book)}</BookTitle>
       </a>
       {props.book.authors_ordered && <BookAuthor>{authorsRenderer(authors)}</BookAuthor>}
-      {props.book.isAvailableSelect && (
+      {props.book?.clientBookFields.isAvailableSelect && (
         <div
           css={css`
             display: flex;
