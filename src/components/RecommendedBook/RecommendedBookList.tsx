@@ -107,11 +107,12 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                       white-space: nowrap;
                       ${orBelow(
                         BreakPoint.LG,
-                        css`padding-left: 13px;
-   display: flex;
-    width: 120px;
-    justify-content: center;
-}`,
+                        css`
+                          padding-left: 13px;
+                          display: flex;
+                          width: 120px;
+                          justify-content: center;
+                        `,
                       )};
                     `,
                     theme === 'dark' &&

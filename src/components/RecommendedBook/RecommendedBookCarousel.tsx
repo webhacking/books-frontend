@@ -58,60 +58,62 @@ interface RecommendedBookCarouselProps {
   isIntersecting: boolean;
 }
 
-const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = props => (
-  <ul
-    css={css`
-      display: flex;
-      padding-left: 3px;
-      justify-content: center;
-      height: 365px;
-      margin-left: -18px;
-    `}>
-    {props.items
-      .filter(book => book.detail)
-      .map((book, index) => (
-        <PortraitBook key={index}>
-          <ThumbnailWrapper>
-            <ThumbnailRenderer
-              width={147}
-              book={{ b_id: book.b_id, detail: book.detail }}
-              imgSize={'xxlarge'}
-              isIntersecting={props.isIntersecting}
-            />
-          </ThumbnailWrapper>
-          {book.detail && props.type === DisplayType.HotRelease && (
-            <BookMeta book={book.detail} />
-          )}
-          {book.detail && props.type === DisplayType.TodayRecommendation && (
-            <h4
-              css={[
-                css`
-                  padding-left: 14px;
-                  margin-top: 2px;
-                  font-size: 13px;
-                  line-height: 16px;
-                  text-align: center;
-                  font-weight: 700;
-                  white-space: nowrap;
-                `,
-                props.theme === 'dark' &&
-                  css`
-                    color: white;
-                  `,
-              ]}>
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: (book as HotRelease).sentence.replace(
-                    /(?:\r\n|\r|\n)/g,
-                    '<br />',
-                  ),
-                }}
+const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = React.memo(
+  props => (
+    <ul
+      css={css`
+        display: flex;
+        padding-left: 3px;
+        justify-content: center;
+        height: 365px;
+        margin-left: -18px;
+      `}>
+      {props.items
+        .filter(book => book.detail)
+        .map((book, index) => (
+          <PortraitBook key={index}>
+            <ThumbnailWrapper>
+              <ThumbnailRenderer
+                width={147}
+                book={{ b_id: book.b_id, detail: book.detail }}
+                imgSize={'xxlarge'}
+                isIntersecting={props.isIntersecting}
               />
-            </h4>
-          )}
-        </PortraitBook>
-      ))}
-  </ul>
+            </ThumbnailWrapper>
+            {book.detail && props.type === DisplayType.HotRelease && (
+              <BookMeta book={book.detail} />
+            )}
+            {book.detail && props.type === DisplayType.TodayRecommendation && (
+              <h4
+                css={[
+                  css`
+                    padding-left: 14px;
+                    margin-top: 2px;
+                    font-size: 13px;
+                    line-height: 16px;
+                    text-align: center;
+                    font-weight: 700;
+                    white-space: nowrap;
+                  `,
+                  props.theme === 'dark' &&
+                    css`
+                      color: white;
+                    `,
+                ]}>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: (book as HotRelease).sentence.replace(
+                      /(?:\r\n|\r|\n)/g,
+                      '<br />',
+                    ),
+                  }}
+                />
+              </h4>
+            )}
+          </PortraitBook>
+        ))}
+    </ul>
+  ),
 );
 
 const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props => {

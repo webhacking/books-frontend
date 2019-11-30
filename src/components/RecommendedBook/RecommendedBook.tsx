@@ -175,6 +175,101 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
 
 type RecommendedBookType = TodayRecommendation[] | HotRelease[];
 
+interface RecommendedBookLoadingProps {
+  type: DisplayType;
+  books: RecommendedBookType;
+  isIntersecting: boolean;
+  theme: 'dark' | 'white';
+}
+
+const dummyBook = {
+  b_id: '',
+  rating: {
+    buyer_rating_score: 0,
+    buyer_rating_count: 0,
+    total_rating_count: 0,
+  },
+  detail: null,
+  type: '',
+  order: 0,
+  sentence: '',
+};
+
+const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo(
+  props => {
+    const { books, type, isIntersecting, theme } = props;
+    const dummyBooks: HotRelease[] = books.length < 6 ? Array(6).fill(dummyBook) : books;
+    return (
+      <BookList
+        css={[
+          props.type === DisplayType.HotRelease
+            ? hotReleaseBookListCSS
+            : recommendedBookListCSS,
+          css`
+            padding-left: 0 !important;
+          `,
+        ]}>
+        {/* // @ts-ignore */}
+        {dummyBooks.map((book, index) => (
+          <PortraitBook
+            css={css`
+              padding-left: 0 !important;
+            `}
+            key={index}>
+            <ThumbnailWrapper>
+              <ThumbnailRenderer
+                book={{ b_id: book.b_id, detail: book.detail }}
+                imgSize={'xxlarge'}
+                isIntersecting={isIntersecting}
+              />
+            </ThumbnailWrapper>
+            {book.detail && type === DisplayType.HotRelease && (
+              <BookMeta book={book.detail} showSelect={true} />
+            )}
+            {book.detail && type === DisplayType.TodayRecommendation && (
+              <h4
+                css={[
+                  css`
+                    padding-left: 13px;
+                    margin-top: 2px;
+                    font-size: 13px;
+                    line-height: 16px;
+                    text-align: center;
+                    font-weight: bold;
+                    white-space: nowrap;
+                    width: 140px;
+                    display: flex;
+                    justify-content: center;
+                    ${orBelow(
+                      BreakPoint.LG,
+                      css`
+                        display: flex;
+                        width: 120px;
+                      `,
+                    )};
+                  `,
+                  theme === 'dark' &&
+                    css`
+                      color: white;
+                    `,
+                ]}>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: (book as HotRelease).sentence.replace(
+                      /(?:\r\n|\r|\n)/g,
+                      '<br />',
+                    ),
+                  }}
+                />
+              </h4>
+            )}
+          </PortraitBook>
+        ))}
+      </BookList>
+    );
+  },
+);
+
 interface RecommendedBookProps {
   items: RecommendedBookType;
   title: string;
@@ -188,7 +283,6 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
 
   const [books, isFetching] = useBookDetailSelector(props.items);
-
   return (
     <section
       ref={targetRef}
@@ -214,75 +308,12 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
         </span>
       </h2>
       {!isIntersecting || isFetching ? (
-        <BookList
-          css={[
-            props.type === DisplayType.HotRelease
-              ? hotReleaseBookListCSS
-              : recommendedBookListCSS,
-            css`
-              padding-left: 0 !important;
-            `,
-          ]}>
-          {/* // @ts-ignore */}
-          {books
-            .filter(book => book.detail)
-            .slice(0, 6)
-            .map((book, index) => (
-              <PortraitBook
-                css={css`
-                  padding-left: 0 !important;
-                `}
-                key={index}>
-                <ThumbnailWrapper>
-                  <ThumbnailRenderer
-                    book={{ b_id: book.b_id, detail: book.detail }}
-                    imgSize={'xxlarge'}
-                    isIntersecting={isIntersecting}
-                  />
-                </ThumbnailWrapper>
-                {book.detail && type === DisplayType.HotRelease && (
-                  <BookMeta book={book.detail} showSelect={true} />
-                )}
-                {book.detail && type === DisplayType.TodayRecommendation && (
-                  <h4
-                    css={[
-                      css`
-                        padding-left: 13px;
-                        margin-top: 2px;
-                        font-size: 13px;
-                        line-height: 16px;
-                        text-align: center;
-                        font-weight: bold;
-                        white-space: nowrap;
-                        width: 140px;
-                        display: flex;
-                        justify-content: center;
-                        ${orBelow(
-                          BreakPoint.LG,
-                          css`
-   display: flex;
-    width: 120px;
-}`,
-                        )};
-                      `,
-                      theme === 'dark' &&
-                        css`
-                          color: white;
-                        `,
-                    ]}>
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: (book as HotRelease).sentence.replace(
-                          /(?:\r\n|\r|\n)/g,
-                          '<br />',
-                        ),
-                      }}
-                    />
-                  </h4>
-                )}
-              </PortraitBook>
-            ))}
-        </BookList>
+        <RecommendedBookLoading
+          type={type}
+          books={books.filter(book => book.detail).slice(0, 6) as HotRelease[]}
+          isIntersecting={isIntersecting}
+          theme={theme}
+        />
       ) : (
         <WindowWidthQuery>
           <View maxWidth={1000}>

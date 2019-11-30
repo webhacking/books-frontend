@@ -29,6 +29,12 @@ const computeThumbnailUrl = (
   bId: string,
   imageSize?: string,
 ) => {
+  if (bId.length === 0) {
+    return new URL(
+      '/static/image/cover_lazyload.png',
+      publicRuntimeConfig.STATIC_CDN_URL,
+    ).toString();
+  }
   if (!isIntersection) {
     return new URL(
       '/static/image/cover_lazyload.png',
@@ -59,7 +65,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
     const targetRef = useRef(null);
     const bookIsIntersecting = useIntersectionObserver(targetRef, '0px');
 
-    const { is_adult_only } = book.detail?.property;
+    const is_adult_only = book.detail?.property?.is_adult_only ?? false;
     const imageUrl = computeThumbnailUrl(
       is_adult_only,
       isIntersecting,
@@ -80,7 +86,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
           thumbnailTitle={bookTitleGenerator(book.detail)}
           thumbnailUrl={imageUrl}>
           {children}
-          {book.detail?.property.is_adult_only && (
+          {book.detail?.property?.is_adult_only && (
             <AdultBadge
               css={css`
                 display: block;
