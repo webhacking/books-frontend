@@ -91,7 +91,7 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
             {index !== 1 && ', '}
           </React.Fragment>
         ))}
-        <span> 외 {authors.length - 2}명></span>
+        <span> 외 {authors.length - 2}명</span>
       </>
     );
   }
