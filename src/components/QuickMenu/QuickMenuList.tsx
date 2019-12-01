@@ -76,6 +76,49 @@ const MenuItemWrapper = styled.div`
 interface QuickMenuListProps {
   items: QuickMenu[];
 }
+
+const Menu: React.FC<{ menu: QuickMenu }> = React.memo(props => {
+  const { menu } = props;
+  return (
+    <MenuItem>
+      <MenuItemWrapper>
+        <a href={menu.url} aria-label={menu.name}>
+          <div
+            css={css`
+              position: relative;
+              height: 44px;
+              margin-bottom: 8px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            `}>
+            <QuickMenuShape
+              css={css`
+                height: 44px;
+                width: 44px;
+                position: absolute;
+                z-index: 1;
+                fill: ${menu.bg_color};
+              `}
+            />
+            <img
+              css={css`
+                position: absolute;
+                width: 44px;
+                height: 44px;
+                z-index: 2;
+              `}
+              alt={menu.name}
+              src={menu.icon}
+            />
+          </div>
+          <span css={labelCSS}>{menu.name}</span>
+        </a>
+      </MenuItemWrapper>
+    </MenuItem>
+  );
+});
+
 export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
@@ -88,42 +131,7 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
       <h2 className={'a11y'}>퀵 메뉴</h2>
       <MenuList ref={ref}>
         {props.items.map((menu, index) => (
-          <MenuItem key={index}>
-            <MenuItemWrapper>
-              <a href={menu.url} aria-label={menu.name}>
-                <div
-                  css={css`
-                    position: relative;
-                    height: 44px;
-                    margin-bottom: 8px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                  `}>
-                  <QuickMenuShape
-                    css={css`
-                      height: 44px;
-                      width: 44px;
-                      position: absolute;
-                      z-index: 1;
-                      fill: ${menu.bg_color};
-                    `}
-                  />
-                  <img
-                    css={css`
-                      position: absolute;
-                      width: 44px;
-                      height: 44px;
-                      z-index: 2;
-                    `}
-                    alt={menu.name}
-                    src={menu.icon}
-                  />
-                </div>
-                <span css={labelCSS}>{menu.name}</span>
-              </a>
-            </MenuItemWrapper>
-          </MenuItem>
+          <Menu key={index} menu={menu} />
         ))}
       </MenuList>
       <form

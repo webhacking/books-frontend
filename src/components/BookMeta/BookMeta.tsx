@@ -117,7 +117,7 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
   return '';
 };
 
-const BookMeta: React.FC<BookMetaProps> = props => {
+const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
   const {
     book: {
       authors_ordered,
@@ -199,6 +199,6 @@ const BookMeta: React.FC<BookMetaProps> = props => {
       </div>
     </>
   );
-};
+});
 
 export default BookMeta;

@@ -77,6 +77,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
       if (bookIsIntersecting) {
         // console.log(book.b_id);
         // Todo Impression
+        // 디바운싱을 고려해볼것
       }
     }, [bookIsIntersecting]);
     return (

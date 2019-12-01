@@ -17,39 +17,228 @@ interface MultipleLineBooks {
   genre: string;
 }
 
+interface MultipleLineBookItemProps {
+  genre: string;
+  item: MdBook;
+  isIntersecting: boolean;
+}
+
+const itemCSS = css`
+  ${orBelow(
+    426,
+    css`
+      margin-right: 3px;
+      :not(:nth-of-type(3n)) {
+        margin-right: 20px;
+      }
+      width: 22%;
+    `,
+  )};
+  ${orBelow(
+    432,
+    css`
+      margin-right: 3px;
+      :not(:nth-of-type(3n)) {
+        margin-right: 20px;
+      }
+      width: 27%;
+    `,
+  )};
+  ${between(
+    433,
+    579,
+    css`
+      :not(:nth-of-type(3n)) {
+        margin-right: 4%;
+      }
+      width: 120px;
+    `,
+  )};
+  ${between(
+    580,
+    833,
+    css`
+      :not(:nth-of-type(3n)) {
+        margin-right: 16%;
+      }
+      width: 120px;
+    `,
+  )};
+  ${between(
+    850,
+    BreakPoint.LG,
+    css`
+      :not(:nth-of-type(6n)) {
+        margin-right: 2.1%;
+      }
+      width: 120px;
+    `,
+  )};
+  ${greaterThanOrEqualTo(
+    1001,
+    css`
+      :not(:nth-of-type(6n)) {
+        //margin-right: 20px;
+        flex-grow: 0;
+      }
+      margin: 0 1px 20px 1px;
+      width: 140px;
+    `,
+  )};
+  margin-bottom: 20px;
+`;
+
+const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(props => {
+  const { item, genre, isIntersecting } = props;
+  return (
+    <li css={itemCSS}>
+      <ThumbnailWrapper
+        css={css`
+          ${orBelow(
+            BreakPoint.SM,
+            css`
+              width: 100%;
+              min-width: 70px;
+              height: calc(90px * 1.618 - 10px);
+            `,
+          )};
+          ${between(
+            BreakPoint.SM + 1,
+            BreakPoint.M,
+            css`
+              width: 100%;
+              min-width: 100px;
+              height: calc(100px * 1.618 - 10px);
+            `,
+          )};
+
+          ${between(
+            BreakPoint.M + 1,
+            BreakPoint.MD,
+            css`
+              width: 120px;
+            `,
+          )};
+          ${between(
+            BreakPoint.MD + 1,
+            BreakPoint.LG,
+            css`
+              width: 120px;
+            `,
+          )};
+          ${greaterThanOrEqualTo(
+            BreakPoint.LG + 1,
+            css`
+              width: 140px;
+            `,
+          )};
+        `}>
+        <div
+          css={css`
+            ${greaterThanOrEqualTo(
+              BreakPoint.LG,
+              css`
+                img {
+                  width: 140px;
+                }
+              `,
+            )}
+          `}>
+          <a
+            css={css`
+              display: inline-block;
+            `}
+            href={new URL(
+              `/books/${item.b_id}`,
+              publicRuntimeConfig.STORE_HOST,
+            ).toString()}>
+            <ThumbnailRenderer
+              book={{ b_id: item.b_id, detail: item.detail }}
+              imgSize={'xxlarge'}
+              isIntersecting={isIntersecting}>
+              <div
+                css={css`
+                  position: absolute;
+                  display: block;
+                  top: -7px;
+                  left: -7px;
+                `}>
+                <BookBadgeRenderer
+                  type={DisplayType.RecommendedBook}
+                  wrapperCSS={css``}
+                  isWaitFree={item.detail?.series?.property.is_wait_free}
+                  discountPercentage={
+                    item?.detail?.price_info?.buy?.discount_percentage || 0
+                  }
+                />
+              </div>
+              <FreeBookRenderer
+                freeBookCount={item.detail?.series?.price_info?.buy?.free_book_count || 0}
+              />
+            </ThumbnailRenderer>
+          </a>
+        </div>
+      </ThumbnailWrapper>
+      {item.detail && (
+        <BookMeta
+          book={item.detail}
+          showTag={['bl', 'bl-serial'].includes(genre)}
+          wrapperCSS={css`
+            ${between(
+              BreakPoint.M + 1,
+              BreakPoint.LG,
+              css`
+                width: 120px;
+              `,
+            )}
+            ${greaterThanOrEqualTo(
+              BreakPoint.LG + 1,
+              css`
+                width: 140px;
+              `,
+            )}
+          `}
+          showRating={true}
+          isAIRecommendation={false}
+        />
+      )}
+    </li>
+  );
+});
+
+const multipleLineSectionCSS = css`
+  max-width: 1000px;
+  margin: 0 auto;
+  ${orBelow(
+    433,
+    css`
+      justify-content: space-between;
+      padding: 0 10px;
+      padding-right: 20px !important;
+    `,
+  )};
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      padding-left: 20px;
+      padding-right: 27px;
+    `,
+  )}
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+      padding-left: 24px;
+    `,
+  )}
+`;
+
 export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props => {
   const { title, items, genre } = props;
   const [books] = useBookDetailSelector(items);
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   return (
-    <section
-      ref={targetRef}
-      css={css`
-        max-width: 1000px;
-        margin: 0 auto;
-        ${orBelow(
-          433,
-          css`
-            justify-content: space-between;
-            padding: 0 10px;
-            padding-right: 20px !important;
-          `,
-        )};
-        ${orBelow(
-          BreakPoint.LG,
-          css`
-            padding-left: 20px;
-            padding-right: 27px;
-          `,
-        )}
-        ${greaterThanOrEqualTo(
-          BreakPoint.LG + 1,
-          css`
-            padding-left: 24px;
-          `,
-        )}
-      `}>
+    <section ref={targetRef} css={multipleLineSectionCSS}>
       <h2
         css={css`
           font-size: 21px;
@@ -105,185 +294,12 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props =
           )}
         `}>
         {(books as MdBook[]).slice(0, 18).map((item, index) => (
-          <li
+          <MultipleLineBookItem
             key={index}
-            css={css`
-              ${orBelow(
-                426,
-                css`
-                  margin-right: 3px;
-                  :not(:nth-of-type(3n)) {
-                    margin-right: 20px;
-                  }
-                  width: 22%;
-                `,
-              )};
-              ${orBelow(
-                432,
-                css`
-                  margin-right: 3px;
-                  :not(:nth-of-type(3n)) {
-                    margin-right: 20px;
-                  }
-                  width: 27%;
-                `,
-              )};
-              ${between(
-                433,
-                579,
-                css`
-                  :not(:nth-of-type(3n)) {
-                    margin-right: 4%;
-                  }
-                  width: 120px;
-                `,
-              )};
-              ${between(
-                580,
-                833,
-                css`
-                  :not(:nth-of-type(3n)) {
-                    margin-right: 16%;
-                  }
-                  width: 120px;
-                `,
-              )};
-              ${between(
-                850,
-                BreakPoint.LG,
-                css`
-                  :not(:nth-of-type(6n)) {
-                    margin-right: 2.1%;
-                  }
-                  width: 120px;
-                `,
-              )};
-              ${greaterThanOrEqualTo(
-                1001,
-                css`
-                  :not(:nth-of-type(6n)) {
-                    //margin-right: 20px;
-                    flex-grow: 0;
-                  }
-                  margin: 0 1px 20px 1px;
-                  width: 140px;
-                `,
-              )};
-              margin-bottom: 20px;
-            `}>
-            <ThumbnailWrapper
-              css={css`
-                ${orBelow(
-                  BreakPoint.SM,
-                  css`
-                    width: 100%;
-                    min-width: 70px;
-                    height: calc(90px * 1.618 - 10px);
-                  `,
-                )};
-                ${between(
-                  BreakPoint.SM + 1,
-                  BreakPoint.M,
-                  css`
-                    width: 100%;
-                    min-width: 100px;
-                    height: calc(100px * 1.618 - 10px);
-                  `,
-                )};
-
-                ${between(
-                  BreakPoint.M + 1,
-                  BreakPoint.MD,
-                  css`
-                    width: 120px;
-                  `,
-                )};
-                ${between(
-                  BreakPoint.MD + 1,
-                  BreakPoint.LG,
-                  css`
-                    width: 120px;
-                  `,
-                )};
-                ${greaterThanOrEqualTo(
-                  BreakPoint.LG + 1,
-                  css`
-                    width: 140px;
-                  `,
-                )};
-              `}>
-              <div
-                css={css`
-                  ${greaterThanOrEqualTo(
-                    BreakPoint.LG,
-                    css`
-                      img {
-                        width: 140px;
-                      }
-                    `,
-                  )}
-                `}>
-                <a
-                  css={css`
-                    display: inline-block;
-                  `}
-                  href={new URL(
-                    `/books/${item.b_id}`,
-                    publicRuntimeConfig.STORE_HOST,
-                  ).toString()}>
-                  <ThumbnailRenderer
-                    book={{ b_id: item.b_id, detail: item.detail }}
-                    imgSize={'xxlarge'}
-                    isIntersecting={isIntersecting}>
-                    <div
-                      css={css`
-                        position: absolute;
-                        display: block;
-                        top: -7px;
-                        left: -7px;
-                      `}>
-                      <BookBadgeRenderer
-                        type={DisplayType.RecommendedBook}
-                        wrapperCSS={css``}
-                        isWaitFree={item.detail?.series?.property.is_wait_free}
-                        discountPercentage={
-                          item?.detail?.price_info?.buy?.discount_percentage || 0
-                        }
-                      />
-                    </div>
-                    <FreeBookRenderer
-                      freeBookCount={
-                        item.detail?.series?.price_info?.buy?.free_book_count || 0
-                      }
-                    />
-                  </ThumbnailRenderer>
-                </a>
-              </div>
-            </ThumbnailWrapper>
-            {item.detail && (
-              <BookMeta
-                book={item.detail}
-                showTag={['bl', 'bl-serial'].includes(genre)}
-                wrapperCSS={css`
-                  ${between(
-                    BreakPoint.M + 1,
-                    BreakPoint.LG,
-                    css`
-                      width: 120px;
-                    `,
-                  )}
-                  ${greaterThanOrEqualTo(
-                    BreakPoint.LG + 1,
-                    css`
-                      width: 140px;
-                    `,
-                  )}
-                `}
-                showRating={true}
-                isAIRecommendation={false}
-              />
-            )}
-          </li>
+            genre={genre}
+            item={item}
+            isIntersecting={isIntersecting}
+          />
         ))}
       </ul>
     </section>
