@@ -8,7 +8,7 @@ const genres = {
   romance: '로맨스 단행본',
   'romance-serial': '로맨스 연재',
   comics: '만화',
-  general: '일반장르',
+  general: '일반도서',
 };
 
 export default (genre: string) => {
