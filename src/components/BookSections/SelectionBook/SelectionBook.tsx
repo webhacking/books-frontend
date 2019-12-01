@@ -16,8 +16,6 @@ import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import ArrowV from 'src/svgs/ArrowV.svg';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import BookMeta from 'src/components/BookMeta/BookMeta';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/store/config';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
@@ -168,38 +166,14 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
   );
 };
 
-interface SectionTitleProps {
-  type: DisplayType;
-  categoryId?: number;
-  title: string;
-}
-
-const SectionTitleRenderer: React.FC<SectionTitleProps> = props => {
-  const { type, categoryId, title } = props;
-  const { items: categories, isFetching: isCategoryFetching } = useSelector(
-    (state: RootState) => state.categories,
-  );
-
-  const isShowCategoryName = type === DisplayType.UserPreferredBestseller && !!categoryId;
-  if (isShowCategoryName && categories[categoryId]) {
-    return (
-      !isCategoryFetching && <span>{categories[categoryId].name ?? ''} 베스트셀러</span>
-    );
-  }
-  return <span>{title}</span>;
-};
-
 const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
-  const { genre, type, categoryId, title, extra, option } = props;
+  const { genre, type, title, extra } = props;
   const [, setMounted] = useState(false);
 
   const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
 
   useEffect(() => {
     setMounted(true);
-    if (option.isAIRecommendation) {
-      // Todo
-    }
   }, []);
 
   // Todo
@@ -208,7 +182,6 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
   // }
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
-
   return (
     <SectionWrapper ref={targetRef}>
       <SectionTitle>
@@ -219,7 +192,7 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
               display: flex;
             `}
             href={extra.detail_link}>
-            <span>{props.title}</span>
+            <span>{title}</span>
             <span
               css={css`
                 margin-left: 7.8px;
@@ -228,7 +201,7 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
             </span>
           </a>
         ) : (
-          <SectionTitleRenderer type={type} categoryId={categoryId} title={title} />
+          <span>{title}</span>
         )}
       </SectionTitle>
       {!isIntersecting || isFetching ? (
