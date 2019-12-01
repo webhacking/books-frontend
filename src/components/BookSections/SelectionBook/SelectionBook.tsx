@@ -62,7 +62,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
           <ThumbnailRenderer
             width={props.width || 140}
             book={{ b_id: book.b_id, detail: book.detail }}
-            imgSize={'xxlarge'}
+            imgSize={'xlarge'}
             isIntersecting={isIntersecting}>
             <div
               css={css`
@@ -148,7 +148,7 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
           <ThumbnailWrapper>
             <ThumbnailRenderer
               book={{ b_id: book.b_id, detail: book.detail }}
-              imgSize={'xxlarge'}
+              imgSize={'xlarge'}
               isIntersecting={isIntersecting}
             />
           </ThumbnailWrapper>

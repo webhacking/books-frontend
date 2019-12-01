@@ -17,7 +17,7 @@ interface ThumbnailRendererProps {
     b_id: string;
     detail?: BookApi.Book;
   };
-  imgSize: 'xxlarge' | 'large' | 'small' | 'medium';
+  imgSize: 'xxlarge' | 'xlarge' | 'large' | 'small' | 'medium';
   isIntersecting?: boolean;
   width?: number;
 }
@@ -48,7 +48,7 @@ const computeThumbnailUrl = (
     ).toString();
   }
   return new URL(
-    imageSize ? `/cover/${bId}/${imageSize}` : `/cover/${bId}/xxlarge`,
+    imageSize ? `/cover/${bId}/${imageSize}` : `/cover/${bId}/xlarge`,
     IMG_RIDI_CDN_URL,
   ).toString();
 };

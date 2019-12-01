@@ -154,7 +154,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
             ).toString()}>
             <ThumbnailRenderer
               book={{ b_id: item.b_id, detail: item.detail }}
-              imgSize={'xxlarge'}
+              imgSize={'large'}
               isIntersecting={isIntersecting}>
               <div
                 css={css`

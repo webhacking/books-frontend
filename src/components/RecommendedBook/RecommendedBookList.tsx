@@ -61,7 +61,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                   <ThumbnailRenderer
                     width={120}
                     book={{ b_id: book.b_id, detail: book.detail }}
-                    imgSize={'xxlarge'}
+                    imgSize={'large'}
                     isIntersecting={props.isIntersecting}>
                     <div
                       css={css`

@@ -219,7 +219,7 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
             <ThumbnailWrapper>
               <ThumbnailRenderer
                 book={{ b_id: book.b_id, detail: book.detail }}
-                imgSize={'xxlarge'}
+                imgSize={'xlarge'}
                 isIntersecting={isIntersecting}
               />
             </ThumbnailWrapper>
