@@ -147,6 +147,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
           wrapperStyle={[
             css`
               left: 5px;
+              z-index: 2;
               position: absolute;
               transition: opacity 0.2s;
               top: calc(
@@ -166,6 +167,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
           side={'right'}
           wrapperStyle={[
             css`
+              z-index: 2;
               right: 9px;
               position: absolute;
               transition: opacity 0.2s;
