@@ -29,7 +29,7 @@ const genreListCSS = theme => css`
   height: 47px;
   align-items: center;
   li {
-    button {
+    a {
       padding: 0 22px;
       ${orBelow(
         999,
@@ -51,7 +51,7 @@ const genreListCSS = theme => css`
     :first-of-type {
       line-height: 56px;
       margin-right: 0;
-      button {
+      a {
         padding: 0 20px;
         ${orBelow(
           999,
@@ -263,11 +263,12 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
           : props.labelCSS(theme)}
       `}>
       <Link replace={false} route={route}>
-        <button aria-label={props.label}>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <a aria-label={props.label}>
           <span css={isActivePath ? props.currentCSS : props.normalCSS}>
             {props.label}
           </span>
-        </button>
+        </a>
       </Link>
     </li>
   );
