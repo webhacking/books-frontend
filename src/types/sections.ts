@@ -15,7 +15,7 @@ export enum DisplayType {
   UserPreferredBestseller = 'UserPreferredBestseller',
   TodayNewBook = 'TodayNewBook', // 최신 단행본
   NewSerialBook = 'NewSerialBook', // 최신 연재
-  Keywordfinder = 'Keywordfinder',
+  KeywordFinder = 'KeywordFinder',
   WaitFree = 'WaitFree', // 리디 기다리면 무료
   AiRecommendation = 'AiRecommendation', // AI 추천
 }

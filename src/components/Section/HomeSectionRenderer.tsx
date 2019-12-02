@@ -152,7 +152,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
         />
       );
     }
-    case DisplayType.Keywordfinder: {
+    case DisplayType.KeywordFinder: {
       return <HomeKeywordFinderSection genre={genre} />;
     }
     case DisplayType.RecommendedBook: {
