@@ -30,6 +30,7 @@ const genreListCSS = theme => css`
   align-items: center;
   li {
     a {
+      display: inline-block;
       padding: 0 22px;
       ${orBelow(
         999,
@@ -99,9 +100,11 @@ const subServicesListCSS = theme => css`
   li {
     height: 100%;
     line-height: 50px;
-    button {
+    a {
       font-size: 17px;
       ${clearOutline};
+      display: inline-block;
+      height: 100%;
     }
     span {
       display: inline-block;
