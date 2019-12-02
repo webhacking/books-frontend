@@ -214,14 +214,14 @@ const multipleLineSectionCSS = css`
     css`
       justify-content: space-between;
       padding: 0 10px;
-      padding-right: 20px !important;
+      padding-right: 29px !important;
     `,
-  )};
+  )}
   ${orBelow(
     BreakPoint.LG,
     css`
       padding-left: 20px;
-      padding-right: 27px;
+      padding-right: 26px;
     `,
   )}
   ${greaterThanOrEqualTo(
