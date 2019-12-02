@@ -98,7 +98,7 @@ const hotReleaseTitleCSS = css`
   margin: 0 auto;
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  padding-left: 24px;
   font-weight: normal;
 
   ${orBelow(
