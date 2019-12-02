@@ -85,7 +85,7 @@ const itemCSS = css`
       width: 140px;
     `,
   )};
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 `;
 
 const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(props => {
