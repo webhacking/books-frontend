@@ -5,7 +5,7 @@ import { css } from '@emotion/core';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import ArrowV from 'src/svgs/ArrowV.svg';
-import { scrollBarHidden } from 'src/styles';
+import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import Clock from 'src/svgs/Clock.svg';
@@ -282,15 +282,15 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
               ))}
           </ul>
           <form
-            css={css`
-              height: 0;
-              @media (hover: none) {
-                display: none;
-              }
-              @media (min-width: 1000px) {
-                display: none;
-              }
-            `}>
+            css={[
+              css`
+                height: 0;
+                @media (min-width: 1000px) {
+                  display: none;
+                }
+              `,
+              displayNoneForTouchDevice,
+            ]}>
             <Arrow
               label={'이전'}
               side={'left'}

@@ -18,6 +18,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
+import { displayNoneForTouchDevice } from 'src/styles';
 const { publicRuntimeConfig } = getConfig();
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
@@ -133,12 +134,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
             </PortraitBook>
           ))}
       </BookList>
-      <form
-        css={css`
-          @media (hover: none) {
-            display: none;
-          }
-        `}>
+      <form css={displayNoneForTouchDevice}>
         <Arrow
           onClickHandler={moveLeft}
           label={'이전'}

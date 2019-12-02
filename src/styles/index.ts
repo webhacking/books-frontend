@@ -61,3 +61,15 @@ export const scrollBarHidden = css`
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none; /* Firefox 64 */
 `;
+
+export const displayNoneForTouchDevice = css`
+  @media (hover: none) {
+    display: none;
+  }
+  @media (hover: none) and (pointer: coarse) {
+    display: none;
+  }
+  @media (hover: none) and (pointer: fine) {
+    display: none;
+  }
+`;

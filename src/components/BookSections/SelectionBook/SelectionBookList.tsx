@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { flexRowStart, scrollBarHidden } from 'src/styles';
+import { displayNoneForTouchDevice, flexRowStart, scrollBarHidden } from 'src/styles';
 import { SelectionBookItem } from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { css } from '@emotion/core';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
@@ -84,12 +84,12 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
           ))}
       </ul>
       <form
-        css={css`
-          height: 0;
-          @media (hover: none) {
-            display: none;
-          }
-        `}>
+        css={[
+          css`
+            height: 0;
+          `,
+          displayNoneForTouchDevice,
+        ]}>
         <Arrow
           label={'이전'}
           side={'left'}
