@@ -8,6 +8,7 @@ import uiOption from 'src/constants/ui';
 import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import { TopBanner } from 'src/types/sections';
+import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 
 const TOP_BANNER_LG_WIDTH = 430;
 const TOP_BANNER_SM_WIDTH = 355;
@@ -271,60 +272,71 @@ interface TopBannerItemProps {
   center?: boolean;
 }
 
-const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => (
-  <TopBannerItemWrapper>
-    <ItemInner
-      className={'slide-item-inner'}
-      css={css`
-        ${greaterThanOrEqualTo(
-          BreakPoint.LG + 1,
-          css`
-            transform: ${props.loading && !props.center ? 'scale(0.965)' : 'scale(1)'};
-            margin: ${props.loading ? '0 1px' : '0'};
-          `,
-        )};
-      `}>
-      <img
+const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => {
+  const wrapperRef = React.useRef<HTMLInputElement>();
+  const isIntersecting = useIntersectionObserver(wrapperRef, '0px');
+  // Todo Impression
+  if (isIntersecting) {
+    // console.log(isIntersecting, props.item.title);
+    if (wrapperRef.current) {
+      // console.log(wrapperRef.current.parentNode.parentNode.parentNode);
+    }
+  }
+  return (
+    <TopBannerItemWrapper ref={wrapperRef}>
+      <ItemInner
+        className={'slide-item-inner'}
         css={css`
-          border-radius: 6px;
-          // Fix me 올바른 사이즈 배너가 올 때 다시 테스트
-          object-fit: cover; // IE 11 미지원
-          object-position: 0 0; // IE 11 미지원
-
-          ${greaterThanOrEqualTo(
-            BreakPoint.XS,
-            css`
-              width: calc(100vw - 20px);
-              min-width: 280px;
-              height: calc((100vw - 20px) / 1.5);
-            `,
-          )};
-          ${greaterThanOrEqualTo(
-            BreakPoint.SM + 1,
-            css`
-              width: ${TOP_BANNER_SM_WIDTH}px;
-              height: 237px;
-            `,
-          )};
-
           ${greaterThanOrEqualTo(
             BreakPoint.LG + 1,
             css`
-              width: ${TOP_BANNER_LG_WIDTH}px;
-              height: 286px;
+              transform: ${props.loading && !props.center ? 'scale(0.965)' : 'scale(1)'};
+              margin: ${props.loading ? '0 1px' : '0'};
             `,
-          )}
-        `}
-        alt={props.item.title}
-        src={props.item.main_image_url}
+          )};
+        `}>
+        <img
+          css={css`
+            border-radius: 6px;
+            // Fix me 올바른 사이즈 배너가 올 때 다시 테스트
+            object-fit: cover; // IE 11 미지원
+            object-position: 0 0; // IE 11 미지원
+
+            ${greaterThanOrEqualTo(
+              BreakPoint.XS,
+              css`
+                width: calc(100vw - 20px);
+                min-width: 280px;
+                height: calc((100vw - 20px) / 1.5);
+              `,
+            )};
+            ${greaterThanOrEqualTo(
+              BreakPoint.SM + 1,
+              css`
+                width: ${TOP_BANNER_SM_WIDTH}px;
+                height: 237px;
+              `,
+            )};
+
+            ${greaterThanOrEqualTo(
+              BreakPoint.LG + 1,
+              css`
+                width: ${TOP_BANNER_LG_WIDTH}px;
+                height: 286px;
+              `,
+            )}
+          `}
+          alt={props.item.title}
+          src={props.item.main_image_url}
+        />
+      </ItemInner>
+      <div
+        css={props.loading && !props.center ? carouselLoadingOverlay : null}
+        className={'slide-overlay'}
       />
-    </ItemInner>
-    <div
-      css={props.loading && !props.center ? carouselLoadingOverlay : null}
-      className={'slide-overlay'}
-    />
-  </TopBannerItemWrapper>
-));
+    </TopBannerItemWrapper>
+  );
+});
 
 const arrowCSS = css`
   :hover {
@@ -390,12 +402,14 @@ const TopBannerCarouselWrapper = styled.section`
 
 interface TopBannerCarouselProps {
   banners: TopBanner[];
+  slug: string;
   changePosition: (pos: number) => void;
   setInitialized: () => void;
   forwardRef: React.RefObject<SliderCarousel>;
 }
 interface TopBannerCarouselContainerProps {
   banners: TopBanner[];
+  slug: string;
 }
 
 interface TopBannerCarouselLoadingProps {
@@ -468,7 +482,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
   props => {
     const [carouselInitialized, setCarouselInitialized] = useState(false);
     const [currentPosition, setCurrentPosition] = useState(0);
-    const { banners } = props;
+    const { banners, slug } = props;
     const slider = React.useRef<SliderCarousel>();
     const wrapper = React.useRef<HTMLElement>();
 
@@ -549,6 +563,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
           <TopBannerCarousel
             forwardRef={slider}
             banners={banners}
+            slug={slug}
             changePosition={changePosition}
             setInitialized={setInitialized}
           />

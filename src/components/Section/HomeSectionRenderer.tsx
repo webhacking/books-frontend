@@ -45,6 +45,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
       return (
         <TopBannerCarouselContainer
           banners={items as TopBanner[]} /* options={item_metadata} */
+          slug={slug}
         />
       );
     case DisplayType.HomeEventBanner:
