@@ -228,22 +228,24 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                         book={{ b_id: book.b_id, detail: book.detail }}
                         imgSize={'medium'}
                         isIntersecting={isIntersecting}>
-                        <div
-                          css={css`
-                            position: absolute;
-                            display: block;
-                            top: -7px;
-                            left: -7px;
-                          `}>
-                          <BookBadgeRenderer
-                            type={DisplayType.BestSeller}
-                            wrapperCSS={css``}
-                            isWaitFree={book.detail?.series?.property.is_wait_free}
-                            discountPercentage={
-                              book?.detail?.price_info?.buy?.discount_percentage || 0
-                            }
-                          />
-                        </div>
+                        {type === 'big' && (
+                          <div
+                            css={css`
+                              position: absolute;
+                              display: block;
+                              top: -7px;
+                              left: -7px;
+                            `}>
+                            <BookBadgeRenderer
+                              type={DisplayType.BestSeller}
+                              wrapperCSS={css``}
+                              isWaitFree={book.detail?.series?.property.is_wait_free}
+                              discountPercentage={
+                                book?.detail?.price_info?.buy?.discount_percentage || 0
+                              }
+                            />
+                          </div>
+                        )}
                         {type === 'big' && (
                           <>
                             <FreeBookRenderer
@@ -268,7 +270,9 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                         titleLineClamp={props.type === 'small' ? 1 : 2}
                         isAIRecommendation={false}
                         showSomeDeal={showSomeDeal}
-                        showTag={['bl', 'bl-serial'].includes(genre)}
+                        showTag={
+                          ['bl', 'bl-serial'].includes(genre) && props.type === 'big'
+                        }
                         width={props.type === 'big' ? '177px' : null}
                         ratingInfo={book.rating}
                       />
@@ -291,13 +295,25 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
               label={'이전'}
               side={'left'}
               onClickHandler={moveLeft}
-              wrapperStyle={[arrowPosition('left'), !isOnTheLeft && arrowTransition]}
+              wrapperStyle={[
+                arrowPosition('left'),
+                !isOnTheLeft && arrowTransition,
+                css`
+                  z-index: 2;
+                `,
+              ]}
             />
             <Arrow
               label={'다음'}
               side={'right'}
               onClickHandler={moveRight}
-              wrapperStyle={[arrowPosition('right'), !isOnTheRight && arrowTransition]}
+              wrapperStyle={[
+                arrowPosition('right'),
+                !isOnTheRight && arrowTransition,
+                css`
+                  z-index: 2;
+                `,
+              ]}
             />
           </form>
         </div>
