@@ -463,6 +463,8 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
           const url = new URL('/search/', publicRuntimeConfig.STORE_HOST);
           url.searchParams.append('q', keyword);
+
+          window.location.href = url.toString();
           //
           // if (isPartials) {
           //   window.location.href = `${window.location.origin}/search/?q=${keyword}`;
