@@ -116,6 +116,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
                 title={item.title}
                 genre={genre}
                 key={item.id}
+                selectionId={item.id}
                 type={type}
                 option={{ isAIRecommendation: false }}
               />

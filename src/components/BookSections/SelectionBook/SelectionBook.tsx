@@ -38,6 +38,7 @@ interface SelectionBookProps {
   type: DisplayType;
   categoryId?: number;
   extra?: SectionExtra;
+  selectionId?: number;
 }
 
 interface SelectionBookItemProps {
@@ -167,7 +168,7 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
 };
 
 const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
-  const { genre, type, title, extra } = props;
+  const { genre, type, title, extra, selectionId } = props;
   const [, setMounted] = useState(false);
 
   const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
@@ -185,13 +186,19 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
   return (
     <SectionWrapper ref={targetRef}>
       <SectionTitle>
-        {extra?.detail_link ? (
+        {extra?.detail_link || (type === DisplayType.HomeMdSelection && selectionId) ? (
           // Todo Refactor
           <a
             css={css`
               display: flex;
             `}
-            href={extra.detail_link}>
+            href={
+              extra?.detail_link ??
+              new URL(
+                `/selection/${selectionId}`,
+                publicRuntimeConfig.STORE_HOST,
+              ).toString()
+            }>
             <span>{title}</span>
             <span
               css={css`

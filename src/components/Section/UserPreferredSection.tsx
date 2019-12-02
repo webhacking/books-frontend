@@ -64,6 +64,12 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
             }
             categoryId={item.category_id}
             genre={genre}
+            extra={{
+              detail_link: new URL(
+                `/category/bestsellers/${item.category_id}`,
+                publicRuntimeConfig.STORE_HOST,
+              ).toString(),
+            }}
             key={index}
             type={type}
             option={{ isAIRecommendation: false }}
