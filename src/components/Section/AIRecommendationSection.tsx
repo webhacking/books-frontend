@@ -19,12 +19,13 @@ interface AiRecommendationSectionProps {
   type: DisplayType;
   extra: SectionExtra;
   title: string;
+  slug: string;
 }
 
 const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props => {
   const { loggedUser } = useSelector((store: RootState) => store.account);
   const dispatch = useDispatch();
-  const { items, genre, type, title, extra } = props;
+  const { items, genre, type, title, extra, slug } = props;
   const [, setSections] = useState(items);
 
   useEffect(() => {
@@ -56,6 +57,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
   return (
     <SelectionBook
       items={[]}
+      slug={slug}
       title={loggedUser ? `${loggedUser.id} ${title}` : 'AI 추천'}
       extra={extra}
       genre={genre}

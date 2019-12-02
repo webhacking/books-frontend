@@ -275,14 +275,15 @@ interface RecommendedBookProps {
   title: string;
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
   theme: 'white' | 'dark';
+  slug: string;
 }
 
 const RecommendedBook: React.FC<RecommendedBookProps> = props => {
-  const { theme, type } = props;
+  const { theme, type, slug } = props;
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
 
-  const [books, isFetching] = useBookDetailSelector(props.items);
+  const [books] = useBookDetailSelector(props.items);
   return (
     <section
       ref={targetRef}
@@ -307,7 +308,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           {props.title}
         </span>
       </h2>
-      {!isIntersecting || isFetching ? (
+      {!isIntersecting ? (
         <RecommendedBookLoading
           type={type}
           books={books.filter(book => book.detail).slice(0, 6) as HotRelease[]}
@@ -319,6 +320,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           <View maxWidth={1000}>
             <RecommendedBookList
               type={props.type}
+              slug={slug}
               items={books as HotRelease[]}
               theme={theme}
               isIntersecting={isIntersecting}
@@ -327,6 +329,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           <View>
             <RecommendedBookCarousel
               type={props.type}
+              slug={slug}
               items={books as HotRelease[]}
               theme={theme}
               isIntersecting={isIntersecting}

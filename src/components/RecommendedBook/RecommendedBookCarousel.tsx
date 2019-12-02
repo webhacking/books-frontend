@@ -55,6 +55,7 @@ interface RecommendedBookCarouselProps {
   items: TodayRecommendation[] | HotRelease[];
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
   theme: 'dark' | 'white';
+  slug?: string;
   isIntersecting: boolean;
 }
 
@@ -120,7 +121,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
   const wrapperRef = useRef<HTMLDivElement>();
-  const { theme, type } = props;
+  const { theme, type, slug } = props;
   // @ts-ignore
   const [isMounted, setMounted] = useState(false);
   const [arrowPosition, setArrowPosition] = useState(
@@ -201,6 +202,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                     <ThumbnailWrapper>
                       <ThumbnailRenderer
                         width={140}
+                        slug={slug}
                         book={{ b_id: book.b_id, detail: book.detail }}
                         imgSize={'xlarge'}
                         isIntersecting={props.isIntersecting}>

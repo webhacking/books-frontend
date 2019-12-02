@@ -53,13 +53,14 @@ interface SelectionBookListProps {
   type: DisplayType;
   genre: string;
   isIntersecting: boolean;
+  slug: string;
 }
 
 const SelectionBookList: React.FC<SelectionBookListProps> = props => {
   const ref = useRef<HTMLUListElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
-  const { genre, type, isIntersecting } = props;
+  const { genre, type, isIntersecting, slug } = props;
 
   return (
     <div
@@ -73,6 +74,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
           .map((item, index) => (
             <li key={index} css={itemCSS}>
               <SelectionBookItem
+                slug={slug}
                 isIntersecting={isIntersecting}
                 genre={genre}
                 type={type}

@@ -39,7 +39,7 @@ export const arrowTransition = css`
   pointer-events: none;
 `;
 
-const Arrow: React.FC<ArrowProps> = React.memo(props => {
+const Arrow: React.FC<ArrowProps> = props => {
   const { color, side, arrowStyle, onClickHandler } = props;
   const handleClick = e => {
     e.preventDefault();
@@ -74,6 +74,6 @@ const Arrow: React.FC<ArrowProps> = React.memo(props => {
       <span className={'a11y'}>{props.label}</span>
     </button>
   );
-});
+};
 
 export default Arrow;
