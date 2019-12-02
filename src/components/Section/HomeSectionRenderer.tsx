@@ -13,7 +13,7 @@ import {
 import { TopBannerCarouselContainer } from 'src/components/TopBanner';
 import { EventBanner } from 'src/components/EventBanner';
 import { QuickMenuList } from 'src/components/QuickMenu';
-import * as React from 'react';
+import React from 'react';
 import RankingBookList from 'src/components/BookSections/RankingBook/RankingBookList';
 import { RecommendedBook } from 'src/components/RecommendedBook';
 import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBook';
@@ -30,6 +30,8 @@ interface HomeSectionRendererProps {
 
 // eslint-disable-next-line complexity
 export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => {
+  // @ts-ignore
+
   const {
     // @ts-ignore  Todo declare item_metadata type
     section: { items, item_metadata, type, title, extra, slug },
@@ -53,6 +55,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     case DisplayType.ReadingBooksRanking:
       return (
         <RankingBookList
+          slug={slug}
           items={items as ReadingRanking[]}
           type={'small'}
           genre={genre}
@@ -65,6 +68,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     case DisplayType.HotRelease: {
       return (
         <RecommendedBook
+          slug={slug}
           title={title}
           items={items as HotRelease[]}
           type={type}
@@ -76,6 +80,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     case DisplayType.TodayRecommendation: {
       return (
         <RecommendedBook
+          slug={slug}
           title={title}
           items={items as TodayRecommendation[]}
           type={type}
@@ -87,6 +92,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     case DisplayType.BestSeller:
       return (
         <RankingBookList
+          slug={slug}
           items={items as ReadingRanking[]}
           title={title}
           genre={genre}
@@ -100,7 +106,12 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     }
     case DisplayType.UserPreferredBestseller: {
       return (
-        <UserPreferredSection items={items as MdSelection[]} genre={genre} type={type} />
+        <UserPreferredSection
+          slug={slug}
+          items={items as MdSelection[]}
+          genre={genre}
+          type={type}
+        />
       );
     }
     case DisplayType.HomeMdSelection: {
@@ -112,6 +123,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
             }
             return (
               <SelectionBook
+                slug={slug}
                 items={item.books}
                 title={item.title}
                 genre={genre}
@@ -132,6 +144,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
       if (items) {
         return (
           <SelectionBook
+            slug={slug}
             items={items as MdBook[]}
             title={title}
             genre={genre}
@@ -146,6 +159,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     case DisplayType.AiRecommendation: {
       return (
         <AiRecommendationSection
+          slug={slug}
           items={items as MdBook[]}
           genre={genre}
           type={type}
@@ -158,7 +172,14 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
       return <HomeKeywordFinderSection genre={genre} />;
     }
     case DisplayType.RecommendedBook: {
-      return <MultipleLineBooks genre={genre} title={title} items={items as MdBook[]} />;
+      return (
+        <MultipleLineBooks
+          slug={slug}
+          genre={genre}
+          title={title}
+          items={items as MdBook[]}
+        />
+      );
     }
     default:
       return null;

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import * as BookApi from 'src/types/book';
 import { useSelector } from 'react-redux';
@@ -8,6 +8,10 @@ import getConfig from 'next/config';
 import { css } from '@emotion/core';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
+import { EventTrackerContext } from 'src/components/Context/EventTracker';
+// import { useDebounceSendEventTracker } from 'src/hooks/useDebounceSendEventTracker';
+// import { EventTrackerContext } from 'src/components/Context/EventTracker';
+
 const { publicRuntimeConfig } = getConfig();
 
 export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
@@ -20,6 +24,7 @@ interface ThumbnailRendererProps {
   imgSize: 'xxlarge' | 'xlarge' | 'large' | 'small' | 'medium';
   isIntersecting?: boolean;
   width?: number;
+  slug?: string;
 }
 
 const computeThumbnailUrl = (
@@ -58,9 +63,10 @@ const computeThumbnailUrl = (
 // 아닌 경우는 성인 도서 Placeholder 표지
 const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
   props => {
-    const { book, isIntersecting, imgSize, width, children } = props;
+    const { book, isIntersecting, imgSize, width, children, slug } = props;
     const { loggedUser } = useSelector((state: RootState) => state.account);
-
+    // @ts-ignore
+    const trackingUtils = useContext(EventTrackerContext);
     // Todo WIP 노출 여부
     const targetRef = useRef(null);
     const bookIsIntersecting = useIntersectionObserver(targetRef, '0px');
@@ -75,9 +81,10 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
     );
     useEffect(() => {
       if (bookIsIntersecting) {
-        // console.log(book.b_id);
-        // Todo Impression
-        // 디바운싱을 고려해볼것
+        if (book.b_id.length > 0 && slug) {
+          // book impression
+          trackingUtils(slug, book.b_id);
+        }
       }
     }, [bookIsIntersecting]);
     return (

@@ -17,6 +17,7 @@ interface UserPreferredSectionProps {
   items: MdSelection[];
   genre: string;
   type: DisplayType;
+  slug: string;
 }
 
 // 이 영역은 사용자 정보를 바탕으로 제공되는데 사용자 정보가 늦게 로드되므로 Fetch 를 따로한다.
@@ -25,7 +26,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
   const categoryState = useSelector((store: RootState) => store.categories);
 
   const dispatch = useDispatch();
-  const { items, genre, type } = props;
+  const { items, genre, type, slug } = props;
   const [sections, setSections] = useState(items);
 
   useEffect(() => {
@@ -58,6 +59,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
         }
         return (
           <SelectionBook
+            slug={slug}
             items={item.books}
             title={
               `${categoryState.items[item.category_id]?.name} 베스트셀러` ?? '베스트셀러'

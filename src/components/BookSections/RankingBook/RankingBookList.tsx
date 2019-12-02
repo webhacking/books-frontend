@@ -124,6 +124,7 @@ const arrowPosition = (side: 'left' | 'right') => css`
 `;
 
 interface RankingBookListProps {
+  slug: string;
   items: ReadingRanking[];
   type: 'small' | 'big';
   title?: string;
@@ -169,7 +170,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   const ref = useRef<HTMLUListElement>(null);
   const [books] = useBookDetailSelector(props.items);
-  const { genre, type, showSomeDeal } = props;
+  const { genre, type, showSomeDeal, slug } = props;
 
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   return (
@@ -224,6 +225,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                         publicRuntimeConfig.STORE_HOST,
                       ).toString()}>
                       <ThumbnailRenderer
+                        slug={slug}
                         width={type === 'big' ? 80 : 50}
                         book={{ b_id: book.b_id, detail: book.detail }}
                         imgSize={'medium'}

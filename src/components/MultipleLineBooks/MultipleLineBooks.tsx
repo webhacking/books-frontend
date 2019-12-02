@@ -15,12 +15,14 @@ interface MultipleLineBooks {
   items: MdBook[];
   title: string;
   genre: string;
+  slug: string;
 }
 
 interface MultipleLineBookItemProps {
   genre: string;
   item: MdBook;
   isIntersecting: boolean;
+  slug: string;
 }
 
 const itemCSS = css`
@@ -89,7 +91,7 @@ const itemCSS = css`
 `;
 
 const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(props => {
-  const { item, genre, isIntersecting } = props;
+  const { item, genre, isIntersecting, slug } = props;
   return (
     <li css={itemCSS}>
       <ThumbnailWrapper
@@ -153,6 +155,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
               publicRuntimeConfig.STORE_HOST,
             ).toString()}>
             <ThumbnailRenderer
+              slug={slug}
               book={{ b_id: item.b_id, detail: item.detail }}
               imgSize={'large'}
               isIntersecting={isIntersecting}>
@@ -233,7 +236,7 @@ const multipleLineSectionCSS = css`
 `;
 
 export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props => {
-  const { title, items, genre } = props;
+  const { title, items, genre, slug } = props;
   const [books] = useBookDetailSelector(items);
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
@@ -295,6 +298,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props =
         `}>
         {(books as MdBook[]).slice(0, 18).map((item, index) => (
           <MultipleLineBookItem
+            slug={slug}
             key={index}
             genre={genre}
             item={item}

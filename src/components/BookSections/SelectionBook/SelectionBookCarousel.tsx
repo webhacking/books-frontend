@@ -46,7 +46,7 @@ const CarouselWrapper = styled.div`
 const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
-  const { genre, type, bookFetching, isIntersecting } = props;
+  const { genre, type, bookFetching, isIntersecting, slug } = props;
   const wrapperRef = useRef<HTMLDivElement>();
   const [, setMounted] = useState(false);
   const [arrowPosition, setArrowPosition] = useState(
@@ -112,6 +112,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                 `}>
                 <SelectionBookItem
                   genre={genre}
+                  slug={slug}
                   isIntersecting={isIntersecting}
                   isAIRecommendation={props.isAIRecommendation}
                   book={book}

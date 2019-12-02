@@ -25,12 +25,13 @@ interface RecommendedBookListProps {
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
   theme: 'dark' | 'white';
   isIntersecting: boolean;
+  slug: string;
 }
 
 const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
-  const { theme, type } = props;
+  const { theme, type, slug } = props;
   return (
     <div
       css={css`
@@ -61,6 +62,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                 <ThumbnailWrapper>
                   <ThumbnailRenderer
                     width={120}
+                    slug={slug}
                     book={{ b_id: book.b_id, detail: book.detail }}
                     imgSize={'large'}
                     isIntersecting={props.isIntersecting}>

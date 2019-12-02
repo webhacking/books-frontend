@@ -39,6 +39,7 @@ interface SelectionBookProps {
   categoryId?: number;
   extra?: SectionExtra;
   selectionId?: number;
+  slug: string;
 }
 
 interface SelectionBookItemProps {
@@ -48,10 +49,11 @@ interface SelectionBookItemProps {
   width: number;
   type: DisplayType;
   isIntersecting: boolean;
+  slug: string;
 }
 
 export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(props => {
-  const { book, isAIRecommendation, genre, type, isIntersecting } = props;
+  const { book, isAIRecommendation, genre, type, isIntersecting, slug } = props;
   return (
     <>
       <a
@@ -61,6 +63,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
         href={new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString()}>
         <ThumbnailWrapper>
           <ThumbnailRenderer
+            slug={slug}
             width={props.width || 140}
             book={{ b_id: book.b_id, detail: book.detail }}
             imgSize={'xlarge'}
@@ -127,6 +130,7 @@ export interface SelectionBookCarouselProps {
   type: DisplayType;
   isIntersecting?: boolean;
   bookFetching?: boolean;
+  slug?: string;
 }
 
 export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props => {
@@ -168,7 +172,7 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
 };
 
 const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
-  const { genre, type, title, extra, selectionId } = props;
+  const { genre, type, slug, title, extra, selectionId } = props;
   const [, setMounted] = useState(false);
 
   const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
@@ -223,6 +227,7 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
         <WindowWidthQuery>
           <View maxWidth={1000}>
             <SelectionBookList
+              slug={slug}
               isIntersecting={isIntersecting}
               type={type}
               genre={genre}
@@ -233,6 +238,7 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
           <View>
             <SelectionBookCarousel
               type={type}
+              slug={slug}
               isIntersecting={isIntersecting}
               genre={genre}
               isAIRecommendation={props.option.isAIRecommendation}
