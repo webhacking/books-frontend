@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css, SerializedStyles } from '@emotion/core';
 import * as React from 'react';
 import { RIDITheme } from 'src/styles';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
@@ -6,6 +6,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 interface ButtonProps {
   label: string | React.ReactNode;
   type: 'primary' | 'secondary';
+  wrapperCSS?: SerializedStyles;
 }
 
 const createCSS = (theme: RIDITheme, type: 'primary' | 'secondary') => css`
@@ -32,5 +33,7 @@ const createCSS = (theme: RIDITheme, type: 'primary' | 'secondary') => css`
 `;
 
 export const Button: React.FC<ButtonProps> = props => (
-  <button css={theme => [createCSS(theme, props.type)]}>{props.label}</button>
+  <button css={theme => [createCSS(theme, props.type), props.wrapperCSS]}>
+    {props.label}
+  </button>
 );

@@ -9,5 +9,6 @@
   "ACCOUNT_API": "https://account.ridibooks.com",
   "STORE_MASTER_HOST": "https://ridibooks.com",
   "STORE_HOST": "https://ridibooks.com",
-  "LIBRARY_HOST": "https://library.ridibooks.com"
+  "LIBRARY_HOST": "https://library.ridibooks.com",
+  "STORE_TEMP_API_HOST": "https://ridibooks.com"
 }

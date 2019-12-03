@@ -15,8 +15,12 @@ import { AccountState } from 'src/services/accounts/reducer';
 import getConfig from 'next/config';
 import { LoggedUser } from 'src/types/account';
 import { useRouter } from 'next/router';
-
+import DoublePointIcon from 'src/svgs/DoublePoint.svg';
 import CashIcon from 'src/svgs/Cash.svg';
+import pRetry from 'p-retry';
+import axios from 'src/utils/axios';
+import sentry from 'src/utils/sentry';
+const { captureException } = sentry();
 
 const { publicRuntimeConfig } = getConfig();
 const GNBWrapper = styled.div`
@@ -167,6 +171,13 @@ interface GNBButtonsProps {
 }
 const GNBButtons: React.FC<GNBButtonsProps> = props => {
   const { loggedUser, isPartialsLogin } = props;
+  const [eventStatus, setEventStatus] = useState<{
+    double_point: boolean;
+    fifteen_night: boolean;
+  }>({
+    double_point: true,
+    fifteen_night: false,
+  });
   const route = useRouter();
   const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_MASTER_HOST);
   const signUpPath = new URL('/account/signup', publicRuntimeConfig.STORE_MASTER_HOST);
@@ -195,6 +206,27 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
     );
   }, [route.asPath]);
 
+  useEffect(() => {
+    const requestRidiEventStatus = async () => {
+      try {
+        const cartUrl = new URL(
+          '/api/schedule/events',
+          publicRuntimeConfig.STORE_TEMP_API_HOST,
+        );
+
+        const result = await pRetry(() => axios.get(cartUrl.toString(), {}), {
+          retries: 2,
+        });
+        if (result.status === 200) {
+          setEventStatus(result.data);
+        }
+      } catch (error) {
+        captureException(error);
+      }
+    };
+    requestRidiEventStatus();
+  }, [route]);
+
   return (
     <>
       {/* isPartialsLogin Partials 뿐만 아니라 값이 있으면 그냥 로그인 표시 */}
@@ -204,6 +236,12 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
           <li>
             <a href={cashOrderPath.toString()} aria-label={'리디 캐시 충전'}>
               <Button
+                wrapperCSS={
+                  eventStatus.double_point &&
+                  css`
+                    border: 1px solid #ffde24;
+                  `
+                }
                 type={'primary'}
                 label={
                   <div
@@ -214,6 +252,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
                       color: white;
                       font-size: 13px;
                       font-weight: 700;
+                      transition: all 0.2s ease-in-out;
                     `}>
                     <span
                       css={css`
@@ -230,7 +269,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
                         충전
                       </span>
                     </span>
-                    <CashIcon />
+                    {eventStatus.double_point ? <DoublePointIcon /> : <CashIcon />}
                   </div>
                 }
               />
