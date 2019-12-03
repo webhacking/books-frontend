@@ -18,9 +18,13 @@ const EventBannerList: React.FC<EventBannerListProps> = props => {
   const [tracker] = useEventTracker();
   useEffect(() => {
     if (isIntersecting) {
-      tracker.sendEvent('Impression', {
+      tracker.sendEvent('display', {
         section: props.slug,
-        items: props.items.map(item => ({ id: item.id, title: item.title })),
+        items: props.items.map((item, index) => ({
+          id: item.id,
+          idx: index,
+          ts: new Date().getTime(),
+        })),
       });
     }
   }, [isIntersecting]);

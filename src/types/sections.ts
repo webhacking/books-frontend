@@ -93,6 +93,7 @@ export interface TopBanner {
   landing_url: string;
   bg_color: string;
   order: number;
+  list_order: number;
   is_visible: boolean;
   is_badge_available: boolean;
 }

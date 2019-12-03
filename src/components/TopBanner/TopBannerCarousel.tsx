@@ -9,6 +9,7 @@ import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel'
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import { TopBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
+import { useEventTracker } from 'src/hooks/useEveneTracker';
 
 const TOP_BANNER_LG_WIDTH = 430;
 const TOP_BANNER_SM_WIDTH = 355;
@@ -406,6 +407,7 @@ interface TopBannerCarouselProps {
   changePosition: (pos: number) => void;
   setInitialized: () => void;
   forwardRef: React.RefObject<SliderCarousel>;
+  isIntersecting: boolean;
 }
 interface TopBannerCarouselContainerProps {
   banners: TopBanner[];
@@ -439,7 +441,9 @@ const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props 
 );
 
 const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => {
-  const { banners, forwardRef, setInitialized } = props;
+  const { banners, forwardRef, setInitialized, isIntersecting } = props;
+  const [tracker] = useEventTracker();
+
   return (
     <ForwardedRefComponent
       ref={forwardRef}
@@ -464,9 +468,31 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
         }
         window.dispatchEvent(event);
         props.changePosition(next);
+
+        if (isIntersecting) {
+          tracker.sendEvent('display', {
+            section: props.slug,
+            items: [
+              {
+                id: banners[next]?.id,
+                idx: banners[next]?.list_order,
+                ts: new Date().getTime(),
+              },
+            ],
+          });
+        }
       }}
       onInit={() => {
         setInitialized();
+        const firstItem = {
+          id: banners[0]?.id,
+          idx: banners[0]?.list_order,
+          ts: new Date().getTime(),
+        };
+        tracker.sendEvent('display', {
+          section: props.slug,
+          items: [firstItem],
+        });
       }}
       centerMode={true}>
       {banners.map((item, index) => (
@@ -528,6 +554,8 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
       firstClientX = e.touches[0].clientX;
     };
 
+    const isIntersecting = useIntersectionObserver(wrapper, '0px');
+
     useEffect(() => {
       if (wrapper.current) {
         wrapper.current.addEventListener('touchstart', touchStart, { passive: false });
@@ -561,6 +589,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
         )}
         <>
           <TopBannerCarousel
+            isIntersecting={isIntersecting}
             forwardRef={slider}
             banners={banners}
             slug={slug}
