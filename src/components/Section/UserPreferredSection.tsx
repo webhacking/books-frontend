@@ -59,7 +59,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
         }
         return (
           <SelectionBook
-            slug={slug}
+            slug={`${slug}-category-${item.category_id}`}
             items={item.books}
             title={
               `${categoryState.items[item.category_id]?.name} 베스트셀러` ?? '베스트셀러'

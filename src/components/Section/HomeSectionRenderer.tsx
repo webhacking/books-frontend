@@ -123,7 +123,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
             }
             return (
               <SelectionBook
-                slug={slug}
+                slug={`${slug}-${item.id}`}
                 items={item.books}
                 title={item.title}
                 genre={genre}
