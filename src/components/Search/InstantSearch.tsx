@@ -542,6 +542,12 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
       if (inputRef.current) {
         setLoaded(true);
+
+        // 검색어 query string 있을 경우 업데이트
+        if (location.pathname.startsWith('/search')) {
+          const searchParams = new URLSearchParams(window.location.search);
+          setKeyword(searchParams.get('q') ?? '');
+        }
       }
 
       return () => {

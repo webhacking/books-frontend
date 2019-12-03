@@ -55,7 +55,7 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
               isPartials={true}
               isLoginForPartials={this.props.is_login}
               type={this.props.type}
-              searchKeyword={this.props.q || ''}
+              searchKeyword={''}
             />
           </PartialSeparator>
         </BrowserLocationWithRouter>
