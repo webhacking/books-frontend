@@ -265,7 +265,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
   useEffect(() => {
     const requestCartCount = async () => {
       try {
-        const cartUrl = new URL('/users/me/cart-count/', publicRuntimeConfig.STORE_API);
+        const cartUrl = new URL('/api/cart/count', publicRuntimeConfig.STORE_MASTER_HOST);
 
         const result = await pRetry(
           () =>
