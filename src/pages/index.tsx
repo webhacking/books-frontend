@@ -131,9 +131,9 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
           req,
         );
         const bIds = keyToArray(result.branches, 'b_id');
-        await store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+        store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
         const categoryIds = keyToArray(result.branches, 'category_id');
-        await store.dispatch({
+        store.dispatch({
           type: categoryActions.insertCategoryIds.type,
           payload: categoryIds,
         });
