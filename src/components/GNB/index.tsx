@@ -252,7 +252,6 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
                       color: white;
                       font-size: 13px;
                       font-weight: 700;
-                      transition: all 0.2s ease-in-out;
                     `}>
                     <span
                       css={css`

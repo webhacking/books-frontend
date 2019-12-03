@@ -30,6 +30,7 @@ const createCSS = (theme: RIDITheme, type: 'primary' | 'secondary') => css`
   :hover {
     opacity: 0.7;
   }
+  transition: all 0.2s ease-in-out;
 `;
 
 export const Button: React.FC<ButtonProps> = props => (
