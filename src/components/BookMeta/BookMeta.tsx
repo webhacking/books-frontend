@@ -187,9 +187,15 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
         )}
         <>
           <span
-            css={css`
-              display: flex;
-            `}>
+            css={[
+              css`
+                display: flex;
+              `,
+              (!showRating || !ratingInfo) &&
+                css`
+                  margin-top: 6px;
+                `,
+            ]}>
             {showTag && (
               <RenderBookTag isComic={is_comic_hd || is_comic} isNovel={is_novel} />
             )}
