@@ -47,7 +47,7 @@ const EventBannerItem = styled.li`
   )};
   img {
     border-radius: 3px;
-    border: 1px solid rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.08);
   }
 `;
 
