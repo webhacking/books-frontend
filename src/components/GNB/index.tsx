@@ -175,7 +175,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
     double_point: boolean;
     fifteen_night: boolean;
   }>({
-    double_point: true,
+    double_point: false,
     fifteen_night: false,
   });
   const route = useRouter();
