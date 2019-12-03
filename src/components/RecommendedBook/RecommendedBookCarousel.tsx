@@ -201,6 +201,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                     ).toString()}>
                     <ThumbnailWrapper>
                       <ThumbnailRenderer
+                        order={index}
                         width={140}
                         slug={slug}
                         book={{ b_id: book.b_id, detail: book.detail }}

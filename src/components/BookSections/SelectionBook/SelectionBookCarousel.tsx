@@ -111,6 +111,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                   margin-right: -3px;
                 `}>
                 <SelectionBookItem
+                  order={index}
                   genre={genre}
                   slug={slug}
                   isIntersecting={isIntersecting}

@@ -226,6 +226,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                       ).toString()}>
                       <ThumbnailRenderer
                         slug={slug}
+                        order={index}
                         width={type === 'big' ? 80 : 50}
                         book={{ b_id: book.b_id, detail: book.detail }}
                         imgSize={'medium'}

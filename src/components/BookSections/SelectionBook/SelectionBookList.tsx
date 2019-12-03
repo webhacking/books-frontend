@@ -74,6 +74,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
           .map((item, index) => (
             <li key={index} css={itemCSS}>
               <SelectionBookItem
+                order={index}
                 slug={slug}
                 isIntersecting={isIntersecting}
                 genre={genre}

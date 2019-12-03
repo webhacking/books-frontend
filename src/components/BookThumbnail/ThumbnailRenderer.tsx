@@ -25,6 +25,7 @@ interface ThumbnailRendererProps {
   isIntersecting?: boolean;
   width?: number;
   slug?: string;
+  order?: number;
 }
 
 const computeThumbnailUrl = (
@@ -63,13 +64,13 @@ const computeThumbnailUrl = (
 // 아닌 경우는 성인 도서 Placeholder 표지
 const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
   props => {
-    const { book, isIntersecting, imgSize, width, children, slug } = props;
+    const { book, isIntersecting, imgSize, width, children, slug, order } = props;
     const { loggedUser } = useSelector((state: RootState) => state.account);
     // @ts-ignore
     const trackingUtils = useContext(EventTrackerContext);
     // Todo WIP 노출 여부
     const targetRef = useRef(null);
-    const bookIsIntersecting = useIntersectionObserver(targetRef, '0px');
+    const bookIsIntersecting = useIntersectionObserver(targetRef, '25px');
 
     const is_adult_only = book.detail?.property?.is_adult_only ?? false;
     const imageUrl = computeThumbnailUrl(
@@ -83,7 +84,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
       if (bookIsIntersecting) {
         if (book.b_id.length > 0 && slug) {
           // book impression
-          trackingUtils(slug, book.b_id);
+          trackingUtils(slug, book.b_id, order);
         }
       }
     }, [bookIsIntersecting]);

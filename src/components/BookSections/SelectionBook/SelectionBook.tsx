@@ -50,10 +50,11 @@ interface SelectionBookItemProps {
   type: DisplayType;
   isIntersecting: boolean;
   slug: string;
+  order?: number;
 }
 
 export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(props => {
-  const { book, isAIRecommendation, genre, type, isIntersecting, slug } = props;
+  const { book, isAIRecommendation, genre, type, isIntersecting, slug, order } = props;
   return (
     <>
       <a
@@ -63,6 +64,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
         href={new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString()}>
         <ThumbnailWrapper>
           <ThumbnailRenderer
+            order={order}
             slug={slug}
             width={props.width || 140}
             book={{ b_id: book.b_id, detail: book.detail }}

@@ -61,6 +61,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                 ).toString()}>
                 <ThumbnailWrapper>
                   <ThumbnailRenderer
+                    order={index}
                     width={120}
                     slug={slug}
                     book={{ b_id: book.b_id, detail: book.detail }}

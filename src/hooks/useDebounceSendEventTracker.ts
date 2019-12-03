@@ -4,12 +4,12 @@ import { useEventTracker } from 'src/hooks/useEveneTracker';
 
 interface DisplayEvent {
   ts: number;
-  idx: number;
+  order: number;
   id: string;
 }
 
 export const useDebounceSendEventTracker = (): [
-  (slug: string, bookId: string, timeStamp: number) => void,
+  (slug: string, bookId: string, order: number) => void,
 ] => {
   const [tracker] = useEventTracker();
   const [mergedImpressionBook, setImpressionBook] = useState<{
@@ -18,9 +18,9 @@ export const useDebounceSendEventTracker = (): [
 
   const sendImpression = useCallback(() => {
     Object.keys(mergedImpressionBook).forEach(key => {
-      const sectionItem = mergedImpressionBook[key].map((item, index) => ({
+      const sectionItem = mergedImpressionBook[key].map(item => ({
         id: item.id,
-        idx: index,
+        order: item.order,
         ts: item.ts,
       }));
       tracker.sendEvent('display', { section: key, items: sectionItem });
@@ -31,12 +31,15 @@ export const useDebounceSendEventTracker = (): [
   const [debouncedInsertImpressionItem] = useDebounce(sendImpression, 1000);
 
   const insertImpressionItem = useCallback(
-    (slug, bookId) => {
+    (slug, bookId, order) => {
       const keys = {
         ...mergedImpressionBook,
         [slug]: mergedImpressionBook[slug]
-          ? [...mergedImpressionBook[slug], { id: bookId, ts: new Date().getTime() }]
-          : [{ id: bookId, ts: new Date().getTime() }],
+          ? [
+              ...mergedImpressionBook[slug],
+              { id: bookId, order, ts: new Date().getTime() },
+            ]
+          : [{ id: bookId, order, ts: new Date().getTime() }],
       };
       setImpressionBook(keys);
       debouncedInsertImpressionItem();
