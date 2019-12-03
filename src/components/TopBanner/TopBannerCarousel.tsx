@@ -475,7 +475,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
             items: [
               {
                 id: banners[next]?.id,
-                idx: banners[next]?.list_order,
+                idx: next,
                 ts: new Date().getTime(),
               },
             ],
@@ -486,7 +486,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
         setInitialized();
         const firstItem = {
           id: banners[0]?.id,
-          idx: banners[0]?.list_order,
+          idx: 0,
           ts: new Date().getTime(),
         };
         tracker.sendEvent('display', {
