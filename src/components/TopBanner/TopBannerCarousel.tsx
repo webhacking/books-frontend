@@ -10,6 +10,8 @@ import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery'
 import { TopBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { useEventTracker } from 'src/hooks/useEveneTracker';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 const TOP_BANNER_LG_WIDTH = 430;
 const TOP_BANNER_SM_WIDTH = 355;
@@ -273,6 +275,47 @@ interface TopBannerItemProps {
   center?: boolean;
 }
 
+const BannerBadgeRenderer: React.FC<{
+  badge: 'END_TODAY' | 'END_IN_3DAY' | null;
+}> = props => {
+  const { badge } = props;
+  if (!badge) {
+    return null;
+  }
+  if (badge === 'END_TODAY') {
+    return (
+      <img
+        css={css`
+          position: absolute;
+          top: 12px;
+          right: 12px;
+        `}
+        alt="오늘 마감"
+        width={44}
+        height={44}
+        src={`${publicRuntimeConfig.STATIC_CDN_URL}/static/image/expired_today.png`}
+      />
+    );
+  }
+  if (badge === 'END_IN_3DAY') {
+    return (
+      <img
+        css={css`
+          position: absolute;
+          top: 12px;
+          right: 12px;
+        `}
+        alt={'마감 임박'}
+        width={44}
+        height={44}
+        src={`${publicRuntimeConfig.STATIC_CDN_URL}/static/image/expired_soon.png`}
+      />
+    );
+  }
+
+  return null;
+};
+
 const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => {
   const wrapperRef = React.useRef<HTMLInputElement>();
   const isIntersecting = useIntersectionObserver(wrapperRef, '0px');
@@ -288,6 +331,7 @@ const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => {
       <ItemInner
         className={'slide-item-inner'}
         css={css`
+          position: relative;
           ${greaterThanOrEqualTo(
             BreakPoint.LG + 1,
             css`
@@ -330,6 +374,9 @@ const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => {
           alt={props.item.title}
           src={props.item.main_image_url}
         />
+        {props.item.is_badge_available && (
+          <BannerBadgeRenderer badge={props.item.badge} />
+        )}
       </ItemInner>
       <div
         css={props.loading && !props.center ? carouselLoadingOverlay : null}

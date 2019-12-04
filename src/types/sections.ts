@@ -96,6 +96,7 @@ export interface TopBanner {
   list_order: number;
   is_visible: boolean;
   is_badge_available: boolean;
+  badge: 'END_TODAY' | 'END_IN_3DAY' | null;
 }
 
 export interface QuickMenu {
