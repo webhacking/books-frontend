@@ -290,7 +290,10 @@ const Footer: React.FC<{}> = () => (
                 </a>
               </li>
               <li>
-                <a href="https://help.ridibooks.com/hc/ko/articles/360026484174">
+                <a
+                  href="https://help.ridibooks.com/hc/ko/articles/360026484174"
+                  target="_blank"
+                  rel="noopener">
                   <FooterMenuLabel>페이퍼 대량구매 안내</FooterMenuLabel>
                 </a>
               </li>
