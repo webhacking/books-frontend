@@ -16,7 +16,7 @@ const listCSS = css`
     BreakPoint.LG,
     css`
       margin-left: -5px;
-      margin-right: 6px;
+      //margin-right: 6px;
     `,
   )}
 `;
@@ -37,7 +37,7 @@ const itemCSS = css`
     BreakPoint.MD,
     css`
       :last-of-type {
-        padding-right: 16px;
+        padding-right: 24px;
       }
       :first-of-type {
         padding-left: 16px;

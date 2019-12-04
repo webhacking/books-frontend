@@ -217,7 +217,7 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
           <span>{title}</span>
         )}
       </SectionTitle>
-      {!isIntersecting || isFetching ? (
+      {!isIntersecting ? (
         <SelectionBookLoading
           genre={genre}
           type={type}

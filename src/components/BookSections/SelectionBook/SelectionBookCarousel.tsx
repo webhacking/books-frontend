@@ -46,7 +46,7 @@ const CarouselWrapper = styled.div`
 const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
-  const { genre, type, bookFetching, isIntersecting, slug } = props;
+  const { genre, type, isIntersecting, slug } = props;
   const wrapperRef = useRef<HTMLDivElement>();
   const [, setMounted] = useState(false);
   const [arrowPosition, setArrowPosition] = useState(
@@ -123,7 +123,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
               </div>
             ))}
         </ForwardedRefComponent>
-        {carouselInitialize && props.items.length > 6 && !bookFetching && (
+        {carouselInitialize && props.items.length > 6 && (
           <form
             css={css`
               height: 0;

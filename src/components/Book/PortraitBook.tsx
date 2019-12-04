@@ -28,7 +28,7 @@ export const PortraitBook = styled.li`
         //padding-left: 16px;
       }
       :last-of-type {
-        padding-right: 16px;
+        padding-right: 24px;
       }
       :not(:last-of-type) {
         margin-right: 20px;

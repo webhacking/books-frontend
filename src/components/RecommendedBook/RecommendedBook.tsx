@@ -58,7 +58,6 @@ export const BookList = styled.ul`
     BreakPoint.LG,
     css`
       padding-left: 9px !important;
-      margin-right: 8px;
       ${flexRowStart}
     `,
   )};
