@@ -87,6 +87,7 @@ const Menu: React.FC<{ menu: QuickMenu }> = React.memo(props => {
             css={css`
               position: relative;
               height: 44px;
+              width: 100%;
               margin-bottom: 8px;
               display: flex;
               justify-content: center;
@@ -96,13 +97,16 @@ const Menu: React.FC<{ menu: QuickMenu }> = React.memo(props => {
               css={css`
                 height: 44px;
                 width: 44px;
-                position: absolute;
+                top: 0;
                 z-index: 1;
                 fill: ${menu.bg_color};
               `}
             />
             <img
               css={css`
+                top: 0;
+                transform: translate(-50%, 0);
+                left: 50%;
                 position: absolute;
                 width: 44px;
                 height: 44px;

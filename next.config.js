@@ -14,7 +14,7 @@ module.exports = withBundleAnalyzer(
   nextSourceMaps(
     withCSS(
       withTM({
-        transpileModules: ['p-retry'],
+        transpileModules: ['p-retry'], // for IE11
         distDir: '../build',
         assetPrefix: localEnv.STATIC_CDN_URL || 'https://books.local.ridi.io',
         useFileSystemPublicRoutes: false,
