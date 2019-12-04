@@ -5,6 +5,7 @@ import { ConnectedInitializeProps } from 'src/types/common';
 import GNB from 'src/components/GNB';
 import { PartialSeparator } from 'src/components/Misc';
 import { BrowserLocationWithRouter } from 'src/components/Context';
+import { GenreTab } from 'src/components/Tabs';
 
 interface GNBState {
   theme?: string | boolean;
@@ -57,6 +58,9 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
               type={this.props.type}
               searchKeyword={''}
             />
+            {this.props.pathname === '/category/list' && (
+              <GenreTab isPartials={true} currentGenre={'category'} />
+            )}
           </PartialSeparator>
         </BrowserLocationWithRouter>
       </ThemeProvider>

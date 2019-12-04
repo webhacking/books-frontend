@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 const GenreTabWrapper = styled.ul`
   max-width: 1000px;
   margin: 0 auto;
+  background: white;
 `;
 
 const rulerCSS = theme => css`
@@ -20,6 +21,66 @@ const rulerCSS = theme => css`
   left: 0;
   height: 1px;
   background-color: ${theme.divider2};
+`;
+
+const genreListPartialsCSS = theme => css`
+  display: flex;
+  flex-direction: row;
+  height: 44px;
+  align-items: center;
+  li {
+    a {
+      display: inline-block;
+      padding: 0 22px;
+      ${orBelow(
+        999,
+        css`
+          padding: 0;
+        `,
+      )};
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 44px;
+      height: 100%;
+      width: 100%;
+      ${clearOutline};
+    }
+    height: 100%;
+    text-align: center;
+    color: ${theme.genreTab.normal};
+    cursor: pointer;
+    :first-of-type {
+      line-height: 44px;
+      position: relative;
+      top: -2px;
+      margin-right: 0;
+      a {
+        padding: 0 20px;
+        ${orBelow(
+          999,
+          css`
+            padding: 0;
+          `,
+        )};
+      }
+    }
+    margin-right: 10px;
+  }
+
+  ${orBelow(
+    999,
+    css`
+      justify-content: space-around;
+      li {
+        flex-grow: 1;
+        padding: 0;
+        margin: 0;
+        :first-of-type {
+          padding: 0;
+        }
+      }
+    `,
+  )};
 `;
 
 // Todo Refactor css
@@ -279,6 +340,7 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
 
 interface GenreTabProps {
   currentGenre: string;
+  isPartials?: boolean;
 }
 
 const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
@@ -288,116 +350,146 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
   const showSubGenre = genreInfo.services.length > 1;
   const router = useRouter();
   return (
-    <GenreTabWrapper>
-      <li>
-        <ul css={genreListCSS}>
-          <li
-            css={css`
-              ${router.asPath === '/category/list'
-                ? css`
-                    :hover {
-                      opacity: 1 !important;
-                    }
-                  `
-                : css`
-                    :hover {
-                      opacity: 0.7;
-                    }
-                  `}
-            `}>
-            <a href={'/category/list'} aria-label={'카테고리 목록'}>
-              <button>
-                <GNBCategory
-                  css={(theme: RIDITheme) => css`
-                    ${iconCSS(theme)};
-                    ${router.asPath === '/category/list'
-                      ? css`
-                          fill: ${theme.primaryColor};
-                        `
-                      : ''};
-                  `}
-                />
-                <span className={'a11y'}>{labels.category}</span>
-              </button>
-            </a>
-          </li>
-          <TabItem
-            normalCSS={normal}
-            currentCSS={genreTab}
-            labelCSS={genreTabLabelCSS}
-            currentPath={router.asPath}
-            activePath={['/']}
-            label={'일반'}
-            route={'/'}
+    <>
+      <GenreTabWrapper>
+        <li>
+          <ul
+            css={
+              props.isPartials
+                ? theme => genreListPartialsCSS(theme)
+                : theme => genreListCSS(theme)
+            }>
+            <li
+              css={css`
+                ${router.asPath === '/category/list'
+                  ? css`
+                      :hover {
+                        opacity: 1 !important;
+                      }
+                    `
+                  : css`
+                      :hover {
+                        opacity: 0.7;
+                      }
+                    `}
+              `}>
+              <a href={'/category/list'} aria-label={'카테고리 목록'}>
+                <button>
+                  <GNBCategory
+                    css={(theme: RIDITheme) => css`
+                      ${iconCSS(theme)};
+                      ${router.asPath === '/category/list'
+                        ? css`
+                            fill: ${theme.primaryColor};
+                          `
+                        : ''};
+                    `}
+                  />
+                  <span className={'a11y'}>{labels.category}</span>
+                </button>
+              </a>
+            </li>
+            <TabItem
+              normalCSS={normal}
+              currentCSS={genreTab}
+              labelCSS={genreTabLabelCSS}
+              currentPath={router.asPath}
+              activePath={['/']}
+              label={'일반'}
+              route={'/'}
+            />
+            <TabItem
+              normalCSS={normal}
+              currentCSS={genreTab}
+              labelCSS={genreTabLabelCSS}
+              currentPath={router.asPath}
+              activePath={[
+                '/romance',
+                '/romance-serial',
+                '/romance/',
+                '/romance-serial/',
+              ]}
+              label={'로맨스'}
+              route={'/romance'}
+            />
+            <TabItem
+              normalCSS={normal}
+              currentCSS={genreTab}
+              labelCSS={genreTabLabelCSS}
+              currentPath={router.asPath}
+              activePath={[
+                '/fantasy',
+                '/fantasy-serial',
+                '/fantasy/',
+                '/fantasy-serial/',
+              ]}
+              label={'판타지'}
+              route={'/fantasy'}
+            />
+            <TabItem
+              normalCSS={normal}
+              currentCSS={genreTab}
+              labelCSS={genreTabLabelCSS}
+              currentPath={router.asPath}
+              activePath={['/comics', '/comics/']}
+              label={'만화'}
+              route={'/comics'}
+            />
+            <TabItem
+              normalCSS={normal}
+              currentCSS={genreTab}
+              labelCSS={genreTabLabelCSS}
+              currentPath={router.asPath}
+              activePath={['/bl', '/bl-serial', '/bl/', '/bl-serial/']}
+              label={'BL'}
+              route={'/bl'}
+            />
+          </ul>
+        </li>
+        <li>
+          <hr css={rulerCSS} />
+        </li>
+        {showSubGenre ? (
+          <>
+            <li>
+              <ul css={subServicesListCSS}>
+                {genreInfo.services.map((service, index) => (
+                  <TabItem
+                    key={index}
+                    route={service.path}
+                    normalCSS={normal}
+                    currentCSS={subServiceTab}
+                    labelCSS={subServiceTabLabelCSS}
+                    currentPath={router.asPath}
+                    activePath={service.activePaths}
+                    label={service.name}
+                  />
+                ))}
+              </ul>
+            </li>
+          </>
+        ) : (
+          <div
+            css={[
+              !props.isPartials &&
+                css`
+                  margin-bottom: 20px;
+                `,
+            ]}
           />
-          <TabItem
-            normalCSS={normal}
-            currentCSS={genreTab}
-            labelCSS={genreTabLabelCSS}
-            currentPath={router.asPath}
-            activePath={['/romance', '/romance-serial', '/romance/', '/romance-serial/']}
-            label={'로맨스'}
-            route={'/romance'}
-          />
-          <TabItem
-            normalCSS={normal}
-            currentCSS={genreTab}
-            labelCSS={genreTabLabelCSS}
-            currentPath={router.asPath}
-            activePath={['/fantasy', '/fantasy-serial', '/fantasy/', '/fantasy-serial/']}
-            label={'판타지'}
-            route={'/fantasy'}
-          />
-          <TabItem
-            normalCSS={normal}
-            currentCSS={genreTab}
-            labelCSS={genreTabLabelCSS}
-            currentPath={router.asPath}
-            activePath={['/comics', '/comics/']}
-            label={'만화'}
-            route={'/comics'}
-          />
-          <TabItem
-            normalCSS={normal}
-            currentCSS={genreTab}
-            labelCSS={genreTabLabelCSS}
-            currentPath={router.asPath}
-            activePath={['/bl', '/bl-serial', '/bl/', '/bl-serial/']}
-            label={'BL'}
-            route={'/bl'}
-          />
-        </ul>
-      </li>
-      <li>
-        <hr css={rulerCSS} />
-      </li>
-      {showSubGenre ? (
-        <>
-          <li>
-            <ul css={subServicesListCSS}>
-              {genreInfo.services.map((service, index) => (
-                <TabItem
-                  key={index}
-                  route={service.path}
-                  normalCSS={normal}
-                  currentCSS={subServiceTab}
-                  labelCSS={subServiceTabLabelCSS}
-                  currentPath={router.asPath}
-                  activePath={service.activePaths}
-                  label={service.name}
-                />
-              ))}
-            </ul>
-          </li>
-        </>
-      ) : (
-        <div
+        )}
+      </GenreTabWrapper>
+      {props.isPartials && (
+        <hr
           css={css`
-            margin-bottom: 20px;
+            border: 0;
+            height: 1px;
+            display: block !important;
+            background: #e6e8eb;
           `}
         />
       )}
-    </GenreTabWrapper>
+    </>
   );
 });
 
