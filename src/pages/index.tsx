@@ -26,6 +26,7 @@ import useIsSelectFetch from 'src/hooks/useIsSelectFetch';
 // import { useDebounceSendEventTracker } from 'src/hooks/useDebounceSendEventTracker';
 import { EventTracker } from 'src/components/Context/EventTracker';
 import { DeviceType } from 'src/components/Context/DeviceType';
+import Spinner from 'src/svgs/Spinner.svg';
 
 const { captureException } = sentry();
 
@@ -35,6 +36,53 @@ export interface HomeProps {
   branches: Section[];
   genre: string;
 }
+
+const offset = 187;
+const duration = '1.4s';
+
+import { css, keyframes } from '@emotion/core';
+
+const rotator = keyframes`
+ 0% { transform: rotate(0deg); }
+  100% { transform: rotate(270deg); }
+`;
+
+const colors = keyframes` 
+  0% { stroke: #4285F4; }
+  25% { stroke: #4285F4; }
+  50% { stroke: #339CF2; }
+  75% { stroke: #1F8CE6; }
+  100% { stroke: #1F8CE6; }
+`;
+
+const dash = keyframes`
+  0% { stroke-dashoffset: ${offset}; }
+  50% {
+    stroke-dashoffset: ${offset / 4};
+  transform:rotate(135deg);
+}
+  100% {
+    stroke-dashoffset: ${offset};
+  transform:rotate(450deg);
+}
+`;
+
+const spinnerCSS = css`
+  position: fixed;
+  left: 46%;
+  top: 42%;
+  animation: ${rotator} ${duration} linear infinite;
+  will-change: auto;
+  z-index: 2;
+  circle {
+    will-change: auto;
+    stroke-dasharray: 187;
+    stroke-dashoffset: 0;
+    transform-origin: center;
+    stroke-width: 4;
+    animation: ${dash} 1.4s ease-in-out infinite, ${colors} 5.6s ease-in-out infinite;
+  }
+`;
 
 const redirect = (req: Request, res: ServerResponse, path: string) => {
   if (req.path !== path && !res.finished) {
@@ -79,10 +127,18 @@ const setCookie = (genre: string) => {
     expires: DEFAULT_COOKIE_EXPIRES,
   });
 };
+
+const MemoSpinner = React.memo(() => (
+  <>
+    <Spinner css={spinnerCSS} />
+  </>
+));
+
 export const Home: NextPage<HomeProps> = props => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const bIds = keyToArray(props.branches, 'b_id');
   const [tracker] = useEventTracker();
+  const { isFetching } = useSelector((state: RootState) => state.books);
 
   const setPageView = useCallback(() => {
     if (tracker) {
@@ -99,7 +155,6 @@ export const Home: NextPage<HomeProps> = props => {
     setCookie(props.genre);
     setPageView();
   }, [props.genre, loggedUser, props.branches, setPageView]);
-
   const { genre } = props;
   const currentGenre = genre || 'general';
   return (
@@ -122,6 +177,7 @@ export const Home: NextPage<HomeProps> = props => {
             ))}
         </EventTracker>
       </DeviceType>
+      {isFetching && <MemoSpinner />}
     </>
   );
 };
@@ -132,6 +188,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
   if (req && res) {
     if (res.statusCode !== 302) {
       try {
+        store.dispatch({ type: booksActions.setFetching.type, payload: true });
         const result = await fetchHomeSections(
           // @ts-ignore
           genre,
@@ -158,6 +215,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
   } else {
     // Client Side
     try {
+      store.dispatch({ type: booksActions.setFetching.type, payload: true });
       const result = await fetchHomeSections(
         // @ts-ignore
         genre || 'general',
