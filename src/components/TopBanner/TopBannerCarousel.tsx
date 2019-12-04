@@ -569,7 +569,13 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       }}
       centerMode={true}>
       {banners.map((item, index) => (
-        <a href={item.landing_url} key={index} aria-label={item.title}>
+        <a
+          css={css`
+            outline: none;
+          `}
+          href={item.landing_url}
+          key={index}
+          aria-label={item.title}>
           <TopBannerItem item={item} />
         </a>
       ))}
