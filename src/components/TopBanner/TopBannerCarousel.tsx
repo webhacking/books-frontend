@@ -6,7 +6,7 @@ import { flexCenter } from 'src/styles';
 import Arrow from 'src/components/Carousel/Arrow';
 import uiOption from 'src/constants/ui';
 import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
-import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
+import { between, BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import { TopBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { useEventTracker } from 'src/hooks/useEveneTracker';
@@ -400,8 +400,33 @@ const arrowCSS = css`
   }
 `;
 
-const arrowWrapperCSS = css`
+const arrowWrapperCSS = (position: 'left' | 'right') => css`
   display: none;
+  ${between(
+    300,
+    568,
+    css`
+      display: block;
+      position: absolute;
+      opacity: 0.7;
+      bottom: 117px;
+      ${position === 'right'
+        ? 'transform: translate(-115%, 20px);'
+        : 'transform: translate(115%, 20px);'};
+    `,
+  )};
+  ${between(
+    569,
+    BreakPoint.LG,
+    css`
+      display: block;
+      position: absolute;
+      opacity: 0.7;
+      bottom: 117px;
+      ${position === 'right' ? 'right: calc(50% - 220px);' : 'left: calc(50% - 220px);'};
+    `,
+  )};
+
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
     css`
@@ -409,6 +434,7 @@ const arrowWrapperCSS = css`
       position: absolute;
       opacity: 0.7;
       bottom: 143.5px;
+      ${position === 'right' ? 'right: calc(50% - 257px);' : 'left: calc(50% - 257px);'};
     `,
   )};
 `;
@@ -648,41 +674,41 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
               total={banners.length}
               currentPosition={currentPosition + 1}
             />
-            <form>
-              <div
-                css={css`
-                  ${arrowWrapperCSS};
-                  left: -40px;
-                  transform: translate(-50%, 50%);
-                `}>
-                <Arrow
-                  side={'left'}
-                  onClickHandler={handleClickLeft}
-                  label={'이전'}
-                  wrapperStyle={css`
-                    ${arrowCSS};
-                    opacity: 0.5;
-                  `}
-                />
-              </div>
-              <div
-                css={css`
-                  ${arrowWrapperCSS};
-                  transform: translate(50%, 50%);
-                  right: -40px;
-                `}>
-                <Arrow
-                  onClickHandler={handleClickRight}
-                  side={'right'}
-                  label={'다음'}
-                  wrapperStyle={css`
-                    ${arrowCSS};
-                    opacity: 0.5;
-                  `}
-                />
-              </div>
-            </form>
           </PositionOverlay>
+          <form>
+            <div
+              css={css`
+                ${arrowWrapperCSS('left')};
+                left: -40px;
+                transform: translate(-50%, 50%);
+              `}>
+              <Arrow
+                side={'left'}
+                onClickHandler={handleClickLeft}
+                label={'이전'}
+                wrapperStyle={css`
+                  ${arrowCSS};
+                  opacity: 0.5;
+                `}
+              />
+            </div>
+            <div
+              css={css`
+                ${arrowWrapperCSS('right')};
+                transform: translate(50%, 50%);
+                right: -40px;
+              `}>
+              <Arrow
+                onClickHandler={handleClickRight}
+                side={'right'}
+                label={'다음'}
+                wrapperStyle={css`
+                  ${arrowCSS};
+                  opacity: 0.5;
+                `}
+              />
+            </div>
+          </form>
         </>
       </TopBannerCarouselWrapper>
     );
