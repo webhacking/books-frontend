@@ -1,9 +1,13 @@
 import { css } from '@emotion/core';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import * as React from 'react';
+import React, { useContext, useRef } from 'react';
 import ArrowV from 'src/svgs/ArrowV.svg';
-import { scrollBarHidden } from 'src/styles';
+// @ts-ignore
+import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
 import getConfig from 'next/config';
+import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
+import { useScrollSlider } from 'src/hooks/useScrollSlider';
+import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 const { publicRuntimeConfig } = getConfig();
 
 interface Keyword {
@@ -392,6 +396,10 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
   if (['bl', 'fantasy', 'romancee'].includes(parentGenre)) {
     keywordFinderUrl.searchParams.append('from', genre);
   }
+
+  const ref = useRef<HTMLUListElement>(null);
+  const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
+  const deviceType = useContext(DeviceTypeContext);
   return (
     <section
       css={css`
@@ -399,12 +407,11 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
         max-width: 1000px;
         margin: 0 auto;
         box-sizing: border-box;
-        padding: 0 24px;
         margin-bottom: 48px;
         ${orBelow(
           BreakPoint.LG,
           css`
-            padding: 0 16px;
+            padding: 0;
           `,
         )};
       `}>
@@ -418,6 +425,13 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
           a {
             color: black;
           }
+          padding-left: 24px;
+          ${orBelow(
+            BreakPoint.LG,
+            css`
+              padding-left: 16px;
+            `,
+          )};
         `}>
         <a href={keywordFinderUrl.toString()} aria-label={'키워드 파인더'}>
           <span css={css``}>키워드로 검색하기</span>
@@ -431,6 +445,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
       </h2>
       <div>
         <ul
+          ref={ref}
           css={css`
             display: flex;
             overflow-x: auto;
@@ -455,6 +470,23 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
                   :not(:last-of-type) {
                     margin-right: 6px;
                   }
+                  :last-of-type {
+                    padding-right: 24px;
+                  }
+                  :first-of-type {
+                    padding-left: 24px;
+                  }
+                  ${orBelow(
+                    BreakPoint.LG,
+                    css`
+                      :last-of-type {
+                        padding-right: 16px;
+                      }
+                      :first-of-type {
+                        padding-left: 16px;
+                      }
+                    `,
+                  )};
                 `}>
                 <a
                   href={keywordFinderUrl.toString()}
@@ -479,6 +511,47 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
           })}
         </ul>
       </div>
+      {!['mobile', 'tablet'].includes(deviceType) && (
+        <form
+          css={[
+            css`
+              height: 0;
+            `,
+            displayNoneForTouchDevice,
+          ]}>
+          <Arrow
+            label={'이전'}
+            side={'left'}
+            onClickHandler={moveLeft}
+            wrapperStyle={[
+              css`
+                z-index: 2;
+                position: absolute;
+                left: 5px;
+                transition: opacity 0.2s;
+                top: 40px;
+              `,
+              !isOnTheLeft && arrowTransition,
+            ]}
+          />
+
+          <Arrow
+            label={'다음'}
+            side={'right'}
+            onClickHandler={moveRight}
+            wrapperStyle={[
+              css`
+                z-index: 2;
+                position: absolute;
+                right: 5px;
+                transition: opacity 0.2s;
+                top: 40px;
+              `,
+              !isOnTheRight && arrowTransition,
+            ]}
+          />
+        </form>
+      )}
     </section>
   );
 };

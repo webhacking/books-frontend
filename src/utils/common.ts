@@ -1,3 +1,5 @@
+import { UAParser } from 'ua-parser-js';
+
 // tslint:disable-next-line
 export const safeJSONParse = (source: string | null, defaultValue: any) => {
   if (!source) {
@@ -79,4 +81,9 @@ export const splitArrayToChunk = (array: any[], size: number) => {
     index += size;
   }
   return chunked_arr;
+};
+
+export const getDeviceType = () => {
+  const result = new UAParser();
+  return result.getDevice().type;
 };

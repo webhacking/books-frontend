@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { displayNoneForTouchDevice, flexRowStart, scrollBarHidden } from 'src/styles';
 import { SelectionBookItem } from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { css } from '@emotion/core';
@@ -7,6 +7,7 @@ import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DisplayType, MdBook } from 'src/types/sections';
+import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 
 const listCSS = css`
   padding-bottom: 48px;
@@ -61,7 +62,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const { genre, type, isIntersecting, slug } = props;
-
+  const deviceType = useContext(DeviceTypeContext);
   return (
     <div
       ref={wrapperRef}
@@ -86,43 +87,45 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
             </li>
           ))}
       </ul>
-      <form
-        css={[
-          css`
-            height: 0;
-          `,
-          displayNoneForTouchDevice,
-        ]}>
-        <Arrow
-          label={'이전'}
-          side={'left'}
-          onClickHandler={moveLeft}
-          wrapperStyle={[
+      {!['mobile', 'tablet'].includes(deviceType) && (
+        <form
+          css={[
             css`
-              position: absolute;
-              left: 5px;
-              transition: opacity 0.2s;
-              top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+              height: 0;
             `,
-            !isOnTheLeft && arrowTransition,
-          ]}
-        />
+            displayNoneForTouchDevice,
+          ]}>
+          <Arrow
+            label={'이전'}
+            side={'left'}
+            onClickHandler={moveLeft}
+            wrapperStyle={[
+              css`
+                position: absolute;
+                left: 5px;
+                transition: opacity 0.2s;
+                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+              `,
+              !isOnTheLeft && arrowTransition,
+            ]}
+          />
 
-        <Arrow
-          label={'다음'}
-          side={'right'}
-          onClickHandler={moveRight}
-          wrapperStyle={[
-            css`
-              position: absolute;
-              right: 5px;
-              transition: opacity 0.2s;
-              top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
-            `,
-            !isOnTheRight && arrowTransition,
-          ]}
-        />
-      </form>
+          <Arrow
+            label={'다음'}
+            side={'right'}
+            onClickHandler={moveRight}
+            wrapperStyle={[
+              css`
+                position: absolute;
+                right: 5px;
+                transition: opacity 0.2s;
+                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+              `,
+              !isOnTheRight && arrowTransition,
+            ]}
+          />
+        </form>
+      )}
     </div>
   );
 };

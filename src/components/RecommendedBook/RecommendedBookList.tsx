@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import {
   BookList,
   BookMeta,
@@ -19,6 +19,7 @@ import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
 import { displayNoneForTouchDevice } from 'src/styles';
+import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 const { publicRuntimeConfig } = getConfig();
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
@@ -32,6 +33,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const { theme, type, slug } = props;
+  const deviceType = useContext(DeviceTypeContext);
   return (
     <div
       css={css`
@@ -137,50 +139,52 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
             </PortraitBook>
           ))}
       </BookList>
-      <form css={displayNoneForTouchDevice}>
-        <Arrow
-          onClickHandler={moveLeft}
-          label={'이전'}
-          color={theme}
-          side={'left'}
-          wrapperStyle={[
-            css`
-              left: 5px;
-              z-index: 2;
-              position: absolute;
-              transition: opacity 0.2s;
-              top: calc(
-                ${getArrowVerticalCenterPosition(
-                  ref,
-                  type === DisplayType.HotRelease ? '30px' : '0px',
-                )}
-              );
-            `,
-            !isOnTheLeft && arrowTransition,
-          ]}
-        />
-        <Arrow
-          label={'다음'}
-          onClickHandler={moveRight}
-          color={theme}
-          side={'right'}
-          wrapperStyle={[
-            css`
-              z-index: 2;
-              right: 9px;
-              position: absolute;
-              transition: opacity 0.2s;
-              top: calc(
-                ${getArrowVerticalCenterPosition(
-                  ref,
-                  type === DisplayType.HotRelease ? '30px' : '0px',
-                )}
-              );
-            `,
-            !isOnTheRight && arrowTransition,
-          ]}
-        />
-      </form>
+      {!['mobile', 'tablet'].includes(deviceType) && (
+        <form css={displayNoneForTouchDevice}>
+          <Arrow
+            onClickHandler={moveLeft}
+            label={'이전'}
+            color={theme}
+            side={'left'}
+            wrapperStyle={[
+              css`
+                left: 5px;
+                z-index: 2;
+                position: absolute;
+                transition: opacity 0.2s;
+                top: calc(
+                  ${getArrowVerticalCenterPosition(
+                    ref,
+                    type === DisplayType.HotRelease ? '30px' : '0px',
+                  )}
+                );
+              `,
+              !isOnTheLeft && arrowTransition,
+            ]}
+          />
+          <Arrow
+            label={'다음'}
+            onClickHandler={moveRight}
+            color={theme}
+            side={'right'}
+            wrapperStyle={[
+              css`
+                z-index: 2;
+                right: 9px;
+                position: absolute;
+                transition: opacity 0.2s;
+                top: calc(
+                  ${getArrowVerticalCenterPosition(
+                    ref,
+                    type === DisplayType.HotRelease ? '30px' : '0px',
+                  )}
+                );
+              `,
+              !isOnTheRight && arrowTransition,
+            ]}
+          />
+        </form>
+      )}
     </div>
   );
 };

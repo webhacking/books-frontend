@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 // import BookMeta from 'src/components/BookMeta/BookMeta';
@@ -19,6 +19,7 @@ import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
+import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 const { publicRuntimeConfig } = getConfig();
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -173,6 +174,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
   const { genre, type, showSomeDeal, slug } = props;
 
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
+  const deviceType = useContext(DeviceTypeContext);
   return (
     <>
       <SectionWrapper ref={targetRef}>
@@ -284,41 +286,43 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                 </li>
               ))}
           </ul>
-          <form
-            css={[
-              css`
-                height: 0;
-                @media (min-width: 1000px) {
-                  display: none;
-                }
-              `,
-              displayNoneForTouchDevice,
-            ]}>
-            <Arrow
-              label={'이전'}
-              side={'left'}
-              onClickHandler={moveLeft}
-              wrapperStyle={[
-                arrowPosition('left'),
-                !isOnTheLeft && arrowTransition,
+          {!['mobile', 'tablet'].includes(deviceType) && (
+            <form
+              css={[
                 css`
-                  z-index: 2;
+                  height: 0;
+                  @media (min-width: 1000px) {
+                    display: none;
+                  }
                 `,
-              ]}
-            />
-            <Arrow
-              label={'다음'}
-              side={'right'}
-              onClickHandler={moveRight}
-              wrapperStyle={[
-                arrowPosition('right'),
-                !isOnTheRight && arrowTransition,
-                css`
-                  z-index: 2;
-                `,
-              ]}
-            />
-          </form>
+                displayNoneForTouchDevice,
+              ]}>
+              <Arrow
+                label={'이전'}
+                side={'left'}
+                onClickHandler={moveLeft}
+                wrapperStyle={[
+                  arrowPosition('left'),
+                  !isOnTheLeft && arrowTransition,
+                  css`
+                    z-index: 2;
+                  `,
+                ]}
+              />
+              <Arrow
+                label={'다음'}
+                side={'right'}
+                onClickHandler={moveRight}
+                wrapperStyle={[
+                  arrowPosition('right'),
+                  !isOnTheRight && arrowTransition,
+                  css`
+                    z-index: 2;
+                  `,
+                ]}
+              />
+            </form>
+          )}
         </div>
       </SectionWrapper>
     </>

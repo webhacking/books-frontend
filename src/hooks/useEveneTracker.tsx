@@ -4,15 +4,20 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
+import { getDeviceType } from 'src/utils/common';
+
 const { captureException } = sentry();
 
 export const createTracker = (userId: string | null) => {
   if (typeof window !== 'undefined') {
-    const tracker = new Tracker({
+    const device = getDeviceType();
+    return new Tracker({
       // @ts-ignore
       userId: userId || null,
       // Todo device 판단  User-Agent ?
-      deviceType: window.innerWidth > 999 ? DeviceType.PC : DeviceType.Mobile, // user agent 판단? 아니면?
+      deviceType: ['mobile', 'tablet'].includes(device)
+        ? DeviceType.Mobile
+        : DeviceType.PC,
       beaconOptions: {
         use: true,
         beaconSrc:
@@ -38,7 +43,6 @@ export const createTracker = (userId: string | null) => {
       // eslint-disable-next-line no-process-env
       development: process.env.NODE_ENV !== 'production',
     });
-    return tracker;
   }
   return null;
 };
@@ -54,10 +58,13 @@ export const useEventTracker = () => {
   }
   const { loggedUser } = useSelector((state: RootState) => state.account);
   useEffect(() => {
+    const device = getDeviceType();
     try {
       tracker.set({
         userId: loggedUser?.id || null,
-        deviceType: window.innerWidth > 999 ? DeviceType.PC : DeviceType.Mobile,
+        deviceType: ['mobile', 'tablet'].includes(device)
+          ? DeviceType.Mobile
+          : DeviceType.PC,
       });
     } catch (error) {
       captureException(error);

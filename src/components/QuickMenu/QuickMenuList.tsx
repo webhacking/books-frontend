@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import styled from '@emotion/styled';
 import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
 import { css } from '@emotion/core';
@@ -7,6 +7,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { QuickMenu } from 'src/types/sections';
+import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 const labelCSS = theme => css`
   font-size: 13px;
   line-height: 1.23;
@@ -126,7 +127,7 @@ const Menu: React.FC<{ menu: QuickMenu }> = React.memo(props => {
 export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
-
+  const deviceType = useContext(DeviceTypeContext);
   return (
     <section
       css={css`
@@ -138,44 +139,46 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
           <Menu key={index} menu={menu} />
         ))}
       </MenuList>
-      <form
-        css={css`
-          height: 0;
-          @media (hover: none) {
-            display: none;
-          }
-        `}>
-        <Arrow
-          label={'이전'}
-          side={'left'}
-          onClickHandler={moveLeft}
-          wrapperStyle={[
-            css`
-              z-index: 2;
-              position: absolute;
-              left: 5px;
-              top: 30px;
-              transition: opacity 0.2s;
-            `,
-            !isOnTheLeft && arrowTransition,
-          ]}
-        />
-        <Arrow
-          label={'다음'}
-          side={'right'}
-          onClickHandler={moveRight}
-          wrapperStyle={[
-            css`
-              z-index: 2;
-              position: absolute;
-              right: 5px;
-              top: 30px;
-              transition: opacity 0.2s;
-            `,
-            !isOnTheRight && arrowTransition,
-          ]}
-        />
-      </form>
+      {!['mobile', 'tablet'].includes(deviceType) && (
+        <form
+          css={css`
+            height: 0;
+            @media (hover: none) {
+              display: none;
+            }
+          `}>
+          <Arrow
+            label={'이전'}
+            side={'left'}
+            onClickHandler={moveLeft}
+            wrapperStyle={[
+              css`
+                z-index: 2;
+                position: absolute;
+                left: 5px;
+                top: 30px;
+                transition: opacity 0.2s;
+              `,
+              !isOnTheLeft && arrowTransition,
+            ]}
+          />
+          <Arrow
+            label={'다음'}
+            side={'right'}
+            onClickHandler={moveRight}
+            wrapperStyle={[
+              css`
+                z-index: 2;
+                position: absolute;
+                right: 5px;
+                top: 30px;
+                transition: opacity 0.2s;
+              `,
+              !isOnTheRight && arrowTransition,
+            ]}
+          />
+        </form>
+      )}
     </section>
   );
 };
