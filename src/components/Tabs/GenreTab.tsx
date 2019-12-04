@@ -208,6 +208,7 @@ interface TabItemProps {
   normalCSS: (theme: RIDITheme) => SerializedStyles;
   labelCSS: (theme: RIDITheme) => SerializedStyles;
   route?: string;
+  isPartial?: boolean;
 }
 
 // @ts-ignore
@@ -302,7 +303,7 @@ const genres = {
 
 const TabItem: React.FC<TabItemProps> = React.memo(props => {
   // Todo apply lint
-  const { route, currentPath, activePath } = props;
+  const { route, currentPath, activePath, isPartial } = props;
   const isActivePath = activePath.includes(currentPath);
   return (
     <li
@@ -326,14 +327,22 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
             `
           : props.labelCSS(theme)}
       `}>
-      <Link replace={false} route={route}>
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <a aria-label={props.label}>
+      {isPartial ? (
+        <a aria-label={props.label} href={route}>
           <span css={isActivePath ? props.currentCSS : props.normalCSS}>
             {props.label}
           </span>
         </a>
-      </Link>
+      ) : (
+        <Link replace={false} route={route}>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <a aria-label={props.label}>
+            <span css={isActivePath ? props.currentCSS : props.normalCSS}>
+              {props.label}
+            </span>
+          </a>
+        </Link>
+      )}
     </li>
   );
 });
@@ -344,7 +353,7 @@ interface GenreTabProps {
 }
 
 const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
-  const { currentGenre } = props;
+  const { currentGenre, isPartials } = props;
   const genreInfo = genres[currentGenre] ?? genres.general;
 
   const showSubGenre = genreInfo.services.length > 1;
@@ -397,6 +406,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               activePath={['/']}
               label={'일반'}
               route={'/'}
+              isPartial={isPartials}
             />
             <TabItem
               normalCSS={normal}
@@ -411,6 +421,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               ]}
               label={'로맨스'}
               route={'/romance'}
+              isPartial={isPartials}
             />
             <TabItem
               normalCSS={normal}
@@ -425,6 +436,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               ]}
               label={'판타지'}
               route={'/fantasy'}
+              isPartial={isPartials}
             />
             <TabItem
               normalCSS={normal}
@@ -434,6 +446,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               activePath={['/comics', '/comics/']}
               label={'만화'}
               route={'/comics'}
+              isPartial={isPartials}
             />
             <TabItem
               normalCSS={normal}
@@ -443,6 +456,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               activePath={['/bl', '/bl-serial', '/bl/', '/bl-serial/']}
               label={'BL'}
               route={'/bl'}
+              isPartial={isPartials}
             />
           </ul>
         </li>
@@ -463,6 +477,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                     currentPath={router.asPath}
                     activePath={service.activePaths}
                     label={service.name}
+                    isPartial={isPartials}
                   />
                 ))}
               </ul>
