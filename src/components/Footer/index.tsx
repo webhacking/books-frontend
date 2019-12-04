@@ -289,6 +289,11 @@ const Footer: React.FC<{}> = () => (
                   <FooterMenuLabel>사업 제휴 문의</FooterMenuLabel>
                 </a>
               </li>
+              <li>
+                <a href="https://help.ridibooks.com/hc/ko/articles/360026484174">
+                  <FooterMenuLabel>페이퍼 대량구매 안내</FooterMenuLabel>
+                </a>
+              </li>
             </FooterMenu>
           </li>
           <li css={hiddenMenu}>
