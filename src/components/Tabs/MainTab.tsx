@@ -213,7 +213,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
   const { isPartials, loggedUserInfo } = props;
   const currentPath = useContext(BrowserLocationContext);
   const [homeURL, setHomeURL] = useState('/');
-  const [cartCount, setCartCount] = useState<null | number>(null);
+  const [cartCount, setCartCount] = useState<number>(0);
   const [hasNotification, setNotification] = useState(0);
   useEffect(() => {
     const visitedGenre = Cookies.get(`${cookieKeys.main_genre}`);
@@ -279,7 +279,9 @@ export const MainTab: React.FC<MainTabProps> = props => {
           { retries: 2 },
         );
         if (result.status === 200) {
-          setCartCount(result.data.count);
+          if (result.data.count) {
+            setCartCount(result.data.count);
+          }
         }
       } catch (error) {
         captureException(error);
@@ -347,7 +349,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           path={'/cart'}
           pathRegexp={/^\/cart/gu}
           addOn={
-            cartCount && (
+            cartCount > 0 && (
               <div
                 css={css`
                   position: absolute;
