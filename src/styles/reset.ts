@@ -153,3 +153,113 @@ export const resetStyles = css`
     letter-spacing: -0.03em;
   }
 `;
+export const partialResetStyles = css`
+  html {
+    ${css([resetSpacing, resetFont])};
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    font-size: 14px;
+  }
+  body {
+    ${css([resetSpacing])};
+    overflow-x: hidden;
+  }
+  hr {
+    ${css([resetSpacing])};
+  }
+  p {
+    ${css([resetSpacing])};
+  }
+  button {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    ${css([inheritFont, resetAppearance, resetSpacing])};
+    * {
+      position: relative;
+      top: 0;
+      left: 0;
+    }
+  }
+  input {
+    ${inheritFont};
+    ${resetAppearance};
+    ${resetSpacing};
+
+    &::-ms-clear {
+      display: none;
+    }
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  ul {
+    list-style-type: none;
+    ${css([resetSpacing])};
+  }
+  li {
+    line-height: initial;
+  }
+
+  #new_footer {
+    * {
+      .a11y {
+        ${css([a11y])};
+      }
+      box-sizing: border-box;
+    }
+  }
+  #__next__footer {
+    * {
+      .a11y {
+        ${css([a11y])};
+      }
+      box-sizing: border-box;
+    }
+  }
+
+  a {
+    ${inheritFont};
+    &:link,
+    &:visited {
+      text-decoration: none;
+      .new_gnb &,
+      #new_footer & {
+        color: white;
+      }
+    }
+    cursor: pointer;
+  }
+
+  ${fonts};
+  #__next {
+    overflow-y: hidden;
+    overflow-x: hidden;
+
+    * {
+      .a11y {
+        ${css([a11y])};
+      }
+      //margin: 0;
+      //padding: 0;
+      box-sizing: border-box;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  button,
+  input,
+  p,
+  span {
+    letter-spacing: -0.03em;
+  }
+`;

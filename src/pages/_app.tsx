@@ -6,7 +6,7 @@ import makeStore, { RootState } from 'src/store/config';
 import withReduxSaga from 'next-redux-saga';
 import { ConnectedRouter } from 'connected-next-router';
 import { CacheProvider, Global } from '@emotion/core';
-import { defaultTheme, resetStyles } from 'src/styles';
+import { defaultTheme, partialResetStyles, resetStyles } from 'src/styles';
 import GNB from 'src/components/GNB';
 import { ThemeProvider } from 'emotion-theming';
 import Footer from 'src/components/Footer';
@@ -123,7 +123,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       return (
         <>
           <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={true}>
-            <Global styles={resetStyles} />
+            <Global styles={partialResetStyles} />
           </PartialSeparator>
           {/* Todo Apply Layout */}
           <Provider store={store}>
