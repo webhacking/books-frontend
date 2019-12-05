@@ -6,7 +6,7 @@ import { EventBanner as EventBannerItem } from 'src/types/sections';
 const eventBannerWrapperCSS = css`
   margin: 0 auto;
   width: 100%;
-  padding: 10px 0 56px 0;
+  padding: 24px 0;
   height: 100%;
 `;
 

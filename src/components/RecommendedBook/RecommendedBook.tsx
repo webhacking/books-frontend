@@ -35,11 +35,12 @@ const backgroundImageCSS = css`
 `;
 
 const hotReleaseRecommendedBookWrapperCSS = css`
-  padding-top: 36px;
-  margin-bottom: 48px;
+  padding-top: 24px;
+  margin-bottom: 0;
 `;
 const recommendedBookWrapperCSS = css`
-  padding-top: 36px;
+  padding-top: 24px;
+  padding-bottom: 0;
 `;
 
 export const hotReleaseBookListCSS = css`
@@ -291,6 +292,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           ? hotReleaseRecommendedBookWrapperCSS
           : recommendedBookWrapperCSS,
         theme === 'dark' && backgroundImageCSS,
+        theme === 'white' && css``,
       ]}>
       <h2
         css={[

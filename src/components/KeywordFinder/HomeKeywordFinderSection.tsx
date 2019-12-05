@@ -407,7 +407,8 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
         max-width: 1000px;
         margin: 0 auto;
         box-sizing: border-box;
-        margin-bottom: 48px;
+        padding-bottom: 24px;
+        padding-top: 24px;
         ${orBelow(
           BreakPoint.LG,
           css`

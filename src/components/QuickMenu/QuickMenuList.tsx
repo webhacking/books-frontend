@@ -31,7 +31,7 @@ const MenuList = styled.ul`
   flex-direction: row;
   justify-content: space-between;
   padding-top: 24px;
-  padding-bottom: 32px;
+  padding-bottom: 24px;
   padding-left: 13px;
   padding-right: 13px;
 

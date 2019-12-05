@@ -24,6 +24,8 @@ const { publicRuntimeConfig } = getConfig();
 const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;
+  padding-top: 24px;
+  padding-bottom: 24px;
 `;
 
 const listCSS = css`
@@ -201,7 +203,6 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
           css={css`
             position: relative;
             height: ${type === 'big' ? '433px' : '270px'}; // badge + (7 * 3)
-            margin-bottom: 62px;
           `}>
           <ul css={listCSS} ref={ref}>
             {books

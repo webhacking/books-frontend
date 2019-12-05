@@ -214,6 +214,8 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
 const multipleLineSectionCSS = css`
   max-width: 1000px;
   margin: 0 auto;
+  padding-bottom: 24px;
+  padding-top: 24px;
   ${orBelow(
     433,
     css`
