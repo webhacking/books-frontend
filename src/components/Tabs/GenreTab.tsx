@@ -7,7 +7,7 @@ import { clearOutline, RIDITheme } from 'src/styles';
 import { Link } from 'server/routes';
 import { orBelow } from 'src/utils/mediaQuery';
 import { useRouter } from 'next/router';
-
+import * as Cookies from 'js-cookie';
 const GenreTabWrapper = styled.ul`
   max-width: 1000px;
   margin: 0 auto;
@@ -305,6 +305,8 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
   // Todo apply lint
   const { route, currentPath, activePath, isPartial } = props;
   const isActivePath = activePath.includes(currentPath);
+  const cookieGenre = Cookies.get('main_genre') || '';
+
   return (
     <li
       css={theme => css`
@@ -328,7 +330,14 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
           : props.labelCSS(theme)}
       `}>
       {isPartial ? (
-        <a aria-label={props.label} href={route}>
+        <a
+          aria-label={props.label}
+          href={route}
+          onClick={() => {
+            if (route === '/' && cookieGenre) {
+              Cookies.set('main_genre', '');
+            }
+          }}>
           <span css={isActivePath ? props.currentCSS : props.normalCSS}>
             {props.label}
           </span>
