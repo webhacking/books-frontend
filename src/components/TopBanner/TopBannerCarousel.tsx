@@ -32,6 +32,7 @@ const slideCenterOverlayCSS = css`
 `;
 
 const TopBannerItemWrapper = styled.div`
+  border-radius: 6px;
   position: relative;
   ${flexCenter};
   flex-shrink: 0;
@@ -249,7 +250,7 @@ const totalCountCSS = css`
 
 const carouselLoadingOverlay = css`
   position: absolute;
-  top: 0;
+  top: 1px;
   left: 1px;
   border-radius: 6px;
   height: 100%;
@@ -528,7 +529,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       slidesToScroll={1}
       speed={uiOption.topBannerCarouselSpeed}
       autoplaySpeed={uiOption.topBannerCarouselPlaySpeed}
-      autoplay={true}
+      autoplay={false}
       arrows={false}
       infinite={true}
       variableWidth={true}
@@ -573,6 +574,15 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
         <a
           css={css`
             outline: none;
+            border-radius: 6px;
+            position: relative;
+            top: 1px;
+            ${greaterThanOrEqualTo(
+              BreakPoint.LG + 1,
+              css`
+                top: 2px;
+              `,
+            )}
           `}
           href={item.landing_url}
           key={index}
