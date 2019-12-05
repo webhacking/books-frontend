@@ -37,7 +37,6 @@ const CarouselWrapper = styled.div`
   margin: 0 auto;
   position: relative;
   height: 100%;
-  padding-bottom: 48px;
   padding-left: 22px;
   padding-right: 9px;
   margin-left: -6px;

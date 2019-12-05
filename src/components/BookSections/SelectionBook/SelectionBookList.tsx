@@ -10,7 +10,6 @@ import { DisplayType, MdBook } from 'src/types/sections';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 
 const listCSS = css`
-  padding-bottom: 48px;
   box-sizing: content-box;
   overflow: auto;
   ${orBelow(

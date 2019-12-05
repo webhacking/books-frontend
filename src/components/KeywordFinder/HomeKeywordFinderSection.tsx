@@ -409,12 +409,6 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
         box-sizing: border-box;
         padding-bottom: 24px;
         padding-top: 24px;
-        ${orBelow(
-          BreakPoint.LG,
-          css`
-            padding: 0;
-          `,
-        )};
       `}>
       <h2
         css={css`
