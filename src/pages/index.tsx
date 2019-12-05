@@ -128,6 +128,7 @@ const setCookie = (genre: string) => {
   });
 };
 
+// @ts-ignore
 const MemoSpinner = React.memo(() => (
   <>
     <Spinner css={spinnerCSS} />
@@ -138,7 +139,6 @@ export const Home: NextPage<HomeProps> = props => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const bIds = keyToArray(props.branches, 'b_id');
   const [tracker] = useEventTracker();
-  const { isFetching } = useSelector((state: RootState) => state.books);
 
   const setPageView = useCallback(() => {
     if (tracker) {
@@ -177,7 +177,6 @@ export const Home: NextPage<HomeProps> = props => {
             ))}
         </EventTracker>
       </DeviceType>
-      {isFetching && <MemoSpinner />}
     </>
   );
 };
@@ -188,7 +187,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
   if (req && res) {
     if (res.statusCode !== 302) {
       try {
-        store.dispatch({ type: booksActions.setFetching.type, payload: true });
+        // store.dispatch({ type: booksActions.setFetching.type, payload: true });
         const result = await fetchHomeSections(
           // @ts-ignore
           genre,
@@ -215,7 +214,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
   } else {
     // Client Side
     try {
-      store.dispatch({ type: booksActions.setFetching.type, payload: true });
+      // store.dispatch({ type: booksActions.setFetching.type, payload: true });
       const result = await fetchHomeSections(
         // @ts-ignore
         genre || 'general',
