@@ -1,8 +1,8 @@
-import React, { FormEvent, useCallback, useEffect, useState } from 'react';
+import React, { FormEvent, useCallback, useContext, useEffect, useState } from 'react';
 import SliderCarousel from 'react-slick';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
-import { flexCenter } from 'src/styles';
+import { displayNoneForTouchDevice, flexCenter } from 'src/styles';
 import Arrow from 'src/components/Carousel/Arrow';
 import uiOption from 'src/constants/ui';
 import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
@@ -11,6 +11,7 @@ import { TopBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { useEventTracker } from 'src/hooks/useEveneTracker';
 import getConfig from 'next/config';
+import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 const { publicRuntimeConfig } = getConfig();
 
 const TOP_BANNER_LG_WIDTH = 430;
@@ -657,6 +658,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
     if (banners.length < 3) {
       return null;
     }
+    const deviceType = useContext(DeviceTypeContext);
     return (
       <TopBannerCarouselWrapper ref={wrapper}>
         {!carouselInitialized && (
@@ -681,40 +683,42 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
               currentPosition={currentPosition + 1}
             />
           </PositionOverlay>
-          <form>
-            <div
-              css={css`
-                ${arrowWrapperCSS('left')};
-                left: -40px;
-                transform: translate(-50%, 50%);
-              `}>
-              <Arrow
-                side={'left'}
-                onClickHandler={handleClickLeft}
-                label={'이전'}
-                wrapperStyle={css`
-                  ${arrowCSS};
-                  opacity: 0.5;
-                `}
-              />
-            </div>
-            <div
-              css={css`
-                ${arrowWrapperCSS('right')};
-                transform: translate(50%, 50%);
-                right: -40px;
-              `}>
-              <Arrow
-                onClickHandler={handleClickRight}
-                side={'right'}
-                label={'다음'}
-                wrapperStyle={css`
-                  ${arrowCSS};
-                  opacity: 0.5;
-                `}
-              />
-            </div>
-          </form>
+          {!['mobile', 'tablet'].includes(deviceType) && (
+            <form css={displayNoneForTouchDevice}>
+              <div
+                css={css`
+                  ${arrowWrapperCSS('left')};
+                  left: -40px;
+                  transform: translate(-50%, 50%);
+                `}>
+                <Arrow
+                  side={'left'}
+                  onClickHandler={handleClickLeft}
+                  label={'이전'}
+                  wrapperStyle={css`
+                    ${arrowCSS};
+                    opacity: 0.5;
+                  `}
+                />
+              </div>
+              <div
+                css={css`
+                  ${arrowWrapperCSS('right')};
+                  transform: translate(50%, 50%);
+                  right: -40px;
+                `}>
+                <Arrow
+                  onClickHandler={handleClickRight}
+                  side={'right'}
+                  label={'다음'}
+                  wrapperStyle={css`
+                    ${arrowCSS};
+                    opacity: 0.5;
+                  `}
+                />
+              </div>
+            </form>
+          )}
         </>
       </TopBannerCarouselWrapper>
     );
