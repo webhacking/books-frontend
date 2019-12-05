@@ -50,8 +50,9 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
     if (!items && loggedUser) {
       requestAiRecommendationItems();
     }
+    console.log(aiItems);
   }, [dispatch, items, genre, loggedUser]);
-  if (!loggedUser || aiItems.length < 1) {
+  if (!loggedUser || !aiItems || aiItems.length < 1) {
     return null;
   }
   return (
