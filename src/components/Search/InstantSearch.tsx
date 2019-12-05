@@ -92,9 +92,8 @@ const searchWrapper = (theme: RIDITheme) => css`
 
 const iconStyle = (theme: RIDITheme) => css`
   fill: ${theme.input.placeholder};
-  box-sizing: content-box;
   flex-shrink: 0;
-  padding: 5.5px 2.5px 5px 7.5px;
+  margin: 5.5px 2.5px 5px 7.5px;
   width: 24px;
   height: 24px;
 `;
