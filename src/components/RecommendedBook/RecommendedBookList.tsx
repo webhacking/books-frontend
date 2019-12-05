@@ -104,22 +104,24 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                 <h4
                   css={[
                     css`
-                      padding-left: 14px;
+                      padding-left: 0;
+                      position: relative;
+                      left: 7px;
                       margin-top: 2px;
                       font-size: 13px;
                       line-height: 16px;
                       text-align: center;
                       font-weight: bold;
                       white-space: nowrap;
-                      ${orBelow(
-                        BreakPoint.LG,
-                        css`
-                          padding-left: 13px;
-                          display: flex;
-                          width: 120px;
-                          justify-content: center;
-                        `,
-                      )};
+                      letter-spacing: -0.373044px
+                        ${orBelow(
+                          BreakPoint.LG,
+                          css`
+                            display: flex;
+                            width: 120px;
+                            justify-content: center;
+                          `,
+                        )};
                     `,
                     theme === 'dark' &&
                       css`

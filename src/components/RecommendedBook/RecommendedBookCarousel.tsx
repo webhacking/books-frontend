@@ -48,7 +48,7 @@ const CarouselWrapper = styled.div`
   margin: 0 auto;
   position: relative;
   padding-left: 36px;
-  padding-bottom: 36px;
+  padding-bottom: 24px;
 `;
 
 interface RecommendedBookCarouselProps {
@@ -88,7 +88,10 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = R
               <h4
                 css={[
                   css`
-                    padding-left: 14px;
+                    padding-left: 0;
+                    position: relative;
+                    left: 7px;
+                    width: 140px;
                     margin-top: 2px;
                     font-size: 13px;
                     line-height: 16px;
@@ -239,16 +242,20 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                     <BookMeta book={book.detail} />
                   )}
                   {book.detail && type === DisplayType.TodayRecommendation && (
-                    <div
+                    <h4
                       css={[
                         css`
-                          padding-left: 14px;
+                          padding-left: 0;
+                          position: relative;
+                          left: 7px;
+                          width: 140px;
                           margin-top: 2px;
                           font-size: 13px;
                           line-height: 16px;
                           text-align: center;
                           font-weight: 700;
                           white-space: nowrap;
+                          letter-spacing: -0.373044px;
                         `,
                         theme === 'dark' &&
                           css`
@@ -263,7 +270,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                           ),
                         }}
                       />
-                    </div>
+                    </h4>
                   )}
                 </PortraitBook>
               </div>

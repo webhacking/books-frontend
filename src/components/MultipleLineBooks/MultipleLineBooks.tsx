@@ -220,7 +220,7 @@ const multipleLineSectionCSS = css`
     433,
     css`
       justify-content: space-between;
-      padding: 0 10px;
+      padding: 24px 10px;
       padding-right: 29px !important;
     `,
   )}

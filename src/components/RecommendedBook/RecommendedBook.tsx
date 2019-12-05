@@ -230,7 +230,9 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
               <h4
                 css={[
                   css`
-                    padding-left: 13px;
+                    padding-left: 0;
+                    position: relative;
+                    left: 7px;
                     margin-top: 2px;
                     font-size: 13px;
                     line-height: 16px;
@@ -240,13 +242,14 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
                     width: 140px;
                     display: flex;
                     justify-content: center;
-                    ${orBelow(
-                      BreakPoint.LG,
-                      css`
-                        display: flex;
-                        width: 120px;
-                      `,
-                    )};
+                    letter-spacing: -0.373044px
+                      ${orBelow(
+                        BreakPoint.LG,
+                        css`
+                          display: flex;
+                          width: 120px;
+                        `,
+                      )};
                   `,
                   theme === 'dark' &&
                     css`
