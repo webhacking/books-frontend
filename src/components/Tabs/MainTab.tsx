@@ -355,18 +355,19 @@ export const MainTab: React.FC<MainTabProps> = props => {
                   position: absolute;
                   justify-content: flex-end;
                   margin-left: auto;
-                  width: 26px;
+                  width: 100%;
+                  max-width: 30px;
                   align-items: center;
-                  top: -5px;
-                  left: 13.5px;
+                  top: -10px;
+                  left: 10px;
                   display: flex;
-                  max-height: 30px;
-                  height: auto;
+                  max-height: 31px;
+                  height: 100%;
                   ${orBelow(
                     BreakPoint.LG,
                     css`
-                      left: 18.5px;
-                      top: -3.5px;
+                      left: 12.5px;
+                      top: -10px;
                     `,
                   )}
                 `}>
