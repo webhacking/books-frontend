@@ -175,7 +175,7 @@ const sliderCSS = css`
     ${greaterThanOrEqualTo(
       BreakPoint.SM + 1,
       css`
-        height: 237px;
+        height: 235px;
       `,
     )};
     ${greaterThanOrEqualTo(
@@ -361,7 +361,7 @@ const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => {
               BreakPoint.SM + 1,
               css`
                 width: ${TOP_BANNER_SM_WIDTH}px;
-                height: 237px;
+                height: 235px;
               `,
             )};
 
