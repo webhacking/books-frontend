@@ -26,7 +26,7 @@ const rulerCSS = theme => css`
 const genreListPartialsCSS = theme => css`
   display: flex;
   flex-direction: row;
-  height: 44px;
+  height: 47px;
   align-items: center;
   li {
     a {
@@ -40,7 +40,7 @@ const genreListPartialsCSS = theme => css`
       )};
       font-size: 16px;
       font-weight: 500;
-      line-height: 44px;
+      line-height: 47px;
       height: 100%;
       width: 100%;
       ${clearOutline};
@@ -50,9 +50,9 @@ const genreListPartialsCSS = theme => css`
     color: ${theme.genreTab.normal};
     cursor: pointer;
     :first-of-type {
-      line-height: 44px;
+      line-height: 47px;
       position: relative;
-      top: -2px;
+      top: -1px;
       margin-right: 0;
       a {
         padding: 0 20px;
