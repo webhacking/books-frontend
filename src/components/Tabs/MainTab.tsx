@@ -52,6 +52,7 @@ const TabButton = styled.button`
   position: relative;
   top: -1px;
   margin: 0 auto;
+  overflow: visible;
 `;
 
 const iconStyle = () => css`
