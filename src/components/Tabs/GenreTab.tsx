@@ -52,7 +52,7 @@ const genreListPartialsCSS = theme => css`
     :first-of-type {
       line-height: 47px;
       position: relative;
-      top: -1px;
+      top: -2px;
       margin-right: 0;
       a {
         padding: 0 20px;
