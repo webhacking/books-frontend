@@ -100,7 +100,7 @@ const sliderCSS = css`
       .slick-slide {
         .slide-overlay {
           ${slideOverlayCSS};
-          height: 100%;
+          height: calc(100% - 1px);
           width: ${TOP_BANNER_SM_WIDTH}px;
         }
       }
@@ -250,10 +250,10 @@ const totalCountCSS = css`
 
 const carouselLoadingOverlay = css`
   position: absolute;
-  top: 1px;
+  top: 0;
   left: 1px;
   border-radius: 6px;
-  height: 100%;
+  height: calc(100% - 1px);
   background: rgba(0, 0, 0, 0.5);
   ${slideCSS};
 `;
@@ -529,7 +529,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       slidesToScroll={1}
       speed={uiOption.topBannerCarouselSpeed}
       autoplaySpeed={uiOption.topBannerCarouselPlaySpeed}
-      autoplay={true}
+      autoplay={false}
       arrows={false}
       infinite={true}
       variableWidth={true}
