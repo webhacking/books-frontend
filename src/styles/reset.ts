@@ -163,7 +163,6 @@ export const partialResetStyles = css`
   }
   body {
     ${css([resetSpacing])};
-    overflow-x: hidden;
   }
   hr {
     ${css([resetSpacing])};
