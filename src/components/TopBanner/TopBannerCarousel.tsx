@@ -56,7 +56,7 @@ const sliderCSS = css`
     ${greaterThanOrEqualTo(
       BreakPoint.XS + 1,
       css`
-        height: calc((100vw - 20px) / 1.5);
+        height: calc((100vw - 19px) / 1.5);
       `,
     )};
 
@@ -82,7 +82,7 @@ const sliderCSS = css`
           ${slideOverlayCSS};
           min-width: 280px;
           width: calc(100vw - 20px);
-          height: calc((100vw - 20px) / 1.5);
+          height: calc((100vw - 19px) / 1.5);
         }
       }
 
@@ -192,8 +192,8 @@ const slideCSS = css`
     BreakPoint.XS + 1,
     css`
       min-width: 280px;
-      width: calc(100vw - 20px);
-      height: calc((100vw - 20px) / 1.5);
+      width: calc(100vw - 19px);
+      height: calc((100vw - 19px) / 1.5);
     `,
   )};
   ${greaterThanOrEqualTo(
@@ -352,9 +352,9 @@ const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => {
             ${greaterThanOrEqualTo(
               BreakPoint.XS,
               css`
-                width: calc(100vw - 20px);
+                width: calc(100vw - 19px);
                 min-width: 280px;
-                height: calc((100vw - 20px) / 1.5);
+                height: calc((100vw - 19px) / 1.5);
               `,
             )};
             ${greaterThanOrEqualTo(
@@ -576,7 +576,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
             outline: none;
             border-radius: 6px;
             position: relative;
-            top: 1px;
+            top: 2px;
             ${greaterThanOrEqualTo(
               BreakPoint.LG + 1,
               css`
