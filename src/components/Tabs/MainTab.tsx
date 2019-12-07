@@ -219,7 +219,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
   const [hasNotification, setNotification] = useState(0);
   useEffect(() => {
     const visitedGenre = Cookies.get(`${cookieKeys.main_genre}`);
-    setHomeURL(visitedGenre && visitedGenre !== 'general' ? visitedGenre : '');
+    setHomeURL(visitedGenre && visitedGenre !== 'general' ? visitedGenre : '/');
   }, [currentPath]);
 
   useEffect(() => {
@@ -303,7 +303,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           normalIcon={<Home css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.home}
-          path={`/${homeURL}`}
+          path={`/${homeURL}` ?? '/'}
           replace={true}
           pathRegexp={
             // Hack, Apply lint
