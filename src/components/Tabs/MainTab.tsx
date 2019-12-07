@@ -97,6 +97,7 @@ const TabItemWrapper = styled.li`
   flex-direction: column;
   box-sizing: border-box;
   height: 37px;
+  overflow: visible;
   :not(:last-of-type) {
     margin-right: 50px;
   }
@@ -374,6 +375,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
                 `}>
                 <div
                   css={css`
+                    background-clip: padding-box;
                     align-items: center;
                     border-radius: 6px;
                     border: 2px solid #1f8ce6;
