@@ -375,7 +375,6 @@ export const MainTab: React.FC<MainTabProps> = props => {
                 `}>
                 <div
                   css={css`
-                    background-clip: padding-box !important;
                     align-items: center;
                     border-radius: 6px;
                     border: 2px solid #1f8ce6;
@@ -387,7 +386,8 @@ export const MainTab: React.FC<MainTabProps> = props => {
                       css`
                         margin-left: 4px;
                       `,
-                    )}
+                    )};
+                    background-clip: padding-box !important;
                   `}>
                   <span
                     css={css`
