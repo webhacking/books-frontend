@@ -44,6 +44,10 @@ export const lineClamp = (limit: number) => css`
   word-wrap: break-word;
   white-space: normal;
   word-break: keep-all;
+
+  @media (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    white-space: nowrap;
+  }
 `;
 
 export const scrollBarHidden = css`
