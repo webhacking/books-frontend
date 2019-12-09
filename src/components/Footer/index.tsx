@@ -244,7 +244,11 @@ const Footer: React.FC<{}> = () => {
               </a>
             </li>
             <li>
-              <a css={anchorHover} href="/support/notice">
+              <a
+                css={anchorHover}
+                href="https://help.ridibooks.com/hc/ko/sections/360002578234"
+                target="_blank"
+                rel="noopener">
                 <span css={serviceCenter}>공지사항</span>
               </a>
             </li>
