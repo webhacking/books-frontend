@@ -211,15 +211,29 @@ const TabItem: React.FC<TabItemProps> = props => {
   );
 };
 
+// Fixme 레거시 쿠키 값 때문에 존재함. 장르 분리되면 분리해야 한다.
+const genreValueReplace = (visitedGenre: string) => {
+  if (visitedGenre === 'comic') {
+    return 'comics';
+  }
+  if (visitedGenre.includes('_')) {
+    return visitedGenre.replace('_', '-');
+  }
+  return visitedGenre;
+};
+
 export const MainTab: React.FC<MainTabProps> = props => {
   const { isPartials, loggedUserInfo } = props;
   const currentPath = useContext(BrowserLocationContext);
-  const [homeURL, setHomeURL] = useState('/');
+  const [, setHomeURL] = useState('/');
   const [cartCount, setCartCount] = useState<number>(0);
   const [hasNotification, setNotification] = useState(0);
+
   useEffect(() => {
     const visitedGenre = Cookies.get(`${cookieKeys.main_genre}`);
-    setHomeURL(visitedGenre && visitedGenre !== 'general' ? visitedGenre : '/');
+    setHomeURL(
+      visitedGenre && visitedGenre !== 'general' ? genreValueReplace(visitedGenre) : '/',
+    );
   }, [currentPath]);
 
   useEffect(() => {
@@ -303,8 +317,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           normalIcon={<Home css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.home}
-          path={`/${homeURL}` ?? '/'}
-          replace={true}
+          path={'/'}
           pathRegexp={
             // Hack, Apply lint
             // eslint-disable-next-line require-unicode-regexp,prefer-named-capture-group
