@@ -428,7 +428,13 @@ const Footer: React.FC<{}> = () => (
                     }
                   `}
                   htmlFor={'toggle'}>
-                  <span>더 보기</span>
+                  <span
+                    css={css`
+                      color: white;
+                      font-size: 14px;
+                    `}>
+                    더 보기
+                  </span>
                   <ArrowV
                     css={css`
                       transform: scale(0.7) rotate(90deg);
