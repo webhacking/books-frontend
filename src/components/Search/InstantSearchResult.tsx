@@ -133,6 +133,7 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
             `,
           )};
           margin-right: 8px;
+          -
         `}
         dangerouslySetInnerHTML={{
           __html: getEscapedString(author.highlight.name_raw || author.name_raw),
@@ -220,6 +221,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                       ${titleCSS};
                       margin-right: 4px;
                       margin-bottom: 3px;
+                      color: #252525;
                     `}
                     dangerouslySetInnerHTML={{
                       __html: getEscapedString(
@@ -263,6 +265,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                         <p
                           css={css`
                             ${titleCSS};
+                            color: #303538;
                             margin-bottom: 4px;
                           `}
                           dangerouslySetInnerHTML={{
