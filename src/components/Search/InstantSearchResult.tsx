@@ -46,13 +46,19 @@ const bookListItemCSS = (theme: RIDITheme) => css`
           border-bottom-left-radius: 3px;
           border-bottom-right-radius: 3px;
         }
+
+        :hover {
+          background-color: ${theme.instantSearch.itemHover};
+        }
       `,
     )}
     :hover {
     background-color: ${theme.instantSearch.itemHover};
   }
-  :focus {
-    background-color: ${theme.instantSearch.itemHover};
+  button {
+    :focus {
+      background-color: ${theme.instantSearch.itemHover};
+    }
   }
 `;
 
@@ -82,8 +88,10 @@ const authorListItemCSS = (theme: RIDITheme) => css`
   :hover {
     background-color: ${theme.instantSearch.itemHover};
   }
-  :focus {
-    background-color: ${theme.instantSearch.itemHover};
+  button {
+    :focus {
+      background-color: ${theme.instantSearch.itemHover};
+    }
   }
 `;
 
@@ -133,7 +141,7 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
             `,
           )};
           margin-right: 8px;
-          -
+          color: #303538;
         `}
         dangerouslySetInnerHTML={{
           __html: getEscapedString(author.highlight.name_raw || author.name_raw),
