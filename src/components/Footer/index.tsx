@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React from 'react';
 import PaperIcon from 'src/svgs/Paper.svg';
 import NewIcon from 'src/svgs/New_1.svg';
 import { RIDITheme } from 'src/styles';
@@ -227,297 +227,334 @@ const paperIcon = css`
   fill: white;
 `;
 
-const Footer: React.FC<{}> = () => {
-  const [readMore, setReadMore] = useState(false);
-  return (
-    <section id="new_footer" css={sectionStyle}>
-      <FooterWrapper>
-        <FlexBox>
-          <ul css={contactListCSS}>
-            <li>
-              <a
-                css={anchorHover}
-                href="https://help.ridibooks.com/hc/ko"
-                target="_blank"
-                rel="noopener">
-                <span css={serviceCenter}>고객센터</span>
-              </a>
-            </li>
-            <li>
-              <a
-                css={anchorHover}
-                href="https://help.ridibooks.com/hc/ko/sections/360002578234"
-                target="_blank"
-                rel="noopener">
-                <span css={serviceCenter}>공지사항</span>
-              </a>
-            </li>
-          </ul>
-          <FooterMenuWrapper>
-            <li>
-              <FooterMenu>
-                <li>
-                  <a
-                    css={anchorHover}
-                    href="https://paper.ridibooks.com"
-                    aria-label={'리디 페이퍼'}>
-                    <PaperIcon css={paperIcon} />
-                  </a>
-                </li>
-                <li>
-                  <a css={anchorHover} href="https://ridibooks.com/support/partner-card">
-                    <FooterMenuLabel>제휴카드</FooterMenuLabel>
-                  </a>
-                </li>
-                <li>
-                  <a css={anchorHover} href="https://ridibooks.com/support/app/download">
-                    <FooterMenuLabel>뷰어 다운로드</FooterMenuLabel>
-                  </a>
-                </li>
-                <li>
-                  <a css={anchorHover} href="https://ridibooks.com/order/checkout/cash">
-                    <FooterMenuLabel>리디캐시 충전</FooterMenuLabel>
-                  </a>
-                </li>
-              </FooterMenu>
-            </li>
-            <li css={hiddenMenu}>
-              <FooterMenu>
-                <li>
-                  <a css={anchorHover} href="https://ridibooks.com/partners/">
-                    <FooterMenuLabel>콘텐츠 제공 문의</FooterMenuLabel>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    css={anchorHover}
-                    href="https://cp.ridibooks.com"
-                    target="_blank"
-                    rel="noopener">
-                    <FooterMenuLabel>CP 사이트</FooterMenuLabel>
-                  </a>
-                </li>
-                <li>
-                  <a href="mailto:biz@ridi.com">
-                    <FooterMenuLabel>사업 제휴 문의</FooterMenuLabel>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://help.ridibooks.com/hc/ko/articles/360026484174"
-                    target="_blank"
-                    rel="noopener">
-                    <FooterMenuLabel>페이퍼 대량구매 안내</FooterMenuLabel>
-                  </a>
-                </li>
-              </FooterMenu>
-            </li>
-            <li css={hiddenMenu}>
-              <FooterMenu>
-                <li>
-                  <a
-                    css={anchorHover}
-                    href="https://www.facebook.com/ridibooks"
-                    target="_blank"
-                    rel="noopener">
-                    <FooterMenuLabel>페이스북</FooterMenuLabel>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    css={anchorHover}
-                    href="https://instagram.com/ridibookspaper/"
-                    target="_blank"
-                    rel="noopener">
-                    <FooterMenuLabel>인스타그램</FooterMenuLabel>
-                  </a>
-                </li>
-              </FooterMenu>
-            </li>
-            <li>
-              <FooterMenu>
-                <li>
-                  <a
-                    css={anchorHover}
-                    href="https://www.ridicorp.com/"
-                    target="_blank"
-                    rel="noopener">
-                    <FooterMenuLabel>회사 소개</FooterMenuLabel>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    css={anchorHover}
-                    href="https://www.ridicorp.com/career/"
-                    target="_blank"
-                    rel="noopener">
-                    <FooterMenuLabel>인재 채용</FooterMenuLabel>
-                    <NewIcon
-                      css={css`
-                        position: relative;
-                        top: 1.5px;
-                        margin-left: 6px;
-                        fill: #509deb;
-                        width: 14px;
-                        height: 14px;
-                      `}
-                    />
-                  </a>
-                </li>
-                <li
-                  css={css`
-                    position: relative;
-                    left: 0;
-                    top: -3px;
-                    display: block;
-                    ${greaterThanOrEqualTo(
-                      BreakPoint.LG + 1,
-                      css`
-                        display: none;
-                      `,
-                    )};
-                  `}>
-                  <button
+const Footer: React.FC<{}> = () => (
+  <section id="new_footer" css={sectionStyle}>
+    <FooterWrapper>
+      <FlexBox
+        css={css`
+          transition: height 0.3s ease-in-out;
+        `}>
+        <ul css={contactListCSS}>
+          <li>
+            <a
+              css={anchorHover}
+              href="https://help.ridibooks.com/hc/ko"
+              target="_blank"
+              rel="noopener">
+              <span css={serviceCenter}>고객센터</span>
+            </a>
+          </li>
+          <li>
+            <a
+              css={anchorHover}
+              href="https://help.ridibooks.com/hc/ko/sections/360002578234"
+              target="_blank"
+              rel="noopener">
+              <span css={serviceCenter}>공지사항</span>
+            </a>
+          </li>
+        </ul>
+        <FooterMenuWrapper>
+          <li>
+            <FooterMenu>
+              <li>
+                <a
+                  css={anchorHover}
+                  href="https://paper.ridibooks.com"
+                  aria-label={'리디 페이퍼'}>
+                  <PaperIcon css={paperIcon} />
+                </a>
+              </li>
+              <li>
+                <a css={anchorHover} href="https://ridibooks.com/support/partner-card">
+                  <FooterMenuLabel>제휴카드</FooterMenuLabel>
+                </a>
+              </li>
+              <li>
+                <a css={anchorHover} href="https://ridibooks.com/support/app/download">
+                  <FooterMenuLabel>뷰어 다운로드</FooterMenuLabel>
+                </a>
+              </li>
+              <li>
+                <a css={anchorHover} href="https://ridibooks.com/order/checkout/cash">
+                  <FooterMenuLabel>리디캐시 충전</FooterMenuLabel>
+                </a>
+              </li>
+            </FooterMenu>
+          </li>
+          <li css={hiddenMenu}>
+            <FooterMenu>
+              <li>
+                <a css={anchorHover} href="https://ridibooks.com/partners/">
+                  <FooterMenuLabel>콘텐츠 제공 문의</FooterMenuLabel>
+                </a>
+              </li>
+              <li>
+                <a
+                  css={anchorHover}
+                  href="https://cp.ridibooks.com"
+                  target="_blank"
+                  rel="noopener">
+                  <FooterMenuLabel>CP 사이트</FooterMenuLabel>
+                </a>
+              </li>
+              <li>
+                <a css={anchorHover} href="mailto:biz@ridi.com">
+                  <FooterMenuLabel>사업 제휴 문의</FooterMenuLabel>
+                </a>
+              </li>
+              <li>
+                <a
+                  css={anchorHover}
+                  href="https://help.ridibooks.com/hc/ko/articles/360026484174"
+                  target="_blank"
+                  rel="noopener">
+                  <FooterMenuLabel>페이퍼 대량구매 안내</FooterMenuLabel>
+                </a>
+              </li>
+            </FooterMenu>
+          </li>
+          <li css={hiddenMenu}>
+            <FooterMenu>
+              <li>
+                <a
+                  css={anchorHover}
+                  href="https://www.facebook.com/ridibooks"
+                  target="_blank"
+                  rel="noopener">
+                  <FooterMenuLabel>페이스북</FooterMenuLabel>
+                </a>
+              </li>
+              <li>
+                <a
+                  css={anchorHover}
+                  href="https://instagram.com/ridibookspaper/"
+                  target="_blank"
+                  rel="noopener">
+                  <FooterMenuLabel>인스타그램</FooterMenuLabel>
+                </a>
+              </li>
+            </FooterMenu>
+          </li>
+          <li>
+            <FooterMenu>
+              <li>
+                <a
+                  css={anchorHover}
+                  href="https://www.ridicorp.com/"
+                  target="_blank"
+                  rel="noopener">
+                  <FooterMenuLabel>회사 소개</FooterMenuLabel>
+                </a>
+              </li>
+              <li>
+                <a
+                  css={anchorHover}
+                  href="https://www.ridicorp.com/career/"
+                  target="_blank"
+                  rel="noopener">
+                  <FooterMenuLabel>인재 채용</FooterMenuLabel>
+                  <NewIcon
                     css={css`
-                      transition: all 0.2s ease-in-out;
-                      opacity: ${readMore ? 0 : 1};
-                      height: ${readMore ? '100%' : '0px'};
-                      font-size: 14px;
                       position: relative;
-                      left: 1px;
-                      display: flex;
-                      align-items: center;
+                      top: 1.5px;
+                      margin-left: 6px;
+                      fill: #509deb;
+                      width: 14px;
+                      height: 14px;
+                    `}
+                  />
+                </a>
+              </li>
+              <li
+                css={css`
+                  position: relative;
+                  left: 0;
+                  top: -3px;
+                  display: block;
+                  height: 100%;
+                  transition: height 0.3s ease-in-out;
+                  ${greaterThanOrEqualTo(
+                    BreakPoint.LG + 1,
+                    css`
+                      display: none;
+                    `,
+                  )};
+                `}>
+                <input
+                  type="checkbox"
+                  id={'toggle'}
+                  name={'toggle'}
+                  css={css`
+                    &[type='checkbox'] {
+                      height: 0;
+                      width: 0;
+                      visibility: hidden;
+                    }
+                    transition: all 0.3s ease-in-out;
+
+                    font-size: 14px;
+                    position: relative;
+                    left: 1px;
+                    display: flex;
+                    align-items: center;
+                    :hover {
+                      opacity: 0.7;
+                    }
+                    &:checked + label {
+                      & {
+                        opacity: 0;
+                      }
+                      ul {
+                        visibility: visible;
+                      }
+                    }
+                    &:checked + label + ul {
+                      opacity: 1;
+                      visibility: visible;
+                      height: 95px;
+                    }
+                  `}
+                />
+                <label
+                  css={css`
+                    display: flex;
+                    align-items: center;
+                    position: relative;
+                    transition: opacity 0.3s ease-in-out;
+                    cursor: pointer;
+                    :hover {
+                      opacity: 0.7;
+                    }
+                  `}
+                  htmlFor={'toggle'}>
+                  <span>더 보기</span>
+                  <ArrowV
+                    css={css`
+                      transform: scale(0.7) rotate(90deg);
+                      fill: white;
+                      margin-left: 2.5px;
+                    `}
+                  />
+                </label>
+                <FooterMenu
+                  css={css`
+                    left: 0;
+                    top: -17px;
+                    position: relative;
+                    visibility: hidden;
+                    transition: all 0.3s ease-in-out;
+                    max-height: 140px;
+                    height: 0;
+                    opacity: 0;
+                    a {
                       :hover {
                         opacity: 0.7;
                       }
-                    `}
-                    onClick={e => {
-                      e.preventDefault();
-                      setReadMore(true);
-                    }}>
-                    <span>더 보기</span>
-                    <ArrowV
-                      css={css`
-                        transform: scale(0.7) rotate(90deg);
-                        fill: white;
-                        margin-left: 2.5px;
-                      `}
-                    />
-                  </button>
-                  <FooterMenu
-                    css={css`
-                      position: ${readMore ? 'relative' : 'absolute'};
-                      left: 0;
-                      top: -17px;
-                      opacity: ${readMore ? 1 : 0};
-                      visibility: ${readMore ? 'visible' : 'hidden'};
-                      //transition: opacity 0.3s ease-in-out;
-                      transition: all 0.3s;
-                      max-height: 230px;
-                    `}>
-                    <li>
-                      <a css={anchorHover} href="https://ridibooks.com/partners/">
-                        <FooterMenuLabel>콘텐츠 제공 문의</FooterMenuLabel>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        css={anchorHover}
-                        href="https://cp.ridibooks.com"
-                        target="_blank"
-                        rel="noopener">
-                        <FooterMenuLabel>CP 사이트</FooterMenuLabel>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="mailto:biz@ridi.com">
-                        <FooterMenuLabel>사업 제휴 문의</FooterMenuLabel>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="https://help.ridibooks.com/hc/ko/articles/360026484174"
-                        target="_blank"
-                        rel="noopener">
-                        <FooterMenuLabel>페이퍼 대량구매 안내</FooterMenuLabel>
-                      </a>
-                    </li>
-                  </FooterMenu>
-                </li>
-              </FooterMenu>
-            </li>
-          </FooterMenuWrapper>
-        </FlexBox>
-
-        <InformationWrapper>
-          <span css={address}>{ridiMeta.address}</span>
-          <span
-            css={css`
-              position: relative;
-              line-height: 10px;
-              height: 10px;
-              top: 5px;
-              margin: 0 6px 0 8px;
-              border-left: 1px solid ${colors.slateGray70};
-              ${orBelow(
-                BreakPoint.LG,
-                css`
-                  display: none;
-                `,
-              )};
-            `}
-          />
-          <span css={address}>{ridiMeta.info}</span>
-        </InformationWrapper>
-        <MiscWrapper>
-          <Copyright className="museo">© RIDI Corp.</Copyright>
-          <ul css={menuListCSS}>
-            <li>
-              <a
-                css={anchorHover}
-                href="https://ridibooks.com/legal/terms"
-                target="_blank"
-                rel="noopener">
-                <MiscMenuLabel>이용 약관</MiscMenuLabel>
-              </a>
-            </li>
-            <li>
-              <a
-                css={anchorHover}
-                href="https://ridibooks.com/legal/privacy"
-                target="_blank"
-                rel="noopener">
-                <MiscMenuLabel
-                  css={css`
-                    font-weight: bold;
+                    }
                   `}>
-                  개인 정보 처리 방침
-                </MiscMenuLabel>
-              </a>
-            </li>
-            <li>
-              <a
-                css={anchorHover}
-                href="https://ridibooks.com/legal/youth"
-                target="_blank"
-                rel="noopener">
-                <MiscMenuLabel>청소년 보호 정책</MiscMenuLabel>
-              </a>
-            </li>
-            <li>
-              <a
-                css={anchorHover}
-                href="http://ftc.go.kr/info/bizinfo/communicationList.jsp"
-                target="_blank"
-                rel="noopener">
-                <MiscMenuLabel>사업자 정보 확인</MiscMenuLabel>
-              </a>
-            </li>
-          </ul>
-        </MiscWrapper>
-      </FooterWrapper>
-    </section>
-  );
-};
+                  <li>
+                    <a css={anchorHover} href="https://ridibooks.com/partners/">
+                      <FooterMenuLabel>콘텐츠 제공 문의</FooterMenuLabel>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      css={anchorHover}
+                      href="https://cp.ridibooks.com"
+                      target="_blank"
+                      rel="noopener">
+                      <FooterMenuLabel>CP 사이트</FooterMenuLabel>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="mailto:biz@ridi.com">
+                      <FooterMenuLabel>사업 제휴 문의</FooterMenuLabel>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://help.ridibooks.com/hc/ko/articles/360026484174"
+                      target="_blank"
+                      rel="noopener">
+                      <FooterMenuLabel>페이퍼 대량구매 안내</FooterMenuLabel>
+                    </a>
+                  </li>
+                </FooterMenu>
+              </li>
+            </FooterMenu>
+          </li>
+        </FooterMenuWrapper>
+      </FlexBox>
+
+      <InformationWrapper>
+        <span css={address}>{ridiMeta.address}</span>
+        <span
+          css={css`
+            position: relative;
+            line-height: 10px;
+            height: 10px;
+            top: 5px;
+            margin: 0 6px 0 8px;
+            border-left: 1px solid ${colors.slateGray70};
+            ${orBelow(
+              BreakPoint.LG,
+              css`
+                display: none;
+              `,
+            )};
+          `}
+        />
+        <span css={address}>{ridiMeta.info}</span>
+      </InformationWrapper>
+      <MiscWrapper>
+        <Copyright className="museo">© RIDI Corp.</Copyright>
+        <ul css={menuListCSS}>
+          <li>
+            <a
+              css={anchorHover}
+              href="https://ridibooks.com/legal/terms"
+              target="_blank"
+              rel="noopener">
+              <MiscMenuLabel>이용 약관</MiscMenuLabel>
+            </a>
+          </li>
+          <li>
+            <a
+              css={anchorHover}
+              href="https://ridibooks.com/legal/privacy"
+              target="_blank"
+              rel="noopener">
+              <MiscMenuLabel
+                css={css`
+                  font-weight: bold;
+                `}>
+                개인 정보 처리 방침
+              </MiscMenuLabel>
+            </a>
+          </li>
+          <li>
+            <a
+              css={anchorHover}
+              href="https://ridibooks.com/legal/youth"
+              target="_blank"
+              rel="noopener">
+              <MiscMenuLabel>청소년 보호 정책</MiscMenuLabel>
+            </a>
+          </li>
+          <li>
+            <a
+              css={anchorHover}
+              href="http://ftc.go.kr/info/bizinfo/communicationList.jsp"
+              target="_blank"
+              rel="noopener">
+              <MiscMenuLabel>사업자 정보 확인</MiscMenuLabel>
+            </a>
+          </li>
+        </ul>
+      </MiscWrapper>
+    </FooterWrapper>
+  </section>
+);
 
 export default Footer;
