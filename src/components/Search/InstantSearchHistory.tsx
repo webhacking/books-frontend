@@ -128,7 +128,10 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
     if (wrapperRef.current) {
       const items = wrapperRef.current.querySelectorAll('li');
       if (items.length > 0 && focusedPosition !== 0) {
-        (items[focusedPosition - 1] as HTMLLIElement).focus();
+        const item = items[focusedPosition - 1] as HTMLLIElement;
+        if (item) {
+          item.focus();
+        }
       }
     }
   }, [focusedPosition]);
