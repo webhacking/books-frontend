@@ -70,7 +70,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
     const trackingUtils = useContext(EventTrackerContext);
     // Todo WIP 노출 여부
     const targetRef = useRef(null);
-    const bookIsIntersecting = useIntersectionObserver(targetRef, '25px');
+    const bookIsIntersecting = useIntersectionObserver(targetRef, '40px');
 
     const is_adult_only = book.detail?.property?.is_adult_only ?? false;
     const imageUrl = computeThumbnailUrl(

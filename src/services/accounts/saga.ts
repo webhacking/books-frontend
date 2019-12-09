@@ -6,7 +6,7 @@ import pRetry from 'p-retry';
 function* watchCheckLogged() {
   try {
     const data = yield call(pRetry, checkLoggedIn, {
-      retries: 5,
+      retries: 2,
     });
     yield put({ type: accountActions.setLogged.type, payload: data.result });
   } catch (err) {
