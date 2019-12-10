@@ -309,6 +309,8 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           } else {
             debouncedHandleSearch(value);
           }
+        } else {
+          debouncedHandleSearch(value);
         }
         setFocusedPosition(0);
       },
@@ -442,6 +444,11 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       },
       [keyword, isPartials],
     );
+
+    const focusedWithSearch = () => {
+      setFocus(true);
+      debouncedHandleSearch(keyword);
+    };
 
     const handleSubmit = useCallback(
       (e: React.FormEvent<HTMLFormElement>) => {
@@ -602,8 +609,8 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                 type={'text'}
                 name="instant_search"
                 placeholder={labels.searchPlaceHolder}
-                onFocus={setFocus.bind(null, true)}
-                onClick={setFocus.bind(null, true)}
+                onFocus={focusedWithSearch}
+                onClick={focusedWithSearch}
                 onKeyDown={handleKeyDown}
                 onChange={passEventTarget}
               />
