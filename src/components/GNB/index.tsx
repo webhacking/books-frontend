@@ -18,8 +18,7 @@ import { useRouter } from 'next/router';
 import DoublePointIcon from 'src/svgs/DoublePoint.svg';
 import CashIcon from 'src/svgs/Cash.svg';
 import pRetry from 'p-retry';
-import axios from 'src/utils/axios';
-import globalAxios from 'axios';
+import axios, { OAuthRequestType } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 const { captureException } = sentry();
 
@@ -179,37 +178,50 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
     double_point: false,
     fifteen_night: false,
   });
-  const route = useRouter();
-  const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_MASTER_HOST);
-  const signUpPath = new URL('/account/signup', publicRuntimeConfig.STORE_MASTER_HOST);
-  const cashOrderPath = new URL(
-    '/order/checkout/cash',
-    publicRuntimeConfig.STORE_MASTER_HOST,
-  );
 
-  const returnUrl = new URL(route.asPath, publicRuntimeConfig.STORE_HOST);
-  loginPath.searchParams.append(
-    'return_url',
-    returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
-  );
-  signUpPath.searchParams.append(
-    'return_url',
-    returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
-  );
+  const [cashOrderPath, setCashOrderPath] = useState('/');
+  const [loginPath, setLoginPath] = useState('/');
+  const [signUpPath, setSignUpPath] = useState('/');
+  const route = useRouter();
+
   useEffect(() => {
-    loginPath.searchParams.append(
+    const tempLoginPath = new URL(
+      '/account/login',
+      publicRuntimeConfig.STORE_MASTER_HOST,
+    );
+    const tempSignUpPath = new URL(
+      '/account/signup',
+      publicRuntimeConfig.STORE_MASTER_HOST,
+    );
+    setCashOrderPath(
+      new URL('/order/checkout/cash', publicRuntimeConfig.STORE_MASTER_HOST).toString(),
+    );
+
+    const returnUrl = new URL(route.asPath, publicRuntimeConfig.STORE_HOST);
+    tempLoginPath.searchParams.append(
+      'return_url',
+      returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
+    );
+    tempSignUpPath.searchParams.append(
+      'return_url',
+      returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
+    );
+
+    tempLoginPath.searchParams.append(
       'return_url',
       new URL(route.asPath, publicRuntimeConfig.STORE_HOST).toString(),
     );
-    signUpPath.searchParams.append(
+    tempSignUpPath.searchParams.append(
       'return_url',
       new URL(route.asPath, publicRuntimeConfig.STORE_HOST).toString(),
     );
+
+    setLoginPath(tempLoginPath.toString());
+    setSignUpPath(tempSignUpPath.toString());
     return () => {};
   }, [route.asPath]);
 
   useEffect(() => {
-    let cancel = null;
     const requestRidiEventStatus = async () => {
       try {
         const cartUrl = new URL(
@@ -220,7 +232,8 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
         const result = await pRetry(
           () =>
             axios.get(cartUrl.toString(), {
-              cancelToken: new globalAxios.CancelToken(c => (cancel = c)),
+              withCredentials: true,
+              custom: { authorizationRequestType: OAuthRequestType.CHECK },
             }),
           {
             retries: 2,
@@ -234,11 +247,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
       }
     };
     requestRidiEventStatus();
-    return () => {
-      if (cancel) {
-        cancel();
-      }
-    };
+    return () => {};
   }, [route]);
 
   return (
