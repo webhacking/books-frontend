@@ -21,13 +21,16 @@ export const useIntersectionObserver = (
         root: root.current,
       },
     );
+    let copied = null;
     if (target?.current) {
       observer.observe(target.current);
+      copied = target.current;
     }
+
     return () => {
       // @ts-ignore
-      if (target?.current) {
-        observer.unobserve(target.current);
+      if (copied) {
+        observer.unobserve(copied);
       }
     };
   }, []);
