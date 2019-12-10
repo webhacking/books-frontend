@@ -55,7 +55,6 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       : {};
 
     // @ts-ignore
-    const at = ctx?.req?.cookies['ridi-at'] ?? ''; // access token
     return {
       pageProps,
       isPartials,
@@ -63,7 +62,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       query: {
         ...ctx.query,
         // @ts-ignore
-        is_login: at.length > 0 ? 'true' : 'false',
+        is_login: ctx?.query?.is_login === 'true' ? 'true' : 'false',
       },
     };
   }
