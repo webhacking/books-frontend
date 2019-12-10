@@ -83,13 +83,13 @@ const itemCSS = css`
 
 const bigItemCSS = css`
   ${itemCSS};
-  height: 144px;
+  height: 138px;
   width: 308px;
 `;
 
 const smallItemCSS = css`
   ${itemCSS};
-  height: 90px;
+  height: 94px;
   width: 308px;
 `;
 
@@ -202,7 +202,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
         <div
           css={css`
             position: relative;
-            height: ${type === 'big' ? '433px' : '270px'}; // badge + (7 * 3)
+            height: ${type === 'big' ? '414px' : '282px'}; // badge + (7 * 3)
           `}>
           <ul css={listCSS} ref={ref}>
             {books

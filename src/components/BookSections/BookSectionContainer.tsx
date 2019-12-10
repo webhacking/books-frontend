@@ -51,7 +51,6 @@ export const RankingBookTitle = styled.h2`
 
 export const SectionTitle = styled.h2`
   ${fontStyle};
-  margin-bottom: 14px;
   ${titleCSS};
 `;
 

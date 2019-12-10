@@ -66,6 +66,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
     <div
       ref={wrapperRef}
       css={css`
+        margin-top: 6px;
         position: relative;
       `}>
       <ul ref={ref} css={[flexRowStart, scrollBarHidden, listCSS]}>

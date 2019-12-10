@@ -142,6 +142,7 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
     <ul
       css={css`
         display: flex;
+        margin-top: 6px;
         padding-bottom: 48px;
         padding-left: 18px;
         ${orBelow(

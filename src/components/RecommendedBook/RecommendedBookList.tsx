@@ -38,6 +38,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
     <div
       css={css`
         position: relative;
+        margin-top: 6px;
       `}>
       <BookList
         ref={ref}

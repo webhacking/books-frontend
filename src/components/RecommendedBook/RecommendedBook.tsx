@@ -66,6 +66,7 @@ export const BookList = styled.ul`
   )};
   display: flex;
   justify-content: center;
+  margin-top: 6px;
   //padding-bottom: 36px;
 `;
 
@@ -114,7 +115,6 @@ const hotReleaseTitleCSS = css`
   line-height: 21px;
   font-size: 21px;
   color: white;
-  margin-bottom: 14px;
 `;
 
 interface BookMetaProps {
