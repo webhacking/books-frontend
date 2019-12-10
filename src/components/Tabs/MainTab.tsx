@@ -264,7 +264,6 @@ export const MainTab: React.FC<MainTabProps> = props => {
                 headers: {
                   Authorization: `Bearer ${tokenResult.data.token}`,
                 },
-                withCredentials: true,
               }),
             { retries: 2 },
           );
