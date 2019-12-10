@@ -197,6 +197,24 @@ const dummyBook = {
   sentence: '',
 };
 
+export const sentenceStyle = css`
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  font-weight: bold;
+  white-space: nowrap;
+  letter-spacing: -0.373044px;
+  width: 140px;
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      display: flex;
+      width: 120px;
+      justify-content: center;
+    `,
+  )};
+`;
+
 const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo(
   props => {
     const { books, type, isIntersecting, theme } = props;
@@ -236,22 +254,7 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
                     position: relative;
                     left: 7px;
                     margin-top: 2px;
-                    font-size: 13px;
-                    line-height: 16px;
-                    text-align: center;
-                    font-weight: bold;
-                    white-space: nowrap;
-                    width: 140px;
-                    display: flex;
-                    justify-content: center;
-                    letter-spacing: -0.373044px
-                      ${orBelow(
-                        BreakPoint.LG,
-                        css`
-                          display: flex;
-                          width: 120px;
-                        `,
-                      )};
+                    ${sentenceStyle};
                   `,
                   theme === 'dark' &&
                     css`

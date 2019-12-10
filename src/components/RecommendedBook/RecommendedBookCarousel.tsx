@@ -9,7 +9,7 @@ import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel'
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
-import { BookMeta } from 'src/components/RecommendedBook/RecommendedBook';
+import { BookMeta, sentenceStyle } from 'src/components/RecommendedBook/RecommendedBook';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
@@ -90,13 +90,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = R
                     padding-left: 0;
                     position: relative;
                     left: 7px;
-                    width: 140px;
-                    margin-top: 2px;
-                    font-size: 13px;
-                    line-height: 16px;
-                    text-align: center;
-                    font-weight: 700;
-                    white-space: nowrap;
+                    ${sentenceStyle};
                   `,
                   props.theme === 'dark' &&
                     css`
@@ -247,14 +241,8 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                           padding-left: 0;
                           position: relative;
                           left: 7px;
-                          width: 140px;
                           margin-top: 2px;
-                          font-size: 13px;
-                          line-height: 16px;
-                          text-align: center;
-                          font-weight: 700;
-                          white-space: nowrap;
-                          letter-spacing: -0.373044px;
+                          ${sentenceStyle};
                         `,
                         theme === 'dark' &&
                           css`

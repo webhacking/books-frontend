@@ -4,6 +4,7 @@ import {
   BookMeta,
   hotReleaseBookListCSS,
   recommendedBookListCSS,
+  sentenceStyle,
 } from 'src/components/RecommendedBook/RecommendedBook';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
@@ -14,7 +15,6 @@ import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
-import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
@@ -108,20 +108,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                       position: relative;
                       left: 7px;
                       margin-top: 2px;
-                      font-size: 13px;
-                      line-height: 16px;
-                      text-align: center;
-                      font-weight: bold;
-                      white-space: nowrap;
-                      letter-spacing: -0.373044px
-                        ${orBelow(
-                          BreakPoint.LG,
-                          css`
-                            display: flex;
-                            width: 120px;
-                            justify-content: center;
-                          `,
-                        )};
+                      ${sentenceStyle}
                     `,
                     theme === 'dark' &&
                       css`
