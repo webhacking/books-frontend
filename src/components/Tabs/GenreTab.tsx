@@ -526,6 +526,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
       }
     }
   }, [router]);
+  console.log(router);
   return (
     <>
       <GenreTabWrapper>
@@ -570,7 +571,13 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               normalCSS={normal}
               currentCSS={genreTab}
               labelCSS={genreTabLabelCSS}
-              currentPath={router.pathname === '/' && router.route === '/' && '/'}
+              currentPath={
+                // Todo refactor
+                router.pathname === '/' &&
+                router.route === '/' &&
+                router.asPath.split('?')[0] === '/' &&
+                '/'
+              }
               activePath={['/']}
               label={'일반'}
               route={'/'}
