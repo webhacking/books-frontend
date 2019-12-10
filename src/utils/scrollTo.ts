@@ -69,12 +69,19 @@ const horizontalAnimateScroll = (
       const now = 'now' in window.performance ? performance.now() : new Date().getTime();
       const time = Math.min(1, (now - startTime) / duration);
       const timeFunction = easings[easing](time);
-      element.current.scroll(
-        Math.ceil(
+
+      if (element.current.scroll) {
+        element.current.scroll(
+          Math.ceil(
+            timeFunction * (scrollToPosition - startScrollPosition) + startScrollPosition,
+          ),
+          0,
+        );
+      } else {
+        element.current.scrollLeft = Math.ceil(
           timeFunction * (scrollToPosition - startScrollPosition) + startScrollPosition,
-        ),
-        0,
-      );
+        );
+      }
 
       const isRightScrollMax =
         moveTo > 0 &&
@@ -90,7 +97,11 @@ const horizontalAnimateScroll = (
     };
     scroll();
   }
-  element.current.scroll(scrollToPosition, 0);
+  if (element.current.scroll) {
+    element.current.scroll(scrollToPosition, 0);
+  } else {
+    element.current.scrollLeft = scrollToPosition;
+  }
 };
 
 export default horizontalAnimateScroll;
