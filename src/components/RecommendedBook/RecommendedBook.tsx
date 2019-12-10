@@ -32,6 +32,8 @@ const backgroundImageCSS = css`
       background-size: cover;
     `,
   )};
+  padding-top: 36px;
+  padding-bottom: 36px;
 `;
 
 const hotReleaseRecommendedBookWrapperCSS = css`
@@ -40,7 +42,7 @@ const hotReleaseRecommendedBookWrapperCSS = css`
 `;
 const recommendedBookWrapperCSS = css`
   padding-top: 24px;
-  padding-bottom: 0;
+  padding-bottom: 24px;
 `;
 
 export const hotReleaseBookListCSS = css`
@@ -64,7 +66,7 @@ export const BookList = styled.ul`
   )};
   display: flex;
   justify-content: center;
-  padding-bottom: 36px;
+  //padding-bottom: 36px;
 `;
 
 export const bookMetaWrapperCSS = css`

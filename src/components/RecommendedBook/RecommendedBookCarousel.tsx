@@ -48,7 +48,6 @@ const CarouselWrapper = styled.div`
   margin: 0 auto;
   position: relative;
   padding-left: 36px;
-  padding-bottom: 24px;
 `;
 
 interface RecommendedBookCarouselProps {
