@@ -26,7 +26,9 @@ export const useIntersectionObserver = (
     }
     return () => {
       // @ts-ignore
-      observer.unobserve(target.current);
+      if (target.current) {
+        observer.unobserve(target.current);
+      }
     };
   }, []);
 
