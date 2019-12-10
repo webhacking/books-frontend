@@ -28,7 +28,12 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = props => {
           `,
           wrapperCSS,
         ]}>
-        <RidiWaitFree />
+        <RidiWaitFree
+          css={css`
+            position: relative;
+            left: 1px;
+          `}
+        />
         <span className={'a11y'}>리디 기다리면 무료</span>
       </div>
     );
