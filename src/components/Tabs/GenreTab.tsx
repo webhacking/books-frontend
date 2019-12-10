@@ -526,6 +526,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
       }
     }
   }, [router]);
+  console.log(router);
   return (
     <>
       <GenreTabWrapper>
@@ -538,7 +539,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             }>
             <li
               css={css`
-                ${router.pathname.startsWith('/category/list')
+                ${router.query?.pathname?.toString().startsWith('/category/list')
                   ? css`
                       :hover {
                         opacity: 1 !important;
@@ -555,7 +556,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                   <GNBCategory
                     css={(theme: RIDITheme) => css`
                       ${iconCSS(theme)};
-                      ${router.pathname.startsWith('/category/list')
+                      ${router.query?.pathname?.toString().startsWith('/category/list')
                         ? css`
                             fill: ${theme.primaryColor};
                           `
@@ -570,7 +571,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               normalCSS={normal}
               currentCSS={genreTab}
               labelCSS={genreTabLabelCSS}
-              currentPath={`/${router?.query?.genre?.toString() || ''}`}
+              currentPath={router.pathname === '/' && router.route === '/' && '/'}
               activePath={['/']}
               label={'일반'}
               route={'/'}
