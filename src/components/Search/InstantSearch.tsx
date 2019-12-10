@@ -58,6 +58,7 @@ const searchWrapper = (theme: RIDITheme) => css`
       width: 100%;
     `,
   )};
+  outline: none;
   form {
     width: 100%;
   }
@@ -69,6 +70,7 @@ const searchWrapper = (theme: RIDITheme) => css`
     padding-right: 3.75px; // 4 * 0.9375
     width: 98%;
     font-size: 16px;
+    outline: none;
     transform: scale(0.9375);
     transform-origin: top left;
     font-weight: 500;
@@ -275,6 +277,10 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
     const handleSearch = useCallback(async (value: string) => {
       setFetching(true);
+      if (value.trim().length < 1) {
+        setFetching(false);
+        return;
+      }
       try {
         const url = new URL('/search', publicRuntimeConfig.SEARCH_API);
         url.searchParams.append('site', 'ridi-store');
@@ -310,6 +316,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
             debouncedHandleSearch(value);
           }
         } else {
+          setSearchResult(initialSearchResult);
           debouncedHandleSearch(value);
         }
         setFocusedPosition(0);
@@ -583,7 +590,12 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
           tabIndex={0}
           onBlur={handleSearchWrapperBlur}
-          css={isFocused ? focused : initial}>
+          css={theme => [
+            isFocused ? focused(theme) : initial(),
+            css`
+              outline: none;
+            `,
+          ]}>
           {isFocused && (
             <button css={arrowWrapperButton} onClick={setFocus.bind(null, false)}>
               <ArrowLeft css={arrow} />

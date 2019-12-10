@@ -80,6 +80,7 @@ const SearchHistoryItem = styled.li`
   :focus {
     background-color: #f7fafc;
   }
+  outline: none;
 `;
 
 const historyOptionPanelCSS = theme => css`
