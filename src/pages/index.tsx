@@ -122,8 +122,16 @@ const fetchHomeSections = async (genre: string, req?: Request) => {
 };
 
 // Lambda 에서 올바르게 동작할까. 공유되지 않을까?
+// legacy genre 로 쿠키 값 설정
 const setCookie = (genre: string) => {
-  Cookies.set(cookieKeys.main_genre, genre || 'general', {
+  let convertedLegacyGenre = '';
+  if (genre === 'comics') {
+    convertedLegacyGenre = 'comic';
+  }
+  if (genre.includes('-')) {
+    convertedLegacyGenre = genre.replace('-', '_');
+  }
+  Cookies.set(cookieKeys.main_genre, convertedLegacyGenre, {
     expires: DEFAULT_COOKIE_EXPIRES,
   });
 };
