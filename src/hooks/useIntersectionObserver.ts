@@ -21,12 +21,12 @@ export const useIntersectionObserver = (
         root: root.current,
       },
     );
-    if (target.current) {
+    if (target?.current) {
       observer.observe(target.current);
     }
     return () => {
       // @ts-ignore
-      if (target.current) {
+      if (target?.current) {
         observer.unobserve(target.current);
       }
     };
