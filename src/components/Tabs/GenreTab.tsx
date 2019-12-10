@@ -526,7 +526,6 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
       }
     }
   }, [router]);
-  console.log(router);
   return (
     <>
       <GenreTabWrapper>
