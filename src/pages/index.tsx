@@ -127,10 +127,12 @@ const setCookie = (genre: string) => {
   let convertedLegacyGenre = '';
   if (genre === 'comics') {
     convertedLegacyGenre = 'comic';
-  }
-  if (genre.includes('-')) {
+  } else if (genre.includes('-')) {
     convertedLegacyGenre = genre.replace('-', '_');
+  } else {
+    convertedLegacyGenre = genre;
   }
+
   Cookies.set(cookieKeys.main_genre, convertedLegacyGenre, {
     expires: DEFAULT_COOKIE_EXPIRES,
   });
