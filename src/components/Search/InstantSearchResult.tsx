@@ -58,6 +58,7 @@ const bookListItemCSS = (theme: RIDITheme) => css`
   button {
     :focus {
       background-color: ${theme.instantSearch.itemHover};
+      outline: none !important;
     }
   }
 `;
@@ -91,6 +92,7 @@ const authorListItemCSS = (theme: RIDITheme) => css`
   button {
     :focus {
       background-color: ${theme.instantSearch.itemHover};
+      outline: none !important;
     }
   }
 `;
