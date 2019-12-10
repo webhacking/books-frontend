@@ -207,15 +207,6 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
       returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
     );
 
-    tempLoginPath.searchParams.append(
-      'return_url',
-      new URL(route.asPath, publicRuntimeConfig.STORE_HOST).toString(),
-    );
-    tempSignUpPath.searchParams.append(
-      'return_url',
-      new URL(route.asPath, publicRuntimeConfig.STORE_HOST).toString(),
-    );
-
     setLoginPath(tempLoginPath.toString());
     setSignUpPath(tempSignUpPath.toString());
     return () => {};
