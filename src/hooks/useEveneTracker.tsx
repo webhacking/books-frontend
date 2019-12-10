@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
 import { getDeviceType } from 'src/utils/common';
-
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 const { captureException } = sentry();
 
 export const createTracker = (userId: string | null) => {
@@ -20,11 +21,7 @@ export const createTracker = (userId: string | null) => {
         : DeviceType.PC,
       beaconOptions: {
         use: true,
-        beaconSrc:
-          // eslint-disable-next-line no-process-env
-          // process.env.NODE_ENV !== 'production'
-          'https://s3.ap-northeast-2.amazonaws.com/beacon-ridibooks-test/beacon_ridibooks_test.gif',
-        // : 'https://s3.ap-northeast-2.amazonaws.com/beacon-ridibooks/beacon_ridibooks.gif',
+        beaconSrc: publicRuntimeConfig.BEACON_URL,
       },
       // eslint-disable-next-line no-process-env
       debug: process.env.NODE_ENV !== 'production',
