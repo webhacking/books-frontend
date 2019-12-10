@@ -19,6 +19,7 @@ import DoublePointIcon from 'src/svgs/DoublePoint.svg';
 import CashIcon from 'src/svgs/Cash.svg';
 import pRetry from 'p-retry';
 import axios from 'src/utils/axios';
+import globalAxios from 'axios';
 import sentry from 'src/utils/sentry';
 const { captureException } = sentry();
 
@@ -204,9 +205,11 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
       'return_url',
       new URL(route.asPath, publicRuntimeConfig.STORE_HOST).toString(),
     );
+    return () => {};
   }, [route.asPath]);
 
   useEffect(() => {
+    let cancel = null;
     const requestRidiEventStatus = async () => {
       try {
         const cartUrl = new URL(
@@ -214,9 +217,15 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
           publicRuntimeConfig.STORE_TEMP_API_HOST,
         );
 
-        const result = await pRetry(() => axios.get(cartUrl.toString(), {}), {
-          retries: 2,
-        });
+        const result = await pRetry(
+          () =>
+            axios.get(cartUrl.toString(), {
+              cancelToken: new globalAxios.CancelToken(c => (cancel = c)),
+            }),
+          {
+            retries: 2,
+          },
+        );
         if (result.status === 200) {
           setEventStatus(result.data);
         }
@@ -225,6 +234,11 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
       }
     };
     requestRidiEventStatus();
+    return () => {
+      if (cancel) {
+        cancel();
+      }
+    };
   }, [route]);
 
   return (

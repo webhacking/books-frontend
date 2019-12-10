@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { a11y } from 'src/styles';
+import { BrowserLocationContext } from 'src/components/Context';
 import * as labels from 'src/labels/menus.json';
 import * as Cookies from 'js-cookie';
 import Home from 'src/svgs/Home.svg';
@@ -20,7 +21,6 @@ const { publicRuntimeConfig } = getConfig();
 import pRetry from 'p-retry';
 import axios, { OAuthRequestType } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
-import { useRouter } from 'next/router';
 const { captureException } = sentry();
 
 const StyledAnchor = styled.a`
@@ -224,7 +224,7 @@ const genreValueReplace = (visitedGenre: string) => {
 
 export const MainTab: React.FC<MainTabProps> = props => {
   const { isPartials, loggedUserInfo } = props;
-  const router = useRouter();
+  const currentPath = useContext(BrowserLocationContext);
   const [, setHomeURL] = useState('/');
   const [cartCount, setCartCount] = useState<number>(0);
   const [hasNotification, setNotification] = useState(0);
@@ -234,7 +234,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
     setHomeURL(
       visitedGenre && visitedGenre !== 'general' ? genreValueReplace(visitedGenre) : '/',
     );
-  }, [router.asPath]);
+  }, [currentPath]);
 
   useEffect(() => {
     const requestNotificationAuth = async () => {
@@ -315,7 +315,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           isPartials={isPartials}
           activeIcon={<HomeSolid css={iconStyle} />}
           normalIcon={<Home css={iconStyle} />}
-          currentPath={router.asPath}
+          currentPath={currentPath}
           label={labels.mainTab.home}
           path={'/'}
           pathRegexp={
@@ -328,7 +328,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           isPartials={isPartials}
           activeIcon={<Notification_solid css={iconStyle} />}
           normalIcon={<Notification_regular css={iconStyle} />}
-          currentPath={router.asPath}
+          currentPath={currentPath}
           label={labels.mainTab.notification}
           path={'/notification'}
           pathRegexp={/^\/notification/g}
@@ -359,7 +359,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           isPartials={isPartials}
           activeIcon={<Cart_solid css={iconStyle} />}
           normalIcon={<Cart_regular css={iconStyle} />}
-          currentPath={router.asPath}
+          currentPath={currentPath}
           label={labels.mainTab.cart}
           path={'/cart'}
           pathRegexp={/^\/cart/gu}
@@ -421,7 +421,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           isPartials={isPartials}
           activeIcon={<MyRIDI_solid css={iconStyle} />}
           normalIcon={<MyRIDI_regular css={iconStyle} />}
-          currentPath={router.asPath}
+          currentPath={currentPath}
           label={labels.mainTab.myRidi}
           path={'/account/myridi'}
           pathRegexp={/^\/account\/myridi/gu}
