@@ -169,6 +169,7 @@ const authorPublisherCSS = css`
   line-height: 1.36;
   color: #808991;
   -webkit-font-smoothing: antialiased;
+  max-width: 298px;
 `;
 
 // Todo 사용 컴포넌트마다 다른 options 사용해서 보여주기
@@ -245,6 +246,12 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                       ${authorPublisherCSS};
                       padding-left: 4px;
                       border-left: 1px solid #e6e8eb;
+                      ${greaterThanOrEqualTo(
+                        BreakPoint.LG + 1,
+                        css`
+                          max-width: 298px;
+                        `,
+                      )}
                     `}>
                     {book.publisher}
                   </span>
@@ -277,6 +284,13 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                             ${titleCSS};
                             color: #303538;
                             margin-bottom: 4px;
+                            word-break: keep-all;
+                            ${greaterThanOrEqualTo(
+                              BreakPoint.LG + 1,
+                              css`
+                                max-width: 298px;
+                              `,
+                            )}
                           `}
                           dangerouslySetInnerHTML={{
                             __html: getEscapedString(
@@ -285,7 +299,16 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                             ),
                           }}
                         />
-                        <div>
+                        <div
+                          css={css`
+                            word-break: keep-all;
+                            ${greaterThanOrEqualTo(
+                              BreakPoint.LG + 1,
+                              css`
+                                max-width: 298px;
+                              `,
+                            )}
+                          `}>
                           <AuthorLabel author={book.author} authors={book.authors_info} />
                           <span
                             css={css`
