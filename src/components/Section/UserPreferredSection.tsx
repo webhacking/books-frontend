@@ -27,7 +27,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
 
   const dispatch = useDispatch();
   const { items, genre, type, slug } = props;
-  const [sections, setSections] = useState(items);
+  const [sections, setSections] = useState(items || []);
 
   useEffect(() => {
     const requestUserPreferredBestSeller = async () => {
@@ -47,10 +47,10 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
       }
     };
 
-    if (items.length === 0 && loggedUser) {
+    if (sections.length === 0 && loggedUser) {
       requestUserPreferredBestSeller();
     }
-  }, [genre, items.length, loggedUser]);
+  }, [genre, sections, loggedUser]);
   return (
     <>
       {(sections as MdSelection[]).map((item, index) => {
