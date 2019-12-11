@@ -5,7 +5,7 @@ export default () => (
     <meta name="twitter:site" content="@ridibooks" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=0"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"
     />
     <meta name="theme-color" content="#339CF2" />
     <meta name="keywords" content="리디북스,리디,ridibooks,ridi,책,전자책,ebook" />
