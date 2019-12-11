@@ -129,6 +129,8 @@ const setCookie = (genre: string) => {
     convertedLegacyGenre = 'comic';
   } else if (genre.includes('-')) {
     convertedLegacyGenre = genre.replace('-', '_');
+  } else if (genre === 'general') {
+    convertedLegacyGenre = '';
   } else {
     convertedLegacyGenre = genre;
   }
