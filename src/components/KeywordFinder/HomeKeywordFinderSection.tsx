@@ -411,6 +411,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
         padding-top: 24px;
       `}>
       <h2
+        aria-label={'키워드 파인더로 이동'}
         css={css`
           font-weight: normal;
           height: 21px;
@@ -515,7 +516,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
             displayNoneForTouchDevice,
           ]}>
           <Arrow
-            label={'이전'}
+            label={'이전 키워드 보기'}
             side={'left'}
             onClickHandler={moveLeft}
             wrapperStyle={[
@@ -531,7 +532,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
           />
 
           <Arrow
-            label={'다음'}
+            label={'다음 키워드 보기'}
             side={'right'}
             onClickHandler={moveRight}
             wrapperStyle={[

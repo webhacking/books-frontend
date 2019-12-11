@@ -133,7 +133,9 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
       css={css`
         position: relative;
       `}>
-      <h2 className={'a11y'}>퀵 메뉴</h2>
+      <h2 className={'a11y'} aria-label={'퀵 메뉴'}>
+        퀵 메뉴
+      </h2>
       <MenuList ref={ref}>
         {props.items.map((menu, index) => (
           <Menu key={index} menu={menu} />
@@ -148,7 +150,7 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
             }
           `}>
           <Arrow
-            label={'이전'}
+            label={'이전 퀵 메뉴'}
             side={'left'}
             onClickHandler={moveLeft}
             wrapperStyle={[
@@ -163,7 +165,7 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
             ]}
           />
           <Arrow
-            label={'다음'}
+            label={'다음 퀵 메뉴'}
             side={'right'}
             onClickHandler={moveRight}
             wrapperStyle={[

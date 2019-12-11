@@ -247,6 +247,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props =
   return (
     <section ref={targetRef} css={multipleLineSectionCSS}>
       <h2
+        aria-label={title}
         css={css`
           font-size: 21px;
           font-weight: normal;
