@@ -248,7 +248,11 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
         // Todo add promotion buttons ex) calc date 123 충전
         <>
           <li>
-            <a href={cashOrderPath.toString()} aria-label={'리디 캐시 충전'}>
+            <a
+              href={cashOrderPath.toString()}
+              aria-label={
+                eventStatus.double_point ? '리디 캐시 더블 포인트 충전' : '리디 캐시 충전'
+              }>
               <Button
                 wrapperCSS={
                   eventStatus.double_point &&
@@ -289,7 +293,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
             </a>
           </li>
           <li>
-            <a href={publicRuntimeConfig.LIBRARY_HOST} aria-label={'내 서재 홈'}>
+            <a href={publicRuntimeConfig.LIBRARY_HOST} aria-label={'내 서재 홈으로 이동'}>
               <Button type={'primary'} label={'내 서재'} />
             </a>
           </li>
@@ -297,13 +301,13 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
       ) : (
         <>
           <li>
-            <a href={signUpPath.toString()} aria-label={'회원가입'}>
+            <a href={signUpPath.toString()} aria-label={'회원가입하기'}>
               <Button type={'primary'} label={'회원가입'} />
             </a>
           </li>
           <li>
             {/* Todo fix correct path by env */}
-            <a href={loginPath.toString()} aria-label={'로그인'}>
+            <a href={loginPath.toString()} aria-label={'로그인하기'}>
               <Button type={'secondary'} label={'로그인'} />
             </a>
           </li>
@@ -347,7 +351,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               <li>
                 <a
                   href={homePath.toString()}
-                  aria-label={'리디북스 홈'}
+                  aria-label={'리디북스 홈으로 이동'}
                   css={css`
                     display: flex;
                     align-items: center;
@@ -357,7 +361,9 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
                 </a>
               </li>
               <li>
-                <a href="https://select.ridibooks.com" aria-label={'리디셀렉트 홈'}>
+                <a
+                  href="https://select.ridibooks.com"
+                  aria-label={'리디셀렉트 홈으로 이동'}>
                   <RidiSelectLogo css={ridiSelectLogo} />
                   <span className="a11y">리디셀렉트</span>
                 </a>

@@ -704,7 +704,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
                 <Arrow
                   side={'left'}
                   onClickHandler={handleClickLeft}
-                  label={'이전'}
+                  label={'이전 배너 보기'}
                   wrapperStyle={css`
                     ${arrowCSS};
                     opacity: 0.5;
@@ -720,7 +720,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
                 <Arrow
                   onClickHandler={handleClickRight}
                   side={'right'}
-                  label={'다음'}
+                  label={'다음 배너 보기'}
                   wrapperStyle={css`
                     ${arrowCSS};
                     opacity: 0.5;

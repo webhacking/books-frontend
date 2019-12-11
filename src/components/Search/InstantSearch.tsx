@@ -616,6 +616,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                 autoCorrect={'off'}
                 disabled={!isLoaded}
                 aria-label={labels.searchPlaceHolder}
+                aria-required={'true'}
                 defaultValue={keyword}
                 ref={inputRef}
                 type={'text'}
