@@ -143,7 +143,7 @@ const sliderCSS = css`
         .slide-overlay {
           top: 0;
           width: ${TOP_BANNER_LG_WIDTH}px;
-          left: -2px;
+          left: -2.5px;
           border-radius: 6px;
           background: rgba(0, 0, 0, 0.5);
           transition: all 0.2s;
