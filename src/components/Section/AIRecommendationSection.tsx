@@ -59,7 +59,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
   }
   return (
     <SelectionBook
-      items={[]}
+      items={aiItems || []}
       slug={`${slug}-ai-rcmd`}
       title={loggedUser ? `${loggedUser.id} ${title}` : 'AI 추천'}
       extra={extra}
