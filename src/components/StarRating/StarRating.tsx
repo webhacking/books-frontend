@@ -3,7 +3,7 @@ import StarRatingIcon from 'src/svgs/StarRating.svg';
 import { css } from '@emotion/core';
 
 interface StarRatingProps {
-  rating: number;
+  rating: number | null;
   totalReviewer?: number;
 }
 

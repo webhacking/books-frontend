@@ -134,6 +134,7 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
   return '';
 };
 
+// eslint-disable-next-line complexity
 const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
   const {
     book: {
@@ -154,6 +155,15 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
     ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author'].includes(
       author.role,
     ),
+  );
+
+  console.log(
+    showSomeDeal,
+    showTag,
+    showRating,
+    ratingInfo,
+    props.book.id,
+    props.book.title.main,
   );
 
   return (
@@ -189,7 +199,26 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
           />
         </a>
         {/* Todo Author Anchor Generator */}
-        <span css={authorCSS}>{authorsRenderer(authors)}</span>
+        <span
+          css={[
+            authorCSS,
+            showSomeDeal &&
+              !is_somedeal &&
+              css`
+                margin-bottom: 0;
+              `,
+            !showRating &&
+              css`
+                margin-bottom: 0;
+              `,
+            showSomeDeal &&
+              is_somedeal &&
+              css`
+                margin-bottom: 6px;
+              `,
+          ]}>
+          {authorsRenderer(authors)}
+        </span>
         {showRating && ratingInfo && (
           <>
             <span
@@ -221,6 +250,23 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
               (!showRating || !ratingInfo) &&
                 css`
                   margin-top: 6px;
+                `,
+              showSomeDeal &&
+                is_somedeal &&
+                css`
+                  margin-top: 0;
+                `,
+              !showTag &&
+                !showSomeDeal &&
+                !showRating &&
+                !ratingInfo &&
+                css`
+                  margin-top: 0;
+                `,
+              showSomeDeal &&
+                !is_somedeal &&
+                css`
+                  margin-top: 0;
                 `,
             ]}>
             {showTag && (
