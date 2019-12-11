@@ -11,5 +11,5 @@
   "STORE_HOST": "https://ridibooks.com",
   "LIBRARY_HOST": "https://library.ridibooks.com",
   "STORE_TEMP_API_HOST": "https://ridibooks.com",
-  "BEACON_URL": "'https://s3.ap-northeast-2.amazonaws.com/beacon-ridibooks/beacon_ridibooks.gif'"
+  "BEACON_URL": "https://s3.ap-northeast-2.amazonaws.com/beacon-ridibooks/beacon_ridibooks.gif"
 }
