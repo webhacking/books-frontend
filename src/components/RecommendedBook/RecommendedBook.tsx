@@ -201,12 +201,14 @@ const dummyBook = {
 };
 
 export const sentenceStyle = css`
-  font-size: 12px;
   line-height: 16px;
   text-align: center;
   font-weight: bold;
   white-space: nowrap;
-  letter-spacing: -0.373044px;
+  left: 5px;
+  margin-top: 2px;
+  font-size: 0.92em;
+
   width: 140px;
   ${orBelow(
     BreakPoint.LG,
