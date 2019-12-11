@@ -63,7 +63,7 @@ const sliderCSS = css`
     ${greaterThanOrEqualTo(
       BreakPoint.SM + 1,
       css`
-        height: calc(${TOP_BANNER_SM_WIDTH}px / 1.5);
+        height: 235px;
       `,
     )};
 
@@ -200,7 +200,7 @@ const slideCSS = css`
     BreakPoint.SM + 1,
     css`
       width: ${TOP_BANNER_SM_WIDTH}px;
-      height: calc(${TOP_BANNER_SM_WIDTH}px / 1.5);
+      height: 235px;
     `,
   )};
 
@@ -352,16 +352,16 @@ const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => {
             ${greaterThanOrEqualTo(
               BreakPoint.XS,
               css`
-                width: calc(100vw - 19px);
+                width: calc(100vw - 20px);
                 min-width: 280px;
-                height: calc((100vw - 19px) / 1.5);
+                height: calc((100vw - 23px) / 1.5);
               `,
             )};
             ${greaterThanOrEqualTo(
               BreakPoint.SM + 1,
               css`
                 width: ${TOP_BANNER_SM_WIDTH}px;
-                height: 235px;
+                height: 234px;
               `,
             )};
 
@@ -529,7 +529,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       slidesToScroll={1}
       speed={uiOption.topBannerCarouselSpeed}
       autoplaySpeed={uiOption.topBannerCarouselPlaySpeed}
-      autoplay={true}
+      autoplay={false}
       arrows={false}
       infinite={true}
       variableWidth={true}
