@@ -102,7 +102,7 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
                   : `/search?q=${encodeURIComponent(author.name)}`
               }
               aria-label={author.id ? author.name : '작가 검색'}>
-              >{author.name}
+              {author.name}
             </a>
             {index !== 1 && ', '}
           </React.Fragment>
@@ -123,7 +123,7 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
                   : `/search?q=${encodeURIComponent(author.name)}`
               }
               aria-label={author.id ? author.name : '작가 검색'}>
-              >{author.name}
+              {author.name}
             </a>
             {index !== 1 && ', '}
           </React.Fragment>
