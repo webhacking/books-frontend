@@ -120,7 +120,7 @@ deploy-production:
   tags:
     - ridicorp
     - aws
-  image: cypress/base:10
+  image: cypress/base:10.15.3
   stage: e2e
   allow_failure: true
   before_script:
