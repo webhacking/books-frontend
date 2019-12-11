@@ -269,6 +269,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props =
           flex-wrap: wrap;
           flex-shrink: 0;
           justify-content: space-around;
+          margin-bottom: -24px;
           ${orBelow(
             432,
             css`
