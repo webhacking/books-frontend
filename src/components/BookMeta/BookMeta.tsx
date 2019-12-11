@@ -157,15 +157,6 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
     ),
   );
 
-  console.log(
-    showSomeDeal,
-    showTag,
-    showRating,
-    ratingInfo,
-    props.book.id,
-    props.book.title.main,
-  );
-
   return (
     <>
       <div
