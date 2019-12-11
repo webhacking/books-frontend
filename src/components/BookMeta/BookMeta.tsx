@@ -222,9 +222,16 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
         {showRating && ratingInfo && (
           <>
             <span
-              css={css`
-                margin-bottom: 6px;
-              `}>
+              css={[
+                css`
+                  margin-bottom: 6px;
+                `,
+                !showTag &&
+                  !showSomeDeal &&
+                  css`
+                    margin-bottom: 0;
+                  `,
+              ]}>
               <StarRating
                 totalReviewer={ratingInfo.buyer_rating_count}
                 rating={ratingInfo.buyer_rating_score || 0}
@@ -277,7 +284,7 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
                 <Tag.SomeDeal />
                 <span className={'a11y'} aria-label={'썸딜 도서'}>
                   썸딜 도서
-                </span>{' '}
+                </span>
               </>
             )}
           </span>
