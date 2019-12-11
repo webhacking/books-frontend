@@ -268,7 +268,9 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                     </a>
                   </div>
                   <div className={'book-meta-box'}>
-                    <div css={rankCSS}>{index + 1}</div>
+                    <div css={rankCSS} aria-label={`랭킹 순위 ${index + 1}위`}>
+                      {index + 1}
+                    </div>
                     {book.detail && (
                       <BookMeta
                         book={book.detail}

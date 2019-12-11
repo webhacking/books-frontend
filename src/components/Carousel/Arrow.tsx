@@ -71,7 +71,9 @@ const Arrow: React.FC<ArrowProps> = props => {
       ]}>
       <ArrowV css={mergedStyle} />
 
-      <span className={'a11y'}>{props.label}</span>
+      <span className={'a11y'} aria-label={props.label}>
+        {props.label}
+      </span>
     </button>
   );
 };

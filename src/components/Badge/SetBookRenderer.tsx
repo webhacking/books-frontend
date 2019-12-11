@@ -52,7 +52,8 @@ const SetBookRenderer: React.FC<SetBookRendererProps> = props => {
           padding: 0 6px;
           flex-shrink: 0;
           flex-grow: 0;
-        `}>
+        `}
+        aria-label={`${Math.min(setBookCount, 999)}권 세트`}>
         {`${Math.min(setBookCount, 999)}권 세트`}
       </span>
       <hr

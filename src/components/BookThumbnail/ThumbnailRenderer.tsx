@@ -96,16 +96,21 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
           thumbnailUrl={imageUrl}>
           {children}
           {book.detail?.property?.is_adult_only && (
-            <AdultBadge
-              css={css`
-                display: block;
-                position: absolute;
-                right: 3px;
-                top: 3px;
-                width: 20px;
-                height: 20px;
-              `}
-            />
+            <>
+              <AdultBadge
+                css={css`
+                  display: block;
+                  position: absolute;
+                  right: 3px;
+                  top: 3px;
+                  width: 20px;
+                  height: 20px;
+                `}
+              />
+              <span className={'a11y'} aria-label={'성인 전용 도서'}>
+                성인 전용 도서
+              </span>
+            </>
           )}
         </Book.Thumbnail>
       </div>

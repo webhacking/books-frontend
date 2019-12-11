@@ -32,7 +32,8 @@ const FreeBookRenderer: React.FC<FreeBookRendererProps> = props => {
             font-size: 12px;
             z-index: 3;
             line-height: 12px;
-          `}>
+          `}
+          aria-label={`${props.freeBookCount}화 무료`}>
           {`${props.freeBookCount}화 무료`}
         </span>
       </div>

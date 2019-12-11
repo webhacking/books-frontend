@@ -54,10 +54,24 @@ interface RenderBookTagProps {
 const RenderBookTag: React.FC<RenderBookTagProps> = props => {
   const { isComic, isNovel } = props;
   if (isComic) {
-    return <Tag.Comic />;
+    return (
+      <>
+        <Tag.Comic />
+        <span className={'a11y'} aria-label={'만화'}>
+          만화
+        </span>
+      </>
+    );
   }
   if (isNovel) {
-    return <Tag.Novel />;
+    return (
+      <>
+        <Tag.Novel />
+        <span className={'a11y'} aria-label={'소설'}>
+          소설
+        </span>
+      </>
+    );
   }
   return null;
 };
@@ -70,7 +84,8 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
           authors[0].id
             ? `/author/${authors[0].id}`
             : `/search?q=${encodeURIComponent(authors[0].name)}`
-        }>
+        }
+        aria-label={authors[0].id ? authors[0].name : '작가 검색'}>
         {authors[0].name}
       </a>
     );
@@ -85,8 +100,9 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
                 author.id
                   ? `/author/${author.id}`
                   : `/search?q=${encodeURIComponent(author.name)}`
-              }>
-              {author.name}
+              }
+              aria-label={author.id ? author.name : '작가 검색'}>
+              >{author.name}
             </a>
             {index !== 1 && ', '}
           </React.Fragment>
@@ -105,8 +121,9 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
                 author.id
                   ? `/author/${author.id}`
                   : `/search?q=${encodeURIComponent(author.name)}`
-              }>
-              {author.name}
+              }
+              aria-label={author.id ? author.name : '작가 검색'}>
+              >{author.name}
             </a>
             {index !== 1 && ', '}
           </React.Fragment>
@@ -167,6 +184,7 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
               ${bookTitleCSS};
               ${lineClamp(titleLineClamp || 2)}
             `}
+            aria-label={props.book.title.main}
             dangerouslySetInnerHTML={{ __html: bookTitleGenerator(props.book) }}
           />
         </a>
@@ -182,6 +200,15 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
                 totalReviewer={ratingInfo.buyer_rating_count}
                 rating={ratingInfo.buyer_rating_score || 0}
               />
+              <span
+                className={'a11y'}
+                aria-label={`총 리뷰어 ${
+                  ratingInfo.buyer_rating_count
+                }명. 구매자 평균 별점 ${ratingInfo.buyer_rating_score || 0}점.`}>
+                {`총 리뷰어 ${
+                  ratingInfo.buyer_rating_count
+                }명. 구매자 평균 별점 ${ratingInfo.buyer_rating_score || 0}점.`}
+              </span>
             </span>
           </>
         )}
@@ -199,7 +226,14 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
             {showTag && (
               <RenderBookTag isComic={is_comic_hd || is_comic} isNovel={is_novel} />
             )}
-            {showSomeDeal && is_somedeal && <Tag.SomeDeal />}
+            {showSomeDeal && is_somedeal && (
+              <>
+                <Tag.SomeDeal />
+                <span className={'a11y'} aria-label={'썸딜 도서'}>
+                  썸딜 도서
+                </span>{' '}
+              </>
+            )}
           </span>
         </>
       </div>

@@ -193,7 +193,7 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   return (
     <SectionWrapper ref={targetRef}>
-      <SectionTitle>
+      <SectionTitle aria-label={title}>
         {extra?.detail_link || (type === DisplayType.HomeMdSelection && selectionId) ? (
           // Todo Refactor
           <a

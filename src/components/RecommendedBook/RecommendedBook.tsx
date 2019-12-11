@@ -144,7 +144,9 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
           `/books/${props.book.id}`,
           publicRuntimeConfig.STORE_HOST,
         ).toString()}>
-        <BookTitle>{bookTitleGenerator(props.book)}</BookTitle>
+        <BookTitle aria-label={props.book?.title?.main || ''}>
+          {bookTitleGenerator(props.book)}
+        </BookTitle>
       </a>
       {props.book.authors_ordered && <BookAuthor>{authorsRenderer(authors)}</BookAuthor>}
       {props.book?.clientBookFields.isAvailableSelect && (
@@ -152,7 +154,8 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
           css={css`
             display: flex;
             align-items: center;
-          `}>
+          `}
+          aria-label={'리디 셀렉트 이용 가능 도서'}>
           <AtSelectIcon
             css={css`
               width: 14px;
@@ -309,7 +312,8 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
             css`
               color: black;
             `,
-        ]}>
+        ]}
+        aria-label={props.title}>
         <span
           css={css`
             margin-right: 8px;
