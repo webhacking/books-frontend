@@ -81,8 +81,8 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
   const [localExcluded, setLocalExcluded] = useState(excluded);
 
   const requestExclude = useCallback(
-    (bId, rcmdId) => {
-      const result = aiRecommendationCallback.exclude(bId, rcmdId);
+    async (bId, rcmdId) => {
+      const result = await aiRecommendationCallback.exclude(bId, rcmdId);
       // @ts-ignore
       if (result) {
         setLocalExcluded(true);
@@ -93,8 +93,8 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
   );
 
   const requestCancelExclude = useCallback(
-    bId => {
-      const result = aiRecommendationCallback.excludeCancel(bId);
+    async bId => {
+      const result = await aiRecommendationCallback.excludeCancel(bId);
       // @ts-ignore
       if (result) {
         setLocalExcluded(false);
@@ -111,7 +111,14 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
           display: inline-block;
         `}
         href={new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString()}>
-        <ThumbnailWrapper>
+        <ThumbnailWrapper
+          css={
+            excluded &&
+            css`
+              opacity: 0.6;
+              pointer-events: none;
+            `
+          }>
           <ThumbnailRenderer
             order={order}
             slug={slug}
@@ -151,6 +158,13 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
           showRating={type === DisplayType.HomeMdSelection}
           isAIRecommendation={false}
           ratingInfo={(book as MdBook).rating}
+          wrapperCSS={
+            excluded &&
+            css`
+              opacity: 0.6;
+              pointer-events: none;
+            `
+          }
         />
       )}
 
