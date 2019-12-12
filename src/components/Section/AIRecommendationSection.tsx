@@ -40,7 +40,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
           withCredentials: true,
           custom: { authorizationRequestType: OAuthRequestType.CHECK },
         });
-        setSections(result.data.items);
+        setSections(result.data.items.map(item => ({ ...item, excluded: false })));
         const bIds = keyToArray(result.data.items, 'b_id');
         dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
         const categoryIds = keyToArray(result.data.items, 'category_id');
@@ -55,6 +55,10 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
     }
   }, [dispatch, items, genre, loggedUser]);
   if (!loggedUser || !aiItems || aiItems.length < 1) {
+    return null;
+  }
+  // https://app.asana.com/0/1152363431499050/1153588050414697
+  if (aiItems.length < 6) {
     return null;
   }
   return (

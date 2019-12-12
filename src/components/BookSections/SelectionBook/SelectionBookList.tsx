@@ -8,6 +8,7 @@ import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DisplayType, MdBook } from 'src/types/sections';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
+import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
 
 const listCSS = css`
   box-sizing: content-box;
@@ -62,6 +63,9 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const { genre, type, isIntersecting, slug } = props;
   const deviceType = useContext(DeviceTypeContext);
+
+  const [requestExclude, requestCancel] = useExcludeRecommendation();
+
   return (
     <div
       ref={wrapperRef}
@@ -81,6 +85,10 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
                 genre={genre}
                 type={type}
                 isAIRecommendation={props.isAIRecommendation}
+                aiRecommendationCallback={{
+                  exclude: requestExclude,
+                  excludeCancel: requestCancel,
+                }}
                 book={item}
                 width={120}
               />

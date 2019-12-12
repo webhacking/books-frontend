@@ -11,6 +11,7 @@ import {
 import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
+import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
 
 const recommendedBookCarouselLoadingCSS = css`
   .slick-slide {
@@ -69,6 +70,8 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
     }
   };
 
+  const [requestExclude, requestCancel] = useExcludeRecommendation();
+
   useEffect(() => {
     setMounted(true);
     setArrowPosition(getArrowVerticalCenterPosition(wrapperRef));
@@ -116,6 +119,10 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                   slug={slug}
                   isIntersecting={isIntersecting}
                   isAIRecommendation={props.isAIRecommendation}
+                  aiRecommendationCallback={{
+                    exclude: requestExclude,
+                    excludeCancel: requestCancel,
+                  }}
                   book={book}
                   type={type}
                   width={140}

@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { DisplayType, MdBook, SectionExtra } from 'src/types/sections';
+import {
+  AIRecommendationBook,
+  DisplayType,
+  MdBook,
+  SectionExtra,
+} from 'src/types/sections';
 import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
 import SelectionBookCarousel from 'src/components/BookSections/SelectionBook/SelectionBookCarousel';
@@ -44,9 +49,13 @@ interface SelectionBookProps {
 }
 
 interface SelectionBookItemProps {
-  book: MdBook;
+  book: MdBook | AIRecommendationBook;
   genre: string;
   isAIRecommendation: boolean;
+  aiRecommendationCallback?: {
+    exclude: (bId: string, rcmd_id: string) => void;
+    excludeCancel: (bId: string) => void;
+  };
   width: number;
   type: DisplayType;
   isIntersecting: boolean;
@@ -55,7 +64,19 @@ interface SelectionBookItemProps {
 }
 
 export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(props => {
-  const { book, isAIRecommendation, genre, type, isIntersecting, slug, order } = props;
+  const {
+    book,
+    isAIRecommendation,
+    genre,
+    type,
+    isIntersecting,
+    slug,
+    order,
+    aiRecommendationCallback,
+  } = props;
+  if (isAIRecommendation) {
+    console.log(book);
+  }
   return (
     <>
       <a
@@ -102,7 +123,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
           width={`${props.width || 140}px`}
           showRating={type === DisplayType.HomeMdSelection}
           isAIRecommendation={false}
-          ratingInfo={book.rating}
+          ratingInfo={(book as MdBook).rating}
         />
       )}
 
@@ -120,7 +141,14 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
             color: #aaaaaa;
             outline: none;
           `}
-          aria-label={'추천 제외'}>
+          onClick={aiRecommendationCallback.exclude.bind(
+            null,
+            book.b_id,
+            (book as AIRecommendationBook).rcmd_id,
+          )}
+          aria-label={
+            (book as AIRecommendationBook).excluded ? '추천 제외' : '다시 보기'
+          }>
           추천 제외
         </button>
       )}

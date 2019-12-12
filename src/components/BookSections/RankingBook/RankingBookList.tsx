@@ -11,7 +11,7 @@ import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import Clock from 'src/svgs/Clock.svg';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { createTimeLabel } from 'src/utils/dateTime';
-import { DisplayType, ReadingRanking, SectionExtra } from 'src/types/sections';
+import { DisplayType, MdBook, ReadingRanking, SectionExtra } from 'src/types/sections';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
@@ -274,7 +274,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                     {book.detail && (
                       <BookMeta
                         book={book.detail}
-                        showRating={props.type === 'big' || !!book.rating}
+                        showRating={props.type === 'big' || !!(book as MdBook).rating}
                         titleLineClamp={props.type === 'small' ? 1 : 2}
                         isAIRecommendation={false}
                         showSomeDeal={showSomeDeal}
@@ -282,7 +282,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                           ['bl', 'bl-serial'].includes(genre) && props.type === 'big'
                         }
                         width={props.type === 'big' ? '177px' : null}
-                        ratingInfo={book.rating}
+                        ratingInfo={(book as MdBook).rating}
                       />
                     )}
                   </div>

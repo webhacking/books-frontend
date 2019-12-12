@@ -130,8 +130,16 @@ export interface MdSelection {
   category_id?: number;
   books: MdBook[];
 }
+export interface AIRecommendationBook {
+  b_id: string;
+  rcmd_id: string;
+  score: number;
+  detail: BookApi.Book | null;
+  excluded?: boolean;
+}
 
 export type BookItem =
+  | AIRecommendationBook
   | MdBook
   | TodayRecommendation
   | HotRelease
