@@ -51,19 +51,22 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
       requestUserPreferredBestSeller();
     }
   }, [genre, sections, loggedUser]);
+
   return (
     <>
       {(sections as MdSelection[]).map((item, index) => {
         if (!item.books) {
           return null;
         }
+
+        const categoryName = categoryState.items[item.category_id]?.name
+          ? `${categoryState.items[item.category_id]?.name} 베스트셀러`
+          : '베스트셀러';
         return (
           <SelectionBook
             slug={`${slug}-category-${item.category_id}`}
             items={item.books}
-            title={
-              `${categoryState.items[item.category_id]?.name} 베스트셀러` ?? '베스트셀러'
-            }
+            title={categoryName}
             categoryId={item.category_id}
             genre={genre}
             extra={{
