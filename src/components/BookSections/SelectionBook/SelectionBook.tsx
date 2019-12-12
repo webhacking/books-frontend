@@ -69,7 +69,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
             slug={slug}
             width={props.width || 140}
             book={{ b_id: book.b_id, detail: book.detail }}
-            imgSize={'xlarge'}
+            imgSize={'xxlarge'}
             isIntersecting={isIntersecting}>
             <div
               css={css`
@@ -110,6 +110,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
         <button
           css={css`
             margin-top: 8px;
+            margin-left: 7px;
             border-radius: 4px;
             border: solid 1px #d6d6d6;
             padding: 6px 7px;
@@ -118,7 +119,8 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
             line-height: 1;
             color: #aaaaaa;
             outline: none;
-          `}>
+          `}
+          aria-label={'추천 제외'}>
           추천 제외
         </button>
       )}
@@ -157,7 +159,7 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
           <ThumbnailWrapper>
             <ThumbnailRenderer
               book={{ b_id: book.b_id, detail: book.detail }}
-              imgSize={'xlarge'}
+              imgSize={'xxlarge'}
               isIntersecting={isIntersecting}
             />
           </ThumbnailWrapper>
