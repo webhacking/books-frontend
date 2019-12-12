@@ -89,6 +89,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
                   exclude: requestExclude,
                   excludeCancel: requestCancel,
                 }}
+                excluded={item.excluded ?? false}
                 book={item}
                 width={120}
               />

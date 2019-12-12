@@ -117,6 +117,7 @@ export interface EventBanner {
 }
 
 export interface MdBook {
+  excluded?: boolean;
   detail: BookApi.Book | null;
   b_id: string;
   type: string;

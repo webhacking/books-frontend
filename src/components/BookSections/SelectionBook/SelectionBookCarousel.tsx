@@ -123,6 +123,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
                     exclude: requestExclude,
                     excludeCancel: requestCancel,
                   }}
+                  excluded={book?.excluded ?? false}
                   book={book}
                   type={type}
                   width={140}

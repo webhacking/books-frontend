@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import {
   AIRecommendationBook,
@@ -61,6 +61,7 @@ interface SelectionBookItemProps {
   isIntersecting: boolean;
   slug: string;
   order?: number;
+  excluded?: boolean;
 }
 
 export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(props => {
@@ -73,10 +74,36 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
     slug,
     order,
     aiRecommendationCallback,
+    excluded,
   } = props;
-  if (isAIRecommendation) {
-    console.log(book);
-  }
+
+  // 추천제외 여부
+  const [localExcluded, setLocalExcluded] = useState(excluded);
+
+  const requestExclude = useCallback(
+    (bId, rcmdId) => {
+      const result = aiRecommendationCallback.exclude(bId, rcmdId);
+      // @ts-ignore
+      if (result) {
+        setLocalExcluded(true);
+        console.log(result);
+      }
+    },
+    [aiRecommendationCallback],
+  );
+
+  const requestCancelExclude = useCallback(
+    bId => {
+      const result = aiRecommendationCallback.excludeCancel(bId);
+      // @ts-ignore
+      if (result) {
+        setLocalExcluded(false);
+        console.log(result);
+      }
+    },
+    [aiRecommendationCallback],
+  );
+
   return (
     <>
       <a
@@ -141,15 +168,17 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
             color: #aaaaaa;
             outline: none;
           `}
-          onClick={aiRecommendationCallback.exclude.bind(
-            null,
-            book.b_id,
-            (book as AIRecommendationBook).rcmd_id,
-          )}
-          aria-label={
-            (book as AIRecommendationBook).excluded ? '추천 제외' : '다시 보기'
-          }>
-          추천 제외
+          onClick={
+            localExcluded
+              ? requestCancelExclude.bind(null, book.b_id)
+              : requestExclude.bind(
+                  null,
+                  book.b_id,
+                  (book as AIRecommendationBook).rcmd_id,
+                )
+          }
+          aria-label={localExcluded ? '다시 보기' : '추천 제외'}>
+          {localExcluded ? '다시 보기' : '추천 제외'}
         </button>
       )}
     </>
