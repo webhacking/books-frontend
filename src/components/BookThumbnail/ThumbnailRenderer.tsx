@@ -77,7 +77,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
       is_adult_only,
       isIntersecting,
       loggedUser?.is_verified_adult,
-      book.b_id,
+      book?.detail?.thumbnailId ?? book.b_id,
       imgSize,
     );
     useEffect(() => {
