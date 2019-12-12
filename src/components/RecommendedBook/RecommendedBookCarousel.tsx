@@ -22,7 +22,7 @@ const recommendedBookCarouselLoadingCSS = css`
   left: -18px;
   .slick-slide {
     width: 162px !important;
-    will-change: transform;
+    //will-change: transform;
     .slide-item-inner {
       display: inline-block;
       width: 140px;

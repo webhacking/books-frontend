@@ -50,7 +50,7 @@ const sliderCSS = css`
     height: 100%;
   }
   .slick-track {
-    will-change: transform;
+    //will-change: transform;
   }
   &.slick-slider {
     ${greaterThanOrEqualTo(

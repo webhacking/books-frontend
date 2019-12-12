@@ -15,7 +15,7 @@ import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
 
 const recommendedBookCarouselLoadingCSS = css`
   .slick-slide {
-    will-change: transform;
+    //will-change: transform;
     .slide-item-inner {
       display: inline-block;
       width: 140px;
