@@ -264,6 +264,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
                 label={
                   <div
                     css={css`
+                      line-height: 30px;
                       display: flex;
                       justify-content: center;
                       align-items: center;
