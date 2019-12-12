@@ -207,7 +207,7 @@ export const sentenceStyle = css`
   white-space: nowrap;
   left: 5px;
   margin-top: 2px;
-  font-size: 0.92em;
+  font-size: 0.89em;
 
   width: 140px;
   ${orBelow(
