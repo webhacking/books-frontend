@@ -328,7 +328,7 @@ const Footer: React.FC<{}> = () => (
               <li>
                 <a
                   css={anchorHover}
-                  href="https://instagram.com/ridibookspaper/"
+                  href="https://instagram.com/ridipaper/"
                   target="_blank"
                   rel="noopener">
                   <FooterMenuLabel>인스타그램</FooterMenuLabel>
