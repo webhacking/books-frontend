@@ -79,14 +79,20 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
 
   // 추천제외 여부
   const [localExcluded, setLocalExcluded] = useState(excluded);
+  const [isFetching, setFetching] = useState(false);
 
   const requestExclude = useCallback(
     async (bId, rcmdId) => {
-      const result = await aiRecommendationCallback.exclude(bId, rcmdId);
-      // @ts-ignore
-      if (result) {
-        setLocalExcluded(true);
-        console.log(result);
+      try {
+        setFetching(true);
+        const result = await aiRecommendationCallback.exclude(bId, rcmdId);
+        // @ts-ignore
+        if (result) {
+          setLocalExcluded(true);
+          console.log(result);
+        }
+      } finally {
+        setFetching(false);
       }
     },
     [aiRecommendationCallback],
@@ -94,11 +100,16 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
 
   const requestCancelExclude = useCallback(
     async bId => {
-      const result = await aiRecommendationCallback.excludeCancel(bId);
-      // @ts-ignore
-      if (result) {
-        setLocalExcluded(false);
-        console.log(result);
+      try {
+        setFetching(true);
+        const result = await aiRecommendationCallback.excludeCancel(bId);
+        // @ts-ignore
+        if (result) {
+          setLocalExcluded(false);
+          console.log(result);
+        }
+      } finally {
+        setFetching(false);
       }
     },
     [aiRecommendationCallback],
@@ -113,9 +124,9 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
         href={new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString()}>
         <ThumbnailWrapper
           css={
-            excluded &&
+            localExcluded &&
             css`
-              opacity: 0.6;
+              opacity: 0.2;
               pointer-events: none;
             `
           }>
@@ -159,9 +170,9 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
           isAIRecommendation={false}
           ratingInfo={(book as MdBook).rating}
           wrapperCSS={
-            excluded &&
+            localExcluded &&
             css`
-              opacity: 0.6;
+              opacity: 0.2;
               pointer-events: none;
             `
           }
@@ -170,18 +181,25 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
 
       {isAIRecommendation && (
         <button
-          css={css`
-            margin-top: 8px;
-            margin-left: 7px;
-            border-radius: 4px;
-            border: solid 1px #d6d6d6;
-            padding: 6px 7px;
-            font-size: 10px;
-            font-weight: bold;
-            line-height: 1;
-            color: #aaaaaa;
-            outline: none;
-          `}
+          css={[
+            css`
+              margin-top: 8px;
+              margin-left: 7px;
+              border-radius: 4px;
+              border: solid 1px #d6d6d6;
+              padding: 6px 7px;
+              font-size: 10px;
+              font-weight: bold;
+              line-height: 1;
+              color: #aaaaaa;
+              outline: none;
+            `,
+            isFetching &&
+              css`
+                opacity: 0.3;
+                cursor: not-allowed;
+              `,
+          ]}
           onClick={
             localExcluded
               ? requestCancelExclude.bind(null, book.b_id)
