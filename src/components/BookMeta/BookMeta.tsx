@@ -23,6 +23,7 @@ const bookMetaCSS = css`
   display: flex;
   flex-direction: column;
   padding-left: 7px;
+  transition: opacity 0.2s ease-in-out;
 `;
 
 const authorCSS = css`

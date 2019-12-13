@@ -8,7 +8,6 @@ import * as Cookies from 'js-cookie';
 import titleGenerator from 'src/utils/titleGenerator';
 import { useSelector } from 'react-redux';
 
-import getConfig from 'next/config';
 import { Page, Section } from 'src/types/sections';
 import { HomeSectionRenderer } from 'src/components/Section/HomeSectionRenderer';
 import pRetry from 'p-retry';
@@ -30,6 +29,7 @@ import Spinner from 'src/svgs/Spinner.svg';
 
 const { captureException } = sentry();
 
+import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 
 export interface HomeProps {

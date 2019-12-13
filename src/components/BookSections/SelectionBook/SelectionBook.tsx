@@ -89,7 +89,6 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
         // @ts-ignore
         if (result) {
           setLocalExcluded(true);
-          console.log(result);
         }
       } finally {
         setFetching(false);
@@ -106,7 +105,6 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
         // @ts-ignore
         if (result) {
           setLocalExcluded(false);
-          console.log(result);
         }
       } finally {
         setFetching(false);
@@ -123,13 +121,16 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
         `}
         href={new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString()}>
         <ThumbnailWrapper
-          css={
+          css={[
             localExcluded &&
+              css`
+                opacity: 0.2;
+                pointer-events: none;
+              `,
             css`
-              opacity: 0.2;
-              pointer-events: none;
-            `
-          }>
+              transition: opacity 0.2s;
+            `,
+          ]}>
           <ThumbnailRenderer
             order={order}
             slug={slug}
