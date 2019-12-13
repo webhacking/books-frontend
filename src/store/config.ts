@@ -18,6 +18,8 @@ import {
 import { AccountState } from 'src/services/accounts/reducer';
 import { BooksState } from 'src/services/books/reducer';
 import { CategoryState } from 'src/services/category/reducer';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 export interface RootState {
   app?: AppState;
@@ -60,7 +62,9 @@ const makeStore = (
   const store = createStore(
     rootReducers,
     preLoadedState,
-    composeWithDevTools(applyMiddleware(routerMiddleware, sagaMiddleware)),
+    publicRuntimeConfig.STORE_HOST === 'https://ridibooks.com'
+      ? applyMiddleware(routerMiddleware, sagaMiddleware)
+      : composeWithDevTools(applyMiddleware(routerMiddleware, sagaMiddleware)),
   );
 
   (store as Store & { sagaTask: Task }).sagaTask = sagaMiddleware.run(rootSaga);
