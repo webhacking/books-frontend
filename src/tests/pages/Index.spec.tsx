@@ -42,7 +42,7 @@ const providerWrap = (
 );
 
 const renderComponent = (props: HomeProps, genre: string) =>
-  render(providerWrap(<Index {...props} genre={genre} />));
+  render(providerWrap(<Index {...props} branches={[]} genre={genre} />));
 
 describe('Home Test', () => {
   afterEach(() => {
@@ -85,7 +85,7 @@ describe('Home Test', () => {
       providerWrap(
         <RouterContext.Provider value={{ asPath: '' }}>
           <BrowserLocationWithRouter isPartials={false} pathname={'/'}>
-            <Index {...props} genre={'romance'} />
+            <Index {...props} branches={[]} genre={'romance'} />
           </BrowserLocationWithRouter>
         </RouterContext.Provider>,
       ),
