@@ -20,7 +20,7 @@ export const useDebounceSendEventTracker = (): [
     Object.keys(mergedImpressionBook).forEach(key => {
       const sectionItem = mergedImpressionBook[key].map(item => ({
         id: item.id,
-        order: item.order,
+        idx: item.order,
         ts: item.ts,
       }));
       tracker.sendEvent('display', { section: key, items: sectionItem });
@@ -37,9 +37,9 @@ export const useDebounceSendEventTracker = (): [
         [slug]: mergedImpressionBook[slug]
           ? [
               ...mergedImpressionBook[slug],
-              { id: bookId, order, ts: new Date().getTime() },
+              { id: bookId, idx: order, ts: new Date().getTime() },
             ]
-          : [{ id: bookId, order, ts: new Date().getTime() }],
+          : [{ id: bookId, idx: order, ts: new Date().getTime() }],
       };
       setImpressionBook(keys);
       debouncedInsertImpressionItem();
