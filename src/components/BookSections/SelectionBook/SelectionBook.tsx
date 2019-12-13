@@ -230,6 +230,7 @@ export interface SelectionBookCarouselProps {
 
 export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props => {
   const { isIntersecting, genre, type } = props;
+
   return (
     <ul
       css={css`
@@ -237,6 +238,7 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
         margin-top: 6px;
         padding-bottom: 48px;
         padding-left: 18px;
+        ${!isIntersecting && 'display: none;'};
         ${orBelow(
           BreakPoint.LG,
           css`

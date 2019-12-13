@@ -204,91 +204,95 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
             position: relative;
             height: ${type === 'big' ? '414px' : '282px'}; // badge + (7 * 3)
           `}>
-          <ul css={listCSS} ref={ref}>
-            {books
-              .filter(book => book.detail)
-              .slice(0, 9)
-              .map((book, index) => (
-                <li css={type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
-                  <div
-                    css={css`
-                      margin-right: ${props.type === 'big' ? '18px' : '24px'};
-                      height: 100%;
-                      display: flex;
-                      flex-direction: column;
-                      justify-content: center;
-                      position: relative;
-                    `}>
-                    <a
+          {isIntersecting && (
+            <ul css={listCSS} ref={ref}>
+              {books
+                .filter(book => book.detail)
+                .slice(0, 9)
+                .map((book, index) => (
+                  <li css={type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
+                    <div
                       css={css`
-                        display: inline-block;
-                      `}
-                      href={new URL(
-                        `/books/${book.b_id}`,
-                        publicRuntimeConfig.STORE_HOST,
-                      ).toString()}>
-                      <ThumbnailRenderer
-                        slug={slug}
-                        order={index}
-                        width={type === 'big' ? 80 : 50}
-                        book={{ b_id: book.b_id, detail: book.detail }}
-                        imgSize={'xlarge'}
-                        isIntersecting={isIntersecting}>
-                        {type === 'big' && (
-                          <div
-                            css={css`
-                              position: absolute;
-                              display: block;
-                              top: -7px;
-                              left: -7px;
-                            `}>
-                            <BookBadgeRenderer
-                              type={DisplayType.BestSeller}
-                              wrapperCSS={css``}
-                              isWaitFree={book.detail?.series?.property.is_wait_free}
-                              discountPercentage={
-                                book?.detail?.price_info?.buy?.discount_percentage || 0
-                              }
-                            />
-                          </div>
-                        )}
-                        {type === 'big' && (
-                          <>
-                            <FreeBookRenderer
-                              freeBookCount={
-                                book.detail?.series?.price_info?.buy?.free_book_count || 0
-                              }
-                            />
-                            <SetBookRenderer
-                              setBookCount={book.detail?.setbook?.member_books_count}
-                            />
-                          </>
-                        )}
-                      </ThumbnailRenderer>
-                    </a>
-                  </div>
-                  <div className={'book-meta-box'}>
-                    <div css={rankCSS} aria-label={`랭킹 순위 ${index + 1}위`}>
-                      {index + 1}
+                        margin-right: ${props.type === 'big' ? '18px' : '24px'};
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        position: relative;
+                      `}>
+                      <a
+                        css={css`
+                          display: inline-block;
+                        `}
+                        href={new URL(
+                          `/books/${book.b_id}`,
+                          publicRuntimeConfig.STORE_HOST,
+                        ).toString()}>
+                        <ThumbnailRenderer
+                          slug={slug}
+                          order={index}
+                          width={type === 'big' ? 80 : 50}
+                          book={{ b_id: book.b_id, detail: book.detail }}
+                          imgSize={'xlarge'}
+                          isIntersecting={isIntersecting}>
+                          {type === 'big' && (
+                            <div
+                              css={css`
+                                position: absolute;
+                                display: block;
+                                top: -7px;
+                                left: -7px;
+                              `}>
+                              <BookBadgeRenderer
+                                type={DisplayType.BestSeller}
+                                wrapperCSS={css``}
+                                isWaitFree={book.detail?.series?.property.is_wait_free}
+                                discountPercentage={
+                                  book?.detail?.price_info?.buy?.discount_percentage || 0
+                                }
+                              />
+                            </div>
+                          )}
+                          {type === 'big' && (
+                            <>
+                              <FreeBookRenderer
+                                freeBookCount={
+                                  book.detail?.series?.price_info?.buy?.free_book_count ||
+                                  0
+                                }
+                              />
+                              <SetBookRenderer
+                                setBookCount={book.detail?.setbook?.member_books_count}
+                              />
+                            </>
+                          )}
+                        </ThumbnailRenderer>
+                      </a>
                     </div>
-                    {book.detail && (
-                      <BookMeta
-                        book={book.detail}
-                        showRating={props.type === 'big' || !!(book as MdBook).rating}
-                        titleLineClamp={props.type === 'small' ? 1 : 2}
-                        isAIRecommendation={false}
-                        showSomeDeal={showSomeDeal}
-                        showTag={
-                          ['bl', 'bl-serial'].includes(genre) && props.type === 'big'
-                        }
-                        width={props.type === 'big' ? '177px' : null}
-                        ratingInfo={(book as MdBook).rating}
-                      />
-                    )}
-                  </div>
-                </li>
-              ))}
-          </ul>
+                    <div className={'book-meta-box'}>
+                      <div css={rankCSS} aria-label={`랭킹 순위 ${index + 1}위`}>
+                        {index + 1}
+                      </div>
+                      {book.detail && (
+                        <BookMeta
+                          book={book.detail}
+                          showRating={props.type === 'big' || !!(book as MdBook).rating}
+                          titleLineClamp={props.type === 'small' ? 1 : 2}
+                          isAIRecommendation={false}
+                          showSomeDeal={showSomeDeal}
+                          showTag={
+                            ['bl', 'bl-serial'].includes(genre) && props.type === 'big'
+                          }
+                          width={props.type === 'big' ? '177px' : null}
+                          ratingInfo={(book as MdBook).rating}
+                        />
+                      )}
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          )}
+
           {!['mobile', 'tablet'].includes(deviceType) && (
             <form
               css={[

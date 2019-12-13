@@ -13,6 +13,7 @@ import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
 const listCSS = css`
   box-sizing: content-box;
   overflow: auto;
+  overflow-y: hidden;
   ${orBelow(
     BreakPoint.LG,
     css`
