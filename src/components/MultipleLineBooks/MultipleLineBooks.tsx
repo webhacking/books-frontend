@@ -159,7 +159,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
               order={order}
               slug={slug}
               book={{ b_id: item.b_id, detail: item.detail }}
-              imgSize={'large'}
+              imgSize={'xxlarge'}
               isIntersecting={isIntersecting}>
               <div
                 css={css`
