@@ -188,6 +188,11 @@ export const Home: NextPage<HomeProps> = props => {
                   order={index}
                   genre={currentGenre}
                 />
+                <div
+                  css={css`
+                    margin-bottom: 24px;
+                  `}
+                />
               </React.Fragment>
             ))}
         </EventTracker>

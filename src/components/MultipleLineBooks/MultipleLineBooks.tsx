@@ -302,16 +302,19 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props =
             `,
           )}
         `}>
-        {(books as MdBook[]).slice(0, 18).map((item, index) => (
-          <MultipleLineBookItem
-            order={index}
-            slug={slug}
-            key={index}
-            genre={genre}
-            item={item}
-            isIntersecting={isIntersecting}
-          />
-        ))}
+        {isIntersecting &&
+          (books as MdBook[])
+            .slice(0, 18)
+            .map((item, index) => (
+              <MultipleLineBookItem
+                order={index}
+                slug={slug}
+                key={index}
+                genre={genre}
+                item={item}
+                isIntersecting={isIntersecting}
+              />
+            ))}
       </ul>
     </section>
   );
