@@ -519,6 +519,17 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
   const { banners, forwardRef, setInitialized, isIntersecting } = props;
   const [tracker] = useEventTracker();
 
+  const resize = useCallback(() => {
+    let event = null;
+    if (typeof Event === 'function') {
+      event = new Event('resize');
+    } else {
+      event = document.createEvent('Event');
+      event.initEvent('resize', true, true);
+    }
+    window.dispatchEvent(event);
+  }, []);
+
   return (
     <ForwardedRefComponent
       ref={forwardRef}
@@ -530,18 +541,13 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       speed={uiOption.topBannerCarouselSpeed}
       autoplaySpeed={uiOption.topBannerCarouselPlaySpeed}
       autoplay={false}
+      touchThreshold={10}
+      onReInit={resize}
       arrows={false}
       infinite={true}
       variableWidth={true}
       afterChange={(next: number) => {
-        let event = null;
-        if (typeof Event === 'function') {
-          event = new Event('resize');
-        } else {
-          event = document.createEvent('Event');
-          event.initEvent('resize', true, true);
-        }
-        window.dispatchEvent(event);
+        resize();
         props.changePosition(next);
 
         if (isIntersecting) {
@@ -626,7 +632,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
     };
 
     const preventTouch = e => {
-      const minValue = 5; // threshold
+      const minValue = 8; // threshold
 
       clientX = e.touches[0].clientX - firstClientX;
 
