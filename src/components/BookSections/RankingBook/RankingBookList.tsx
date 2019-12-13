@@ -232,7 +232,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                         order={index}
                         width={type === 'big' ? 80 : 50}
                         book={{ b_id: book.b_id, detail: book.detail }}
-                        imgSize={'medium'}
+                        imgSize={'xlarge'}
                         isIntersecting={isIntersecting}>
                         {type === 'big' && (
                           <div
