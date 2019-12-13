@@ -22,7 +22,6 @@ const sectionStyle = (theme: RIDITheme) => css`
   hr {
     display: none;
   }
-  margin-top: 24px;
   background: ${theme.secondaryColor};
 `;
 
