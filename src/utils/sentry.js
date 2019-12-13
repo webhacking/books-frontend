@@ -5,18 +5,25 @@ const getConfig = require('next/config').default;
 const { publicRuntimeConfig } = getConfig();
 const { captureException, configureScope, init } = Sentry;
 
+// eslint-disable-next-line no-process-env
 module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
   const sentryOptions = {
     dsn: publicRuntimeConfig.SENTRY_DSN,
     release: nextBuildId,
-    maxBreadcrumbs: 50,
+    maxBreadcrumbs: 30,
     environment: publicRuntimeConfig.ENVIRONMENT || 'local',
     attachStacktrace: true,
-    sampleRate: 0.5,
+    sampleRate: 0.2,
+    whitelistUrls: [
+      /https?:\/\/(.+\.)?ridibooks\.com/,
+      /https?:\/\/(.+\.)?ridi\.io/,
+      'https://s3.ap-northeast-2.amazonaws.com/beacon-ridibooks',
+    ],
   };
 
   init(sentryOptions);
 
+  // eslint-disable-next-line no-process-env
   if (process.env.NODE_ENV !== 'production') {
     const sentryTestkit = require('sentry-testkit');
     const { sentryTransport } = sentryTestkit();
