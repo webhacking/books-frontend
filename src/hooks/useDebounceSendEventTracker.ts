@@ -20,7 +20,8 @@ export const useDebounceSendEventTracker = (): [
     Object.keys(mergedImpressionBook).forEach(key => {
       const sectionItem = mergedImpressionBook[key].map(item => ({
         id: item.id,
-        idx: item.order,
+        // @ts-ignore
+        idx: item.idx,
         ts: item.ts,
       }));
       tracker.sendEvent('display', { section: key, items: sectionItem });
