@@ -149,7 +149,10 @@ const MemoSpinner = React.memo(() => (
 
 export const Home: NextPage<HomeProps> = props => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
-  const bIds = keyToArray(props.branches, 'b_id');
+  const bIds = keyToArray(
+    props.branches.filter(section => section.extra.use_select_api),
+    'b_id',
+  );
   const [tracker] = useEventTracker();
 
   const setPageView = useCallback(() => {
@@ -238,7 +241,11 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
         type: categoryActions.insertCategoryIds.type,
         payload: categoryIds,
       });
-      store.dispatch({ type: booksActions.checkSelectBook.type, payload: bIds });
+      const selectBIds = keyToArray(
+        result.branches.filter(section => section.extra.use_select_api),
+        'b_id',
+      );
+      store.dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
       return {
         genre,
         store,
