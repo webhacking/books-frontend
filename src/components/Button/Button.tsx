@@ -35,6 +35,7 @@ const createCSS = (theme: RIDITheme, type: 'primary' | 'secondary') => css`
   display: flex;
   justify-content: center;
   align-items: center;
+  outline: none;
 `;
 
 export const Button: React.FC<ButtonProps> = props => (

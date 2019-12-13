@@ -538,6 +538,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
             }>
             <li
               css={css`
+                outline: none;
                 ${router.query?.pathname?.toString().startsWith('/category/list')
                   ? css`
                       :hover {
@@ -551,7 +552,10 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                     `}
               `}>
               <a href={'/category/list'} aria-label={'카테고리 목록'}>
-                <button>
+                <button
+                  css={css`
+                    outline: none;
+                  `}>
                   <GNBCategory
                     css={(theme: RIDITheme) => css`
                       ${iconCSS(theme)};
