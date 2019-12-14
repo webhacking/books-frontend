@@ -13,6 +13,14 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
     maxBreadcrumbs: 30,
     environment: publicRuntimeConfig.ENVIRONMENT || 'local',
     attachStacktrace: true,
+    ignoreErrors: [
+      /ERR_BLOCKED_BY_CLIENT/,
+      'fb_xd_fragment',
+      /ReferenceError:.*/,
+      /Failed to fetch/,
+      /window.__naverapp__.extractMetadata/,
+      /TypeError: undefined is not an object (evaluating '__gCrWeb.autofill.extractForms')/,
+    ],
     sampleRate: 0.2,
     whitelistUrls: [
       /https?:\/\/(.+\.)?ridibooks\.com/,
@@ -20,7 +28,6 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /https?:\/\/s3.ap-northeast-2.amazonaws.com\/beacon-ridibooks(-test)*/,
     ],
   };
-
   init(sentryOptions);
 
   // eslint-disable-next-line no-process-env
