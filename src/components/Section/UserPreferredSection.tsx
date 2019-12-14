@@ -3,7 +3,7 @@ import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBo
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
-import axios from 'src/utils/axios';
+import axios, { OAuthRequestType } from 'src/utils/axios';
 import getConfig from 'next/config';
 import sentry from 'src/utils/sentry';
 import { keyToArray } from 'src/utils/common';
@@ -36,7 +36,10 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
           `/sections/home-${genre}-user-preferred-bestseller`,
           publicRuntimeConfig.STORE_API,
         );
-        const result = await axios.get(requestUrl.toString(), { withCredentials: true });
+        const result = await axios.get(requestUrl.toString(), {
+          withCredentials: true,
+          custom: { authorizationRequestType: OAuthRequestType.CHECK },
+        });
         setSections(result.data.items);
         const bIds = keyToArray(result.data.items, 'b_id');
         dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
