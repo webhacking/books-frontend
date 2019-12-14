@@ -10,6 +10,9 @@ import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
+import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
+import { Tracker } from '@ridi/event-tracker';
+
 const { publicRuntimeConfig } = getConfig();
 interface MultipleLineBooks {
   items: MdBook[];
@@ -24,6 +27,7 @@ interface MultipleLineBookItemProps {
   isIntersecting: boolean;
   slug: string;
   order: number;
+  tracker: Tracker;
 }
 
 const itemCSS = css`
@@ -92,7 +96,7 @@ const itemCSS = css`
 `;
 
 const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(props => {
-  const { item, genre, isIntersecting, slug, order } = props;
+  const { item, genre, isIntersecting, slug, order, tracker } = props;
   return (
     <li css={itemCSS}>
       <ThumbnailWrapper
@@ -151,6 +155,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
             css={css`
               display: inline-block;
             `}
+            onClick={sendClickEvent.bind(null, tracker, item, slug, order)}
             href={new URL(
               `/books/${item.b_id}`,
               publicRuntimeConfig.STORE_HOST,
@@ -243,6 +248,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props =
   const { title, items, genre, slug } = props;
   const [books] = useBookDetailSelector(items);
   const targetRef = useRef(null);
+  const [tracker] = useEventTracker();
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   return (
     <section ref={targetRef} css={multipleLineSectionCSS}>
@@ -313,6 +319,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props =
                 genre={genre}
                 item={item}
                 isIntersecting={isIntersecting}
+                tracker={tracker}
               />
             ))}
       </ul>

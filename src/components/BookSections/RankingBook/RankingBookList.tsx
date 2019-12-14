@@ -20,6 +20,7 @@ import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import getConfig from 'next/config';
+import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
 const { publicRuntimeConfig } = getConfig();
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -177,6 +178,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
 
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   const deviceType = useContext(DeviceTypeContext);
+  const [tracker] = useEventTracker();
   return (
     <>
       <SectionWrapper ref={targetRef}>
@@ -221,6 +223,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                         position: relative;
                       `}>
                       <a
+                        onClick={sendClickEvent.bind(null, tracker, book, slug, index)}
                         css={css`
                           display: inline-block;
                         `}

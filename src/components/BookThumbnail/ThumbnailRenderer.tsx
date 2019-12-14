@@ -34,6 +34,7 @@ const computeThumbnailUrl = (
   isVerifiedAdult: boolean | null,
   bId: string,
   imageSize?: string,
+  book?: BookApi.Book,
 ) => {
   if (bId.length === 0) {
     return new URL(
@@ -53,6 +54,24 @@ const computeThumbnailUrl = (
       publicRuntimeConfig.STATIC_CDN_URL,
     ).toString();
   }
+
+  if (book?.series) {
+    if (book.series.property.is_completed) {
+      return new URL(
+        imageSize ? `/cover/${bId}/${imageSize}` : `/cover/${bId}/xlarge`,
+        IMG_RIDI_CDN_URL,
+      ).toString();
+    }
+    if (book?.series.property.opened_last_volume_id.length !== 0) {
+      return new URL(
+        imageSize
+          ? `/cover/${book.series.property.opened_last_volume_id}/${imageSize}`
+          : `/cover/${book.series.property.opened_last_volume_id}/xlarge`,
+        IMG_RIDI_CDN_URL,
+      ).toString();
+    }
+  }
+
   return new URL(
     imageSize ? `/cover/${bId}/${imageSize}` : `/cover/${bId}/xlarge`,
     IMG_RIDI_CDN_URL,
@@ -79,6 +98,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
       loggedUser?.is_verified_adult,
       book?.detail?.thumbnailId ?? book.b_id,
       imgSize,
+      book.detail,
     );
     useEffect(() => {
       if (bookIsIntersecting) {
@@ -118,6 +138,9 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
   },
   (prev, next) => {
     if (prev.book.b_id !== next.book.b_id) {
+      return false;
+    }
+    if (prev.book.detail !== next.book.detail) {
       return false;
     }
     if (prev.isIntersecting !== next.isIntersecting) {

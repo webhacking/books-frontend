@@ -69,3 +69,11 @@ export const useEventTracker = () => {
   }, [loggedUser]);
   return [tracker];
 };
+
+// Todo refactor
+export const sendClickEvent = (eventTracker, item, section, order) => {
+  eventTracker.sendEvent('click', {
+    section,
+    items: [{ id: item.b_id || item.id, idx: order, ts: new Date().getTime() }],
+  });
+};

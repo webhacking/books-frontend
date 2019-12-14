@@ -9,9 +9,10 @@ import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel'
 import { between, BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import { TopBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
-import { useEventTracker } from 'src/hooks/useEveneTracker';
+import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
 import getConfig from 'next/config';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
+import { useRouter } from 'next/router';
 const { publicRuntimeConfig } = getConfig();
 
 const TOP_BANNER_LG_WIDTH = 430;
@@ -516,7 +517,7 @@ const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props 
 );
 
 const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => {
-  const { banners, forwardRef, setInitialized, isIntersecting } = props;
+  const { banners, forwardRef, setInitialized, isIntersecting, slug } = props;
   const [tracker] = useEventTracker();
 
   const resize = useCallback(() => {
@@ -577,6 +578,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       centerMode={true}>
       {banners.map((item, index) => (
         <a
+          onClick={sendClickEvent.bind(null, tracker, item, slug, index)}
           css={css`
             outline: none;
             border-radius: 6px;
@@ -599,143 +601,150 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
   );
 });
 
-export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProps> = React.memo(
-  props => {
-    const [carouselInitialized, setCarouselInitialized] = useState(false);
-    const [currentPosition, setCurrentPosition] = useState(0);
-    const { banners, slug } = props;
-    const slider = React.useRef<SliderCarousel>();
-    const wrapper = React.useRef<HTMLElement>();
+export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProps> = props => {
+  const [carouselInitialized, setCarouselInitialized] = useState(false);
+  const [currentPosition, setCurrentPosition] = useState(0);
+  const { banners, slug } = props;
+  const slider = React.useRef<SliderCarousel>();
+  const wrapper = React.useRef<HTMLElement>();
+  const deviceType = useContext(DeviceTypeContext);
+  const router = useRouter();
 
-    let firstClientX = 0;
-    let clientX = 0;
+  let firstClientX = 0;
+  let clientX = 0;
 
-    const changePosition = useCallback(item => {
-      setCurrentPosition(item || 0);
-    }, []);
-    const setInitialized = useCallback(() => {
-      setCarouselInitialized(true);
-    }, []);
+  const changePosition = useCallback(item => {
+    setCurrentPosition(item || 0);
+  }, []);
+  const setInitialized = useCallback(() => {
+    setCarouselInitialized(true);
+  }, []);
 
-    const handleClickLeft = (e: FormEvent) => {
+  const handleClickLeft = (e: FormEvent) => {
+    e.preventDefault();
+    if (slider.current) {
+      slider.current.slickPrev();
+    }
+  };
+  const handleClickRight = (e: FormEvent) => {
+    e.preventDefault();
+    if (slider.current) {
+      slider.current.slickNext();
+    }
+  };
+
+  const preventTouch = e => {
+    const minValue = 8; // threshold
+
+    clientX = e.touches[0].clientX - firstClientX;
+
+    // Vertical scrolling does not work when you start swiping horizontally.
+    if (Math.abs(clientX) > minValue) {
       e.preventDefault();
-      if (slider.current) {
-        slider.current.slickPrev();
-      }
-    };
-    const handleClickRight = (e: FormEvent) => {
-      e.preventDefault();
-      if (slider.current) {
-        slider.current.slickNext();
-      }
-    };
+      e.returnValue = false;
 
-    const preventTouch = e => {
-      const minValue = 8; // threshold
+      return false;
+    }
+    return e;
+  };
 
-      clientX = e.touches[0].clientX - firstClientX;
+  const touchStart = e => {
+    firstClientX = e.touches[0].clientX;
+  };
 
-      // Vertical scrolling does not work when you start swiping horizontally.
-      if (Math.abs(clientX) > minValue) {
-        e.preventDefault();
-        e.returnValue = false;
+  const isIntersecting = useIntersectionObserver(wrapper, '0px');
 
-        return false;
-      }
-      return e;
-    };
+  useEffect(() => {
+    if (wrapper.current) {
+      wrapper.current.addEventListener('touchstart', touchStart, { passive: false });
+      wrapper.current.addEventListener('touchmove', preventTouch, {
+        passive: false,
+      });
+    }
 
-    const touchStart = e => {
-      firstClientX = e.touches[0].clientX;
-    };
-
-    const isIntersecting = useIntersectionObserver(wrapper, '0px');
-
-    useEffect(() => {
+    return () => {
       if (wrapper.current) {
-        wrapper.current.addEventListener('touchstart', touchStart, { passive: false });
-        wrapper.current.addEventListener('touchmove', preventTouch, {
+        wrapper.current.removeEventListener('touchstart', touchStart);
+        wrapper.current.removeEventListener('touchmove', preventTouch, {
+          // @ts-ignore
           passive: false,
         });
       }
+    };
+  }, [wrapper]);
 
-      return () => {
-        if (wrapper.current) {
-          wrapper.current.removeEventListener('touchstart', touchStart);
-          wrapper.current.removeEventListener('touchmove', preventTouch, {
-            // @ts-ignore
-            passive: false,
-          });
-        }
-      };
-    }, [wrapper]);
-
-    if (banners.length < 3) {
-      return null;
+  useEffect(() => {
+    if (carouselInitialized) {
+      setCurrentPosition(0);
+      slider.current.slickGoTo(0);
     }
-    const deviceType = useContext(DeviceTypeContext);
-    return (
-      <TopBannerCarouselWrapper ref={wrapper}>
-        {!carouselInitialized && (
-          <TopBannerCarouselLoading
-            left={banners[banners.length - 1]}
-            center={banners[0]}
-            right={banners[1]}
+  }, [carouselInitialized, router.asPath]);
+
+  if (banners.length < 3) {
+    return null;
+  }
+
+  return (
+    <TopBannerCarouselWrapper ref={wrapper}>
+      {!carouselInitialized && (
+        <TopBannerCarouselLoading
+          left={banners[banners.length - 1]}
+          center={banners[0]}
+          right={banners[1]}
+        />
+      )}
+      <>
+        <TopBannerCarousel
+          isIntersecting={isIntersecting}
+          forwardRef={slider}
+          banners={banners}
+          slug={slug}
+          changePosition={changePosition}
+          setInitialized={setInitialized}
+        />
+        <PositionOverlay>
+          <TopBannerCurrentPosition
+            total={banners.length}
+            currentPosition={currentPosition + 1}
           />
+        </PositionOverlay>
+        {!['mobile', 'tablet'].includes(deviceType) && (
+          <form css={displayNoneForTouchDevice}>
+            <div
+              css={css`
+                ${arrowWrapperCSS('left')};
+                left: -40px;
+                transform: translate(-50%, 50%);
+              `}>
+              <Arrow
+                side={'left'}
+                onClickHandler={handleClickLeft}
+                label={'이전 배너 보기'}
+                wrapperStyle={css`
+                  ${arrowCSS};
+                  opacity: 0.5;
+                `}
+              />
+            </div>
+            <div
+              css={css`
+                ${arrowWrapperCSS('right')};
+                transform: translate(50%, 50%);
+                right: -40px;
+              `}>
+              <Arrow
+                onClickHandler={handleClickRight}
+                side={'right'}
+                label={'다음 배너 보기'}
+                wrapperStyle={css`
+                  ${arrowCSS};
+                  opacity: 0.5;
+                `}
+              />
+            </div>
+          </form>
         )}
-        <>
-          <TopBannerCarousel
-            isIntersecting={isIntersecting}
-            forwardRef={slider}
-            banners={banners}
-            slug={slug}
-            changePosition={changePosition}
-            setInitialized={setInitialized}
-          />
-          <PositionOverlay>
-            <TopBannerCurrentPosition
-              total={banners.length}
-              currentPosition={currentPosition + 1}
-            />
-          </PositionOverlay>
-          {!['mobile', 'tablet'].includes(deviceType) && (
-            <form css={displayNoneForTouchDevice}>
-              <div
-                css={css`
-                  ${arrowWrapperCSS('left')};
-                  left: -40px;
-                  transform: translate(-50%, 50%);
-                `}>
-                <Arrow
-                  side={'left'}
-                  onClickHandler={handleClickLeft}
-                  label={'이전 배너 보기'}
-                  wrapperStyle={css`
-                    ${arrowCSS};
-                    opacity: 0.5;
-                  `}
-                />
-              </div>
-              <div
-                css={css`
-                  ${arrowWrapperCSS('right')};
-                  transform: translate(50%, 50%);
-                  right: -40px;
-                `}>
-                <Arrow
-                  onClickHandler={handleClickRight}
-                  side={'right'}
-                  label={'다음 배너 보기'}
-                  wrapperStyle={css`
-                    ${arrowCSS};
-                    opacity: 0.5;
-                  `}
-                />
-              </div>
-            </form>
-          )}
-        </>
-      </TopBannerCarouselWrapper>
-    );
-  },
-);
+      </>
+    </TopBannerCarouselWrapper>
+  );
+};

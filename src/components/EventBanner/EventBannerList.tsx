@@ -4,7 +4,7 @@ import { css } from '@emotion/core';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { EventBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
-import { useEventTracker } from 'src/hooks/useEveneTracker';
+import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
 
 interface EventBannerListProps {
   items: EventBanner[];
@@ -52,7 +52,9 @@ const EventBannerList: React.FC<EventBannerListProps> = props => {
       `}>
       {props.items.slice(0, 4).map((item, index) => (
         <EventBannerItem key={index}>
-          <a href={item.url}>
+          <a
+            href={item.url}
+            onClick={sendClickEvent.bind(null, tracker, item.id, props.slug, index)}>
             <img width="100%" height="100%" src={item.image_url} alt={item.title} />
           </a>
         </EventBannerItem>
