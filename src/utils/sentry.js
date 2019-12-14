@@ -17,7 +17,7 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
     whitelistUrls: [
       /https?:\/\/(.+\.)?ridibooks\.com/,
       /https?:\/\/(.+\.)?ridi\.io/,
-      'https://s3.ap-northeast-2.amazonaws.com/beacon-ridibooks',
+      /https?:\/\/s3.ap-northeast-2.amazonaws.com\/beacon-ridibooks(-test)*/,
     ],
   };
 
