@@ -44,6 +44,9 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
   if (items.length === 0 && extra.is_placeholder === false) {
     return null;
   }
+  if (items.length === 0 && !extra.is_placeholder) {
+    return null;
+  }
   switch (type) {
     case DisplayType.Page:
       return null;
