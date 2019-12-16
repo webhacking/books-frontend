@@ -708,7 +708,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
             currentPosition={currentPosition + 1}
           />
         </PositionOverlay>
-        {!['mobile', 'tablet'].includes(deviceType) && (
+        {carouselInitialized && !['mobile', 'tablet'].includes(deviceType) && (
           <form css={displayNoneForTouchDevice}>
             <div
               css={css`
