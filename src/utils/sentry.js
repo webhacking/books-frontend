@@ -21,11 +21,12 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /React is running in production mode, but dead code elimination has not been applied. Read how to correctly configure React for production/,
       /Cannot read property 'contains' of undefined/,
       /Failed to fetch/,
+      /TypeError: NetworkError when attempting to fetch resource/,
       /NetworkError when attempting to fetch resource./,
       /window.__naverapp__.extractMetadata/,
       /TypeError: undefined is not an object (evaluating '__gCrWeb.autofill.extractForms')/,
     ],
-    sampleRate: 0.2,
+    sampleRate: 1.0,
     whitelistUrls: [
       /https?:\/\/(.+\.)?ridibooks\.com/,
       /https?:\/\/(.+\.)?ridi\.io/,
