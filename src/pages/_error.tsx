@@ -37,9 +37,14 @@ export default class ErrorPage extends React.Component<CustomErrorProps> {
     if (error && error?.isAxiosError) {
       // @ts-ignore
       if ((error as AxiosError)?.response) {
+        captureException(error);
         // @ts-ignore
         return (error.response as AxiosResponse).status;
       }
+      captureException(error);
+      return '';
+    }
+    if (error) {
       captureException(error);
     }
     return '';
