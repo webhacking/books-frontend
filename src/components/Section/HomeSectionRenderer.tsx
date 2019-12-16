@@ -40,6 +40,10 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
   if (!items && extra.is_placeholder === false) {
     return null;
   }
+  // placeholder 이고 별도 요청을 해야하는 섹션이 아닌데도 불구하고 아이템이 없으면 표시하지 않는다.
+  if (items.length === 0 && extra.is_placeholder === false) {
+    return null;
+  }
   switch (type) {
     case DisplayType.Page:
       return null;
