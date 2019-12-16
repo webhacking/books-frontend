@@ -12,7 +12,7 @@ import {
 import { requestCategories } from 'src/services/category/request';
 const { captureException } = sentry();
 
-const DEFAULT_CHUNK_SIZE = 50;
+const DEFAULT_CHUNK_SIZE = 20;
 
 function* fetchCategories(category_ids: number[]) {
   const data = yield call(pRetry, () => requestCategories(category_ids), { retries: 2 });
