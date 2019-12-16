@@ -63,6 +63,14 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
             {this.props.pathname === '/category/list' && (
               <GenreTab isPartials={true} currentGenre={'category'} />
             )}
+            {/* {this.props.pathname.match(/(\/v2\/Detail\?id=|\/books\/)\d{9,11}$/) && ( */}
+            {/*  <GenreTab*/}
+            {/*    isPartials={true}*/}
+            {/*    currentGenre={''}*/}
+            {/*    hasBookId={true}*/}
+            {/*    bookPath={this.props.pathname}*/}
+            {/*  />*/}
+            {/* )} */}
           </PartialSeparator>
         </BrowserLocationWithRouter>
       </ThemeProvider>

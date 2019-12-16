@@ -9,6 +9,8 @@ import { orBelow } from 'src/utils/mediaQuery';
 import { useRouter } from 'next/router';
 import * as Cookies from 'js-cookie';
 import { safeJSONParse } from 'src/utils/common';
+// import { useSelector } from 'react-redux';
+// import { RootState } from 'src/store/config';
 const GenreTabWrapper = styled.ul`
   max-width: 1000px;
   margin: 0 auto;
@@ -434,6 +436,8 @@ const subServices = [
 interface GenreTabProps {
   currentGenre: string;
   isPartials?: boolean;
+  hasBookId?: boolean;
+  bookPath?: string;
 }
 
 interface SavedSubServices {
@@ -453,6 +457,19 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
     fantasy: '/fantasy',
     bl: '/bl',
   });
+  // let book = null;
+  // // @ts-ignore
+  // if (props.hasBookId) {
+  //   console.log((/(\/v2\/Detail\?id=|\/books\/)\d{9,11}$/));
+  //   const bookId = props.bookPath.match(/\d{9,11}/g)[0] || null;
+  //   if (bookId) {
+  //     book = useSelector((state: RootState) => state.books.items[bookId]);
+  //     // eslint-disable-next-line no-empty
+  //   } else {
+  //
+  //   }
+  //   console.log(book);
+  // }
 
   useEffect(() => {
     const latestSubService = safeJSONParse(localStorage.getItem('latest_sub_service'), {
