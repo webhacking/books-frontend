@@ -26,7 +26,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
   const { loggedUser } = useSelector((store: RootState) => store.account);
   const dispatch = useDispatch();
   const { items, genre, type, title, extra, slug } = props;
-  const [aiItems, setSections] = useState(items);
+  const [aiItems, setSections] = useState(items || []);
 
   useEffect(() => {
     // @ts-ignore
@@ -50,10 +50,10 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
       }
     };
 
-    if (!items && loggedUser) {
+    if (aiItems.length < 1 && loggedUser) {
       requestAiRecommendationItems();
     }
-  }, [dispatch, items, genre, loggedUser]);
+  }, [dispatch, aiItems.length, items, genre, loggedUser]);
   if (!loggedUser || !aiItems || aiItems.length < 1) {
     return null;
   }
