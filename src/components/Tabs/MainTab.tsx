@@ -330,7 +330,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           normalIcon={<Notification_regular css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.notification}
-          path={'/notification'}
+          path={'/notification/'}
           pathRegexp={/^\/notification/g}
           addOn={
             hasNotification > 0 && (
@@ -361,7 +361,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           normalIcon={<Cart_regular css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.cart}
-          path={'/cart'}
+          path={'/cart/'}
           pathRegexp={/^\/cart/gu}
           addOn={
             cartCount > 0 && (
@@ -423,7 +423,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           normalIcon={<MyRIDI_regular css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.myRidi}
-          path={'/account/myridi'}
+          path={'/account/myridi/'}
           pathRegexp={/^\/account\/myridi/gu}
         />
       </Tabs>
