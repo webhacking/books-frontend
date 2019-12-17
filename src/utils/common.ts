@@ -107,7 +107,7 @@ export const getMaxDiscountPercentage = (book?: BookApi.Book) => {
     singleRentDiscountPercentage,
     seriesRentDiscountPercentage,
   );
-  if (maxValue >= 10) {
+  if (Math.ceil(maxValue) >= 10) {
     return maxValue;
   }
   return 0;
