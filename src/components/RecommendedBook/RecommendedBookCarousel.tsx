@@ -168,7 +168,6 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
           slidesToShow={Math.min(props.items.length, 6)}
           slidesToScroll={6}
           speed={200}
-          lazyLoad={'ondemand'}
           autoplay={false}
           arrows={false}
           onInit={setInitialized}

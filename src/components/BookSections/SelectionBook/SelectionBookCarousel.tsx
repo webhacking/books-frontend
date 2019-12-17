@@ -98,7 +98,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
           speed={200}
           autoplay={false}
           arrows={false}
-          lazyLoad={'ondemand'}
           onInit={() => {
             setInitialized();
           }}
