@@ -33,7 +33,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
     const requestUserPreferredBestSeller = async () => {
       try {
         const requestUrl = new URL(
-          `/sections/home-${genre}-user-preferred-bestseller`,
+          `/sections/home-${genre}-user-preferred-bestseller/`,
           publicRuntimeConfig.STORE_API,
         );
         const result = await axios.get(requestUrl.toString(), {
