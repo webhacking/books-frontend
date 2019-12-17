@@ -12,6 +12,7 @@ import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
 import { Tracker } from '@ridi/event-tracker';
+import { getMaxDiscountPercentage } from 'src/utils/common';
 
 const { publicRuntimeConfig } = getConfig();
 interface MultipleLineBooks {
@@ -177,9 +178,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
                   type={DisplayType.RecommendedBook}
                   wrapperCSS={css``}
                   isWaitFree={item.detail?.series?.property.is_wait_free}
-                  discountPercentage={
-                    item?.detail?.price_info?.buy?.discount_percentage || 0
-                  }
+                  discountPercentage={getMaxDiscountPercentage(item.detail)}
                 />
               </div>
               <FreeBookRenderer

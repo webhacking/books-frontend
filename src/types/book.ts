@@ -51,13 +51,16 @@ export interface SeriesBuyInfo {
   price: number;
   regular_price: number;
   total_book_count: number;
+  discount_percentage: number;
 }
 
 export interface RentBuyInfo {
   total_book_count: number;
   free_book_count: number;
+  regular_price: number;
   rent_price: number;
   rent_days: number;
+  discount_percentage: number;
 }
 
 export interface SeriesPriceInfo {

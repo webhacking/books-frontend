@@ -28,6 +28,7 @@ import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
+import { getMaxDiscountPercentage } from 'src/utils/common';
 const { publicRuntimeConfig } = getConfig();
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -151,9 +152,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
                 type={type}
                 wrapperCSS={css``}
                 isWaitFree={book.detail?.series?.property.is_wait_free}
-                discountPercentage={
-                  book?.detail?.price_info?.buy?.discount_percentage || 0
-                }
+                discountPercentage={getMaxDiscountPercentage(book.detail)}
               />
             </div>
             <FreeBookRenderer

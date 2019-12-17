@@ -15,6 +15,7 @@ import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
+import { getMaxDiscountPercentage } from 'src/utils/common';
 const { publicRuntimeConfig } = getConfig();
 
 const recommendedBookCarouselLoadingCSS = css`
@@ -215,9 +216,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                             type={type}
                             wrapperCSS={css``}
                             isWaitFree={book.detail?.series?.property.is_wait_free}
-                            discountPercentage={
-                              book?.detail?.price_info?.buy?.discount_percentage || 0
-                            }
+                            discountPercentage={getMaxDiscountPercentage(book.detail)}
                           />
                         </div>
                         <FreeBookRenderer

@@ -1,4 +1,5 @@
 import { UAParser } from 'ua-parser-js';
+import * as BookApi from 'src/types/book';
 
 // tslint:disable-next-line
 export const safeJSONParse = (source: string | null, defaultValue: any) => {
@@ -86,4 +87,28 @@ export const splitArrayToChunk = (array: any[], size: number) => {
 export const getDeviceType = () => {
   const result = new UAParser();
   return result.getDevice().type;
+};
+
+export const getMaxDiscountPercentage = (book?: BookApi.Book) => {
+  if (!book) {
+    return 0;
+  }
+  const singleBuyDiscountPercentage = book.price_info?.buy?.discount_percentage || 0;
+  const singleRentDiscountPercentage =
+    book.price_info?.rentInfo?.discount_percentage || 0;
+  const seriesBuyDiscountPercentage =
+    book.series?.price_info?.buy?.discount_percentage || 0;
+  const seriesRentDiscountPercentage =
+    book.series?.price_info?.rent?.discount_percentage || 0;
+
+  const maxValue = Math.max(
+    singleBuyDiscountPercentage,
+    seriesBuyDiscountPercentage,
+    singleRentDiscountPercentage,
+    seriesRentDiscountPercentage,
+  );
+  if (maxValue >= 10) {
+    return maxValue;
+  }
+  return 0;
 };

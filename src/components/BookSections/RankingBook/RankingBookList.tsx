@@ -21,6 +21,7 @@ import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import getConfig from 'next/config';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
+import { getMaxDiscountPercentage } from 'src/utils/common';
 const { publicRuntimeConfig } = getConfig();
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -250,9 +251,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                                 type={DisplayType.BestSeller}
                                 wrapperCSS={css``}
                                 isWaitFree={book.detail?.series?.property.is_wait_free}
-                                discountPercentage={
-                                  book?.detail?.price_info?.buy?.discount_percentage || 0
-                                }
+                                discountPercentage={getMaxDiscountPercentage(book.detail)}
                               />
                             </div>
                           )}
