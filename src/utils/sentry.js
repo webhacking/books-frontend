@@ -30,8 +30,12 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /Error: SecurityError: Blocked a frame with origin "https:\/\/ridibooks.com" from accessing a frame with origin "https:\/\/bid.g.doubleclick.net". Protocols, domains, and ports must match./,
       /Uncaught SyntaxError: Unexpected token 'else'/,
       /Uncaught SyntaxError: Unexpected identifier/,
+      /Unexpected end of input/,
       /TypeError: WebKit에 내부 오류 발생/,
       /The operation couldn’t be completed. Software caused connection abort/,
+      /작업을 완료할 수 없습니다. 소프트웨어에 의한 연결 중단/,
+      /No identifiers allowed directly after numeric literal/,
+      /发生了SSL错误，无法建立与该服务器的安全连接。/,
     ],
     sampleRate: 1.0,
     whitelistUrls: [
