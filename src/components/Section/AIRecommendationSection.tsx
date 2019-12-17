@@ -27,6 +27,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
   const dispatch = useDispatch();
   const { items, genre, type, title, extra, slug } = props;
   const [aiItems, setSections] = useState(items || []);
+  const [isRequestError, setIsRequestError] = useState(false);
 
   useEffect(() => {
     // @ts-ignore
@@ -40,25 +41,37 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
           withCredentials: true,
           custom: { authorizationRequestType: OAuthRequestType.CHECK },
         });
-        setSections(result.data.items.map(item => ({ ...item, excluded: false })));
-        const bIds = keyToArray(result.data.items, 'b_id');
-        dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
-        const categoryIds = keyToArray(result.data.items, 'category_id');
-        dispatch({ type: categoryActions.insertCategoryIds.type, payload: categoryIds });
+        if (result.status < 400 && result.status >= 200) {
+          setSections(result.data.items.map(item => ({ ...item, excluded: false })));
+          const bIds = keyToArray(result.data.items, 'b_id');
+          dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+          const categoryIds = keyToArray(result.data.items, 'category_id');
+          dispatch({
+            type: categoryActions.insertCategoryIds.type,
+            payload: categoryIds,
+          });
+          setIsRequestError(false);
+        } else {
+          setIsRequestError(true);
+        }
       } catch (error) {
+        setIsRequestError(true);
         captureException(error);
       }
     };
 
-    if (aiItems.length < 1 && loggedUser) {
+    if (aiItems.length < 1 && loggedUser && !isRequestError) {
       requestAiRecommendationItems();
     }
-  }, [dispatch, aiItems.length, items, genre, loggedUser]);
+  }, [dispatch, aiItems.length, items, genre, loggedUser, isRequestError]);
   if (!loggedUser || !aiItems || aiItems.length < 1) {
     return null;
   }
   // https://app.asana.com/0/1152363431499050/1153588050414697
   if (aiItems.length < 6) {
+    return null;
+  }
+  if (isRequestError) {
     return null;
   }
   return (
