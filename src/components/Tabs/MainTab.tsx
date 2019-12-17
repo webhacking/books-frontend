@@ -423,7 +423,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           normalIcon={<MyRIDI_regular css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.myRidi}
-          path={'/account/myridi/'}
+          path={'/account/myridi'}
           pathRegexp={/^\/account\/myridi/gu}
         />
       </Tabs>
