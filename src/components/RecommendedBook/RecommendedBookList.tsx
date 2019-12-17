@@ -20,6 +20,7 @@ import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
 import { displayNoneForTouchDevice } from 'src/styles';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
+import { getMaxDiscountPercentage } from 'src/utils/common';
 const { publicRuntimeConfig } = getConfig();
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
@@ -81,9 +82,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                         type={type}
                         wrapperCSS={css``}
                         isWaitFree={book.detail?.series?.property.is_wait_free}
-                        discountPercentage={
-                          book?.detail?.price_info?.buy?.discount_percentage || 0
-                        }
+                        discountPercentage={getMaxDiscountPercentage(book.detail)}
                       />
                     </div>
                     <FreeBookRenderer
