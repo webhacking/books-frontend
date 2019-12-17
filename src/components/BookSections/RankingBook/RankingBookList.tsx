@@ -265,6 +265,7 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
                                   book.detail?.series?.price_info?.buy?.free_book_count ||
                                   0
                                 }
+                                unit={book.detail?.series?.property.unit || '권'}
                               />
                               <SetBookRenderer
                                 setBookCount={book.detail?.setbook?.member_books_count}

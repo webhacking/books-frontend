@@ -3,6 +3,7 @@ import { css } from '@emotion/core';
 
 interface FreeBookRendererProps {
   freeBookCount?: number;
+  unit: string;
 }
 
 // 무료책 권수 썸네일에 표시하는 컴포넌트
@@ -33,8 +34,8 @@ const FreeBookRenderer: React.FC<FreeBookRendererProps> = props => {
             z-index: 3;
             line-height: 12px;
           `}
-          aria-label={`${props.freeBookCount}화 무료`}>
-          {`${props.freeBookCount}화 무료`}
+          aria-label={`${props.freeBookCount}${props.unit} 무료`}>
+          {`${props.freeBookCount}${props.unit} 무료`}
         </span>
       </div>
     );

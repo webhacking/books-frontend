@@ -162,6 +162,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
                 book.detail?.series?.price_info?.buy?.free_book_count ||
                 0
               }
+              unit={book.detail?.series?.property.unit || '권'}
             />
             <SetBookRenderer setBookCount={book.detail?.setbook?.member_books_count} />
           </ThumbnailRenderer>

@@ -125,7 +125,7 @@ export interface SeriesProperty {
   last_volume_id: string;
   title: string;
   total_book_count: number;
-  unit: string;
+  unit: string | null;
 }
 
 export interface Publish {

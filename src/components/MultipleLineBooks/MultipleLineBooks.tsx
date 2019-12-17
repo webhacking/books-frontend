@@ -188,6 +188,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
                   item.detail?.series?.price_info?.buy?.free_book_count ||
                   0
                 }
+                unit={item.detail?.series?.property.unit || '권'}
               />
             </ThumbnailRenderer>
           </a>
