@@ -157,7 +157,11 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
               />
             </div>
             <FreeBookRenderer
-              freeBookCount={book.detail?.series?.price_info?.buy?.free_book_count || 0}
+              freeBookCount={
+                book.detail?.series?.price_info?.rent?.free_book_count ||
+                book.detail?.series?.price_info?.buy?.free_book_count ||
+                0
+              }
             />
             <SetBookRenderer setBookCount={book.detail?.setbook?.member_books_count} />
           </ThumbnailRenderer>

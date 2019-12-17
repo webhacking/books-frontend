@@ -53,8 +53,16 @@ export interface SeriesBuyInfo {
   total_book_count: number;
 }
 
+export interface RentBuyInfo {
+  total_book_count: number;
+  free_book_count: number;
+  rent_price: number;
+  rent_days: number;
+}
+
 export interface SeriesPriceInfo {
   buy: SeriesBuyInfo;
+  rent?: RentBuyInfo;
 }
 
 export interface PaperBuyInfo {

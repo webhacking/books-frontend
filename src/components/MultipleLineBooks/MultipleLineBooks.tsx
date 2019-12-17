@@ -183,7 +183,11 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
                 />
               </div>
               <FreeBookRenderer
-                freeBookCount={item.detail?.series?.price_info?.buy?.free_book_count || 0}
+                freeBookCount={
+                  item.detail?.series?.price_info?.rent?.free_book_count ||
+                  item.detail?.series?.price_info?.buy?.free_book_count ||
+                  0
+                }
               />
             </ThumbnailRenderer>
           </a>

@@ -88,7 +88,9 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                     </div>
                     <FreeBookRenderer
                       freeBookCount={
-                        book.detail?.series?.price_info?.buy?.free_book_count || 0
+                        book.detail?.series?.price_info?.rent?.free_book_count ||
+                        book.detail?.series?.price_info?.buy?.free_book_count ||
+                        0
                       }
                     />
                     <SetBookRenderer
