@@ -25,6 +25,8 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /NetworkError when attempting to fetch resource./,
       /window.__naverapp__.extractMetadata/,
       /TypeError: undefined is not an object (evaluating '__gCrWeb.autofill.extractForms')/,
+      // Evernote extension error
+      /Error: There is no clipping info for given tab/,
     ],
     sampleRate: 1.0,
     whitelistUrls: [
