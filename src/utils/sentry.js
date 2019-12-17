@@ -28,8 +28,11 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       // Evernote extension error
       /Error: There is no clipping info for given tab/,
       /Error: SecurityError: Blocked a frame with origin "https:\/\/ridibooks.com" from accessing a frame with origin "https:\/\/bid.g.doubleclick.net". Protocols, domains, and ports must match./,
+      /Error: SecurityError: Blocked a frame with origin "https:\/\/ridibooks.com" from accessing a cross-origin frame./,
       /Uncaught SyntaxError: Unexpected token 'else'/,
       /Uncaught SyntaxError: Unexpected identifier/,
+      /SyntaxError: Unexpected token 'else'/,
+      /SyntaxError: Unexpected identifier/,
       /Unexpected end of input/,
       /TypeError: WebKit에 내부 오류 발생/,
       /The operation couldn’t be completed. Software caused connection abort/,
