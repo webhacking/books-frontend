@@ -114,7 +114,7 @@
     "serverless-layers": "^1.4.2",
     "serverless-offline": "^5.8.0",
     "serverless-plugin-warmup": "^4.7.1-rc.1",
-    "serverless-s3-sync": "^1.9.1",
+    "serverless-s3-deploy": "^0.9.0",
     "typescript": "^3.7.2",
     "url-loader": "^2.2.0"
   },
