@@ -393,7 +393,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
     `/keyword-finder/${parentGenre}`,
     publicRuntimeConfig.STORE_HOST,
   );
-  if (['bl', 'fantasy', 'romancee'].includes(parentGenre)) {
+  if (['bl', 'fantasy', 'romance'].includes(parentGenre)) {
     keywordFinderUrl.searchParams.append('from', genre);
   }
 
@@ -416,7 +416,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
           font-weight: normal;
           height: 21px;
           line-height: 21px;
-          font-size: 21px;
+          font-size: 19px;
           margin-bottom: 26px;
           a {
             color: black;
