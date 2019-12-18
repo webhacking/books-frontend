@@ -223,8 +223,8 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
 const multipleLineSectionCSS = css`
   max-width: 1000px;
   margin: 0 auto;
-  padding-bottom: 24px;
-  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-top: 16px;
   ${orBelow(
     433,
     css`
@@ -259,7 +259,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props =
       <h2
         aria-label={title}
         css={css`
-          font-size: 21px;
+          font-size: 19px;
           font-weight: normal;
           line-height: 26px;
           margin-bottom: 20px;

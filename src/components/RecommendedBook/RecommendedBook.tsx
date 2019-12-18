@@ -37,12 +37,12 @@ const backgroundImageCSS = css`
 `;
 
 const hotReleaseRecommendedBookWrapperCSS = css`
-  padding-top: 24px;
+  padding-top: 16px;
   margin-bottom: 0;
 `;
 const recommendedBookWrapperCSS = css`
-  padding-top: 24px;
-  padding-bottom: 24px;
+  padding-top: 16px;
+  padding-bottom: 16px;
 `;
 
 export const hotReleaseBookListCSS = css`
@@ -110,9 +110,9 @@ const hotReleaseTitleCSS = css`
     `,
   )};
 
-  height: 21px;
-  line-height: 21px;
-  font-size: 21px;
+  height: 19px;
+  line-height: 19px;
+  font-size: 19px;
   color: white;
 `;
 

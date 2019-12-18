@@ -30,8 +30,8 @@ const MenuList = styled.ul`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-top: 24px;
-  padding-bottom: 24px;
+  padding-top: 16px;
+  padding-bottom: 16px;
   padding-left: 13px;
   padding-right: 13px;
 

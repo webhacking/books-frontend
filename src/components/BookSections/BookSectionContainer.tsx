@@ -4,7 +4,7 @@ import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { BookItem } from 'src/types/sections';
 
 const fontStyle = css`
-  font-size: 21px;
+  font-size: 19px;
   font-weight: normal;
   line-height: 26px;
   color: #000000;
