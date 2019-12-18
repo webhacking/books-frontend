@@ -13,7 +13,7 @@ export default () => (
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@ridibooks" />
     <meta property="fb:app_id" content="208688205808637" />
-    <meta name="theme-color" content="#339CF2" />
+    <meta name="theme-color" content="#ffffff" />
     <meta name="keywords" content="리디북스,리디,ridibooks,ridi,책,전자책,ebook" />
     <meta name="format-detection" content="telephone=no" />
     <meta property="og:url" content="https://ridibooks.com" />
