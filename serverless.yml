@@ -80,11 +80,11 @@ custom:
       - bucket: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
         prefix: static/
         files:
-          - source: ./static/
+          - source: static/
       - bucket: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
         prefix: _next/
         files:
-          source: ./build/
+          source: build/
           empty: true
           globs:
             - '*.js':
