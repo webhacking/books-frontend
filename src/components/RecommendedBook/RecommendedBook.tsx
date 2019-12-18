@@ -60,7 +60,6 @@ export const BookList = styled.ul`
   ${orBelow(
     BreakPoint.LG,
     css`
-      padding-left: 9px !important;
       ${flexRowStart}
     `,
   )};
@@ -79,7 +78,7 @@ export const bookMetaWrapperCSS = css`
 
 export const BookTitle = styled.h2`
   color: white;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.33em;
   max-height: 2.66em;
@@ -205,17 +204,18 @@ export const sentenceStyle = css`
   text-align: center;
   font-weight: bold;
   white-space: nowrap;
-  left: 5px;
+  left: 7px;
   margin-top: 2px;
-  font-size: 0.89em;
+  font-size: 0.84em;
 
   width: 140px;
   ${orBelow(
     BreakPoint.LG,
     css`
       display: flex;
-      width: 120px;
+      width: 130px;
       justify-content: center;
+      left: -10px;
     `,
   )};
 `;
@@ -233,18 +233,49 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
           css`
             padding-left: 0 !important;
           `,
+          props.type === DisplayType.TodayRecommendation
+            ? css`
+                ${orBelow(
+                  999,
+                  css`
+                    padding-left: 23px !important;
+                  `,
+                )}
+              `
+            : css`
+                padding-left: 11px !important;
+              `,
         ]}>
         {/* // @ts-ignore */}
         {dummyBooks.map((book, index) => (
           <PortraitBook
-            css={css`
-              padding-left: 0 !important;
-            `}
+            css={[
+              css`
+                padding-left: 0 !important;
+              `,
+              props.type === DisplayType.HotRelease
+                ? css`
+                    ${orBelow(
+                      999,
+                      css`
+                        margin-right: 12px !important;
+                      `,
+                    )}
+                  `
+                : css`
+                    ${orBelow(
+                      999,
+                      css`
+                        margin-right: 30px !important;
+                      `,
+                    )}
+                  `,
+            ]}
             key={index}>
             <ThumbnailWrapper>
               <ThumbnailRenderer
                 book={{ b_id: book.b_id, detail: book.detail }}
-                imgSize={'xxlarge'}
+                imgSize={'xlarge'}
                 isIntersecting={isIntersecting}
               />
             </ThumbnailWrapper>
@@ -257,7 +288,6 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
                   css`
                     padding-left: 0;
                     position: relative;
-                    left: 7px;
                     margin-top: 2px;
                     ${sentenceStyle};
                   `,

@@ -78,7 +78,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = R
               <ThumbnailRenderer
                 width={147}
                 book={{ b_id: book.b_id, detail: book.detail }}
-                imgSize={'xxlarge'}
+                imgSize={'xlarge'}
                 isIntersecting={props.isIntersecting}
               />
             </ThumbnailWrapper>
@@ -203,7 +203,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                         width={140}
                         slug={slug}
                         book={{ b_id: book.b_id, detail: book.detail }}
-                        imgSize={'xxlarge'}
+                        imgSize={'xlarge'}
                         isIntersecting={props.isIntersecting}>
                         <div
                           css={css`

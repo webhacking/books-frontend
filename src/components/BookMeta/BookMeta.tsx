@@ -7,6 +7,7 @@ import * as BookApi from 'src/types/book';
 import { StarRating as StarRatingType } from 'src/types/sections';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import getConfig from 'next/config';
+import { orBelow } from 'src/utils/mediaQuery';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -17,6 +18,12 @@ const bookTitleCSS = css`
   color: #000000;
   max-height: 2.7em;
   margin-bottom: 4.5px;
+  ${orBelow(
+    999,
+    css`
+      font-size: 14px;
+    `,
+  )}
 `;
 
 const bookMetaCSS = css`

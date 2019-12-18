@@ -21,6 +21,8 @@ import getConfig from 'next/config';
 import { displayNoneForTouchDevice } from 'src/styles';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { getMaxDiscountPercentage } from 'src/utils/common';
+import { orBelow } from 'src/utils/mediaQuery';
+
 const { publicRuntimeConfig } = getConfig();
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
@@ -50,15 +52,47 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
           css`
             padding-left: 0 !important;
           `,
+          props.type === DisplayType.TodayRecommendation
+            ? css`
+                padding-left: 23px !important;
+              `
+            : css`
+                padding-left: 13px !important;
+              `,
         ]}>
         {props.items
           .filter(book => book.detail)
           .map((book, index) => (
-            <PortraitBook key={index}>
+            <PortraitBook
+              key={index}
+              css={[
+                props.type === DisplayType.HotRelease
+                  ? css`
+                      ${orBelow(
+                        999,
+                        css`
+                          margin-right: 12px !important;
+                        `,
+                      )}
+                    `
+                  : css`
+                      ${orBelow(
+                        999,
+                        css`
+                          margin-right: 30px !important;
+                          :last-of-type {
+                            padding-right: 35px !important;
+                          }
+                        `,
+                      )}
+                    `,
+              ]}>
               <a
-                css={css`
-                  display: inline-block;
-                `}
+                css={[
+                  css`
+                    display: inline-block;
+                  `,
+                ]}
                 href={new URL(
                   `/books/${book.b_id}`,
                   publicRuntimeConfig.STORE_HOST,
@@ -66,10 +100,10 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                 <ThumbnailWrapper>
                   <ThumbnailRenderer
                     order={index}
-                    width={120}
+                    width={100}
                     slug={slug}
                     book={{ b_id: book.b_id, detail: book.detail }}
-                    imgSize={'xxlarge'}
+                    imgSize={'xlarge'}
                     isIntersecting={props.isIntersecting}>
                     <div
                       css={css`
@@ -109,7 +143,6 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                     css`
                       padding-left: 0;
                       position: relative;
-                      left: 7px;
                       margin-top: 2px;
                       ${sentenceStyle}
                     `,

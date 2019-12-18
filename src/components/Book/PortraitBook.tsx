@@ -22,8 +22,8 @@ export const PortraitBook = styled.li`
   ${orBelow(
     BreakPoint.LG,
     css`
-      min-width: 120px;
-      width: 120px;
+      min-width: 100px;
+      width: 100px;
       :first-of-type {
         //padding-left: 16px;
       }

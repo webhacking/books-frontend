@@ -38,6 +38,7 @@ const itemCSS = css`
   ${orBelow(
     BreakPoint.MD,
     css`
+      margin-right: 12px;
       :last-of-type {
         padding-right: 24px;
       }
@@ -92,7 +93,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
                 }}
                 excluded={item.excluded ?? false}
                 book={item}
-                width={120}
+                width={100}
               />
             </li>
           ))}

@@ -15,16 +15,16 @@ export const ThumbnailWrapper = styled.div`
   ${orBelow(
     BreakPoint.LG,
     css`
-      min-width: 120px;
-      max-height: 202px; //  배지 관련 184 + 7
-      height: 202px; //  배지 관련 184 + 7
+      min-width: 100px;
+      max-height: 174px; //  배지 관련 184 + 7
+      height: 174px; //  배지 관련 184 + 7
     `,
   )};
   img {
     ${orBelow(
       BreakPoint.LG,
       css`
-        max-height: calc(127px * 1.618 - 10px); // 120 + 7
+        max-height: calc(107px * 1.618 - 10px); // 120 + 7
       `,
     )};
     max-height: calc(147px * 1.618 - 10px); // 140 + 7
