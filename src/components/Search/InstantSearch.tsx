@@ -305,9 +305,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const [debouncedHandleSearch] = useDebouncedCallback(handleSearch, 300);
 
     const handleOnChange = useCallback(
-      (target: React.ChangeEvent<HTMLInputElement>['target']) => {
-        const { value } = target;
-        setKeyword(value);
+      (value: string) => {
         // 초-중-종성 체크
         if (value.length > 0) {
           if (value.length === 1 && isOnsetNucleusCoda(value[0])) {
@@ -325,7 +323,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     );
     const [debouncedOnChange] = useDebouncedCallback(handleOnChange, 100, {});
     const passEventTarget = e => {
-      debouncedOnChange(e.target);
+      const copiedValue = e.target.value;
+      setKeyword(copiedValue);
+      debouncedOnChange(copiedValue);
     };
 
     const handleSearchWrapperBlur = useCallback((e: React.FocusEvent<HTMLDivElement>) => {
