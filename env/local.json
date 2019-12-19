@@ -10,6 +10,6 @@
   "STORE_MASTER_HOST": "https://master.test.ridi.io",
   "STORE_HOST": "https://books.local.ridi.io",
   "LIBRARY_HOST": "https://library.ridi.io",
-  "STORE_TEMP_API_HOST": "https://responsive-web.test.ridi.io",
+  "STORE_TEMP_API_HOST": "https://master.test.ridi.io",
   "BEACON_URL": "https://s3.ap-northeast-2.amazonaws.com/beacon-ridibooks-test/beacon_ridibooks_test.gif"
 }
