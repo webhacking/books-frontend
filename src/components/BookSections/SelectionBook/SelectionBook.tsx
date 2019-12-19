@@ -33,8 +33,15 @@ const { publicRuntimeConfig } = getConfig();
 const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  ${orBelow(
+    999,
+    css`
+      padding-top: 16px;
+      padding-bottom: 16px;
+    `,
+  )}
   -webkit-overflow-scrolling: touch;
 `;
 

@@ -409,6 +409,13 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
         box-sizing: border-box;
         padding-bottom: 24px;
         padding-top: 24px;
+        ${orBelow(
+          999,
+          css`
+            padding-bottom: 16px;
+            padding-top: 16px;
+          `,
+        )}
       `}>
       <h2
         aria-label={'키워드 파인더로 이동'}

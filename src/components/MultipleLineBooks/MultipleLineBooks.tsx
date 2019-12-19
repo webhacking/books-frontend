@@ -223,13 +223,13 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
 const multipleLineSectionCSS = css`
   max-width: 1000px;
   margin: 0 auto;
-  padding-bottom: 16px;
-  padding-top: 16px;
+  padding-bottom: 24px;
+  padding-top: 24px;
   ${orBelow(
     433,
     css`
       justify-content: space-between;
-      padding: 24px 10px;
+      padding: 16px 10px;
       padding-right: 29px !important;
     `,
   )}
@@ -238,6 +238,8 @@ const multipleLineSectionCSS = css`
     css`
       padding-left: 20px;
       padding-right: 26px;
+      padding-top: 16px;
+      padding-bottom: 16px;
     `,
   )}
   ${greaterThanOrEqualTo(
@@ -262,7 +264,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props =
           font-size: 19px;
           font-weight: normal;
           line-height: 26px;
-          margin-bottom: 20px;
+          margin-bottom: 7px;
           color: #000000;
           word-break: keep-all;
           ${orBelow(

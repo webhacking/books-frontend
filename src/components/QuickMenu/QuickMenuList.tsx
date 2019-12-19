@@ -30,14 +30,16 @@ const MenuList = styled.ul`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: 24px;
+  padding-bottom: 24px;
   padding-left: 13px;
   padding-right: 13px;
 
   ${orBelow(
     BreakPoint.LG,
     css`
+      padding-top: 16px;
+      padding-bottom: 16px;
       padding-left: 3px;
       padding-right: 3px;
     `,

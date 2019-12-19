@@ -6,7 +6,7 @@ import { RankingBookTitle } from 'src/components/BookSections/BookSectionContain
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import ArrowV from 'src/svgs/ArrowV.svg';
 import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
-import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
+import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import Clock from 'src/svgs/Clock.svg';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
@@ -26,8 +26,16 @@ const { publicRuntimeConfig } = getConfig();
 const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+
+  ${orBelow(
+    999,
+    css`
+      padding-top: 16px;
+      padding-bottom: 16px;
+    `,
+  )}
 `;
 
 const listCSS = css`

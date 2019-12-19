@@ -37,12 +37,27 @@ const backgroundImageCSS = css`
 `;
 
 const hotReleaseRecommendedBookWrapperCSS = css`
-  padding-top: 16px;
+  padding-top: 24px;
+  ${orBelow(
+    999,
+    css`
+      padding-top: 16px;
+    `,
+  )};
+
   margin-bottom: 0;
 `;
 const recommendedBookWrapperCSS = css`
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+
+  ${orBelow(
+    999,
+    css`
+      padding-top: 16px;
+      padding-bottom: 16px;
+    `,
+  )}
 `;
 
 export const hotReleaseBookListCSS = css`
