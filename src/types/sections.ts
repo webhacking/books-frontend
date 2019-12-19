@@ -18,6 +18,7 @@ export enum DisplayType {
   KeywordFinder = 'KeywordFinder',
   WaitFree = 'WaitFree', // 리디 기다리면 무료
   AiRecommendation = 'AiRecommendation', // AI 추천
+  FreeBook = 'FreeBook',
 }
 
 interface BaseResult {

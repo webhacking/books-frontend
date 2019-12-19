@@ -16,6 +16,9 @@ import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
 import { getMaxDiscountPercentage } from 'src/utils/common';
+import { useEventTracker } from 'src/hooks/useEveneTracker';
+// import { useDebouncedCallback as useDebounce } from 'use-debounce';
+import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 const { publicRuntimeConfig } = getConfig();
 
 const recommendedBookCarouselLoadingCSS = css`
@@ -142,6 +145,28 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
     }
   };
 
+  const [tracker] = useEventTracker();
+  const sendEvent = useCallback(
+    (intersectionItems: IntersectionObserverEntry[]) => {
+      const trackingItems = { section: slug, items: [] };
+      intersectionItems.forEach(item => {
+        const bId = item.target.getAttribute('data-book-id');
+        const order = item.target.getAttribute('data-order');
+        trackingItems.items.push({
+          id: bId,
+          idx: order,
+          ts: Date.now(),
+        });
+      });
+      if (trackingItems.items.length > 0) {
+        tracker.sendEvent('display', trackingItems);
+      }
+    },
+    [slug, tracker],
+  );
+  // const [debounceSendEvent] = useDebounce(sendEvent, 1000);
+  useMultipleIntersectionObserver(wrapperRef, slug, sendEvent);
+
   useEffect(() => {
     setMounted(true);
     if (carouselInitialize) {
@@ -200,6 +225,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = props =>
                     <ThumbnailWrapper>
                       <ThumbnailRenderer
                         order={index}
+                        className={slug}
                         width={140}
                         slug={slug}
                         book={{ b_id: book.b_id, detail: book.detail }}

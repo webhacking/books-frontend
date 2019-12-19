@@ -146,6 +146,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     }
     case DisplayType.RecommendedNewBook:
     case DisplayType.WaitFree:
+    case DisplayType.FreeBook:
     case DisplayType.TodayNewBook:
     case DisplayType.NewSerialBook: {
       if (items) {

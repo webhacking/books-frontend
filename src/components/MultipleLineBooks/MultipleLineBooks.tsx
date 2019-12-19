@@ -3,7 +3,7 @@ import { between, BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/me
 import { DisplayType, MdBook } from 'src/types/sections';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import BookMeta from 'src/components/BookMeta/BookMeta';
-import React, { useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
@@ -13,6 +13,7 @@ import getConfig from 'next/config';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
 import { Tracker } from '@ridi/event-tracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
+import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 
 const { publicRuntimeConfig } = getConfig();
 interface MultipleLineBooks {
@@ -96,7 +97,7 @@ const itemCSS = css`
   margin-bottom: 24px;
 `;
 
-const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(props => {
+const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = props => {
   const { item, genre, isIntersecting, slug, order, tracker } = props;
   return (
     <li css={itemCSS}>
@@ -163,6 +164,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
             ).toString()}>
             <ThumbnailRenderer
               order={order}
+              className={slug}
               slug={slug}
               book={{ b_id: item.b_id, detail: item.detail }}
               imgSize={'xlarge'}
@@ -218,7 +220,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
       )}
     </li>
   );
-});
+};
 
 const multipleLineSectionCSS = css`
   max-width: 1000px;
@@ -250,34 +252,39 @@ const multipleLineSectionCSS = css`
   )}
 `;
 
-export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props => {
-  const { title, items, genre, slug } = props;
-  const [books] = useBookDetailSelector(items);
-  const targetRef = useRef(null);
+const ItemList: React.FC<any> = props => {
+  const { isIntersecting, slug, genre, books } = props;
+  const ref = useRef<HTMLUListElement>(null);
+  const [isMounted, setMounted] = useState(false);
   const [tracker] = useEventTracker();
-  const isIntersecting = useIntersectionObserver(targetRef, '50px');
+  const sendEvent = useCallback(
+    (intersectionItems: IntersectionObserverEntry[]) => {
+      const trackingItems = { section: slug, items: [] };
+      intersectionItems.forEach(item => {
+        const bId = item.target.getAttribute('data-book-id');
+        const order = item.target.getAttribute('data-order');
+        trackingItems.items.push({
+          id: bId,
+          idx: order,
+          ts: Date.now(),
+        });
+      });
+      if (trackingItems.items.length > 0) {
+        tracker.sendEvent('display', trackingItems);
+      }
+    },
+    [slug, tracker],
+  );
+
+  useMultipleIntersectionObserver(ref, slug, sendEvent, isMounted);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
-    <section ref={targetRef} css={multipleLineSectionCSS}>
-      <h2
-        aria-label={title}
-        css={css`
-          font-size: 19px;
-          font-weight: normal;
-          line-height: 26px;
-          margin-bottom: 7px;
-          color: #000000;
-          word-break: keep-all;
-          ${orBelow(
-            BreakPoint.MD,
-            css`
-              margin-left: -2px;
-            `,
-          )}
-        `}>
-        <span>{title}</span>
-      </h2>
-      <ul
-        css={css`
+    <ul
+      ref={ref}
+      css={css`
           display: flex;
           flex-wrap: wrap;
           flex-shrink: 0;
@@ -314,21 +321,48 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = React.memo(props =
             `,
           )}
         `}>
-        {isIntersecting &&
-          (books as MdBook[])
-            .slice(0, 18)
-            .map((item, index) => (
-              <MultipleLineBookItem
-                order={index}
-                slug={slug}
-                key={index}
-                genre={genre}
-                item={item}
-                isIntersecting={isIntersecting}
-                tracker={tracker}
-              />
-            ))}
-      </ul>
+      {(books as MdBook[]).slice(0, 18).map((item, index) => (
+        <MultipleLineBookItem
+          order={index}
+          slug={slug}
+          key={index}
+          genre={genre}
+          item={item}
+          isIntersecting={isIntersecting}
+          tracker={tracker}
+        />
+      ))}
+    </ul>
+  );
+};
+
+export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
+  const { title, items, genre, slug } = props;
+  const [books] = useBookDetailSelector(items);
+  const targetRef = useRef(null);
+  const isIntersecting = useIntersectionObserver(targetRef, '0px');
+
+  return (
+    <section ref={targetRef} css={multipleLineSectionCSS}>
+      <h2
+        aria-label={title}
+        css={css`
+          font-size: 19px;
+          font-weight: normal;
+          line-height: 26px;
+          margin-bottom: 10px;
+          color: #000000;
+          word-break: keep-all;
+          ${orBelow(
+            BreakPoint.MD,
+            css`
+              margin-left: -2px;
+            `,
+          )}
+        `}>
+        <span>{title}</span>
+      </h2>
+      <ItemList genre={genre} slug={slug} books={books} isIntersecting={isIntersecting} />
     </section>
   );
-});
+};
