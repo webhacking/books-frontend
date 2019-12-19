@@ -142,6 +142,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
             `,
           ]}>
           <ThumbnailRenderer
+            className={slug}
             order={order}
             slug={slug}
             width={props.width || 140}

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 // import BookMeta from 'src/components/BookMeta/BookMeta';
@@ -22,6 +22,7 @@ import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import getConfig from 'next/config';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
+import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 const { publicRuntimeConfig } = getConfig();
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -178,8 +179,124 @@ const Timer: React.FC = () => {
   );
 };
 
-const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
+const ItemList: React.FC<any> = props => {
+  const { books, slug, type, genre, isIntersecting, showSomeDeal } = props;
+  const ref = useRef<HTMLUListElement>();
+  const [tracker] = useEventTracker();
+  const sendEvent = useCallback(
+    (intersectionItems: IntersectionObserverEntry[]) => {
+      const trackingItems = { section: slug, items: [] };
+      intersectionItems.forEach(item => {
+        const bId = item.target.getAttribute('data-book-id');
+        const order = item.target.getAttribute('data-order');
+        trackingItems.items.push({
+          id: bId,
+          idx: order,
+          ts: Date.now(),
+        });
+      });
+      if (trackingItems.items.length > 0) {
+        tracker.sendEvent('display', trackingItems);
+      }
+    },
+    [slug, tracker],
+  );
+
+  useMultipleIntersectionObserver(ref, slug, sendEvent);
+
+  return (
+    <ul css={listCSS} ref={ref}>
+      {books
+        .filter(book => book.detail)
+        .slice(0, 9)
+        .map((book, index) => (
+          <li css={type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
+            <div
+              css={css`
+                margin-right: ${props.type === 'big' ? '18px' : '24px'};
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                position: relative;
+              `}>
+              <a
+                onClick={sendClickEvent.bind(null, tracker, book, slug, index)}
+                css={css`
+                  display: inline-block;
+                `}
+                href={new URL(
+                  `/books/${book.b_id}`,
+                  publicRuntimeConfig.STORE_HOST,
+                ).toString()}>
+                <ThumbnailRenderer
+                  slug={slug}
+                  className={slug}
+                  order={index}
+                  width={type === 'big' ? 80 : 50}
+                  book={{ b_id: book.b_id, detail: book.detail }}
+                  imgSize={'xlarge'}
+                  isIntersecting={isIntersecting}>
+                  {type === 'big' && (
+                    <div
+                      css={css`
+                        position: absolute;
+                        display: block;
+                        top: -7px;
+                        left: -7px;
+                      `}>
+                      <BookBadgeRenderer
+                        type={DisplayType.BestSeller}
+                        wrapperCSS={css``}
+                        isWaitFree={book.detail?.series?.property.is_wait_free}
+                        discountPercentage={getMaxDiscountPercentage(book.detail)}
+                      />
+                    </div>
+                  )}
+                  {type === 'big' && (
+                    <>
+                      <FreeBookRenderer
+                        freeBookCount={
+                          book.detail?.series?.price_info?.rent?.free_book_count ||
+                          book.detail?.series?.price_info?.buy?.free_book_count ||
+                          0
+                        }
+                        unit={book.detail?.series?.property.unit || '권'}
+                      />
+                      <SetBookRenderer
+                        setBookCount={book.detail?.setbook?.member_books_count}
+                      />
+                    </>
+                  )}
+                </ThumbnailRenderer>
+              </a>
+            </div>
+            <div className={'book-meta-box'}>
+              <div css={rankCSS} aria-label={`랭킹 순위 ${index + 1}위`}>
+                {index + 1}
+              </div>
+              {book.detail && (
+                <BookMeta
+                  book={book.detail}
+                  showRating={props.type === 'big' || !!(book as MdBook).rating}
+                  titleLineClamp={props.type === 'small' ? 1 : 2}
+                  isAIRecommendation={false}
+                  showSomeDeal={showSomeDeal}
+                  showTag={['bl', 'bl-serial'].includes(genre) && props.type === 'big'}
+                  width={props.type === 'big' ? '177px' : null}
+                  ratingInfo={(book as MdBook).rating}
+                />
+              )}
+            </div>
+          </li>
+        ))}
+    </ul>
+  );
+};
+
+const RankingBookList: React.FC<RankingBookListProps> = props => {
   const targetRef = useRef(null);
+  // @ts-ignore
   const isIntersecting = useIntersectionObserver(targetRef, '50px');
   const ref = useRef<HTMLUListElement>(null);
   const [books] = useBookDetailSelector(props.items);
@@ -187,7 +304,6 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
 
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   const deviceType = useContext(DeviceTypeContext);
-  const [tracker] = useEventTracker();
   return (
     <>
       <SectionWrapper ref={targetRef}>
@@ -215,97 +331,14 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
             position: relative;
             height: ${type === 'big' ? '414px' : '282px'}; // badge + (7 * 3)
           `}>
-          {isIntersecting && (
-            <ul css={listCSS} ref={ref}>
-              {books
-                .filter(book => book.detail)
-                .slice(0, 9)
-                .map((book, index) => (
-                  <li css={type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
-                    <div
-                      css={css`
-                        margin-right: ${props.type === 'big' ? '18px' : '24px'};
-                        height: 100%;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        position: relative;
-                      `}>
-                      <a
-                        onClick={sendClickEvent.bind(null, tracker, book, slug, index)}
-                        css={css`
-                          display: inline-block;
-                        `}
-                        href={new URL(
-                          `/books/${book.b_id}`,
-                          publicRuntimeConfig.STORE_HOST,
-                        ).toString()}>
-                        <ThumbnailRenderer
-                          slug={slug}
-                          order={index}
-                          width={type === 'big' ? 80 : 50}
-                          book={{ b_id: book.b_id, detail: book.detail }}
-                          imgSize={'xlarge'}
-                          isIntersecting={isIntersecting}>
-                          {type === 'big' && (
-                            <div
-                              css={css`
-                                position: absolute;
-                                display: block;
-                                top: -7px;
-                                left: -7px;
-                              `}>
-                              <BookBadgeRenderer
-                                type={DisplayType.BestSeller}
-                                wrapperCSS={css``}
-                                isWaitFree={book.detail?.series?.property.is_wait_free}
-                                discountPercentage={getMaxDiscountPercentage(book.detail)}
-                              />
-                            </div>
-                          )}
-                          {type === 'big' && (
-                            <>
-                              <FreeBookRenderer
-                                freeBookCount={
-                                  book.detail?.series?.price_info?.rent
-                                    ?.free_book_count ||
-                                  book.detail?.series?.price_info?.buy?.free_book_count ||
-                                  0
-                                }
-                                unit={book.detail?.series?.property.unit || '권'}
-                              />
-                              <SetBookRenderer
-                                setBookCount={book.detail?.setbook?.member_books_count}
-                              />
-                            </>
-                          )}
-                        </ThumbnailRenderer>
-                      </a>
-                    </div>
-                    <div className={'book-meta-box'}>
-                      <div css={rankCSS} aria-label={`랭킹 순위 ${index + 1}위`}>
-                        {index + 1}
-                      </div>
-                      {book.detail && (
-                        <BookMeta
-                          book={book.detail}
-                          showRating={props.type === 'big' || !!(book as MdBook).rating}
-                          titleLineClamp={props.type === 'small' ? 1 : 2}
-                          isAIRecommendation={false}
-                          showSomeDeal={showSomeDeal}
-                          showTag={
-                            ['bl', 'bl-serial'].includes(genre) && props.type === 'big'
-                          }
-                          width={props.type === 'big' ? '177px' : null}
-                          ratingInfo={(book as MdBook).rating}
-                        />
-                      )}
-                    </div>
-                  </li>
-                ))}
-            </ul>
-          )}
-
+          <ItemList
+            books={books}
+            slug={slug}
+            genre={genre}
+            type={type}
+            showSomeDeal={showSomeDeal}
+            isIntersecting={isIntersecting}
+          />
           {!['mobile', 'tablet'].includes(deviceType) && (
             <form
               css={[
@@ -347,6 +380,6 @@ const RankingBookList: React.FC<RankingBookListProps> = React.memo(props => {
       </SectionWrapper>
     </>
   );
-});
+};
 
 export default RankingBookList;

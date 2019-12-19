@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import { displayNoneForTouchDevice, flexRowStart, scrollBarHidden } from 'src/styles';
 import { SelectionBookItem } from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { css } from '@emotion/core';
@@ -9,6 +9,8 @@ import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DisplayType, MdBook } from 'src/types/sections';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
+import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
+import { useEventTracker } from 'src/hooks/useEveneTracker';
 
 const listCSS = css`
   box-sizing: content-box;
@@ -65,8 +67,29 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const { genre, type, isIntersecting, slug } = props;
   const deviceType = useContext(DeviceTypeContext);
-
+  // @ts-ignore
+  const [tracker] = useEventTracker();
   const [requestExclude, requestCancel] = useExcludeRecommendation();
+
+  const sendEvent = useCallback(
+    (intersectionItems: IntersectionObserverEntry[]) => {
+      const trackingItems = { section: slug, items: [] };
+      intersectionItems.forEach(item => {
+        const bId = item.target.getAttribute('data-book-id');
+        const order = item.target.getAttribute('data-order');
+        trackingItems.items.push({
+          id: bId,
+          idx: order,
+          ts: Date.now(),
+        });
+      });
+      if (trackingItems.items.length > 0) {
+        tracker.sendEvent('display', trackingItems);
+      }
+    },
+    [slug, tracker],
+  );
+  useMultipleIntersectionObserver(ref, slug, sendEvent);
 
   return (
     <div

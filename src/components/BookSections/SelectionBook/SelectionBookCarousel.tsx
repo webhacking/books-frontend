@@ -12,6 +12,8 @@ import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel'
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
+import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
+import { useEventTracker } from 'src/hooks/useEveneTracker';
 
 const recommendedBookCarouselLoadingCSS = css`
   .slick-slide {
@@ -69,8 +71,28 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
       (slider.current as SliderCarousel).slickNext();
     }
   };
-
+  const [tracker] = useEventTracker();
   const [requestExclude, requestCancel] = useExcludeRecommendation();
+
+  const sendEvent = useCallback(
+    (intersectionItems: IntersectionObserverEntry[]) => {
+      const trackingItems = { section: slug, items: [] };
+      intersectionItems.forEach(item => {
+        const bId = item.target.getAttribute('data-book-id');
+        const order = item.target.getAttribute('data-order');
+        trackingItems.items.push({
+          id: bId,
+          idx: order,
+          ts: Date.now(),
+        });
+      });
+      if (trackingItems.items.length > 0) {
+        tracker.sendEvent('display', trackingItems);
+      }
+    },
+    [slug, tracker],
+  );
+  useMultipleIntersectionObserver(wrapperRef, slug, sendEvent);
 
   useEffect(() => {
     setMounted(true);

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React from 'react';
 import { Book } from '@ridi/web-ui/dist/index.node';
 import * as BookApi from 'src/types/book';
 import { useSelector } from 'react-redux';
@@ -7,10 +7,6 @@ import AdultBadge from 'src/svgs/AdultBadge.svg';
 import getConfig from 'next/config';
 import { css } from '@emotion/core';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
-import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
-import { EventTrackerContext } from 'src/components/Context/EventTracker';
-// import { useDebounceSendEventTracker } from 'src/hooks/useDebounceSendEventTracker';
-// import { EventTrackerContext } from 'src/components/Context/EventTracker';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -26,6 +22,7 @@ interface ThumbnailRendererProps {
   width?: number;
   slug?: string;
   order?: number;
+  className?: string;
 }
 
 const computeThumbnailUrl = (
@@ -83,14 +80,9 @@ const computeThumbnailUrl = (
 // 아닌 경우는 성인 도서 Placeholder 표지
 const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
   props => {
+    // @ts-ignore
     const { book, isIntersecting, imgSize, width, children, slug, order } = props;
     const { loggedUser } = useSelector((state: RootState) => state.account);
-    // @ts-ignore
-    const trackingUtils = useContext(EventTrackerContext);
-    // Todo WIP 노출 여부
-    const targetRef = useRef(null);
-    const bookIsIntersecting = useIntersectionObserver(targetRef, '40px');
-
     const is_adult_only = book.detail?.property?.is_adult_only ?? false;
     const imageUrl = computeThumbnailUrl(
       is_adult_only,
@@ -100,16 +92,8 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
       imgSize,
       book.detail,
     );
-    useEffect(() => {
-      if (bookIsIntersecting) {
-        if (book.b_id.length > 0 && slug) {
-          // book impression
-          trackingUtils(slug, book.b_id, order);
-        }
-      }
-    }, [bookIsIntersecting]);
     return (
-      <div ref={targetRef}>
+      <div className={props.className || ''} data-order={order} data-book-id={book.b_id}>
         <Book.Thumbnail
           thumbnailWidth={width}
           thumbnailTitle={bookTitleGenerator(book.detail)}

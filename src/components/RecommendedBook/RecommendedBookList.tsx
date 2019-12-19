@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import {
   BookList,
   BookMeta,
@@ -21,6 +21,8 @@ import getConfig from 'next/config';
 import { displayNoneForTouchDevice } from 'src/styles';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { getMaxDiscountPercentage } from 'src/utils/common';
+import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
+import { useEventTracker } from 'src/hooks/useEveneTracker';
 import { orBelow } from 'src/utils/mediaQuery';
 
 const { publicRuntimeConfig } = getConfig();
@@ -37,6 +39,28 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const { theme, type, slug } = props;
   const deviceType = useContext(DeviceTypeContext);
+
+  const [tracker] = useEventTracker();
+  const sendEvent = useCallback(
+    (intersectionItems: IntersectionObserverEntry[]) => {
+      const trackingItems = { section: slug, items: [] };
+      intersectionItems.forEach(item => {
+        const bId = item.target.getAttribute('data-book-id');
+        const order = item.target.getAttribute('data-order');
+        trackingItems.items.push({
+          id: bId,
+          idx: order,
+          ts: Date.now(),
+        });
+      });
+      if (trackingItems.items.length > 0) {
+        tracker.sendEvent('display', trackingItems);
+      }
+    },
+    [slug, tracker],
+  );
+  useMultipleIntersectionObserver(ref, slug, sendEvent);
+
   return (
     <div
       css={css`
@@ -99,6 +123,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                 ).toString()}>
                 <ThumbnailWrapper>
                   <ThumbnailRenderer
+                    className={slug}
                     order={index}
                     width={100}
                     slug={slug}

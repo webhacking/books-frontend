@@ -22,8 +22,6 @@ import { NextPage } from 'next';
 import { useEventTracker } from 'src/hooks/useEveneTracker';
 import { RootState } from 'src/store/config';
 import useIsSelectFetch from 'src/hooks/useIsSelectFetch';
-// import { useDebounceSendEventTracker } from 'src/hooks/useDebounceSendEventTracker';
-import { EventTracker } from 'src/components/Context/EventTracker';
 import { DeviceType } from 'src/components/Context/DeviceType';
 import Spinner from 'src/svgs/Spinner.svg';
 
@@ -179,23 +177,17 @@ export const Home: NextPage<HomeProps> = props => {
       </Head>
       <GenreTab currentGenre={currentGenre} />
       <DeviceType>
-        <EventTracker>
-          {props.branches &&
-            props.branches.map((section, index) => (
-              <React.Fragment key={index}>
-                <HomeSectionRenderer
-                  section={section}
-                  order={index}
-                  genre={currentGenre}
-                />
-              </React.Fragment>
-            ))}
-          <div
-            css={css`
-              margin-bottom: 24px;
-            `}
-          />
-        </EventTracker>
+        {props.branches &&
+          props.branches.map((section, index) => (
+            <React.Fragment key={index}>
+              <HomeSectionRenderer section={section} order={index} genre={currentGenre} />
+            </React.Fragment>
+          ))}
+        <div
+          css={css`
+            margin-bottom: 24px;
+          `}
+        />
       </DeviceType>
     </>
   );
