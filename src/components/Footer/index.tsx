@@ -337,7 +337,10 @@ const Footer: React.FC<{}> = () => (
           </li>
           <li>
             <FooterMenu>
-              <li>
+              <li
+                css={css`
+                  height: 15.5px;
+                `}>
                 <a
                   css={anchorHover}
                   href="https://www.ridicorp.com/"
@@ -346,7 +349,10 @@ const Footer: React.FC<{}> = () => (
                   <FooterMenuLabel>회사 소개</FooterMenuLabel>
                 </a>
               </li>
-              <li>
+              <li
+                css={css`
+                  height: 17px;
+                `}>
                 <a
                   css={anchorHover}
                   href="https://www.ridicorp.com/career/"
@@ -356,7 +362,7 @@ const Footer: React.FC<{}> = () => (
                   <NewIcon
                     css={css`
                       position: relative;
-                      top: 1.5px;
+                      top: 2px;
                       margin-left: 6px;
                       fill: #509deb;
                       width: 14px;
@@ -368,8 +374,8 @@ const Footer: React.FC<{}> = () => (
               <li
                 css={css`
                   position: relative;
-                  left: 0;
-                  top: -3px;
+                  left: 0.3px;
+                  top: 1px;
                   display: block;
                   height: 100%;
                   transition: height 0.3s ease-in-out;
