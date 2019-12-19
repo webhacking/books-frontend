@@ -32,11 +32,13 @@ export const useMultipleIntersectionObserver = (
     });
 
     setTimeout(() => {
-      items = parentRef.current.querySelectorAll(`.${childClassName}`) || [];
+      items = parentRef.current
+        ? parentRef.current.querySelectorAll(`.${childClassName}`)
+        : [];
       items.forEach(item => {
         observer.observe(item);
       });
-    }, 1000);
+    }, 2000);
 
     // }
 
