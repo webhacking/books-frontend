@@ -46,6 +46,7 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /TypeError: 취소됨/,
       /An SSL error has occurred and a secure connection to the server cannot be made./,
       /The Internet connection appears to be offline./,
+      /SSL 오류가 발생했으며 서버에 안전하게 연결할 수 없습니다./,
     ],
     sampleRate: 1.0,
     whitelistUrls: [
