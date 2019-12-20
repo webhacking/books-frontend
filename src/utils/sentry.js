@@ -44,6 +44,7 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /TypeError: 특정 호스트 이름을 가진 서버를 찾을 수 없습니다./,
       /TypeError: cancelled/,
       /TypeError: 취소됨/,
+      /An SSL error has occurred and a secure connection to the server cannot be made./,
       /The Internet connection appears to be offline./,
     ],
     sampleRate: 1.0,
