@@ -234,7 +234,7 @@ const genres = {
     services: [],
   },
   bl: {
-    path: '/bl',
+    path: '/bl/',
     activePaths: ['/bl', '/bl-serial', '/bl/', '/bl-serial/', 'bl', 'bl-serial'],
     services: [
       { name: '단행본', path: '/bl', activePaths: ['/bl', '/bl/', 'bl'] },
@@ -246,7 +246,7 @@ const genres = {
     ],
   },
   'bl-serial': {
-    path: '/bl-serial',
+    path: '/bl-serial/',
     activePaths: ['/bl', '/bl-serial', 'bl-serial', 'bl'],
     services: [
       { name: '단행본', path: '/bl', activePaths: ['/bl', '/bl/', 'bl'] },
@@ -258,7 +258,7 @@ const genres = {
     ],
   },
   fantasy: {
-    path: '/fantasy',
+    path: '/fantasy/',
     activePaths: [
       '/fantasy',
       '/fantasy-serial',
@@ -281,7 +281,7 @@ const genres = {
     ],
   },
   'fantasy-serial': {
-    path: '/fantasy-serial',
+    path: '/fantasy-serial/',
     activePaths: [
       '/fantasy',
       '/fantasy-serial',
@@ -304,7 +304,7 @@ const genres = {
     ],
   },
   romance: {
-    path: '/romance',
+    path: '/romance/',
     activePaths: [
       '/romance',
       '/romance-serial',
@@ -327,7 +327,7 @@ const genres = {
     ],
   },
   'romance-serial': {
-    path: 'romance-serial',
+    path: '/romance-serial/',
     activePaths: [
       '/romance',
       '/romance-serial',
