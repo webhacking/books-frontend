@@ -474,12 +474,12 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
           'latest_sub_service',
           JSON.stringify({
             ...latestSubService,
-            bl: `/${router?.query?.genre.toString()}`,
+            bl: `/${router?.query?.genre.toString()}/`,
           }),
         );
         setLatestSubServices({
           ...latestSubService,
-          bl: `/${router?.query?.genre.toString()}`,
+          bl: `/${router?.query?.genre.toString()}/`,
         });
       }
 
@@ -497,12 +497,12 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
           'latest_sub_service',
           JSON.stringify({
             ...latestSubService,
-            romance: `/${router?.query?.genre.toString() || ''}`,
+            romance: `/${`${router?.query?.genre.toString()}/` || ''}`,
           }),
         );
         setLatestSubServices({
           ...latestSubService,
-          romance: `/${router?.query?.genre.toString() || ''}`,
+          romance: `/${`${router?.query?.genre.toString()}/` || ''}`,
         });
       }
       if (
@@ -519,12 +519,12 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
           'latest_sub_service',
           JSON.stringify({
             ...latestSubService,
-            fantasy: `/${router?.query?.genre.toString()}`,
+            fantasy: `/${router?.query?.genre.toString()}/`,
           }),
         );
         setLatestSubServices({
           ...latestSubService,
-          fantasy: `/${router?.query?.genre.toString()}`,
+          fantasy: `/${router?.query?.genre.toString()}/`,
         });
       }
     }
