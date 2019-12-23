@@ -252,7 +252,6 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
         margin-top: 6px;
         padding-bottom: 48px;
         padding-left: 18px;
-        ${!isIntersecting && 'display: none;'};
         ${orBelow(
           BreakPoint.LG,
           css`
@@ -298,7 +297,7 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
   //
   // }
   const targetRef = useRef(null);
-  const isIntersecting = useIntersectionObserver(targetRef, '50px');
+  const isIntersecting = useIntersectionObserver(targetRef, '-150px');
   return (
     <SectionWrapper ref={targetRef}>
       <SectionTitle aria-label={title}>

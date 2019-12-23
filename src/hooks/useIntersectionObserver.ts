@@ -7,7 +7,7 @@ export const useIntersectionObserver = (
   const [isIntersecting, setIntersecting] = React.useState(false);
 
   React.useEffect(() => {
-    const root = document.querySelector('body');
+    // const root = null;
     // @ts-ignore
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -18,7 +18,7 @@ export const useIntersectionObserver = (
       {
         rootMargin,
         // @ts-ignore
-        root: root.current,
+        root: null,
       },
     );
     let copied = null;

@@ -48,6 +48,7 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /The Internet connection appears to be offline./,
       /SSL 오류가 발생했으며 서버에 안전하게 연결할 수 없습니다./,
       /TypeError: SSL 오류가 발생했기 때문에 서버에 안전하게 연결할 수 없습니다./,
+      /SSL/,
       /TypeError: 发生SSL错误，无法建立到该服务器的安全连接。/,
       /TypeError: 특정 호스트 이름을 가진 서버를 찾을 수 없습니다./,
       /TypeError: A server with the specified hostname could not be found./,

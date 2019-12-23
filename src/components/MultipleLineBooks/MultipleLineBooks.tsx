@@ -340,7 +340,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = props => {
   const { title, items, genre, slug } = props;
   const [books] = useBookDetailSelector(items);
   const targetRef = useRef(null);
-  const isIntersecting = useIntersectionObserver(targetRef, '0px');
+  const isIntersecting = useIntersectionObserver(targetRef, '-150px');
 
   return (
     <section ref={targetRef} css={multipleLineSectionCSS}>

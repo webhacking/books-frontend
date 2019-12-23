@@ -297,7 +297,7 @@ const ItemList: React.FC<any> = props => {
 const RankingBookList: React.FC<RankingBookListProps> = props => {
   const targetRef = useRef(null);
   // @ts-ignore
-  const isIntersecting = useIntersectionObserver(targetRef, '50px');
+  const isIntersecting = useIntersectionObserver(targetRef, '-150px');
   const ref = useRef<HTMLUListElement>(null);
   const [books] = useBookDetailSelector(props.items);
   const { genre, type, showSomeDeal, slug } = props;

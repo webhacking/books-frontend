@@ -339,7 +339,7 @@ interface RecommendedBookProps {
 const RecommendedBook: React.FC<RecommendedBookProps> = props => {
   const { theme, type, slug } = props;
   const targetRef = useRef(null);
-  const isIntersecting = useIntersectionObserver(targetRef, '50px');
+  const isIntersecting = useIntersectionObserver(targetRef, '-50px');
 
   const [books] = useBookDetailSelector(props.items);
   return (
