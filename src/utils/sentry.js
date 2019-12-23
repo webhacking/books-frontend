@@ -10,7 +10,7 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
   const sentryOptions = {
     dsn: publicRuntimeConfig.SENTRY_DSN,
     release: nextBuildId,
-    maxBreadcrumbs: 30,
+    maxBreadcrumbs: 50,
     environment: publicRuntimeConfig.ENVIRONMENT || 'local',
     attachStacktrace: true,
     ignoreErrors: [
@@ -77,7 +77,7 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /TypeError: null is not an object (evaluating 'window.mttLongPressVar.tagName')/,
       /TypeError: can't redefine non-configurable property "fuckAdBlock"/,
     ],
-    sampleRate: 1.0,
+    sampleRate: 0.75,
     whitelistUrls: [
       /https?:\/\/(.+\.)?ridibooks\.com/,
       /https?:\/\/(.+\.)?ridi\.io/,
@@ -143,6 +143,17 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
 
           if (req && res) {
             scope.setExtra('NEXT_JS_RES_STATUS_CODE', res.statusCode);
+          }
+        } else if (error.config) {
+          if (error.response) {
+            scope.setExtra('Axios Response Url', error.config?.url);
+            scope.setTag('AXIOS_RESPONSE_CODE', error.response.status || 'none');
+            scope.setTag('API_URL', error.config.url);
+            scope.setFingerprint([
+              error.config.url,
+              error.response.status,
+              error.message,
+            ]);
           }
         }
       });
