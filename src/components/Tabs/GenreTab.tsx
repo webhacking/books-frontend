@@ -356,7 +356,7 @@ const genres = {
   },
 };
 
-const TabItem: React.FC<TabItemProps> = React.memo(props => {
+const TabItem: React.FC<TabItemProps> = props => {
   // Todo apply lint
   const { route, currentPath, activePath } = props;
   const isActivePath = activePath.includes(currentPath);
@@ -396,7 +396,7 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
       </a>
     </li>
   );
-});
+};
 
 const subServices = [
   '/romance/',
@@ -439,9 +439,9 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
   const showSubGenre = genreInfo.services.length > 1;
   const router = useRouter();
   const [latestSubServices, setLatestSubServices] = useState<SavedSubServices>({
-    romance: '/romance',
-    fantasy: '/fantasy',
-    bl: '/bl',
+    romance: '/romance/',
+    fantasy: '/fantasy/',
+    bl: '/bl/',
   });
   // let book = null;
   // // @ts-ignore
@@ -459,9 +459,9 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
 
   useEffect(() => {
     const latestSubService = safeJSONParse(localStorage.getItem('latest_sub_service'), {
-      romance: '/romance',
-      fantasy: '/fantasy',
-      bl: '/bl',
+      romance: '/romance/',
+      fantasy: '/fantasy/',
+      bl: '/bl/',
     });
 
     if (subServices.includes(router?.query?.genre?.toString() || '')) {
@@ -528,6 +528,16 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
         });
       }
     }
+
+    const items = safeJSONParse(localStorage.getItem('latest_sub_service'), {
+      romance: '/romance/',
+      fantasy: '/fantasy/',
+      bl: '/bl/',
+    });
+
+    setLatestSubServices({
+      ...items,
+    });
   }, [router]);
   return (
     <>
@@ -630,7 +640,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               currentPath={router?.query?.genre?.toString()}
               activePath={['/comics', '/comics/', 'comics']}
               label={'만화'}
-              route={'/comics'}
+              route={'/comics/'}
               isPartial={isPartials}
             />
             <TabItem
