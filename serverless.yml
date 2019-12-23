@@ -66,14 +66,6 @@ functions:
       enabled:
         - development
         - production
-    events:
-      - cors: true
-      - http:
-          method: ANY
-          path: /partials/gnb
-      - http:
-          method: ANY
-          path: /partials/gnb/{proxy+}
   partials_footer:
     path: /partials/gnb
     handler: server/index.handler
@@ -81,14 +73,6 @@ functions:
       enabled:
         - development
         - production
-    events:
-      - cors: true
-      - http:
-          method: ANY
-          path: /partials/footer
-      - http:
-          method: ANY
-        path: /partials/footer/{proxy+}
 
 plugins:
   - serverless-offline
