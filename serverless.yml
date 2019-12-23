@@ -89,7 +89,7 @@ custom:
     prewarm: true
     concurrency: 3
     events:
-      - schedule: 'cron(0 0/3 * * * ?)' #
+      - schedule: 'cron(0/3 * * * *)' #
   s3Sync:
     - bucketName: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
       bucketPrefix: static/ # optional
