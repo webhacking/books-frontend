@@ -50,7 +50,6 @@ functions:
     warmup:
       enabled:
         - development
-        - staging
         - production
     events:
       - cors: true
@@ -60,6 +59,36 @@ functions:
       - http:
           method: ANY
           path: /{proxy+}
+  partials_gnb:
+    path: /partials/gnb
+    handler: server/index.handler
+    warmup:
+      enabled:
+        - development
+        - production
+    events:
+      - cors: true
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: /{proxy+}
+  partials_footer:
+    path: /partials/gnb
+    handler: server/index.handler
+    warmup:
+      enabled:
+        - development
+        - production
+    events:
+      - cors: true
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+        path: /{proxy+}
 
 plugins:
   - serverless-offline
@@ -71,10 +100,12 @@ custom:
   warmup:
     enabled: true
     cleanFolder: false
-    memorySize: 256
+    memorySize: 512
     timeout: 20
     prewarm: true
-    concurrency: 1
+    concurrency: 3
+    events:
+      - schedule: 'cron(0 0/3 * * * ?)' #
   s3Sync:
     - bucketName: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
       bucketPrefix: static/ # optional

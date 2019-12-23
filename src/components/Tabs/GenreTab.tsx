@@ -4,7 +4,6 @@ import * as labels from 'src/labels/common.json';
 import GNBCategory from 'src/svgs/GNB_Category.svg';
 import { css, SerializedStyles } from '@emotion/core';
 import { clearOutline, RIDITheme } from 'src/styles';
-import { Link } from 'server/routes';
 import { orBelow } from 'src/utils/mediaQuery';
 import { useRouter } from 'next/router';
 import * as Cookies from 'js-cookie';
@@ -241,7 +240,7 @@ const genres = {
       { name: '단행본', path: '/bl', activePaths: ['/bl', '/bl/', 'bl'] },
       {
         name: '연재',
-        path: '/bl-serial',
+        path: '/bl-serial/',
         activePaths: ['/bl-serial', '/bl-serial/', 'bl-serial'],
       },
     ],
@@ -253,7 +252,7 @@ const genres = {
       { name: '단행본', path: '/bl', activePaths: ['/bl', '/bl/', 'bl'] },
       {
         name: '연재',
-        path: '/bl-serial',
+        path: '/bl-serial/',
         activePaths: ['/bl-serial', '/bl-serial/', 'bl-serial'],
       },
     ],
@@ -271,12 +270,12 @@ const genres = {
     services: [
       {
         name: '단행본',
-        path: '/fantasy',
+        path: '/fantasy/',
         activePaths: ['/fantasy', '/fantasy/', 'fantasy'],
       },
       {
         name: '연재',
-        path: '/fantasy-serial',
+        path: '/fantasy-serial/',
         activePaths: ['/fantasy-serial', '/fantasy-serial/', 'fantasy-serial'],
       },
     ],
@@ -294,12 +293,12 @@ const genres = {
     services: [
       {
         name: '단행본',
-        path: '/fantasy',
+        path: '/fantasy/',
         activePaths: ['/fantasy', '/fantasy/', 'fantasy'],
       },
       {
         name: '연재',
-        path: '/fantasy-serial',
+        path: '/fantasy-serial/',
         activePaths: ['/fantasy-serial', '/fantasy-serial/', 'fantasy-serial'],
       },
     ],
@@ -317,12 +316,12 @@ const genres = {
     services: [
       {
         name: '단행본',
-        path: '/romance',
+        path: '/romance/',
         activePaths: ['/romance', '/romance/', 'romance'],
       },
       {
         name: '연재',
-        path: '/romance-serial',
+        path: '/romance-serial/',
         activePaths: ['/romance-serial', '/romance-serial/', 'romance-serial'],
       },
     ],
@@ -340,18 +339,18 @@ const genres = {
     services: [
       {
         name: '단행본',
-        path: '/romance',
+        path: '/romance/',
         activePaths: ['/romance', '/romance/', 'romance'],
       },
       {
         name: '연재',
-        path: '/romance-serial',
+        path: '/romance-serial/',
         activePaths: ['/romance-serial', '/romance-serial/', 'romance-serial'],
       },
     ],
   },
   comics: {
-    path: '/comics',
+    path: '/comics/',
     activePaths: ['/comics', 'comics', '/comics/'],
     services: [],
   },
@@ -359,7 +358,7 @@ const genres = {
 
 const TabItem: React.FC<TabItemProps> = React.memo(props => {
   // Todo apply lint
-  const { route, currentPath, activePath, isPartial } = props;
+  const { route, currentPath, activePath } = props;
   const isActivePath = activePath.includes(currentPath);
   const cookieGenre = Cookies.get('main_genre') || '';
 
@@ -385,29 +384,16 @@ const TabItem: React.FC<TabItemProps> = React.memo(props => {
             `
           : props.labelCSS(theme)}
       `}>
-      {isPartial ? (
-        <a
-          aria-label={props.label}
-          href={route}
-          onClick={() => {
-            if (route === '/' && cookieGenre) {
-              Cookies.set('main_genre', '');
-            }
-          }}>
-          <span css={isActivePath ? props.currentCSS : props.normalCSS}>
-            {props.label}
-          </span>
-        </a>
-      ) : (
-        <Link replace={false} route={route}>
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <a aria-label={props.label}>
-            <span css={isActivePath ? props.currentCSS : props.normalCSS}>
-              {props.label}
-            </span>
-          </a>
-        </Link>
-      )}
+      <a
+        aria-label={props.label}
+        href={route}
+        onClick={() => {
+          if (route === '/' && cookieGenre) {
+            Cookies.set('main_genre', '');
+          }
+        }}>
+        <span css={isActivePath ? props.currentCSS : props.normalCSS}>{props.label}</span>
+      </a>
     </li>
   );
 });
@@ -617,7 +603,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                 'romance-serial',
               ]}
               label={'로맨스'}
-              route={latestSubServices.romance || '/romance'}
+              route={latestSubServices.romance || '/romance/'}
               isPartial={isPartials}
             />
             <TabItem
@@ -634,7 +620,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                 'fantasy-serial',
               ]}
               label={'판타지'}
-              route={latestSubServices.fantasy || '/fantasy'}
+              route={latestSubServices.fantasy || '/fantasy/'}
               isPartial={isPartials}
             />
             <TabItem
@@ -654,7 +640,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               currentPath={router?.query?.genre?.toString()}
               activePath={['/bl', '/bl-serial', '/bl/', '/bl-serial/', 'bl', 'bl-serial']}
               label={'BL'}
-              route={latestSubServices.bl || '/bl'}
+              route={latestSubServices.bl || '/bl/'}
               isPartial={isPartials}
             />
           </ul>
