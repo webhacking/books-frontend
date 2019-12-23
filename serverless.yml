@@ -60,14 +60,14 @@ functions:
           method: ANY
           path: /{proxy+}
   partials_gnb:
-    path: /partials/gnb
+    path: partials/gnb
     handler: server/index.handler
     warmup:
       enabled:
         - development
         - production
   partials_footer:
-    path: /partials/gnb
+    path: partials/footer
     handler: server/index.handler
     warmup:
       enabled:
