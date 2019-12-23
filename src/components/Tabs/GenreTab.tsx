@@ -237,7 +237,7 @@ const genres = {
     path: '/bl/',
     activePaths: ['/bl', '/bl-serial', '/bl/', '/bl-serial/', 'bl', 'bl-serial'],
     services: [
-      { name: '단행본', path: '/bl', activePaths: ['/bl', '/bl/', 'bl'] },
+      { name: '단행본', path: '/bl/', activePaths: ['/bl', '/bl/', 'bl'] },
       {
         name: '연재',
         path: '/bl-serial/',
@@ -249,7 +249,7 @@ const genres = {
     path: '/bl-serial/',
     activePaths: ['/bl', '/bl-serial', 'bl-serial', 'bl'],
     services: [
-      { name: '단행본', path: '/bl', activePaths: ['/bl', '/bl/', 'bl'] },
+      { name: '단행본', path: '/bl/', activePaths: ['/bl', '/bl/', 'bl'] },
       {
         name: '연재',
         path: '/bl-serial/',
