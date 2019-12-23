@@ -40,6 +40,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
         const result = await axios.get(requestUrl.toString(), {
           withCredentials: true,
           custom: { authorizationRequestType: OAuthRequestType.CHECK },
+          timeout: 8000,
         });
         if (result.status < 400 && result.status >= 200) {
           setSections(result.data.items.map(item => ({ ...item, excluded: false })));

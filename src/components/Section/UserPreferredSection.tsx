@@ -39,6 +39,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
         const result = await axios.get(requestUrl.toString(), {
           withCredentials: true,
           custom: { authorizationRequestType: OAuthRequestType.CHECK },
+          timeout: 8000,
         });
         setSections(result.data.items);
         const bIds = keyToArray(result.data.items, 'b_id');
