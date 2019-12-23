@@ -146,7 +146,7 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
           }
         } else if (error.config) {
           if (error.response) {
-            scope.setExtra('Axios Response Url', error.config?.url);
+            scope.setExtra('Axios Response Url', error.config.url);
             scope.setTag('AXIOS_RESPONSE_CODE', error.response.status || 'none');
             scope.setTag('API_URL', error.config.url);
             scope.setFingerprint([
