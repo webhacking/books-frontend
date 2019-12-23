@@ -70,10 +70,10 @@ functions:
       - cors: true
       - http:
           method: ANY
-          path: /
+          path: /partials/gnb
       - http:
           method: ANY
-          path: /{proxy+}
+          path: /partials/gnb/{proxy+}
   partials_footer:
     path: /partials/gnb
     handler: server/index.handler
@@ -85,10 +85,10 @@ functions:
       - cors: true
       - http:
           method: ANY
-          path: /
+          path: /partials/footer
       - http:
           method: ANY
-        path: /{proxy+}
+        path: /partials/footer/{proxy+}
 
 plugins:
   - serverless-offline
