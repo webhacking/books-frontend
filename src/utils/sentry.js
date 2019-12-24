@@ -76,6 +76,8 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /TypeError: can't redefine non-configurable property "blockAdBlock"/,
       /TypeError: null is not an object (evaluating 'window.mttLongPressVar.tagName')/,
       /TypeError: can't redefine non-configurable property "fuckAdBlock"/,
+      /Blocked a frame with origin/,
+      /Object [object Object] has no method 'checkDomStatus'/,
     ],
     sampleRate: 0.75,
     whitelistUrls: [
