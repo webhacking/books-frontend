@@ -31,8 +31,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
   const { items, type, slug } = props;
   const [sections, setSections] = useState(items || []);
   // @ts-ignore
-  const genre = router.query.genre as string;
-
+  const genre = (router.query.genre as string) || ('general' as string);
   useEffect(() => {
     const requestUserPreferredBestSeller = async () => {
       try {
@@ -61,7 +60,20 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
     };
 
     if (sections.length === 0 && loggedUser && genre) {
-      requestUserPreferredBestSeller();
+      if (
+        [
+          'bl',
+          'bl-serial',
+          'fantasy',
+          'fantasy-serial',
+          'comics',
+          'romance',
+          'romance-serial',
+          'general',
+        ].includes(genre)
+      ) {
+        requestUserPreferredBestSeller();
+      }
     }
   }, [sections, loggedUser, genre]);
 
@@ -81,7 +93,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
             items={item.books}
             title={categoryName}
             categoryId={item.category_id}
-            genre={genre}
+            genre={genre as string}
             extra={{
               detail_link: new URL(
                 `/category/bestsellers/${item.category_id}`,
