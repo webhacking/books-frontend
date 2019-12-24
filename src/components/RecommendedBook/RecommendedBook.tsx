@@ -32,8 +32,8 @@ const backgroundImageCSS = css`
       background-size: cover;
     `,
   )};
-  padding-top: 36px;
-  padding-bottom: 36px;
+  padding-top: 36px !important;
+  padding-bottom: 36px !important;
 `;
 
 const hotReleaseRecommendedBookWrapperCSS = css`
