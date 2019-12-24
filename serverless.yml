@@ -64,7 +64,6 @@ functions:
 plugins:
   - serverless-offline
   - serverless-apigw-binary
-  - serverless-s3-sync
   - serverless-plugin-warmup
 
 custom:
