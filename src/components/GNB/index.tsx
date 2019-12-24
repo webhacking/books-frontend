@@ -209,7 +209,6 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
 
     setLoginPath(tempLoginPath.toString());
     setSignUpPath(tempSignUpPath.toString());
-    return () => {};
   }, [route.asPath]);
 
   useEffect(() => {
@@ -238,7 +237,6 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
       }
     };
     requestRidiEventStatus();
-    return () => {};
   }, [route]);
 
   return (
@@ -335,7 +333,6 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   useEffect(() => {
     dispatch({ type: accountActions.checkLogged.type });
     setPath(window.location.href);
-    return () => {};
   }, []);
 
   const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_HOST);

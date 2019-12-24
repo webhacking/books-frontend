@@ -75,7 +75,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
         requestUserPreferredBestSeller();
       }
     }
-  }, [sections, loggedUser, genre]);
+  }, [sections, router, loggedUser, genre]);
 
   return (
     <>

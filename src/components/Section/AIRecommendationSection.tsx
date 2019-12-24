@@ -81,7 +81,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
         requestAiRecommendationItems();
       }
     }
-  }, [dispatch, aiItems.length, items, loggedUser, isRequestError]);
+  }, [dispatch, genre, router, aiItems.length, items, loggedUser, isRequestError]);
   if (!loggedUser || !aiItems || aiItems.length < 1) {
     return null;
   }

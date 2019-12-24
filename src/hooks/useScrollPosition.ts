@@ -74,6 +74,7 @@ export const useScrollPosition = (
         }
       };
     }
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     return () => {};
   }, [
     ref,
