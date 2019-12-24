@@ -12,7 +12,7 @@ import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 import { useEventTracker } from 'src/hooks/useEveneTracker';
 
-const listCSS = css`
+export const listCSS = css`
   box-sizing: content-box;
   overflow: auto;
   overflow-y: hidden;
@@ -25,7 +25,7 @@ const listCSS = css`
   )}
 `;
 
-const itemCSS = css`
+export const itemCSS = css`
   display: flex;
   flex-direction: column;
   :first-of-type {

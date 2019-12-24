@@ -7,7 +7,9 @@ import {
   SectionExtra,
 } from 'src/types/sections';
 import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
-import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
+import SelectionBookList, {
+  listCSS,
+} from 'src/components/BookSections/SelectionBook/SelectionBookList';
 import SelectionBookCarousel from 'src/components/BookSections/SelectionBook/SelectionBookCarousel';
 // import BookMeta from 'src/components/BookMeta/BookMeta';
 import { css } from '@emotion/core';
@@ -29,6 +31,7 @@ import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
+import { flexRowStart, scrollBarHidden } from 'src/styles';
 const { publicRuntimeConfig } = getConfig();
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -246,39 +249,46 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
   const { isIntersecting, genre, type } = props;
 
   return (
-    <ul
+    <div
       css={css`
-        display: flex;
         margin-top: 6px;
-        padding-bottom: 48px;
-        padding-left: 18px;
-        ${orBelow(
-          BreakPoint.LG,
-          css`
-            padding-left: 13px;
-          `,
-        )}
+        position: relative;
       `}>
-      {props.items.map((book, index) => (
-        <PortraitBook key={index}>
-          <ThumbnailWrapper>
-            <ThumbnailRenderer
-              book={{ b_id: book.b_id, detail: book.detail }}
-              imgSize={'xlarge'}
-              isIntersecting={isIntersecting}
-            />
-          </ThumbnailWrapper>
-          {book.detail && (
-            <BookMeta
-              showTag={['bl', 'bl-serial'].includes(genre)}
-              book={book.detail}
-              showRating={type === DisplayType.HomeMdSelection}
-              ratingInfo={book.rating}
-            />
-          )}
-        </PortraitBook>
-      ))}
-    </ul>
+      <ul
+        css={[
+          css`
+            ${orBelow(
+              BreakPoint.LG,
+              css`
+                padding-left: 13px;
+              `,
+            )}
+          `,
+          flexRowStart,
+          scrollBarHidden,
+          listCSS,
+        ]}>
+        {props.items.map((book, index) => (
+          <PortraitBook key={index}>
+            <ThumbnailWrapper>
+              <ThumbnailRenderer
+                book={{ b_id: book.b_id, detail: book.detail }}
+                imgSize={'xlarge'}
+                isIntersecting={isIntersecting}
+              />
+            </ThumbnailWrapper>
+            {book.detail && (
+              <BookMeta
+                showTag={['bl', 'bl-serial'].includes(genre)}
+                book={book.detail}
+                showRating={type === DisplayType.HomeMdSelection}
+                ratingInfo={book.rating}
+              />
+            )}
+          </PortraitBook>
+        ))}
+      </ul>
+    </div>
   );
 };
 

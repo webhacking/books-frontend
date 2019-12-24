@@ -37,11 +37,11 @@ const backgroundImageCSS = css`
 `;
 
 const hotReleaseRecommendedBookWrapperCSS = css`
-  padding-top: 24px;
+  padding-top: 36px;
   ${orBelow(
     999,
     css`
-      padding-top: 16px;
+      padding-top: 36px;
     `,
   )};
 
@@ -54,8 +54,8 @@ const recommendedBookWrapperCSS = css`
   ${orBelow(
     999,
     css`
-      padding-top: 16px;
-      padding-bottom: 16px;
+      padding-top: 24px;
+      padding-bottom: 24px;
     `,
   )}
 `;
