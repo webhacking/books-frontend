@@ -9,6 +9,7 @@ import sentry from 'src/utils/sentry';
 import { keyToArray } from 'src/utils/common';
 import { booksActions } from 'src/services/books';
 import { categoryActions } from 'src/services/category';
+import { useRouter } from 'next/router';
 const { publicRuntimeConfig } = getConfig();
 
 const { captureException } = sentry();
@@ -26,8 +27,11 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
   const categoryState = useSelector((store: RootState) => store.categories);
 
   const dispatch = useDispatch();
-  const { items, genre, type, slug } = props;
+  const router = useRouter();
+  const { items, type, slug } = props;
   const [sections, setSections] = useState(items || []);
+  // @ts-ignore
+  const genre = router.query.genre as string;
 
   useEffect(() => {
     const requestUserPreferredBestSeller = async () => {
@@ -41,20 +45,25 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
           custom: { authorizationRequestType: OAuthRequestType.CHECK },
           timeout: 8000,
         });
-        setSections(result.data.items);
-        const bIds = keyToArray(result.data.items, 'b_id');
-        dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
-        const categoryIds = keyToArray(result.data.items, 'category_id');
-        dispatch({ type: categoryActions.insertCategoryIds.type, payload: categoryIds });
+        if (result.status === 200) {
+          setSections(result.data.items);
+          const bIds = keyToArray(result.data.items, 'b_id');
+          dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+          const categoryIds = keyToArray(result.data.items, 'category_id');
+          dispatch({
+            type: categoryActions.insertCategoryIds.type,
+            payload: categoryIds,
+          });
+        }
       } catch (error) {
         captureException(error);
       }
     };
 
-    if (sections.length === 0 && loggedUser) {
+    if (sections.length === 0 && loggedUser && genre) {
       requestUserPreferredBestSeller();
     }
-  }, [genre, sections, loggedUser]);
+  }, [sections, loggedUser, genre]);
 
   return (
     <>
