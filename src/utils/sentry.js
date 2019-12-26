@@ -69,7 +69,7 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /TypeError: 취소됨/,
       /TypeError: Type error/,
       /キャンセルしました/,
-      /null is not an object (evaluating 'document.head.querySelector("meta[name='supported-color-schemes']").content')/,
+      /null is not an object (evaluating 'document.head.querySelector("meta[name='supported/-color-schemes']").content')/,
       /TypeError: 请求超时。/,
       /TypeError: Abgebrochen/,
       /Error: SecurityError: Blocked a frame with origin "https:\/\/ridibooks.com" from accessing a cross-origin frame. Protocols, domains, and ports must match./,
