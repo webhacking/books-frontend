@@ -145,7 +145,7 @@ export interface SeriesProperty {
   prev_books: [] | LinkedSeriesBookInfo;
   next_books: [] | LinkedSeriesBookInfo;
   last_volume_id: string;
-  title: string;
+  title?: string;
   total_book_count: number;
   unit: string | null;
 }

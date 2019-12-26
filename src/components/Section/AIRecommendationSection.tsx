@@ -9,6 +9,7 @@ import sentry from 'src/utils/sentry';
 import { keyToArray } from 'src/utils/common';
 import { booksActions } from 'src/services/books';
 import { categoryActions } from 'src/services/category';
+import { useRouter } from 'next/router';
 const { publicRuntimeConfig } = getConfig();
 
 const { captureException } = sentry();
@@ -25,9 +26,12 @@ interface AiRecommendationSectionProps {
 const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props => {
   const { loggedUser } = useSelector((store: RootState) => store.account);
   const dispatch = useDispatch();
-  const { items, genre, type, title, extra, slug } = props;
+  const { items, type, title, extra, slug } = props;
   const [aiItems, setSections] = useState(items || []);
   const [isRequestError, setIsRequestError] = useState(false);
+
+  const router = useRouter();
+  const genre = (router.query.genre as string) || 'general';
 
   useEffect(() => {
     // @ts-ignore
@@ -62,9 +66,22 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
     };
 
     if (aiItems.length < 1 && loggedUser && !isRequestError) {
-      requestAiRecommendationItems();
+      if (
+        [
+          'bl',
+          'bl-serial',
+          'fantasy',
+          'fantasy-serial',
+          'comics',
+          'romance',
+          'romance-serial',
+          'general',
+        ].includes(genre)
+      ) {
+        requestAiRecommendationItems();
+      }
     }
-  }, [dispatch, aiItems.length, items, genre, loggedUser, isRequestError]);
+  }, [dispatch, genre, router, aiItems.length, items, loggedUser, isRequestError]);
   if (!loggedUser || !aiItems || aiItems.length < 1) {
     return null;
   }

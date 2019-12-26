@@ -64,7 +64,6 @@ functions:
 plugins:
   - serverless-offline
   - serverless-apigw-binary
-  - serverless-s3-sync
   - serverless-plugin-warmup
 
 custom:
@@ -75,16 +74,6 @@ custom:
     timeout: 20
     prewarm: true
     concurrency: 1
-  s3Sync:
-    - bucketName: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
-      bucketPrefix: static/ # optional
-      localDir: static/ # required
-    - bucketName: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
-      bucketPrefix: _next/ # optional
-      localDir: build/
-      params: # optional
-        - '*.js':
-            CacheControl: 'public, max-age=31536000'
 
   stage: ${opt:stage, 'development'}
   secrets: ${file(secrets.json)}
