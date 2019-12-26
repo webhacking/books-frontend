@@ -25,7 +25,7 @@ export interface Category {
   id: number;
   is_series_category: boolean;
   name: string;
-  genre: string;
+  genre: string | '';
   sub_genre: string;
 }
 
@@ -38,6 +38,7 @@ export interface File {
   is_manga: boolean;
   is_webtoon: boolean;
   size: number;
+  page_count?: number;
 }
 
 export interface BuyInfo {
@@ -54,7 +55,7 @@ export interface SeriesBuyInfo {
   discount_percentage: number;
 }
 
-export interface RentBuyInfo {
+export interface SeriesRentBuyInfo {
   total_book_count: number;
   free_book_count: number;
   regular_price: number;
@@ -64,8 +65,8 @@ export interface RentBuyInfo {
 }
 
 export interface SeriesPriceInfo {
-  buy: SeriesBuyInfo;
-  rent?: RentBuyInfo;
+  buy?: SeriesBuyInfo;
+  rent?: SeriesRentBuyInfo;
 }
 
 export interface PaperBuyInfo {
@@ -84,11 +85,24 @@ export interface PointBackInfo {
   point_duration: number;
 }
 
+interface PriceInfoCashBack {
+  cashback_period_start: string;
+  cashback_period_end: string;
+}
+
+interface PriceInfoPointBack {
+  pointback_amount?: number;
+  point_duration?: number;
+}
+
 export interface PriceInfo {
   buy?: BuyInfo;
   paper?: PaperBuyInfo;
   rentInfo?: RentInfo;
   pointBackInfo?: PointBackInfo;
+  flatrate?: number;
+  cashback?: PriceInfoCashBack;
+  pointback?: PriceInfoPointBack;
 }
 
 export interface Property {
@@ -100,6 +114,11 @@ export interface Property {
   is_somedeal: boolean;
   is_trial: boolean;
   preview_rate: number;
+  review_display_id?: string;
+  kpc_id?: string;
+  kd_stage?: number;
+  preview_max_characters?: number;
+  preview_max_pages?: number;
 }
 
 export interface LinkedSeriesBookInfo {
@@ -132,9 +151,10 @@ export interface SeriesProperty {
 }
 
 export interface Publish {
-  ebook_publish: string;
-  ridibooks_publish: string;
-  ridibooks_register: string;
+  ebook_publish?: string;
+  ridibooks_publish?: string;
+  ridibooks_register?: string;
+  paper_book_publish?: Date | string;
 }
 
 export interface Publisher {
@@ -173,10 +193,10 @@ export interface Book {
   title: Title;
   file: File;
   last_modified: string;
-  price_info: PriceInfo;
+  price_info?: PriceInfo;
   property: Property;
   publish: Publish;
-  publisher: Publisher;
+  publisher?: Publisher;
   series?: Series;
   support: DeviceSupport;
   thumbnail: ThumbnailInfo;
