@@ -10,7 +10,7 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
   const sentryOptions = {
     dsn: publicRuntimeConfig.SENTRY_DSN,
     release: nextBuildId,
-    maxBreadcrumbs: 50,
+    maxBreadcrumbs: 100,
     environment: publicRuntimeConfig.ENVIRONMENT || 'local',
     attachStacktrace: true,
     ignoreErrors: [
@@ -68,9 +68,11 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /TypeError: 未能完成该操作。软件导致连接中止/,
       /TypeError: 취소됨/,
       /TypeError: Type error/,
+      /キャンセルしました/,
+      /null is not an object (evaluating 'document.head.querySelector("meta[name='supported-color-schemes']").content')/,
+      /TypeError: 请求超时。/,
       /TypeError: Abgebrochen/,
       /Error: SecurityError: Blocked a frame with origin "https:\/\/ridibooks.com" from accessing a cross-origin frame. Protocols, domains, and ports must match./,
-
       /Error: SecurityError: Blocked a frame with origin "https:\/\/ridibooks.com" from accessing a frame with origin "https:\/\/www.youtube-nocookie.com". Protocols, domains, and ports must match./,
       /TypeError: cancelado/,
       /TypeError: can't redefine non-configurable property "blockAdBlock"/,
@@ -78,8 +80,12 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /TypeError: can't redefine non-configurable property "fuckAdBlock"/,
       /Blocked a frame with origin/,
       /Object [object Object] has no method 'checkDomStatus'/,
+      /TypeError: 이 서버에 대한 인증서가 유효하지 않습니다. ‘s3.ap-northeast-2.amazonaws.com’인 것처럼 보이는 서버에 연결될 수 있으며 이렇게 될 경우 사용자의 비밀 정보가 위험에 노출될 수 있습니다./,
+
+      // sentry sendEvent 시 발생해서 일단 막아 둠
+      /Converting circular structure to JSON/,
     ],
-    sampleRate: 0.75,
+    sampleRate: 0.5,
     whitelistUrls: [
       /https?:\/\/(.+\.)?ridibooks\.com/,
       /https?:\/\/(.+\.)?ridi\.io/,
