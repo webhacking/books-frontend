@@ -257,10 +257,11 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
       <ul
         css={[
           css`
+            padding-left: 16px;
             ${orBelow(
               BreakPoint.LG,
               css`
-                padding-left: 13px;
+                padding-left: 16px;
               `,
             )}
           `,

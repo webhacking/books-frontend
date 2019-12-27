@@ -258,7 +258,13 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
                 )}
               `
             : css`
-                padding-left: 11px !important;
+                padding-left: 1px !important;
+                ${orBelow(
+                  999,
+                  css`
+                    padding-left: 13px !important;
+                  `,
+                )}
               `,
         ]}>
         {/* // @ts-ignore */}
