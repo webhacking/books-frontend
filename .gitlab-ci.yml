@@ -132,7 +132,7 @@ deploy-production:
   tags:
     - ridicorp
     - aws
-  image: cypress/base:10.15.3
+  image: cypress/browsers:node11.13.0-chrome73
   stage: e2e
   allow_failure: true
   before_script:
