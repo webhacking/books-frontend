@@ -34,6 +34,10 @@ module.exports = withBundleAnalyzer(
           if (!isServer) {
             config.resolve.alias['@sentry/node'] = '@sentry/browser';
           }
+          config.node = {
+            net: 'empty',
+          };
+
           config.module.rules.push({
             test: /\.(eot|woff|woff2|ttf|png|jpg|gif)$/,
             use: {

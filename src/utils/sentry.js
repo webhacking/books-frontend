@@ -94,19 +94,19 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
   };
   init(sentryOptions);
 
-  // eslint-disable-next-line no-process-env
-  if (process.env.NODE_ENV !== 'production') {
-    const sentryTestkit = require('sentry-testkit');
-    const { sentryTransport } = sentryTestkit();
-
-    sentryOptions.transport = sentryTransport;
-    sentryOptions.integrations = [
-      new SentryIntegrations.Debug({
-        // Trigger DevTools debugger instead of using console.log
-        debugger: false,
-      }),
-    ];
-  }
+  // // eslint-disable-next-line no-process-env
+  // if (process.env.NODE_ENV !== 'production') {
+  //   const sentryTestkit = require('sentry-testkit');
+  //   const { sentryTransport } = sentryTestkit();
+  //
+  //   sentryOptions.transport = sentryTransport;
+  //   sentryOptions.integrations = [
+  //     new SentryIntegrations.Debug({
+  //       // Trigger DevTools debugger instead of using console.log
+  //       debugger: false,
+  //     }),
+  //   ];
+  // }
 
   return {
     Sentry,
