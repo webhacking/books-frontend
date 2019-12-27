@@ -26,6 +26,7 @@ then
   }'\
   ${DEV_SLACK_WEB_HOOK}
 elif [ ${ENV} = "production" ]
+then
    curl -X POST \
    -H 'Content-type: application/json' \
    --data '{
@@ -42,5 +43,4 @@ elif [ ${ENV} = "production" ]
     }]
   }'\
   ${PROD_SLACK_WEB_HOOK}
-then
 fi
