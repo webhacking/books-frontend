@@ -71,7 +71,7 @@ const sliderCSS = css`
     ${greaterThanOrEqualTo(
       BreakPoint.LG + 1,
       css`
-        height: calc(${TOP_BANNER_LG_WIDTH}px / 1.5);
+        // height: calc(${TOP_BANNER_LG_WIDTH}px / 1.5);
       `,
     )};
   }
@@ -193,8 +193,8 @@ const slideCSS = css`
     BreakPoint.XS + 1,
     css`
       min-width: 280px;
-      width: calc(100vw - 19px);
-      height: calc((100vw - 19px) / 1.5);
+      width: calc(100vw - 20px);
+      height: calc((100vw - 23px) / 1.5);
     `,
   )};
   ${greaterThanOrEqualTo(
@@ -210,7 +210,7 @@ const slideCSS = css`
     css`
       width: ${TOP_BANNER_LG_WIDTH}px;
       transform: scale(0.965);
-      height: calc(${TOP_BANNER_LG_WIDTH}px / 1.5);
+      height: calc(100% - 3px);
     `,
   )}
 `;
@@ -253,6 +253,12 @@ const carouselLoadingOverlay = css`
   position: absolute;
   top: 0;
   left: 1px;
+  ${orBelow(
+    999,
+    css`
+      left: 0;
+    `,
+  )};
   border-radius: 6px;
   height: calc(100% - 1px);
   background: rgba(0, 0, 0, 0.5);
@@ -499,6 +505,15 @@ interface TopBannerCarouselLoadingProps {
 const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props => (
   <div
     css={css`
+      top: 1px;
+      position: relative;
+      ${orBelow(
+        999,
+        css`
+          top: 1px;
+        `,
+      )}
+
       ${flexCenter};
       @media (max-width: 1279px) and (-ms-high-contrast: none),
         (-ms-high-contrast: active) {
