@@ -180,5 +180,5 @@ e2e-production:
   only:
     - master
   variables:
-    CYPRESS_BASE_URL: https://ridibooks.com
+    CYPRESS_BASE_URL: https://books.ridibooks.com
     ENVIRONMENT: 'production'
