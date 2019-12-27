@@ -44,7 +44,7 @@ then
    }]
   }'\
   ${DEV_SLACK_WEB_HOOK}
-elif [ ${ENV} = "production"]
+elif [ ${ENV} = "production" ]
 then
   curl -X POST \
   -H 'Content-type: application/json' \
