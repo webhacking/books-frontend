@@ -44,4 +44,22 @@ then
    }]
   }'\
   ${DEV_SLACK_WEB_HOOK}
+elif [ ${ENV} = "production"]
+then
+  curl -X POST \
+  -H 'Content-type: application/json' \
+  --data '{
+    "attachments": [{
+    "title": "'"books.ridibooks.com"'",
+    "text": "'"${CI_COMMIT_TITLE:="NONE"}"'",
+    "color": "'"${COLOR}"'",
+    "fields": [
+       { "title": "Branch", "value": "'"${BRANCH_NAME}"'", "short": true },
+       { "title": "Revision", "value": "'"${CI_COMMIT_SHA:="NONE"}"'", "short": true },
+       { "title": "CI Stage", "value": "'"${STAGE}"'", "short": true },
+       { "title": "JOB Result", "value": "'"${STATUS}"'", "short": true },
+     ]
+   }]
+  }'\
+  ${PROD_SLACK_WEB_HOOK}
 fi
