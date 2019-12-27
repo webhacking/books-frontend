@@ -5,13 +5,10 @@ describe('Genre Home Test', function() {
     cy.visit('/');
     cy.contains('일반');
     cy.contains('로맨스');
-    expect(true).to.equal(true);
-
     cy.viewport(700, 500);
   });
 
   it('인스턴트 검색이 존재', () => {
-    // cy.visit('/');
     cy.get('input')
       .should('have.attr', 'placeholder', labels.searchPlaceHolder)
       .click();
