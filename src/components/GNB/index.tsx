@@ -19,6 +19,7 @@ import DoublePointIcon from 'src/svgs/DoublePoint.svg';
 import CashIcon from 'src/svgs/Cash.svg';
 import pRetry from 'p-retry';
 import axios, { OAuthRequestType } from 'src/utils/axios';
+import originalAxios from 'axios';
 import sentry from 'src/utils/sentry';
 const { captureException } = sentry();
 
@@ -212,6 +213,8 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
   }, [route.asPath]);
 
   useEffect(() => {
+    const source = originalAxios.CancelToken.source();
+
     const requestRidiEventStatus = async () => {
       try {
         const cartUrl = new URL(
@@ -224,6 +227,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
             axios.get(cartUrl.toString(), {
               withCredentials: true,
               custom: { authorizationRequestType: OAuthRequestType.CHECK },
+              cancelToken: source.token,
             }),
           {
             retries: 2,
@@ -237,6 +241,10 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
       }
     };
     requestRidiEventStatus();
+
+    return () => {
+      source.cancel();
+    };
   }, [route]);
 
   return (

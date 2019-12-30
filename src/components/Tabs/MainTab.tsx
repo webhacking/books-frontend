@@ -20,6 +20,7 @@ import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 import pRetry from 'p-retry';
 import axios, { OAuthRequestType } from 'src/utils/axios';
+import originalAxios from 'axios';
 import sentry from 'src/utils/sentry';
 const { captureException } = sentry();
 
@@ -237,6 +238,8 @@ export const MainTab: React.FC<MainTabProps> = props => {
   }, [currentPath]);
 
   useEffect(() => {
+    const tokenRequestSource = originalAxios.CancelToken.source();
+    const notificationRequestSource = originalAxios.CancelToken.source();
     const requestNotificationAuth = async () => {
       let tokenResult = null;
       try {
@@ -246,7 +249,11 @@ export const MainTab: React.FC<MainTabProps> = props => {
         );
 
         tokenResult = await pRetry(
-          () => axios.get(tokenUrl.toString(), { withCredentials: true }),
+          () =>
+            axios.get(tokenUrl.toString(), {
+              withCredentials: true,
+              cancelToken: tokenRequestSource.token,
+            }),
           { retries: 2 },
         );
       } catch (error) {
@@ -260,6 +267,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
             () =>
               axios.get(notificationUrl.toString(), {
                 params: { limit: 5 },
+                cancelToken: notificationRequestSource.token,
                 custom: { authorizationRequestType: OAuthRequestType.CHECK },
                 headers: {
                   Authorization: `Bearer ${tokenResult.data.token}`,
@@ -276,9 +284,14 @@ export const MainTab: React.FC<MainTabProps> = props => {
     if (loggedUserInfo) {
       requestNotificationAuth();
     }
+    return () => {
+      tokenRequestSource.cancel();
+      notificationRequestSource.cancel();
+    };
   }, [loggedUserInfo]);
 
   useEffect(() => {
+    const cartRequestTokenSource = originalAxios.CancelToken.source();
     const requestCartCount = async () => {
       try {
         const cartUrl = new URL(
@@ -290,6 +303,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           () =>
             axios.get(cartUrl.toString(), {
               withCredentials: true,
+              cancelToken: cartRequestTokenSource.token,
               custom: { authorizationRequestType: OAuthRequestType.CHECK },
             }),
           { retries: 2 },
@@ -306,6 +320,9 @@ export const MainTab: React.FC<MainTabProps> = props => {
     if (loggedUserInfo) {
       requestCartCount();
     }
+    return () => {
+      cartRequestTokenSource.cancel();
+    };
   }, [loggedUserInfo]);
 
   return (
