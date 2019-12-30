@@ -141,7 +141,7 @@ deploy-production:
       - .job_status
       - .stage
   script:
-    - ./node_modules/.bin/cypress run
+    - ./node_modules/.bin/cypress run --browser chrome
     - echo "SUCCESS" > .job_status
   after_script:
     - ./notify/slack-notify-e2e.sh
