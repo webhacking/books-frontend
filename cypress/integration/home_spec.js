@@ -21,24 +21,24 @@ describe('Genre Home Test', function() {
       .click({ multiple: true, force: true });
   });
 
-  it('검색 히스토리 목록 표시', () => {
-    cy.clearLocalStorage();
-    cy.get('input')
-      .click({ multiple: true, force: true })
-      .type('{enter}');
-    cy.viewport(700, 500);
-    cy.wait(250);
-    cy.get('input')
-      .should('have.attr', 'placeholder', labels.searchPlaceHolder)
-      .click({ multiple: true, force: true })
-      .type('test{enter}');
-    cy.wait(250);
-    cy.get('input').clear();
-    cy.contains(labels.turnOffSearchHistory);
-    cy.contains(labels.clearSearchHistory);
-    cy.contains(labels.turnOffSearchHistory).click({ multiple: true, force: true });
-    cy.contains(labels.turnOffStatus);
-    cy.contains(labels.turnOnSearchHistory).click({ multiple: true, force: true });
-    cy.contains(labels.clearSearchHistory).click({ multiple: true, force: true });
-  });
+  // it('검색 히스토리 목록 표시', () => {
+  //   cy.clearLocalStorage();
+  //   cy.get('input')
+  //     .click({ multiple: true, force: true })
+  //     .type('{enter}');
+  //   cy.viewport(700, 500);
+  //   cy.wait(250);
+  //   cy.get('input')
+  //     .should('have.attr', 'placeholder', labels.searchPlaceHolder)
+  //     .click({ multiple: true, force: true })
+  //     .type('test{enter}');
+  //   cy.wait(250);
+  //   cy.get('input').clear();
+  //   cy.contains(labels.turnOffSearchHistory);
+  //   cy.contains(labels.clearSearchHistory);
+  //   cy.contains(labels.turnOffSearchHistory).click({ multiple: true, force: true });
+  //   cy.contains(labels.turnOffStatus);
+  //   cy.contains(labels.turnOnSearchHistory).click({ multiple: true, force: true });
+  //   cy.contains(labels.clearSearchHistory).click({ multiple: true, force: true });
+  // });
 });
