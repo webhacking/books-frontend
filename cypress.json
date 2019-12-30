@@ -1,6 +1,4 @@
 {
   "integrationFolder": "cypress/integration",
-  "chromeWebSecurity": false,
-  "videoCompression": 16,
-  "video": false
+  "chromeWebSecurity": false
 }
