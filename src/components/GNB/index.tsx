@@ -339,8 +339,12 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({ type: accountActions.checkLogged.type });
+    const cancelToken = originalAxios.CancelToken.source();
+    dispatch({ type: accountActions.checkLogged.type, payload: cancelToken });
     setPath(window.location.href);
+    return () => {
+      cancelToken.cancel();
+    };
   }, []);
 
   const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_HOST);
