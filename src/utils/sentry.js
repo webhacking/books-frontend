@@ -81,12 +81,13 @@ module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
       /Blocked a frame with origin/,
       /Object [object Object] has no method 'checkDomStatus'/,
       /TypeError: 이 서버에 대한 인증서가 유효하지 않습니다. ‘s3.ap-northeast-2.amazonaws.com’인 것처럼 보이는 서버에 연결될 수 있으며 이렇게 될 경우 사용자의 비밀 정보가 위험에 노출될 수 있습니다./,
-
+      /Non-error was thrown: "Cancel". You should only throw errors./,
+      /TypeError: Non-error was thrown: "Cancel". You should only throw errors./,
       // sentry sendEvent 시 발생해서 일단 막아 둠
       /TypeError: Converting circular structure to JSON/,
       /Converting circular structure to JSON/,
     ],
-    sampleRate: 0.5,
+    sampleRate: 0.33,
     whitelistUrls: [
       /https?:\/\/(.+\.)?ridibooks\.com/,
       /https?:\/\/(.+\.)?ridi\.io/,
