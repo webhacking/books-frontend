@@ -69,10 +69,11 @@ build:
       --paths "/*"
     - aws cloudfront create-invalidation --distribution-id $STATIC_CDN_DISTRIBUTION_ID
       --paths "/*"
+    - echo "SUCCESS" > .job_status
     - LATEST_SLS_DEPLOY_TIMESTAMP=$(./node_modules/.bin/serverless deploy list | awk
       '/Timestamp/' | awk '{print $3}' | awk END{print})
     - LATEST_COMMIT_HASH=$(git rev-parse HEAD)
-    - echo "SUCCESS" > .job_status
+
   artifacts:
     paths:
       - .job_status
@@ -97,17 +98,6 @@ deploy-development:
   environment:
     name: development
     url: https://books.ridi.io
-
-deploy-staging:
-  extends: .deploy-template
-  only:
-    - staging
-  when: manual
-  variables:
-    ENVIRONMENT: 'staging'
-    AWS_ACCESS_KEY_ID: $STAGING_AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY: $STAGING_AWS_SECRET_ACCESS_KEY
-    STATIC_CDN_URL: $DEV_STATIC_CDN_URL
 
 deploy-production:
   extends: .deploy-template
