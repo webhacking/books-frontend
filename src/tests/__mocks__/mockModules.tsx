@@ -6,6 +6,13 @@ export const initModules = () => {
     defaults: {
       timeout: 1000,
     },
+    CancelToken: {
+      source: () => {
+        return {
+          cancel: () => null,
+        };
+      },
+    },
     create: () => ({
       get: () => {
         return { data: {} };
