@@ -27,24 +27,25 @@ interface ThumbnailRendererProps {
 
 const computeThumbnailUrl = (
   isAdultOnly: boolean,
+  // @ts-ignore
   isIntersection: boolean,
   isVerifiedAdult: boolean | null,
   bId: string,
   imageSize?: string,
   book?: BookApi.Book,
 ) => {
-  if (bId.length === 0) {
-    return new URL(
-      '/static/image/cover_lazyload.png',
-      publicRuntimeConfig.STATIC_CDN_URL,
-    ).toString();
-  }
-  if (!isIntersection) {
-    return new URL(
-      '/static/image/cover_lazyload.png',
-      publicRuntimeConfig.STATIC_CDN_URL,
-    ).toString();
-  }
+  // if (bId.length === 0) {
+  //   return new URL(
+  //     '/static/image/cover_lazyload.png',
+  //     publicRuntimeConfig.STATIC_CDN_URL,
+  //   ).toString();
+  // }
+  // if (!isIntersection) {
+  //   return new URL(
+  //     '/static/image/cover_lazyload.png',
+  //     publicRuntimeConfig.STATIC_CDN_URL,
+  //   ).toString();
+  // }
   if (isAdultOnly && !isVerifiedAdult) {
     return new URL(
       '/static/image/cover_adult.png',
@@ -93,7 +94,15 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
       book.detail,
     );
     return (
-      <div className={props.className || ''} data-order={order} data-book-id={book.b_id}>
+      <div
+        css={css`
+          img {
+            transition: opacity 2s ease-in-out;
+          }
+        `}
+        className={props.className || ''}
+        data-order={order}
+        data-book-id={book.b_id}>
         <Book.Thumbnail
           thumbnailWidth={width}
           thumbnailTitle={bookTitleGenerator(book.detail)}

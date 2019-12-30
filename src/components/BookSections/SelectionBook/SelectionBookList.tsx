@@ -52,6 +52,33 @@ export const itemCSS = css`
   align-items: flex-start;
 `;
 
+export const loadingItemCSS = css`
+  display: flex;
+  flex-direction: row;
+  :first-of-type {
+    padding-left: 18px;
+  }
+  margin-right: 20px;
+  :last-of-type {
+    padding-right: 19px;
+  }
+  box-sizing: content-box;
+
+  ${orBelow(
+    BreakPoint.MD,
+    css`
+      margin-right: 12px;
+      :last-of-type {
+        padding-right: 24px;
+      }
+      :first-of-type {
+        padding-left: 13px;
+      }
+    `,
+  )};
+  align-items: flex-start;
+`;
+
 interface SelectionBookListProps {
   items: MdBook[];
   isAIRecommendation: boolean;

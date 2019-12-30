@@ -10,7 +10,7 @@ import { flexRowStart, lineClamp, scrollBarHidden } from 'src/styles';
 import AtSelectIcon from 'src/svgs/Book1.svg';
 import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedBookCarousel';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
-import { PortraitBook } from 'src/components/Book/PortraitBook';
+import { RecommendedPortraitBook } from 'src/components/Book/PortraitBook';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
@@ -269,7 +269,7 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
         ]}>
         {/* // @ts-ignore */}
         {dummyBooks.map((book, index) => (
-          <PortraitBook
+          <RecommendedPortraitBook
             css={[
               css`
                 padding-left: 0 !important;
@@ -327,7 +327,7 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
                 />
               </h4>
             )}
-          </PortraitBook>
+          </RecommendedPortraitBook>
         ))}
       </BookList>
     );

@@ -8,7 +8,7 @@ import {
 } from 'src/types/sections';
 import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import SelectionBookList, {
-  listCSS,
+  loadingItemCSS,
 } from 'src/components/BookSections/SelectionBook/SelectionBookList';
 import SelectionBookCarousel from 'src/components/BookSections/SelectionBook/SelectionBookCarousel';
 // import BookMeta from 'src/components/BookMeta/BookMeta';
@@ -251,23 +251,30 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = props 
   return (
     <div
       css={css`
-        margin-top: 6px;
         position: relative;
+        width: 1005px;
+        max-width: 1005px;
+        margin: 0 auto;
+        margin-top: 6px;
+        height: 100%;
+        margin-left: -2px;
       `}>
       <ul
         css={[
+          flexRowStart,
+          scrollBarHidden,
+          loadingItemCSS,
           css`
+            justify-content: space-between;
             padding-left: 16px;
             ${orBelow(
               BreakPoint.LG,
               css`
                 padding-left: 16px;
+                justify-content: start;
               `,
             )}
           `,
-          flexRowStart,
-          scrollBarHidden,
-          listCSS,
         ]}>
         {props.items.map((book, index) => (
           <PortraitBook key={index}>
