@@ -236,7 +236,6 @@ export const partialResetStyles = css`
     cursor: pointer;
   }
 
-  ${fonts};
   #__next {
     overflow-y: hidden;
     overflow-x: hidden;
