@@ -12,7 +12,7 @@ import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedB
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { RecommendedPortraitBook } from 'src/components/Book/PortraitBook';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
-import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import * as BookApi from 'src/types/book';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
@@ -277,9 +277,16 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
               props.type === DisplayType.HotRelease
                 ? css`
                     ${orBelow(
-                      999,
+                      833,
                       css`
                         margin-right: 12px !important;
+                      `,
+                    )}
+                    ${between(
+                      834,
+                      999,
+                      css`
+                        margin-right: 20px !important;
                       `,
                     )}
                   `
@@ -356,7 +363,16 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           ? hotReleaseRecommendedBookWrapperCSS
           : recommendedBookWrapperCSS,
         theme === 'dark' && backgroundImageCSS,
-        theme === 'white' && css``,
+        theme === 'white' &&
+          css`
+            ${orBelow(
+              999,
+              css`
+                padding-bottom: 16px;
+                padding-top: 16px;
+              `,
+            )}
+          `,
       ]}>
       <h2
         css={[

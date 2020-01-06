@@ -23,7 +23,7 @@ import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 import { useEventTracker } from 'src/hooks/useEveneTracker';
-import { orBelow } from 'src/utils/mediaQuery';
+import { between, orBelow } from 'src/utils/mediaQuery';
 
 const { publicRuntimeConfig } = getConfig();
 interface RecommendedBookListProps {
@@ -93,9 +93,16 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                 props.type === DisplayType.HotRelease
                   ? css`
                       ${orBelow(
-                        999,
+                        833,
                         css`
                           margin-right: 12px !important;
+                        `,
+                      )}
+                      ${between(
+                        834,
+                        999,
+                        css`
+                          margin-right: 20px !important;
                         `,
                       )}
                     `

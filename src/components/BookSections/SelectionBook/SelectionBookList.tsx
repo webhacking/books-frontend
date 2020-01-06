@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useRef } from 'react';
 import { displayNoneForTouchDevice, flexRowStart, scrollBarHidden } from 'src/styles';
 import { SelectionBookItem } from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { css } from '@emotion/core';
-import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
@@ -49,6 +49,13 @@ export const itemCSS = css`
       }
     `,
   )};
+  ${between(
+    834,
+    999,
+    css`
+      margin-right: 20px;
+    `,
+  )};
   align-items: flex-start;
 `;
 
@@ -74,6 +81,16 @@ export const loadingItemCSS = css`
       :first-of-type {
         padding-left: 13px;
       }
+    `,
+  )};
+  ${between(
+    834,
+    999,
+    css`
+      :first-of-type {
+        padding-left: 17px;
+      }
+      margin-right: 20px;
     `,
   )};
   align-items: flex-start;
