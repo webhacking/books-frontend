@@ -22,7 +22,7 @@ import pRetry from 'p-retry';
 import axios, { OAuthRequestType } from 'src/utils/axios';
 import originalAxios from 'axios';
 import sentry from 'src/utils/sentry';
-import { safeJSONParse } from 'src/utils/common';
+import jwt_decode from 'jwt-decode';
 const { captureException } = sentry();
 
 const RIDI_NOTIFICATION_TOKEN = 'ridi_notification_token';
@@ -241,8 +241,7 @@ const requestNotificationToken = async cancelToken => {
         }),
       { retries: 2 },
     );
-    localStorage.setItem(RIDI_NOTIFICATION_TOKEN, JSON.stringify(result.data) || null);
-    return result.data;
+    return result.data.token;
   } catch (error) {
     captureException(error);
   }
@@ -269,19 +268,26 @@ export const MainTab: React.FC<MainTabProps> = props => {
     const notificationRequestSource = originalAxios.CancelToken.source();
     const requestNotificationAuth = async () => {
       let tokenResult = null;
+      let expired = null;
 
-      const savedToken = safeJSONParse(
-        localStorage.getItem(RIDI_NOTIFICATION_TOKEN),
-        null,
-      );
+      const savedTokenValue = Cookies.get(RIDI_NOTIFICATION_TOKEN) || '';
+      if (savedTokenValue.length > 0) {
+        try {
+          expired = jwt_decode(savedTokenValue).exp;
+        } catch (error) {
+          expired = null;
+        }
+      }
 
-      const expiredTime = savedToken?.expired ? parseInt(savedToken.expired, 10) : null;
+      const expiredTime = expired ? parseInt(expired, 10) : null;
       const isExpired = !expiredTime || expiredTime * 1000 < Date.now();
       setTokenExpired(isExpired);
-      tokenResult = savedToken;
+      tokenResult = savedTokenValue;
 
       if (isExpired) {
-        tokenResult = await requestNotificationToken(tokenRequestSource);
+        const token = await requestNotificationToken(tokenRequestSource);
+        Cookies.set(RIDI_NOTIFICATION_TOKEN, token);
+        tokenResult = token;
       }
       if (tokenResult) {
         try {
@@ -293,18 +299,16 @@ export const MainTab: React.FC<MainTabProps> = props => {
                 cancelToken: notificationRequestSource.token,
                 custom: { authorizationRequestType: OAuthRequestType.CHECK },
                 headers: {
-                  Authorization: `Bearer ${tokenResult.token}`,
+                  Authorization: `Bearer ${tokenResult}`,
                 },
               }),
             { retries: 2 },
           );
           setNotification(notificationResult.data.unreadCount || 0);
         } catch (error) {
-          if (error.response && loggedUserInfo) {
-            if (error.response.status === 401) {
-              localStorage.setItem(RIDI_NOTIFICATION_TOKEN, null);
-              setTokenExpired(true);
-            }
+          if (error.response && error.response.status === 401 && loggedUserInfo) {
+            setTokenExpired(true);
+            Cookies.remove(RIDI_NOTIFICATION_TOKEN);
           }
           captureException(error);
         }
