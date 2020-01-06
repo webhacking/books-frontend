@@ -22,7 +22,10 @@ import pRetry from 'p-retry';
 import axios, { OAuthRequestType } from 'src/utils/axios';
 import originalAxios from 'axios';
 import sentry from 'src/utils/sentry';
+import { safeJSONParse } from 'src/utils/common';
 const { captureException } = sentry();
+
+const RIDI_NOTIFICATION_TOKEN = 'ridi_notification_token';
 
 const StyledAnchor = styled.a`
   height: 100%;
@@ -223,12 +226,36 @@ const genreValueReplace = (visitedGenre: string) => {
   return visitedGenre;
 };
 
+const requestNotificationToken = async cancelToken => {
+  try {
+    const tokenUrl = new URL(
+      '/users/me/notification-token/',
+      publicRuntimeConfig.STORE_API,
+    );
+
+    const result = await pRetry(
+      () =>
+        axios.get(tokenUrl.toString(), {
+          withCredentials: true,
+          cancelToken: cancelToken.token,
+        }),
+      { retries: 2 },
+    );
+    localStorage.setItem(RIDI_NOTIFICATION_TOKEN, JSON.stringify(result.data) || null);
+    return result.data;
+  } catch (error) {
+    captureException(error);
+  }
+  return null;
+};
+
 export const MainTab: React.FC<MainTabProps> = props => {
   const { isPartials, loggedUserInfo } = props;
   const currentPath = useContext(BrowserLocationContext);
   const [, setHomeURL] = useState('/');
   const [cartCount, setCartCount] = useState<number>(0);
   const [hasNotification, setNotification] = useState(0);
+  const [isTokenExpired, setTokenExpired] = useState(true);
 
   useEffect(() => {
     const visitedGenre = Cookies.get(`${cookieKeys.main_genre}`);
@@ -242,24 +269,20 @@ export const MainTab: React.FC<MainTabProps> = props => {
     const notificationRequestSource = originalAxios.CancelToken.source();
     const requestNotificationAuth = async () => {
       let tokenResult = null;
-      try {
-        const tokenUrl = new URL(
-          '/users/me/notification-token/',
-          publicRuntimeConfig.STORE_API,
-        );
 
-        tokenResult = await pRetry(
-          () =>
-            axios.get(tokenUrl.toString(), {
-              withCredentials: true,
-              cancelToken: tokenRequestSource.token,
-            }),
-          { retries: 2 },
-        );
-      } catch (error) {
-        captureException(error);
+      const savedToken = safeJSONParse(
+        localStorage.getItem(RIDI_NOTIFICATION_TOKEN),
+        null,
+      );
+
+      const expiredTime = savedToken?.expired ? parseInt(savedToken.expired, 10) : null;
+      const isExpired = !expiredTime || expiredTime * 1000 < Date.now();
+      setTokenExpired(isExpired);
+      tokenResult = savedToken;
+
+      if (isExpired) {
+        tokenResult = await requestNotificationToken(tokenRequestSource);
       }
-
       if (tokenResult) {
         try {
           const notificationUrl = new URL('/notification', publicRuntimeConfig.STORE_API);
@@ -270,17 +293,24 @@ export const MainTab: React.FC<MainTabProps> = props => {
                 cancelToken: notificationRequestSource.token,
                 custom: { authorizationRequestType: OAuthRequestType.CHECK },
                 headers: {
-                  Authorization: `Bearer ${tokenResult.data.token}`,
+                  Authorization: `Bearer ${tokenResult.token}`,
                 },
               }),
             { retries: 2 },
           );
           setNotification(notificationResult.data.unreadCount || 0);
         } catch (error) {
+          if (error.response && loggedUserInfo) {
+            if (error.response.status === 401) {
+              localStorage.setItem(RIDI_NOTIFICATION_TOKEN, null);
+              setTokenExpired(true);
+            }
+          }
           captureException(error);
         }
       }
     };
+
     if (loggedUserInfo) {
       requestNotificationAuth();
     }
@@ -288,7 +318,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
       tokenRequestSource.cancel();
       notificationRequestSource.cancel();
     };
-  }, [loggedUserInfo]);
+  }, [loggedUserInfo, isTokenExpired]);
 
   useEffect(() => {
     const cartRequestTokenSource = originalAxios.CancelToken.source();
