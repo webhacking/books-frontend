@@ -1,6 +1,6 @@
 import { DeviceType, Tracker } from '@ridi/event-tracker';
 import { FB_KEYS, GA_KEY, GTM_KEY } from 'src/constants/eventTracking';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
@@ -72,8 +72,33 @@ export const useEventTracker = () => {
 
 // Todo refactor
 export const sendClickEvent = (eventTracker, item, section, order) => {
+  const device = getDeviceType();
+  const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
   eventTracker.sendEvent('click', {
-    section,
+    section: `${deviceType}.${section}`,
     items: [{ id: item.b_id || item.id, idx: order, ts: new Date().getTime() }],
   });
+};
+
+export const useSendDisplayEvent = slug => {
+  const device = getDeviceType();
+  const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
+  return useCallback(
+    (intersectionItems: IntersectionObserverEntry[]) => {
+      const trackingItems = { section: `${deviceType}.${slug}`, items: [] };
+      intersectionItems.forEach(item => {
+        const bId = item.target.getAttribute('data-book-id');
+        const order = item.target.getAttribute('data-order');
+        trackingItems.items.push({
+          id: bId,
+          idx: order,
+          ts: Date.now(),
+        });
+      });
+      if (trackingItems.items.length > 0) {
+        tracker.sendEvent('display', trackingItems);
+      }
+    },
+    [deviceType, slug],
+  );
 };

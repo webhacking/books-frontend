@@ -13,6 +13,7 @@ import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
 import getConfig from 'next/config';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { useRouter } from 'next/router';
+import { getDeviceType } from 'src/utils/common';
 const { publicRuntimeConfig } = getConfig();
 
 const TOP_BANNER_LG_WIDTH = 430;
@@ -505,7 +506,8 @@ interface TopBannerCarouselLoadingProps {
 const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props => (
   <div
     css={css`
-      top: 1px;
+      top: 2px;
+      max-height: 286.8px;
       position: relative;
       ${orBelow(
         999,
@@ -535,6 +537,8 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
   const { banners, forwardRef, setInitialized, isIntersecting, slug } = props;
   const [tracker] = useEventTracker();
 
+  const device = getDeviceType();
+  const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
   const resize = useCallback(() => {
     let event = null;
     if (typeof Event === 'function') {
@@ -567,7 +571,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
 
         if (isIntersecting) {
           tracker.sendEvent('display', {
-            section: props.slug,
+            section: `${deviceType}.${props.slug}`,
             items: [
               {
                 id: banners[next]?.id,
@@ -586,7 +590,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
           ts: new Date().getTime(),
         };
         tracker.sendEvent('display', {
-          section: props.slug,
+          section: `${deviceType}.${props.slug}`,
           items: [firstItem],
         });
       }}

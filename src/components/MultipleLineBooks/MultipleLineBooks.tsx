@@ -3,14 +3,18 @@ import { between, BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/me
 import { DisplayType, MdBook } from 'src/types/sections';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import BookMeta from 'src/components/BookMeta/BookMeta';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import getConfig from 'next/config';
-import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
+import {
+  sendClickEvent,
+  useEventTracker,
+  useSendDisplayEvent,
+} from 'src/hooks/useEveneTracker';
 import { Tracker } from '@ridi/event-tracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
@@ -257,26 +261,8 @@ const ItemList: React.FC<any> = props => {
   const ref = useRef<HTMLUListElement>(null);
   const [isMounted, setMounted] = useState(false);
   const [tracker] = useEventTracker();
-  const sendEvent = useCallback(
-    (intersectionItems: IntersectionObserverEntry[]) => {
-      const trackingItems = { section: slug, items: [] };
-      intersectionItems.forEach(item => {
-        const bId = item.target.getAttribute('data-book-id');
-        const order = item.target.getAttribute('data-order');
-        trackingItems.items.push({
-          id: bId,
-          idx: order,
-          ts: Date.now(),
-        });
-      });
-      if (trackingItems.items.length > 0) {
-        tracker.sendEvent('display', trackingItems);
-      }
-    },
-    [slug, tracker],
-  );
-
-  useMultipleIntersectionObserver(ref, slug, sendEvent, isMounted);
+  const sendDisplayEvent = useSendDisplayEvent(slug);
+  useMultipleIntersectionObserver(ref, slug, sendDisplayEvent, isMounted);
   useEffect(() => {
     setMounted(true);
   }, []);
