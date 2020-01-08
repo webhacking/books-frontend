@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 // import BookMeta from 'src/components/BookMeta/BookMeta';
@@ -20,7 +20,11 @@ import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import getConfig from 'next/config';
-import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
+import {
+  sendClickEvent,
+  useEventTracker,
+  useSendDisplayEvent,
+} from 'src/hooks/useEveneTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 const { publicRuntimeConfig } = getConfig();
@@ -182,27 +186,10 @@ const Timer: React.FC = () => {
 const ItemList: React.FC<any> = props => {
   const { books, slug, type, genre, isIntersecting, showSomeDeal } = props;
   const ref = useRef<HTMLUListElement>();
-  const [tracker] = useEventTracker();
-  const sendEvent = useCallback(
-    (intersectionItems: IntersectionObserverEntry[]) => {
-      const trackingItems = { section: slug, items: [] };
-      intersectionItems.forEach(item => {
-        const bId = item.target.getAttribute('data-book-id');
-        const order = item.target.getAttribute('data-order');
-        trackingItems.items.push({
-          id: bId,
-          idx: order,
-          ts: Date.now(),
-        });
-      });
-      if (trackingItems.items.length > 0) {
-        tracker.sendEvent('display', trackingItems);
-      }
-    },
-    [slug, tracker],
-  );
 
-  useMultipleIntersectionObserver(ref, slug, sendEvent);
+  const sendDisplayEvent = useSendDisplayEvent(slug);
+  const [tracker] = useEventTracker();
+  useMultipleIntersectionObserver(ref, slug, sendDisplayEvent);
 
   return (
     <ul css={listCSS} ref={ref}>

@@ -5,6 +5,7 @@ import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { EventBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
+import { getDeviceType } from 'src/utils/common';
 
 interface EventBannerListProps {
   items: EventBanner[];
@@ -18,8 +19,10 @@ const EventBannerList: React.FC<EventBannerListProps> = props => {
   const [tracker] = useEventTracker();
   useEffect(() => {
     if (isIntersecting) {
+      const device = getDeviceType();
+      const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
       tracker.sendEvent('display', {
-        section: props.slug,
+        section: `${deviceType}.${props.slug}`,
         items: props.items.map((item, index) => ({
           id: item.id,
           idx: index,
@@ -27,7 +30,7 @@ const EventBannerList: React.FC<EventBannerListProps> = props => {
         })),
       });
     }
-  }, [isIntersecting]);
+  }, [isIntersecting, props.items, props.slug, tracker]);
   return (
     <ul
       ref={targetRef}
