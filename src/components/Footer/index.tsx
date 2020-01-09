@@ -524,7 +524,7 @@ const Footer: React.FC<{}> = () => (
           <li>
             <a
               css={anchorHover}
-              href="https://ridibooks.com/legal/terms"
+              href="https://policy.ridi.com/legal/terms"
               target="_blank"
               rel="noopener">
               <MiscMenuLabel>이용 약관</MiscMenuLabel>
@@ -533,7 +533,7 @@ const Footer: React.FC<{}> = () => (
           <li>
             <a
               css={anchorHover}
-              href="https://ridibooks.com/legal/privacy"
+              href="https://policy.ridi.com/legal/privacy"
               target="_blank"
               rel="noopener">
               <MiscMenuLabel
@@ -547,7 +547,7 @@ const Footer: React.FC<{}> = () => (
           <li>
             <a
               css={anchorHover}
-              href="https://ridibooks.com/legal/youth"
+              href="https://policy.ridi.com/legal/youth"
               target="_blank"
               rel="noopener">
               <MiscMenuLabel>청소년 보호 정책</MiscMenuLabel>
