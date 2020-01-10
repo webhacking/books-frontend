@@ -1,6 +1,3 @@
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
-
 export default () => (
   <>
     <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />

@@ -14,11 +14,9 @@ import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
-import getConfig from 'next/config';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useSendDisplayEvent } from 'src/hooks/useEveneTracker';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
-const { publicRuntimeConfig } = getConfig();
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;

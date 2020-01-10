@@ -4,13 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import axios, { OAuthRequestType } from 'src/utils/axios';
-import getConfig from 'next/config';
 import sentry from 'src/utils/sentry';
 import { keyToArray } from 'src/utils/common';
 import { booksActions } from 'src/services/books';
 import { categoryActions } from 'src/services/category';
 import { useRouter } from 'next/router';
-const { publicRuntimeConfig } = getConfig();
 
 const { captureException } = sentry();
 

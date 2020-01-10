@@ -10,11 +10,9 @@ import { between, BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/me
 import { TopBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
-import getConfig from 'next/config';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { useRouter } from 'next/router';
 import { getDeviceType } from 'src/utils/common';
-const { publicRuntimeConfig } = getConfig();
 
 const TOP_BANNER_LG_WIDTH = 430;
 const TOP_BANNER_SM_WIDTH = 355;

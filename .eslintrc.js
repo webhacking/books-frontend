@@ -215,6 +215,7 @@ module.exports = {
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
+    publicRuntimeConfig: 'readonly',
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {

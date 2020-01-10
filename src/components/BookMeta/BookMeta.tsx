@@ -6,10 +6,7 @@ import Tag from 'src/components/Tag/Tag';
 import * as BookApi from 'src/types/book';
 import { StarRating as StarRatingType } from 'src/types/sections';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
-import getConfig from 'next/config';
 import { orBelow } from 'src/utils/mediaQuery';
-
-const { publicRuntimeConfig } = getConfig();
 
 const bookTitleCSS = css`
   font-size: 15px;

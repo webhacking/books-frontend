@@ -1,8 +1,5 @@
 import axios, { AxiosError } from 'axios';
 import { OAuthRequestType } from 'src/utils/axios';
-import getConfig from 'next/config';
-
-const { publicRuntimeConfig } = getConfig();
 
 export const redirectOAuthLoginPage = () => {
   const loginURL = new URL('/ridi/authorize/', publicRuntimeConfig.ACCOUNT_API);

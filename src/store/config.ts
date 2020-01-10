@@ -18,8 +18,6 @@ import {
 import { AccountState } from 'src/services/accounts/reducer';
 import { BooksState } from 'src/services/books/reducer';
 import { CategoryState } from 'src/services/category/reducer';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 
 export interface RootState {
   app?: AppState;

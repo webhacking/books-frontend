@@ -1,6 +1,4 @@
-import getConfig from 'next/config';
 import { css } from '@emotion/core';
-const { publicRuntimeConfig } = getConfig();
 
 export default css`
   @font-face {

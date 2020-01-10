@@ -16,8 +16,6 @@ import MyRIDI_regular from 'src/svgs/MyRIDI_regular.svg';
 import cookieKeys from 'src/constants/cookies';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { LoggedUser } from 'src/types/account';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 import pRetry from 'p-retry';
 import axios, { OAuthRequestType } from 'src/utils/axios';
 import originalAxios from 'axios';

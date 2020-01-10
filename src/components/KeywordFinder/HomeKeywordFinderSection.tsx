@@ -4,11 +4,9 @@ import React, { useContext, useRef } from 'react';
 import ArrowV from 'src/svgs/ArrowV.svg';
 // @ts-ignore
 import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
-import getConfig from 'next/config';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
-const { publicRuntimeConfig } = getConfig();
 
 interface Keyword {
   genre: string;

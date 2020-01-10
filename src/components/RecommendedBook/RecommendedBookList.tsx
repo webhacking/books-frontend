@@ -17,7 +17,6 @@ import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
-import getConfig from 'next/config';
 import { displayNoneForTouchDevice } from 'src/styles';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { getMaxDiscountPercentage } from 'src/utils/common';
@@ -25,7 +24,6 @@ import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersecti
 import { useSendDisplayEvent } from 'src/hooks/useEveneTracker';
 import { between, orBelow } from 'src/utils/mediaQuery';
 
-const { publicRuntimeConfig } = getConfig();
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
