@@ -9,7 +9,6 @@ import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
-import getConfig from 'next/config';
 import {
   sendClickEvent,
   useEventTracker,
@@ -19,7 +18,6 @@ import { Tracker } from '@ridi/event-tracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 
-const { publicRuntimeConfig } = getConfig();
 interface MultipleLineBooks {
   items: MdBook[];
   title: string;

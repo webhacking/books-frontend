@@ -11,6 +11,7 @@ package:
     - 'cypress/**'
     - 'src/**'
     - 'dist/**'
+    - 'build/cache/**'
     - secrets.json
     - coverage/**
     - yarn.lock

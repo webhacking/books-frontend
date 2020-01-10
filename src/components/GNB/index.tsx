@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { accountActions } from 'src/services/accounts';
 import { RootState } from 'src/store/config';
 import { AccountState } from 'src/services/accounts/reducer';
-import getConfig from 'next/config';
 import { LoggedUser } from 'src/types/account';
 import { useRouter } from 'next/router';
 import DoublePointIcon from 'src/svgs/DoublePoint.svg';
@@ -23,7 +22,6 @@ import originalAxios from 'axios';
 import sentry from 'src/utils/sentry';
 const { captureException } = sentry();
 
-const { publicRuntimeConfig } = getConfig();
 const GNBWrapper = styled.div`
   width: 100%;
   background-color: ${(props: { theme: RIDITheme }) => props.theme.primaryColor};

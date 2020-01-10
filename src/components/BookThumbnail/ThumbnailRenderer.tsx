@@ -4,11 +4,8 @@ import * as BookApi from 'src/types/book';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import AdultBadge from 'src/svgs/AdultBadge.svg';
-import getConfig from 'next/config';
 import { css } from '@emotion/core';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
-
-const { publicRuntimeConfig } = getConfig();
 
 export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
 

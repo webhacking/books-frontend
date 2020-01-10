@@ -28,11 +28,9 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
-import getConfig from 'next/config';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { flexRowStart, scrollBarHidden } from 'src/styles';
-const { publicRuntimeConfig } = getConfig();
 const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;

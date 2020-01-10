@@ -5,8 +5,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
 import { getDeviceType } from 'src/utils/common';
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 const { captureException } = sentry();
 
 export const createTracker = (userId: string | null) => {

@@ -28,9 +28,6 @@ import { DeviceType } from 'src/components/Context/DeviceType';
 
 const { captureException } = sentry();
 
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
-
 export interface HomeProps {
   branches: Section[];
   genre: string;

@@ -13,15 +13,12 @@ import { safeJSONParse } from 'src/utils/common';
 import axios from 'axios';
 import InstantSearchResult from 'src/components/Search/InstantSearchResult';
 import InstantSearchHistory from 'src/components/Search/InstantSearchHistory';
-import getConfig from 'next/config';
 import { get } from 'ts-get';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import pRetry from 'p-retry';
 import sentry from 'src/utils/sentry';
 
 const { captureException } = sentry();
-
-const { publicRuntimeConfig } = getConfig();
 
 const fadeIn = keyframes`
   0% { 

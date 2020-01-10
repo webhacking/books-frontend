@@ -1,10 +1,8 @@
 import axios, { OAuthRequestType } from 'src/utils/axios';
 import pRetry from 'p-retry';
-import getConfig from 'next/config';
 import sentry from 'src/utils/sentry';
 
 const { captureException } = sentry();
-const { publicRuntimeConfig } = getConfig();
 
 export const useExcludeRecommendation = (): [
   (bId: string, rcmdId: string) => void,

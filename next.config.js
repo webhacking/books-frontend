@@ -10,33 +10,54 @@ const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const webpack = require('webpack');
 const withTM = require('next-transpile-modules');
 
+const STATIC_CDN_URL = process.env.STATIC_CDN_URL || localEnv.STATIC_CDN_URL || '';
+const ENVIRONMENT = process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'local';
+
 module.exports = withBundleAnalyzer(
   nextSourceMaps(
     withCSS(
       withTM({
         transpileModules: ['p-retry'], // for IE11
         distDir: '../build',
-        assetPrefix: localEnv.STATIC_CDN_URL || 'https://books.local.ridi.io',
+        assetPrefix: STATIC_CDN_URL || 'https://books.local.ridi.io',
         useFileSystemPublicRoutes: false,
         exportPathMap: () => {
           return {};
-        },
-        publicRuntimeConfig: {
-          ENVIRONMENT: process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'local',
-          SENTRY_DSN: process.env.SENTRY_DSN || localEnv.SENTRY_DSN,
-          VERSION: require('./package.json').version,
-          ...require(`./env/${process.env.ENVIRONMENT ||
-            localEnv.ENVIRONMENT ||
-            'local'}`),
         },
         webpack(config, option) {
           const { isServer, buildId } = option;
           if (!isServer) {
             config.resolve.alias['@sentry/node'] = '@sentry/browser';
           }
-          config.node = {
-            net: 'empty',
+          config.output.publicPath = STATIC_CDN_URL + '/_next/';
+
+          const modifyEntries = entries => {
+            Object.values(entries).forEach(entry => {
+              if (!entry.includes('@babel/polyfill/noConflict')) {
+                entry.unshift('@babel/polyfill/noConflict');
+              } else if (typeof entry === 'string') {
+                entry = ['@babel/polyfill/noConflict', entry];
+              }
+
+              if (!entry.includes('intersection-observer')) {
+                entry.unshift('intersection-observer');
+              } else if (typeof entry === 'string') {
+                entry = ['intersection-observer', entry];
+              }
+            });
           };
+          if (typeof config.entry === 'function') {
+            modifyEntries(config.entry);
+          } else {
+            config.entry = (entriesFunction => {
+              const entries = entriesFunction();
+              if (typeof entries.then === 'function') {
+                return entries.then(modifyEntries);
+              } else {
+                return modifyEntries(entries);
+              }
+            })(config.entry);
+          }
 
           config.module.rules.push({
             test: /\.(eot|woff|woff2|ttf|png|jpg|gif)$/,
@@ -52,31 +73,12 @@ module.exports = withBundleAnalyzer(
             test: /\.svg$/,
             use: ['@svgr/webpack'],
           });
-          const originalEntry = config.entry;
-          config.entry = async () => {
-            const entries = await originalEntry();
-            Object.values(entries).forEach(entry => {
-              if (!!entry.unshift) {
-                if (!entry.includes('@babel/polyfill/noConflict')) {
-                  entry.unshift('@babel/polyfill/noConflict');
-                } else if (typeof entry === 'string') {
-                  entry = ['@babel/polyfill/noConflict', entry];
-                }
 
-                if (!entry.includes('intersection-observer')) {
-                  entry.unshift('intersection-observer');
-                } else if (typeof entry === 'string') {
-                  entry = ['intersection-observer', entry];
-                }
-              }
-            });
-            return entries;
-          };
-          if (process.env.ENVIRONMENT !== 'local') {
+          if (ENVIRONMENT !== 'local') {
             config.plugins.push(
               new SentryCliPlugin({
                 include: ['./build/', './src/'],
-                release: require('./package.json').version,
+                release: buildId,
                 urlPrefix: `~/_next/`,
                 ignoreFile: '.sentrycliignore',
                 entries: [],
@@ -85,19 +87,16 @@ module.exports = withBundleAnalyzer(
               }),
             );
           }
-          config.output.publicPath = !!localEnv.STATIC_CDN_URL
-            ? localEnv.STATIC_CDN_URL + '/_next/'
-            : '/_next/';
           config.plugins.push(
             new CopyPlugin([
               {
                 from: '../static/manifest.webmanifest',
                 to: '',
-                transform(content, src) {
+                transform(content) {
                   return Promise.resolve(
                     Buffer.from(content, 'utf8')
                       .toString()
-                      .replace(/<path>/gi, localEnv.STATIC_CDN_URL || ''),
+                      .replace(/<path>/gi, STATIC_CDN_URL),
                   );
                 },
               },
@@ -109,19 +108,26 @@ module.exports = withBundleAnalyzer(
               exclude: [
                 /\.map$/,
                 /\/pages\/partials\//,
-                /build-manifest.json/,
-                /manifest.webmanifest/,
+                /build-manifest\.json/,
+                /manifest\.webmanifest/,
               ],
             }),
           );
-
-          config.plugins.push(
-            new webpack.DefinePlugin({
-              'process.env.SENTRY_RELEASE': JSON.stringify(buildId),
-            }),
-          );
+          const publicRuntimeConfig = {
+            ENVIRONMENT,
+            SENTRY_DSN: process.env.SENTRY_DSN || localEnv.SENTRY_DSN,
+            SENTRY_RELEASE: buildId,
+            VERSION: require('./package.json').version,
+            ...require(`./env/${ENVIRONMENT}`),
+          };
+          const defs = {};
+          Object.entries(publicRuntimeConfig).forEach(([key, value]) => {
+            defs[`publicRuntimeConfig.${key}`] = JSON.stringify(value);
+          });
+          config.plugins.push(new webpack.DefinePlugin(defs));
 
           config.node = {
+            net: 'empty',
             fs: 'empty',
           };
           return config;

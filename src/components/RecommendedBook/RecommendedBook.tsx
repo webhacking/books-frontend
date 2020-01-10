@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import { View } from 'libreact/lib/View';
 import { css } from '@emotion/core';
-import getConfig from 'next/config';
 import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
 import styled from '@emotion/styled';
 import { flexRowStart, lineClamp, scrollBarHidden } from 'src/styles';
@@ -19,8 +18,6 @@ import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { authorsRenderer } from 'src/components/BookMeta/BookMeta';
-
-const { publicRuntimeConfig } = getConfig();
 
 const backgroundImageCSS = css`
   background: url(${`${publicRuntimeConfig.STATIC_CDN_URL}/static/image/recommended_book_background@desktop.png`})

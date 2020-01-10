@@ -51,15 +51,6 @@ export const initModules = () => {
     captureException: () => null,
   }));
 
-  jest.mock('next/config', () => () => ({
-    publicRuntimeConfig: {
-      BOOKS_HOST: 'https://books.local.ridi.io',
-      STORE_HOST: 'https://master.test.ridi.io',
-      STORE_MASTER_HOST: 'https://master.test.ridi.io',
-      STORE_API: 'https://store-api.dev.ridi.io',
-      STATIC_CDN_URL: 'https://books.ridicdn.net',
-    },
-  }));
   jest.mock('server/routes', () => {
     // eslint-disable-next-line global-require
     require('react');
