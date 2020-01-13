@@ -370,7 +370,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           pathRegexp={
             // Hack, Apply lint
             // eslint-disable-next-line require-unicode-regexp,prefer-named-capture-group
-            /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(v2|personalized-recommendation|selection|support|special-room|keyword-finder|new-releases|free-books|bestsellers|author|books|event|search|category|fantasy|romance|bl|bl-serial|fantasy-serial|romance-serial|comics)(\/.*$|$))/
+            /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(fantasy|romance|bl|bl-serial|fantasy-serial|romance-serial|comics)(\/.*$|$))/
           }
         />
         <TabItem
@@ -380,7 +380,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           currentPath={currentPath}
           label={labels.mainTab.notification}
           path={'/notification/'}
-          pathRegexp={/^\/notification/g}
+          pathRegexp={/^\/notification\/$/g}
           addOn={
             hasNotification > 0 && (
               <div
@@ -411,7 +411,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           currentPath={currentPath}
           label={labels.mainTab.cart}
           path={'/cart/'}
-          pathRegexp={/^\/cart/gu}
+          pathRegexp={/^\/cart\/$/gu}
           addOn={
             cartCount > 0 && (
               <div
@@ -473,7 +473,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           currentPath={currentPath}
           label={labels.mainTab.myRidi}
           path={'/account/myridi'}
-          pathRegexp={/^\/account\/myridi/gu}
+          pathRegexp={/^\/account\/myridi$/gu}
         />
       </Tabs>
     </>
