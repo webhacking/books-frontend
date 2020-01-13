@@ -49,8 +49,6 @@ module.exports = withBundleAnalyzer(
             });
           };
           if (typeof config.entry === 'function') {
-            modifyEntries(config.entry);
-          } else {
             config.entry = (entriesFunction => {
               const entries = entriesFunction();
               if (typeof entries.then === 'function') {
@@ -59,6 +57,8 @@ module.exports = withBundleAnalyzer(
                 return modifyEntries(entries);
               }
             })(config.entry);
+          } else {
+            modifyEntries(config.entry);
           }
 
           config.module.rules.push({
