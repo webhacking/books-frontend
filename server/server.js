@@ -5,12 +5,15 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const csp = require('./csp');
 
+require('dotenv').config();
 const dev = process.env.NODE_ENV !== 'production';
 const port = parseInt(process.env.PORT || '8081', 10);
 const app = next({ dev, dir: path.resolve(__dirname, dev ? '../src' : '../build') });
 
+const { injectConfig } = require('../env/publicRuntimeConfig');
 const { clientRoutes } = require('./routes');
 
+injectConfig(app.buildId);
 const handle = clientRoutes.getRequestHandler(app);
 
 function createServer() {

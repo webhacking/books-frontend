@@ -3,15 +3,12 @@ const SentryIntegrations = require('@sentry/integrations');
 
 const { captureException, configureScope, init } = Sentry;
 
-// eslint-disable-next-line no-process-env
-module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
+module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
   const sentryOptions = {
-    // eslint-disable-next-line no-process-env
-    dsn: process.env.SENTRY_DSN,
+    dsn: publicRuntimeConfig.SENTRY_DSN,
     release: nextBuildId,
     maxBreadcrumbs: 100,
-    // eslint-disable-next-line no-process-env
-    environment: process.env.ENVIRONMENT || 'local',
+    environment: publicRuntimeConfig.ENVIRONMENT || 'local',
     attachStacktrace: true,
     ignoreErrors: [
       /ERR_BLOCKED_BY_CLIENT/,
