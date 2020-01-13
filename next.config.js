@@ -34,20 +34,19 @@ module.exports = withBundleAnalyzer(
           config.output.publicPath = STATIC_CDN_URL + '/_next/';
 
           const modifyEntries = entries => {
-            Object.keys(entries)
-              .filter(key => /polyfills\.js$/.test(key))
-              .forEach(key => {
-                if (typeof entries[key] === 'string') {
-                  entries[key] = [entries[key]];
-                }
-                const entry = entries[key];
-                if (!entry.includes('@babel/polyfill/noConflict')) {
-                  entry.unshift('@babel/polyfill/noConflict');
-                }
-                if (!entry.includes('intersection-observer')) {
-                  entry.unshift('intersection-observer');
-                }
-              });
+            if (!('main.js' in entries)) {
+              return entries;
+            }
+            if (typeof entries['main.js'] === 'string') {
+              entries['main.js'] = [entries['main.js']];
+            }
+            const entry = entries['main.js'];
+            if (!entry.includes('@babel/polyfill/noConflict')) {
+              entry.unshift('@babel/polyfill/noConflict');
+            }
+            if (!entry.includes('intersection-observer')) {
+              entry.unshift('intersection-observer');
+            }
             return entries;
           };
           if (typeof config.entry === 'function') {
