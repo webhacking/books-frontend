@@ -390,7 +390,12 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
       {!isIntersecting ? (
         <RecommendedBookLoading
           type={type}
-          books={books.filter(book => book.detail).slice(0, 6) as HotRelease[]}
+          books={
+            books
+              .filter(book => book.detail)
+              .filter(book => !book.detail.is_deleted)
+              .slice(0, 6) as HotRelease[]
+          }
           isIntersecting={isIntersecting}
           theme={theme}
         />

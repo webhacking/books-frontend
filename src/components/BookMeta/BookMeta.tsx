@@ -141,6 +141,9 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
 
 // eslint-disable-next-line complexity
 const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
+  if (props.book.is_deleted) {
+    return null;
+  }
   const {
     book: {
       authors_ordered,

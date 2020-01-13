@@ -66,6 +66,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
         ]}>
         {props.items
           .filter(book => book.detail)
+          .filter(book => !book.detail.is_deleted)
           .map((book, index) => (
             <PortraitBook
               key={index}

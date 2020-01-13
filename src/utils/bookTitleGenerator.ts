@@ -9,6 +9,9 @@ export const bookTitleGenerator = (book: BookApi.Book) => {
     if (!book) {
       return '';
     }
+    if (book.is_deleted) {
+      return '';
+    }
     if (book.series) {
       if (book.title.prefix) {
         return getEscapedString(`${book.title.prefix} ${book.series.property.title}`);
@@ -23,6 +26,7 @@ export const bookTitleGenerator = (book: BookApi.Book) => {
     return getEscapedString(book.title.main);
   } catch (error) {
     captureException(error);
+    console.log(book);
     return book.title.main;
   }
 };

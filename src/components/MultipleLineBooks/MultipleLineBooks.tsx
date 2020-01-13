@@ -305,17 +305,21 @@ const ItemList: React.FC<any> = props => {
             `,
           )}
         `}>
-      {(books as MdBook[]).slice(0, 18).map((item, index) => (
-        <MultipleLineBookItem
-          order={index}
-          slug={slug}
-          key={index}
-          genre={genre}
-          item={item}
-          isIntersecting={isIntersecting}
-          tracker={tracker}
-        />
-      ))}
+      {(books as MdBook[])
+        .filter(book => book.detail)
+        .filter(book => !book.detail.is_deleted)
+        .slice(0, 18)
+        .map((item, index) => (
+          <MultipleLineBookItem
+            order={index}
+            slug={slug}
+            key={index}
+            genre={genre}
+            item={item}
+            isIntersecting={isIntersecting}
+            tracker={tracker}
+          />
+        ))}
     </ul>
   );
 };
