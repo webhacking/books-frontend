@@ -3,15 +3,17 @@ const nextSourceMaps = require('@zeit/next-source-maps')({
   devtool: 'hidden-source-map',
 });
 const SentryCliPlugin = require('@sentry/webpack-plugin');
-const { parsed: localEnv = {} } = require('dotenv').config();
 const CopyPlugin = require('copy-webpack-plugin');
 const withCSS = require('@zeit/next-css');
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const webpack = require('webpack');
 const withTM = require('next-transpile-modules');
 
-const STATIC_CDN_URL = process.env.STATIC_CDN_URL || localEnv.STATIC_CDN_URL || '';
-const ENVIRONMENT = process.env.ENVIRONMENT || localEnv.ENVIRONMENT || 'local';
+require('dotenv').config();
+const { getDefinitions } = require('./env/publicRuntimeConfig');
+
+const STATIC_CDN_URL = process.env.STATIC_CDN_URL || '';
+const ENVIRONMENT = process.env.ENVIRONMENT || 'local';
 
 module.exports = withBundleAnalyzer(
   nextSourceMaps(
@@ -113,18 +115,7 @@ module.exports = withBundleAnalyzer(
               ],
             }),
           );
-          const publicRuntimeConfig = {
-            ENVIRONMENT,
-            SENTRY_DSN: process.env.SENTRY_DSN || localEnv.SENTRY_DSN,
-            SENTRY_RELEASE: buildId,
-            VERSION: require('./package.json').version,
-            ...require(`./env/${ENVIRONMENT}`),
-          };
-          const defs = {};
-          Object.entries(publicRuntimeConfig).forEach(([key, value]) => {
-            defs[`publicRuntimeConfig.${key}`] = JSON.stringify(value);
-          });
-          config.plugins.push(new webpack.DefinePlugin(defs));
+          config.plugins.push(new webpack.DefinePlugin(getDefinitions(buildId)));
 
           config.node = {
             net: 'empty',
