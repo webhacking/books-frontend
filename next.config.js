@@ -34,29 +34,32 @@ module.exports = withBundleAnalyzer(
           config.output.publicPath = STATIC_CDN_URL + '/_next/';
 
           const modifyEntries = entries => {
-            Object.values(entries).forEach(entry => {
-              if (!entry.includes('@babel/polyfill/noConflict')) {
-                entry.unshift('@babel/polyfill/noConflict');
-              } else if (typeof entry === 'string') {
-                entry = ['@babel/polyfill/noConflict', entry];
-              }
-
-              if (!entry.includes('intersection-observer')) {
-                entry.unshift('intersection-observer');
-              } else if (typeof entry === 'string') {
-                entry = ['intersection-observer', entry];
-              }
-            });
+            Object.keys(entries)
+              .filter(key => /polyfills\.js$/.test(key))
+              .forEach(key => {
+                if (typeof entries[key] === 'string') {
+                  entries[key] = [entries[key]];
+                }
+                const entry = entries[key];
+                if (!entry.includes('@babel/polyfill/noConflict')) {
+                  entry.unshift('@babel/polyfill/noConflict');
+                }
+                if (!entry.includes('intersection-observer')) {
+                  entry.unshift('intersection-observer');
+                }
+              });
+            return entries;
           };
           if (typeof config.entry === 'function') {
-            config.entry = (entriesFunction => {
-              const entries = entriesFunction();
+            const prevEntry = config.entry;
+            config.entry = () => {
+              const entries = prevEntry();
               if (typeof entries.then === 'function') {
                 return entries.then(modifyEntries);
               } else {
                 return modifyEntries(entries);
               }
-            })(config.entry);
+            };
           } else {
             modifyEntries(config.entry);
           }
