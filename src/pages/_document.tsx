@@ -7,8 +7,6 @@ import Document, {
 } from 'next/document';
 import { extractCritical } from 'emotion-server';
 import { EmotionCritical } from 'create-emotion-server';
-import Favicon from 'src/pages/Favicon';
-import Meta from 'src/pages/Meta';
 import { PartialSeparator } from 'src/components/Misc';
 import * as React from 'react';
 
@@ -59,13 +57,6 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
       <html lang="ko">
         <PartialSeparator name={'HEADER'} wrapped={isPartials}>
           <Head nonce={nonce}>
-            {!isPartials && (
-              <>
-                <Meta />
-                <Favicon />
-                <link rel="manifest" href="/manifest.webmanifest" />
-              </>
-            )}
             <style nonce={nonce} dangerouslySetInnerHTML={{ __html: this.props.css }} />
           </Head>
         </PartialSeparator>

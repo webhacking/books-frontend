@@ -1,12 +1,17 @@
+import Head from 'next/head';
+
+import Favicon from 'src/pages/Favicon';
+
 export default () => (
-  <>
-    <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
+  <Head>
+    <Favicon />
     <meta charSet="UTF-8" />
-    <meta name="twitter:site" content="@ridibooks" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes"
     />
+    <meta name="twitter:site" content="@ridibooks" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@ridibooks" />
     <meta property="fb:app_id" content="208688205808637" />
@@ -27,5 +32,6 @@ export default () => (
       name="description"
       content="웹툰/웹소설, 전자책, 만화까지 취향에 딱 맞는 콘텐츠를 제안합니다."
     />
-  </>
+    <link rel="manifest" href="/manifest.webmanifest" />
+  </Head>
 );
