@@ -1,3 +1,5 @@
+/* eslint-disable no-process-env */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { InjectManifest } = require('workbox-webpack-plugin');
 const nextSourceMaps = require('@zeit/next-source-maps')({
   devtool: 'hidden-source-map',
@@ -23,14 +25,13 @@ module.exports = withBundleAnalyzer(
         distDir: '../build',
         assetPrefix: STATIC_CDN_URL || 'https://books.local.ridi.io',
         useFileSystemPublicRoutes: false,
-        exportPathMap: () => {
-          return {};
-        },
+        exportPathMap: () => ({}),
         webpack(config, option) {
           const { isServer, buildId } = option;
           if (!isServer) {
             config.resolve.alias['@sentry/node'] = '@sentry/browser';
           }
+          // eslint-disable-next-line prefer-template
           config.output.publicPath = STATIC_CDN_URL + '/_next/';
 
           const modifyEntries = entries => {
@@ -55,6 +56,7 @@ module.exports = withBundleAnalyzer(
               const entries = prevEntry();
               if (typeof entries.then === 'function') {
                 return entries.then(modifyEntries);
+                // eslint-disable-next-line no-else-return
               } else {
                 return modifyEntries(entries);
               }
@@ -83,7 +85,7 @@ module.exports = withBundleAnalyzer(
               new SentryCliPlugin({
                 include: ['./build/', './src/'],
                 release: buildId,
-                urlPrefix: `~/_next/`,
+                urlPrefix: '~/_next/',
                 ignoreFile: '.sentrycliignore',
                 entries: [],
                 ignore: ['coverage', 'server', 'node_modules', 'webpack.config.js'],
