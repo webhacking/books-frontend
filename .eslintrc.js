@@ -225,6 +225,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
     project: './tsconfig.json',
+    createDefaultProgram: true,
   },
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'jsx-a11y', 'import', 'jest'],
   rules: {
