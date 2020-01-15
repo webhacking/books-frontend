@@ -9,7 +9,7 @@ import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel'
 import { between, BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import { TopBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
-import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
+import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { useRouter } from 'next/router';
 import { getDeviceType } from 'src/utils/common';

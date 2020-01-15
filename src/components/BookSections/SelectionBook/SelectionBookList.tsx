@@ -10,7 +10,7 @@ import { DisplayType, MdBook } from 'src/types/sections';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
-import { useSendDisplayEvent } from 'src/hooks/useEveneTracker';
+import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
 
 export const listCSS = css`
   box-sizing: content-box;

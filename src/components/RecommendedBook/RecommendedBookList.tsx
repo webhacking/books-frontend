@@ -21,7 +21,7 @@ import { displayNoneForTouchDevice } from 'src/styles';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
-import { useSendDisplayEvent } from 'src/hooks/useEveneTracker';
+import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
 import { between, orBelow } from 'src/utils/mediaQuery';
 
 interface RecommendedBookListProps {

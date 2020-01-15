@@ -28,7 +28,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
-import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
+import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { flexRowStart, scrollBarHidden } from 'src/styles';
 const SectionWrapper = styled.section`

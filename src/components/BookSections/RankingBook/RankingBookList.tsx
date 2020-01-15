@@ -23,7 +23,7 @@ import {
   sendClickEvent,
   useEventTracker,
   useSendDisplayEvent,
-} from 'src/hooks/useEveneTracker';
+} from 'src/hooks/useEventTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 const SectionWrapper = styled.section`

@@ -13,7 +13,7 @@ import {
   sendClickEvent,
   useEventTracker,
   useSendDisplayEvent,
-} from 'src/hooks/useEveneTracker';
+} from 'src/hooks/useEventTracker';
 import { Tracker } from '@ridi/event-tracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';

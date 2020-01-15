@@ -13,7 +13,7 @@ import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
-import { useSendDisplayEvent } from 'src/hooks/useEveneTracker';
+import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
 
 const recommendedBookCarouselLoadingCSS = css`
   .slick-slide {

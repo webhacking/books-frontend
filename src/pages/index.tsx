@@ -19,7 +19,7 @@ import { ServerResponse } from 'http';
 import sentry from 'src/utils/sentry';
 import { categoryActions } from 'src/services/category';
 import { NextPage } from 'next';
-import { useEventTracker } from 'src/hooks/useEveneTracker';
+import { useEventTracker } from 'src/hooks/useEventTracker';
 import { RootState } from 'src/store/config';
 import useIsSelectFetch from 'src/hooks/useIsSelectFetch';
 import { css } from '@emotion/core';

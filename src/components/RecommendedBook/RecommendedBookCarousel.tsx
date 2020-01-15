@@ -15,7 +15,7 @@ import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { getMaxDiscountPercentage } from 'src/utils/common';
-import { useSendDisplayEvent } from 'src/hooks/useEveneTracker';
+import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 
 const recommendedBookCarouselLoadingCSS = css`

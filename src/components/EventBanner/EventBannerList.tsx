@@ -4,7 +4,7 @@ import { css } from '@emotion/core';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { EventBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
-import { sendClickEvent, useEventTracker } from 'src/hooks/useEveneTracker';
+import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { getDeviceType } from 'src/utils/common';
 
 interface EventBannerListProps {
