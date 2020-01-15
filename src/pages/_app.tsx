@@ -19,6 +19,7 @@ import { PartialSeparator } from 'src/components/Misc';
 import { cache } from 'emotion';
 import createCache from '@emotion/cache';
 
+import Meta from 'src/pages/Meta';
 import sentry from 'src/utils/sentry';
 
 const { captureException } = sentry();
@@ -134,28 +135,31 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     }
     return (
       // CacheProvider 올바르게 동작하는지 확인하기
-      <CacheProvider value={createCache({ ...cache, nonce })}>
-        <Global styles={resetStyles} />
-        {/* eslint-disable-next-line no-process-env */}
-        <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
-          <Provider store={store}>
-            <ConnectedRouter>
-              {/* Todo Apply Layout */}
-              <ThemeProvider theme={defaultTheme}>
-                <GNB
-                  searchKeyword={query.search || query.q}
-                  isPartials={false}
-                  isLoginForPartials={query.is_login}
-                />
-                <Contents>
-                  <Component {...pageProps} />
-                </Contents>
-                <Footer />
-              </ThemeProvider>
-            </ConnectedRouter>
-          </Provider>
-        </BrowserLocationWithRouter>
-      </CacheProvider>
+      <>
+        <Meta />
+        <CacheProvider value={createCache({ ...cache, nonce })}>
+          <Global styles={resetStyles} />
+          {/* eslint-disable-next-line no-process-env */}
+          <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
+            <Provider store={store}>
+              <ConnectedRouter>
+                {/* Todo Apply Layout */}
+                <ThemeProvider theme={defaultTheme}>
+                  <GNB
+                    searchKeyword={query.search || query.q}
+                    isPartials={false}
+                    isLoginForPartials={query.is_login}
+                  />
+                  <Contents>
+                    <Component {...pageProps} />
+                  </Contents>
+                  <Footer />
+                </ThemeProvider>
+              </ConnectedRouter>
+            </Provider>
+          </BrowserLocationWithRouter>
+        </CacheProvider>
+      </>
     );
   }
 }

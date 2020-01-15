@@ -9,6 +9,8 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 import NotFoundIcon from 'src/svgs/NotFound.svg';
 
+import Meta from 'src/pages/Meta';
+
 const { captureException } = sentry();
 
 interface CustomErrorProps extends ErrorProps {
@@ -55,6 +57,7 @@ export default class ErrorPage extends React.Component<CustomErrorProps> {
   public render() {
     return (
       <>
+        <Meta />
         <header
           css={css`
             border-bottom: 1px solid #cddce5;
