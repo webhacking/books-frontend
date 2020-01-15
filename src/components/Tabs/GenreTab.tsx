@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import * as Cookies from 'js-cookie';
 import * as colors from '@ridi/colors';
 import { safeJSONParse } from 'src/utils/common';
+import Link from 'next/link';
 
 const GenreTabWrapper = styled.ul`
   max-width: 1000px;
@@ -110,6 +111,10 @@ const SubServicesList = styled.ul`
   li {
     height: 100%;
     line-height: 50px;
+    button {
+      font-size: 17px;
+      ${clearOutline};
+    }
     a {
       font-size: 17px;
       ${clearOutline};
@@ -175,7 +180,7 @@ const GenreTabDivider = styled.hr`
 interface TabItemProps {
   label: string;
   activePath: RegExp;
-  route?: string;
+  href: string;
 }
 
 const subGenres: { [genre: string]: Array<{ name: string; path: string; activePaths: RegExp }> } = {
@@ -195,7 +200,7 @@ const subGenres: { [genre: string]: Array<{ name: string; path: string; activePa
 
 const TabItem: React.FC<TabItemProps> = (props) => {
   const router = useRouter();
-  const { route, activePath, label } = props;
+  const { href, activePath, label } = props;
   const [isActivePath, setIsActivePath] = useState(false);
   const cookieGenre = Cookies.get('main_genre') || '';
 
@@ -207,17 +212,26 @@ const TabItem: React.FC<TabItemProps> = (props) => {
     <li
       css={isActivePath ? activeLabelCSS : genreLabelCSS}
     >
-      <a
-        aria-label={label}
-        href={route}
-        onClick={() => {
-          if (route === '/' && cookieGenre) {
-            Cookies.set('main_genre', '', { sameSite: 'lax' });
-          }
-        }}
-      >
-        {isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
-      </a>
+      {process.env.IS_PRODUCTION ? (
+        <a
+          aria-label={label}
+          href={href}
+          onClick={() => {
+            if (href === '/' && cookieGenre) {
+              Cookies.set('main_genre', '', { sameSite: 'lax' });
+            }
+          }}
+        >
+          {isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
+        </a>
+      ) : (
+        <Link href={href === '/' ? '/' : '/[genre]'} as={href}>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <a aria-label={label}>
+            {isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
+          </a>
+        </Link>
+      )}
     </li>
   );
 };
@@ -282,27 +296,27 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
             <TabItem
               activePath={/^\/?$/}
               label="일반"
-              route="/"
+              href="/"
             />
             <TabItem
               activePath={/^\/romance(-serial)?\/?$/}
               label="로맨스"
-              route={subServices.romance || '/romance'}
+              href={subServices.romance || '/romance'}
             />
             <TabItem
               activePath={/^\/fantasy(-serial)?\/?$/}
               label="판타지"
-              route={subServices.fantasy || '/fantasy'}
+              href={subServices.fantasy || '/fantasy'}
             />
             <TabItem
               activePath={/^\/comics\/?$/}
               label="만화"
-              route="/comics"
+              href="/comics"
             />
             <TabItem
               activePath={/^\/bl(-serial)?\/?$/}
               label="BL"
-              route={subServices.bl || '/bl'}
+              href={subServices.bl || '/bl'}
             />
           </GenreList>
         </li>
@@ -315,7 +329,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
               {subGenreData.map((service, index) => (
                 <TabItem
                   key={index}
-                  route={service.path}
+                  href={service.path}
                   activePath={service.activePaths}
                   label={service.name}
                 />
