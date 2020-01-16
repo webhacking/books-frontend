@@ -4,6 +4,7 @@ import { checkLoggedIn } from 'src/services/accounts/request';
 import pRetry from 'p-retry';
 import { Actions } from 'immer-reducer';
 import { CancelTokenSource } from 'axios';
+import { configureScope } from '@sentry/node';
 
 function* watchCheckLogged(action: Actions<typeof AccountReducer>) {
   try {
@@ -14,9 +15,20 @@ function* watchCheckLogged(action: Actions<typeof AccountReducer>) {
         retries: 2,
       },
     );
-    yield put({ type: accountActions.setLogged.type, payload: data.result });
+    const { result } = data;
+    yield put({ type: accountActions.setLogged.type, payload: result });
+    configureScope(scope => {
+      scope.setUser({
+        id: result.idx,
+        username: result.id,
+        email: result.email,
+      });
+    });
   } catch (err) {
     yield put({ type: accountActions.setLogged.type, payload: null });
+    configureScope(scope => {
+      scope.setUser(null);
+    });
   }
 }
 
