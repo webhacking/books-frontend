@@ -79,6 +79,8 @@ build:
       - .job_status
       - .stage
   after_script:
+    - git log origin/master..origin/development --pretty=format:"* `%h` %s (%an, %cr) %n"
+      > .git_history
     - ./notify/slack-notify.sh
 
 deploy-development:
