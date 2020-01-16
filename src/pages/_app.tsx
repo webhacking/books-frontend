@@ -1,4 +1,5 @@
 import App, { AppContext } from 'next/app';
+import Head from 'next/head';
 import { Provider } from 'react-redux';
 import { Store } from 'redux';
 import withRedux from 'next-redux-wrapper';
@@ -123,6 +124,9 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     if (isPartials) {
       return (
         <>
+          <Head>
+            <meta name="viewport" />
+          </Head>
           <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={true}>
             <Global styles={partialResetStyles} />
           </PartialSeparator>
