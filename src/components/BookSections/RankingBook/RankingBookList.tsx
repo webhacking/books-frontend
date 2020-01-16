@@ -193,7 +193,6 @@ const ItemList: React.FC<any> = props => {
     <ul css={listCSS} ref={ref}>
       {books
         .filter(book => book.detail)
-        .filter(book => !book.detail.is_deleted)
         .slice(0, 9)
         .map((book, index) => (
           <li css={type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
