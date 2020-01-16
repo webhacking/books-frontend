@@ -307,7 +307,6 @@ const ItemList: React.FC<any> = props => {
         `}>
       {(books as MdBook[])
         .filter(book => book.detail)
-        .filter(book => !book.detail.is_deleted)
         .slice(0, 18)
         .map((item, index) => (
           <MultipleLineBookItem

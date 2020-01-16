@@ -127,7 +127,6 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
       <ul ref={ref} css={[flexRowStart, scrollBarHidden, listCSS]}>
         {props.items
           .filter(item => item.detail)
-          .filter(item => !item.detail.is_deleted)
           .map((item, index) => (
             <li key={index} css={itemCSS}>
               <SelectionBookItem

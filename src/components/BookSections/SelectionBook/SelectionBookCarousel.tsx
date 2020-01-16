@@ -107,7 +107,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
           infinite={true}>
           {props.items
             .filter(book => book.detail)
-            .filter(book => !book.detail.is_deleted)
             .map((book, index) => (
               <div
                 key={index}

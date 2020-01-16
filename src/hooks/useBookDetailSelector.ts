@@ -13,7 +13,7 @@ const bookSelector = createSelector(
         ...item,
         detail: books[item.b_id],
       }))
-      .filter(item => item.detail),
+      .filter(item => !item.detail?.is_deleted),
 );
 
 export const useBookDetailSelector = (bookItems: BookItem[]): [BookItem[], boolean] => {
