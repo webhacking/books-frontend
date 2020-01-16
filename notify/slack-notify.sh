@@ -1,5 +1,5 @@
 #!/bin/sh
-
+HISTORY="$(cat .git_history)"
 STATUS="$(cat .job_status)"
 STAGE="$(cat .stage)"
 ENV=${ENVIRONMENT:="development"}
@@ -58,8 +58,17 @@ then
        { "title": "Revision", "value": "'"${CI_COMMIT_SHA:="NONE"}"'", "short": true },
        { "title": "CI Stage", "value": "'"${STAGE}"'", "short": true },
        { "title": "JOB Result", "value": "'"${STATUS}"'", "short": true },
-     ]
-   }]
+
+     ],
+   }],
+
+   "blocks": [{
+         "type": "section",
+         "text": {
+           "type": "mrkdwn",
+           "text": "\n :book: \n ```'"${HISTORY}"'``` "
+         }
+   }],
   }'\
   ${PROD_SLACK_WEB_HOOK}
 fi
