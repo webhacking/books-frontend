@@ -126,6 +126,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         <>
           <Head>
             <meta name="viewport" />
+            {typeof document !== 'undefined' && <title>{document.title ?? ''}</title>}
           </Head>
           <PartialSeparator name={'GLOBAL_STYLE_RESET'} wrapped={true}>
             <Global styles={partialResetStyles} />
