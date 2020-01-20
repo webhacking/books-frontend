@@ -15,7 +15,7 @@ module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
       'fb_xd_fragment',
       'Failed to fetch',
       'NetworkError when attempting to fetch resource',
-      'window.__naverapp__',
+      '__naverapp__',
       '__gCrWeb.autofill.extractForms',
       'There is no clipping info for given tab', // Evernote extension error
       "Unexpected token 'else'",
@@ -47,13 +47,12 @@ module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
       'Abgebrochen',
       'cancelado',
       'AdBlock',
-      'window.mttLongPressVar',
+      'mttLongPressVar',
       'Blocked a frame with origin',
       "has no method 'checkDomStatus'",
       '이 서버에 대한 인증서가 유효하지 않습니다',
-      'Converting circular structure to JSON', // sentry sendEvent 시 발생해서 일단 막아 둠
     ],
-    sampleRate: 1,
+    sampleRate: 0.6,
     whitelistUrls: [
       /https?:\/\/(.+\.)?ridibooks\.com/,
       /https?:\/\/(.+\.)?ridi\.io/,
@@ -98,8 +97,8 @@ module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
         if (ctx) {
           const { isServer, req, res, err, asPath, query, pathname } = ctx;
           scope.setTag('isServer', isServer);
-          scope.setExtra('path', asPath);
-          scope.setExtra('NEXT_JS_ERROR', err);
+          scope.setTag('path', asPath);
+          scope.setExtra('NEXT_JS_ERROR', String(err));
           scope.setExtra('query', query);
 
           if (req && res) {
