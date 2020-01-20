@@ -3,14 +3,22 @@ version: '3.7'
 # ssl dependent by traefik (https://github.com/ridi/traefik)
 services:
   books:
-    build:
-      dockerfile: $PWD/provisioning/local/Dockerfile
-      context: ./
+    image: node:10
     container_name: books
     volumes:
-      - .:/books:cached
+      - type: bind
+        source: .
+        target: /books
+      - type: volume
+        source: node_modules
+        target: /books/node_modules
+        volume:
+          nocopy: true
     working_dir: /books
     init: true
     environment:
       ENVIRONMENT: local
-    command: ['yarn', 'local']
+      NEXT_TELEMETRY_DISABLED: '1'
+    command: ['/books/provisioning/local/run.sh']
+volumes:
+  node_modules:
