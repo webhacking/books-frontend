@@ -7,7 +7,7 @@ module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
   const sentryOptions = {
     dsn: publicRuntimeConfig.SENTRY_DSN,
     release: nextBuildId,
-    maxBreadcrumbs: 100,
+    maxBreadcrumbs: 30,
     environment: publicRuntimeConfig.ENVIRONMENT || 'local',
     attachStacktrace: true,
     ignoreErrors: [
