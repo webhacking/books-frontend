@@ -21,6 +21,7 @@ import axios, { OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
 import originalAxios from 'axios';
 import sentry from 'src/utils/sentry';
 import jwt_decode from 'jwt-decode';
+import { useCartCount } from 'src/hooks/useCartCount';
 const { captureException } = sentry();
 
 const RIDI_NOTIFICATION_TOKEN = 'ridi_notification_token';
@@ -250,7 +251,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
   const { isPartials, loggedUserInfo } = props;
   const currentPath = useContext(BrowserLocationContext);
   const [, setHomeURL] = useState('/');
-  const [cartCount, setCartCount] = useState<number>(0);
+  const cartCount = useCartCount(loggedUserInfo);
   const [hasNotification, setNotification] = useState(0);
   const [isTokenExpired, setTokenExpired] = useState(true);
 
@@ -321,41 +322,6 @@ export const MainTab: React.FC<MainTabProps> = props => {
       notificationRequestSource.cancel();
     };
   }, [loggedUserInfo, isTokenExpired]);
-
-  useEffect(() => {
-    const cartRequestTokenSource = originalAxios.CancelToken.source();
-    const requestCartCount = async () => {
-      try {
-        const cartUrl = new URL(
-          '/api/cart/count',
-          publicRuntimeConfig.STORE_TEMP_API_HOST,
-        );
-
-        const result = await pRetry(
-          () =>
-            wrapCatchCancel(axios.get)(cartUrl.toString(), {
-              withCredentials: true,
-              cancelToken: cartRequestTokenSource.token,
-              custom: { authorizationRequestType: OAuthRequestType.CHECK },
-            }),
-          { retries: 2 },
-        );
-        if (result.status === 200) {
-          if (result.data.count) {
-            setCartCount(result.data.count);
-          }
-        }
-      } catch (error) {
-        captureException(error);
-      }
-    };
-    if (loggedUserInfo) {
-      requestCartCount();
-    }
-    return () => {
-      cartRequestTokenSource.cancel();
-    };
-  }, [loggedUserInfo]);
 
   return (
     <>
