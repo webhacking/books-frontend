@@ -1,5 +1,4 @@
 #!/bin/sh
-HISTORY="$(cat .git_history)"
 STATUS="$(cat .job_status)"
 STAGE="$(cat .stage)"
 ENV=${ENVIRONMENT:="development"}
@@ -65,7 +64,12 @@ then
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": ":book:\n${HISTORY}"
+      "text": ":book: \\n
+      $(git log origin/master..origin/development --no-merges --pretty=format:'* `%h` %s (%an, %cr)' |
+      while read line;
+      do echo "${line}"\\\\n;
+      done;
+      )"
     }
   }]
 }

@@ -79,9 +79,6 @@ build:
       - .job_status
       - .stage
   after_script:
-    - |
-      git log origin/master..origin/development \
-        --no-merges --pretty=format:'* `%h` %s (%an, %cr)' > .git_history
     - ./notify/slack-notify.sh
 
 deploy-development:
