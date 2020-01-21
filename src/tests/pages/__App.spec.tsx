@@ -53,7 +53,7 @@ test('should be render Partials Component', async () => {
         location: { pathname: '/partials/gnb' },
       },
       pathname: '/partials/gnb',
-      query: { search: 'testKeyword' },
+      query: { search: 'testKeyword', pathname: '/books' },
     },
     req: {
       path: '/',

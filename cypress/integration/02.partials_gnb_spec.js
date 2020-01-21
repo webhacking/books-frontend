@@ -10,4 +10,21 @@ describe('Partials GNB Test', function() {
     cy.contains('내 서재');
     cy.contains('캐시충전');
   });
+
+  it('event partails 에서 카테고리 네비게이션이 출현', () => {
+    cy.visit('/partials/gnb?pathname=/event');
+    cy.contains('일반');
+    cy.contains('로맨스');
+  });
+
+  it('book detail 에서 카테고리 네비게이션이 출현', () => {
+    cy.visit('/partials/gnb?pathname=/books/123456789');
+    cy.contains('일반');
+    cy.contains('로맨스');
+  });
+  it('book detail legacy (v2) 에서 카테고리 네비게이션이 출현', () => {
+    cy.visit('/partials/gnb?pathname=/v2/Detail');
+    cy.contains('일반');
+    cy.contains('로맨스');
+  });
 });
