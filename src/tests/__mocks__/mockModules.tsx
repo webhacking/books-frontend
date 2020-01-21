@@ -2,29 +2,49 @@ import * as React from 'react';
 
 export const initModules = () => {
   // jest.mock('src/utils/sentry', () => ({ notifySentry: () => null }));
-  jest.mock('axios', () => ({
-    defaults: {
-      timeout: 1000,
-    },
-    CancelToken: {
-      source: () => {
-        return {
-          cancel: () => null,
-        };
+  jest.mock('axios', () => {
+    let handler = (method: string, ...rest: any[]) => {
+      return { data: {} };
+    };
+    return {
+      __setHandler(newHandler: (method: string, ...rest: any[]) => any) {
+        handler = newHandler;
       },
-    },
-    create: () => ({
-      get: () => {
-        return { data: {} };
+      get(...args: any[]) {
+        return handler('get', ...args);
       },
-      interceptors: {
-        request: {},
-        response: {
-          use: () => null,
+      post(...args: any[]) {
+        return handler('post', ...args);
+      },
+      put(...args: any[]) {
+        return handler('put', ...args);
+      },
+      delete(...args: any[]) {
+        return handler('delete', ...args);
+      },
+      defaults: {
+        timeout: 1000,
+      },
+      CancelToken: {
+        source: () => {
+          return {
+            cancel: () => null,
+          };
         },
       },
-    }),
-  }));
+      create: () => ({
+        get: () => {
+          return { data: {} };
+        },
+        interceptors: {
+          request: {},
+          response: {
+            use: () => null,
+          },
+        },
+      }),
+    };
+  });
   jest.mock('@ridi/event-tracker', () => {
     const DeviceType = {
       PC: 'pc',
