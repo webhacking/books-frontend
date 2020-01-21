@@ -37,13 +37,16 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = props => 
     section: { items, item_metadata, type, title, extra, slug },
     genre,
   } = props;
-  if (!items && extra.is_placeholder === false) {
+
+  if (!items) {
+    // 사파리 disk cache 된 섹션 정보가 호출 될 때
+    // 특정섹션에 items 필드가 자체가 존재하지 않는 경우를 방어합니다.
+    // ex) AI 추천, KeywordFinder 등
+    // 실제 사파리에서 디스크 캐시 된 데이터가 사용되는 이유는 더 찾아야합니다.
     return null;
   }
-  // placeholder 이고 별도 요청을 해야하는 섹션이 아닌데도 불구하고 아이템이 없으면 표시하지 않는다.
-  if (items.length === 0 && extra.is_placeholder === false) {
-    return null;
-  }
+
+  // placeholder가 아닌데 아이템이 0개면 잘못된 섹션이므로 표시하지 않는다.
   if (items.length === 0 && !extra.is_placeholder) {
     return null;
   }
