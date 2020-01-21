@@ -49,18 +49,20 @@ const createHomeSlug = (genre: string) => {
   return `home-${genre}`;
 };
 
-const fetchHomeSections = async (genre: string, req?: Request) => {
+const fetchHomeSections = async (genre: string, req?: Request, params = {}) => {
   const url = new URL(`/pages/${createHomeSlug(genre)}/`, publicRuntimeConfig.STORE_API);
   const headers = req && {
     Cookie: `ridi-at=${req?.cookies['ridi-at'] ?? ''}; ridi-rt=${req?.cookies[
       'ridi-rt'
     ] ?? ''};`,
   };
+
   const result = await pRetry(
     () =>
       axios.get<Page>(url.toString(), {
         withCredentials: true,
         headers,
+        params,
       }),
     {
       retries: 2,
@@ -174,6 +176,10 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
       const result = await fetchHomeSections(
         // @ts-ignore
         genre || 'general',
+        null,
+        // Hack
+        // 사파리 BFCache 디스크에서 캐시 된 데이터가 그대로 사용되는데 끄걸 회피하기 위해 ts를 삽입하는 꼼수
+        { ts: Date.now() },
       );
       const bIds = keyToArray(result.branches, 'b_id');
       store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
