@@ -8,7 +8,7 @@ export const useExcludeRecommendation = (): [
   (bId: string, rcmdId: string, genre: string) => void,
   (bId: string, genre: string) => void,
 ] => {
-  const requestURL = new URL('', publicRuntimeConfig.STORE_HOST);
+  const requestURL = new URL('', publicRuntimeConfig.STORE_API);
 
   // eslint-disable-next-line consistent-return
   const requestExcludeBook = async (bId: string, rcmd_id: string, genre: string) => {
