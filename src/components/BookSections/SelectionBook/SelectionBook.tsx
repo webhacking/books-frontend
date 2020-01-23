@@ -63,8 +63,8 @@ interface SelectionBookItemProps {
   genre: string;
   isAIRecommendation: boolean;
   aiRecommendationCallback?: {
-    exclude: (bId: string, rcmd_id: string) => void;
-    excludeCancel: (bId: string) => void;
+    exclude: (bId: string, rcmd_id: string, genre: string) => void;
+    excludeCancel: (bId: string, genre: string) => void;
   };
   width: number;
   type: DisplayType;
@@ -95,7 +95,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
     async (bId, rcmdId) => {
       try {
         setFetching(true);
-        const result = await aiRecommendationCallback.exclude(bId, rcmdId);
+        const result = await aiRecommendationCallback.exclude(bId, rcmdId, props.genre);
         // @ts-ignore
         if (result) {
           setLocalExcluded(true);
@@ -111,7 +111,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
     async bId => {
       try {
         setFetching(true);
-        const result = await aiRecommendationCallback.excludeCancel(bId);
+        const result = await aiRecommendationCallback.excludeCancel(bId, props.genre);
         // @ts-ignore
         if (result) {
           setLocalExcluded(false);
