@@ -74,3 +74,69 @@ test('should be render event page with nav bar', async () => {
   expect(queryByText(/RIDIBOOKS/)).not.toBe(null);
   expect(queryByText(/BL/)).not.toBe(null);
 });
+
+test('should be render event page with nav bar', async () => {
+  const props = await Index.getInitialProps({
+    pathname: '',
+    isServer: false,
+    asPath: '',
+    store,
+    query: { type: '1', theme: 'dark', pathname: '/event/12345' },
+  });
+
+  const { queryByText } = render(
+    <Provider store={store}>
+      <RouterContext.Provider value={{ asPath: '' }}>
+        <Index {...props} />
+      </RouterContext.Provider>
+    </Provider>,
+  );
+
+  expect(queryByText(/리디셀렉트/)).not.toBe(null);
+  expect(queryByText(/RIDIBOOKS/)).not.toBe(null);
+  expect(queryByText(/BL/)).not.toBe(null);
+});
+
+test('should be render book page with nav bar', async () => {
+  const props = await Index.getInitialProps({
+    pathname: '',
+    isServer: false,
+    asPath: '',
+    store,
+    query: { type: '1', theme: 'dark', pathname: '/v2/Detail' },
+  });
+
+  const { queryByText } = render(
+    <Provider store={store}>
+      <RouterContext.Provider value={{ asPath: '' }}>
+        <Index {...props} />
+      </RouterContext.Provider>
+    </Provider>,
+  );
+
+  expect(queryByText(/리디셀렉트/)).not.toBe(null);
+  expect(queryByText(/RIDIBOOKS/)).not.toBe(null);
+  expect(queryByText(/BL/)).not.toBe(null);
+});
+
+test('should be render book page with nav bar', async () => {
+  const props = await Index.getInitialProps({
+    pathname: '',
+    isServer: false,
+    asPath: '',
+    store,
+    query: { type: '1', theme: 'dark', pathname: '/books/12345567990' },
+  });
+
+  const { queryByText } = render(
+    <Provider store={store}>
+      <RouterContext.Provider value={{ asPath: '' }}>
+        <Index {...props} />
+      </RouterContext.Provider>
+    </Provider>,
+  );
+
+  expect(queryByText(/리디셀렉트/)).not.toBe(null);
+  expect(queryByText(/RIDIBOOKS/)).not.toBe(null);
+  expect(queryByText(/BL/)).not.toBe(null);
+});
