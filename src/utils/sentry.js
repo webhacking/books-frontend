@@ -19,6 +19,10 @@ module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
       '__gCrWeb.autofill.extractForms',
       'There is no clipping info for given tab', // Evernote extension error
       "Unexpected token 'else'",
+      'Let/Const 다시 선언',
+      'ReferenceError: Let/Const 다시 선언',
+      'TypeError: 특정 호스트 이름을 가진\n' + '서버를 찾을 수 없습니다.',
+      '특정 호스트 이름을 가진\n' + '서버를 찾을 수 없습니다.\n',
       'Unexpected identifier',
       'Unexpected end of input',
       'TypeError: WebKit에 내부 오류 발생',
@@ -45,6 +49,8 @@ module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
       'supported-color-schemes',
       '请求超时。',
       'Abgebrochen',
+      'Non-error was thrown: "Cancel". You should only throw errors.',
+      'TypeError: Non-error was thrown: "Cancel". You should only throw errors.',
       'cancelado',
       'AdBlock',
       'mttLongPressVar',
@@ -52,7 +58,7 @@ module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
       "has no method 'checkDomStatus'",
       '이 서버에 대한 인증서가 유효하지 않습니다',
     ],
-    sampleRate: 0.6,
+    sampleRate: 0.1,
     whitelistUrls: [
       /https?:\/\/(.+\.)?ridibooks\.com/,
       /https?:\/\/(.+\.)?ridi\.io/,
