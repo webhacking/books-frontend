@@ -13,8 +13,8 @@
     "lib": ["esnext", "dom", "dom.iterable"],
     "outDir": "./dist/",
     "baseUrl": ".",
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
     "downlevelIteration": true,
     "paths": {
       "src/*": ["./src/*"],
