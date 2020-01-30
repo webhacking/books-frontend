@@ -64,12 +64,11 @@ then
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": ":book: \\n
-      $(git log origin/master..origin/development --no-merges --pretty=format:'* `%h` %s (%an, %cr)' |
-      while read line;
-      do echo "${line}"\\\\n;
-      done;
-      )"
+      "text": $(
+        git log origin/master^1..origin/master \
+          --no-merges --pretty=format:'* `%h` %s (%an, %cr)' |
+          node -- "$(dirname -- "$0")/stdin-to-json.js"
+      )
     }
   }]
 }
