@@ -1,5 +1,5 @@
 import React from 'react';
-import { Book } from '@ridi/web-ui/dist/index.node';
+import { Book } from '@ridi/web-ui';
 import * as BookApi from 'src/types/book';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
