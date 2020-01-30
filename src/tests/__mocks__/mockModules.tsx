@@ -6,9 +6,18 @@ export const initModules = () => {
     let handler = (method: string, ...rest: any[]) => {
       return { data: {} };
     };
+    let createHook = (instance: any, options: any) => {};
     return {
       __setHandler(newHandler: (method: string, ...rest: any[]) => any) {
         handler = newHandler;
+      },
+      __setCreateHook(
+        hook: (
+          instance: any,
+          options: any,
+        ) => ((method: string, ...rest: any[]) => any) | void,
+      ) {
+        createHook = hook;
       },
       get(...args: any[]) {
         return handler('get', ...args);
@@ -32,17 +41,34 @@ export const initModules = () => {
           };
         },
       },
-      create: () => ({
-        get: () => {
-          return { data: {} };
-        },
-        interceptors: {
-          request: {},
-          response: {
-            use: () => null,
+      create: (options: any) => {
+        const ret: any = {
+          _getHandler() {
+            return ret._handler || handler;
           },
-        },
-      }),
+          get(...args: any[]) {
+            return ret._getHandler()('get', ...args);
+          },
+          post(...args: any[]) {
+            return ret._getHandler()('post', ...args);
+          },
+          put(...args: any[]) {
+            return ret._getHandler()('put', ...args);
+          },
+          delete(...args: any[]) {
+            return ret._getHandler()('delete', ...args);
+          },
+          interceptors: {
+            request: {},
+            response: {
+              use: () => null,
+            },
+          },
+        };
+        const localHandler = createHook(ret, options);
+        ret._handler = localHandler;
+        return ret;
+      },
     };
   });
   jest.mock('@ridi/event-tracker', () => {

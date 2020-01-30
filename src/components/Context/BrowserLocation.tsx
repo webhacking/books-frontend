@@ -28,30 +28,34 @@ const BrowserLocation: React.FC<BrowserLocationContextProps> = props => {
   }, []);
 
   useEffect(() => {
-    try {
-      if (!props.isPartials) {
-        setCurrentPath(window.location.pathname);
+    if (props.isPartials) {
+      return;
+    }
+    setCurrentPath(window.location.pathname);
 
-        if (props.router) {
-          // eslint-disable-next-line no-unused-expressions
-          props.router?.events?.on('routeChangeComplete', routeChangeCompleteHandler);
-          // eslint-disable-next-line no-unused-expressions
-          props.router?.events?.on('routeChangeError', routeErrorHandler);
-        }
-      }
+    const events = props.router?.events;
+    if (!events) {
+      return;
+    }
+
+    try {
+      events.on('routeChangeComplete', routeChangeCompleteHandler);
+      events.on('routeChangeError', routeErrorHandler);
     } catch (error) {
       captureException(error);
     }
 
     return () => {
-      if (props.router) {
-        // eslint-disable-next-line no-unused-expressions
-        props.router?.events?.off('routeChangeComplete', routeChangeCompleteHandler);
-        // eslint-disable-next-line no-unused-expressions
-        props.router?.events?.off('routeChangeError', routeErrorHandler);
-      }
+      events.off('routeChangeComplete', routeChangeCompleteHandler);
+      events.off('routeChangeError', routeErrorHandler);
     };
-  }, [props.router, props.isPartials, routeChangeCompleteHandler, routeErrorHandler]);
+  }, [
+    props.router?.events,
+    props.isPartials,
+    routeChangeCompleteHandler,
+    routeErrorHandler,
+  ]);
+
   return (
     <BrowserLocationContext.Provider value={currentPath}>
       {props.children}
