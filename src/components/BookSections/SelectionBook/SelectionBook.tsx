@@ -331,100 +331,89 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = React.
   },
 );
 
-const SelectionBook: React.FC<SelectionBookProps> = React.memo(
-  props => {
-    const { genre, type, slug, title, extra, selectionId } = props;
-    const [, setMounted] = useState(false);
+const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
+  const { genre, type, slug, title, extra, selectionId } = props;
+  const [, setMounted] = useState(false);
 
-    const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
+  const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
 
-    useEffect(() => {
-      setMounted(true);
-    }, []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    // Todo
-    // const handleExceptAIRecommendation = (bId: string) => {
-    //
-    // }
-    const targetRef = useRef(null);
-    const isIntersecting = useIntersectionObserver(targetRef, '-150px');
-    return (
-      <SectionWrapper ref={targetRef}>
-        <SectionTitle aria-label={title}>
-          {extra?.detail_link || (type === DisplayType.HomeMdSelection && selectionId) ? (
-            // Todo Refactor
-            <a
-              css={css`
-                display: flex;
-              `}
-              href={
-                extra?.detail_link ??
-                new URL(
-                  `/selection/${selectionId}`,
-                  publicRuntimeConfig.STORE_HOST,
-                ).toString()
-              }>
-              <span>{title}</span>
-              <span
-                css={css`
-                  margin-left: 7.8px;
-                `}>
-                <ArrowV />
-              </span>
-            </a>
-          ) : (
+  // Todo
+  // const handleExceptAIRecommendation = (bId: string) => {
+  //
+  // }
+  const targetRef = useRef(null);
+  const isIntersecting = useIntersectionObserver(targetRef, '-150px');
+  return (
+    <SectionWrapper ref={targetRef}>
+      <SectionTitle aria-label={title}>
+        {extra?.detail_link || (type === DisplayType.HomeMdSelection && selectionId) ? (
+          // Todo Refactor
+          <a
+            css={css`
+              display: flex;
+            `}
+            href={
+              extra?.detail_link ??
+              new URL(
+                `/selection/${selectionId}`,
+                publicRuntimeConfig.STORE_HOST,
+              ).toString()
+            }>
             <span>{title}</span>
-          )}
-        </SectionTitle>
-        {!isIntersecting ? (
-          <SelectionBookLoading
-            genre={genre}
-            type={type}
-            isIntersecting={isIntersecting}
-            isAIRecommendation={props.option.isAIRecommendation}
-            items={books.slice(0, 6)}
-          />
+            <span
+              css={css`
+                margin-left: 7.8px;
+              `}>
+              <ArrowV />
+            </span>
+          </a>
         ) : (
-          <WindowWidthQuery>
-            <View maxWidth={1000}>
-              <div>
-                <SelectionBookList
-                  slug={slug}
-                  isIntersecting={isIntersecting}
-                  type={type}
-                  genre={genre}
-                  isAIRecommendation={props.option.isAIRecommendation}
-                  items={books}
-                />
-              </div>
-            </View>
-            <View>
-              <div>
-                <SelectionBookCarousel
-                  type={type}
-                  slug={slug}
-                  isIntersecting={isIntersecting}
-                  genre={genre}
-                  isAIRecommendation={props.option.isAIRecommendation}
-                  items={books}
-                  bookFetching={isFetching}
-                />
-              </div>
-            </View>
-          </WindowWidthQuery>
+          <span>{title}</span>
         )}
-      </SectionWrapper>
-    );
-  },
-  (prev, next) => {
-    if (
-      prev.extra?.detail_link === next.extra?.detail_link &&
-      prev.option?.isAIRecommendation === next.option?.isAIRecommendation
-    ) {
-      return true;
-    }
-    return false;
-  },
-);
+      </SectionTitle>
+      {!isIntersecting ? (
+        <SelectionBookLoading
+          genre={genre}
+          type={type}
+          isIntersecting={isIntersecting}
+          isAIRecommendation={props.option.isAIRecommendation}
+          items={books.slice(0, 6)}
+        />
+      ) : (
+        <WindowWidthQuery>
+          <View maxWidth={1000}>
+            <div>
+              <SelectionBookList
+                slug={slug}
+                isIntersecting={isIntersecting}
+                type={type}
+                genre={genre}
+                isAIRecommendation={props.option.isAIRecommendation}
+                items={books}
+              />
+            </div>
+          </View>
+          <View>
+            <div>
+              <SelectionBookCarousel
+                type={type}
+                slug={slug}
+                isIntersecting={isIntersecting}
+                genre={genre}
+                isAIRecommendation={props.option.isAIRecommendation}
+                items={books}
+                bookFetching={isFetching}
+              />
+            </div>
+          </View>
+        </WindowWidthQuery>
+      )}
+    </SectionWrapper>
+  );
+});
 
 export default SelectionBook;
