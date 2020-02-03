@@ -105,7 +105,7 @@ interface SelectionBookListProps {
   slug: string;
 }
 
-const SelectionBookList: React.FC<SelectionBookListProps> = props => {
+const SelectionBookList: React.FC<SelectionBookListProps> = React.memo(props => {
   const ref = useRef<HTMLUListElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
@@ -188,6 +188,6 @@ const SelectionBookList: React.FC<SelectionBookListProps> = props => {
       )}
     </div>
   );
-};
+});
 
 export default SelectionBookList;

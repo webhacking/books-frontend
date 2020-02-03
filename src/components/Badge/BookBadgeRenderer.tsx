@@ -25,6 +25,7 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = props => {
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 2;
           `,
           wrapperCSS,
         ]}>
@@ -32,6 +33,7 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = props => {
           css={css`
             position: relative;
             left: 1px;
+            z-index: 2;
           `}
         />
         <span className={'a11y'} aria-label={'리디 기다리면 무료'}>
@@ -56,6 +58,7 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = props => {
             justify-content: center;
             position: relative;
             color: white;
+            z-index: 2;
           `,
           wrapperCSS,
         ]}>

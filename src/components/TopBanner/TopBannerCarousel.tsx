@@ -326,14 +326,7 @@ const BannerBadgeRenderer: React.FC<{
 
 const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => {
   const wrapperRef = React.useRef<HTMLInputElement>();
-  const isIntersecting = useIntersectionObserver(wrapperRef, '0px');
-  // Todo Impression
-  if (isIntersecting) {
-    // console.log(isIntersecting, props.item.title);
-    if (wrapperRef.current) {
-      // console.log(wrapperRef.current.parentNode.parentNode.parentNode);
-    }
-  }
+
   return (
     <TopBannerItemWrapper ref={wrapperRef}>
       <ItemInner
