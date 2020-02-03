@@ -11,8 +11,8 @@ export const AdultBadge: React.FC = () => (
       position: absolute;
       right: 3px;
       top: 3px;
-      width: 20px;
-      height: 20px;
+      width: 20px !important;
+      height: 20px !important;
     `}
   />
 );
