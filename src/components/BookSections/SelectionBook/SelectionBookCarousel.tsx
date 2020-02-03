@@ -8,7 +8,6 @@ import {
   SelectionBookItem,
   SelectionBookLoading,
 } from 'src/components/BookSections/SelectionBook/SelectionBook';
-import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
@@ -44,6 +43,13 @@ const CarouselWrapper = styled.div`
   padding-left: 22px;
   padding-right: 9px;
   margin-left: -6px;
+`;
+
+const BookItemWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  margin-right: -3px;
 `;
 
 const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(props => {
@@ -92,7 +98,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(p
         />
       )}
       <CarouselWrapper ref={wrapperRef}>
-        <ForwardedRefComponent
+        <SliderCarousel
           ref={slider}
           css={recommendedBookCarouselLoadingCSS}
           className={'slider'}
@@ -108,14 +114,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(p
           {props.items
             .filter(book => book.detail)
             .map((book, index) => (
-              <div
-                key={index}
-                css={css`
-                  display: flex;
-                  flex-direction: column;
-                  outline: none;
-                  margin-right: -3px;
-                `}>
+              <BookItemWrapper key={index}>
                 <SelectionBookItem
                   order={index}
                   genre={genre}
@@ -131,9 +130,9 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(p
                   type={type}
                   width={140}
                 />
-              </div>
+              </BookItemWrapper>
             ))}
-        </ForwardedRefComponent>
+        </SliderCarousel>
         {carouselInitialize && props.items.length > 6 && (
           <form
             css={css`
