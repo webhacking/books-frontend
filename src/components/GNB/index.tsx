@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import DoublePointIcon from 'src/svgs/DoublePoint.svg';
 import CashIcon from 'src/svgs/Cash.svg';
 import pRetry from 'p-retry';
-import axios, { OAuthRequestType } from 'src/utils/axios';
+import axios, { OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
 import originalAxios from 'axios';
 import sentry from 'src/utils/sentry';
 const { captureException } = sentry();
@@ -222,7 +222,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
 
         const result = await pRetry(
           () =>
-            axios.get(cartUrl.toString(), {
+            wrapCatchCancel(axios.get)(cartUrl.toString(), {
               withCredentials: true,
               custom: { authorizationRequestType: OAuthRequestType.CHECK },
               cancelToken: source.token,
