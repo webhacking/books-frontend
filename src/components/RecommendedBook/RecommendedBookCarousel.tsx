@@ -5,7 +5,6 @@ import Arrow from 'src/components/Carousel/Arrow';
 import SliderCarousel from 'react-slick';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
-import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
@@ -171,7 +170,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = React.me
           />
         )}
         <CarouselWrapper ref={wrapperRef}>
-          <ForwardedRefComponent
+          <SliderCarousel
             ref={slider}
             css={recommendedBookCarouselLoadingCSS}
             className={'slider'}
@@ -280,7 +279,7 @@ const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = React.me
                   </PortraitBook>
                 </div>
               ))}
-          </ForwardedRefComponent>
+          </SliderCarousel>
           {carouselInitialize && props.items.length > 6 && (
             <form>
               <Arrow
