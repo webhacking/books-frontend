@@ -1,11 +1,10 @@
-import React from 'react';
-import { Book } from '@ridi/web-ui/dist/index.node';
+import React, { useEffect, useRef, useState } from 'react';
 import * as BookApi from 'src/types/book';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
-import AdultBadge from 'src/svgs/AdultBadge.svg';
 import { css } from '@emotion/core';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
+import { SerializedStyles } from '@emotion/serialize';
 
 export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
 
@@ -16,11 +15,20 @@ interface ThumbnailRendererProps {
   };
   imgSize: 'xxlarge' | 'xlarge' | 'large' | 'small' | 'medium';
   isIntersecting?: boolean;
-  width?: number;
   slug?: string;
   order?: number;
   className?: string;
+  responsiveWidth: Array<SerializedStyles>;
+  bookDecorators?: React.ReactNode;
 }
+const ADULT_COVER_URL = new URL(
+  '/static/image/cover_adult.png',
+  publicRuntimeConfig.STATIC_CDN_URL,
+).toString();
+const PLACEHOLDER_COVER_URL = new URL(
+  '/static/image/cover_lazyload.png',
+  publicRuntimeConfig.STATIC_CDN_URL,
+).toString();
 
 const computeThumbnailUrl = (
   isAdultOnly: boolean,
@@ -31,47 +39,61 @@ const computeThumbnailUrl = (
   imageSize?: string,
   book?: BookApi.Book,
 ) => {
-  // if (bId.length === 0) {
-  //   return new URL(
-  //     '/static/image/cover_lazyload.png',
-  //     publicRuntimeConfig.STATIC_CDN_URL,
-  //   ).toString();
-  // }
   // if (!isIntersection) {
-  //   return new URL(
-  //     '/static/image/cover_lazyload.png',
-  //     publicRuntimeConfig.STATIC_CDN_URL,
-  //   ).toString();
+  //   return PLACEHOLDER_COVER_URL;
   // }
   if (isAdultOnly && !isVerifiedAdult) {
-    return new URL(
-      '/static/image/cover_adult.png',
-      publicRuntimeConfig.STATIC_CDN_URL,
-    ).toString();
+    return ADULT_COVER_URL;
   }
 
   if (book?.series) {
     if (book.series.property.is_completed) {
       return new URL(
-        imageSize ? `/cover/${bId}/${imageSize}` : `/cover/${bId}/xlarge`,
+        imageSize
+          ? `/cover/${bId}/${imageSize}?dpi=xhdpi`
+          : `/cover/${bId}/large?dpi=xhdpi`,
         IMG_RIDI_CDN_URL,
       ).toString();
     }
     if (book?.series.property.opened_last_volume_id.length !== 0) {
       return new URL(
         imageSize
-          ? `/cover/${book.series.property.opened_last_volume_id}/${imageSize}`
-          : `/cover/${book.series.property.opened_last_volume_id}/xlarge`,
+          ? `/cover/${book.series.property.opened_last_volume_id}/${imageSize}?dpi=xhdpi`
+          : `/cover/${book.series.property.opened_last_volume_id}/large?dpi=xhdpi`,
         IMG_RIDI_CDN_URL,
       ).toString();
     }
   }
 
   return new URL(
-    imageSize ? `/cover/${bId}/${imageSize}` : `/cover/${bId}/xlarge`,
+    imageSize ? `/cover/${bId}/${imageSize}?dpi=xhdpi` : `/cover/${bId}/large?dpi=xhdpi`,
     IMG_RIDI_CDN_URL,
   ).toString();
 };
+
+const thumbnailWrapperCSS = css`
+  position: relative;
+  line-height: 0;
+  max-height: inherit;
+  
+  &::after {
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+    linear-gradient(to right,rgba(0, 0, 0, .2) 0,
+      rgba(0, 0, 0, 0) 5%,
+      rgba(0, 0, 0, 0) 95%,
+      rgba(0, 0, 0, .2) 100%
+    );
+    border: solid 1px rgba(0, 0, 0, .1);
+    content: '';
+  },
+`;
 
 // 썸네일을 보여줄 수 있는 상태 ( intersecting 되거나 fetch 종료 ) 일 때도 체크
 // loggedUser 가 성인 인증 상태일 경우는 정상 렌더링
@@ -79,9 +101,20 @@ const computeThumbnailUrl = (
 const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
   props => {
     // @ts-ignore
-    const { book, isIntersecting, imgSize, width, children, slug, order } = props;
+    const {
+      book,
+      isIntersecting,
+      imgSize,
+      responsiveWidth,
+      children,
+      slug,
+      order,
+    } = props;
     const { loggedUser } = useSelector((state: RootState) => state.account);
+    const [isImageLoaded, setImageLoaded] = useState(false);
     const is_adult_only = book.detail?.property?.is_adult_only ?? false;
+    const imgRef = useRef<HTMLImageElement>(null);
+
     const imageUrl = computeThumbnailUrl(
       is_adult_only,
       isIntersecting,
@@ -90,43 +123,52 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
       imgSize,
       book.detail,
     );
+    const imageOnLoad = () => {
+      setImageLoaded(true);
+    };
+
+    const title = bookTitleGenerator(book.detail);
+
+    useEffect(() => {
+      if (imgRef.current) {
+        imgRef.current.src = imageUrl;
+      }
+    }, [imageUrl]);
     return (
       <div
-        css={css`
-          img {
-            transition: opacity 2s ease-in-out;
-          }
-        `}
+        css={[thumbnailWrapperCSS]}
         className={props.className || ''}
         data-order={order}
         data-book-id={book.b_id}>
-        <Book.Thumbnail
-          thumbnailWidth={width}
-          thumbnailTitle={bookTitleGenerator(book.detail)}
-          thumbnailUrl={imageUrl}>
-          {children}
-          {book.detail?.property?.is_adult_only && (
-            <>
-              <AdultBadge
-                css={css`
-                  display: block;
-                  position: absolute;
-                  right: 3px;
-                  top: 3px;
-                  width: 20px;
-                  height: 20px;
-                `}
-              />
-              <span className={'a11y'} aria-label={'성인 전용 도서'}>
-                성인 전용 도서
-              </span>
-            </>
-          )}
-        </Book.Thumbnail>
+        <img
+          ref={imgRef}
+          css={[
+            responsiveWidth,
+            isImageLoaded
+              ? null
+              : css`
+                  padding-bottom: 142%;
+                  height: 0;
+                  background-image: linear-gradient(
+                    147deg,
+                    #e6e8eb,
+                    #edeff2 55%,
+                    #e6e8eb
+                  );
+                `,
+          ]}
+          src={imageUrl}
+          alt={title}
+          onLoad={imageOnLoad}
+        />
+        {children}
       </div>
     );
   },
   (prev, next) => {
+    if (prev.book?.detail?.title?.main === next.book?.detail?.title?.main) {
+      return true;
+    }
     if (prev.book.b_id !== next.book.b_id) {
       return false;
     }
@@ -136,8 +178,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
     if (prev.isIntersecting !== next.isIntersecting) {
       return false;
     }
-    return prev.imgSize === next.imgSize;
+    return true;
   },
 );
-
 export default ThumbnailRenderer;

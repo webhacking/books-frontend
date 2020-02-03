@@ -300,7 +300,18 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
             <ThumbnailWrapper>
               <ThumbnailRenderer
                 book={{ b_id: book.b_id, detail: book.detail }}
-                imgSize={'xlarge'}
+                imgSize={'large'}
+                responsiveWidth={[
+                  css`
+                    width: 140px;
+                  `,
+                  orBelow(
+                    999,
+                    css`
+                      width: 100px;
+                    `,
+                  ),
+                ]}
                 isIntersecting={isIntersecting}
               />
             </ThumbnailWrapper>
@@ -397,22 +408,26 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
       ) : (
         <WindowWidthQuery>
           <View maxWidth={1000}>
-            <RecommendedBookList
-              type={props.type}
-              slug={slug}
-              items={books as HotRelease[]}
-              theme={theme}
-              isIntersecting={isIntersecting}
-            />
+            <div>
+              <RecommendedBookList
+                type={props.type}
+                slug={slug}
+                items={books as HotRelease[]}
+                theme={theme}
+                isIntersecting={isIntersecting}
+              />
+            </div>
           </View>
           <View>
-            <RecommendedBookCarousel
-              type={props.type}
-              slug={slug}
-              items={books as HotRelease[]}
-              theme={theme}
-              isIntersecting={isIntersecting}
-            />
+            <div>
+              <RecommendedBookCarousel
+                type={props.type}
+                slug={slug}
+                items={books as HotRelease[]}
+                theme={theme}
+                isIntersecting={isIntersecting}
+              />
+            </div>
           </View>
         </WindowWidthQuery>
       )}

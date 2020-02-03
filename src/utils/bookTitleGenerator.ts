@@ -26,7 +26,6 @@ export const bookTitleGenerator = (book: BookApi.Book) => {
     return getEscapedString(book.title.main);
   } catch (error) {
     captureException(error);
-    console.log(book);
     return book.title.main;
   }
 };

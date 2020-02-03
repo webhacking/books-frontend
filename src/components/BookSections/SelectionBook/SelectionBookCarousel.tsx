@@ -46,7 +46,7 @@ const CarouselWrapper = styled.div`
   margin-left: -6px;
 `;
 
-const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
+const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(props => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
   const { genre, type, isIntersecting, slug } = props;
@@ -177,6 +177,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = props => {
       </CarouselWrapper>
     </>
   );
-};
+});
 
 export default SelectionBookCarousel;

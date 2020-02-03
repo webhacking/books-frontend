@@ -23,6 +23,7 @@ import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
 import { between, orBelow } from 'src/utils/mediaQuery';
+import { AdultBadge } from 'src/components/Badge/AdultBadge';
 
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
@@ -32,7 +33,7 @@ interface RecommendedBookListProps {
   slug: string;
 }
 
-const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
+const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo(props => {
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const { theme, type, slug } = props;
@@ -112,10 +113,14 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                   <ThumbnailRenderer
                     className={slug}
                     order={index}
-                    width={100}
+                    responsiveWidth={[
+                      css`
+                        width: 100px;
+                      `,
+                    ]}
                     slug={slug}
                     book={{ b_id: book.b_id, detail: book.detail }}
-                    imgSize={'xlarge'}
+                    imgSize={'large'}
                     isIntersecting={props.isIntersecting}>
                     <div
                       css={css`
@@ -142,6 +147,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
                     <SetBookRenderer
                       setBookCount={book.detail?.setbook?.member_books_count}
                     />
+                    {book.detail?.property?.is_adult_only && <AdultBadge />}
                   </ThumbnailRenderer>
                 </ThumbnailWrapper>
               </a>
@@ -224,6 +230,6 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = props => {
       )}
     </div>
   );
-};
+});
 
 export default RecommendedBookList;

@@ -17,6 +17,7 @@ import {
 import { Tracker } from '@ridi/event-tracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
+import { AdultBadge } from 'src/components/Badge/AdultBadge';
 
 interface MultipleLineBooks {
   items: MdBook[];
@@ -99,7 +100,7 @@ const itemCSS = css`
   margin-bottom: 24px;
 `;
 
-const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = props => {
+const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(props => {
   const { item, genre, isIntersecting, slug, order, tracker } = props;
   return (
     <li css={itemCSS}>
@@ -168,8 +169,19 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = props => {
               order={order}
               className={slug}
               slug={slug}
+              responsiveWidth={[
+                css`
+                  width: 140px;
+                `,
+                orBelow(
+                  999,
+                  css`
+                    width: 120px;
+                  `,
+                ),
+              ]}
               book={{ b_id: item.b_id, detail: item.detail }}
-              imgSize={'xlarge'}
+              imgSize={'large'}
               isIntersecting={isIntersecting}>
               <div
                 css={css`
@@ -193,6 +205,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = props => {
                 }
                 unit={item.detail?.series?.property.unit || '권'}
               />
+              {item.detail?.property?.is_adult_only && <AdultBadge />}
             </ThumbnailRenderer>
           </a>
         </div>
@@ -222,7 +235,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = props => {
       )}
     </li>
   );
-};
+});
 
 const multipleLineSectionCSS = css`
   max-width: 1000px;

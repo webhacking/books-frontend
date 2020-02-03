@@ -26,6 +26,7 @@ import {
 } from 'src/hooks/useEventTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
+import { AdultBadge } from 'src/components/Badge/AdultBadge';
 const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;
@@ -218,9 +219,21 @@ const ItemList: React.FC<any> = props => {
                   slug={slug}
                   className={slug}
                   order={index}
-                  width={type === 'big' ? 80 : 50}
+                  responsiveWidth={
+                    type === 'big'
+                      ? [
+                          css`
+                            width: 80px;
+                          `,
+                        ]
+                      : [
+                          css`
+                            width: 50px;
+                          `,
+                        ]
+                  }
                   book={{ b_id: book.b_id, detail: book.detail }}
-                  imgSize={'xlarge'}
+                  imgSize={'large'}
                   isIntersecting={isIntersecting}>
                   {type === 'big' && (
                     <div
@@ -229,6 +242,7 @@ const ItemList: React.FC<any> = props => {
                         display: block;
                         top: -7px;
                         left: -7px;
+                        z-index: 2;
                       `}>
                       <BookBadgeRenderer
                         type={DisplayType.BestSeller}
@@ -253,6 +267,7 @@ const ItemList: React.FC<any> = props => {
                       />
                     </>
                   )}
+                  {book.detail?.property?.is_adult_only && <AdultBadge />}
                 </ThumbnailRenderer>
               </a>
             </div>
