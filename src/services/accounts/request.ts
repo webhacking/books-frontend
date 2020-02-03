@@ -1,9 +1,9 @@
-import axios, { OAuthRequestType } from 'src/utils/axios';
+import axios, { OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
 import { LoggedUser } from 'src/types/account';
 import { CancelTokenSource } from 'axios';
 
 export const checkLoggedIn = async (cancelToken: CancelTokenSource) => {
-  const { data } = await axios.get<LoggedUser>('/accounts/me', {
+  const { data } = await wrapCatchCancel(axios.get)<LoggedUser>('/accounts/me', {
     baseURL: publicRuntimeConfig.ACCOUNT_API,
     withCredentials: true,
     custom: {

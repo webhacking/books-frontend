@@ -17,7 +17,7 @@ import cookieKeys from 'src/constants/cookies';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { LoggedUser } from 'src/types/account';
 import pRetry from 'p-retry';
-import axios, { OAuthRequestType } from 'src/utils/axios';
+import axios, { OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
 import originalAxios from 'axios';
 import sentry from 'src/utils/sentry';
 import jwt_decode from 'jwt-decode';
@@ -233,7 +233,7 @@ const requestNotificationToken = async cancelToken => {
 
     const result = await pRetry(
       () =>
-        axios.get(tokenUrl.toString(), {
+        wrapCatchCancel(axios.get)(tokenUrl.toString(), {
           withCredentials: true,
           cancelToken: cancelToken.token,
         }),
@@ -292,7 +292,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           const notificationUrl = new URL('/notification', publicRuntimeConfig.STORE_API);
           const notificationResult = await pRetry(
             () =>
-              axios.get(notificationUrl.toString(), {
+              wrapCatchCancel(axios.get)(notificationUrl.toString(), {
                 params: { limit: 5 },
                 cancelToken: notificationRequestSource.token,
                 custom: { authorizationRequestType: OAuthRequestType.CHECK },
@@ -333,7 +333,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
 
         const result = await pRetry(
           () =>
-            axios.get(cartUrl.toString(), {
+            wrapCatchCancel(axios.get)(cartUrl.toString(), {
               withCredentials: true,
               cancelToken: cartRequestTokenSource.token,
               custom: { authorizationRequestType: OAuthRequestType.CHECK },
