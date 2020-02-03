@@ -121,6 +121,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         </>
       );
     }
+
     if (isPartials) {
       return (
         <>
