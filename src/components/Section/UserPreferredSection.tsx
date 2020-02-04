@@ -74,7 +74,6 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = props => {
       }
     }
   }, [sections, router, loggedUser, genre]);
-
   return (
     <>
       {(sections as MdSelection[]).map((item, index) => {
