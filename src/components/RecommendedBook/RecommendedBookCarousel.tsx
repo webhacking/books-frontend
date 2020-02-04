@@ -2,7 +2,7 @@ import React, { useCallback, FormEvent, useEffect, useRef, useState } from 'reac
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
-import SliderCarousel from 'react-slick';
+import SliderCarousel, { Settings } from 'react-slick';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
@@ -119,209 +119,248 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = R
   ),
 );
 
-const RecommendedBookCarousel: React.FC<RecommendedBookCarouselProps> = React.memo(
-  props => {
-    const [carouselInitialize, setCarouselInitialized] = useState(false);
-    const slider = useRef<SliderCarousel>();
-    const wrapperRef = useRef<HTMLDivElement>();
-    const { theme, type, slug } = props;
+interface CarouselItemProps {
+  book: TodayRecommendation | HotRelease;
+  index: number;
+  type: DisplayType;
+  theme: string;
+  isIntersecting: boolean;
+  slug: string;
+}
+
+const CarouselItem = React.memo(function CarouselItem(props: CarouselItemProps) {
+  const { book, index, type, slug, theme, isIntersecting } = props;
+  const href = new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString();
+  return (
     // @ts-ignore
-    const [isMounted, setMounted] = useState(false);
-    const [arrowPosition, setArrowPosition] = useState(
-      getArrowVerticalCenterPosition(wrapperRef),
-    );
-    const setInitialized = useCallback(() => {
-      setCarouselInitialized(true);
-    }, []);
-
-    const handleLeftArrow = (e: FormEvent) => {
-      e.preventDefault();
-      if (slider.current) {
-        (slider.current as SliderCarousel).slickPrev();
-      }
-    };
-    const handleRightArrow = (e: FormEvent) => {
-      e.preventDefault();
-      if (slider.current) {
-        (slider.current as SliderCarousel).slickNext();
-      }
-    };
-
-    const sendDisplayEvent = useSendDisplayEvent(slug);
-    useMultipleIntersectionObserver(wrapperRef, slug, sendDisplayEvent);
-
-    useEffect(() => {
-      setMounted(true);
-      if (carouselInitialize) {
-        setArrowPosition(getArrowVerticalCenterPosition(wrapperRef));
-      }
-    }, [carouselInitialize]);
-
-    // @ts-ignore
-    return (
-      <>
-        {/* Flickering 없는 UI 를 위해 추가함 */}
-        {!carouselInitialize && (
-          <RecommendedBookCarouselLoading
-            theme={theme}
-            type={props.type}
-            items={props.items.slice(0, 6)}
-            isIntersecting={props.isIntersecting}
-          />
+    <div
+      css={css`
+        display: flex;
+        flex-direction: column;
+        outline: none;
+      `}>
+      <PortraitBook
+        css={css`
+          height: 100%;
+          padding-left: 0 !important;
+        `}>
+        <a
+          css={css`
+            display: inline-block;
+          `}
+          href={href}>
+          <ThumbnailWrapper>
+            <ThumbnailRenderer
+              order={index}
+              className={slug}
+              responsiveWidth={[
+                css`
+                  width: 140px;
+                `,
+              ]}
+              slug={slug}
+              book={{ b_id: book.b_id, detail: book.detail }}
+              imgSize={'large'}
+              isIntersecting={isIntersecting}>
+              <div
+                css={css`
+                  position: absolute;
+                  display: block;
+                  top: -7px;
+                  left: -7px;
+                `}>
+                <BookBadgeRenderer
+                  type={type}
+                  wrapperCSS={css``}
+                  isWaitFree={book.detail?.series?.property.is_wait_free}
+                  discountPercentage={getMaxDiscountPercentage(book.detail)}
+                />
+              </div>
+              <FreeBookRenderer
+                freeBookCount={
+                  book.detail?.series?.price_info?.rent?.free_book_count ||
+                  book.detail?.series?.price_info?.buy?.free_book_count ||
+                  0
+                }
+                unit={book.detail?.series?.property.unit || '권'}
+              />
+              <SetBookRenderer setBookCount={book.detail?.setbook?.member_books_count} />
+              {book.detail?.property?.is_adult_only && <AdultBadge />}
+            </ThumbnailRenderer>
+          </ThumbnailWrapper>
+        </a>
+        {/* Todo show sentence */}
+        {book.detail && type === DisplayType.HotRelease && (
+          <BookMeta book={book.detail} />
         )}
-        <CarouselWrapper ref={wrapperRef}>
-          <SliderCarousel
-            ref={slider}
-            css={recommendedBookCarouselLoadingCSS}
-            className={'slider'}
-            slidesToShow={Math.min(props.items.length, 6)}
-            slidesToScroll={6}
-            speed={200}
-            autoplay={false}
-            arrows={false}
-            onInit={setInitialized}
-            infinite={true}>
-            {props.items
-              .filter(book => book.detail)
-              .map((book, index) => (
-                // @ts-ignore
-                <div
-                  key={index}
-                  css={css`
-                    display: flex;
-                    flex-direction: column;
-                    outline: none;
-                  `}>
-                  <PortraitBook
-                    css={css`
-                      height: 100%;
-                      padding-left: 0 !important;
-                    `}>
-                    <a
-                      css={css`
-                        display: inline-block;
-                      `}
-                      href={new URL(
-                        `/books/${book.b_id}`,
-                        publicRuntimeConfig.STORE_HOST,
-                      ).toString()}>
-                      <ThumbnailWrapper>
-                        <ThumbnailRenderer
-                          order={index}
-                          className={slug}
-                          responsiveWidth={[
-                            css`
-                              width: 140px;
-                            `,
-                          ]}
-                          slug={slug}
-                          book={{ b_id: book.b_id, detail: book.detail }}
-                          imgSize={'large'}
-                          isIntersecting={props.isIntersecting}>
-                          <div
-                            css={css`
-                              position: absolute;
-                              display: block;
-                              top: -7px;
-                              left: -7px;
-                            `}>
-                            <BookBadgeRenderer
-                              type={type}
-                              wrapperCSS={css``}
-                              isWaitFree={book.detail?.series?.property.is_wait_free}
-                              discountPercentage={getMaxDiscountPercentage(book.detail)}
-                            />
-                          </div>
-                          <FreeBookRenderer
-                            freeBookCount={
-                              book.detail?.series?.price_info?.rent?.free_book_count ||
-                              book.detail?.series?.price_info?.buy?.free_book_count ||
-                              0
-                            }
-                            unit={book.detail?.series?.property.unit || '권'}
-                          />
-                          <SetBookRenderer
-                            setBookCount={book.detail?.setbook?.member_books_count}
-                          />
-                          {book.detail?.property?.is_adult_only && <AdultBadge />}
-                        </ThumbnailRenderer>
-                      </ThumbnailWrapper>
-                    </a>
-                    {/* Todo show sentence */}
-                    {book.detail && type === DisplayType.HotRelease && (
-                      <BookMeta book={book.detail} />
-                    )}
-                    {book.detail && type === DisplayType.TodayRecommendation && (
-                      <h4
-                        css={[
-                          css`
-                            padding-left: 0;
-                            position: relative;
-                            left: 7px;
-                            margin-top: 2px;
-                            ${sentenceStyle};
-                          `,
-                          theme === 'dark' &&
-                            css`
-                              color: white;
-                            `,
-                        ]}>
-                        <span
-                          dangerouslySetInnerHTML={{
-                            __html: (book as HotRelease).sentence.replace(
-                              /(?:\r\n|\r|\n)/g,
-                              '<br />',
-                            ),
-                          }}
-                        />
-                      </h4>
-                    )}
-                  </PortraitBook>
-                </div>
-              ))}
-          </SliderCarousel>
-          {carouselInitialize && props.items.length > 6 && (
-            <form>
-              <Arrow
-                onClickHandler={handleLeftArrow}
-                label={'이전'}
-                color={theme}
-                side={'left'}
-                wrapperStyle={css`
-                  ${arrowWrapperCSS};
-                  ${greaterThanOrEqualTo(
-                    BreakPoint.XL + 1,
-                    css`
-                      left: -31px;
-                    `,
-                  )};
-                  left: 5px;
-                  top: calc(${arrowPosition});
-                `}
-              />
-              <Arrow
-                label={'다음'}
-                onClickHandler={handleRightArrow}
-                color={theme}
-                side={'right'}
-                wrapperStyle={css`
-                  ${arrowWrapperCSS};
-                  ${greaterThanOrEqualTo(
-                    BreakPoint.XL + 1,
-                    css`
-                      right: -27px;
-                    `,
-                  )};
-                  right: 5px;
-                  top: calc(${arrowPosition});
-                `}
-              />
-            </form>
-          )}
-        </CarouselWrapper>
-      </>
-    );
-  },
-);
+        {book.detail && type === DisplayType.TodayRecommendation && (
+          <h4
+            css={[
+              css`
+                padding-left: 0;
+                position: relative;
+                left: 7px;
+                margin-top: 2px;
+                ${sentenceStyle};
+              `,
+              theme === 'dark' &&
+                css`
+                  color: white;
+                `,
+            ]}>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: (book as HotRelease).sentence.replace(
+                  /(?:\r\n|\r|\n)/g,
+                  '<br />',
+                ),
+              }}
+            />
+          </h4>
+        )}
+      </PortraitBook>
+    </div>
+  );
+});
+
+interface SliderCarouselWrapperProps {
+  forwardedRef?: React.RefObject<SliderCarousel>;
+  children?: React.ReactNode;
+}
+
+const SliderCarouselWrapper = React.memo(function SliderCarouselWrapper(
+  props: Settings & SliderCarouselWrapperProps,
+) {
+  const { forwardedRef, ...restProps } = props;
+  return <SliderCarousel {...restProps} ref={forwardedRef} />;
+});
+
+const RecommendedBookCarousel = React.memo(function RecommendedBookCarousel(
+  props: RecommendedBookCarouselProps,
+) {
+  const [carouselInitialize, setCarouselInitialized] = useState(false);
+  const slider = useRef<SliderCarousel>();
+  const wrapperRef = useRef<HTMLDivElement>();
+  const { theme, type, slug } = props;
+  // @ts-ignore
+  const [isMounted, setMounted] = useState(false);
+  const [arrowPosition, setArrowPosition] = useState(
+    getArrowVerticalCenterPosition(wrapperRef),
+  );
+  const setInitialized = useCallback(() => {
+    setCarouselInitialized(true);
+  }, []);
+
+  const handleLeftArrow = (e: FormEvent) => {
+    e.preventDefault();
+    if (slider.current) {
+      (slider.current as SliderCarousel).slickPrev();
+    }
+  };
+  const handleRightArrow = (e: FormEvent) => {
+    e.preventDefault();
+    if (slider.current) {
+      (slider.current as SliderCarousel).slickNext();
+    }
+  };
+
+  const sendDisplayEvent = useSendDisplayEvent(slug);
+  useMultipleIntersectionObserver(wrapperRef, slug, sendDisplayEvent);
+
+  useEffect(() => {
+    setMounted(true);
+    if (carouselInitialize) {
+      setArrowPosition(getArrowVerticalCenterPosition(wrapperRef));
+    }
+  }, [carouselInitialize]);
+
+  const items = props.items;
+  const carouselItems = React.useMemo(
+    () =>
+      items
+        .filter(book => book.detail)
+        .map((book, index) => (
+          <CarouselItem
+            key={index}
+            book={book}
+            index={index}
+            type={type}
+            theme={theme}
+            isIntersecting={props.isIntersecting}
+            slug={slug}
+          />
+        )),
+    [items],
+  );
+
+  // @ts-ignore
+  return (
+    <>
+      {/* Flickering 없는 UI 를 위해 추가함 */}
+      {!carouselInitialize && (
+        <RecommendedBookCarouselLoading
+          key="loading"
+          theme={theme}
+          type={props.type}
+          items={props.items.slice(0, 6)}
+          isIntersecting={props.isIntersecting}
+        />
+      )}
+      <CarouselWrapper key="carousel" ref={wrapperRef}>
+        <SliderCarouselWrapper
+          forwardedRef={slider}
+          css={recommendedBookCarouselLoadingCSS}
+          className={'slider'}
+          slidesToShow={Math.min(props.items.length, 6)}
+          slidesToScroll={6}
+          speed={200}
+          autoplay={false}
+          arrows={false}
+          onInit={setInitialized}
+          infinite={true}>
+          {carouselItems}
+        </SliderCarouselWrapper>
+        {carouselInitialize && props.items.length > 6 && (
+          <form key="arrows">
+            <Arrow
+              onClickHandler={handleLeftArrow}
+              label={'이전'}
+              color={theme}
+              side={'left'}
+              wrapperStyle={css`
+                ${arrowWrapperCSS};
+                ${greaterThanOrEqualTo(
+                  BreakPoint.XL + 1,
+                  css`
+                    left: -31px;
+                  `,
+                )};
+                left: 5px;
+                top: calc(${arrowPosition});
+              `}
+            />
+            <Arrow
+              label={'다음'}
+              onClickHandler={handleRightArrow}
+              color={theme}
+              side={'right'}
+              wrapperStyle={css`
+                ${arrowWrapperCSS};
+                ${greaterThanOrEqualTo(
+                  BreakPoint.XL + 1,
+                  css`
+                    right: -27px;
+                  `,
+                )};
+                right: 5px;
+                top: calc(${arrowPosition});
+              `}
+            />
+          </form>
+        )}
+      </CarouselWrapper>
+    </>
+  );
+});
 
 export default RecommendedBookCarousel;
