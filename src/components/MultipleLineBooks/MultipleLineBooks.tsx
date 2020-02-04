@@ -179,6 +179,12 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
                     width: 120px;
                   `,
                 ),
+                orBelow(
+                  432,
+                  css`
+                    width: 100%;
+                  `,
+                ),
               ]}
               book={{ b_id: item.b_id, detail: item.detail }}
               imgSize={'large'}
