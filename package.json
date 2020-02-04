@@ -70,6 +70,7 @@
     "@babel/plugin-transform-runtime": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
     "@emotion/babel-preset-css-prop": "^10.0.23",
+    "@ridi/eslint-config": "^4.2.1",
     "@svgr/webpack": "^4.3.3",
     "@testing-library/dom": "^6.6.0",
     "@testing-library/jest-dom": "^4.1.1",
@@ -119,7 +120,7 @@
   "scripts": {
     "format": "yarn prettier --write ",
     "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
-    "lint": "eslint \"./+(!node_modules|src|server)/!(tests)/**/!(*.d).ts{,x}\" --fix --fix-type problem",
+    "lint": "eslint src --ext .js,.ts,tsx",
     "validate": "yarn lint && yarn format && yarn prettier --list-different \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "build": "cross-env ENVIRONMENT=production && next build src",
     "local": "cross-env ENVIRONMENT=local pm2-runtime start ecosystem.config.js --only books-server --env local",
