@@ -88,6 +88,7 @@ const setCookie = (genre: string) => {
 
   Cookies.set(cookieKeys.main_genre, convertedLegacyGenre, {
     expires: DEFAULT_COOKIE_EXPIRES,
+    sameSite: 'lax',
   });
 };
 

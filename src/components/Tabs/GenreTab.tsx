@@ -389,7 +389,7 @@ const TabItem: React.FC<TabItemProps> = props => {
         href={route}
         onClick={() => {
           if (route === '/' && cookieGenre) {
-            Cookies.set('main_genre', '');
+            Cookies.set('main_genre', '', { sameSite: 'lax' });
           }
         }}>
         <span css={isActivePath ? props.currentCSS : props.normalCSS}>{props.label}</span>
