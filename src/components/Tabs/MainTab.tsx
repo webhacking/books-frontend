@@ -284,7 +284,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
 
       if (isExpired) {
         const token = await requestNotificationToken(tokenRequestSource);
-        Cookies.set(RIDI_NOTIFICATION_TOKEN, token);
+        Cookies.set(RIDI_NOTIFICATION_TOKEN, token, { sameSite: 'lax' });
         tokenResult = token;
       }
       if (tokenResult) {
