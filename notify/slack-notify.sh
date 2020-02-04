@@ -54,20 +54,20 @@ then
     "text": "${COMMIT_TITLE}",
     "color": "${COLOR}",
     "fields": [
-       { "title": "Branch", "value": "${BRANCH_NAME}", "short": true },
-       { "title": "Revision", "value": "${CI_COMMIT_SHA:="NONE"}", "short": true },
-       { "title": "CI Stage", "value": "${STAGE}", "short": true },
-       { "title": "JOB Result", "value": "${STATUS}", "short": true }
+      { "title": "Branch", "value": "${BRANCH_NAME}", "short": true },
+      { "title": "Revision", "value": "${CI_COMMIT_SHA:="NONE"}", "short": true },
+      { "title": "CI Stage", "value": "${STAGE}", "short": true },
+      { "title": "JOB Result", "value": "${STATUS}", "short": true }
     ],
   }],
   "blocks": [{
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "$(
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "$(
         git log origin/master^1..origin/master \
-          --no-merges --pretty=format:'* `%h` %s (%an, %cr)' |
-          node -- "$(dirname -- "$0")/stdin-to-json.js"
+        --no-merges --pretty=format:'* `%h` %s (%an, %cr)' |
+        node -- "$(dirname -- "$0")/stdin-to-json.js"
       )"
     }
   }]
