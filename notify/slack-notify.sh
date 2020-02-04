@@ -61,14 +61,14 @@ then
     ],
   }],
   "blocks": [{
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": $(
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "$(
         git log origin/master^1..origin/master \
           --no-merges --pretty=format:'* `%h` %s (%an, %cr)' |
           node -- "$(dirname -- "$0")/stdin-to-json.js"
-      )
+      )"
     }
   }]
 }
