@@ -173,14 +173,14 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
   } else {
     // Client Side
     try {
-      // store.dispatch({ type: booksActions.setFetching.type, payload: true });
       const result = await fetchHomeSections(
         // @ts-ignore
         genre || 'general',
         null,
         // Hack
-        // 사파리 BFCache 디스크에서 캐시 된 데이터가 그대로 사용되는데 끄걸 회피하기 위해 ts를 삽입하는 꼼수
-        { ts: Date.now() },
+        // 사파리 BFCache 디스크에서 캐시 된 데이터가 그대로 사용되는데 끄걸 회피하기 위해 Query Param 에 초를 삽입하는 꼼수
+        // 30초 단위로 잘라 보냄
+        { sec: Math.floor(Date.now() / 30000) },
       );
       const bIds = keyToArray(result.branches, 'b_id');
       store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
