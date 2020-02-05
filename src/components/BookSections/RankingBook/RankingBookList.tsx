@@ -247,6 +247,11 @@ const ItemList: React.FC<any> = props => {
                       <BookBadgeRenderer
                         type={DisplayType.BestSeller}
                         wrapperCSS={css``}
+                        isRentable={
+                          (!!book.detail?.price_info?.rent ||
+                            !!book.detail?.series?.price_info?.rent) &&
+                          ['general', 'romance', 'bl'].includes(genre)
+                        }
                         isWaitFree={book.detail?.series?.property.is_wait_free}
                         discountPercentage={getMaxDiscountPercentage(book.detail)}
                       />

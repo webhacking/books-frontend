@@ -59,6 +59,7 @@ interface RecommendedBookCarouselProps {
   theme: 'dark' | 'white';
   slug?: string;
   isIntersecting: boolean;
+  genre: string;
 }
 
 const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = React.memo(
@@ -127,10 +128,11 @@ interface CarouselItemProps {
   theme: string;
   isIntersecting: boolean;
   slug: string;
+  genre: string;
 }
 
 const CarouselItem = React.memo(function CarouselItem(props: CarouselItemProps) {
-  const { book, index, type, slug, theme, isIntersecting } = props;
+  const { book, index, type, slug, theme, isIntersecting, genre } = props;
   const href = new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString();
   return (
     // @ts-ignore
@@ -169,10 +171,16 @@ const CarouselItem = React.memo(function CarouselItem(props: CarouselItemProps) 
                   display: block;
                   top: -7px;
                   left: -7px;
+                  z-index: 2;
                 `}>
                 <BookBadgeRenderer
                   type={type}
                   wrapperCSS={css``}
+                  isRentable={
+                    (!!book.detail?.price_info?.rent ||
+                      !!book.detail?.series?.price_info?.rent) &&
+                    ['general', 'romance', 'bl'].includes(genre)
+                  }
                   isWaitFree={book.detail?.series?.property.is_wait_free}
                   discountPercentage={getMaxDiscountPercentage(book.detail)}
                 />
@@ -230,7 +238,7 @@ const RecommendedBookCarousel = React.memo(function RecommendedBookCarousel(
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
   const wrapperRef = useRef<HTMLDivElement>();
-  const { theme, type, slug, isIntersecting } = props;
+  const { theme, type, slug, isIntersecting, genre } = props;
   // @ts-ignore
   const [isMounted, setMounted] = useState(false);
   const [arrowPosition, setArrowPosition] = useState(
@@ -270,6 +278,7 @@ const RecommendedBookCarousel = React.memo(function RecommendedBookCarousel(
             book={book}
             index={index}
             type={type}
+            genre={genre}
             theme={theme}
             isIntersecting={isIntersecting}
             slug={slug}
@@ -286,6 +295,7 @@ const RecommendedBookCarousel = React.memo(function RecommendedBookCarousel(
         <RecommendedBookCarouselLoading
           key="loading"
           theme={theme}
+          genre={genre}
           type={props.type}
           items={props.items.slice(0, 6)}
           isIntersecting={props.isIntersecting}

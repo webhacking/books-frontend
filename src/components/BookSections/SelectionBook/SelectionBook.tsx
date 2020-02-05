@@ -173,6 +173,11 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
               <BookBadgeRenderer
                 type={type}
                 wrapperCSS={css``}
+                isRentable={
+                  (!!book.detail?.price_info?.rent ||
+                    !!book.detail?.series?.price_info?.rent) &&
+                  ['general', 'romance', 'bl'].includes(genre)
+                }
                 isWaitFree={book.detail?.series?.property.is_wait_free}
                 discountPercentage={getMaxDiscountPercentage(book.detail)}
               />
