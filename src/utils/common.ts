@@ -94,8 +94,7 @@ export const getMaxDiscountPercentage = (book?: BookApi.Book) => {
     return 0;
   }
   const singleBuyDiscountPercentage = book.price_info?.buy?.discount_percentage || 0;
-  const singleRentDiscountPercentage =
-    book.price_info?.rentInfo?.discount_percentage || 0;
+  const singleRentDiscountPercentage = book.price_info?.rent?.discount_percentage || 0;
   const seriesBuyDiscountPercentage =
     book.series?.price_info?.buy?.discount_percentage || 0;
   const seriesRentDiscountPercentage =
@@ -109,7 +108,7 @@ export const getMaxDiscountPercentage = (book?: BookApi.Book) => {
       seriesRentDiscountPercentage,
     ),
   );
-  if (maxValue >= 10) {
+  if (maxValue >= 10 && maxValue < 100) {
     return maxValue;
   }
   return 0;

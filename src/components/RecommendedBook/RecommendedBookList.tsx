@@ -30,6 +30,7 @@ interface RecommendedBookListProps {
   theme: 'dark' | 'white';
   isIntersecting: boolean;
   slug: string;
+  genre: string;
 }
 
 interface ListItemProps {
@@ -39,10 +40,11 @@ interface ListItemProps {
   theme: string;
   isIntersecting: boolean;
   slug: string;
+  genre: string;
 }
 
 const ListItem = React.memo(function ListItem(props: ListItemProps) {
-  const { book, index, type, theme, isIntersecting, slug } = props;
+  const { book, index, type, theme, isIntersecting, slug, genre } = props;
   return (
     <PortraitBook
       key={index}
@@ -92,10 +94,16 @@ const ListItem = React.memo(function ListItem(props: ListItemProps) {
                 display: block;
                 top: -7px;
                 left: -7px;
+                z-index: 2;
               `}>
               <BookBadgeRenderer
                 type={type}
                 wrapperCSS={css``}
+                isRentable={
+                  (!!book.detail?.price_info?.rent ||
+                    !!book.detail?.series?.price_info?.rent) &&
+                  ['general', 'romance', 'bl'].includes(genre)
+                }
                 isWaitFree={book.detail?.series?.property.is_wait_free}
                 discountPercentage={getMaxDiscountPercentage(book.detail)}
               />
@@ -143,7 +151,7 @@ const ListItem = React.memo(function ListItem(props: ListItemProps) {
 const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo(props => {
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
-  const { theme, type, slug, isIntersecting } = props;
+  const { theme, type, slug, isIntersecting, genre } = props;
   const deviceType = useContext(DeviceTypeContext);
 
   const sendDisplayEvent = useSendDisplayEvent(slug);
@@ -163,6 +171,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo(props
             theme={theme}
             isIntersecting={isIntersecting}
             slug={slug}
+            genre={genre}
           />
         )),
     [items, type, theme, isIntersecting, slug],

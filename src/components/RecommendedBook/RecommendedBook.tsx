@@ -354,10 +354,11 @@ interface RecommendedBookProps {
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
   theme: 'white' | 'dark';
   slug: string;
+  genre: string;
 }
 
 const RecommendedBook: React.FC<RecommendedBookProps> = props => {
-  const { theme, type, slug } = props;
+  const { theme, type, slug, genre } = props;
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '-50px');
 
@@ -413,6 +414,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
                 slug={slug}
                 items={books as HotRelease[]}
                 theme={theme}
+                genre={genre}
                 isIntersecting={isIntersecting}
               />
             </div>
@@ -422,6 +424,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
               <RecommendedBookCarousel
                 type={props.type}
                 slug={slug}
+                genre={genre}
                 items={books as HotRelease[]}
                 theme={theme}
                 isIntersecting={isIntersecting}

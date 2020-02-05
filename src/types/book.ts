@@ -98,7 +98,7 @@ interface PriceInfoPointBack {
 export interface PriceInfo {
   buy?: BuyInfo;
   paper?: PaperBuyInfo;
-  rentInfo?: RentInfo;
+  rent?: RentInfo;
   pointBackInfo?: PointBackInfo;
   flatrate?: number;
   cashback?: PriceInfoCashBack;

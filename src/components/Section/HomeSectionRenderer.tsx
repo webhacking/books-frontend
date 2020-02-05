@@ -83,6 +83,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = React.mem
             title={title}
             items={items as HotRelease[]}
             type={type}
+            genre={genre}
             theme={'dark'}
           />
         );
@@ -92,6 +93,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = React.mem
         return (
           <RecommendedBook
             slug={slug}
+            genre={genre}
             title={title}
             items={items as TodayRecommendation[]}
             type={type}
