@@ -68,17 +68,16 @@ export const recommendedBookListCSS = css`
 export const BookList = styled.ul`
   overflow: auto;
   ${scrollBarHidden};
+
   margin: 0 auto;
-  ${orBelow(
-    BreakPoint.LG,
-    css`
-      ${flexRowStart}
-    `,
-  )};
   display: flex;
-  justify-content: center;
+  justify-content: start;
+  flex-wrap: nowrap;
   margin-top: 6px;
-  //padding-bottom: 36px;
+
+  @media (min-width: 1000px) {
+    justify-content: center;
+  }
 `;
 
 export const bookMetaWrapperCSS = css`
