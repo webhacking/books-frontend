@@ -724,20 +724,31 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
         />
       )}
       <>
-        <TopBannerCarousel
-          isIntersecting={isIntersecting}
-          forwardRef={slider}
-          banners={banners}
-          slug={slug}
-          changePosition={changePosition}
-          setInitialized={setInitialized}
-        />
-        <PositionOverlay>
-          <TopBannerCurrentPosition
-            total={banners.length}
-            currentPosition={currentPosition + 1}
+        <div
+          css={[
+            carouselInitialized
+              ? css`
+                  display: block;
+                `
+              : css`
+                  display: none;
+                `,
+          ]}>
+          <TopBannerCarousel
+            isIntersecting={isIntersecting}
+            forwardRef={slider}
+            banners={banners}
+            slug={slug}
+            changePosition={changePosition}
+            setInitialized={setInitialized}
           />
-        </PositionOverlay>
+          <PositionOverlay>
+            <TopBannerCurrentPosition
+              total={banners.length}
+              currentPosition={currentPosition + 1}
+            />
+          </PositionOverlay>
+        </div>
         {carouselInitialized && !['mobile', 'tablet'].includes(deviceType) && (
           <form css={displayNoneForTouchDevice}>
             <div
