@@ -2,6 +2,7 @@ import React, { useCallback, FormEvent, useEffect, useRef, useState } from 'reac
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
+import SliderCarouselWrapper from 'src/components/Carousel/CarouselWrapper';
 import SliderCarousel from 'react-slick';
 import {
   SelectionBookCarouselProps,
@@ -54,9 +55,9 @@ const BookItemWrapper = styled.div`
 
 const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(props => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
-  const slider = useRef<SliderCarousel>();
-  const { genre, type, isIntersecting, slug } = props;
-  const wrapperRef = useRef<HTMLDivElement>();
+  const slider = useRef<SliderCarousel>(null);
+  const { genre, type, isAIRecommendation, isIntersecting, slug } = props;
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [, setMounted] = useState(false);
   const [arrowPosition, setArrowPosition] = useState(
     getArrowVerticalCenterPosition(wrapperRef),
@@ -67,15 +68,11 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(p
 
   const handleLeftArrow = (e: FormEvent) => {
     e.preventDefault();
-    if (slider.current) {
-      (slider.current as SliderCarousel).slickPrev();
-    }
+    slider.current?.slickPrev();
   };
   const handleRightArrow = (e: FormEvent) => {
     e.preventDefault();
-    if (slider.current) {
-      (slider.current as SliderCarousel).slickNext();
-    }
+    slider.current?.slickNext();
   };
   const [requestExclude, requestCancel] = useExcludeRecommendation();
   const sendDisplayEvent = useSendDisplayEvent(slug);
@@ -85,6 +82,33 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(p
     setMounted(true);
     setArrowPosition(getArrowVerticalCenterPosition(wrapperRef));
   }, [wrapperRef]);
+
+  const items = props.items;
+  const carouselItems = React.useMemo(
+    () =>
+      props.items
+        .filter(book => book.detail)
+        .map((book, index) => (
+          <BookItemWrapper key={index}>
+            <SelectionBookItem
+              order={index}
+              genre={genre}
+              slug={slug}
+              isIntersecting={isIntersecting}
+              isAIRecommendation={isAIRecommendation}
+              aiRecommendationCallback={{
+                exclude: requestExclude,
+                excludeCancel: requestCancel,
+              }}
+              excluded={book?.excluded ?? false}
+              book={book}
+              type={type}
+              width={140}
+            />
+          </BookItemWrapper>
+        )),
+    [items, genre, slug, isIntersecting, isAIRecommendation, type],
+  );
 
   return (
     <>
@@ -98,8 +122,8 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(p
         />
       )}
       <CarouselWrapper ref={wrapperRef}>
-        <SliderCarousel
-          ref={slider}
+        <SliderCarouselWrapper
+          forwardedRef={slider}
           css={recommendedBookCarouselLoadingCSS}
           className={'slider'}
           slidesToShow={Math.min(props.items.length, 6)}
@@ -107,32 +131,10 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(p
           speed={200}
           autoplay={false}
           arrows={false}
-          onInit={() => {
-            setInitialized();
-          }}
+          onInit={setInitialized}
           infinite={true}>
-          {props.items
-            .filter(book => book.detail)
-            .map((book, index) => (
-              <BookItemWrapper key={index}>
-                <SelectionBookItem
-                  order={index}
-                  genre={genre}
-                  slug={slug}
-                  isIntersecting={isIntersecting}
-                  isAIRecommendation={props.isAIRecommendation}
-                  aiRecommendationCallback={{
-                    exclude: requestExclude,
-                    excludeCancel: requestCancel,
-                  }}
-                  excluded={book?.excluded ?? false}
-                  book={book}
-                  type={type}
-                  width={140}
-                />
-              </BookItemWrapper>
-            ))}
-        </SliderCarousel>
+          {carouselItems}
+        </SliderCarouselWrapper>
         {carouselInitialize && props.items.length > 6 && (
           <form
             css={css`

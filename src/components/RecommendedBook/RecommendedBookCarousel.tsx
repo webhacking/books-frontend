@@ -2,7 +2,7 @@ import React, { useCallback, FormEvent, useEffect, useRef, useState } from 'reac
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
-import SliderCarousel, { Settings } from 'react-slick';
+import SliderCarousel from 'react-slick';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
@@ -13,6 +13,7 @@ import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
+import SliderCarouselWrapper from 'src/components/Carousel/CarouselWrapper';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
@@ -223,25 +224,13 @@ const CarouselItem = React.memo(function CarouselItem(props: CarouselItemProps) 
   );
 });
 
-interface SliderCarouselWrapperProps {
-  forwardedRef?: React.RefObject<SliderCarousel>;
-  children?: React.ReactNode;
-}
-
-const SliderCarouselWrapper = React.memo(function SliderCarouselWrapper(
-  props: Settings & SliderCarouselWrapperProps,
-) {
-  const { forwardedRef, ...restProps } = props;
-  return <SliderCarousel {...restProps} ref={forwardedRef} />;
-});
-
 const RecommendedBookCarousel = React.memo(function RecommendedBookCarousel(
   props: RecommendedBookCarouselProps,
 ) {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
   const wrapperRef = useRef<HTMLDivElement>();
-  const { theme, type, slug } = props;
+  const { theme, type, slug, isIntersecting } = props;
   // @ts-ignore
   const [isMounted, setMounted] = useState(false);
   const [arrowPosition, setArrowPosition] = useState(
@@ -253,15 +242,11 @@ const RecommendedBookCarousel = React.memo(function RecommendedBookCarousel(
 
   const handleLeftArrow = (e: FormEvent) => {
     e.preventDefault();
-    if (slider.current) {
-      (slider.current as SliderCarousel).slickPrev();
-    }
+    slider.current?.slickPrev();
   };
   const handleRightArrow = (e: FormEvent) => {
     e.preventDefault();
-    if (slider.current) {
-      (slider.current as SliderCarousel).slickNext();
-    }
+    slider.current?.slickNext();
   };
 
   const sendDisplayEvent = useSendDisplayEvent(slug);
@@ -286,11 +271,11 @@ const RecommendedBookCarousel = React.memo(function RecommendedBookCarousel(
             index={index}
             type={type}
             theme={theme}
-            isIntersecting={props.isIntersecting}
+            isIntersecting={isIntersecting}
             slug={slug}
           />
         )),
-    [items],
+    [items, type, theme, isIntersecting, slug],
   );
 
   // @ts-ignore

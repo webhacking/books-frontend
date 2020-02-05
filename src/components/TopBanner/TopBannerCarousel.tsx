@@ -5,7 +5,7 @@ import { css } from '@emotion/core';
 import { displayNoneForTouchDevice, flexCenter } from 'src/styles';
 import Arrow from 'src/components/Carousel/Arrow';
 import uiOption from 'src/constants/ui';
-import { ForwardedRefComponent } from 'src/components/Carousel/LoadableCarousel';
+import SliderCarouselWrapper from 'src/components/Carousel/CarouselWrapper';
 import { between, BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import { TopBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
@@ -525,11 +525,16 @@ const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props 
 );
 
 const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => {
-  const { banners, forwardRef, setInitialized, isIntersecting, slug } = props;
+  const {
+    banners,
+    changePosition,
+    forwardRef,
+    setInitialized,
+    isIntersecting,
+    slug,
+  } = props;
   const [tracker] = useEventTracker();
 
-  const device = getDeviceType();
-  const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
   const resize = useCallback(() => {
     let event = null;
     if (typeof Event === 'function') {
@@ -541,9 +546,52 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
     window.dispatchEvent(event);
   }, []);
 
+  const handleAfterChange = useCallback(
+    (next: number) => {
+      const device = getDeviceType();
+      const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
+      resize();
+      changePosition(next);
+
+      if (isIntersecting) {
+        tracker.sendEvent('display', {
+          section: `${deviceType}.${slug}`,
+          items: [
+            {
+              id: banners[next]?.id,
+              order: next,
+              ts: new Date().getTime(),
+            },
+          ],
+        });
+      }
+    },
+    [resize, tracker, isIntersecting, changePosition, banners, slug],
+  );
+
+  // FIXME: 함수 의존성을 의도적으로 비웠는데 별로 기분이 좋지 않음
+  useEffect(() => {
+    const device = getDeviceType();
+    const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
+
+    setInitialized();
+    // FIXME: 이게 최선입니까?
+    setImmediate(() => {
+      const firstItem = {
+        id: banners[0]?.id,
+        order: 0,
+        ts: new Date().getTime(),
+      };
+      tracker.sendEvent('display', {
+        section: `${deviceType}.${props.slug}`,
+        items: [firstItem],
+      });
+    });
+  }, []);
+
   return (
-    <ForwardedRefComponent
-      ref={forwardRef}
+    <SliderCarouselWrapper
+      forwardedRef={forwardRef}
       className={'center slider variable-width'}
       css={sliderCSS}
       slidesToShow={1}
@@ -556,35 +604,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
       arrows={false}
       infinite={true}
       variableWidth={true}
-      afterChange={(next: number) => {
-        resize();
-        props.changePosition(next);
-
-        if (isIntersecting) {
-          tracker.sendEvent('display', {
-            section: `${deviceType}.${props.slug}`,
-            items: [
-              {
-                id: banners[next]?.id,
-                order: next,
-                ts: new Date().getTime(),
-              },
-            ],
-          });
-        }
-      }}
-      onInit={() => {
-        setInitialized();
-        const firstItem = {
-          id: banners[0]?.id,
-          order: 0,
-          ts: new Date().getTime(),
-        };
-        tracker.sendEvent('display', {
-          section: `${deviceType}.${props.slug}`,
-          items: [firstItem],
-        });
-      }}
+      afterChange={handleAfterChange}
       centerMode={true}>
       {banners.map((item, index) => (
         <a
@@ -607,7 +627,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
           <TopBannerItem item={item} />
         </a>
       ))}
-    </ForwardedRefComponent>
+    </SliderCarouselWrapper>
   );
 });
 

@@ -22,7 +22,6 @@ import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
-import { between, orBelow } from 'src/utils/mediaQuery';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
 
 interface RecommendedBookListProps {
@@ -33,14 +32,141 @@ interface RecommendedBookListProps {
   slug: string;
 }
 
+interface ListItemProps {
+  book: TodayRecommendation | HotRelease;
+  index: number;
+  type: DisplayType;
+  theme: string;
+  isIntersecting: boolean;
+  slug: string;
+}
+
+const ListItem = React.memo(function ListItem(props: ListItemProps) {
+  const { book, index, type, theme, isIntersecting, slug } = props;
+  return (
+    <PortraitBook
+      key={index}
+      css={[
+        props.type === DisplayType.HotRelease
+          ? css`
+              margin-right: 12px !important;
+              @media (min-width: 834px) {
+                margin-right: 20px !important;
+              }
+              @media (min-width: 1000px) {
+                margin-right: inherit !important;
+              }
+            `
+          : css`
+              margin-right: 30px !important;
+              :last-of-type {
+                padding-right: 35px !important;
+              }
+              @media (min-width: 1000px) {
+                margin-right: inherit !important;
+                padding-right: inherit !important;
+              }
+            `,
+      ]}>
+      <a
+        css={css`
+          display: inline-block;
+        `}
+        href={new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString()}>
+        <ThumbnailWrapper>
+          <ThumbnailRenderer
+            className={slug}
+            order={index}
+            responsiveWidth={[
+              css`
+                width: 100px;
+              `,
+            ]}
+            slug={slug}
+            book={{ b_id: book.b_id, detail: book.detail }}
+            imgSize={'large'}
+            isIntersecting={isIntersecting}>
+            <div
+              css={css`
+                position: absolute;
+                display: block;
+                top: -7px;
+                left: -7px;
+              `}>
+              <BookBadgeRenderer
+                type={type}
+                wrapperCSS={css``}
+                isWaitFree={book.detail?.series?.property.is_wait_free}
+                discountPercentage={getMaxDiscountPercentage(book.detail)}
+              />
+            </div>
+            <FreeBookRenderer
+              freeBookCount={
+                book.detail?.series?.price_info?.rent?.free_book_count ||
+                book.detail?.series?.price_info?.buy?.free_book_count ||
+                0
+              }
+              unit={book.detail?.series?.property.unit || '권'}
+            />
+            <SetBookRenderer setBookCount={book.detail?.setbook?.member_books_count} />
+            {book.detail?.property?.is_adult_only && <AdultBadge />}
+          </ThumbnailRenderer>
+        </ThumbnailWrapper>
+      </a>
+      {/* Todo show sentence */}
+      {book.detail && type === DisplayType.HotRelease && <BookMeta book={book.detail} />}
+      {book.detail && type === DisplayType.TodayRecommendation && (
+        <h4
+          css={[
+            css`
+              padding-left: 0;
+              position: relative;
+              margin-top: 2px;
+              ${sentenceStyle}
+            `,
+            theme === 'dark' &&
+              css`
+                color: white;
+              `,
+          ]}>
+          <span
+            dangerouslySetInnerHTML={{
+              __html: (book as HotRelease).sentence.replace(/(?:\r\n|\r|\n)/g, '<br />'),
+            }}
+          />
+        </h4>
+      )}
+    </PortraitBook>
+  );
+});
+
 const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo(props => {
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
-  const { theme, type, slug } = props;
+  const { theme, type, slug, isIntersecting } = props;
   const deviceType = useContext(DeviceTypeContext);
 
   const sendDisplayEvent = useSendDisplayEvent(slug);
   useMultipleIntersectionObserver(ref, slug, sendDisplayEvent);
+
+  const items = props.items;
+  const carouselItems = React.useMemo(
+    () =>
+      items
+        .filter(book => book.detail)
+        .map((book, index) => (
+          <ListItem
+            key={index}
+            book={book}
+            index={index}
+            type={type}
+            theme={theme}
+            isIntersecting={isIntersecting}
+            slug={slug}
+          />
+        )),
+    [items, type, theme, isIntersecting, slug],
+  );
 
   return (
     <div
@@ -51,13 +177,10 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo(props
       <BookList
         ref={ref}
         css={[
-          props.type === DisplayType.HotRelease
+          type === DisplayType.HotRelease
             ? hotReleaseBookListCSS
             : recommendedBookListCSS,
-          css`
-            padding-left: 0 !important;
-          `,
-          props.type === DisplayType.TodayRecommendation
+          type === DisplayType.TodayRecommendation
             ? css`
                 padding-left: 23px !important;
               `
@@ -65,122 +188,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo(props
                 padding-left: 13px !important;
               `,
         ]}>
-        {props.items
-          .filter(book => book.detail)
-          .map((book, index) => (
-            <PortraitBook
-              key={index}
-              css={[
-                props.type === DisplayType.HotRelease
-                  ? css`
-                      ${orBelow(
-                        833,
-                        css`
-                          margin-right: 12px !important;
-                        `,
-                      )}
-                      ${between(
-                        834,
-                        999,
-                        css`
-                          margin-right: 20px !important;
-                        `,
-                      )}
-                    `
-                  : css`
-                      ${orBelow(
-                        999,
-                        css`
-                          margin-right: 30px !important;
-                          :last-of-type {
-                            padding-right: 35px !important;
-                          }
-                        `,
-                      )}
-                    `,
-              ]}>
-              <a
-                css={[
-                  css`
-                    display: inline-block;
-                  `,
-                ]}
-                href={new URL(
-                  `/books/${book.b_id}`,
-                  publicRuntimeConfig.STORE_HOST,
-                ).toString()}>
-                <ThumbnailWrapper>
-                  <ThumbnailRenderer
-                    className={slug}
-                    order={index}
-                    responsiveWidth={[
-                      css`
-                        width: 100px;
-                      `,
-                    ]}
-                    slug={slug}
-                    book={{ b_id: book.b_id, detail: book.detail }}
-                    imgSize={'large'}
-                    isIntersecting={props.isIntersecting}>
-                    <div
-                      css={css`
-                        position: absolute;
-                        display: block;
-                        top: -7px;
-                        left: -7px;
-                      `}>
-                      <BookBadgeRenderer
-                        type={type}
-                        wrapperCSS={css``}
-                        isWaitFree={book.detail?.series?.property.is_wait_free}
-                        discountPercentage={getMaxDiscountPercentage(book.detail)}
-                      />
-                    </div>
-                    <FreeBookRenderer
-                      freeBookCount={
-                        book.detail?.series?.price_info?.rent?.free_book_count ||
-                        book.detail?.series?.price_info?.buy?.free_book_count ||
-                        0
-                      }
-                      unit={book.detail?.series?.property.unit || '권'}
-                    />
-                    <SetBookRenderer
-                      setBookCount={book.detail?.setbook?.member_books_count}
-                    />
-                    {book.detail?.property?.is_adult_only && <AdultBadge />}
-                  </ThumbnailRenderer>
-                </ThumbnailWrapper>
-              </a>
-              {/* Todo show sentence */}
-              {book.detail && type === DisplayType.HotRelease && (
-                <BookMeta book={book.detail} />
-              )}
-              {book.detail && type === DisplayType.TodayRecommendation && (
-                <h4
-                  css={[
-                    css`
-                      padding-left: 0;
-                      position: relative;
-                      margin-top: 2px;
-                      ${sentenceStyle}
-                    `,
-                    theme === 'dark' &&
-                      css`
-                        color: white;
-                      `,
-                  ]}>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: (book as HotRelease).sentence.replace(
-                        /(?:\r\n|\r|\n)/g,
-                        '<br />',
-                      ),
-                    }}
-                  />
-                </h4>
-              )}
-            </PortraitBook>
-          ))}
+        {carouselItems}
       </BookList>
       {!['mobile', 'tablet'].includes(deviceType) && (
         <form css={displayNoneForTouchDevice}>
