@@ -49,6 +49,8 @@ module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
       'supported-color-schemes',
       '请求超时。',
       'Abgebrochen',
+      'Non-error was thrown: "Cancel". You should only throw errors.',
+      'TypeError: Non-error was thrown: "Cancel". You should only throw errors.',
       'cancelado',
       'AdBlock',
       'mttLongPressVar',
