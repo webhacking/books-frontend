@@ -98,87 +98,61 @@ const thumbnailWrapperCSS = css`
 // 썸네일을 보여줄 수 있는 상태 ( intersecting 되거나 fetch 종료 ) 일 때도 체크
 // loggedUser 가 성인 인증 상태일 경우는 정상 렌더링
 // 아닌 경우는 성인 도서 Placeholder 표지
-const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(
-  props => {
-    // @ts-ignore
-    const {
-      book,
-      isIntersecting,
-      imgSize,
-      responsiveWidth,
-      children,
-      slug,
-      order,
-    } = props;
-    const { loggedUser } = useSelector((state: RootState) => state.account);
-    const [isImageLoaded, setImageLoaded] = useState(false);
-    const is_adult_only = book.detail?.property?.is_adult_only ?? false;
-    const imgRef = useRef<HTMLImageElement>(null);
+const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(props => {
+  // @ts-ignore
+  const { book, isIntersecting, imgSize, responsiveWidth, children, slug, order } = props;
+  const { loggedUser } = useSelector((state: RootState) => state.account);
+  const [isImageLoaded, setImageLoaded] = useState(false);
+  const is_adult_only = book.detail?.property?.is_adult_only ?? false;
+  const imgRef = useRef<HTMLImageElement>(null);
 
-    const imageUrl = computeThumbnailUrl(
-      is_adult_only,
-      isIntersecting,
-      loggedUser?.is_verified_adult,
-      book?.detail?.thumbnailId ?? book.b_id,
-      imgSize,
-      book.detail,
-    );
-    const imageOnLoad = () => {
-      setImageLoaded(true);
-    };
+  const imageUrl = computeThumbnailUrl(
+    is_adult_only,
+    isIntersecting,
+    loggedUser?.is_verified_adult,
+    book?.detail?.thumbnailId ?? book.b_id,
+    imgSize,
+    book.detail,
+  );
+  const imageOnLoad = () => {
+    setImageLoaded(true);
+  };
 
-    const title = bookTitleGenerator(book.detail);
+  const title = bookTitleGenerator(book.detail);
 
-    useEffect(() => {
-      if (imgRef.current) {
-        imgRef.current.src = imageUrl;
-      }
-    }, [imageUrl]);
-    return (
-      <div
-        css={[thumbnailWrapperCSS]}
-        className={props.className || ''}
-        data-order={order}
-        data-book-id={book.b_id}>
-        <img
-          ref={imgRef}
-          css={[
-            responsiveWidth,
-            isImageLoaded
-              ? null
-              : css`
-                  padding-bottom: 142%;
-                  height: 0;
-                  background-image: linear-gradient(
-                    147deg,
-                    #e6e8eb,
-                    #edeff2 55%,
-                    #e6e8eb
-                  );
-                `,
-          ]}
-          src={imageUrl}
-          alt={title}
-          onLoad={imageOnLoad}
-        />
-        {children}
-      </div>
-    );
-  },
-  (prev, next) => {
-    if (prev.book?.detail?.title?.main === next.book?.detail?.title?.main) {
-      return true;
+  useEffect(() => {
+    if (imgRef.current) {
+      imgRef.current.src = imageUrl;
     }
-    if (prev.book.b_id !== next.book.b_id) {
-      return false;
-    }
-    if (prev.book.detail !== next.book.detail) {
-      return false;
-    }
-    if (prev.isIntersecting !== next.isIntersecting) {
-      return false;
-    }
-    return true;
-  },
-);
+  }, []);
+  return (
+    <div
+      css={[thumbnailWrapperCSS]}
+      className={props.className || ''}
+      data-order={order}
+      data-book-id={book.b_id}>
+      <img
+        ref={imgRef}
+        css={[
+          responsiveWidth,
+          isIntersecting || isImageLoaded
+            ? css`
+                padding-bottom: 0;
+                background-image: inherit;
+                height: inherit;
+              `
+            : css`
+                padding-bottom: 142%;
+                height: 0;
+                background-image: linear-gradient(147deg, #e6e8eb, #edeff2 55%, #e6e8eb);
+              `,
+        ]}
+        src={imageUrl}
+        alt={title}
+        onLoad={imageOnLoad}
+      />
+      {children}
+    </div>
+  );
+});
 export default ThumbnailRenderer;
