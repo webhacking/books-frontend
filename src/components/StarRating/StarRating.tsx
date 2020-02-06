@@ -1,6 +1,6 @@
 import * as React from 'react';
-import StarRatingIcon from 'src/svgs/StarRating.svg';
 import { css } from '@emotion/core';
+import { NO_STAR_RATING_URL, STAR_RATING_URL } from 'src/constants/icons';
 
 interface StarRatingProps {
   rating: number | null;
@@ -28,30 +28,29 @@ const StarRating: React.FC<StarRatingProps> = props => (
       css={css`
         position: relative;
       `}>
-      <StarRatingIcon
+      <img
+        src={NO_STAR_RATING_URL}
         css={css`
           width: 50px;
           height: 10px;
-          fill: black;
-          opacity: 0.2;
           margin-right: 2px;
-          background-color: transparent;
         `}
       />
       <span
         css={css`
           width: ${Math.floor((props.rating / 5) * 50)}px;
           left: 0;
+          top: 0;
           position: absolute;
           height: 100%;
           background-color: transparent;
           overflow: hidden;
         `}>
-        <StarRatingIcon
+        <img
+          src={STAR_RATING_URL}
           css={css`
             width: 50px;
             height: 10px;
-            background-color: transparent;
           `}
         />
       </span>
