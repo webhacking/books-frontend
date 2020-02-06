@@ -1,0 +1,188 @@
+version: 2.1
+orbs:
+  aws-s3: circleci/aws-s3@1.0.9
+  slack: circleci/slack@3.4.2
+commands:
+  install:
+    parameters:
+      key:
+        type: string
+        default: books-frontend
+    steps:
+      - restore_cache:
+          keys:
+            - <<parameters.key>>-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - <<parameters.key>>-{{ .Branch }}-
+            - <<parameters.key>>-
+      - run:
+          name: Install yarn packages
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          key: <<parameters.key>>-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths: ~/.cache/yarn
+jobs:
+  build:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/books-frontend
+    parameters:
+      environment:
+        type: string
+        default: production
+    environment:
+      ENVIRONMENT: << parameters.environment >>
+    steps:
+      - checkout
+      - install
+      - run:
+          command: yarn build src
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build/
+  deploy:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/books-frontend
+    parameters:
+      aws-access-key-id:
+        type: env_var_name
+        default: PROD_AWS_ACCESS_KEY_ID
+      aws-secret-access-key:
+        type: env_var_name
+        default: PROD_AWS_SECRET_ACCESS_KEY
+      s3-bucket:
+        type: env_var_name
+        default: PROD_S3_BUCKET
+      stage:
+        type: string
+        default: production
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - aws-s3/sync:
+          from: static
+          to: s3://${<< parameters.s3-bucket >>}/static/
+          aws-access-key-id: << parameters.aws-access-key-id >>
+          aws-secret-access-key: << parameters.aws-secret-access-key >>
+      - aws-s3/sync:
+          from: build
+          to: s3://${<< parameters.s3-bucket >>}/_next/
+          aws-access-key-id: << parameters.aws-access-key-id >>
+          aws-secret-access-key: << parameters.aws-secret-access-key >>
+      - install
+      - run:
+          command: yarn serverless deploy -s << parameters.stage >> -v
+      - run:
+          command:
+            yarn serverless deploy list | awk '/Timestamp/ {print $NF}' | tail -n 1 >
+            .deploytimestamp
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .deploytimestamp
+  notify:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/books-frontend
+    parameters:
+      color:
+        type: string
+        default: good
+      channel:
+        type: string
+        default: deploy-store
+      rollback:
+        type: boolean
+        default: false
+    steps:
+      - checkout
+      - run:
+          command: |
+            export TITLE="`git show -s --format=%s -n1 $CIRCLE_SHA1 | sed "s/'/\\\\\'/g"`"
+            echo "export TITLE=$'$(echo "$TITLE")'" >> $BASH_ENV
+      - unless:
+          condition: <<parameters.rollback>>
+          steps:
+            - run:
+                command: |
+                  export MESSAGE="`git show -s --format=%b $CIRCLE_SHA1 | sed "s/'/\\\\\'/g"`"
+                  export MESSAGE="$MESSAGE\n\n$(git log `git rev-parse --abbrev-ref HEAD`^1..`git rev-parse --abbrev-ref HEAD` --no-merges --pretty=format:'* `%h` %s')"
+                  echo "export MESSAGE=$'$(echo "$MESSAGE")'" >> $BASH_ENV
+      - when:
+          condition: <<parameters.rollback>>
+          steps:
+            - run:
+                command: |
+                  export MESSAGE="[Rollback]: `git show -s --format=%b $CIRCLE_SHA1 | sed "s/'/\\\\\'/g"`"
+                  echo "export MESSAGE=$'$(echo "$MESSAGE")'" >> $BASH_ENV
+      - slack/notify:
+          color: << parameters.color >>
+          title: $TITLE
+          title_link: https://github.com/ridi/books-frontend/commit/$CIRCLE_SHA1
+          message: $MESSAGE
+          channel: << parameters.channel >>
+          include_project_field: false
+          include_job_number_field: false
+  rollback:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - run:
+          command: |
+            curl -o- -L https://slss.io/install | bash
+            export PATH="$HOME/.serverless/bin:$PATH"
+      - run:
+          command: serverless rollback -t `cat .deploytimestamp`
+workflows:
+  version: 2
+  deploy-dev:
+    jobs:
+      - build:
+          name: build-dev
+          filters:
+            branches:
+              only: master
+          environment: local
+      - deploy:
+          name: deploy-dev
+          requires:
+            - build-dev
+          aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
+          aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
+          s3-bucket: DEV_S3_BUCKET
+          stage: development
+      - notify:
+          name: notify-dev
+          requires:
+            - deploy-dev
+          channel: deploy-store-dev
+  deploy-prod:
+    jobs:
+      - build:
+          name: build-prod
+          filters:
+            branches:
+              only: release
+      - deploy:
+          name: deploy-prod
+          requires:
+            - build-prod
+      - notify:
+          name: notify-prod
+          requires:
+            - deploy-prod
+      - rollback-approval:
+          type: approval
+          requires:
+            - deploy-prod
+      - rollback:
+          requires:
+            - rollback-approval
+      - notify:
+          name: notify-rollback
+          requires:
+            - rollback
+          color: '#805b24'
+          rollback: true
