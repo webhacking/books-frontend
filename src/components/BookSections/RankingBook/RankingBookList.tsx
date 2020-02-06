@@ -27,6 +27,7 @@ import {
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
+
 const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;
@@ -189,7 +190,6 @@ const ItemList: React.FC<any> = props => {
   const sendDisplayEvent = useSendDisplayEvent(slug);
   const [tracker] = useEventTracker();
   useMultipleIntersectionObserver(ref, slug, sendDisplayEvent);
-
   return (
     <ul css={listCSS} ref={ref}>
       {books
@@ -233,7 +233,7 @@ const ItemList: React.FC<any> = props => {
                         ]
                   }
                   book={{ b_id: book.b_id, detail: book.detail }}
-                  imgSize={'large'}
+                  imgSize="large"
                   isIntersecting={isIntersecting}>
                   {type === 'big' && (
                     <div
@@ -276,7 +276,7 @@ const ItemList: React.FC<any> = props => {
                 </ThumbnailRenderer>
               </a>
             </div>
-            <div className={'book-meta-box'}>
+            <div className="book-meta-box">
               <div css={rankCSS} aria-label={`랭킹 순위 ${index + 1}위`}>
                 {index + 1}
               </div>
@@ -356,8 +356,8 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                 displayNoneForTouchDevice,
               ]}>
               <Arrow
-                label={'이전'}
-                side={'left'}
+                label="이전"
+                side="left"
                 onClickHandler={moveLeft}
                 wrapperStyle={[
                   arrowPosition('left'),
@@ -368,8 +368,8 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                 ]}
               />
               <Arrow
-                label={'다음'}
-                side={'right'}
+                label="다음"
+                side="right"
                 onClickHandler={moveRight}
                 wrapperStyle={[
                   arrowPosition('right'),
