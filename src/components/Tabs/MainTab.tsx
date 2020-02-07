@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { a11y } from 'src/styles';
-import { BrowserLocationContext } from 'src/components/Context';
 import { Link } from 'server/routes';
 import * as labels from 'src/labels/menus.json';
 import * as Cookies from 'js-cookie';
@@ -17,7 +17,6 @@ import MyRIDI_regular from 'src/svgs/MyRIDI_regular.svg';
 import cookieKeys from 'src/constants/cookies';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { LoggedUser } from 'src/types/account';
-import sentry from 'src/utils/sentry';
 import { useCartCount } from 'src/hooks/useCartCount';
 import { useDispatch, useSelector } from 'react-redux';
 import { notificationActions } from 'src/services/notification';
@@ -240,7 +239,8 @@ const genreValueReplace = (visitedGenre: string) => {
 export const MainTab: React.FC<MainTabProps> = props => {
   const { isPartials, loggedUserInfo } = props;
   const { hasNotification } = useSelector((store: RootState) => store.notifications);
-  const currentPath = useContext(BrowserLocationContext);
+  const router = useRouter();
+  const currentPath = router.asPath;
   const [, setHomeURL] = useState('/');
   const cartCount = useCartCount(loggedUserInfo);
   const dispatch = useDispatch();

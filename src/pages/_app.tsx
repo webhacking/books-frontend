@@ -145,25 +145,22 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         <Meta />
         <CacheProvider value={createCache({ ...cache, nonce })}>
           <Global styles={resetStyles} />
-          {/* eslint-disable-next-line no-process-env */}
-          <BrowserLocationWithRouter isPartials={false} pathname={ctxPathname || '/'}>
-            <Provider store={store}>
-              <ConnectedRouter>
-                {/* Todo Apply Layout */}
-                <ThemeProvider theme={defaultTheme}>
-                  <GNB
-                    searchKeyword={query.search || query.q}
-                    isPartials={false}
-                    isLoginForPartials={query.is_login}
-                  />
-                  <Contents>
-                    <Component {...pageProps} />
-                  </Contents>
-                  <Footer />
-                </ThemeProvider>
-              </ConnectedRouter>
-            </Provider>
-          </BrowserLocationWithRouter>
+          <Provider store={store}>
+            <ConnectedRouter>
+              {/* Todo Apply Layout */}
+              <ThemeProvider theme={defaultTheme}>
+                <GNB
+                  searchKeyword={query.search || query.q}
+                  isPartials={false}
+                  isLoginForPartials={query.is_login}
+                />
+                <Contents>
+                  <Component {...pageProps} />
+                </Contents>
+                <Footer />
+              </ThemeProvider>
+            </ConnectedRouter>
+          </Provider>
         </CacheProvider>
       </>
     );
