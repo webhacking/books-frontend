@@ -151,6 +151,7 @@ async function profile(url) {
       '--disable-background-timer-throttling',
       '--disable-backgrounding-occluded-windows',
       '--disable-renderer-backgrounding',
+      '--disable-web-security',
     ],
   });
   let page;

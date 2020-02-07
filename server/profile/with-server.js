@@ -7,12 +7,16 @@ const { injectConfig } = require('../../env/publicRuntimeConfig');
 const { createServer } = require('../common');
 const { profile } = require('./core');
 
+require('dotenv').config({
+  path: path.resolve(__dirname, 'profile.env'),
+});
+
 const dev = true;
 const app = next({ dev, dir: path.resolve(__dirname, '../../src') });
 injectConfig(app.buildId);
 const expressServer = createServer(app, dev);
 
-const port = 443;
+const port = 8443;
 (async () => {
   const [key, cert] = await Promise.all([
     fs.promises.readFile(path.resolve(__dirname, 'self.key')),
