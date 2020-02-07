@@ -3,12 +3,12 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https');
 
-const { injectConfig } = require('../env/publicRuntimeConfig');
-const { createServer } = require('./common');
-const { profile } = require('./profile-core');
+const { injectConfig } = require('../../env/publicRuntimeConfig');
+const { createServer } = require('../common');
+const { profile } = require('./core');
 
 const dev = true;
-const app = next({ dev, dir: path.resolve(__dirname, '../src') });
+const app = next({ dev, dir: path.resolve(__dirname, '../../src') });
 injectConfig(app.buildId);
 const expressServer = createServer(app, dev);
 
