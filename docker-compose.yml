@@ -19,6 +19,8 @@ services:
     environment:
       ENVIRONMENT: local
       NEXT_TELEMETRY_DISABLED: '1'
-    command: ['/books/provisioning/local/run.sh']
+    command: >
+      sh -c "yarn install --frozen-lockfile &&
+             node ./server/server.js"
 volumes:
   node_modules:
