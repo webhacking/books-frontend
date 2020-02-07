@@ -1,8 +1,4 @@
 {
-  "**/src/!(tests)/**/(!*.d).ts{,x}": ["eslint --fix --fix-type problem", "git add"],
-  "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|graphql|mdx)": [
-    "prettier --write",
-    "git add"
-  ]
+  "src/!(tests)/**/(!*.d).ts{,x}": ["eslint --fix", "git add"]
 }
 
