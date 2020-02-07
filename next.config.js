@@ -80,7 +80,7 @@ module.exports = withBundleAnalyzer(
             use: ['@svgr/webpack'],
           });
 
-          if (ENVIRONMENT !== 'local') {
+          if (!['local', 'profile'].includes(ENVIRONMENT)) {
             config.plugins.push(
               new SentryCliPlugin({
                 include: ['./build/', './src/'],
