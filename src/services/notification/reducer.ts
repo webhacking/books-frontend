@@ -6,13 +6,13 @@ export interface NotificationState {
   items: Notification[];
   hasNotification: boolean;
   unreadCount: number;
-  isFetching: boolean;
+  isLoaded: boolean;
 }
 
 export const notificationInitialState: NotificationState = {
   items: [],
   unreadCount: 0,
-  isFetching: false,
+  isLoaded: false,
   hasNotification: false,
 };
 
@@ -26,7 +26,7 @@ export class NotificationReducer extends ImmerReducer<NotificationState> {
   public loadNotificationUnreadCount() {}
 
   public setNotifications(payload: NotificationResponse) {
-    this.draftState.isFetching = true;
+    this.draftState.isLoaded = true;
     this.draftState.items = payload.notifications;
     this.draftState.unreadCount = payload.unreadCount;
     // GNB Tab의 알림 표시 제거
@@ -42,8 +42,8 @@ export class NotificationReducer extends ImmerReducer<NotificationState> {
     }
   }
 
-  public setFetching(payload: boolean) {
-    this.draftState.isFetching = payload;
+  public setLoaded(payload: boolean) {
+    this.draftState.isLoaded = payload;
   }
 }
 

@@ -1,4 +1,6 @@
-import { takeLeading, all, call, put } from 'redux-saga/effects';
+import {
+  takeLeading, all, call, put,
+} from 'redux-saga/effects';
 import pRetry from 'p-retry';
 import { Actions } from 'immer-reducer';
 import sentry from 'src/utils/sentry';
@@ -73,8 +75,9 @@ function* watchNotificationUnreadCountRequest(
   } catch (error) {
     if (error.response && error.response.status === 401) {
       Cookies.remove(RIDI_NOTIFICATION_TOKEN);
+    } else {
+      captureException(error);
     }
-    captureException(error);
   }
 }
 
@@ -98,7 +101,7 @@ function* watchNotificationRequest(action: Actions<typeof NotificationReducer>) 
       });
     }
   } catch (error) {
-    yield put({ type: notificationActions.setFetching.type, payload: false });
+    yield put({ type: notificationActions.setLoaded.type, payload: false });
     captureException(error);
   }
 }

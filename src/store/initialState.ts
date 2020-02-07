@@ -16,7 +16,7 @@ export const initialState: RootState = {
   },
   notifications: {
     hasNotification: false,
-    isFetching: false,
+    isLoaded: false,
     unreadCount: 0,
     items: [],
   },

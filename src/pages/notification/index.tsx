@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import Head from 'next/head';
 import PageTitle from 'src/components/PageTitle/PageTitle';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { flexColumnStart, RIDITheme } from 'src/styles';
 import { timeAgo } from 'src/utils/common';
+import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 import ArrowLeft from 'src/svgs/ChevronRight.svg';
 import NotificationIcon from 'src/svgs/Notification_solid.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
@@ -12,6 +13,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { notificationActions } from 'src/services/notification';
 import { RootState } from 'src/store/config';
 import NotificationPlaceholder from 'src/components/Placeholder/NotificationItemPlaceholder';
+import { Tracker } from '@ridi/event-tracker';
+import { sendClickEvent, useEventTracker, useSendDisplayEvent } from 'src/hooks/useEventTracker';
+import sentry from 'src/utils/sentry';
+
+const { captureException } = sentry();
 
 const sectionCSS = (theme: RIDITheme) => css`
   background-color: ${theme.backgroundColor};
@@ -159,24 +165,35 @@ interface NotificationItemProps {
   item: NotificationItemScheme;
   createdAtTimeAgo: string;
   dot?: boolean;
+  tracker: Tracker;
+  slug: string;
+  order: number;
 }
 
 interface NotificationPageProps {
   isTitleHidden?: boolean;
 }
 
-export const NotificationItem: React.FunctionComponent<NotificationItemProps> = props => {
-  const { item, createdAtTimeAgo, dot = false } = props;
+export const NotificationItem: React.FunctionComponent<NotificationItemProps> = (props) => {
+  const {
+    item, createdAtTimeAgo, dot = false, tracker, slug, order,
+  } = props;
   return (
     <li css={notiListItemCSS}>
-      <a css={wrapperCSS} href={item.landingUrl}>
-        <div css={imageWrapperCSS}>
+      <a
+        onClick={sendClickEvent.bind(null, tracker, item, slug, order)}
+        css={wrapperCSS}
+        href={item.landingUrl}
+      >
+        <div
+          className={slug}
+          css={imageWrapperCSS}
+          data-id={item.id}
+          data-order={order}
+        >
           <img
             alt={item.message}
-            css={css`
-              box-shadow: 0 0 3px 0.5px rgba(0, 0, 0, 0.3);
-            `}
-            width={'56px'}
+            width="56px"
             src={item.imageUrl}
           />
           {dot && (
@@ -197,7 +214,8 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
           css={css`
             ${flexColumnStart};
             margin-left: 16px;
-          `}>
+          `}
+        >
           <h3
             css={notificationTitleCSS}
             dangerouslySetInnerHTML={{ __html: item.message }}
@@ -208,7 +226,8 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
           css={css`
             padding: 0 15px;
             margin-left: auto;
-          `}>
+          `}
+        >
           <ArrowLeft css={arrow} />
         </div>
       </a>
@@ -216,30 +235,50 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
   );
 };
 
-const NotificationPage: React.FC<NotificationPageProps> = props => {
+const NotificationPage: React.FC<NotificationPageProps> = (props) => {
   const { isTitleHidden = false } = props;
-  const { items, isFetching, unreadCount } = useSelector(
+  const ref = useRef<HTMLUListElement>(null);
+  const { items, isLoaded, unreadCount } = useSelector(
     (store: RootState) => store.notifications,
   );
+  const { loggedUser } = useSelector((state: RootState) => state.account);
+  const slug = 'notification-item';
+  const sendDisplayEvent = useSendDisplayEvent(slug);
   const dispatch = useDispatch();
+  const [tracker] = useEventTracker();
+  useMultipleIntersectionObserver(ref, slug, sendDisplayEvent);
+
+  const setPageView = useCallback(() => {
+    if (tracker) {
+      try {
+        tracker.sendPageView(window.location.href, document.referrer);
+      } catch (error) {
+        captureException(error);
+      }
+    }
+  }, [tracker]);
 
   useEffect(() => {
-    if (!isFetching) {
+    setPageView();
+  }, [loggedUser]);
+
+  useEffect(() => {
+    if (!isLoaded) {
       dispatch(notificationActions.loadNotifications({ limit: 100 }));
     }
 
-    return () => dispatch(notificationActions.setFetching(false));
+    return () => dispatch(notificationActions.setLoaded(false));
   }, [dispatch]);
 
-  if (!isFetching) {
+  if (!isLoaded) {
     return (
       <>
         <Head>
           <title>리디북스 - 알림</title>
         </Head>
         <section css={sectionCSS}>
-          <PageTitle title={'알림'} mobileHidden={isTitleHidden} />
-          <NotificationPlaceholder num={5}></NotificationPlaceholder>
+          <PageTitle title="알림" mobileHidden={isTitleHidden} />
+          <NotificationPlaceholder num={5} />
         </section>
       </>
     );
@@ -251,8 +290,8 @@ const NotificationPage: React.FC<NotificationPageProps> = props => {
         <title>리디북스 - 알림</title>
       </Head>
       <section css={sectionCSS}>
-        <PageTitle title={'알림'} mobileHidden={isTitleHidden} />
-        <ul css={notiListCSS}>
+        <PageTitle title="알림" mobileHidden={isTitleHidden} />
+        <ul ref={ref} css={notiListCSS}>
           {items.length === 0 ? (
             <NoEmptyNotification>
               <NotificationIcon css={notificationIcon} />
@@ -265,6 +304,9 @@ const NotificationPage: React.FC<NotificationPageProps> = props => {
                 createdAtTimeAgo={timeAgo(item.createdAt)}
                 item={item}
                 dot={index < unreadCount}
+                tracker={tracker}
+                slug={slug}
+                order={index}
               />
             ))
           )}

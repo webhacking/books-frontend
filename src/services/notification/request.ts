@@ -1,5 +1,4 @@
 import axios, { OAuthRequestType } from 'src/utils/axios';
-import originalAxios from 'axios';
 import { Notification } from 'src/types/notification';
 
 export interface NotificationAuthResponse {
@@ -22,12 +21,10 @@ export const requestNotificationAuth = async () => {
     '/users/me/notification-token/',
     publicRuntimeConfig.STORE_API,
   );
-  const tokenRequestSource = originalAxios.CancelToken.source();
 
   const { data } = await axios.get<NotificationAuthResponse>(tokenUrl.toString(), {
     custom: { authorizationRequestType: OAuthRequestType.STRICT },
     withCredentials: true,
-    cancelToken: tokenRequestSource.token,
   });
 
   return data;
@@ -35,11 +32,9 @@ export const requestNotificationAuth = async () => {
 
 export const requestNotification = async (limit: number, token: string) => {
   const notificationUrl = new URL('/notification', publicRuntimeConfig.STORE_API);
-  const notificationRequestSource = originalAxios.CancelToken.source();
 
   const { data } = await axios.get<NotificationResponse>(notificationUrl.toString(), {
     params: { limit },
-    cancelToken: notificationRequestSource.token,
     custom: { authorizationRequestType: OAuthRequestType.STRICT },
     headers: {
       Authorization: `Bearer ${token}`,

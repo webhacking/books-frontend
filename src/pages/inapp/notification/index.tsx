@@ -34,7 +34,7 @@ export class InAppNotification extends React.Component<InAppNotificationProps> {
   public render() {
     return (
       <ThemeProvider theme={this.props.theme}>
-        <NotificationPage isTitleHidden={true} />
+        <NotificationPage isTitleHidden />
       </ThemeProvider>
     );
   }

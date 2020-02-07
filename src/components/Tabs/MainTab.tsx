@@ -199,7 +199,8 @@ const TabItem: React.FC<TabItemProps> = (props) => {
               }
             `
           : ''
-      }>
+      }
+    >
       {isSPA ? (
         <Link to={path}>
           <StyledAnchor aria-label={label}>
@@ -236,7 +237,7 @@ const genreValueReplace = (visitedGenre: string) => {
   return visitedGenre;
 };
 
-export const MainTab: React.FC<MainTabProps> = props => {
+export const MainTab: React.FC<MainTabProps> = (props) => {
   const { isPartials, loggedUserInfo } = props;
   const { hasNotification } = useSelector((store: RootState) => store.notifications);
   const router = useRouter();
@@ -305,7 +306,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
               />
             )
           }
-          isSPA={true}
+          isSPA
         />
         <TabItem
           isPartials={isPartials}
