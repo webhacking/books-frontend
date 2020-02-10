@@ -150,10 +150,7 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
         css={css`
           display: inline-block;
         `}
-        href={new URL(
-          `/books/${props.book.id}`,
-          publicRuntimeConfig.STORE_HOST,
-        ).toString()}>
+        href={`/books/${props.book.id}`>
         <BookTitle aria-label={props.book?.title?.main || ''}>
           {bookTitleGenerator(props.book)}
         </BookTitle>

@@ -205,14 +205,14 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
       new URL('/order/checkout/cash', publicRuntimeConfig.STORE_MASTER_HOST).toString(),
     );
 
-    const returnUrl = new URL(route.asPath, publicRuntimeConfig.STORE_HOST);
+    const returnUrl = new URL(route.asPath, location.href);
     tempLoginPath.searchParams.append(
       'return_url',
-      returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
+      returnUrl.toString() || location.href,
     );
     tempSignUpPath.searchParams.append(
       'return_url',
-      returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
+      returnUrl.toString() || location.href,
     );
 
     setLoginPath(tempLoginPath.toString());
@@ -354,10 +354,10 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
     };
   }, []);
 
-  const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_HOST);
+  const loginPath = new URL('/account/login', location.href);
   loginPath.searchParams.append('return_url', path || publicRuntimeConfig.BOOKS_HOST);
 
-  const homePath = new URL('/', publicRuntimeConfig.STORE_HOST);
+  const homePath = new URL('/', location.href);
   return (
     // @ts-ignore
     <GNBWrapper className={'new_gnb'} id={props.id}>

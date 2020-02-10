@@ -132,7 +132,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
           display: block;
         `}
         onClick={sendClickEvent.bind(null, tracker, book, slug, order)}
-        href={new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString()}>
+        href={`/books/${book.b_id}`}>
         <ThumbnailWrapper
           css={[
             localExcluded &&
@@ -362,11 +362,7 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
               display: flex;
             `}
             href={
-              extra?.detail_link ??
-              new URL(
-                `/selection/${selectionId}`,
-                publicRuntimeConfig.STORE_HOST,
-              ).toString()
+              extra?.detail_link ?? `/selection/${selectionId}`
             }>
             <span>{title}</span>
             <span

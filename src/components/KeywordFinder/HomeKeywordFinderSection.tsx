@@ -387,10 +387,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
   const genreKeywords = popularKeywords[genre];
   const parentGenre = genre !== 'comics' ? genre.replace('-serial', '') : 'comic';
   // https://ridibooks.com/keyword-finder/romance?from=romance
-  const keywordFinderUrl = new URL(
-    `/keyword-finder/${parentGenre}`,
-    publicRuntimeConfig.STORE_HOST,
-  );
+  const keywordFinderUrl = `/keyword-finder/${parentGenre}`;
   if (['bl', 'fantasy', 'romance'].includes(parentGenre)) {
     keywordFinderUrl.searchParams.append('from', genre);
   }

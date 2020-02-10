@@ -213,10 +213,7 @@ const ItemList: React.FC<any> = props => {
                 css={css`
                   display: inline-block;
                 `}
-                href={new URL(
-                  `/books/${book.b_id}`,
-                  publicRuntimeConfig.STORE_HOST,
-                ).toString()}>
+                href={`/books/${book.b_id}`}>
                 <ThumbnailRenderer
                   slug={slug}
                   className={slug}

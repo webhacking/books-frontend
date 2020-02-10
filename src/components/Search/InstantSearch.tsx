@@ -397,7 +397,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           setFocus(false);
           setSearchResult(initialSearchResult);
 
-          const url = new URL('/search/', publicRuntimeConfig.STORE_HOST);
+          const url = new URL('/search/', location.href);
           url.searchParams.append('q', label);
 
           window.location.href = url.toString();
@@ -416,7 +416,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         e.preventDefault();
         const { bookId } = e.currentTarget.dataset;
 
-        const url = new URL(`/books/${bookId}`, publicRuntimeConfig.STORE_HOST);
+        const url = new URL(`/books/${bookId}`, location.href);
         url.searchParams.append('_s', 'instant');
         url.searchParams.append('_q', keyword);
 
@@ -434,7 +434,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const { authorId } = e.currentTarget.dataset;
-        const url = new URL(`/author/${authorId}`, publicRuntimeConfig.STORE_HOST);
+        const url = new URL(`/author/${authorId}`, location.href);
         url.searchParams.append('_s', 'instant');
         url.searchParams.append('_q', keyword);
 
@@ -471,7 +471,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           // Move search result page
           // Todo conditional check for partial component
 
-          const url = new URL('/search/', publicRuntimeConfig.STORE_HOST);
+          const url = new URL('/search/', location.href);
           url.searchParams.append('q', keyword);
 
           window.location.href = url.toString();
