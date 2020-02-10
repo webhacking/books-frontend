@@ -187,7 +187,7 @@ export interface ClientBookFields {
 
 export interface Book {
   id: string;
-  authors: Author[]; // will remove
+  authors: Author[];
   categories: Category[];
   title: Title;
   file: File;
