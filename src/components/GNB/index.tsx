@@ -354,10 +354,10 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
     };
   }, []);
 
-  const loginPath = new URL('/account/login', location.href);
+  const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_HOST);
   loginPath.searchParams.append('return_url', path || publicRuntimeConfig.BOOKS_HOST);
 
-  const homePath = new URL('/', location.href);
+  const homePath = new URL('/', publicRuntimeConfig.STORE_HOST);
   return (
     // @ts-ignore
     <GNBWrapper className={'new_gnb'} id={props.id}>
