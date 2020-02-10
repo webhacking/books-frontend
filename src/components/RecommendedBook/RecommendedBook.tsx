@@ -135,7 +135,7 @@ interface BookMetaProps {
 // eslint-disable-next-line
 export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
   const authors =
-    props.book?.authors_ordered.filter(author =>
+    props.book?.authors.filter(author =>
       [
         'author',
         'comic_author',
@@ -158,7 +158,7 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
           {bookTitleGenerator(props.book)}
         </BookTitle>
       </a>
-      {props.book.authors_ordered && <BookAuthor>{authorsRenderer(authors)}</BookAuthor>}
+      {props.book.authors && <BookAuthor>{authorsRenderer(authors)}</BookAuthor>}
       {props.book?.clientBookFields.isAvailableSelect && (
         <div
           css={css`

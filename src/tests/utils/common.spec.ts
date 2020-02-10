@@ -73,8 +73,7 @@ describe('test common utilities', () => {
             },
           },
         },
-        authors: { author: [{ name: '글술술', id: 101878 }] },
-        authors_ordered: [{ name: '글술술', id: 101878, role: 'author' }],
+        authors: [{ name: '글술술', id: 101878, role: 'author' }],
         file: {
           size: 1000,
           format: 'epub',
