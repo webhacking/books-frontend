@@ -479,7 +479,6 @@ interface TopBannerCarouselProps {
   banners: TopBanner[];
   slug: string;
   changePosition: (pos: number) => void;
-  setInitialized: () => void;
   forwardRef: React.RefObject<SliderCarousel>;
   isIntersecting: boolean;
 }
@@ -529,7 +528,6 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
     banners,
     changePosition,
     forwardRef,
-    setInitialized,
     isIntersecting,
     slug,
   } = props;
@@ -568,26 +566,6 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
     },
     [resize, tracker, isIntersecting, changePosition, banners, slug],
   );
-
-  // FIXME: 함수 의존성을 의도적으로 비웠는데 별로 기분이 좋지 않음
-  useEffect(() => {
-    const device = getDeviceType();
-    const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
-
-    setInitialized();
-    // FIXME: 이게 최선입니까?
-    setImmediate(() => {
-      const firstItem = {
-        id: banners[0]?.id,
-        order: 0,
-        ts: new Date().getTime(),
-      };
-      tracker.sendEvent('display', {
-        section: `${deviceType}.${props.slug}`,
-        items: [firstItem],
-      });
-    });
-  }, []);
 
   return (
     <SliderCarouselWrapper
@@ -632,22 +610,20 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
 });
 
 export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProps> = props => {
-  const [carouselInitialized, setCarouselInitialized] = useState(false);
+  const [isMounted, setMounted] = useState(false);
   const [currentPosition, setCurrentPosition] = useState(0);
   const { banners, slug } = props;
-  const slider = React.useRef<SliderCarousel>();
-  const wrapper = React.useRef<HTMLElement>();
+  const slider = React.useRef<SliderCarousel>(null);
+  const wrapper = React.useRef<HTMLElement>(null);
   const deviceType = useContext(DeviceTypeContext);
   const router = useRouter();
+  const [tracker] = useEventTracker();
 
   let firstClientX = 0;
   let clientX = 0;
 
   const changePosition = useCallback(item => {
     setCurrentPosition(item || 0);
-  }, []);
-  const setInitialized = useCallback(() => {
-    setCarouselInitialized(true);
   }, []);
 
   const handleClickLeft = (e: FormEvent) => {
@@ -685,30 +661,51 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
   const isIntersecting = useIntersectionObserver(wrapper, '0px');
 
   useEffect(() => {
-    if (wrapper.current) {
-      wrapper.current.addEventListener('touchstart', touchStart, { passive: false });
-      wrapper.current.addEventListener('touchmove', preventTouch, {
-        passive: false,
-      });
-    }
+    wrapper.current?.addEventListener('touchstart', touchStart, { passive: false });
+    wrapper.current?.addEventListener('touchmove', preventTouch, {
+      passive: false,
+    });
 
     return () => {
-      if (wrapper.current) {
-        wrapper.current.removeEventListener('touchstart', touchStart);
-        wrapper.current.removeEventListener('touchmove', preventTouch, {
-          // @ts-ignore
-          passive: false,
-        });
-      }
+      wrapper.current?.removeEventListener('touchstart', touchStart);
+      wrapper.current?.removeEventListener('touchmove', preventTouch, {
+        // @ts-ignore
+        passive: false,
+      });
     };
   }, [wrapper]);
 
   useEffect(() => {
-    if (carouselInitialized) {
-      setCurrentPosition(0);
-      slider.current.slickGoTo(0);
+    setCurrentPosition(0);
+    slider.current?.slickGoTo(0);
+  }, [router.asPath]);
+
+  useEffect(() => {
+    if (banners.length < 3) {
+      return;
     }
-  }, [carouselInitialized, router.asPath]);
+
+    const device = getDeviceType();
+    const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
+
+    // FIXME: 이게 최선입니까?
+    setImmediate(() => {
+      const firstItem = {
+        id: banners[0]?.id,
+        order: 0,
+        ts: new Date().getTime(),
+      };
+      tracker.sendEvent('display', {
+        section: `${deviceType}.${props.slug}`,
+        items: [firstItem],
+      });
+    });
+  }, [banners, tracker]);
+
+  useEffect(() => {
+    // FIXME: :face_palm:
+    setImmediate(() => setMounted(true));
+  }, []);
 
   if (banners.length < 3) {
     return null;
@@ -716,31 +713,21 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
 
   return (
     <TopBannerCarouselWrapper ref={wrapper}>
-      {!carouselInitialized && (
+      {!isMounted && (
         <TopBannerCarouselLoading
           left={banners[banners.length - 1]}
           center={banners[0]}
           right={banners[1]}
         />
       )}
-      <>
-        <div
-          css={[
-            carouselInitialized
-              ? css`
-                  display: block;
-                `
-              : css`
-                  display: none;
-                `,
-          ]}>
+      {isMounted && (
+        <>
           <TopBannerCarousel
             isIntersecting={isIntersecting}
             forwardRef={slider}
             banners={banners}
             slug={slug}
             changePosition={changePosition}
-            setInitialized={setInitialized}
           />
           <PositionOverlay>
             <TopBannerCurrentPosition
@@ -748,44 +735,44 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
               currentPosition={currentPosition + 1}
             />
           </PositionOverlay>
-        </div>
-        {carouselInitialized && !['mobile', 'tablet'].includes(deviceType) && (
-          <form css={displayNoneForTouchDevice}>
-            <div
-              css={css`
-                ${arrowWrapperCSS('left')};
-                left: -40px;
-                transform: translate(-50%, 50%);
-              `}>
-              <Arrow
-                side={'left'}
-                onClickHandler={handleClickLeft}
-                label={'이전 배너 보기'}
-                wrapperStyle={css`
-                  ${arrowCSS};
-                  opacity: 0.5;
-                `}
-              />
-            </div>
-            <div
-              css={css`
-                ${arrowWrapperCSS('right')};
-                transform: translate(50%, 50%);
-                right: -40px;
-              `}>
-              <Arrow
-                onClickHandler={handleClickRight}
-                side={'right'}
-                label={'다음 배너 보기'}
-                wrapperStyle={css`
-                  ${arrowCSS};
-                  opacity: 0.5;
-                `}
-              />
-            </div>
-          </form>
-        )}
-      </>
+          {!['mobile', 'tablet'].includes(deviceType) && (
+            <form css={displayNoneForTouchDevice}>
+              <div
+                css={css`
+                  ${arrowWrapperCSS('left')};
+                  left: -40px;
+                  transform: translate(-50%, 50%);
+                `}>
+                <Arrow
+                  side={'left'}
+                  onClickHandler={handleClickLeft}
+                  label={'이전 배너 보기'}
+                  wrapperStyle={css`
+                    ${arrowCSS};
+                    opacity: 0.5;
+                  `}
+                />
+              </div>
+              <div
+                css={css`
+                  ${arrowWrapperCSS('right')};
+                  transform: translate(50%, 50%);
+                  right: -40px;
+                `}>
+                <Arrow
+                  onClickHandler={handleClickRight}
+                  side={'right'}
+                  label={'다음 배너 보기'}
+                  wrapperStyle={css`
+                    ${arrowCSS};
+                    opacity: 0.5;
+                  `}
+                />
+              </div>
+            </form>
+          )}
+        </>
+      )}
     </TopBannerCarouselWrapper>
   );
 };
