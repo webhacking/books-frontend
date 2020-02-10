@@ -163,7 +163,8 @@ workflows:
           name: build-prod
           filters:
             branches:
-              only: release
+              only:
+                - /release\/.+/
       - deploy:
           name: deploy-prod
           requires:
