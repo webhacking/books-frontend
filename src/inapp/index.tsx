@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { Global } from '@emotion/core';
 import { resetStyles } from 'src/styles';
 import makeStore from 'src/store/config';
-import InAppNotification from 'src/pages/inapp/notification';
+import InAppNotification from 'src/components/InApp/InAppNotification';
 import * as Cookies from 'js-cookie';
 
 const RIDI_APP_THEME = 'ridi_app_theme';

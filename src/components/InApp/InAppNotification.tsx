@@ -8,15 +8,18 @@ interface InAppNotificationProps {
   // tslint:disable-next-line
 }
 
-export class InAppNotification extends React.Component<InAppNotificationProps> {
+// eslint-disable-next-line react/prefer-stateless-function
+class InAppNotification extends React.Component<InAppNotificationProps> {
   public render() {
     const { theme } = this.props;
 
     return (
       <ThemeProvider theme={theme === 'dark' ? darkTheme : defaultTheme}>
-        <NotificationPage isTitleHidden={true} />
+        <NotificationPage isTitleHidden />
       </ThemeProvider>
     );
   }
 }
 
+
+export default InAppNotification;
