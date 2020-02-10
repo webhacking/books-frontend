@@ -25,7 +25,12 @@ module.exports = function csp(app) {
     'connect.facebook.net',
     ...whiteList,
   ];
-  const styleSrc = ["'self'", "'unsafe-inline'", ...whiteList];
+  const styleSrc = [
+    "'self'",
+    "'unsafe-inline'",
+    "'https://fonts.googleapis.com'",
+    ...whiteList,
+  ];
 
   if (process.env.NODE_ENV !== 'production') {
     scriptSrc.push("'unsafe-eval'");
