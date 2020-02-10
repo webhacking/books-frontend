@@ -51,6 +51,7 @@ const MenuList = styled.ul`
 
 const MenuItem = styled.li`
   display: inline-block;
+  flex-shrink: 0;
   :not(:last-of-type) {
     margin-right: 9px;
   }
@@ -98,6 +99,7 @@ const Menu: React.FC<{ menu: QuickMenu }> = React.memo(props => {
             `}>
             <QuickMenuShape
               css={css`
+                flex-shrink: 0;
                 height: 44px;
                 width: 44px;
                 top: 0;

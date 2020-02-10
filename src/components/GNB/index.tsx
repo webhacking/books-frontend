@@ -129,6 +129,7 @@ const ridiSelectLogo = (theme: RIDITheme) => css`
 const ButtonWrapper = styled.ul`
   margin-left: auto;
   display: flex;
+  top: 9px;
   order: 3;
   ${orBelow(
     BreakPoint.LG,

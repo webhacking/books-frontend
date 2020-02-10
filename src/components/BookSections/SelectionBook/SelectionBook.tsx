@@ -129,7 +129,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
     <>
       <a
         css={css`
-          display: inline-block;
+          display: block;
         `}
         onClick={sendClickEvent.bind(null, tracker, book, slug, order)}
         href={new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString()}>
