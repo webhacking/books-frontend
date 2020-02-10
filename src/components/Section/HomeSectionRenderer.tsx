@@ -10,7 +10,6 @@ import {
   TodayRecommendation,
   TopBanner,
 } from 'src/types/sections';
-import { TopBannerCarouselContainer } from 'src/components/TopBanner';
 import { EventBanner } from 'src/components/EventBanner';
 import { QuickMenuList } from 'src/components/QuickMenu';
 import React from 'react';
@@ -21,6 +20,7 @@ import HomeKeywordFinderSection from 'src/components/KeywordFinder/HomeKeywordFi
 import { MultipleLineBooks } from 'src/components/MultipleLineBooks/MultipleLineBooks';
 import UserPreferredSection from 'src/components/Section/UserPreferredSection';
 import AiRecommendationSection from 'src/components/Section/AIRecommendationSection';
+import TopBannerCarousel from 'src/components/TopBanner';
 
 interface HomeSectionRendererProps {
   section: Section;
@@ -56,10 +56,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = React.mem
         return null;
       case DisplayType.HomeCarouselBanner:
         return (
-          <TopBannerCarouselContainer
-            banners={items as TopBanner[]} /* options={item_metadata} */
-            slug={slug}
-          />
+          <TopBannerCarousel banners={items as TopBanner[]} slug={slug} />
         );
       case DisplayType.HomeEventBanner:
         return (
