@@ -2,7 +2,6 @@ import { css } from '@emotion/core';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import React, { useContext, useRef } from 'react';
 import ArrowV from 'src/svgs/ArrowV.svg';
-// @ts-ignore
 import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
@@ -386,15 +385,14 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
   const { genre } = props;
   const genreKeywords = popularKeywords[genre];
   const parentGenre = genre !== 'comics' ? genre.replace('-serial', '') : 'comic';
-  // https://ridibooks.com/keyword-finder/romance?from=romance
-  const keywordFinderUrl = new URL(`/keyword-finder/${parentGenre}`, location.href);
-  if (['bl', 'fantasy', 'romance'].includes(parentGenre)) {
-    keywordFinderUrl.searchParams.append('from', genre);
-  }
-
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   const deviceType = useContext(DeviceTypeContext);
+  const searchParam = new URLSearchParams();
+  if (['bl', 'fantasy', 'romance'].includes(parentGenre)) {
+    searchParam.append('from', genre);
+  }
+
   return (
     <section
       css={css`
@@ -431,7 +429,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
             `,
           )};
         `}>
-        <a href={keywordFinderUrl.toString()} aria-label={'키워드 파인더'}>
+        <a href={`/keyword-finder?${searchParam.toString()}`} aria-label={'키워드 파인더'}>
           <span css={css``}>키워드로 검색하기</span>
           <span
             css={css`
@@ -451,15 +449,15 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
             -webkit-overflow-scrolling: touch;
           `}>
           {genreKeywords.map((keyword, index) => {
-            if (keywordFinderUrl.searchParams.has('set_id')) {
-              keywordFinderUrl.searchParams.delete('set_id');
+            if (searchParam.has('set_id')) {
+              searchParam.delete('set_id');
             }
-            if (keywordFinderUrl.searchParams.has('tag_ids[]')) {
-              keywordFinderUrl.searchParams.delete('tag_ids[]');
+            if (searchParam.has('tag_ids[]')) {
+              searchParam.delete('tag_ids[]');
             }
 
-            keywordFinderUrl.searchParams.append('set_id', keyword.set_id.toString());
-            keywordFinderUrl.searchParams.append('tag_ids[]', keyword.tag_id.toString());
+            searchParam.append('set_id', keyword.set_id.toString());
+            searchParam.append('tag_ids[]', keyword.tag_id.toString());
             return (
               <li
                 key={index}
@@ -488,7 +486,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
                   )};
                 `}>
                 <a
-                  href={keywordFinderUrl.toString()}
+                  href={`/keyword-finder?${searchParam.toString()}`}
                   aria-label={keyword.name}
                   css={css`
                     border: 1px solid #b8bfc4;
