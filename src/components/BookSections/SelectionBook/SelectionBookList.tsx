@@ -27,7 +27,7 @@ export const listCSS = css`
 
 export const itemCSS = css`
   display: flex;
-  flex: 0 0 auto;
+  flex: none;
   flex-direction: column;
   :first-of-type {
     padding-left: 20px;

@@ -78,7 +78,7 @@ const listCSS = css`
 `;
 
 const itemCSS = css`
-  flex: 0 0 auto;
+  flex: none;
   display: flex;
   align-items: center;
   box-sizing: content-box;
@@ -200,7 +200,7 @@ const ItemList: React.FC<any> = props => {
           <li css={type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
             <div
               css={css`
-                flex: 0 0 auto;
+                flex: none;
                 margin-right: ${props.type === 'big' ? '18px' : '24px'};
                 height: 100%;
                 display: flex;
