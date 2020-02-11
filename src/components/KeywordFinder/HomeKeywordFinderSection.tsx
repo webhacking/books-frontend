@@ -377,6 +377,77 @@ const popularKeywords: StaticKeywords = {
   ],
 };
 
+const sectionStyle = css`
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-bottom: 24px;
+  padding-top: 24px;
+  ${orBelow(
+    999,
+    css`
+      padding-bottom: 16px;
+      padding-top: 16px;
+    `,
+  )}
+`;
+
+const titleStyle = css`
+  font-weight: normal;
+  height: 21px;
+  line-height: 21px;
+  font-size: 19px;
+  margin-bottom: 26px;
+  a {
+    color: black;
+  }
+  padding-left: 24px;
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      padding-left: 16px;
+    `,
+  )};
+`;
+
+const keywordItemStyle = css`
+  height: 31px;
+  flex: none;
+  :not(:last-of-type) {
+    margin-right: 6px;
+  }
+  :last-of-type {
+    padding-right: 24px;
+  }
+  :first-of-type {
+    padding-left: 24px;
+  }
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      :last-of-type {
+        padding-right: 16px;
+      }
+      :first-of-type {
+        padding-left: 16px;
+      }
+    `,
+  )};
+`;
+
+const anchorStyle = css`
+  border: 1px solid #b8bfc4;
+  height: 30px;
+  border-radius: 20px;
+  display: block;
+  font-size: 14px;
+  line-height: 29px;
+  font-weight: bold;
+  color: #525a61;
+  padding: 0 10px;
+`;
+
 interface HomeKeywordFinderSectionProps {
   genre: string;
 }
@@ -394,43 +465,12 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
   }
 
   return (
-    <section
-      css={css`
-        position: relative;
-        max-width: 1000px;
-        margin: 0 auto;
-        box-sizing: border-box;
-        padding-bottom: 24px;
-        padding-top: 24px;
-        ${orBelow(
-          999,
-          css`
-            padding-bottom: 16px;
-            padding-top: 16px;
-          `,
-        )}
-      `}>
-      <h2
-        aria-label={'키워드 파인더로 이동'}
-        css={css`
-          font-weight: normal;
-          height: 21px;
-          line-height: 21px;
-          font-size: 19px;
-          margin-bottom: 26px;
-          a {
-            color: black;
-          }
-          padding-left: 24px;
-          ${orBelow(
-            BreakPoint.LG,
-            css`
-              padding-left: 16px;
-            `,
-          )};
-        `}>
-        <a href={`/keyword-finder?${searchParam.toString()}`} aria-label={'키워드 파인더'}>
-          <span css={css``}>키워드로 검색하기</span>
+    <section css={sectionStyle}>
+      <h2 aria-label={'키워드 파인더로 이동'} css={titleStyle}>
+        <a
+          href={`/keyword-finder?${searchParam.toString()}`}
+          aria-label={'키워드 파인더'}>
+          <span>키워드로 검색하기</span>
           <span
             css={css`
               margin-left: 7.8px;
@@ -459,49 +499,12 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
             searchParam.append('set_id', keyword.set_id.toString());
             searchParam.append('tag_ids[]', keyword.tag_id.toString());
             return (
-              <li
-                key={index}
-                css={css`
-                  height: 31px;
-                  flex: none;
-                  :not(:last-of-type) {
-                    margin-right: 6px;
-                  }
-                  :last-of-type {
-                    padding-right: 24px;
-                  }
-                  :first-of-type {
-                    padding-left: 24px;
-                  }
-                  ${orBelow(
-                    BreakPoint.LG,
-                    css`
-                      :last-of-type {
-                        padding-right: 16px;
-                      }
-                      :first-of-type {
-                        padding-left: 16px;
-                      }
-                    `,
-                  )};
-                `}>
+              <li key={index} css={keywordItemStyle}>
                 <a
                   href={`/keyword-finder?${searchParam.toString()}`}
                   aria-label={keyword.name}
-                  css={css`
-                    border: 1px solid #b8bfc4;
-                    height: 30px;
-                    border-radius: 20px;
-                    display: block;
-                  `}>
-                  <span
-                    css={css`
-                      font-size: 14px;
-                      line-height: 29px;
-                      font-weight: bold;
-                      color: #525a61;
-                      padding: 0 10px;
-                    `}>{`#${keyword.name}`}</span>
+                  css={anchorStyle}>
+                  #{keyword.name}
                 </a>
               </li>
             );
