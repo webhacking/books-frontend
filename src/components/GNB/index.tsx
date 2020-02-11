@@ -48,6 +48,14 @@ const Navigation = styled.nav`
 const LogoWrapper = styled.ul`
   min-height: 30px;
   margin-right: -2.5px;
+  flex: 0 0 auto;
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      height: 30px;
+      margin-right: 0;
+    `,
+  )};
   order: 1;
   margin-bottom: 0;
   display: inline-flex;
@@ -129,7 +137,7 @@ const ridiSelectLogo = (theme: RIDITheme) => css`
 const ButtonWrapper = styled.ul`
   margin-left: auto;
   display: flex;
-  top: 9px;
+  flex: 0 0 auto;
   order: 3;
   ${orBelow(
     BreakPoint.LG,
@@ -160,7 +168,7 @@ const logoAndSearchBox = css`
   ${orBelow(
     BreakPoint.LG,
     css`
-      flex-direction: column;
+      flex-wrap: wrap;
     `,
   )};
 `;

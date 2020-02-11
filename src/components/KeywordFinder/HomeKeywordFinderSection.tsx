@@ -468,7 +468,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
                 key={index}
                 css={css`
                   height: 31px;
-                  flex-shrink: 0;
+                  flex: 0 0 auto;
                   :not(:last-of-type) {
                     margin-right: 6px;
                   }

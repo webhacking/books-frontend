@@ -290,7 +290,7 @@ const ItemList: React.FC<any> = props => {
       css={css`
           display: flex;
           flex-wrap: wrap;
-          flex-shrink: 0;
+          flex: 0 0 auto;
           justify-content: space-around;
           margin-bottom: -24px;
           ${orBelow(
