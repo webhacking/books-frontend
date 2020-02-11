@@ -8,9 +8,9 @@ const dev = process.env.NODE_ENV !== 'production';
 const port = parseInt(process.env.PORT || '8081', 10);
 const app = next({ dev, dir: path.resolve(__dirname, dev ? '../src' : '../build') });
 
-const { injectConfig } = require('../env/publicRuntimeConfig');
+const { createConfig, addSentryConfig, injectConfig } = require('../env/publicRuntimeConfig');
 
-injectConfig(app.buildId);
+injectConfig(addSentryConfig(createConfig(), app.buildId));
 const server = createServer(app, dev);
 
 if (!process.env.SERVERLESS) {
