@@ -468,7 +468,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
     <section css={sectionStyle}>
       <h2 aria-label={'키워드 파인더로 이동'} css={titleStyle}>
         <a
-          href={`/keyword-finder?${genreSearchParam.toString()}`}
+          href={`/keyword-finder/${parentGenre}?${genreSearchParam.toString()}`}
           aria-label={'키워드 파인더'}>
           <span>키워드로 검색하기</span>
           <span
@@ -489,13 +489,13 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
             -webkit-overflow-scrolling: touch;
           `}>
           {genreKeywords.map((keyword, index) => {
-            const keywordSetAndTagSearchParam = new URLSearchParams();
+            const keywordSetAndTagSearchParam = new URLSearchParams(genreSearchParam);
             keywordSetAndTagSearchParam.append('set_id', keyword.set_id.toString());
             keywordSetAndTagSearchParam.append('tag_ids[]', keyword.tag_id.toString());
             return (
               <li key={index} css={keywordItemStyle}>
                 <a
-                  href={`/keyword-finder?${genreSearchParam.toString()}&${keywordSetAndTagSearchParam.toString()}`}
+                  href={`/keyword-finder/${parentGenre}?${keywordSetAndTagSearchParam.toString()}`}
                   aria-label={keyword.name}
                   css={anchorStyle}>
                   #{keyword.name}
