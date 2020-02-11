@@ -32,7 +32,7 @@ const renderSelectionBookList = () =>
               type: 'test',
               detail: {
                 title: { main: '도서 표지' },
-                authors_ordered: [{ name: 'hi' }],
+                authors: [{ name: 'hi' }],
                 property: { is_adult_only: false },
                 file: { is_comic: false },
               },

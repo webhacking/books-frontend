@@ -146,7 +146,7 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
   }
   const {
     book: {
-      authors_ordered,
+      authors,
       property: { is_somedeal, is_novel },
       file: { is_comic, is_comic_hd },
     },
@@ -159,7 +159,7 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
     ratingInfo,
   } = props;
 
-  const authors = authors_ordered.filter(author =>
+  const mergedAuthors = authors.filter(author =>
     ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author'].includes(
       author.role,
     ),
@@ -216,7 +216,7 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
                 margin-bottom: 6px;
               `,
           ]}>
-          {authorsRenderer(authors)}
+          {authorsRenderer(mergedAuthors)}
         </span>
         {showRating && ratingInfo && (
           <>
