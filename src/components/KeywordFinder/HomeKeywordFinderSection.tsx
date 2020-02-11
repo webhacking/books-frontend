@@ -459,16 +459,16 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   const deviceType = useContext(DeviceTypeContext);
-  const searchParam = new URLSearchParams();
+  const genreSearchParam = new URLSearchParams();
   if (['bl', 'fantasy', 'romance'].includes(parentGenre)) {
-    searchParam.append('from', genre);
+    genreSearchParam.append('from', genre);
   }
 
   return (
     <section css={sectionStyle}>
       <h2 aria-label={'키워드 파인더로 이동'} css={titleStyle}>
         <a
-          href={`/keyword-finder?${searchParam.toString()}`}
+          href={`/keyword-finder?${genreSearchParam.toString()}`}
           aria-label={'키워드 파인더'}>
           <span>키워드로 검색하기</span>
           <span
@@ -489,19 +489,13 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
             -webkit-overflow-scrolling: touch;
           `}>
           {genreKeywords.map((keyword, index) => {
-            if (searchParam.has('set_id')) {
-              searchParam.delete('set_id');
-            }
-            if (searchParam.has('tag_ids[]')) {
-              searchParam.delete('tag_ids[]');
-            }
-
-            searchParam.append('set_id', keyword.set_id.toString());
-            searchParam.append('tag_ids[]', keyword.tag_id.toString());
+            const keywordSetAndTagSearchParam = new URLSearchParams();
+            keywordSetAndTagSearchParam.append('set_id', keyword.set_id.toString());
+            keywordSetAndTagSearchParam.append('tag_ids[]', keyword.tag_id.toString());
             return (
               <li key={index} css={keywordItemStyle}>
                 <a
-                  href={`/keyword-finder?${searchParam.toString()}`}
+                  href={`/keyword-finder?${genreSearchParam.toString()}&${keywordSetAndTagSearchParam.toString()}`}
                   aria-label={keyword.name}
                   css={anchorStyle}>
                   #{keyword.name}
