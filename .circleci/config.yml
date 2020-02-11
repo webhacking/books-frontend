@@ -74,7 +74,7 @@ jobs:
       - checkout
       - install
       - run:
-          command: yarn build src
+          command: yarn build
       - persist_to_workspace:
           root: .
           paths:
@@ -108,15 +108,19 @@ jobs:
           to: s3://${<< parameters.s3-bucket >>}/static/
           aws-access-key-id: << parameters.aws-access-key-id >>
           aws-secret-access-key: << parameters.aws-secret-access-key >>
-          arguments: --cache-control public,max-age=31536000
+          arguments: |
+            --exclude "*.map"
+            --cache-control public,max-age=31536000
       - aws-s3/sync:
           from: build
           to: s3://${<< parameters.s3-bucket >>}/_next/
           aws-access-key-id: << parameters.aws-access-key-id >>
           aws-secret-access-key: << parameters.aws-secret-access-key >>
+          arguments: |
+            --exclude "*.map"
       - install
       - run:
-          command: yarn serverless deploy -s << parameters.stage >> -v
+          command: yarn deploy -s << parameters.stage >>
       - run:
           command:
             yarn serverless deploy list -s << parameters.stage >> | awk '/Timestamp/ {print $NF}' | tail -n 1 > .deploytimestamp
