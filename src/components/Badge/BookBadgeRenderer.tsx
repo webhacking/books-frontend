@@ -89,7 +89,7 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = (props) => {
           width={20}
           height={18}
           css={waitFreeImageStyle}
-          alt="RIDI_WAIT_FREE_ICON"
+          alt="리디 기다리면 무료"
         />
         <span className="a11y" aria-label="리디 기다리면 무료">
           리디 기다리면 무료

@@ -36,7 +36,7 @@ const StarRating: React.FC<StarRatingProps> = (props) => (
           height: 10px;
           margin-right: 2px;
         `}
-        alt="NO_STAR_RATING"
+        alt="별점없음"
       />
       <span
         css={css`
@@ -55,7 +55,7 @@ const StarRating: React.FC<StarRatingProps> = (props) => (
             width: 50px;
             height: 10px;
           `}
-          alt="STAR_RATING"
+          alt="별점"
         />
       </span>
     </span>
