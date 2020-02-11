@@ -591,6 +591,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
             isFocused ? focused(theme) : initial(),
             css`
               outline: none;
+              ${orBelow(BreakPoint.LG, css`width: 100%;`)}
             `,
           ]}>
           {isFocused && (
