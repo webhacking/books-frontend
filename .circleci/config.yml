@@ -173,7 +173,6 @@ workflows:
           name: deploy-prod
           requires:
             - build-prod
-          stage: staging
           after-scripts:
             - notify
       - rollback-approval:
