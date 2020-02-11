@@ -161,10 +161,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
               display: inline-block;
             `}
             onClick={sendClickEvent.bind(null, tracker, item, slug, order)}
-            href={new URL(
-              `/books/${item.b_id}`,
-              publicRuntimeConfig.STORE_HOST,
-            ).toString()}>
+            href={`/books/${item.b_id}`}>
             <ThumbnailRenderer
               order={order}
               className={slug}

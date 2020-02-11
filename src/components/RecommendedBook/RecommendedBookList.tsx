@@ -74,7 +74,7 @@ const ListItem = React.memo(function ListItem(props: ListItemProps) {
         css={css`
           display: inline-block;
         `}
-        href={new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString()}>
+        href={`/books/${book.b_id}`}>
         <ThumbnailWrapper>
           <ThumbnailRenderer
             className={slug}

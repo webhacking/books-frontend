@@ -205,14 +205,14 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
       new URL('/order/checkout/cash', publicRuntimeConfig.STORE_MASTER_HOST).toString(),
     );
 
-    const returnUrl = new URL(route.asPath, publicRuntimeConfig.STORE_HOST);
+    const returnUrl = new URL(route.asPath, location.href);
     tempLoginPath.searchParams.append(
       'return_url',
-      returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
+      returnUrl.toString() || location.href,
     );
     tempSignUpPath.searchParams.append(
       'return_url',
-      returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
+      returnUrl.toString() || location.href,
     );
 
     setLoginPath(tempLoginPath.toString());

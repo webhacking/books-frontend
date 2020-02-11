@@ -144,7 +144,7 @@ workflows:
           filters:
             branches:
               only: master
-          environment: local
+          environment: development
       - deploy:
           name: deploy-dev
           requires:
