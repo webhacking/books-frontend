@@ -85,7 +85,7 @@ module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
     Sentry,
     captureException: (error, ctx = null) => {
       let eventId;
-      withScope(scope => {
+      withScope((scope) => {
         // isAxiosError
         if (error.config) {
           if (error.response) {
@@ -101,7 +101,9 @@ module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
         }
 
         if (ctx) {
-          const { isServer, req, res, err, asPath, query, pathname } = ctx;
+          const {
+            isServer, req, res, err, asPath, query, pathname,
+          } = ctx;
           scope.setTag('isServer', isServer);
           scope.setTag('path', asPath);
           scope.setExtra('NEXT_JS_ERROR', String(err));

@@ -17,7 +17,7 @@ Promise<any> => {
     if (retryCount === 1) {
       throw error;
     }
-    await new Promise(resolve => setTimeout(resolve, restOptions.retryDelay || 1000));
+    await new Promise((resolve) => setTimeout(resolve, restOptions.retryDelay || 1000));
     // eslint-disable-next-line no-return-await
     return await retry(
       { retryCount: retryCount - 1, ...restOptions },

@@ -20,6 +20,7 @@ import pRetry from 'p-retry';
 import axios, { OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
 import originalAxios from 'axios';
 import sentry from 'src/utils/sentry';
+
 const { captureException } = sentry();
 
 const GNBWrapper = styled.div`
@@ -76,13 +77,13 @@ const LogoWrapper = styled.ul`
       margin: 0 8.5px 0 10px;
 
       ${orBelow(
-        BreakPoint.LG,
-        css`
+    BreakPoint.LG,
+    css`
           margin: 0 6px 0 5px;
           top: 7px;
           font-size: 12px;
         `,
-      )};
+  )};
     }
     :last-of-type {
       ::after {
@@ -153,11 +154,11 @@ const ButtonWrapper = styled.ul`
       margin-right: 6px;
 
       ${orBelow(
-        BreakPoint.LG,
-        css`
+    BreakPoint.LG,
+    css`
           margin-right: 3px;
         `,
-      )};
+  )};
     }
   }
 `;
@@ -177,7 +178,7 @@ interface GNBButtonsProps {
   loggedUser: null | LoggedUser;
   isPartialsLogin?: 'true' | 'false';
 }
-const GNBButtons: React.FC<GNBButtonsProps> = props => {
+const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
   const { loggedUser, isPartialsLogin } = props;
   const [eventStatus, setEventStatus] = useState<{
     double_point: boolean;
@@ -230,12 +231,11 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
         );
 
         const result = await pRetry(
-          () =>
-            wrapCatchCancel(axios.get)(cartUrl.toString(), {
-              withCredentials: true,
-              custom: { authorizationRequestType: OAuthRequestType.CHECK },
-              cancelToken: source.token,
-            }),
+          () => wrapCatchCancel(axios.get)(cartUrl.toString(), {
+            withCredentials: true,
+            custom: { authorizationRequestType: OAuthRequestType.CHECK },
+            cancelToken: source.token,
+          }),
           {
             retries: 2,
           },
@@ -265,16 +265,17 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
               href={cashOrderPath.toString()}
               aria-label={
                 eventStatus.double_point ? '리디 캐시 더블 포인트 충전' : '리디 캐시 충전'
-              }>
+              }
+            >
               <Button
                 wrapperCSS={
-                  eventStatus.double_point &&
-                  css`
+                  eventStatus.double_point
+                  && css`
                     border: 1px solid #ffde24;
                   `
                 }
-                type={'primary'}
-                label={
+                type="primary"
+                label={(
                   <div
                     css={css`
                       line-height: 30px;
@@ -284,11 +285,13 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
                       color: white;
                       font-size: 13px;
                       font-weight: 700;
-                    `}>
+                    `}
+                  >
                     <span
                       css={css`
                         margin-right: 2px;
-                      `}>
+                      `}
+                    >
                       캐시
                       <span
                         css={orBelow(
@@ -296,33 +299,34 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
                           css`
                             display: none;
                           `,
-                        )}>
+                        )}
+                      >
                         충전
                       </span>
                     </span>
                     {eventStatus.double_point ? <DoublePointIcon /> : <CashIcon />}
                   </div>
-                }
+                )}
               />
             </a>
           </li>
           <li>
-            <a href={publicRuntimeConfig.LIBRARY_HOST} aria-label={'내 서재 홈으로 이동'}>
-              <Button type={'primary'} label={'내 서재'} />
+            <a href={publicRuntimeConfig.LIBRARY_HOST} aria-label="내 서재 홈으로 이동">
+              <Button type="primary" label="내 서재" />
             </a>
           </li>
         </>
       ) : (
         <>
           <li>
-            <a href={signUpPath.toString()} aria-label={'회원가입하기'}>
-              <Button type={'primary'} label={'회원가입'} />
+            <a href={signUpPath.toString()} aria-label="회원가입하기">
+              <Button type="primary" label="회원가입" />
             </a>
           </li>
           <li>
             {/* Todo fix correct path by env */}
-            <a href={loginPath.toString()} aria-label={'로그인하기'}>
-              <Button type={'secondary'} label={'로그인'} />
+            <a href={loginPath.toString()} aria-label="로그인하기">
+              <Button type="secondary" label="로그인" />
             </a>
           </li>
         </>
@@ -341,7 +345,7 @@ interface GNBProps {
   isLoginForPartials?: 'true' | 'false';
 }
 export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
-  const { loggedUser } = useSelector<RootState, AccountState>(state => state.account);
+  const { loggedUser } = useSelector<RootState, AccountState>((state) => state.account);
   const [path, setPath] = useState(null);
   const dispatch = useDispatch();
 
@@ -360,7 +364,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   const homePath = new URL('/', publicRuntimeConfig.STORE_HOST);
   return (
     // @ts-ignore
-    <GNBWrapper className={'new_gnb'} id={props.id}>
+    <GNBWrapper className="new_gnb" id={props.id}>
       <Header>
         <Navigation>
           <div css={logoAndSearchBox}>
@@ -368,11 +372,12 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               <li>
                 <a
                   href={homePath.toString()}
-                  aria-label={'리디북스 홈으로 이동'}
+                  aria-label="리디북스 홈으로 이동"
                   css={css`
                     display: flex;
                     align-items: center;
-                  `}>
+                  `}
+                >
                   <RidiLogo css={ridiLogo} />
                   <span className="a11y">RIDIBOOKS</span>
                 </a>
@@ -380,7 +385,8 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               <li>
                 <a
                   href="https://select.ridibooks.com"
-                  aria-label={'리디셀렉트 홈으로 이동'}>
+                  aria-label="리디셀렉트 홈으로 이동"
+                >
                   <RidiSelectLogo css={ridiSelectLogo} />
                   <span className="a11y">리디셀렉트</span>
                 </a>

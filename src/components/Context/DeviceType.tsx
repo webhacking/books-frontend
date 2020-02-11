@@ -8,7 +8,7 @@ export const DeviceTypeContext = React.createContext(null);
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface DeviceTypeContextProps {}
 
-export const DeviceType: React.FC<DeviceTypeContextProps> = props => {
+export const DeviceType: React.FC<DeviceTypeContextProps> = (props) => {
   const [type, setType] = useState(null);
   useEffect(() => {
     setType(getDeviceType());

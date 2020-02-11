@@ -16,7 +16,7 @@ const GenreTabWrapper = styled.ul`
   background: white;
 `;
 
-const rulerCSS = theme => css`
+const rulerCSS = (theme) => css`
   position: absolute;
   width: 100vw;
   border: 0 none;
@@ -25,7 +25,7 @@ const rulerCSS = theme => css`
   background-color: ${theme.divider2};
 `;
 
-const genreListPartialsCSS = theme => css`
+const genreListPartialsCSS = (theme) => css`
   display: flex;
   flex-direction: row;
   height: 47px;
@@ -35,11 +35,11 @@ const genreListPartialsCSS = theme => css`
       display: inline-block;
       padding: 0 22px;
       ${orBelow(
-        999,
-        css`
+    999,
+    css`
           padding: 0;
         `,
-      )};
+  )};
       font-size: 16px;
       font-weight: 500;
       line-height: 47px;
@@ -59,11 +59,11 @@ const genreListPartialsCSS = theme => css`
       a {
         padding: 0 20px;
         ${orBelow(
-          999,
-          css`
+    999,
+    css`
             padding: 0;
           `,
-        )};
+  )};
       }
     }
     margin-right: 10px;
@@ -86,7 +86,7 @@ const genreListPartialsCSS = theme => css`
 `;
 
 // Todo Refactor css
-const genreListCSS = theme => css`
+const genreListCSS = (theme) => css`
   display: flex;
   flex-direction: row;
   height: 47px;
@@ -96,11 +96,11 @@ const genreListCSS = theme => css`
       display: inline-block;
       padding: 0 22px;
       ${orBelow(
-        999,
-        css`
+    999,
+    css`
           padding: 0;
         `,
-      )};
+  )};
       font-size: 16px;
       font-weight: 500;
       line-height: 47px;
@@ -118,11 +118,11 @@ const genreListCSS = theme => css`
       a {
         padding: 0 20px;
         ${orBelow(
-          999,
-          css`
+    999,
+    css`
             padding: 0;
           `,
-        )};
+  )};
       }
     }
     margin-right: 10px;
@@ -152,7 +152,7 @@ const iconCSS = (theme: RIDITheme) => css`
   fill: ${theme.genreTab.icon};
 `;
 
-const subServicesListCSS = theme => css`
+const subServicesListCSS = (theme) => css`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -356,7 +356,7 @@ const genres = {
   },
 };
 
-const TabItem: React.FC<TabItemProps> = props => {
+const TabItem: React.FC<TabItemProps> = (props) => {
   // Todo apply lint
   const { route, currentPath, activePath } = props;
   const isActivePath = activePath.includes(currentPath);
@@ -364,9 +364,9 @@ const TabItem: React.FC<TabItemProps> = props => {
 
   return (
     <li
-      css={theme => css`
+      css={(theme) => css`
         ${isActivePath
-          ? css`
+        ? css`
               :hover {
                 opacity: 1;
                 color: #1f8ce6;
@@ -382,8 +382,9 @@ const TabItem: React.FC<TabItemProps> = props => {
                 }
               }
             `
-          : props.labelCSS(theme)}
-      `}>
+        : props.labelCSS(theme)}
+      `}
+    >
       <a
         aria-label={props.label}
         href={route}
@@ -391,7 +392,8 @@ const TabItem: React.FC<TabItemProps> = props => {
           if (route === '/' && cookieGenre) {
             Cookies.set('main_genre', '', { sameSite: 'lax' });
           }
-        }}>
+        }}
+      >
         <span css={isActivePath ? props.currentCSS : props.normalCSS}>{props.label}</span>
       </a>
     </li>
@@ -432,7 +434,7 @@ interface SavedSubServices {
   fantasy: string;
 }
 
-const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
+const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
   const { currentGenre, isPartials } = props;
   const genreInfo = genres[currentGenre] ?? genres.general;
 
@@ -546,40 +548,43 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
           <ul
             css={
               props.isPartials
-                ? theme => genreListPartialsCSS(theme)
-                : theme => genreListCSS(theme)
-            }>
+                ? (theme) => genreListPartialsCSS(theme)
+                : (theme) => genreListCSS(theme)
+            }
+          >
             <li
               css={css`
                 outline: none;
                 ${router.query?.pathname?.toString().startsWith('/category/list')
-                  ? css`
+                ? css`
                       :hover {
                         opacity: 1 !important;
                       }
                     `
-                  : css`
+                : css`
                       :hover {
                         opacity: 0.7;
                       }
                     `}
-              `}>
-              <a href={'/category/list'} aria-label={'카테고리 목록'}>
+              `}
+            >
+              <a href="/category/list" aria-label="카테고리 목록">
                 <button
                   css={css`
                     outline: none;
-                  `}>
+                  `}
+                >
                   <GNBCategory
                     css={(theme: RIDITheme) => css`
                       ${iconCSS(theme)};
                       ${router.query?.pathname?.toString().startsWith('/category/list')
-                        ? css`
+                      ? css`
                             fill: ${theme.primaryColor};
                           `
-                        : ''};
+                      : ''};
                     `}
                   />
-                  <span className={'a11y'}>{labels.category}</span>
+                  <span className="a11y">{labels.category}</span>
                 </button>
               </a>
             </li>
@@ -589,14 +594,14 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               labelCSS={genreTabLabelCSS}
               currentPath={
                 // Todo refactor
-                router.pathname === '/' &&
-                router.route === '/' &&
-                router.asPath.split('?')[0] === '/' &&
-                '/'
+                router.pathname === '/'
+                && router.route === '/'
+                && router.asPath.split('?')[0] === '/'
+                && '/'
               }
               activePath={['/']}
-              label={'일반'}
-              route={'/'}
+              label="일반"
+              route="/"
               isPartial={isPartials}
             />
             <TabItem
@@ -612,7 +617,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                 'romance',
                 'romance-serial',
               ]}
-              label={'로맨스'}
+              label="로맨스"
               route={latestSubServices.romance || '/romance/'}
               isPartial={isPartials}
             />
@@ -629,7 +634,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
                 'fantasy',
                 'fantasy-serial',
               ]}
-              label={'판타지'}
+              label="판타지"
               route={latestSubServices.fantasy || '/fantasy/'}
               isPartial={isPartials}
             />
@@ -639,8 +644,8 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               labelCSS={genreTabLabelCSS}
               currentPath={router?.query?.genre?.toString()}
               activePath={['/comics', '/comics/', 'comics']}
-              label={'만화'}
-              route={'/comics/'}
+              label="만화"
+              route="/comics/"
               isPartial={isPartials}
             />
             <TabItem
@@ -649,7 +654,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
               labelCSS={genreTabLabelCSS}
               currentPath={router?.query?.genre?.toString()}
               activePath={['/bl', '/bl-serial', '/bl/', '/bl-serial/', 'bl', 'bl-serial']}
-              label={'BL'}
+              label="BL"
               route={latestSubServices.bl || '/bl/'}
               isPartial={isPartials}
             />
@@ -681,8 +686,8 @@ const GenreTab: React.FC<GenreTabProps> = React.memo(props => {
         ) : (
           <div
             css={[
-              !props.isPartials &&
-                css`
+              !props.isPartials
+                && css`
                   margin-bottom: 20px;
                 `,
             ]}

@@ -12,5 +12,5 @@ const badgeStyle = css`
 `;
 
 export const AdultBadge: React.FC = () => (
-  <img src={ADULT_BADGE_URL} alt={'성인 전용 도서'} css={badgeStyle} />
+  <img src={ADULT_BADGE_URL} alt="성인 전용 도서" css={badgeStyle} />
 );

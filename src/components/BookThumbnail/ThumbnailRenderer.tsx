@@ -97,9 +97,11 @@ const thumbnailWrapperCSS = css`
 // 썸네일을 보여줄 수 있는 상태 ( intersecting 되거나 fetch 종료 ) 일 때도 체크
 // loggedUser 가 성인 인증 상태일 경우는 정상 렌더링
 // 아닌 경우는 성인 도서 Placeholder 표지
-const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(props => {
+const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) => {
   // @ts-ignore
-  const { book, isIntersecting, imgSize, responsiveWidth, children, slug, order } = props;
+  const {
+    book, isIntersecting, imgSize, responsiveWidth, children, slug, order,
+  } = props;
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const [isImageLoaded, setImageLoaded] = useState(false);
   const is_adult_only = book.detail?.property?.is_adult_only ?? false;
@@ -129,7 +131,8 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo(props => 
       css={[thumbnailWrapperCSS]}
       className={props.className || ''}
       data-order={order}
-      data-book-id={book.b_id}>
+      data-book-id={book.b_id}
+    >
       <img
         ref={imgRef}
         css={[

@@ -6,9 +6,9 @@ export interface SliderCarouselWrapperProps {
   children?: React.ReactNode;
 }
 
-const SliderCarouselWrapper = React.memo(function SliderCarouselWrapper(
+const SliderCarouselWrapper = React.memo((
   props: Settings & SliderCarouselWrapperProps,
-) {
+) => {
   const { forwardedRef, ...restProps } = props;
   return <Slider {...restProps} ref={forwardedRef} />;
 });

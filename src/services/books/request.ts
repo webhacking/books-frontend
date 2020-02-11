@@ -1,6 +1,7 @@
 import * as BookApi from 'src/types/book';
 import axios from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
+
 const { captureException } = sentry();
 
 export const requestBooks = async (b_ids: string[]) => {

@@ -84,7 +84,7 @@ const subCategoryItemCSS = (theme: RIDITheme) => css`
   transition: all 0.1s;
 `;
 
-const CuratedCategoryList: React.FC<{ category: ParentCategory }> = React.memo(props => (
+const CuratedCategoryList: React.FC<{ category: ParentCategory }> = React.memo((props) => (
   <>
     <button
       css={css`
@@ -101,14 +101,16 @@ const CuratedCategoryList: React.FC<{ category: ParentCategory }> = React.memo(p
           background-color: #0f5e9c;
         }
         transition: background-color 0.1s;
-      `}>
+      `}
+    >
       <h3
         css={css`
           color: white;
           font-weight: 700;
           font-size: 14px;
           line-height: 14px;
-        `}>
+        `}
+      >
         {props.category.name}
       </h3>
       <ArrowRight
@@ -131,7 +133,8 @@ const CuratedCategoryList: React.FC<{ category: ParentCategory }> = React.memo(p
               margin-top: 2px;
             }
           `}
-          key={index}>
+          key={index}
+        >
           {category.name}
         </li>
       ))}
@@ -143,7 +146,7 @@ export interface CategoryListProps {
   categoryList: CategoryListScheme;
 }
 
-const Desktop: React.FC<CategoryListProps> = props => {
+const Desktop: React.FC<CategoryListProps> = (props) => {
   const [categoryList] = useState(
     props.categoryList || { general: [], curatedCategory: [] },
   );
@@ -156,11 +159,13 @@ const Desktop: React.FC<CategoryListProps> = props => {
         margin-top: 24px;
         border-radius: 4px;
         border: solid 1px #d1d5d9;
-      `}>
+      `}
+    >
       <ul
         css={css`
           padding-top: 15px;
-        `}>
+        `}
+      >
         {categoryList.general.map((item, index) => (
           <li
             css={(theme: RIDITheme) => css`
@@ -169,11 +174,13 @@ const Desktop: React.FC<CategoryListProps> = props => {
             `}
             onMouseEnter={() => setCategory(item)}
             onMouseLeave={() => setCategory(categoryList.general[0])}
-            key={index}>
+            key={index}
+          >
             <h3
               css={css`
                 font-size: 14px;
-              `}>
+              `}
+            >
               {item.name}
             </h3>
             <ArrowRight
@@ -194,7 +201,8 @@ const Desktop: React.FC<CategoryListProps> = props => {
                   left: 100%;
                   ${selectedCategory.name === '잡지' ? 'bottom: 3px;' : 'top: 0'};
                   width: 151px;
-                `}>
+                `}
+              >
                 <li css={subCategoryItemCSS}>
                   <span>{`${selectedCategory.name} 전체`}</span>
                 </li>

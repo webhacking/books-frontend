@@ -26,7 +26,7 @@ export class CategoryReducer extends ImmerReducer<CategoryState> {
 
   public setCategories(payload: CategoryApi.Category[]) {
     const categories: CategoryState['items'] = {};
-    payload.forEach(category => {
+    payload.forEach((category) => {
       if (this.draftState.items[category.id] === null) {
         categories[category.id] = category;
       }

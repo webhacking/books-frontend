@@ -10,7 +10,7 @@ interface AnchorProps {
   replace?: boolean;
 }
 
-export const Anchor: React.FC<AnchorProps> = props => {
+export const Anchor: React.FC<AnchorProps> = (props) => {
   if (!props.isPartials) {
     return (
       <Link shallow={props.shallow} replace={props.replace} route={props.path}>

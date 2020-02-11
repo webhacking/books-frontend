@@ -58,12 +58,11 @@ const fetchHomeSections = async (genre: string, req?: Request, params = {}) => {
   };
 
   const result = await pRetry(
-    () =>
-      axios.get<Page>(url.toString(), {
-        withCredentials: true,
-        headers,
-        params,
-      }),
+    () => axios.get<Page>(url.toString(), {
+      withCredentials: true,
+      headers,
+      params,
+    }),
     {
       retries: 2,
       minTimeout: 2000,
@@ -92,10 +91,10 @@ const setCookie = (genre: string) => {
   });
 };
 
-export const Home: NextPage<HomeProps> = props => {
+export const Home: NextPage<HomeProps> = (props) => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const bIds = keyToArray(
-    props.branches.filter(section => section.extra.use_select_api),
+    props.branches.filter((section) => section.extra.use_select_api),
     'b_id',
   );
   const [tracker] = useEventTracker();
@@ -124,8 +123,8 @@ export const Home: NextPage<HomeProps> = props => {
       </Head>
       <GenreTab currentGenre={currentGenre} />
       <DeviceType>
-        {props.branches &&
-          props.branches.map((section, index) => (
+        {props.branches
+          && props.branches.map((section, index) => (
             <React.Fragment key={index}>
               <HomeSectionRenderer section={section} order={index} genre={currentGenre} />
             </React.Fragment>
@@ -141,7 +140,9 @@ export const Home: NextPage<HomeProps> = props => {
 };
 
 Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
-  const { query, res, req, store } = ctx;
+  const {
+    query, res, req, store,
+  } = ctx;
   const genre = query?.genre || 'general';
   if (req && res) {
     if (res.statusCode !== 302) {
@@ -190,7 +191,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
         payload: categoryIds,
       });
       const selectBIds = keyToArray(
-        result.branches.filter(section => section.extra.use_select_api),
+        result.branches.filter((section) => section.extra.use_select_api),
         'b_id',
       );
       store.dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });

@@ -2,19 +2,17 @@ require('intersection-observer');
 const { initModules } = require('./__mocks__/mockModules');
 
 function initWindow() {
-  window.matchMedia =
-    window.matchMedia ||
-    function() {
+  window.matchMedia = window.matchMedia
+    || function () {
       return {
         matches: false,
-        addListener: function() {},
-        removeListener: function() {},
+        addListener() {},
+        removeListener() {},
       };
     };
 
-  window.requestAnimationFrame =
-    window.requestAnimationFrame ||
-    function(callback) {
+  window.requestAnimationFrame = window.requestAnimationFrame
+    || function (callback) {
       setTimeout(callback, 0);
     };
 

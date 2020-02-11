@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
 import { getDeviceType } from 'src/utils/common';
+
 const { captureException } = sentry();
 
 export const createTracker = (userId: string | null) => {
@@ -78,13 +79,13 @@ export const sendClickEvent = (eventTracker, item, section, order) => {
   });
 };
 
-export const useSendDisplayEvent = slug => {
+export const useSendDisplayEvent = (slug) => {
   const device = getDeviceType();
   const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
   return useCallback(
     (intersectionItems: IntersectionObserverEntry[]) => {
       const trackingItems = { section: `${deviceType}.${slug}`, items: [] };
-      intersectionItems.forEach(item => {
+      intersectionItems.forEach((item) => {
         const bId = item.target.getAttribute('data-book-id');
         const order = item.target.getAttribute('data-order');
         trackingItems.items.push({

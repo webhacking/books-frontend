@@ -30,10 +30,12 @@ interface HomeSectionRendererProps {
 
 export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = React.memo(
   // eslint-disable-next-line complexity
-  props => {
+  (props) => {
     const {
       // @ts-ignore  Todo declare item_metadata type
-      section: { items, item_metadata, type, title, extra, slug },
+      section: {
+        items, item_metadata, type, title, extra, slug,
+      },
       genre,
     } = props;
 
@@ -68,11 +70,11 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = React.mem
           <RankingBookList
             slug={slug}
             items={items as ReadingRanking[]}
-            type={'small'}
+            type="small"
             genre={genre}
             title={title}
-            showSomeDeal={true}
-            showTimer={true}
+            showSomeDeal
+            showTimer
             extra={extra}
           />
         );
@@ -84,7 +86,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = React.mem
             items={items as HotRelease[]}
             type={type}
             genre={genre}
-            theme={'dark'}
+            theme="dark"
           />
         );
       }
@@ -109,7 +111,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = React.mem
             items={items as ReadingRanking[]}
             title={title}
             genre={genre}
-            type={'big'}
+            type="big"
             showTimer={false}
             extra={extra}
           />
@@ -130,7 +132,7 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = React.mem
       case DisplayType.HomeMdSelection: {
         return (
           <>
-            {(items as MdSelection[]).map(item => {
+            {(items as MdSelection[]).map((item) => {
               if (!item.books) {
                 return null;
               }

@@ -1,4 +1,5 @@
 import { createActionCreators, createReducerFunction, ImmerReducer } from 'immer-reducer';
+
 export interface AppState {
   version: string;
   environment: string;

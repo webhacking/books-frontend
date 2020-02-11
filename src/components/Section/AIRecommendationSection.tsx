@@ -21,10 +21,12 @@ interface AiRecommendationSectionProps {
   slug: string;
 }
 
-const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props => {
+const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) => {
   const { loggedUser } = useSelector((store: RootState) => store.account);
   const dispatch = useDispatch();
-  const { items, type, title, extra, slug } = props;
+  const {
+    items, type, title, extra, slug,
+  } = props;
   const [aiItems, setSections] = useState(items || []);
   const [isRequestError, setIsRequestError] = useState(false);
 
@@ -45,7 +47,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = props =>
           timeout: 8000,
         });
         if (result.status < 400 && result.status >= 200) {
-          setSections(result.data.items.map(item => ({ ...item, excluded: false })));
+          setSections(result.data.items.map((item) => ({ ...item, excluded: false })));
           const bIds = keyToArray(result.data.items, 'b_id');
           dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
           const categoryIds = keyToArray(result.data.items, 'category_id');

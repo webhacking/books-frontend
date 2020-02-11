@@ -5,7 +5,7 @@ interface PartialSeparatorProps {
   wrapped: boolean;
 }
 
-export const PartialSeparator: React.FC<PartialSeparatorProps> = props => {
+export const PartialSeparator: React.FC<PartialSeparatorProps> = (props) => {
   const { name, wrapped } = props;
   if (wrapped) {
     return (

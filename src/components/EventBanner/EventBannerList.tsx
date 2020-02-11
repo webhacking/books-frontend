@@ -13,7 +13,7 @@ interface EventBannerListProps {
   slug: string;
 }
 
-const EventBannerList: React.FC<EventBannerListProps> = props => {
+const EventBannerList: React.FC<EventBannerListProps> = (props) => {
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '0px');
   const [tracker] = useEventTracker();
@@ -39,25 +39,27 @@ const EventBannerList: React.FC<EventBannerListProps> = props => {
         justify-content: center;
         align-items: center;
         ${orBelow(
-          BreakPoint.MD,
-          css`
+        BreakPoint.MD,
+        css`
             flex-wrap: wrap;
           `,
-        )};
+      )};
         ${between(
-          BreakPoint.MD + 1,
-          BreakPoint.LG,
-          css`
+        BreakPoint.MD + 1,
+        BreakPoint.LG,
+        css`
             padding-left: 20px;
             padding-right: 20px;
           `,
-        )};
-      `}>
+      )};
+      `}
+    >
       {props.items.slice(0, 4).map((item, index) => (
         <EventBannerItem key={index}>
           <a
             href={item.url}
-            onClick={sendClickEvent.bind(null, tracker, item.id, props.slug, index)}>
+            onClick={sendClickEvent.bind(null, tracker, item.id, props.slug, index)}
+          >
             <img width="100%" height="100%" src={item.image_url} alt={item.title} />
           </a>
         </EventBannerItem>

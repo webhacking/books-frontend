@@ -307,7 +307,7 @@ const sectionCSS = css`
     `,
   )}
 `;
-const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = props => {
+const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = (props) => {
   const [isMounted, setMounted] = useState(false);
 
   const [categoryList] = useState(
@@ -321,9 +321,9 @@ const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = pr
       <Head>
         <title>카테고리 - 리디북스</title>
       </Head>
-      <GenreTab currentGenre={'general'} />
+      <GenreTab currentGenre="general" />
       <section css={sectionCSS}>
-        <PageTitle title={'카테고리'} mobileHidden={true} />
+        <PageTitle title="카테고리" mobileHidden />
         {isMounted ? (
           <WindowWidthQuery>
             <View maxWidth={1000}>

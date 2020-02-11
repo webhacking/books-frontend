@@ -134,15 +134,13 @@ interface BookMetaProps {
 
 // eslint-disable-next-line
 export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
-  const authors =
-    props.book?.authors.filter(author =>
-      [
-        'author',
-        'comic_author',
-        'story_writer',
-        'illustrator',
-        'original_author',
-      ].includes(author.role),
+  const authors = props.book?.authors.filter((author) => [
+    'author',
+    'comic_author',
+    'story_writer',
+    'illustrator',
+    'original_author',
+  ].includes(author.role),
     ) ?? [];
   return (
     <div css={bookMetaWrapperCSS}>
@@ -150,7 +148,11 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
         css={css`
           display: inline-block;
         `}
-        href={`/books/${props.book.id}`}>
+        href={new URL(
+          `/books/${props.book.id}`,
+          publicRuntimeConfig.STORE_HOST,
+        ).toString()}
+      >
         <BookTitle aria-label={props.book?.title?.main || ''}>
           {bookTitleGenerator(props.book)}
         </BookTitle>
@@ -162,7 +164,8 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
             display: flex;
             align-items: center;
           `}
-          aria-label={'리디 셀렉트 이용 가능 도서'}>
+          aria-label="리디 셀렉트 이용 가능 도서"
+        >
           <AtSelectIcon
             css={css`
               width: 14px;
@@ -176,7 +179,8 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
               font-size: 13px;
               font-weight: bold;
               color: #22b8cf;
-            `}>
+            `}
+          >
             리디셀렉트
           </span>
         </div>
@@ -229,8 +233,10 @@ export const sentenceStyle = css`
 `;
 
 const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo(
-  props => {
-    const { books, type, isIntersecting, theme } = props;
+  (props) => {
+    const {
+      books, type, isIntersecting, theme,
+    } = props;
     const dummyBooks: HotRelease[] = books.length < 6 ? Array(6).fill(dummyBook) : books;
     return (
       <BookList
@@ -244,22 +250,23 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
           props.type === DisplayType.TodayRecommendation
             ? css`
                 ${orBelow(
-                  999,
-                  css`
+              999,
+              css`
                     padding-left: 23px !important;
                   `,
-                )}
+            )}
               `
             : css`
                 padding-left: 1px !important;
                 ${orBelow(
-                  999,
-                  css`
+              999,
+              css`
                     padding-left: 13px !important;
                   `,
-                )}
+            )}
               `,
-        ]}>
+        ]}
+      >
         {/* // @ts-ignore */}
         {dummyBooks.map((book, index) => (
           <RecommendedPortraitBook
@@ -270,33 +277,34 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
               props.type === DisplayType.HotRelease
                 ? css`
                     ${orBelow(
-                      833,
-                      css`
+                  833,
+                  css`
                         margin-right: 12px !important;
                       `,
-                    )}
+                )}
                     ${between(
-                      834,
-                      999,
-                      css`
+                  834,
+                  999,
+                  css`
                         margin-right: 20px !important;
                       `,
-                    )}
+                )}
                   `
                 : css`
                     ${orBelow(
-                      999,
-                      css`
+                  999,
+                  css`
                         margin-right: 30px !important;
                       `,
-                    )}
+                )}
                   `,
             ]}
-            key={index}>
+            key={index}
+          >
             <ThumbnailWrapper>
               <ThumbnailRenderer
                 book={{ b_id: book.b_id, detail: book.detail }}
-                imgSize={'large'}
+                imgSize="large"
                 responsiveWidth={[
                   css`
                     width: 140px;
@@ -312,7 +320,7 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
               />
             </ThumbnailWrapper>
             {book.detail && type === DisplayType.HotRelease && (
-              <BookMeta book={book.detail} showSelect={true} />
+              <BookMeta book={book.detail} showSelect />
             )}
             {book.detail && type === DisplayType.TodayRecommendation && (
               <h4
@@ -323,14 +331,15 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
                     margin-top: 2px;
                     ${sentenceStyle};
                   `,
-                  theme === 'dark' &&
-                    css`
+                  theme === 'dark'
+                    && css`
                       color: white;
                     `,
-                ]}>
+                ]}
+              >
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: (book as HotRelease).sentence.replace(
+                    __html: (book).sentence.replace(
                       /(?:\r\n|\r|\n)/g,
                       '<br />',
                     ),
@@ -354,8 +363,10 @@ interface RecommendedBookProps {
   genre: string;
 }
 
-const RecommendedBook: React.FC<RecommendedBookProps> = props => {
-  const { theme, type, slug, genre } = props;
+const RecommendedBook: React.FC<RecommendedBookProps> = (props) => {
+  const {
+    theme, type, slug, genre,
+  } = props;
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '-50px');
 
@@ -368,37 +379,40 @@ const RecommendedBook: React.FC<RecommendedBookProps> = props => {
           ? hotReleaseRecommendedBookWrapperCSS
           : recommendedBookWrapperCSS,
         theme === 'dark' && backgroundImageCSS,
-        theme === 'white' &&
-          css`
+        theme === 'white'
+          && css`
             ${orBelow(
-              999,
-              css`
+            999,
+            css`
                 padding-bottom: 16px;
                 padding-top: 16px;
               `,
-            )}
+          )}
           `,
-      ]}>
+      ]}
+    >
       <h2
         css={[
           hotReleaseTitleCSS,
-          theme === 'white' &&
-            css`
+          theme === 'white'
+            && css`
               color: black;
             `,
         ]}
-        aria-label={props.title}>
+        aria-label={props.title}
+      >
         <span
           css={css`
             margin-right: 8px;
-          `}>
+          `}
+        >
           {props.title}
         </span>
       </h2>
       {!isIntersecting ? (
         <RecommendedBookLoading
           type={type}
-          books={books.filter(book => book.detail).slice(0, 6) as HotRelease[]}
+          books={books.filter((book) => book.detail).slice(0, 6) as HotRelease[]}
           isIntersecting={isIntersecting}
           theme={theme}
         />

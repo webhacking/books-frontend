@@ -1,6 +1,7 @@
 import { createActionCreators, createReducerFunction, ImmerReducer } from 'immer-reducer';
 import * as BookApi from 'src/types/book';
 import sentry from 'src/utils/sentry';
+
 const { captureException } = sentry();
 
 export interface BooksState {
@@ -33,7 +34,7 @@ export class BooksReducer extends ImmerReducer<BooksState> {
   public setBooks(payload: BookApi.Book[]) {
     try {
       const books: BooksState['items'] = {};
-      payload.forEach(book => {
+      payload.forEach((book) => {
         if (this.draftState.items[book.id] === null) {
           books[book.id] = book;
           books[book.id].clientBookFields = {
@@ -54,14 +55,13 @@ export class BooksReducer extends ImmerReducer<BooksState> {
   // Todo series 만 따로 reducer 를 작성할지 고민해보기
   public setThumbnailId() {
     const seriesBooks: BooksState['items'] = {};
-    Object.keys(this.draftState.items).forEach(bid => {
+    Object.keys(this.draftState.items).forEach((bid) => {
       if (this.draftState.items[bid] && this.draftState.items[bid].series) {
         seriesBooks[bid] = this.draftState.items[bid];
         if (!this.draftState.items[bid].series.property.is_completed) {
-          seriesBooks[bid].thumbnailId =
-            seriesBooks[bid].series.property.opened_last_volume_id.length === 0
-              ? bid
-              : seriesBooks[bid].series.property.opened_last_volume_id;
+          seriesBooks[bid].thumbnailId = seriesBooks[bid].series.property.opened_last_volume_id.length === 0
+            ? bid
+            : seriesBooks[bid].series.property.opened_last_volume_id;
         }
       }
     });
@@ -75,7 +75,7 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     // brute force
     // Todo 개선 필요
     try {
-      payload.checkedIds.forEach(bId => {
+      payload.checkedIds.forEach((bId) => {
         this.draftState.items[bId].clientBookFields = {
           isAvailableSelect: payload.isSelectedId.includes(bId),
           isAlreadyCheckedAtSelect: true,

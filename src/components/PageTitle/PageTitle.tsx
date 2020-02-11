@@ -34,12 +34,13 @@ interface PageTitleProps {
   mobileHidden?: boolean;
 }
 
-const PageTitle: React.FC<PageTitleProps> = props => (
+const PageTitle: React.FC<PageTitleProps> = (props) => (
   <h2
     css={css`
       ${pageTitleCSS};
       ${props.mobileHidden ? mobileDisplayNone : ''};
-    `}>
+    `}
+  >
     {props.title}
   </h2>
 );

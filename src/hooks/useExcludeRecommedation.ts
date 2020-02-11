@@ -14,16 +14,15 @@ export const useExcludeRecommendation = (): [
   const requestExcludeBook = async (bId: string, rcmd_id: string, genre: string) => {
     try {
       return pRetry(
-        () =>
-          axios.post(
-            `/recommendation/book/exclude/${bId}/?genre=${genre}`,
-            { rcmd_id },
-            {
-              baseURL: requestURL.toString(),
-              withCredentials: true,
-              custom: { authorizationRequestType: OAuthRequestType.CHECK },
-            },
-          ),
+        () => axios.post(
+          `/recommendation/book/exclude/${bId}/?genre=${genre}`,
+          { rcmd_id },
+          {
+            baseURL: requestURL.toString(),
+            withCredentials: true,
+            custom: { authorizationRequestType: OAuthRequestType.CHECK },
+          },
+        ),
         { retries: 2 },
       );
     } catch (error) {
@@ -35,12 +34,11 @@ export const useExcludeRecommendation = (): [
   const requestCancelExcludeBook = async (bId: string, genre: string) => {
     try {
       return pRetry(
-        () =>
-          axios.delete(`/recommendation/book/exclude/${bId}/?genre=${genre}`, {
-            baseURL: requestURL.toString(),
-            withCredentials: true,
-            custom: { authorizationRequestType: OAuthRequestType.CHECK },
-          }),
+        () => axios.delete(`/recommendation/book/exclude/${bId}/?genre=${genre}`, {
+          baseURL: requestURL.toString(),
+          withCredentials: true,
+          custom: { authorizationRequestType: OAuthRequestType.CHECK },
+        }),
         { retries: 2 },
       );
     } catch (error) {

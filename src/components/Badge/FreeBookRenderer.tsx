@@ -26,7 +26,7 @@ const freeBookStyle = css`
 `;
 
 // 무료책 권수 썸네일에 표시하는 컴포넌트
-const FreeBookRenderer: React.FC<FreeBookRendererProps> = props => {
+const FreeBookRenderer: React.FC<FreeBookRendererProps> = (props) => {
   if (props.freeBookCount && props.freeBookCount > 0) {
     return (
       <span css={freeBookStyle} aria-label={`${props.freeBookCount}${props.unit} 무료`}>

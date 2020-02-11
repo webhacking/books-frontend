@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { NextRouter, withRouter } from 'next/router';
 
 import sentry from 'src/utils/sentry';
+
 const { captureException } = sentry();
 export const BrowserLocationContext = React.createContext('/');
 
@@ -11,7 +12,7 @@ interface BrowserLocationContextProps {
   router: NextRouter;
 }
 
-const BrowserLocation: React.FC<BrowserLocationContextProps> = props => {
+const BrowserLocation: React.FC<BrowserLocationContextProps> = (props) => {
   const [currentPath, setCurrentPath] = useState<string>(props.pathname);
 
   const routeChangeCompleteHandler = useCallback((url: string) => {

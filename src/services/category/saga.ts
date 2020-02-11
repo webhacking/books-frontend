@@ -1,4 +1,6 @@
-import { takeEvery, all, call, put, select } from 'redux-saga/effects';
+import {
+  takeEvery, all, call, put, select,
+} from 'redux-saga/effects';
 import pRetry from 'p-retry';
 import { Actions } from 'immer-reducer';
 import { splitArrayToChunk } from 'src/utils/common';
@@ -10,6 +12,7 @@ import {
   CategoryState,
 } from 'src/services/category/reducer';
 import { requestCategories } from 'src/services/category/request';
+
 const { captureException } = sentry();
 
 const DEFAULT_CHUNK_SIZE = 20;
@@ -22,18 +25,18 @@ function* fetchCategories(category_ids: number[]) {
 function* watchInsertCategoryIds(action: Actions<typeof CategoryReducer>) {
   try {
     if (
-      action.type === categoryActions.insertCategoryIds.type &&
-      action.payload.length > 0
+      action.type === categoryActions.insertCategoryIds.type
+      && action.payload.length > 0
     ) {
       const uniqIds = [...new Set(action.payload)];
 
       const categories: CategoryState = yield select(
         (state: RootState) => state.categories,
       );
-      const excludedIds = uniqIds.filter(id => !categories.items[id]);
+      const excludedIds = uniqIds.filter((id) => !categories.items[id]);
       const arrays = splitArrayToChunk(excludedIds, DEFAULT_CHUNK_SIZE);
 
-      yield all(arrays.map(array => fetchCategories(array)));
+      yield all(arrays.map((array) => fetchCategories(array)));
       yield put({ type: categoryActions.setFetching.type, payload: false });
     }
   } catch (error) {

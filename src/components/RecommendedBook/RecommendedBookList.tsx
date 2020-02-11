@@ -43,8 +43,10 @@ interface ListItemProps {
   genre: string;
 }
 
-const ListItem = React.memo(function ListItem(props: ListItemProps) {
-  const { book, index, type, theme, isIntersecting, slug, genre } = props;
+const ListItem = React.memo((props: ListItemProps) => {
+  const {
+    book, index, type, theme, isIntersecting, slug, genre,
+  } = props;
   return (
     <PortraitBook
       key={index}
@@ -69,12 +71,14 @@ const ListItem = React.memo(function ListItem(props: ListItemProps) {
                 padding-right: inherit !important;
               }
             `,
-      ]}>
+      ]}
+    >
       <a
         css={css`
           display: inline-block;
         `}
-        href={`/books/${book.b_id}`}>
+        href={new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString()}
+      >
         <ThumbnailWrapper>
           <ThumbnailRenderer
             className={slug}
@@ -86,8 +90,9 @@ const ListItem = React.memo(function ListItem(props: ListItemProps) {
             ]}
             slug={slug}
             book={{ b_id: book.b_id, detail: book.detail }}
-            imgSize={'large'}
-            isIntersecting={isIntersecting}>
+            imgSize="large"
+            isIntersecting={isIntersecting}
+          >
             <div
               css={css`
                 position: absolute;
@@ -95,14 +100,15 @@ const ListItem = React.memo(function ListItem(props: ListItemProps) {
                 top: -7px;
                 left: -7px;
                 z-index: 2;
-              `}>
+              `}
+            >
               <BookBadgeRenderer
                 type={type}
                 wrapperCSS={css``}
                 isRentable={
-                  (!!book.detail?.price_info?.rent ||
-                    !!book.detail?.series?.price_info?.rent) &&
-                  ['general', 'romance', 'bl'].includes(genre)
+                  (!!book.detail?.price_info?.rent
+                    || !!book.detail?.series?.price_info?.rent)
+                  && ['general', 'romance', 'bl'].includes(genre)
                 }
                 isWaitFree={book.detail?.series?.property.is_wait_free}
                 discountPercentage={getMaxDiscountPercentage(book.detail)}
@@ -110,9 +116,9 @@ const ListItem = React.memo(function ListItem(props: ListItemProps) {
             </div>
             <FreeBookRenderer
               freeBookCount={
-                book.detail?.series?.price_info?.rent?.free_book_count ||
-                book.detail?.series?.price_info?.buy?.free_book_count ||
-                0
+                book.detail?.series?.price_info?.rent?.free_book_count
+                || book.detail?.series?.price_info?.buy?.free_book_count
+                || 0
               }
               unit={book.detail?.series?.property.unit || '권'}
             />
@@ -132,14 +138,15 @@ const ListItem = React.memo(function ListItem(props: ListItemProps) {
               margin-top: 2px;
               ${sentenceStyle}
             `,
-            theme === 'dark' &&
-              css`
+            theme === 'dark'
+              && css`
                 color: white;
               `,
-          ]}>
+          ]}
+        >
           <span
             dangerouslySetInnerHTML={{
-              __html: (book as HotRelease).sentence.replace(/(?:\r\n|\r|\n)/g, '<br />'),
+              __html: (book).sentence.replace(/(?:\r\n|\r|\n)/g, '<br />'),
             }}
           />
         </h4>
@@ -148,32 +155,33 @@ const ListItem = React.memo(function ListItem(props: ListItemProps) {
   );
 });
 
-const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo(props => {
+const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((props) => {
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
-  const { theme, type, slug, isIntersecting, genre } = props;
+  const {
+    theme, type, slug, isIntersecting, genre,
+  } = props;
   const deviceType = useContext(DeviceTypeContext);
 
   const sendDisplayEvent = useSendDisplayEvent(slug);
   useMultipleIntersectionObserver(ref, slug, sendDisplayEvent);
 
-  const items = props.items;
+  const { items } = props;
   const carouselItems = React.useMemo(
-    () =>
-      items
-        .filter(book => book.detail)
-        .map((book, index) => (
-          <ListItem
-            key={index}
-            book={book}
-            index={index}
-            type={type}
-            theme={theme}
-            isIntersecting={isIntersecting}
-            slug={slug}
-            genre={genre}
-          />
-        )),
+    () => items
+      .filter((book) => book.detail)
+      .map((book, index) => (
+        <ListItem
+          key={index}
+          book={book}
+          index={index}
+          type={type}
+          theme={theme}
+          isIntersecting={isIntersecting}
+          slug={slug}
+          genre={genre}
+        />
+      )),
     [items, type, theme, isIntersecting, slug],
   );
 
@@ -182,7 +190,8 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo(props
       css={css`
         position: relative;
         margin-top: 6px;
-      `}>
+      `}
+    >
       <BookList
         ref={ref}
         css={[
@@ -196,16 +205,17 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo(props
             : css`
                 padding-left: 13px !important;
               `,
-        ]}>
+        ]}
+      >
         {carouselItems}
       </BookList>
       {!['mobile', 'tablet'].includes(deviceType) && (
         <form css={displayNoneForTouchDevice}>
           <Arrow
             onClickHandler={moveLeft}
-            label={'이전'}
+            label="이전"
             color={theme}
-            side={'left'}
+            side="left"
             wrapperStyle={[
               css`
                 left: 5px;
@@ -214,19 +224,19 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo(props
                 transition: opacity 0.2s;
                 top: calc(
                   ${getArrowVerticalCenterPosition(
-                    ref,
-                    type === DisplayType.HotRelease ? '30px' : '0px',
-                  )}
+                ref,
+                type === DisplayType.HotRelease ? '30px' : '0px',
+              )}
                 );
               `,
               !isOnTheLeft && arrowTransition,
             ]}
           />
           <Arrow
-            label={'다음'}
+            label="다음"
             onClickHandler={moveRight}
             color={theme}
-            side={'right'}
+            side="right"
             wrapperStyle={[
               css`
                 z-index: 2;
@@ -235,9 +245,9 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo(props
                 transition: opacity 0.2s;
                 top: calc(
                   ${getArrowVerticalCenterPosition(
-                    ref,
-                    type === DisplayType.HotRelease ? '30px' : '0px',
-                  )}
+                ref,
+                type === DisplayType.HotRelease ? '30px' : '0px',
+              )}
                 );
               `,
               !isOnTheRight && arrowTransition,

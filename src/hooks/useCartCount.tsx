@@ -20,12 +20,11 @@ export const useCartCount = (loggedUserInfo: LoggedUser) => {
         );
 
         const result = await pRetry(
-          () =>
-            axios.get(cartUrl.toString(), {
-              withCredentials: true,
-              cancelToken: cartRequestTokenSource.token,
-              custom: { authorizationRequestType: OAuthRequestType.CHECK },
-            }),
+          () => axios.get(cartUrl.toString(), {
+            withCredentials: true,
+            cancelToken: cartRequestTokenSource.token,
+            custom: { authorizationRequestType: OAuthRequestType.CHECK },
+          }),
           { retries: 2 },
         );
         if (result.status === 200) {

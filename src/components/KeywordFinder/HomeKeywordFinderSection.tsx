@@ -2,6 +2,7 @@ import { css } from '@emotion/core';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import React, { useContext, useRef } from 'react';
 import ArrowV from 'src/svgs/ArrowV.svg';
+// @ts-ignore
 import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
@@ -377,104 +378,71 @@ const popularKeywords: StaticKeywords = {
   ],
 };
 
-const sectionStyle = css`
-  position: relative;
-  max-width: 1000px;
-  margin: 0 auto;
-  box-sizing: border-box;
-  padding-bottom: 24px;
-  padding-top: 24px;
-  ${orBelow(
-    999,
-    css`
-      padding-bottom: 16px;
-      padding-top: 16px;
-    `,
-  )}
-`;
-
-const titleStyle = css`
-  font-weight: normal;
-  height: 21px;
-  line-height: 21px;
-  font-size: 19px;
-  margin-bottom: 26px;
-  a {
-    color: black;
-  }
-  padding-left: 24px;
-  ${orBelow(
-    BreakPoint.LG,
-    css`
-      padding-left: 16px;
-    `,
-  )};
-`;
-
-const keywordItemStyle = css`
-  height: 31px;
-  flex: none;
-  :not(:last-of-type) {
-    margin-right: 6px;
-  }
-  :last-of-type {
-    padding-right: 24px;
-  }
-  :first-of-type {
-    padding-left: 24px;
-  }
-  ${orBelow(
-    BreakPoint.LG,
-    css`
-      :last-of-type {
-        padding-right: 16px;
-      }
-      :first-of-type {
-        padding-left: 16px;
-      }
-    `,
-  )};
-`;
-
-const anchorStyle = css`
-  border: 1px solid #b8bfc4;
-  height: 30px;
-  border-radius: 20px;
-  display: block;
-  font-size: 14px;
-  line-height: 29px;
-  font-weight: bold;
-  color: #525a61;
-  padding: 0 10px;
-`;
-
 interface HomeKeywordFinderSectionProps {
   genre: string;
 }
 
-const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props => {
+const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = (props) => {
   const { genre } = props;
   const genreKeywords = popularKeywords[genre];
   const parentGenre = genre !== 'comics' ? genre.replace('-serial', '') : 'comic';
+  // https://ridibooks.com/keyword-finder/romance?from=romance
+  const keywordFinderUrl = new URL(
+    `/keyword-finder/${parentGenre}`,
+    publicRuntimeConfig.STORE_HOST,
+  );
+  if (['bl', 'fantasy', 'romance'].includes(parentGenre)) {
+    keywordFinderUrl.searchParams.append('from', genre);
+  }
+
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   const deviceType = useContext(DeviceTypeContext);
-  const genreSearchParam = new URLSearchParams();
-  if (['bl', 'fantasy', 'romance'].includes(parentGenre)) {
-    genreSearchParam.append('from', genre);
-  }
-
   return (
-    <section css={sectionStyle}>
-      <h2 aria-label={'키워드 파인더로 이동'} css={titleStyle}>
-        <a
-          href={`/keyword-finder/${parentGenre}?${genreSearchParam.toString()}`}
-          aria-label={'키워드 파인더'}>
-          <span>키워드로 검색하기</span>
+    <section
+      css={css`
+        position: relative;
+        max-width: 1000px;
+        margin: 0 auto;
+        box-sizing: border-box;
+        padding-bottom: 24px;
+        padding-top: 24px;
+        ${orBelow(
+        999,
+        css`
+            padding-bottom: 16px;
+            padding-top: 16px;
+          `,
+      )}
+      `}
+    >
+      <h2
+        aria-label="키워드 파인더로 이동"
+        css={css`
+          font-weight: normal;
+          height: 21px;
+          line-height: 21px;
+          font-size: 19px;
+          margin-bottom: 26px;
+          a {
+            color: black;
+          }
+          padding-left: 24px;
+          ${orBelow(
+          BreakPoint.LG,
+          css`
+              padding-left: 16px;
+            `,
+        )};
+        `}
+      >
+        <a href={keywordFinderUrl.toString()} aria-label="키워드 파인더">
+          <span css={css``}>키워드로 검색하기</span>
           <span
             css={css`
               margin-left: 7.8px;
-            `}>
+            `}
+          >
             <ArrowV />
           </span>
         </a>
@@ -487,18 +455,67 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
             overflow-x: auto;
             ${scrollBarHidden};
             -webkit-overflow-scrolling: touch;
-          `}>
+          `}
+        >
           {genreKeywords.map((keyword, index) => {
-            const keywordSetAndTagSearchParam = new URLSearchParams(genreSearchParam);
-            keywordSetAndTagSearchParam.append('set_id', keyword.set_id.toString());
-            keywordSetAndTagSearchParam.append('tag_ids[]', keyword.tag_id.toString());
+            if (keywordFinderUrl.searchParams.has('set_id')) {
+              keywordFinderUrl.searchParams.delete('set_id');
+            }
+            if (keywordFinderUrl.searchParams.has('tag_ids[]')) {
+              keywordFinderUrl.searchParams.delete('tag_ids[]');
+            }
+
+            keywordFinderUrl.searchParams.append('set_id', keyword.set_id.toString());
+            keywordFinderUrl.searchParams.append('tag_ids[]', keyword.tag_id.toString());
             return (
-              <li key={index} css={keywordItemStyle}>
+              <li
+                key={index}
+                css={css`
+                  height: 31px;
+                  flex: none;
+                  :not(:last-of-type) {
+                    margin-right: 6px;
+                  }
+                  :last-of-type {
+                    padding-right: 24px;
+                  }
+                  :first-of-type {
+                    padding-left: 24px;
+                  }
+                  ${orBelow(
+                  BreakPoint.LG,
+                  css`
+                      :last-of-type {
+                        padding-right: 16px;
+                      }
+                      :first-of-type {
+                        padding-left: 16px;
+                      }
+                    `,
+                )};
+                `}
+              >
                 <a
-                  href={`/keyword-finder/${parentGenre}?${keywordSetAndTagSearchParam.toString()}`}
+                  href={keywordFinderUrl.toString()}
                   aria-label={keyword.name}
-                  css={anchorStyle}>
-                  #{keyword.name}
+                  css={css`
+                    border: 1px solid #b8bfc4;
+                    height: 30px;
+                    border-radius: 20px;
+                    display: block;
+                  `}
+                >
+                  <span
+                    css={css`
+                      font-size: 14px;
+                      line-height: 29px;
+                      font-weight: bold;
+                      color: #525a61;
+                      padding: 0 10px;
+                    `}
+                  >
+                    {`#${keyword.name}`}
+                  </span>
                 </a>
               </li>
             );
@@ -512,10 +529,11 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
               height: 0;
             `,
             displayNoneForTouchDevice,
-          ]}>
+          ]}
+        >
           <Arrow
-            label={'이전 키워드 보기'}
-            side={'left'}
+            label="이전 키워드 보기"
+            side="left"
             onClickHandler={moveLeft}
             wrapperStyle={[
               css`
@@ -530,8 +548,8 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = props 
           />
 
           <Arrow
-            label={'다음 키워드 보기'}
-            side={'right'}
+            label="다음 키워드 보기"
+            side="right"
             onClickHandler={moveRight}
             wrapperStyle={[
               css`

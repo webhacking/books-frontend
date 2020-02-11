@@ -106,11 +106,13 @@ interface SelectionBookListProps {
   slug: string;
 }
 
-const SelectionBookList: React.FC<SelectionBookListProps> = React.memo(props => {
+const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) => {
   const ref = useRef<HTMLUListElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
-  const { genre, type, isIntersecting, slug } = props;
+  const {
+    genre, type, isIntersecting, slug,
+  } = props;
   const deviceType = useContext(DeviceTypeContext);
   // @ts-ignore
   const [requestExclude, requestCancel] = useExcludeRecommendation();
@@ -124,10 +126,11 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo(props => 
       css={css`
         margin-top: 6px;
         position: relative;
-      `}>
+      `}
+    >
       <ul ref={ref} css={[flexRowStart, scrollBarHidden, listCSS]}>
         {props.items
-          .filter(item => item.detail)
+          .filter((item) => item.detail)
           .map((item, index) => (
             <li key={index} css={itemCSS}>
               <SelectionBookItem
@@ -155,10 +158,11 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo(props => 
               height: 0;
             `,
             displayNoneForTouchDevice,
-          ]}>
+          ]}
+        >
           <Arrow
-            label={'이전'}
-            side={'left'}
+            label="이전"
+            side="left"
             onClickHandler={moveLeft}
             wrapperStyle={[
               css`
@@ -172,8 +176,8 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo(props => 
           />
 
           <Arrow
-            label={'다음'}
-            side={'right'}
+            label="다음"
+            side="right"
             onClickHandler={moveRight}
             wrapperStyle={[
               css`

@@ -25,7 +25,7 @@ export const useMultipleIntersectionObserver = (
   React.useEffect(() => {
     // missing forEach on NodeList for IE11
     if (window.NodeList && !NodeList.prototype.forEach) {
-      NodeList.prototype.forEach = function(callback, thisArg) {
+      NodeList.prototype.forEach = function (callback, thisArg) {
         thisArg = thisArg || window;
         for (let i = 0; i < this.length; i++) {
           callback.call(thisArg, this[i], i, this);
@@ -45,7 +45,7 @@ export const useMultipleIntersectionObserver = (
       items = parentRef.current
         ? parentRef.current.querySelectorAll(`.${childClassName}`)
         : [];
-      items.forEach(item => {
+      items.forEach((item) => {
         observer.observe(item);
       });
     }, 2000);
@@ -53,7 +53,7 @@ export const useMultipleIntersectionObserver = (
     // }
 
     return () => {
-      items.forEach(element => {
+      items.forEach((element) => {
         observer.unobserve(element);
       });
     };

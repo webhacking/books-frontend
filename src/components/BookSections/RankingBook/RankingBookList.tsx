@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  useContext, useEffect, useRef, useState,
+} from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 // import BookMeta from 'src/components/BookMeta/BookMeta';
@@ -11,7 +13,9 @@ import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import Clock from 'src/svgs/Clock.svg';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { createTimeLabel } from 'src/utils/dateTime';
-import { DisplayType, MdBook, ReadingRanking, SectionExtra } from 'src/types/sections';
+import {
+  DisplayType, MdBook, ReadingRanking, SectionExtra,
+} from 'src/types/sections';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
@@ -168,24 +172,28 @@ const Timer: React.FC = () => {
     <div
       css={[
         timerWrapperCSS,
-        !label &&
-          css`
+        !label
+          && css`
             opacity: 0;
           `,
-      ]}>
+      ]}
+    >
       <Clock />
       <span
         css={css`
           margin-left: 7px;
-        `}>
+        `}
+      >
         {label}
       </span>
     </div>
   );
 };
 
-const ItemList: React.FC<any> = props => {
-  const { books, slug, type, genre, isIntersecting, showSomeDeal } = props;
+const ItemList: React.FC<any> = (props) => {
+  const {
+    books, slug, type, genre, isIntersecting, showSomeDeal,
+  } = props;
   const ref = useRef<HTMLUListElement>();
 
   const sendDisplayEvent = useSendDisplayEvent(slug);
@@ -194,7 +202,7 @@ const ItemList: React.FC<any> = props => {
   return (
     <ul css={listCSS} ref={ref}>
       {books
-        .filter(book => book.detail)
+        .filter((book) => book.detail)
         .slice(0, 9)
         .map((book, index) => (
           <li css={type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
@@ -207,13 +215,18 @@ const ItemList: React.FC<any> = props => {
                 flex-direction: column;
                 justify-content: center;
                 position: relative;
-              `}>
+              `}
+            >
               <a
                 onClick={sendClickEvent.bind(null, tracker, book, slug, index)}
                 css={css`
                   display: inline-block;
                 `}
-                href={`/books/${book.b_id}`}>
+                href={new URL(
+                  `/books/${book.b_id}`,
+                  publicRuntimeConfig.STORE_HOST,
+                ).toString()}
+              >
                 <ThumbnailRenderer
                   slug={slug}
                   className={slug}
@@ -221,19 +234,20 @@ const ItemList: React.FC<any> = props => {
                   responsiveWidth={
                     type === 'big'
                       ? [
-                          css`
+                        css`
                             width: 80px;
                           `,
-                        ]
+                      ]
                       : [
-                          css`
+                        css`
                             width: 50px;
                           `,
-                        ]
+                      ]
                   }
                   book={{ b_id: book.b_id, detail: book.detail }}
                   imgSize="large"
-                  isIntersecting={isIntersecting}>
+                  isIntersecting={isIntersecting}
+                >
                   {type === 'big' && (
                     <div
                       css={css`
@@ -242,14 +256,15 @@ const ItemList: React.FC<any> = props => {
                         top: -7px;
                         left: -7px;
                         z-index: 2;
-                      `}>
+                      `}
+                    >
                       <BookBadgeRenderer
                         type={DisplayType.BestSeller}
                         wrapperCSS={css``}
                         isRentable={
-                          (!!book.detail?.price_info?.rent ||
-                            !!book.detail?.series?.price_info?.rent) &&
-                          ['general', 'romance', 'bl'].includes(genre)
+                          (!!book.detail?.price_info?.rent
+                            || !!book.detail?.series?.price_info?.rent)
+                          && ['general', 'romance', 'bl'].includes(genre)
                         }
                         isWaitFree={book.detail?.series?.property.is_wait_free}
                         discountPercentage={getMaxDiscountPercentage(book.detail)}
@@ -260,9 +275,9 @@ const ItemList: React.FC<any> = props => {
                     <>
                       <FreeBookRenderer
                         freeBookCount={
-                          book.detail?.series?.price_info?.rent?.free_book_count ||
-                          book.detail?.series?.price_info?.buy?.free_book_count ||
-                          0
+                          book.detail?.series?.price_info?.rent?.free_book_count
+                          || book.detail?.series?.price_info?.buy?.free_book_count
+                          || 0
                         }
                         unit={book.detail?.series?.property.unit || '권'}
                       />
@@ -298,13 +313,15 @@ const ItemList: React.FC<any> = props => {
   );
 };
 
-const RankingBookList: React.FC<RankingBookListProps> = props => {
+const RankingBookList: React.FC<RankingBookListProps> = (props) => {
   const targetRef = useRef(null);
   // @ts-ignore
   const isIntersecting = useIntersectionObserver(targetRef, '-150px');
   const ref = useRef<HTMLUListElement>(null);
   const [books] = useBookDetailSelector(props.items);
-  const { genre, type, showSomeDeal, slug } = props;
+  const {
+    genre, type, showSomeDeal, slug,
+  } = props;
 
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   const deviceType = useContext(DeviceTypeContext);
@@ -321,7 +338,8 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                 <span
                   css={css`
                     margin-left: 7.8px;
-                  `}>
+                  `}
+                >
                   <ArrowV />
                 </span>
               </a>
@@ -334,7 +352,8 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
           css={css`
             position: relative;
             height: ${type === 'big' ? '414px' : '282px'}; // badge + (7 * 3)
-          `}>
+          `}
+        >
           <ItemList
             books={books}
             slug={slug}
@@ -353,7 +372,8 @@ const RankingBookList: React.FC<RankingBookListProps> = props => {
                   }
                 `,
                 displayNoneForTouchDevice,
-              ]}>
+              ]}
+            >
               <Arrow
                 label="이전"
                 side="left"

@@ -22,7 +22,7 @@ export class PartialFooter extends React.Component<FooterProps> {
   public render() {
     return (
       <ThemeProvider theme={!this.props.theme ? defaultTheme : darkTheme}>
-        <PartialSeparator name={'FOOTER'} wrapped={true}>
+        <PartialSeparator name="FOOTER" wrapped>
           <Footer />
         </PartialSeparator>
       </ThemeProvider>

@@ -288,8 +288,8 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
         const result = await pRetry(() => axios.get(url.toString()), { retries: 2 });
         setSearchResult({
-          books: get(result.data, data => data.book.books, []),
-          authors: get(result.data, data => data.author.authors, []),
+          books: get(result.data, (data) => data.book.books, []),
+          authors: get(result.data, (data) => data.author.authors, []),
         });
       } catch (error) {
         setSearchResult(initialSearchResult);
@@ -319,7 +319,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       [debouncedHandleSearch],
     );
     const [debouncedOnChange] = useDebouncedCallback(handleOnChange, 100, {});
-    const passEventTarget = e => {
+    const passEventTarget = (e) => {
       const copiedValue = e.target.value;
       setKeyword(copiedValue);
       debouncedOnChange(copiedValue);
@@ -367,7 +367,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     );
 
     const handleClearInput = useCallback(
-      e => {
+      (e) => {
         e.preventDefault();
         inputRef.current.value = '';
         setKeyword('');
@@ -513,10 +513,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
             window.localStorage.getItem(localStorageKeys.instantSearchHistory),
             [],
           ).slice(0, 5);
-          const total =
-            inputRef.current.value.length < 1
-              ? history.length
-              : searchResult.authors.length + searchResult.books.length;
+          const total = inputRef.current.value.length < 1
+            ? history.length
+            : searchResult.authors.length + searchResult.books.length;
           if (e.which === 40) {
             // keyDown
             const nextPos = focusedPosition + 1;
@@ -569,9 +568,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       () =>
         // eslint-disable-next-line
         ((keyword.length < 1 && searchHistory.length > 0) ||
-          searchResult.books.length > 0 ||
-          searchResult.authors.length > 0) &&
-        isFocused,
+          searchResult.books.length > 0
+          || searchResult.authors.length > 0)
+        && isFocused,
       [
         isFocused,
         keyword.length,
@@ -587,37 +586,38 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
           tabIndex={0}
           onBlur={handleSearchWrapperBlur}
-          css={theme => [
+          css={(theme) => [
             isFocused ? focused(theme) : initial(),
             css`
               outline: none;
               ${orBelow(BreakPoint.LG, css`width: 100%;`)}
             `,
-          ]}>
+          ]}
+        >
           {isFocused && (
             <button css={arrowWrapperButton} onClick={setFocus.bind(null, false)}>
               <ArrowLeft css={arrow} />
-              <span className={'a11y'}>{labels.goBack}</span>
+              <span className="a11y">{labels.goBack}</span>
             </button>
           )}
           <div css={searchWrapper}>
             <Lens
-              css={theme => css`
+              css={(theme) => css`
                 ${iconStyle(theme)};
                 opacity: ${isFocused ? 1 : 0.6};
               `}
             />
-            <form onSubmit={handleSubmit} autoComplete={'off'}>
+            <form onSubmit={handleSubmit} autoComplete="off">
               <input
-                autoComplete={'off'}
-                autoCapitalize={'off'}
-                autoCorrect={'off'}
+                autoComplete="off"
+                autoCapitalize="off"
+                autoCorrect="off"
                 disabled={!isLoaded}
                 aria-label={labels.searchPlaceHolder}
-                aria-required={'true'}
+                aria-required="true"
                 defaultValue={keyword}
                 ref={inputRef}
-                type={'text'}
+                type="text"
                 name="instant_search"
                 placeholder={labels.searchPlaceHolder}
                 onFocus={focusedWithSearch}
@@ -635,14 +635,15 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                   display: flex;
                   align-items: center;
                 `}
-                onClick={handleClearInput}>
+                onClick={handleClearInput}
+              >
                 <Clear
                   css={css`
                     width: 14px;
                     height: 14px;
                   `}
                 />
-                <span className={'a11y'}>모두 지우기</span>
+                <span className="a11y">모두 지우기</span>
               </button>
             )}
           </div>

@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import styled from '@emotion/styled';
 import {
   AIRecommendationBook,
@@ -76,7 +78,7 @@ interface SelectionBookItemProps {
   excluded?: boolean;
 }
 
-export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(props => {
+export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo((props) => {
   const {
     book,
     isAIRecommendation,
@@ -110,7 +112,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
   );
 
   const requestCancelExclude = useCallback(
-    async bId => {
+    async (bId) => {
       try {
         setFetching(true);
         const result = await aiRecommendationCallback.excludeCancel(bId, props.genre);
@@ -132,18 +134,20 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
           display: block;
         `}
         onClick={sendClickEvent.bind(null, tracker, book, slug, order)}
-        href={`/books/${book.b_id}`}>
+        href={new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString()}
+      >
         <ThumbnailWrapper
           css={[
-            localExcluded &&
-              css`
+            localExcluded
+              && css`
                 opacity: 0.2;
                 pointer-events: none;
               `,
             css`
               transition: opacity 0.2s;
             `,
-          ]}>
+          ]}
+        >
           <ThumbnailRenderer
             className={slug}
             order={order}
@@ -160,8 +164,9 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
               ),
             ]}
             book={{ b_id: book.b_id, detail: book.detail }}
-            imgSize={'large'}
-            isIntersecting={isIntersecting}>
+            imgSize="large"
+            isIntersecting={isIntersecting}
+          >
             <div
               css={css`
                 position: absolute;
@@ -169,14 +174,15 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
                 top: -7px;
                 left: -7px;
                 z-index: 2;
-              `}>
+              `}
+            >
               <BookBadgeRenderer
                 type={type}
                 wrapperCSS={css``}
                 isRentable={
-                  (!!book.detail?.price_info?.rent ||
-                    !!book.detail?.series?.price_info?.rent) &&
-                  ['general', 'romance', 'bl'].includes(genre)
+                  (!!book.detail?.price_info?.rent
+                    || !!book.detail?.series?.price_info?.rent)
+                  && ['general', 'romance', 'bl'].includes(genre)
                 }
                 isWaitFree={book.detail?.series?.property.is_wait_free}
                 discountPercentage={getMaxDiscountPercentage(book.detail)}
@@ -184,9 +190,9 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
             </div>
             <FreeBookRenderer
               freeBookCount={
-                book.detail?.series?.price_info?.rent?.free_book_count ||
-                book.detail?.series?.price_info?.buy?.free_book_count ||
-                0
+                book.detail?.series?.price_info?.rent?.free_book_count
+                || book.detail?.series?.price_info?.buy?.free_book_count
+                || 0
               }
               unit={book.detail?.series?.property.unit || '권'}
             />
@@ -205,8 +211,8 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
           isAIRecommendation={false}
           ratingInfo={(book as MdBook).rating}
           wrapperCSS={
-            localExcluded &&
-            css`
+            localExcluded
+            && css`
               opacity: 0.2;
               pointer-events: none;
             `
@@ -229,8 +235,8 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
               color: #aaaaaa;
               outline: none;
             `,
-            isFetching &&
-              css`
+            isFetching
+              && css`
                 opacity: 0.3;
                 cursor: not-allowed;
               `,
@@ -239,12 +245,13 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo(pr
             localExcluded
               ? requestCancelExclude.bind(null, book.b_id)
               : requestExclude.bind(
-                  null,
-                  book.b_id,
-                  (book as AIRecommendationBook).rcmd_id,
-                )
+                null,
+                book.b_id,
+                (book as AIRecommendationBook).rcmd_id,
+              )
           }
-          aria-label={localExcluded ? '다시 보기' : '추천 제외'}>
+          aria-label={localExcluded ? '다시 보기' : '추천 제외'}
+        >
           {localExcluded ? '다시 보기' : '추천 제외'}
         </button>
       )}
@@ -263,7 +270,7 @@ export interface SelectionBookCarouselProps {
 }
 
 export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = React.memo(
-  props => {
+  (props) => {
     const { isIntersecting, genre, type } = props;
 
     return (
@@ -276,7 +283,8 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = React.
           margin-top: 6px;
           height: 100%;
           margin-left: -2px;
-        `}>
+        `}
+      >
         <ul
           css={[
             flexRowStart,
@@ -286,20 +294,21 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = React.
               justify-content: space-between;
               padding-left: 16px;
               ${orBelow(
-                BreakPoint.LG,
-                css`
+              BreakPoint.LG,
+              css`
                   padding-left: 16px;
                   justify-content: start;
                 `,
-              )}
+            )}
             `,
-          ]}>
+          ]}
+        >
           {props.items.map((book, index) => (
             <PortraitBook key={index}>
               <ThumbnailWrapper>
                 <ThumbnailRenderer
                   book={{ b_id: book.b_id, detail: book.detail }}
-                  imgSize={'large'}
+                  imgSize="large"
                   isIntersecting={isIntersecting}
                   responsiveWidth={[
                     css`
@@ -336,8 +345,10 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = React.
   },
 );
 
-const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
-  const { genre, type, slug, title, extra, selectionId } = props;
+const SelectionBook: React.FC<SelectionBookProps> = React.memo((props) => {
+  const {
+    genre, type, slug, title, extra, selectionId,
+  } = props;
   const [, setMounted] = useState(false);
 
   const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
@@ -362,13 +373,19 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo(props => {
               display: flex;
             `}
             href={
-              extra?.detail_link ?? `/selection/${selectionId}`
-            }>
+              extra?.detail_link
+              ?? new URL(
+                `/selection/${selectionId}`,
+                publicRuntimeConfig.STORE_HOST,
+              ).toString()
+            }
+          >
             <span>{title}</span>
             <span
               css={css`
                 margin-left: 7.8px;
-              `}>
+              `}
+            >
               <ArrowV />
             </span>
           </a>

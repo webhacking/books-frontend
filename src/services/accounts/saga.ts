@@ -1,4 +1,6 @@
-import { takeEvery, all, call, put } from 'redux-saga/effects';
+import {
+  takeEvery, all, call, put,
+} from 'redux-saga/effects';
 import { accountActions, AccountReducer } from 'src/services/accounts/reducer';
 import { checkLoggedIn } from 'src/services/accounts/request';
 import pRetry from 'p-retry';
@@ -17,7 +19,7 @@ function* watchCheckLogged(action: Actions<typeof AccountReducer>) {
     );
     const { result } = data;
     yield put({ type: accountActions.setLogged.type, payload: result });
-    configureScope(scope => {
+    configureScope((scope) => {
       scope.setUser({
         id: result.idx,
         username: result.id,
@@ -26,7 +28,7 @@ function* watchCheckLogged(action: Actions<typeof AccountReducer>) {
     });
   } catch (err) {
     yield put({ type: accountActions.setLogged.type, payload: null });
-    configureScope(scope => {
+    configureScope((scope) => {
       scope.setUser(null);
     });
   }
