@@ -1,7 +1,7 @@
 {
-  "name": "books",
+  "name": "@ridi/books-frontend",
   "version": "0.0.1",
-  "private": true,
+  "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
     "@emotion/core": "^10.0.22",
@@ -92,7 +92,6 @@
     "babel-plugin-emotion": "^10.0.23",
     "babel-plugin-module-resolver": "^3.2.0",
     "codecov": "^3.6.1",
-    "cross-env": "^6.0.3",
     "eslint": "^6.7.0",
     "eslint-config-prettier": "^6.7.0",
     "eslint-import-resolver-babel-module": "^5.1.0",
@@ -119,16 +118,9 @@
     "url-loader": "^2.2.0"
   },
   "scripts": {
-    "format": "yarn prettier --write ",
-    "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "lint": "eslint src --ext .js,.ts,tsx",
-    "validate": "yarn lint && yarn format && yarn prettier --list-different \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
-    "build": "cross-env ENVIRONMENT=production && next build src",
-    "local": "cross-env ENVIRONMENT=local pm2-runtime start ecosystem.config.js --only books-server --env local",
-    "deploy": "cross-env SLS_DEBUG=* yarn clear && yarn build && yarn clear-source-map && serverless deploy --stage $ENVIRONMENT -v",
-    "offline": "cross-env SLS_DEBUG=* yarn clear && yarn build && serverless offline -v",
-    "clear": "rm -rf ./build",
-    "clear-source-map": "find ./build -type f -name '*.js.map' -delete",
+    "build": "next build src",
+    "deploy": "serverless deploy -v",
     "test": "jest --passWithNoTests --collectCoverage --colors",
     "analyze": "BUNDLE_ANALYZE=both yarn build"
   },

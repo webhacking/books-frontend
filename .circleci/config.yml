@@ -74,7 +74,7 @@ jobs:
       - checkout
       - install
       - run:
-          command: yarn build src
+          command: yarn build
       - persist_to_workspace:
           root: .
           paths:
@@ -116,7 +116,7 @@ jobs:
           aws-secret-access-key: << parameters.aws-secret-access-key >>
       - install
       - run:
-          command: yarn serverless deploy -s << parameters.stage >> -v
+          command: yarn deploy -s << parameters.stage >>
       - run:
           command:
             yarn serverless deploy list -s << parameters.stage >> | awk '/Timestamp/ {print $NF}' | tail -n 1 > .deploytimestamp
