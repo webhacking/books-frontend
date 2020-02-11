@@ -11,11 +11,12 @@ const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const webpack = require('webpack');
 const withTM = require('next-transpile-modules');
 
+const { createConfig, addSentryConfig, getDefinitionsFromConfig } = require('./env/publicRuntimeConfig');
 require('dotenv').config();
-const { getDefinitions } = require('./env/publicRuntimeConfig');
 
-const STATIC_CDN_URL = process.env.STATIC_CDN_URL || '';
 const ENVIRONMENT = process.env.ENVIRONMENT || 'local';
+const publicRuntimeConfig = createConfig();
+const STATIC_CDN_URL = publicRuntimeConfig.STATIC_CDN_URL || '';
 
 module.exports = withBundleAnalyzer(
   nextSourceMaps(
@@ -119,7 +120,8 @@ module.exports = withBundleAnalyzer(
               ],
             }),
           );
-          config.plugins.push(new webpack.DefinePlugin(getDefinitions(buildId)));
+          const sentryConfig = addSentryConfig(publicRuntimeConfig, buildId);
+          config.plugins.push(new webpack.DefinePlugin(getDefinitionsFromConfig(sentryConfig)));
 
           config.node = {
             net: 'empty',

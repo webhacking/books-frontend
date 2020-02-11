@@ -3,17 +3,17 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https');
 
-const { injectConfig } = require('../../env/publicRuntimeConfig');
+const { createConfig, injectConfig } = require('../../env/publicRuntimeConfig');
 const { createServer } = require('../common');
 const { profile } = require('./core');
 
 require('dotenv').config({
   path: path.resolve(__dirname, 'profile.env'),
 });
+injectConfig(createConfig());
 
 const dev = true;
 const app = next({ dev, dir: path.resolve(__dirname, '../../src') });
-injectConfig(app.buildId);
 const expressServer = createServer(app, dev);
 
 const port = 8443;
