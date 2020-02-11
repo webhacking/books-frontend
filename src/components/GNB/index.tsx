@@ -48,6 +48,14 @@ const Navigation = styled.nav`
 const LogoWrapper = styled.ul`
   min-height: 30px;
   margin-right: -2.5px;
+  flex: none;
+  ${orBelow(
+    BreakPoint.LG,
+    css`
+      height: 30px;
+      margin-right: 0;
+    `,
+  )};
   order: 1;
   margin-bottom: 0;
   display: inline-flex;
@@ -129,6 +137,7 @@ const ridiSelectLogo = (theme: RIDITheme) => css`
 const ButtonWrapper = styled.ul`
   margin-left: auto;
   display: flex;
+  flex: none;
   order: 3;
   ${orBelow(
     BreakPoint.LG,
@@ -159,7 +168,7 @@ const logoAndSearchBox = css`
   ${orBelow(
     BreakPoint.LG,
     css`
-      flex-direction: column;
+      flex-wrap: wrap;
     `,
   )};
 `;
@@ -196,14 +205,14 @@ const GNBButtons: React.FC<GNBButtonsProps> = props => {
       new URL('/order/checkout/cash', publicRuntimeConfig.STORE_MASTER_HOST).toString(),
     );
 
-    const returnUrl = new URL(route.asPath, publicRuntimeConfig.STORE_HOST);
+    const returnUrl = new URL(route.asPath, location.href);
     tempLoginPath.searchParams.append(
       'return_url',
-      returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
+      returnUrl.toString() || location.href,
     );
     tempSignUpPath.searchParams.append(
       'return_url',
-      returnUrl.toString() || publicRuntimeConfig.STORE_HOST,
+      returnUrl.toString() || location.href,
     );
 
     setLoginPath(tempLoginPath.toString());

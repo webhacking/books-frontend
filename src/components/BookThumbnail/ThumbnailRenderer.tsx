@@ -75,7 +75,6 @@ const thumbnailWrapperCSS = css`
   position: relative;
   line-height: 0;
   max-height: inherit;
-  
   &::after {
     display: block;
     box-sizing: border-box;

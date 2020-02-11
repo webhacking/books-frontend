@@ -161,10 +161,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo(pro
               display: inline-block;
             `}
             onClick={sendClickEvent.bind(null, tracker, item, slug, order)}
-            href={new URL(
-              `/books/${item.b_id}`,
-              publicRuntimeConfig.STORE_HOST,
-            ).toString()}>
+            href={`/books/${item.b_id}`}>
             <ThumbnailRenderer
               order={order}
               className={slug}
@@ -290,7 +287,7 @@ const ItemList: React.FC<any> = props => {
       css={css`
           display: flex;
           flex-wrap: wrap;
-          flex-shrink: 0;
+          flex: none;
           justify-content: space-around;
           margin-bottom: -24px;
           ${orBelow(
