@@ -20,6 +20,45 @@ commands:
       - save_cache:
           key: <<parameters.key>>-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths: ~/.cache/yarn
+  notify:
+    parameters:
+      color:
+        type: string
+        default: good
+      channel:
+        type: string
+        default: deploy-store
+      rollback:
+        type: boolean
+        default: false
+    steps:
+      - run:
+          command: |
+            export TITLE="`git show -s --format=%s -n1 $CIRCLE_SHA1 | sed "s/'/\\\\\'/g"`"
+            echo "export TITLE=$'$(echo "$TITLE")'" >> $BASH_ENV
+      - unless:
+          condition: <<parameters.rollback>>
+          steps:
+            - run:
+                command: |
+                  export MESSAGE="`git show -s --format=%b $CIRCLE_SHA1 | sed "s/'/\\\\\'/g"`"
+                  export MESSAGE="$MESSAGE\n\n$(git log `git rev-parse --abbrev-ref HEAD`^1..`git rev-parse --abbrev-ref HEAD` --no-merges --pretty=format:'* `%h` %s')"
+                  echo "export MESSAGE=$'$(echo "$MESSAGE")'" >> $BASH_ENV
+      - when:
+          condition: <<parameters.rollback>>
+          steps:
+            - run:
+                command: |
+                  export MESSAGE="[Rollback]: `git show -s --format=%b $CIRCLE_SHA1 | sed "s/'/\\\\\'/g"`"
+                  echo "export MESSAGE=$'$(echo "$MESSAGE")'" >> $BASH_ENV
+      - slack/notify:
+          color: << parameters.color >>
+          title: $TITLE
+          title_link: https://github.com/ridi/books-frontend/commit/$CIRCLE_SHA1
+          message: $MESSAGE
+          channel: << parameters.channel >>
+          include_project_field: false
+          include_job_number_field: false
 jobs:
   build:
     docker:
@@ -57,6 +96,9 @@ jobs:
       stage:
         type: string
         default: production
+      after-scripts:
+        type: steps
+        default: []
     steps:
       - checkout
       - attach_workspace:
@@ -82,52 +124,14 @@ jobs:
           root: .
           paths:
             - .deploytimestamp
-  notify:
-    docker:
-      - image: circleci/node:lts
-    working_directory: ~/books-frontend
-    parameters:
-      color:
-        type: string
-        default: good
-      channel:
-        type: string
-        default: deploy-store
-      rollback:
-        type: boolean
-        default: false
-    steps:
-      - checkout
-      - run:
-          command: |
-            export TITLE="`git show -s --format=%s -n1 $CIRCLE_SHA1 | sed "s/'/\\\\\'/g"`"
-            echo "export TITLE=$'$(echo "$TITLE")'" >> $BASH_ENV
-      - unless:
-          condition: <<parameters.rollback>>
-          steps:
-            - run:
-                command: |
-                  export MESSAGE="`git show -s --format=%b $CIRCLE_SHA1 | sed "s/'/\\\\\'/g"`"
-                  export MESSAGE="$MESSAGE\n\n$(git log `git rev-parse --abbrev-ref HEAD`^1..`git rev-parse --abbrev-ref HEAD` --no-merges --pretty=format:'* `%h` %s')"
-                  echo "export MESSAGE=$'$(echo "$MESSAGE")'" >> $BASH_ENV
-      - when:
-          condition: <<parameters.rollback>>
-          steps:
-            - run:
-                command: |
-                  export MESSAGE="[Rollback]: `git show -s --format=%b $CIRCLE_SHA1 | sed "s/'/\\\\\'/g"`"
-                  echo "export MESSAGE=$'$(echo "$MESSAGE")'" >> $BASH_ENV
-      - slack/notify:
-          color: << parameters.color >>
-          title: $TITLE
-          title_link: https://github.com/ridi/books-frontend/commit/$CIRCLE_SHA1
-          message: $MESSAGE
-          channel: << parameters.channel >>
-          include_project_field: false
-          include_job_number_field: false
+      - steps: << parameters.after-scripts >>
   rollback:
     docker:
       - image: circleci/node:lts
+    parameters:
+      after-scripts:
+        type: steps
+        default: []
     steps:
       - run:
           command: |
@@ -135,6 +139,7 @@ jobs:
             export PATH="$HOME/.serverless/bin:$PATH"
       - run:
           command: serverless rollback -t `cat .deploytimestamp`
+      - steps: << parameters.after-scripts >>
 workflows:
   version: 2
   deploy-dev:
@@ -153,11 +158,9 @@ workflows:
           aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
           s3-bucket: DEV_S3_BUCKET
           stage: development
-      - notify:
-          name: notify-dev
-          requires:
-            - deploy-dev
-          channel: deploy-store-dev
+          after-scripts:
+            - notify:
+                channel: deploy-store-dev
   deploy-prod:
     jobs:
       - build:
@@ -171,10 +174,8 @@ workflows:
           requires:
             - build-prod
           stage: staging
-      - notify:
-          name: notify-prod
-          requires:
-            - deploy-prod
+          after-scripts:
+            - notify
       - rollback-approval:
           type: approval
           requires:
@@ -182,9 +183,7 @@ workflows:
       - rollback:
           requires:
             - rollback-approval
-      - notify:
-          name: notify-rollback
-          requires:
-            - rollback
-          color: '#805b24'
-          rollback: true
+          after-scripts:
+            - notify:
+                color: '#805b24'
+                rollback: true
