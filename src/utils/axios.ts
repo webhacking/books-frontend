@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import * as AxiosLogger from 'axios-logger';
 import { AbortError } from 'p-retry';
 import { tokenInterceptor } from 'src/utils/axiosInterceptors';
 
@@ -37,6 +38,10 @@ export function wrapCatchCancel<F extends Function>(f: F): F {
 const createAxiosInstances = (): AxiosInstance => {
   const instance = axios.create({ timeout: TIME_OUT });
   instance.interceptors.response.use(onFulfilled => onFulfilled, tokenInterceptor);
+  if (process.env.SERVERLESS) {
+    instance.interceptors.request.use(AxiosLogger.requestLogger, AxiosLogger.errorLogger);
+    instance.interceptors.response.use(AxiosLogger.responseLogger, AxiosLogger.errorLogger);
+  }
   return instance;
 };
 export default createAxiosInstances();
