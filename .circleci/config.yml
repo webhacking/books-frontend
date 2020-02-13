@@ -99,6 +99,8 @@ jobs:
       after-scripts:
         type: steps
         default: []
+    environment:
+      ENVIRONMENT: << parameters.stage >>
     steps:
       - checkout
       - attach_workspace:
