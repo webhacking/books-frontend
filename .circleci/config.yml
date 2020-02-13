@@ -165,13 +165,13 @@ workflows:
           after-scripts:
             - notify:
                 channel: deploy-store-dev
-      - rollback-approval-dev:
+      - rollback-approval:
           type: approval
           requires:
             - deploy-dev
-      - rollback-dev:
+      - rollback:
           requires:
-            - rollback-approval-dev
+            - rollback-approval
           after-scripts:
             - notify:
                 color: '#805b24'
