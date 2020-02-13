@@ -119,7 +119,7 @@ interface NotificationItemProps {
 }
 
 const NotificationItem: React.FunctionComponent<NotificationItemProps> = React.memo(
-  props => {
+  (props) => {
     const { item, createdAtTimeAgo } = props;
     return (
       <li css={notiListItemCSS}>
@@ -130,14 +130,15 @@ const NotificationItem: React.FunctionComponent<NotificationItemProps> = React.m
               css={css`
                 box-shadow: 0 0 3px 0.5px rgba(0, 0, 0, 0.3);
               `}
-              width={'56px'}
+              width="56px"
               src={item.imageUrl}
             />
           </div>
           <div
             css={css`
               ${flexColumnStart};
-            `}>
+            `}
+          >
             <h3
               css={notificationTitleCSS}
               dangerouslySetInnerHTML={{ __html: item.title }}
@@ -149,12 +150,13 @@ const NotificationItem: React.FunctionComponent<NotificationItemProps> = React.m
               padding: 0 15px;
               margin-left: auto;
               ${orBelow(
-                BreakPoint.LG + 1,
-                css`
+              BreakPoint.LG + 1,
+              css`
                   display: none;
                 `,
-              )};
-            `}>
+            )};
+            `}
+          >
             <ArrowLeft css={arrow} />
           </div>
         </a>
@@ -168,7 +170,7 @@ interface NotificationPageProps {
   notifications: NotificationItemScheme[];
 }
 
-const NotificationPage: React.FC<NotificationPageProps> & NextComponentType = props => {
+const NotificationPage: React.FC<NotificationPageProps> & NextComponentType = (props) => {
   const [notifications] = useState(props.notifications || []);
   useEffect(() => {
     const timer = setInterval(() => {
@@ -185,7 +187,7 @@ const NotificationPage: React.FC<NotificationPageProps> & NextComponentType = pr
         <title>리디북스 - 알림</title>
       </Head>
       <section css={sectionCSS}>
-        <PageTitle title={'알림'} mobileHidden={true} />
+        <PageTitle title="알림" mobileHidden />
         <ul css={notiListCSS}>
           {notifications.map((item, index) => (
             <NotificationItem

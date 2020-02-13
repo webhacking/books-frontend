@@ -17,7 +17,10 @@ export default class Search extends React.Component<SearchProps> {
         <Head>
           <title>리디북스 - 검색</title>
         </Head>
-        <div>검색 결과 {this.props.q}</div>
+        <div>
+검색 결과
+          {this.props.q}
+        </div>
       </>
     );
   }

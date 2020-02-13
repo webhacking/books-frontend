@@ -1,4 +1,6 @@
-import React, { FormEvent, useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+  FormEvent, useCallback, useContext, useEffect, useState,
+} from 'react';
 import SliderCarousel from 'react-slick';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
@@ -6,7 +8,9 @@ import { displayNoneForTouchDevice, flexCenter } from 'src/styles';
 import Arrow from 'src/components/Carousel/Arrow';
 import uiOption from 'src/constants/ui';
 import SliderCarouselWrapper from 'src/components/Carousel/CarouselWrapper';
-import { between, BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
+import {
+  between, BreakPoint, greaterThanOrEqualTo, orBelow,
+} from 'src/utils/mediaQuery';
 import { TopBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
@@ -54,25 +58,25 @@ const sliderCSS = css`
   }
   &.slick-slider {
     ${greaterThanOrEqualTo(
-      BreakPoint.XS + 1,
-      css`
+    BreakPoint.XS + 1,
+    css`
         height: calc((100vw - 19px) / 1.5);
       `,
-    )};
+  )};
 
     ${greaterThanOrEqualTo(
-      BreakPoint.SM + 1,
-      css`
+    BreakPoint.SM + 1,
+    css`
         height: 235px;
       `,
-    )};
+  )};
 
     ${greaterThanOrEqualTo(
-      BreakPoint.LG + 1,
-      css`
+    BreakPoint.LG + 1,
+    css`
         // height: calc(${TOP_BANNER_LG_WIDTH}px / 1.5);
       `,
-    )};
+  )};
   }
   ${greaterThanOrEqualTo(
     BreakPoint.XS + 1,
@@ -173,17 +177,17 @@ const sliderCSS = css`
   .slick-slide {
     ${flexCenter};
     ${greaterThanOrEqualTo(
-      BreakPoint.SM + 1,
-      css`
+    BreakPoint.SM + 1,
+    css`
         height: 235px;
       `,
-    )};
+  )};
     ${greaterThanOrEqualTo(
-      BreakPoint.LG + 1,
-      css`
+    BreakPoint.LG + 1,
+    css`
         height: calc(${TOP_BANNER_LG_WIDTH}px / 1.5);
       `,
-    )};
+  )};
   }
 `;
 
@@ -269,10 +273,13 @@ interface TopBannerCurrentPositionProps {
   currentPosition: number;
 }
 
-const TopBannerCurrentPosition: React.FC<TopBannerCurrentPositionProps> = props => (
-  <TopBannerCurrentPositionInner className={'slick-position'}>
+const TopBannerCurrentPosition: React.FC<TopBannerCurrentPositionProps> = (props) => (
+  <TopBannerCurrentPositionInner className="slick-position">
     <span css={currentPosCSS}>
-      {props.currentPosition} / <span css={totalCountCSS}>{props.total}</span>
+      {props.currentPosition}
+      {' '}
+/
+      <span css={totalCountCSS}>{props.total}</span>
     </span>
   </TopBannerCurrentPositionInner>
 );
@@ -285,7 +292,7 @@ interface TopBannerItemProps {
 
 const BannerBadgeRenderer: React.FC<{
   badge: 'END_TODAY' | 'END_IN_3DAY' | null;
-}> = props => {
+}> = (props) => {
   const { badge } = props;
   if (!badge) {
     return null;
@@ -313,7 +320,7 @@ const BannerBadgeRenderer: React.FC<{
           top: 12px;
           right: 12px;
         `}
-        alt={'마감 임박'}
+        alt="마감 임박"
         width={44}
         height={44}
         src={`${publicRuntimeConfig.STATIC_CDN_URL}/static/image/expired_soon.png`}
@@ -324,23 +331,24 @@ const BannerBadgeRenderer: React.FC<{
   return null;
 };
 
-const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => {
+const TopBannerItem: React.FC<TopBannerItemProps> = React.memo((props) => {
   const wrapperRef = React.useRef<HTMLInputElement>();
 
   return (
     <TopBannerItemWrapper ref={wrapperRef}>
       <ItemInner
-        className={'slide-item-inner'}
+        className="slide-item-inner"
         css={css`
           position: relative;
           ${greaterThanOrEqualTo(
-            BreakPoint.LG + 1,
-            css`
+          BreakPoint.LG + 1,
+          css`
               transform: ${props.loading && !props.center ? 'scale(0.965)' : 'scale(1)'};
               margin: ${props.loading ? '0 1px' : '0'};
             `,
-          )};
-        `}>
+        )};
+        `}
+      >
         <img
           css={css`
             border-radius: 6px;
@@ -349,28 +357,28 @@ const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => {
             object-position: 0 0; // IE 11 미지원
 
             ${greaterThanOrEqualTo(
-              BreakPoint.XS,
-              css`
+            BreakPoint.XS,
+            css`
                 width: calc(100vw - 20px);
                 min-width: 280px;
                 height: calc((100vw - 23px) / 1.5);
               `,
-            )};
+          )};
             ${greaterThanOrEqualTo(
-              BreakPoint.SM + 1,
-              css`
+            BreakPoint.SM + 1,
+            css`
                 width: ${TOP_BANNER_SM_WIDTH}px;
                 height: 234px;
               `,
-            )};
+          )};
 
             ${greaterThanOrEqualTo(
-              BreakPoint.LG + 1,
-              css`
+            BreakPoint.LG + 1,
+            css`
                 width: ${TOP_BANNER_LG_WIDTH}px;
                 height: 286px;
               `,
-            )}
+          )}
           `}
           alt={props.item.title}
           src={props.item.main_image_url}
@@ -381,7 +389,7 @@ const TopBannerItem: React.FC<TopBannerItemProps> = React.memo(props => {
       </ItemInner>
       <div
         css={props.loading && !props.center ? carouselLoadingOverlay : null}
-        className={'slide-overlay'}
+        className="slide-overlay"
       />
     </TopBannerItemWrapper>
   );
@@ -412,8 +420,8 @@ const arrowWrapperCSS = (position: 'left' | 'right') => css`
       opacity: 0.7;
       bottom: 117px;
       ${position === 'right'
-        ? 'transform: translate(-115%, 20px);'
-        : 'transform: translate(115%, 20px);'};
+    ? 'transform: translate(-115%, 20px);'
+    : 'transform: translate(115%, 20px);'};
     `,
   )};
   ${between(
@@ -493,18 +501,18 @@ interface TopBannerCarouselLoadingProps {
   right: TopBanner;
 }
 
-const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props => (
+const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = (props) => (
   <div
     css={css`
       top: 2px;
       max-height: 286.8px;
       position: relative;
       ${orBelow(
-        999,
-        css`
+      999,
+      css`
           top: 1px;
         `,
-      )}
+    )}
 
       ${flexCenter};
       @media (max-width: 1279px) and (-ms-high-contrast: none),
@@ -516,14 +524,15 @@ const TopBannerCarouselLoading: React.FC<TopBannerCarouselLoadingProps> = props 
 
         //  IE11 flex center 확인
       }
-    `}>
-    <TopBannerItem loading={true} item={props.left} />
-    <TopBannerItem center={true} loading={true} item={props.center} />
-    <TopBannerItem loading={true} item={props.right} />
+    `}
+  >
+    <TopBannerItem loading item={props.left} />
+    <TopBannerItem center loading item={props.center} />
+    <TopBannerItem loading item={props.right} />
   </div>
 );
 
-const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => {
+const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo((props) => {
   const {
     banners,
     changePosition,
@@ -570,20 +579,21 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
   return (
     <SliderCarouselWrapper
       forwardedRef={forwardRef}
-      className={'center slider variable-width'}
+      className="center slider variable-width"
       css={sliderCSS}
       slidesToShow={1}
       initialSlide={0}
       slidesToScroll={1}
       speed={uiOption.topBannerCarouselSpeed}
       autoplaySpeed={uiOption.topBannerCarouselPlaySpeed}
-      autoplay={true}
+      autoplay
       touchThreshold={10}
       arrows={false}
-      infinite={true}
-      variableWidth={true}
+      infinite
+      variableWidth
       afterChange={handleAfterChange}
-      centerMode={true}>
+      centerMode
+    >
       {banners.map((item, index) => (
         <a
           onClick={sendClickEvent.bind(null, tracker, item, slug, index)}
@@ -593,15 +603,16 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
             position: relative;
             top: 2px;
             ${greaterThanOrEqualTo(
-              BreakPoint.LG + 1,
-              css`
+            BreakPoint.LG + 1,
+            css`
                 top: 2px;
               `,
-            )}
+          )}
           `}
           href={item.landing_url}
           key={index}
-          aria-label={item.title}>
+          aria-label={item.title}
+        >
           <TopBannerItem item={item} />
         </a>
       ))}
@@ -609,7 +620,7 @@ const TopBannerCarousel: React.FC<TopBannerCarouselProps> = React.memo(props => 
   );
 });
 
-export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProps> = props => {
+export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProps> = (props) => {
   const [isMounted, setMounted] = useState(false);
   const [currentPosition, setCurrentPosition] = useState(0);
   const { banners, slug } = props;
@@ -622,7 +633,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
   let firstClientX = 0;
   let clientX = 0;
 
-  const changePosition = useCallback(item => {
+  const changePosition = useCallback((item) => {
     setCurrentPosition(item || 0);
   }, []);
 
@@ -639,7 +650,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
     }
   };
 
-  const preventTouch = e => {
+  const preventTouch = (e) => {
     const minValue = 8; // threshold
 
     clientX = e.touches[0].clientX - firstClientX;
@@ -654,7 +665,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
     return e;
   };
 
-  const touchStart = e => {
+  const touchStart = (e) => {
     firstClientX = e.touches[0].clientX;
   };
 
@@ -686,7 +697,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
     }
 
     const device = getDeviceType();
-    const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
+    const _deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
 
     // FIXME: 이게 최선입니까?
     setImmediate(() => {
@@ -696,7 +707,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
         ts: new Date().getTime(),
       };
       tracker.sendEvent('display', {
-        section: `${deviceType}.${props.slug}`,
+        section: `${_deviceType}.${props.slug}`,
         items: [firstItem],
       });
     });
@@ -742,11 +753,12 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
                   ${arrowWrapperCSS('left')};
                   left: -40px;
                   transform: translate(-50%, 50%);
-                `}>
+                `}
+              >
                 <Arrow
-                  side={'left'}
+                  side="left"
                   onClickHandler={handleClickLeft}
-                  label={'이전 배너 보기'}
+                  label="이전 배너 보기"
                   wrapperStyle={css`
                     ${arrowCSS};
                     opacity: 0.5;
@@ -758,11 +770,12 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
                   ${arrowWrapperCSS('right')};
                   transform: translate(50%, 50%);
                   right: -40px;
-                `}>
+                `}
+              >
                 <Arrow
                   onClickHandler={handleClickRight}
-                  side={'right'}
-                  label={'다음 배너 보기'}
+                  side="right"
+                  label="다음 배너 보기"
                   wrapperStyle={css`
                     ${arrowCSS};
                     opacity: 0.5;

@@ -1,4 +1,6 @@
-import React, { useCallback, FormEvent, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback, FormEvent, useEffect, useRef, useState,
+} from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
@@ -53,10 +55,12 @@ const BookItemWrapper = styled.div`
   margin-right: -3px;
 `;
 
-const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(props => {
+const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((props) => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>(null);
-  const { genre, type, isAIRecommendation, isIntersecting, slug } = props;
+  const {
+    genre, type, isAIRecommendation, isIntersecting, slug,
+  } = props;
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [, setMounted] = useState(false);
   const [arrowPosition, setArrowPosition] = useState(
@@ -83,30 +87,29 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(p
     setArrowPosition(getArrowVerticalCenterPosition(wrapperRef));
   }, [wrapperRef]);
 
-  const items = props.items;
+  const { items } = props;
   const carouselItems = React.useMemo(
-    () =>
-      props.items
-        .filter(book => book.detail)
-        .map((book, index) => (
-          <BookItemWrapper key={index}>
-            <SelectionBookItem
-              order={index}
-              genre={genre}
-              slug={slug}
-              isIntersecting={isIntersecting}
-              isAIRecommendation={isAIRecommendation}
-              aiRecommendationCallback={{
-                exclude: requestExclude,
-                excludeCancel: requestCancel,
-              }}
-              excluded={book?.excluded ?? false}
-              book={book}
-              type={type}
-              width={140}
-            />
-          </BookItemWrapper>
-        )),
+    () => props.items
+      .filter((book) => book.detail)
+      .map((book, index) => (
+        <BookItemWrapper key={index}>
+          <SelectionBookItem
+            order={index}
+            genre={genre}
+            slug={slug}
+            isIntersecting={isIntersecting}
+            isAIRecommendation={isAIRecommendation}
+            aiRecommendationCallback={{
+              exclude: requestExclude,
+              excludeCancel: requestCancel,
+            }}
+            excluded={book?.excluded ?? false}
+            book={book}
+            type={type}
+            width={140}
+          />
+        </BookItemWrapper>
+      )),
     [items, genre, slug, isIntersecting, isAIRecommendation, type],
   );
 
@@ -125,50 +128,52 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo(p
         <SliderCarouselWrapper
           forwardedRef={slider}
           css={recommendedBookCarouselLoadingCSS}
-          className={'slider'}
+          className="slider"
           slidesToShow={Math.min(props.items.length, 6)}
           slidesToScroll={6}
           speed={200}
           autoplay={false}
           arrows={false}
           onInit={setInitialized}
-          infinite={true}>
+          infinite
+        >
           {carouselItems}
         </SliderCarouselWrapper>
         {carouselInitialize && props.items.length > 6 && (
           <form
             css={css`
               height: 0;
-            `}>
+            `}
+          >
             <Arrow
-              label={'이전'}
+              label="이전"
               onClickHandler={handleLeftArrow}
-              side={'left'}
+              side="left"
               wrapperStyle={css`
                 ${arrowWrapperCSS};
                 ${greaterThanOrEqualTo(
-                  BreakPoint.XL + 1,
-                  css`
+                BreakPoint.XL + 1,
+                css`
                     left: -29px;
                   `,
-                )};
+              )};
                 left: 5px;
                 top: calc(${arrowPosition});
               `}
             />
 
             <Arrow
-              label={'다음'}
-              side={'right'}
+              label="다음"
+              side="right"
               onClickHandler={handleRightArrow}
               wrapperStyle={css`
                 ${arrowWrapperCSS};
                 ${greaterThanOrEqualTo(
-                  BreakPoint.XL + 1,
-                  css`
+                BreakPoint.XL + 1,
+                css`
                     right: -36px;
                   `,
-                )};
+              )};
                 right: 5px;
                 top: calc(${arrowPosition});
               `}

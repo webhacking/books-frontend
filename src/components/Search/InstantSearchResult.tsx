@@ -1,10 +1,4 @@
 import React, { useEffect } from 'react';
-import {
-  AuthorInfo as AuthorInfoScheme,
-  InstantSearchAuthorResultScheme,
-  InstantSearchBookResultScheme,
-  InstantSearchResultScheme,
-} from './InstantSearch';
 import { css } from '@emotion/core';
 import { View } from 'libreact/lib/View';
 import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
@@ -12,6 +6,12 @@ import { lineClamp, RIDITheme } from 'src/styles';
 import styled from '@emotion/styled';
 import { getEscapedString } from 'src/utils/highlight';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
+import {
+  AuthorInfo as AuthorInfoScheme,
+  InstantSearchAuthorResultScheme,
+  InstantSearchBookResultScheme,
+  InstantSearchResultScheme,
+} from './InstantSearch';
 
 const listItemCSS = css`
   ${orBelow(
@@ -36,8 +36,8 @@ const bookListItemCSS = (theme: RIDITheme) => css`
     `,
   )};
   ${greaterThanOrEqualTo(
-      BreakPoint.LG + 1,
-      css`
+    BreakPoint.LG + 1,
+    css`
         :first-of-type {
           border-top-left-radius: 3px;
           border-top-right-radius: 3px;
@@ -51,7 +51,7 @@ const bookListItemCSS = (theme: RIDITheme) => css`
           background-color: ${theme.instantSearch.itemHover};
         }
       `,
-    )}
+  )}
     :hover {
     background-color: ${theme.instantSearch.itemHover};
   }
@@ -121,7 +121,7 @@ interface InstantSearchResultBookListProps {
   handleClickBookItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props => {
+const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = (props) => {
   const { author } = props;
 
   return (
@@ -130,18 +130,19 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
         display: flex;
         align-items: center;
         width: 100%;
-      `}>
+      `}
+    >
       <span
         css={css`
           font-size: 15px;
           line-height: 1.33;
           flex-shrink: 0;
           ${orBelow(
-            BreakPoint.LG,
-            css`
+          BreakPoint.LG,
+          css`
               margin-right: 3px;
             `,
-          )};
+        )};
           margin-right: 8px;
           color: #303538;
         `}
@@ -155,7 +156,8 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = props 
           word-break: keep-all;
           color: ${theme.label2};
           ${lineClamp(1)};
-        `}>
+        `}
+      >
         {`<${author.popular_book_title}>${
           author.book_count > 1 ? ` 외 ${author.book_count - 1}권` : ''
         }`}
@@ -173,19 +175,19 @@ const authorPublisherCSS = css`
 `;
 
 // Todo 사용 컴포넌트마다 다른 options 사용해서 보여주기
-const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = props => {
-  const viewedAuthors =
-    props.authors &&
-    props.authors
-      .filter(author => author.role === 'author' || author.role === 'illustrator')
-      .map(author => author.name);
+const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = (props) => {
+  const viewedAuthors = props.authors
+    && props.authors
+      .filter((author) => author.role === 'author' || author.role === 'illustrator')
+      .map((author) => author.name);
   if (!viewedAuthors || viewedAuthors.length === 0) {
     return (
       <span
         css={css`
           ${authorPublisherCSS};
           margin-right: 4px;
-        `}>
+        `}
+      >
         {props.author}
       </span>
     );
@@ -196,7 +198,8 @@ const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = p
       css={css`
         ${authorPublisherCSS};
         margin-right: 4px;
-      `}>
+      `}
+    >
       {viewedAuthors.length > 2
         ? `${viewedAuthors[0]} 외 ${viewedAuthors.length - 1}명`
         : `${viewedAuthors.join(', ')}`}
@@ -204,7 +207,7 @@ const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = p
   );
 };
 
-const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props => {
+const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) => {
   const { result, handleKeyDown, handleClickBookItem } = props;
 
   return (
@@ -224,7 +227,8 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
               `}
               data-book-id={book.b_id}
               onKeyDown={handleKeyDown}
-              onClick={handleClickBookItem}>
+              onClick={handleClickBookItem}
+            >
               <WindowWidthQuery>
                 <View maxWidth={1000}>
                   <span
@@ -247,12 +251,13 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                       padding-left: 4px;
                       border-left: 1px solid #e6e8eb;
                       ${greaterThanOrEqualTo(
-                        BreakPoint.LG + 1,
-                        css`
+                      BreakPoint.LG + 1,
+                      css`
                           max-width: 298px;
                         `,
-                      )}
-                    `}>
+                    )}
+                    `}
+                  >
                     {book.publisher}
                   </span>
                 </View>
@@ -278,7 +283,8 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                           align-items: start;
                           text-align: left;
                           justify-content: center;
-                        `}>
+                        `}
+                      >
                         <p
                           css={css`
                             ${titleCSS};
@@ -286,16 +292,16 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                             margin-bottom: 4px;
                             word-break: keep-all;
                             ${greaterThanOrEqualTo(
-                              BreakPoint.LG + 1,
-                              css`
+                            BreakPoint.LG + 1,
+                            css`
                                 max-width: 298px;
                               `,
-                            )}
+                          )}
                           `}
                           dangerouslySetInnerHTML={{
                             __html: getEscapedString(
-                              book.highlight.web_title_title_raw ||
-                                book.web_title_title_raw,
+                              book.highlight.web_title_title_raw
+                                || book.web_title_title_raw,
                             ),
                           }}
                         />
@@ -303,19 +309,21 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
                           css={css`
                             word-break: keep-all;
                             ${greaterThanOrEqualTo(
-                              BreakPoint.LG + 1,
-                              css`
+                            BreakPoint.LG + 1,
+                            css`
                                 max-width: 298px;
                               `,
-                            )}
-                          `}>
+                          )}
+                          `}
+                        >
                           <AuthorLabel author={book.author} authors={book.authors_info} />
                           <span
                             css={css`
                               ${authorPublisherCSS};
                               padding-left: 4px;
                               border-left: 1px solid #e6e8eb;
-                            `}>
+                            `}
+                          >
                             {book.publisher}
                           </span>
                         </div>
@@ -332,7 +340,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo(props =>
   );
 });
 
-const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props => {
+const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo((props) => {
   const {
     focusedPosition,
     handleClickAuthorItem,
@@ -370,7 +378,8 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(props
                   `}
                   data-author-id={author.id}
                   onKeyDown={handleKeyDown}
-                  onClick={handleClickAuthorItem}>
+                  onClick={handleClickAuthorItem}
+                >
                   <WindowWidthQuery>
                     <View maxWidth={1000}>
                       <AuthorInfo author={author} />

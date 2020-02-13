@@ -232,14 +232,16 @@ const Footer: React.FC<{}> = () => (
       <FlexBox
         css={css`
           transition: height 0.3s ease-in-out;
-        `}>
+        `}
+      >
         <ul css={contactListCSS}>
           <li>
             <a
               css={anchorHover}
               href="https://help.ridibooks.com/hc/ko"
               target="_blank"
-              rel="noopener">
+              rel="noopener"
+            >
               <span css={serviceCenter}>고객센터</span>
             </a>
           </li>
@@ -248,7 +250,8 @@ const Footer: React.FC<{}> = () => (
               css={anchorHover}
               href="https://help.ridibooks.com/hc/ko/sections/360002578234"
               target="_blank"
-              rel="noopener">
+              rel="noopener"
+            >
               <span css={serviceCenter}>공지사항</span>
             </a>
           </li>
@@ -260,7 +263,8 @@ const Footer: React.FC<{}> = () => (
                 <a
                   css={anchorHover}
                   href="https://paper.ridibooks.com"
-                  aria-label={'리디 페이퍼'}>
+                  aria-label="리디 페이퍼"
+                >
                   <PaperIcon css={paperIcon} />
                 </a>
               </li>
@@ -293,7 +297,8 @@ const Footer: React.FC<{}> = () => (
                   css={anchorHover}
                   href="https://cp.ridibooks.com"
                   target="_blank"
-                  rel="noopener">
+                  rel="noopener"
+                >
                   <FooterMenuLabel>CP 사이트</FooterMenuLabel>
                 </a>
               </li>
@@ -307,7 +312,8 @@ const Footer: React.FC<{}> = () => (
                   css={anchorHover}
                   href="https://help.ridibooks.com/hc/ko/articles/360026484174"
                   target="_blank"
-                  rel="noopener">
+                  rel="noopener"
+                >
                   <FooterMenuLabel>페이퍼 대량구매 안내</FooterMenuLabel>
                 </a>
               </li>
@@ -320,7 +326,8 @@ const Footer: React.FC<{}> = () => (
                   css={anchorHover}
                   href="https://www.facebook.com/ridibooks"
                   target="_blank"
-                  rel="noopener">
+                  rel="noopener"
+                >
                   <FooterMenuLabel>페이스북</FooterMenuLabel>
                 </a>
               </li>
@@ -329,7 +336,8 @@ const Footer: React.FC<{}> = () => (
                   css={anchorHover}
                   href="https://instagram.com/ridipaper/"
                   target="_blank"
-                  rel="noopener">
+                  rel="noopener"
+                >
                   <FooterMenuLabel>인스타그램</FooterMenuLabel>
                 </a>
               </li>
@@ -340,24 +348,28 @@ const Footer: React.FC<{}> = () => (
               <li
                 css={css`
                   height: 15.5px;
-                `}>
+                `}
+              >
                 <a
                   css={anchorHover}
                   href="https://www.ridicorp.com/"
                   target="_blank"
-                  rel="noopener">
+                  rel="noopener"
+                >
                   <FooterMenuLabel>회사 소개</FooterMenuLabel>
                 </a>
               </li>
               <li
                 css={css`
                   height: 17px;
-                `}>
+                `}
+              >
                 <a
                   css={anchorHover}
                   href="https://www.ridicorp.com/career/"
                   target="_blank"
-                  rel="noopener">
+                  rel="noopener"
+                >
                   <FooterMenuLabel>인재 채용</FooterMenuLabel>
                   <NewIcon
                     css={css`
@@ -380,16 +392,17 @@ const Footer: React.FC<{}> = () => (
                   height: 100%;
                   transition: height 0.3s ease-in-out;
                   ${greaterThanOrEqualTo(
-                    BreakPoint.LG + 1,
-                    css`
+                  BreakPoint.LG + 1,
+                  css`
                       display: none;
                     `,
-                  )};
-                `}>
+                )};
+                `}
+              >
                 <input
                   type="checkbox"
-                  id={'toggle'}
-                  name={'toggle'}
+                  id="toggle"
+                  name="toggle"
                   css={css`
                     &[type='checkbox'] {
                       height: 0;
@@ -432,12 +445,14 @@ const Footer: React.FC<{}> = () => (
                       opacity: 0.7;
                     }
                   `}
-                  htmlFor={'toggle'}>
+                  htmlFor="toggle"
+                >
                   <span
                     css={css`
                       color: white;
                       font-size: 14px;
-                    `}>
+                    `}
+                  >
                     더 보기
                   </span>
                   <ArrowV
@@ -463,7 +478,8 @@ const Footer: React.FC<{}> = () => (
                         opacity: 0.7;
                       }
                     }
-                  `}>
+                  `}
+                >
                   <li>
                     <a css={anchorHover} href="https://ridibooks.com/partners/">
                       <FooterMenuLabel>콘텐츠 제공 문의</FooterMenuLabel>
@@ -474,7 +490,8 @@ const Footer: React.FC<{}> = () => (
                       css={anchorHover}
                       href="https://cp.ridibooks.com"
                       target="_blank"
-                      rel="noopener">
+                      rel="noopener"
+                    >
                       <FooterMenuLabel>CP 사이트</FooterMenuLabel>
                     </a>
                   </li>
@@ -487,7 +504,8 @@ const Footer: React.FC<{}> = () => (
                     <a
                       href="https://help.ridibooks.com/hc/ko/articles/360026484174"
                       target="_blank"
-                      rel="noopener">
+                      rel="noopener"
+                    >
                       <FooterMenuLabel>페이퍼 대량구매 안내</FooterMenuLabel>
                     </a>
                   </li>
@@ -509,11 +527,11 @@ const Footer: React.FC<{}> = () => (
             margin: 0 6px 0 8px;
             border-left: 1px solid ${colors.slateGray70};
             ${orBelow(
-              BreakPoint.LG,
-              css`
+            BreakPoint.LG,
+            css`
                 display: none;
               `,
-            )};
+          )};
           `}
         />
         <span css={address}>{ridiMeta.info}</span>
@@ -526,7 +544,8 @@ const Footer: React.FC<{}> = () => (
               css={anchorHover}
               href="https://policy.ridi.com/legal/terms"
               target="_blank"
-              rel="noopener">
+              rel="noopener"
+            >
               <MiscMenuLabel>이용 약관</MiscMenuLabel>
             </a>
           </li>
@@ -535,11 +554,13 @@ const Footer: React.FC<{}> = () => (
               css={anchorHover}
               href="https://policy.ridi.com/legal/privacy"
               target="_blank"
-              rel="noopener">
+              rel="noopener"
+            >
               <MiscMenuLabel
                 css={css`
                   font-weight: bold;
-                `}>
+                `}
+              >
                 개인 정보 처리 방침
               </MiscMenuLabel>
             </a>
@@ -549,7 +570,8 @@ const Footer: React.FC<{}> = () => (
               css={anchorHover}
               href="https://policy.ridi.com/legal/youth"
               target="_blank"
-              rel="noopener">
+              rel="noopener"
+            >
               <MiscMenuLabel>청소년 보호 정책</MiscMenuLabel>
             </a>
           </li>
@@ -558,7 +580,8 @@ const Footer: React.FC<{}> = () => (
               css={anchorHover}
               href="http://ftc.go.kr/info/bizinfo/communicationList.jsp"
               target="_blank"
-              rel="noopener">
+              rel="noopener"
+            >
               <MiscMenuLabel>사업자 정보 확인</MiscMenuLabel>
             </a>
           </li>

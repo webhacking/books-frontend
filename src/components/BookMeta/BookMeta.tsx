@@ -56,13 +56,13 @@ interface RenderBookTagProps {
   isComic: boolean;
 }
 
-const RenderBookTag: React.FC<RenderBookTagProps> = props => {
+const RenderBookTag: React.FC<RenderBookTagProps> = (props) => {
   const { isComic, isNovel } = props;
   if (isComic) {
     return (
       <>
         <Tag.Comic />
-        <span className={'a11y'} aria-label={'만화'}>
+        <span className="a11y" aria-label="만화">
           만화
         </span>
       </>
@@ -72,7 +72,7 @@ const RenderBookTag: React.FC<RenderBookTagProps> = props => {
     return (
       <>
         <Tag.Novel />
-        <span className={'a11y'} aria-label={'소설'}>
+        <span className="a11y" aria-label="소설">
           소설
         </span>
       </>
@@ -90,7 +90,8 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
             ? `/author/${authors[0].id}`
             : `/search?q=${encodeURIComponent(authors[0].name)}`
         }
-        aria-label={authors[0].id ? authors[0].name : '작가 검색'}>
+        aria-label={authors[0].id ? authors[0].name : '작가 검색'}
+      >
         {authors[0].name}
       </a>
     );
@@ -106,13 +107,19 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
                   ? `/author/${author.id}`
                   : `/search?q=${encodeURIComponent(author.name)}`
               }
-              aria-label={author.id ? author.name : '작가 검색'}>
+              aria-label={author.id ? author.name : '작가 검색'}
+            >
               {author.name}
             </a>
             {index !== 1 && ', '}
           </React.Fragment>
         ))}
-        <span> 외 {authors.length - 2}명</span>
+        <span>
+          {' '}
+외
+          {authors.length - 2}
+명
+        </span>
       </>
     );
   }
@@ -127,7 +134,8 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
                   ? `/author/${author.id}`
                   : `/search?q=${encodeURIComponent(author.name)}`
               }
-              aria-label={author.id ? author.name : '작가 검색'}>
+              aria-label={author.id ? author.name : '작가 검색'}
+            >
               {author.name}
             </a>
             {index !== 1 && ', '}
@@ -140,7 +148,7 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
 };
 
 // eslint-disable-next-line complexity
-const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
+const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
   if (props.book.is_deleted) {
     return null;
   }
@@ -159,11 +167,9 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
     ratingInfo,
   } = props;
 
-  const mergedAuthors = authors.filter(author =>
-    ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author'].includes(
-      author.role,
-    ),
-  );
+  const mergedAuthors = authors.filter((author) => ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author'].includes(
+    author.role,
+  ));
 
   return (
     <>
@@ -178,13 +184,18 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
                 width: 100%;
               `,
           wrapperCSS,
-        ]}>
+        ]}
+      >
         {/* Fixme available anchor */}
         <a
           css={css`
             display: inline-block;
           `}
-          href={`/books/${props.book.id}`}>
+          href={new URL(
+            `/books/${props.book.id}`,
+            publicRuntimeConfig.STORE_HOST,
+          ).toString()}
+        >
           <h2
             css={css`
               ${bookTitleCSS};
@@ -198,21 +209,22 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
         <span
           css={[
             authorCSS,
-            showSomeDeal &&
-              !is_somedeal &&
-              css`
+            showSomeDeal
+              && !is_somedeal
+              && css`
                 margin-bottom: 0;
               `,
-            !showRating &&
-              css`
+            !showRating
+              && css`
                 margin-bottom: 0;
               `,
-            showSomeDeal &&
-              is_somedeal &&
-              css`
+            showSomeDeal
+              && is_somedeal
+              && css`
                 margin-bottom: 6px;
               `,
-          ]}>
+          ]}
+        >
           {authorsRenderer(mergedAuthors)}
         </span>
         {showRating && ratingInfo && (
@@ -222,21 +234,23 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
                 css`
                   margin-bottom: 6px;
                 `,
-                !showTag &&
-                  !showSomeDeal &&
-                  css`
+                !showTag
+                  && !showSomeDeal
+                  && css`
                     margin-bottom: 0;
                   `,
-              ]}>
+              ]}
+            >
               <StarRating
                 totalReviewer={ratingInfo.buyer_rating_count}
                 rating={ratingInfo.buyer_rating_score || 0}
               />
               <span
-                className={'a11y'}
+                className="a11y"
                 aria-label={`총 리뷰어 ${
                   ratingInfo.buyer_rating_count
-                }명. 구매자 평균 별점 ${ratingInfo.buyer_rating_score || 0}점.`}>
+                }명. 구매자 평균 별점 ${ratingInfo.buyer_rating_score || 0}점.`}
+              >
                 {`총 리뷰어 ${
                   ratingInfo.buyer_rating_count
                 }명. 구매자 평균 별점 ${ratingInfo.buyer_rating_score || 0}점.`}
@@ -250,35 +264,36 @@ const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
               css`
                 display: flex;
               `,
-              (!showRating || !ratingInfo) &&
-                css`
+              (!showRating || !ratingInfo)
+                && css`
                   margin-top: 6px;
                 `,
-              showSomeDeal &&
-                is_somedeal &&
-                css`
+              showSomeDeal
+                && is_somedeal
+                && css`
                   margin-top: 0;
                 `,
-              !showTag &&
-                !showSomeDeal &&
-                !showRating &&
-                !ratingInfo &&
-                css`
+              !showTag
+                && !showSomeDeal
+                && !showRating
+                && !ratingInfo
+                && css`
                   margin-top: 0;
                 `,
-              showSomeDeal &&
-                !is_somedeal &&
-                css`
+              showSomeDeal
+                && !is_somedeal
+                && css`
                   margin-top: 0;
                 `,
-            ]}>
+            ]}
+          >
             {showTag && (
               <RenderBookTag isComic={is_comic_hd || is_comic} isNovel={is_novel} />
             )}
             {showSomeDeal && is_somedeal && (
               <>
                 <Tag.SomeDeal />
-                <span className={'a11y'} aria-label={'썸딜 도서'}>
+                <span className="a11y" aria-label="썸딜 도서">
                   썸딜 도서
                 </span>
               </>

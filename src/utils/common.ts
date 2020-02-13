@@ -61,9 +61,9 @@ export const keyToArray = (target: any[] | Record<string, any>, key: string): an
 
   const arr = [];
   if (Array.isArray(target)) {
-    target.forEach(item => arr.push(...keyToArray(item, key)));
+    target.forEach((item) => arr.push(...keyToArray(item, key)));
   } else if (typeof target === 'object' && target) {
-    Object.keys(target).forEach(innerKey => {
+    Object.keys(target).forEach((innerKey) => {
       if (innerKey === key) {
         arr.push(target[key]);
       } else {
@@ -95,10 +95,8 @@ export const getMaxDiscountPercentage = (book?: BookApi.Book) => {
   }
   const singleBuyDiscountPercentage = book.price_info?.buy?.discount_percentage || 0;
   const singleRentDiscountPercentage = book.price_info?.rent?.discount_percentage || 0;
-  const seriesBuyDiscountPercentage =
-    book.series?.price_info?.buy?.discount_percentage || 0;
-  const seriesRentDiscountPercentage =
-    book.series?.price_info?.rent?.discount_percentage || 0;
+  const seriesBuyDiscountPercentage = book.series?.price_info?.buy?.discount_percentage || 0;
+  const seriesRentDiscountPercentage = book.series?.price_info?.rent?.discount_percentage || 0;
 
   const maxValue = Math.ceil(
     Math.max(

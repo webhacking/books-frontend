@@ -54,7 +54,7 @@ interface CategoryCollapseProps {
   handleSelectCategory: (category: ParentCategory) => void;
 }
 
-const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
+const CategoryCollapse: React.FC<CategoryCollapseProps> = (props) => {
   const { categories, selectedCategory, handleSelectCategory } = props;
   return (
     <ul css={listCSS}>
@@ -63,16 +63,17 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
           <li
             css={[
               categoryCollapsedItem,
-              selectedCategory &&
-                selectedCategory.name === item.name &&
-                css`
+              selectedCategory
+                && selectedCategory.name === item.name
+                && css`
                   span {
                     color: #fff;
                   }
                   background: #636c73;
                   color: #fff;
                 `,
-            ]}>
+            ]}
+          >
             <button
               css={css`
                 display: flex;
@@ -81,15 +82,16 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
                 height: 100%;
                 width: 100%;
               `}
-              onClick={handleSelectCategory.bind(null, item)}>
+              onClick={handleSelectCategory.bind(null, item)}
+            >
               <span css={parentCategoryNameCSS}>{item.name}</span>
               <ArrowDown
                 css={(theme: RIDITheme) => css`
                   width: 16px;
                   height: 16px;
                   fill: ${selectedCategory && selectedCategory.name === item.name
-                    ? 'white'
-                    : theme.primaryColor};
+                  ? 'white'
+                  : theme.primaryColor};
                   ${selectedCategory && selectedCategory.name === item.name
                     ? css`
                         transform: rotate(180deg) translate(0, 0);
@@ -100,37 +102,42 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
               />
             </button>
           </li>
-          {selectedCategory &&
-            index !== 0 &&
-            index % 2 === 1 &&
-            (selectedCategory.name === item.name ||
-              selectedCategory.name === categories[index - 1].name) && (
+          {selectedCategory
+            && index !== 0
+            && index % 2 === 1
+            && (selectedCategory.name === item.name
+              || selectedCategory.name === categories[index - 1].name) && (
               <li
                 css={css`
                   width: 100%;
                   background-color: #ebf6ff;
                   border-top: 1px solid #e6e8eb;
                   border-bottom: 1px solid #e6e8eb;
-                `}>
+                `}
+              >
                 <ul
                   css={css`
                     overflow: hidden;
                     display: flex;
                     flex-wrap: wrap;
                     ${selectedCategory.name === item.name
-                      ? css`
+                    ? css`
                           display: flex;
                           max-height: 500px;
                         `
-                      : 'max-height: 0;'};
-                  `}>
+                    : 'max-height: 0;'};
+                  `}
+                >
                   <li
                     css={[
                       categoryItemCSS,
                       css`
                         width: 100%;
                       `,
-                    ]}>{`${item.name} 전체`}</li>
+                    ]}
+                  >
+                    {`${item.name} 전체`}
+                  </li>
                   {item.subCategory.map((subItem, subIndex) => (
                     <li
                       css={[
@@ -139,7 +146,8 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
                           width: 50%;
                         `,
                       ]}
-                      key={subIndex}>
+                      key={subIndex}
+                    >
                       {subItem.name}
                     </li>
                   ))}
@@ -151,19 +159,21 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
                     flex-wrap: wrap;
 
                     ${selectedCategory.name === categories[index - 1].name
-                      ? css`
+                    ? css`
                           display: flex;
                           max-height: 500px;
                         `
-                      : 'max-height: 0;'};
-                  `}>
+                    : 'max-height: 0;'};
+                  `}
+                >
                   <li
                     css={[
                       categoryItemCSS,
                       css`
                         width: 100%;
                       `,
-                    ]}>
+                    ]}
+                  >
                     {`${categories[index - 1].name} 전체`}
                   </li>
                   {categories[index - 1].subCategory.map((subItem, subIndex) => (
@@ -174,20 +184,21 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = props => {
                           width: 50%;
                         `,
                       ]}
-                      key={subIndex}>
+                      key={subIndex}
+                    >
                       {subItem.name}
                     </li>
                   ))}
                 </ul>
               </li>
-            )}
+          )}
         </React.Fragment>
       ))}
     </ul>
   );
 };
 
-const Mobile: React.FC<CategoryListProps> = props => {
+const Mobile: React.FC<CategoryListProps> = (props) => {
   const [selectedCategory, setCategory] = useState<ParentCategory>(null);
   const handleSelectCategory = (category: ParentCategory) => {
     setCategory(
@@ -200,7 +211,8 @@ const Mobile: React.FC<CategoryListProps> = props => {
         display: flex;
         flex-direction: column;
         background-color: #f2f4f5;
-      `}>
+      `}
+    >
       <section css={css``}>
         <h3 css={headerCSS}>일반</h3>
         <CategoryCollapse

@@ -54,6 +54,6 @@ export default class Tag extends React.Component {
   public static SomeDeal = SomeDealTag;
 
   public render() {
-    return <Fragment>{this.props.children}</Fragment>;
+    return <>{this.props.children}</>;
   }
 }

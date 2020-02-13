@@ -1,12 +1,11 @@
 import { takeEvery, all } from 'redux-saga/effects';
 import { appActions } from 'src/services';
 
-function *watchTestAction(action: ReturnType<typeof appActions.initialize>) {
+function* watchTestAction(action: ReturnType<typeof appActions.initialize>) {
   yield console.log(action);
-  
 }
 
-export function *appRootSaga() {
+export function* appRootSaga() {
   yield all([takeEvery(appActions.initialize.type, watchTestAction)]);
 }
 

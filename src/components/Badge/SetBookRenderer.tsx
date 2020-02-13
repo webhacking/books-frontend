@@ -45,7 +45,7 @@ const labelStyle = css`
   flex-grow: 0;
 `;
 
-const SetBookRenderer: React.FC<SetBookRendererProps> = props => {
+const SetBookRenderer: React.FC<SetBookRendererProps> = (props) => {
   const { setBookCount } = props;
   if (!setBookCount) {
     return null;

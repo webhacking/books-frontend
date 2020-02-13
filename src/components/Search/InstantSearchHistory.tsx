@@ -83,7 +83,7 @@ const SearchHistoryItem = styled.li`
   outline: none;
 `;
 
-const historyOptionPanelCSS = theme => css`
+const historyOptionPanelCSS = (theme) => css`
   padding: 13px 16px;
   cursor: pointer;
   display: flex;
@@ -111,7 +111,7 @@ interface InstantSearchHistoryProps {
   focusedPosition: number;
 }
 
-const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
+const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = (props) => {
   const {
     enableSearchHistoryRecord,
     handleClearHistory,
@@ -129,7 +129,7 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
     if (wrapperRef.current) {
       const items = wrapperRef.current.querySelectorAll('li');
       if (items.length > 0 && focusedPosition !== 0) {
-        const item = items[focusedPosition - 1] as HTMLLIElement;
+        const item = items[focusedPosition - 1];
         if (item) {
           item.focus();
         }
@@ -148,9 +148,10 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
                 data-value={history}
                 onClick={handleClickHistoryItem}
                 onKeyDown={handleKeyDown}
-                key={index}>
+                key={index}
+              >
                 {/* Fixme href */}
-                <a href={'#history'}>
+                <a href="#history">
                   <span>{history}</span>
                 </a>
                 <button
@@ -158,10 +159,11 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
                     margin-left: 16px;
                   `}
                   data-value={history}
-                  type={'submit'}
-                  onClick={handleRemoveHistory}>
+                  type="submit"
+                  onClick={handleRemoveHistory}
+                >
                   <Close css={closeIcon} />
-                  <span className={'a11y'}>{labels.removeHistory}</span>
+                  <span className="a11y">{labels.removeHistory}</span>
                 </button>
               </SearchHistoryItem>
             ))}
@@ -172,7 +174,8 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
             <span
               css={css`
                 color: #9ea7ad;
-              `}>
+              `}
+            >
               {labels.turnOffStatus}
             </span>
           </div>
@@ -183,8 +186,9 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
           css={css`
             font-size: 14px;
           `}
-          type={'submit'}
-          onClick={handleToggleSearchHistoryRecord}>
+          type="submit"
+          onClick={handleToggleSearchHistoryRecord}
+        >
           {enableSearchHistoryRecord
             ? labels.turnOffSearchHistory
             : labels.turnOnSearchHistory}
@@ -193,8 +197,9 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = props => {
           css={css`
             font-size: 14px;
           `}
-          type={'submit'}
-          onClick={handleClearHistory}>
+          type="submit"
+          onClick={handleClearHistory}
+        >
           {enableSearchHistoryRecord && labels.clearSearchHistory}
         </button>
       </div>

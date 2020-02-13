@@ -50,30 +50,30 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
   public render() {
     return (
       <ThemeProvider theme={!this.state.theme ? defaultTheme : darkTheme}>
-        <BrowserLocationWithRouter isPartials={true} pathname={this.props.pathname || ''}>
-          <PartialSeparator name={'GNB'} wrapped={!this.state.isMounted}>
+        <BrowserLocationWithRouter isPartials pathname={this.props.pathname || ''}>
+          <PartialSeparator name="GNB" wrapped={!this.state.isMounted}>
             <GNB
-              id={'gnb'}
+              id="gnb"
               pathname={this.props.pathname}
-              isPartials={true}
+              isPartials
               isLoginForPartials={this.props.is_login}
               type={this.props.type}
-              searchKeyword={''}
+              searchKeyword=""
             />
             {this.props.pathname === '/category/list' && (
-              <GenreTab isPartials={true} currentGenre={'category'} />
+              <GenreTab isPartials currentGenre="category" />
             )}
 
             {['/v2/Detail'].includes(this.props.pathname) && (
-              <GenreTab isPartials={true} currentGenre={''} />
+              <GenreTab isPartials currentGenre="" />
             )}
 
             {this.props.pathname?.startsWith('/books') && (
-              <GenreTab isPartials={true} currentGenre={''} />
+              <GenreTab isPartials currentGenre="" />
             )}
 
             {this.props.pathname?.startsWith('/event') && (
-              <GenreTab isPartials={true} currentGenre={''} />
+              <GenreTab isPartials currentGenre="" />
             )}
           </PartialSeparator>
         </BrowserLocationWithRouter>

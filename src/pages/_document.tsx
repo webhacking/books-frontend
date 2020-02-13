@@ -27,14 +27,13 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
   public static async getInitialProps(context: DocumentContext) {
     const originalRenderPage = context.renderPage;
 
-    context.renderPage = nonce =>
-      originalRenderPage({
-        // useful for wrapping the whole react tree
-        // @ts-ignore
-        enhanceApp: App => props => <App {...props} nonce={nonce} />,
-        // useful for wrapping in a per-page basis
-        enhanceComponent: Component => props => <Component {...props} />,
-      });
+    context.renderPage = (nonce) => originalRenderPage({
+      // useful for wrapping the whole react tree
+      // @ts-ignore
+      enhanceApp: (App) => (props) => <App {...props} nonce={nonce} />,
+      // useful for wrapping in a per-page basis
+      enhanceComponent: (Component) => (props) => <Component {...props} />,
+    });
     // @ts-ignore
     const { locals } = context.res;
     const page = context.renderPage(locals.nonce);
@@ -55,16 +54,16 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
     const { nonce } = this.props;
     return (
       <html lang="ko">
-        <PartialSeparator name={'HEADER'} wrapped={isPartials}>
+        <PartialSeparator name="HEADER" wrapped={isPartials}>
           <Head nonce={nonce}>
             <style nonce={nonce} dangerouslySetInnerHTML={{ __html: this.props.css }} />
           </Head>
         </PartialSeparator>
         <body>
-          <PartialSeparator name={'CONTENT'} wrapped={isPartials}>
+          <PartialSeparator name="CONTENT" wrapped={isPartials}>
             <Main />
           </PartialSeparator>
-          <PartialSeparator name={'BOTTOM_SCRIPT'} wrapped={isPartials}>
+          <PartialSeparator name="BOTTOM_SCRIPT" wrapped={isPartials}>
             <NextScript nonce={nonce} />
           </PartialSeparator>
         </body>

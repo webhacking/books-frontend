@@ -29,6 +29,7 @@ module.exports = {
     'no-restricted-globals': 0,
     'no-underscore-dangle': 0,
     'no-useless-constructor': 0,
+    'no-unused-expressions': 0,
     'consistent-return': 0,
     'import/prefer-default-export': 0,
     'import/no-cycle': 0,
@@ -54,6 +55,7 @@ module.exports = {
     '@typescript-eslint/unbound-method': 0,
     '@typescript-eslint/prefer-regexp-exec': 0,
     '@typescript-eslint/await-thenable': 0,
+    '@typescript-eslint/explicit-function-return-type': 0,
   },
   settings: {
     'import/resolver': {

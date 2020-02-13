@@ -22,7 +22,7 @@ const globalAxiosConfig = () => {
 globalAxiosConfig();
 
 export function wrapCatchCancel<F extends Function>(f: F): F {
-  return (function(...args: any[]) {
+  return (function (...args: any[]) {
     try {
       return f.apply(this, args);
     } catch (err) {
@@ -37,7 +37,7 @@ export function wrapCatchCancel<F extends Function>(f: F): F {
 
 const createAxiosInstances = (): AxiosInstance => {
   const instance = axios.create({ timeout: TIME_OUT });
-  instance.interceptors.response.use(onFulfilled => onFulfilled, tokenInterceptor);
+  instance.interceptors.response.use((onFulfilled) => onFulfilled, tokenInterceptor);
   if (process.env.SERVERLESS) {
     instance.interceptors.request.use(AxiosLogger.requestLogger, AxiosLogger.errorLogger);
     instance.interceptors.response.use(AxiosLogger.responseLogger, AxiosLogger.errorLogger);

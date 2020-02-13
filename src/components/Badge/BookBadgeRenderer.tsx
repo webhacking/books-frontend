@@ -70,25 +70,28 @@ const waitFreeImageStyle = css`
   z-index: 2;
 `;
 
-const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = props => {
-  const { isWaitFree, wrapperCSS, discountPercentage, isRentable } = props;
+const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = (props) => {
+  const {
+    isWaitFree, wrapperCSS, discountPercentage, isRentable,
+  } = props;
   if (isRentable) {
     return (
-      <div className={'badge'} css={[badgeBaseCSS, rentalColor, wrapperCSS]}>
+      <div className="badge" css={[badgeBaseCSS, rentalColor, wrapperCSS]}>
         <Rentable>대여</Rentable>
       </div>
     );
   }
   if (isWaitFree) {
     return (
-      <div className={'badge'} css={[badgeBaseCSS, waitFreeColor, wrapperCSS]}>
+      <div className="badge" css={[badgeBaseCSS, waitFreeColor, wrapperCSS]}>
         <img
           src={RIDI_WAIT_FREE_ICON_URL}
           width={20}
           height={18}
           css={waitFreeImageStyle}
+          alt="리디 기다리면 무료"
         />
-        <span className={'a11y'} aria-label={'리디 기다리면 무료'}>
+        <span className="a11y" aria-label="리디 기다리면 무료">
           리디 기다리면 무료
         </span>
       </div>
@@ -96,10 +99,10 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = props => {
   }
   if (discountPercentage && discountPercentage >= 10) {
     return (
-      <div className={'badge'} css={[badgeBaseCSS, discountBadgeStyle, wrapperCSS]}>
+      <div className="badge" css={[badgeBaseCSS, discountBadgeStyle, wrapperCSS]}>
         <span css={discountNumberStyle}>{discountPercentage}</span>
         <span css={percentageStyle}>%</span>
-        <span className={'a11y'}>{`${discountPercentage} 할인`}</span>
+        <span className="a11y">{`${discountPercentage} 할인`}</span>
       </div>
     );
   }

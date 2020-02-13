@@ -8,7 +8,8 @@ import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { QuickMenu } from 'src/types/sections';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
-const labelCSS = theme => css`
+
+const labelCSS = (theme) => css`
   font-size: 13px;
   line-height: 1.23;
   color: ${theme.quickMenu.label};
@@ -81,7 +82,7 @@ interface QuickMenuListProps {
   items: QuickMenu[];
 }
 
-const Menu: React.FC<{ menu: QuickMenu }> = React.memo(props => {
+const Menu: React.FC<{ menu: QuickMenu }> = React.memo((props) => {
   const { menu } = props;
   return (
     <MenuItem>
@@ -96,7 +97,8 @@ const Menu: React.FC<{ menu: QuickMenu }> = React.memo(props => {
               display: flex;
               justify-content: center;
               align-items: center;
-            `}>
+            `}
+          >
             <QuickMenuShape
               css={css`
                 flex: none;
@@ -128,7 +130,7 @@ const Menu: React.FC<{ menu: QuickMenu }> = React.memo(props => {
   );
 });
 
-export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
+export const QuickMenuList: React.FC<QuickMenuListProps> = (props) => {
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   const deviceType = useContext(DeviceTypeContext);
@@ -136,8 +138,9 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
     <section
       css={css`
         position: relative;
-      `}>
-      <h2 className={'a11y'} aria-label={'퀵 메뉴'}>
+      `}
+    >
+      <h2 className="a11y" aria-label="퀵 메뉴">
         퀵 메뉴
       </h2>
       <MenuList ref={ref}>
@@ -152,10 +155,11 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
             @media (hover: none) {
               display: none;
             }
-          `}>
+          `}
+        >
           <Arrow
-            label={'이전 퀵 메뉴'}
-            side={'left'}
+            label="이전 퀵 메뉴"
+            side="left"
             onClickHandler={moveLeft}
             wrapperStyle={[
               css`
@@ -169,8 +173,8 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = props => {
             ]}
           />
           <Arrow
-            label={'다음 퀵 메뉴'}
-            side={'right'}
+            label="다음 퀵 메뉴"
+            side="right"
             onClickHandler={moveRight}
             wrapperStyle={[
               css`

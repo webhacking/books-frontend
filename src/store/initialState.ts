@@ -1,5 +1,5 @@
-import { RootState } from './config';
 import { appStateInitialState } from 'src/services/app/reducer';
+import { RootState } from './config';
 
 export const initialState: RootState = {
   app: appStateInitialState,

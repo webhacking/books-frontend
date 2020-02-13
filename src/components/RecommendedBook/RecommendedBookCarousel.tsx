@@ -1,4 +1,6 @@
-import React, { useCallback, FormEvent, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback, FormEvent, useEffect, useRef, useState,
+} from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
@@ -63,7 +65,7 @@ interface RecommendedBookCarouselProps {
 }
 
 const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = React.memo(
-  props => (
+  (props) => (
     <ul
       css={css`
         display: flex;
@@ -71,9 +73,10 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = R
         justify-content: center;
         height: 365px;
         margin-left: -18px;
-      `}>
+      `}
+    >
       {props.items
-        .filter(book => book.detail)
+        .filter((book) => book.detail)
         .map((book, index) => (
           <PortraitBook key={index}>
             <ThumbnailWrapper>
@@ -84,7 +87,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = R
                   `,
                 ]}
                 book={{ b_id: book.b_id, detail: book.detail }}
-                imgSize={'large'}
+                imgSize="large"
                 isIntersecting={props.isIntersecting}
               />
             </ThumbnailWrapper>
@@ -100,14 +103,15 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = R
                     left: 7px;
                     ${sentenceStyle};
                   `,
-                  props.theme === 'dark' &&
-                    css`
+                  props.theme === 'dark'
+                    && css`
                       color: white;
                     `,
-                ]}>
+                ]}
+              >
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: (book as HotRelease).sentence.replace(
+                    __html: (book).sentence.replace(
                       /(?:\r\n|\r|\n)/g,
                       '<br />',
                     ),
@@ -131,9 +135,11 @@ interface CarouselItemProps {
   genre: string;
 }
 
-const CarouselItem = React.memo(function CarouselItem(props: CarouselItemProps) {
-  const { book, index, type, slug, theme, isIntersecting, genre } = props;
-  const href = `/books/${book.b_id}`;
+const CarouselItem = React.memo((props: CarouselItemProps) => {
+  const {
+    book, index, type, slug, theme, isIntersecting, genre,
+  } = props;
+  const href = new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString();
   return (
     // @ts-ignore
     <div
@@ -141,17 +147,20 @@ const CarouselItem = React.memo(function CarouselItem(props: CarouselItemProps) 
         display: flex;
         flex-direction: column;
         outline: none;
-      `}>
+      `}
+    >
       <PortraitBook
         css={css`
           height: 100%;
           padding-left: 0 !important;
-        `}>
+        `}
+      >
         <a
           css={css`
             display: inline-block;
           `}
-          href={href}>
+          href={href}
+        >
           <ThumbnailWrapper>
             <ThumbnailRenderer
               order={index}
@@ -163,8 +172,9 @@ const CarouselItem = React.memo(function CarouselItem(props: CarouselItemProps) 
               ]}
               slug={slug}
               book={{ b_id: book.b_id, detail: book.detail }}
-              imgSize={'large'}
-              isIntersecting={isIntersecting}>
+              imgSize="large"
+              isIntersecting={isIntersecting}
+            >
               <div
                 css={css`
                   position: absolute;
@@ -172,14 +182,15 @@ const CarouselItem = React.memo(function CarouselItem(props: CarouselItemProps) 
                   top: -7px;
                   left: -7px;
                   z-index: 2;
-                `}>
+                `}
+              >
                 <BookBadgeRenderer
                   type={type}
                   wrapperCSS={css``}
                   isRentable={
-                    (!!book.detail?.price_info?.rent ||
-                      !!book.detail?.series?.price_info?.rent) &&
-                    ['general', 'romance', 'bl'].includes(genre)
+                    (!!book.detail?.price_info?.rent
+                      || !!book.detail?.series?.price_info?.rent)
+                    && ['general', 'romance', 'bl'].includes(genre)
                   }
                   isWaitFree={book.detail?.series?.property.is_wait_free}
                   discountPercentage={getMaxDiscountPercentage(book.detail)}
@@ -187,9 +198,9 @@ const CarouselItem = React.memo(function CarouselItem(props: CarouselItemProps) 
               </div>
               <FreeBookRenderer
                 freeBookCount={
-                  book.detail?.series?.price_info?.rent?.free_book_count ||
-                  book.detail?.series?.price_info?.buy?.free_book_count ||
-                  0
+                  book.detail?.series?.price_info?.rent?.free_book_count
+                  || book.detail?.series?.price_info?.buy?.free_book_count
+                  || 0
                 }
                 unit={book.detail?.series?.property.unit || '권'}
               />
@@ -212,14 +223,15 @@ const CarouselItem = React.memo(function CarouselItem(props: CarouselItemProps) 
                 margin-top: 2px;
                 ${sentenceStyle};
               `,
-              theme === 'dark' &&
-                css`
+              theme === 'dark'
+                && css`
                   color: white;
                 `,
-            ]}>
+            ]}
+          >
             <span
               dangerouslySetInnerHTML={{
-                __html: (book as HotRelease).sentence.replace(
+                __html: (book).sentence.replace(
                   /(?:\r\n|\r|\n)/g,
                   '<br />',
                 ),
@@ -232,13 +244,15 @@ const CarouselItem = React.memo(function CarouselItem(props: CarouselItemProps) 
   );
 });
 
-const RecommendedBookCarousel = React.memo(function RecommendedBookCarousel(
+const RecommendedBookCarousel = React.memo((
   props: RecommendedBookCarouselProps,
-) {
+) => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
   const wrapperRef = useRef<HTMLDivElement>();
-  const { theme, type, slug, isIntersecting, genre } = props;
+  const {
+    theme, type, slug, isIntersecting, genre,
+  } = props;
   // @ts-ignore
   const [isMounted, setMounted] = useState(false);
   const [arrowPosition, setArrowPosition] = useState(
@@ -267,23 +281,22 @@ const RecommendedBookCarousel = React.memo(function RecommendedBookCarousel(
     }
   }, [carouselInitialize]);
 
-  const items = props.items;
+  const { items } = props;
   const carouselItems = React.useMemo(
-    () =>
-      items
-        .filter(book => book.detail)
-        .map((book, index) => (
-          <CarouselItem
-            key={index}
-            book={book}
-            index={index}
-            type={type}
-            genre={genre}
-            theme={theme}
-            isIntersecting={isIntersecting}
-            slug={slug}
-          />
-        )),
+    () => items
+      .filter((book) => book.detail)
+      .map((book, index) => (
+        <CarouselItem
+          key={index}
+          book={book}
+          index={index}
+          type={type}
+          genre={genre}
+          theme={theme}
+          isIntersecting={isIntersecting}
+          slug={slug}
+        />
+      )),
     [items, type, theme, isIntersecting, slug],
   );
 
@@ -305,48 +318,49 @@ const RecommendedBookCarousel = React.memo(function RecommendedBookCarousel(
         <SliderCarouselWrapper
           forwardedRef={slider}
           css={recommendedBookCarouselLoadingCSS}
-          className={'slider'}
+          className="slider"
           slidesToShow={Math.min(props.items.length, 6)}
           slidesToScroll={6}
           speed={200}
           autoplay={false}
           arrows={false}
           onInit={setInitialized}
-          infinite={true}>
+          infinite
+        >
           {carouselItems}
         </SliderCarouselWrapper>
         {carouselInitialize && props.items.length > 6 && (
           <form key="arrows">
             <Arrow
               onClickHandler={handleLeftArrow}
-              label={'이전'}
+              label="이전"
               color={theme}
-              side={'left'}
+              side="left"
               wrapperStyle={css`
                 ${arrowWrapperCSS};
                 ${greaterThanOrEqualTo(
-                  BreakPoint.XL + 1,
-                  css`
+                BreakPoint.XL + 1,
+                css`
                     left: -31px;
                   `,
-                )};
+              )};
                 left: 5px;
                 top: calc(${arrowPosition});
               `}
             />
             <Arrow
-              label={'다음'}
+              label="다음"
               onClickHandler={handleRightArrow}
               color={theme}
-              side={'right'}
+              side="right"
               wrapperStyle={css`
                 ${arrowWrapperCSS};
                 ${greaterThanOrEqualTo(
-                  BreakPoint.XL + 1,
-                  css`
+                BreakPoint.XL + 1,
+                css`
                     right: -27px;
                   `,
-                )};
+              )};
                 right: 5px;
                 top: calc(${arrowPosition});
               `}

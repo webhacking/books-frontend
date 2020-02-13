@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
-import { between, BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
+import {
+  between, BreakPoint, greaterThanOrEqualTo, orBelow,
+} from 'src/utils/mediaQuery';
 
 const desktopBannerLayout = css`
   width: 234px;

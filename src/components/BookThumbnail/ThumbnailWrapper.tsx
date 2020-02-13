@@ -22,11 +22,11 @@ export const ThumbnailWrapper = styled.div`
   )};
   img {
     ${orBelow(
-      BreakPoint.LG,
-      css`
+    BreakPoint.LG,
+    css`
         max-height: calc(107px * 1.618 - 10px); // 120 + 7
       `,
-    )};
+  )};
     max-height: calc(147px * 1.618 - 10px); // 140 + 7
   }
 `;

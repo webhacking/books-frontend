@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback, useEffect, useMemo, useRef, useState,
+} from 'react';
 import { useDebouncedCallback as useDebounce } from 'use-debounce';
 import horizontalAnimateScroll from 'src/utils/scrollTo';
 
@@ -6,7 +8,8 @@ export const useScrollPosition = (
   ref: React.RefObject<HTMLElement>,
   listenResizeEvent = false,
   debounceDelay = 50,
-): [boolean, boolean, (leftValue: number) => void, () => void] => {
+): [boolean, boolean, (leftValue: number) => void, (
+) => void] => {
   const [isOnTheLeft, setIsOnTheLeft] = useState(false);
   const [isOnTheRight, setIsOnTheRight] = useState(false);
   const rafId = useRef<null | number>(null);
@@ -14,8 +17,8 @@ export const useScrollPosition = (
     if (ref.current) {
       setIsOnTheLeft(ref.current && ref.current.scrollLeft > 0);
       setIsOnTheRight(
-        ref.current &&
-          ref.current.scrollWidth !== ref.current.clientWidth + ref.current.scrollLeft,
+        ref.current
+          && ref.current.scrollWidth !== ref.current.clientWidth + ref.current.scrollLeft,
       );
     }
   }, [ref]);
@@ -38,7 +41,7 @@ export const useScrollPosition = (
   );
 
   const handleWheelEvent = useCallback(
-    event => {
+    (event) => {
       if (Math.abs(event.deltaX) > 10 && rafId.current) {
         cancelAnimationFrame(rafId.current);
         rafId.current = null;

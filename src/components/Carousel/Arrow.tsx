@@ -39,9 +39,11 @@ export const arrowTransition = css`
   pointer-events: none;
 `;
 
-const Arrow: React.FC<ArrowProps> = props => {
-  const { color, side, arrowStyle, onClickHandler } = props;
-  const handleClick = e => {
+const Arrow: React.FC<ArrowProps> = (props) => {
+  const {
+    color, side, arrowStyle, onClickHandler,
+  } = props;
+  const handleClick = (e) => {
     e.preventDefault();
     onClickHandler(e);
   };
@@ -55,7 +57,7 @@ const Arrow: React.FC<ArrowProps> = props => {
   ];
   return (
     <button
-      type={'submit'}
+      type="submit"
       onClick={handleClick}
       css={[
         css`
@@ -68,10 +70,11 @@ const Arrow: React.FC<ArrowProps> = props => {
         clearOutline,
         defaultOpacity,
         props.wrapperStyle,
-      ]}>
+      ]}
+    >
       <ArrowV css={mergedStyle} />
 
-      <span className={'a11y'} aria-label={props.label}>
+      <span className="a11y" aria-label={props.label}>
         {props.label}
       </span>
     </button>

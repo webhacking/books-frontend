@@ -38,8 +38,8 @@ const createCSS = (theme: RIDITheme, type: 'primary' | 'secondary') => css`
   outline: none;
 `;
 
-export const Button: React.FC<ButtonProps> = props => (
-  <button css={theme => [createCSS(theme, props.type), props.wrapperCSS]}>
+export const Button: React.FC<ButtonProps> = (props) => (
+  <button css={(theme) => [createCSS(theme, props.type), props.wrapperCSS]}>
     {props.label}
   </button>
 );

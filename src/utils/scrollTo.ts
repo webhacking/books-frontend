@@ -53,13 +53,11 @@ const horizontalAnimateScroll = (
     return;
   }
   const startScrollPosition = element.current.scrollLeft;
-  const startTime =
-    'now' in window.performance ? performance.now() : new Date().getTime();
+  const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
 
-  const scrollToPosition =
-    element.current.scrollLeft + moveTo <= 0
-      ? 0
-      : Math.round(element.current.scrollLeft + moveTo);
+  const scrollToPosition = element.current.scrollLeft + moveTo <= 0
+    ? 0
+    : Math.round(element.current.scrollLeft + moveTo);
 
   if ('requestAnimationFrame' in window) {
     const scroll = () => {
@@ -83,12 +81,10 @@ const horizontalAnimateScroll = (
         );
       }
 
-      const isRightScrollMax =
-        moveTo > 0 &&
-        element.current.scrollWidth ===
-          element.current.scrollLeft + element.current.clientWidth;
-      const finished =
-        element.current.scrollLeft === scrollToPosition || isRightScrollMax;
+      const isRightScrollMax = moveTo > 0
+        && element.current.scrollWidth
+          === element.current.scrollLeft + element.current.clientWidth;
+      const finished = element.current.scrollLeft === scrollToPosition || isRightScrollMax;
 
       if (finished) {
         return;

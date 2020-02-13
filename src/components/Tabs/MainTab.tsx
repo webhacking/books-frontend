@@ -22,6 +22,7 @@ import originalAxios from 'axios';
 import sentry from 'src/utils/sentry';
 import jwt_decode from 'jwt-decode';
 import { useCartCount } from 'src/hooks/useCartCount';
+
 const { captureException } = sentry();
 
 const RIDI_NOTIFICATION_TOKEN = 'ridi_notification_token';
@@ -176,7 +177,7 @@ interface TabItemProps {
 // Anchor, StyledAnchor ->
 // GNB/Footer 캐싱 때문에 생긴 파편화.
 // 반응형 레거시 코드 작업이 종료되면 이 부분 개선 해야 함.
-const TabItem: React.FC<TabItemProps> = props => {
+const TabItem: React.FC<TabItemProps> = (props) => {
   const {
     // isPartials,
     path,
@@ -201,7 +202,8 @@ const TabItem: React.FC<TabItemProps> = props => {
               }
             `
           : ''
-      }>
+      }
+    >
       <StyledAnchor href={path} aria-label={label}>
         <TabButton>
           {isActiveTab ? activeIcon : normalIcon}
@@ -225,7 +227,7 @@ const genreValueReplace = (visitedGenre: string) => {
   return visitedGenre;
 };
 
-const requestNotificationToken = async cancelToken => {
+const requestNotificationToken = async (cancelToken) => {
   try {
     const tokenUrl = new URL(
       '/users/me/notification-token/',
@@ -233,11 +235,10 @@ const requestNotificationToken = async cancelToken => {
     );
 
     const result = await pRetry(
-      () =>
-        wrapCatchCancel(axios.get)(tokenUrl.toString(), {
-          withCredentials: true,
-          cancelToken: cancelToken.token,
-        }),
+      () => wrapCatchCancel(axios.get)(tokenUrl.toString(), {
+        withCredentials: true,
+        cancelToken: cancelToken.token,
+      }),
       { retries: 2 },
     );
     return result.data.token;
@@ -247,7 +248,7 @@ const requestNotificationToken = async cancelToken => {
   return null;
 };
 
-export const MainTab: React.FC<MainTabProps> = props => {
+export const MainTab: React.FC<MainTabProps> = (props) => {
   const { isPartials, loggedUserInfo } = props;
   const currentPath = useContext(BrowserLocationContext);
   const [, setHomeURL] = useState('/');
@@ -292,15 +293,14 @@ export const MainTab: React.FC<MainTabProps> = props => {
         try {
           const notificationUrl = new URL('/notification', publicRuntimeConfig.STORE_API);
           const notificationResult = await pRetry(
-            () =>
-              wrapCatchCancel(axios.get)(notificationUrl.toString(), {
-                params: { limit: 5 },
-                cancelToken: notificationRequestSource.token,
-                custom: { authorizationRequestType: OAuthRequestType.CHECK },
-                headers: {
-                  Authorization: `Bearer ${tokenResult}`,
-                },
-              }),
+            () => wrapCatchCancel(axios.get)(notificationUrl.toString(), {
+              params: { limit: 5 },
+              cancelToken: notificationRequestSource.token,
+              custom: { authorizationRequestType: OAuthRequestType.CHECK },
+              headers: {
+                Authorization: `Bearer ${tokenResult}`,
+              },
+            }),
             { retries: 2 },
           );
           setNotification(notificationResult.data.unreadCount || 0);
@@ -332,7 +332,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           normalIcon={<Home css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.home}
-          path={'/'}
+          path="/"
           pathRegexp={
             // Hack, Apply lint
             // eslint-disable-next-line require-unicode-regexp,prefer-named-capture-group
@@ -345,7 +345,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           normalIcon={<Notification_regular css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.notification}
-          path={'/notification/'}
+          path="/notification/"
           pathRegexp={/^\/notification\/$/g}
           addOn={
             hasNotification > 0 && (
@@ -360,11 +360,11 @@ export const MainTab: React.FC<MainTabProps> = props => {
                   background: #ffde24;
                   border-radius: 11px;
                   ${orBelow(
-                    BreakPoint.LG,
-                    css`
+                  BreakPoint.LG,
+                  css`
                       left: 17.5px;
                     `,
-                  )}
+                )}
                 `}
               />
             )
@@ -376,7 +376,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           normalIcon={<Cart_regular css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.cart}
-          path={'/cart/'}
+          path="/cart/"
           pathRegexp={/^\/cart\/$/gu}
           addOn={
             cartCount > 0 && (
@@ -394,13 +394,14 @@ export const MainTab: React.FC<MainTabProps> = props => {
                   max-height: 31px;
                   height: 100%;
                   ${orBelow(
-                    BreakPoint.LG,
-                    css`
+                  BreakPoint.LG,
+                  css`
                       left: 12.5px;
                       top: -10px;
                     `,
-                  )}
-                `}>
+                )}
+                `}
+              >
                 <div
                   css={css`
                     align-items: center;
@@ -410,13 +411,14 @@ export const MainTab: React.FC<MainTabProps> = props => {
                     height: 20px;
                     display: flex;
                     ${orBelow(
-                      BreakPoint.LG,
-                      css`
+                    BreakPoint.LG,
+                    css`
                         margin-left: 4px;
                       `,
-                    )};
+                  )};
                     background-clip: padding-box !important;
-                  `}>
+                  `}
+                >
                   <span
                     css={css`
                       font-weight: bold;
@@ -424,7 +426,8 @@ export const MainTab: React.FC<MainTabProps> = props => {
                       font-size: 11.5px;
                       line-height: 11.5px;
                       color: #1f8ce6;
-                    `}>
+                    `}
+                  >
                     {cartCount}
                   </span>
                 </div>
@@ -438,7 +441,7 @@ export const MainTab: React.FC<MainTabProps> = props => {
           normalIcon={<MyRIDI_regular css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.myRidi}
-          path={'/account/myridi'}
+          path="/account/myridi"
           pathRegexp={/^\/account\/myridi$/gu}
         />
       </Tabs>
