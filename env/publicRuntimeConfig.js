@@ -1,7 +1,7 @@
 const { version: VERSION } = require('../package.json');
 
 function createConfig() {
-  const ENVIRONMENT = process.env.ENVIRONMENT || 'local';
+  const ENVIRONMENT = process.env.ENVIRONMENT || 'development';
 
   return {
     ENVIRONMENT,
