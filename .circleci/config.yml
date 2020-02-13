@@ -165,6 +165,18 @@ workflows:
           after-scripts:
             - notify:
                 channel: deploy-store-dev
+      - rollback-approval-dev:
+          type: approval
+          requires:
+            - deploy-dev
+      - rollback-dev:
+          requires:
+            - rollback-approval-dev
+          after-scripts:
+            - notify:
+                color: '#805b24'
+                channel: deploy-store-dev
+                rollback: true
   deploy-prod:
     jobs:
       - build:
