@@ -63,7 +63,6 @@ const searchWrapper = (theme: RIDITheme) => css`
   input {
     flex-shrink: 0;
     position: relative;
-    top: -0.5px;
     padding-right: 3.75px; // 4 * 0.9375
     width: 98%;
     font-size: 16px;
