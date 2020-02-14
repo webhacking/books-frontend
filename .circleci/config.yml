@@ -131,6 +131,25 @@ jobs:
           paths:
             - .deploytimestamp
       - steps: << parameters.after-scripts >>
+  profile-live:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/books-frontend
+    parameters:
+      url:
+        type: string
+        default: 'https://ridibooks.com/'
+    steps:
+      - checkout
+      - install
+      - run:
+          name: Run profiler
+          command: |
+            mkdir /tmp/traces
+            cd /tmp/traces
+            node ~/books-frontend/server/profile/live.js '<< parameters.url >>'
+      - store_artifacts:
+          path: /tmp/traces
   rollback:
     docker:
       - image: circleci/node:lts
@@ -195,6 +214,11 @@ workflows:
             - build-prod
           after-scripts:
             - notify
+      - profile-live:
+          name: profile-live-prod
+          requires:
+            - deploy-prod
+          url: 'https://ridibooks.com/'
       - rollback-approval:
           type: approval
           requires:
