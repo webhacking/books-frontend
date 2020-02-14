@@ -115,6 +115,7 @@
   },
   "scripts": {
     "lint": "eslint src --ext .js,.ts,tsx",
+    "start": "docker-compose -f docker-compose.yml -f docker-compose.traefik.yml up",
     "build": "next build src",
     "deploy": "serverless deploy -v",
     "test": "jest --passWithNoTests --collectCoverage --colors",
