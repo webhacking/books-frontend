@@ -697,7 +697,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
     }
 
     const device = getDeviceType();
-    const _deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
+    const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
 
     // FIXME: 이게 최선입니까?
     setImmediate(() => {
@@ -707,7 +707,7 @@ export const TopBannerCarouselContainer: React.FC<TopBannerCarouselContainerProp
         ts: new Date().getTime(),
       };
       tracker.sendEvent('display', {
-        section: `${_deviceType}.${props.slug}`,
+        section: `${deviceType}.${props.slug}`,
         items: [firstItem],
       });
     });
