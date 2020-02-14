@@ -139,7 +139,7 @@ const CarouselItem = React.memo((props: CarouselItemProps) => {
   const {
     book, index, type, slug, theme, isIntersecting, genre,
   } = props;
-  const href = new URL(`/books/${book.b_id}`, publicRuntimeConfig.STORE_HOST).toString();
+  const href = `/books/${book.b_id}`;
   return (
     // @ts-ignore
     <div
