@@ -12,6 +12,7 @@ package:
     - 'src/**'
     - 'dist/**'
     - 'build/cache/**'
+    - '.circleci/**'
     - secrets.json
     - coverage/**
     - yarn.lock
@@ -80,16 +81,6 @@ custom:
 
   stage: ${opt:stage, 'development'}
   secrets: ${file(secrets.json)}
-  domains:
-    production:
-      lambda: ${self:custom.secrets.PROD_DOMAIN}
-      static: ${self:custom.secrets.PROD_STATIC_DOMAIN}
-    staging:
-      lambda: ${self:custom.secrets.STAGING_DOMAIN}
-      static: ${self:custom.secrets.STAGING_STATIC_DOMAIN}
-    development:
-      lambda: ${self:custom.secrets.DEV_DOMAIN}
-      static: ${self:custom.secrets.DEV_STATIC_DOMAIN}
 
   apigwBinary:
     types:
