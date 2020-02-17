@@ -1,8 +1,8 @@
 import { ADULT_BADGE_URL } from 'src/constants/icons';
-import styled from '@emotion/styled';
 import React from 'react';
+import styled from '@emotion/styled';
 
-const AdultBadgeImg = styled.img`
+const Badge = styled.img`
   display: block;
   position: absolute;
   right: 3px;
@@ -12,5 +12,5 @@ const AdultBadgeImg = styled.img`
 `;
 
 export const AdultBadge: React.FC = () => (
-  <AdultBadgeImg src={ADULT_BADGE_URL} alt="성인 전용 도서" />
+  <Badge src={ADULT_BADGE_URL} alt="성인 전용 도서" />
 );
