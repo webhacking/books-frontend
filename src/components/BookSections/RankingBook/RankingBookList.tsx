@@ -1,21 +1,15 @@
-import React, {
-  useContext, useEffect, useRef, useState,
-} from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
-// import BookMeta from 'src/components/BookMeta/BookMeta';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
-import ArrowV from 'src/svgs/ArrowV.svg';
 import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import Clock from 'src/svgs/Clock.svg';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { createTimeLabel } from 'src/utils/dateTime';
-import {
-  DisplayType, MdBook, ReadingRanking, SectionExtra,
-} from 'src/types/sections';
+import { BookItem, DisplayType, MdBook, ReadingRanking, SectionExtra } from 'src/types/sections';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
@@ -26,6 +20,7 @@ import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
+import { VerticalAnchorArrow } from 'src/components/Icon/VerticalAnchorArrow';
 import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 
 const SectionWrapper = styled.section`
@@ -43,71 +38,8 @@ const SectionWrapper = styled.section`
   )}
 `;
 
-const listCSS = css`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  height: 100%;
-  padding-left: 16px;
-  padding-right: 16px;
-
-  ${greaterThanOrEqualTo(
-    BreakPoint.MD + 1,
-    css`
-      padding-left: 20px;
-      padding-right: 20px;
-    `,
-  )};
-
-  ${greaterThanOrEqualTo(
-    BreakPoint.LG + 1,
-    css`
-      padding-left: 24px;
-      padding-right: 24px;
-    `,
-  )};
-
-  ${greaterThanOrEqualTo(
-    BreakPoint.LG,
-    css`
-      //overflow: auto;
-    `,
-  )};
-  ${scrollBarHidden};
-  overflow-x: auto;
-`;
-
-const itemCSS = css`
-  flex: none;
-  display: flex;
-  align-items: center;
-  box-sizing: content-box;
-  padding-right: 14px;
-  .book-meta-box {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px #e6e8eb solid;
-    height: 100%;
-    width: 100%;
-  }
-  :nth-of-type(3n) {
-    .book-meta-box {
-      border-bottom: 0;
-    }
-  }
-`;
-
-const bigItemCSS = css`
-  ${itemCSS};
-  height: 138px;
-  width: 308px;
-`;
-
-const smallItemCSS = css`
-  ${itemCSS};
-  height: 94px;
-  width: 308px;
-`;
+const BIG_ITEM_HEIGHT = 138;
+const SMALL_ITEM_HEIGHT = 94;
 
 const rankCSS = css`
   height: 22px;
@@ -168,37 +100,101 @@ const Timer: React.FC = () => {
     <div
       css={[
         timerWrapperCSS,
-        !label
-          && css`
+        !label &&
+          css`
             opacity: 0;
           `,
-      ]}
-    >
+      ]}>
       <Clock />
       <span
         css={css`
           margin-left: 7px;
-        `}
-      >
+        `}>
         {label}
       </span>
     </div>
   );
 };
 
-const ItemList: React.FC<any> = (props) => {
-  const {
-    books, slug, type, genre, isIntersecting, showSomeDeal,
-  } = props;
+const List = styled.ul`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  ${greaterThanOrEqualTo(
+    BreakPoint.MD + 1,
+    css`
+      padding-left: 20px;
+      padding-right: 20px;
+    `,
+  )};
+
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+      padding-left: 24px;
+      padding-right: 24px;
+    `,
+  )};
+
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG,
+    css`
+      //overflow: auto;
+    `,
+  )};
+  ${scrollBarHidden};
+  overflow-x: auto;
+`;
+
+const RankingBookItem = styled.li<{ height: number }>`
+  flex: none;
+  display: flex;
+  align-items: center;
+  box-sizing: content-box;
+  padding-right: 14px;
+  .book-meta-box {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px #e6e8eb solid;
+    height: 100%;
+    width: 100%;
+  }
+  :nth-of-type(3n) {
+    .book-meta-box {
+      border-bottom: 0;
+    }
+  }
+  width: 308px;
+  height: ${props => props.height}px;
+`;
+
+interface ItemListProps {
+  books: BookItem[];
+  slug: string;
+  genre: string;
+  type: 'small' | 'big';
+  showSomeDeal: boolean;
+  isIntersecting: boolean;
+}
+
+const ItemList: React.FC<ItemListProps> = (props) => {
+  const { books, slug, type, genre, isIntersecting, showSomeDeal } = props;
+  const ref = useRef<HTMLUListElement>();
 
   const [tracker] = useEventTracker();
   return (
-    <ul css={listCSS}>
+    <List ref={ref}>
       {books
         .filter((book) => book.detail)
         .slice(0, 9)
         .map((book, index) => (
-          <li css={type === 'big' ? bigItemCSS : smallItemCSS} key={index}>
+          <RankingBookItem
+            height={type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT}
+            key={index}>
             <div
               css={css`
                 flex: none;
@@ -208,15 +204,13 @@ const ItemList: React.FC<any> = (props) => {
                 flex-direction: column;
                 justify-content: center;
                 position: relative;
-              `}
-            >
+              `}>
               <a
                 onClick={sendClickEvent.bind(null, tracker, book, slug, index)}
                 css={css`
                   display: inline-block;
                 `}
-                href={`/books/${book.b_id}`}
-              >
+                href={`/books/${book.b_id}`}>
                 <ThumbnailRenderer
                   slug={slug}
                   className={slug}
@@ -227,16 +221,15 @@ const ItemList: React.FC<any> = (props) => {
                   sizes={type === 'big' ? '80px' : '50px'}
                   book={{ b_id: book.b_id, detail: book.detail }}
                   imgSize="large"
-                  isIntersecting={isIntersecting}
-                >
+                  isIntersecting={isIntersecting}>
                   {type === 'big' && (
                     <BadgeContainer>
                       <BookBadgeRenderer
                         type={DisplayType.BestSeller}
                         isRentable={
-                          (!!book.detail?.price_info?.rent
-                            || !!book.detail?.series?.price_info?.rent)
-                          && ['general', 'romance', 'bl'].includes(genre)
+                          (!!book.detail?.price_info?.rent ||
+                            !!book.detail?.series?.price_info?.rent) &&
+                          ['general', 'romance', 'bl'].includes(genre)
                         }
                         isWaitFree={book.detail?.series?.property.is_wait_free}
                         discountPercentage={getMaxDiscountPercentage(book.detail)}
@@ -247,9 +240,9 @@ const ItemList: React.FC<any> = (props) => {
                     <>
                       <FreeBookRenderer
                         freeBookCount={
-                          book.detail?.series?.price_info?.rent?.free_book_count
-                          || book.detail?.series?.price_info?.buy?.free_book_count
-                          || 0
+                          book.detail?.series?.price_info?.rent?.free_book_count ||
+                          book.detail?.series?.price_info?.buy?.free_book_count ||
+                          0
                         }
                         unit={book.detail?.series?.property.unit || '권'}
                       />
@@ -279,21 +272,19 @@ const ItemList: React.FC<any> = (props) => {
                 />
               )}
             </div>
-          </li>
+          </RankingBookItem>
         ))}
-    </ul>
+    </List>
   );
 };
 
-const RankingBookList: React.FC<RankingBookListProps> = (props) => {
+const RankingBookList: React.FC<RankingBookListProps> = props => {
   const targetRef = useRef(null);
   // @ts-ignore
   const isIntersecting = useIntersectionObserver(targetRef, '-150px');
   const ref = useRef<HTMLUListElement>(null);
   const [books] = useBookDetailSelector(props.items);
-  const {
-    genre, type, showSomeDeal, slug,
-  } = props;
+  const { genre, type, showSomeDeal, slug } = props;
 
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
   const deviceType = useContext(DeviceTypeContext);
@@ -310,9 +301,8 @@ const RankingBookList: React.FC<RankingBookListProps> = (props) => {
                 <span
                   css={css`
                     margin-left: 7.8px;
-                  `}
-                >
-                  <ArrowV />
+                  `}>
+                  <VerticalAnchorArrow />
                 </span>
               </a>
             ) : (
@@ -324,8 +314,7 @@ const RankingBookList: React.FC<RankingBookListProps> = (props) => {
           css={css`
             position: relative;
             height: ${type === 'big' ? '414px' : '282px'}; // badge + (7 * 3)
-          `}
-        >
+          `}>
           <ItemList
             books={books}
             slug={slug}
@@ -344,8 +333,7 @@ const RankingBookList: React.FC<RankingBookListProps> = (props) => {
                   }
                 `,
                 displayNoneForTouchDevice,
-              ]}
-            >
+              ]}>
               <Arrow
                 label="이전"
                 side="left"
