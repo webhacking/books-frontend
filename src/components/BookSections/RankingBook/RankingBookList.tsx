@@ -257,7 +257,6 @@ const ItemList: React.FC<any> = (props) => {
                     >
                       <BookBadgeRenderer
                         type={DisplayType.BestSeller}
-                        wrapperCSS={css``}
                         isRentable={
                           (!!book.detail?.price_info?.rent
                             || !!book.detail?.series?.price_info?.rent)

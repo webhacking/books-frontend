@@ -1,12 +1,12 @@
 import React from 'react';
-import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 
 interface FreeBookRendererProps {
   freeBookCount?: number;
   unit: string;
 }
 
-const freeBookStyle = css`
+const FreeBookBadge = styled.span`
   position: absolute;
   bottom: 0;
   right: 0;
@@ -25,13 +25,12 @@ const freeBookStyle = css`
   line-height: 12px;
 `;
 
-// 무료책 권수 썸네일에 표시하는 컴포넌트
 const FreeBookRenderer: React.FC<FreeBookRendererProps> = (props) => {
   if (props.freeBookCount && props.freeBookCount > 0) {
     return (
-      <span css={freeBookStyle} aria-label={`${props.freeBookCount}${props.unit} 무료`}>
+      <FreeBookBadge aria-label={`${props.freeBookCount}${props.unit} 무료`}>
         {`${props.freeBookCount}${props.unit} 무료`}
-      </span>
+      </FreeBookBadge>
     );
   }
   return null;

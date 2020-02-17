@@ -178,7 +178,6 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo((p
             >
               <BookBadgeRenderer
                 type={type}
-                wrapperCSS={css``}
                 isRentable={
                   (!!book.detail?.price_info?.rent
                     || !!book.detail?.series?.price_info?.rent)

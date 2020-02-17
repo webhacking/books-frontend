@@ -1,5 +1,5 @@
 import React from 'react';
-import { css, SerializedStyles } from '@emotion/core';
+import { css } from '@emotion/core';
 import { DisplayType } from 'src/types/sections';
 import styled from '@emotion/styled';
 import { RIDI_WAIT_FREE_ICON_URL } from 'src/constants/icons';
@@ -8,7 +8,6 @@ interface BookBadgeRendererProps {
   isWaitFree?: boolean;
   isRentable?: boolean;
   discountPercentage?: number;
-  wrapperCSS?: SerializedStyles;
   type: DisplayType;
 }
 
@@ -72,18 +71,18 @@ const waitFreeImageStyle = css`
 
 const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = (props) => {
   const {
-    isWaitFree, wrapperCSS, discountPercentage, isRentable,
+    isWaitFree, discountPercentage, isRentable,
   } = props;
   if (isRentable) {
     return (
-      <div className="badge" css={[badgeBaseCSS, rentalColor, wrapperCSS]}>
+      <div className="badge" css={[badgeBaseCSS, rentalColor]}>
         <Rentable>대여</Rentable>
       </div>
     );
   }
   if (isWaitFree) {
     return (
-      <div className="badge" css={[badgeBaseCSS, waitFreeColor, wrapperCSS]}>
+      <div className="badge" css={[badgeBaseCSS, waitFreeColor]}>
         <img
           src={RIDI_WAIT_FREE_ICON_URL}
           width={20}
@@ -99,7 +98,7 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = (props) => {
   }
   if (discountPercentage && discountPercentage >= 10) {
     return (
-      <div className="badge" css={[badgeBaseCSS, discountBadgeStyle, wrapperCSS]}>
+      <div className="badge" css={[badgeBaseCSS, discountBadgeStyle]}>
         <span css={discountNumberStyle}>{discountPercentage}</span>
         <span css={percentageStyle}>%</span>
         <span className="a11y">{`${discountPercentage} 할인`}</span>

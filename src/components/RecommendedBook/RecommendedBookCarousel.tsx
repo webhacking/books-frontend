@@ -186,7 +186,6 @@ const CarouselItem = React.memo((props: CarouselItemProps) => {
               >
                 <BookBadgeRenderer
                   type={type}
-                  wrapperCSS={css``}
                   isRentable={
                     (!!book.detail?.price_info?.rent
                       || !!book.detail?.series?.price_info?.rent)

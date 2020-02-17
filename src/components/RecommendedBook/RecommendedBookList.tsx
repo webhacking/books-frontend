@@ -104,7 +104,6 @@ const ListItem = React.memo((props: ListItemProps) => {
             >
               <BookBadgeRenderer
                 type={type}
-                wrapperCSS={css``}
                 isRentable={
                   (!!book.detail?.price_info?.rent
                     || !!book.detail?.series?.price_info?.rent)
