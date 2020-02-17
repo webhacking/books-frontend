@@ -1,11 +1,11 @@
 import React from 'react';
-import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 
 interface SetBookRendererProps {
   setBookCount?: number;
 }
 
-const setLabelWrapperStyle = css`
+const SetBookWrapper = styled.div`
   position: absolute;
   width: calc(100% + 2px);
   bottom: 21%;
@@ -25,7 +25,7 @@ const setLabelWrapperStyle = css`
   align-items: center;
 `;
 
-const centerLineStyle = css`
+const LineDecoration = styled.hr`
   display: block;
   width: 100%;
   border: 0;
@@ -34,7 +34,7 @@ const centerLineStyle = css`
   background: #1f8ce6;
 `;
 
-const labelStyle = css`
+const SetLabel = styled.span`
   font-size: 13px;
   line-height: 15px;
   text-align: center;
@@ -51,13 +51,13 @@ const SetBookRenderer: React.FC<SetBookRendererProps> = (props) => {
     return null;
   }
   return (
-    <div css={setLabelWrapperStyle}>
-      <hr css={centerLineStyle} />
-      <span css={labelStyle} aria-label={`${Math.min(setBookCount, 999)}권 세트`}>
+    <SetBookWrapper>
+      <LineDecoration />
+      <SetLabel aria-label={`${Math.min(setBookCount, 999)}권 세트`}>
         {`${Math.min(setBookCount, 999)}권 세트`}
-      </span>
-      <hr css={centerLineStyle} />
-    </div>
+      </SetLabel>
+      <LineDecoration />
+    </SetBookWrapper>
   );
 };
 

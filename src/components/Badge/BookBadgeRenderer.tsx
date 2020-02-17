@@ -1,5 +1,4 @@
 import React from 'react';
-import { css } from '@emotion/core';
 import { DisplayType } from 'src/types/sections';
 import styled from '@emotion/styled';
 import { RIDI_WAIT_FREE_ICON_URL } from 'src/constants/icons';
@@ -19,8 +18,7 @@ const Rentable = styled.span`
   color: #ffffff;
   z-index: 2;
 `;
-
-const badgeBaseCSS = css`
+const Badge = styled.div<{ backgroundColor: string }>`
   width: 34px;
   height: 34px;
   border-radius: 34px;
@@ -29,17 +27,10 @@ const badgeBaseCSS = css`
   align-items: center;
   justify-content: center;
   z-index: 2;
+  background: ${(props) => props.backgroundColor};
 `;
 
-const rentalColor = css`
-  background: #1abc9c;
-`;
-
-const waitFreeColor = css`
-  background: #1f8ce6;
-`;
-
-const percentageStyle = css`
+const DiscountPercentage = styled.span`
   top: 1.6px;
   transform: scale(0.92);
   font-weight: bold;
@@ -49,13 +40,12 @@ const percentageStyle = css`
   line-height: 9px;
 `;
 
-const discountBadgeStyle = css`
+const DiscountBadge = styled(Badge)`
   position: relative;
   color: white;
-  background: #70808f;
 `;
 
-const discountNumberStyle = css`
+const DiscountNumber = styled.span`
   font-size: 16px;
   mix-blend-mode: normal;
   font-weight: bold;
@@ -63,46 +53,36 @@ const discountNumberStyle = css`
   opacity: 0.99;
 `;
 
-const waitFreeImageStyle = css`
+const WaitFree = styled.img`
   position: relative;
   left: 1px;
   z-index: 2;
+  width: 20px;
+  height: 18px;
 `;
 
 const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = (props) => {
-  const {
-    isWaitFree, discountPercentage, isRentable,
-  } = props;
+  const { isWaitFree, discountPercentage, isRentable } = props;
   if (isRentable) {
     return (
-      <div className="badge" css={[badgeBaseCSS, rentalColor]}>
+      <Badge className="badge" backgroundColor="#1abc9c">
         <Rentable>대여</Rentable>
-      </div>
+      </Badge>
     );
   }
   if (isWaitFree) {
     return (
-      <div className="badge" css={[badgeBaseCSS, waitFreeColor]}>
-        <img
-          src={RIDI_WAIT_FREE_ICON_URL}
-          width={20}
-          height={18}
-          css={waitFreeImageStyle}
-          alt="리디 기다리면 무료"
-        />
-        <span className="a11y" aria-label="리디 기다리면 무료">
-          리디 기다리면 무료
-        </span>
-      </div>
+      <Badge className="badge" backgroundColor="#1f8ce6">
+        <WaitFree src={RIDI_WAIT_FREE_ICON_URL} alt="리디 기다리면 무료" />
+      </Badge>
     );
   }
   if (discountPercentage && discountPercentage >= 10) {
     return (
-      <div className="badge" css={[badgeBaseCSS, discountBadgeStyle]}>
-        <span css={discountNumberStyle}>{discountPercentage}</span>
-        <span css={percentageStyle}>%</span>
-        <span className="a11y">{`${discountPercentage} 할인`}</span>
-      </div>
+      <DiscountBadge className="badge" backgroundColor="#70808f">
+        <DiscountNumber>{discountPercentage}</DiscountNumber>
+        <DiscountPercentage>%</DiscountPercentage>
+      </DiscountBadge>
     );
   }
   return null;
