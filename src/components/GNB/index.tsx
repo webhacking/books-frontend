@@ -399,7 +399,6 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               />
             </ButtonWrapper>
             <InstantSearch
-              isPartials={props.isPartials}
               searchKeyword={props.searchKeyword || ''}
             />
           </div>
