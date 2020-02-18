@@ -53,7 +53,7 @@ const SetBookRenderer: React.FC<SetBookRendererProps> = (props) => {
   return (
     <SetBookWrapper>
       <LineDecoration />
-      <SetLabel aria-label={`${Math.min(setBookCount, 999)}권 세트`}>
+      <SetLabel>
         {`${Math.min(setBookCount, 999)}권 세트`}
       </SetLabel>
       <LineDecoration />

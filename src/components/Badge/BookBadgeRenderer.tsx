@@ -79,7 +79,12 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = (props) => {
   }
   if (discountPercentage && discountPercentage >= 10) {
     return (
-      <DiscountBadge className="badge" backgroundColor="#70808f">
+      <DiscountBadge
+        className="badge"
+        backgroundColor="#70808f"
+        role="img"
+        aria-label={`${discountPercentage}% 할인`}
+      >
         <DiscountNumber>{discountPercentage}</DiscountNumber>
         <DiscountPercentage>%</DiscountPercentage>
       </DiscountBadge>
