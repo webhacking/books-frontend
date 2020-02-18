@@ -69,6 +69,7 @@ plugins:
   - serverless-offline
   - serverless-apigw-binary
   - serverless-plugin-warmup
+  - serverless-stage-manager
 
 custom:
   warmup:
@@ -78,6 +79,11 @@ custom:
     timeout: 20
     prewarm: true
     concurrency: 1
+
+  stages:
+    - development
+    - staging
+    - production
 
   stage: ${opt:stage, 'development'}
   secrets: ${file(secrets.json)}
