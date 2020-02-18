@@ -167,8 +167,9 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
           ...result,
         };
       } catch (error) {
+        console.log(error);
         captureException(error, ctx);
-        redirect(req, res, '/error');
+        // redirect(req, res, '/error');
       }
     }
   } else {

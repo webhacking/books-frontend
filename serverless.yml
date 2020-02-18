@@ -17,8 +17,6 @@ package:
     - coverage/**
     - yarn.lock
     - tsconfig.json
-  include:
-    - src/utils/sentry.js
 
 provider:
   name: aws

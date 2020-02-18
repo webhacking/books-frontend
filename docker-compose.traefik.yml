@@ -9,6 +9,8 @@ services:
       traefik:
         aliases:
           - books
+    environment:
+      - PORT=8081
     ports:
       - 8081
 networks:

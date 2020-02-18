@@ -3,16 +3,12 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https');
 
-const { createServer } = require('../common');
 const { profile } = require('./core');
+const { server: expressServer } = require('../server');
 
 require('dotenv').config({
   path: path.resolve(__dirname, '.env'),
 });
-
-const dev = true;
-const app = next({ dev, dir: path.resolve(__dirname, '../../src') });
-const expressServer = createServer(app, dev);
 
 const port = 8443;
 (async () => {
