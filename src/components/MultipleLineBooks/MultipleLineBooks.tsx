@@ -204,7 +204,6 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
               >
                 <BookBadgeRenderer
                   type={DisplayType.RecommendedBook}
-                  wrapperCSS={css``}
                   isWaitFree={item.detail?.series?.property.is_wait_free}
                   discountPercentage={getMaxDiscountPercentage(item.detail)}
                 />

@@ -181,7 +181,6 @@ const renderBadge = book =>
   render(
     <BookBadgeRenderer
       type={DisplayType.AiRecommendation}
-      wrapperCSS={css``}
       isWaitFree={book.series?.property.is_wait_free}
       // @ts-ignore
       discountPercentage={getMaxDiscountPercentage(book)}
