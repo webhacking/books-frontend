@@ -24,11 +24,11 @@ interface ThumbnailRendererProps {
 }
 const ADULT_COVER_URL = new URL(
   '/static/image/cover_adult.png',
-  publicRuntimeConfig.STATIC_CDN_URL,
+  process.env.STATIC_CDN_URL,
 ).toString();
 const PLACEHOLDER_COVER_URL = new URL(
   '/static/image/cover_lazyload.png',
-  publicRuntimeConfig.STATIC_CDN_URL,
+  process.env.STATIC_CDN_URL,
 ).toString();
 
 const SIZE_PARAMS = [

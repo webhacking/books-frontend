@@ -308,7 +308,7 @@ const BannerBadgeRenderer: React.FC<{
         alt="오늘 마감"
         width={44}
         height={44}
-        src={`${publicRuntimeConfig.STATIC_CDN_URL}/static/image/expired_today.png`}
+        src={`${process.env.STATIC_CDN_URL}/static/image/expired_today.png`}
       />
     );
   }
@@ -323,7 +323,7 @@ const BannerBadgeRenderer: React.FC<{
         alt="마감 임박"
         width={44}
         height={44}
-        src={`${publicRuntimeConfig.STATIC_CDN_URL}/static/image/expired_soon.png`}
+        src={`${process.env.STATIC_CDN_URL}/static/image/expired_soon.png`}
       />
     );
   }

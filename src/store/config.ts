@@ -62,7 +62,7 @@ const makeStore = (
   const store = createStore(
     rootReducers,
     preLoadedState,
-    publicRuntimeConfig.STORE_HOST === 'https://ridibooks.com'
+    process.env.STORE_HOST === 'https://ridibooks.com'
       ? applyMiddleware(routerMiddleware, sagaMiddleware)
       : composeWithDevTools(applyMiddleware(routerMiddleware, sagaMiddleware)),
   );

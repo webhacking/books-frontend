@@ -1,1 +1,1 @@
-declare const publicRuntimeConfig: { [key: string]: string };
+// declare const publicRuntimeConfig: { [key: string]: string };

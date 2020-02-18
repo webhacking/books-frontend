@@ -3,12 +3,12 @@ const SentryIntegrations = require('@sentry/integrations');
 
 const { captureException, withScope, init } = Sentry;
 
-module.exports = (nextBuildId = publicRuntimeConfig.SENTRY_RELEASE) => {
+module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
   const sentryOptions = {
-    dsn: publicRuntimeConfig.SENTRY_DSN,
+    dsn: process.env.SENTRY_DSN,
     release: nextBuildId,
     maxBreadcrumbs: 30,
-    environment: publicRuntimeConfig.ENVIRONMENT || 'local',
+    environment: process.env.ENVIRONMENT || 'local',
     attachStacktrace: true,
     ignoreErrors: [
       'ERR_BLOCKED_BY_CLIENT',

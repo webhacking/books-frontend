@@ -18,7 +18,7 @@ export const createTracker = (userId: string | null) => {
       deviceType,
       beaconOptions: {
         use: true,
-        beaconSrc: publicRuntimeConfig.BEACON_URL,
+        beaconSrc: process.env.BEACON_URL,
       },
       // eslint-disable-next-line no-process-env
       debug: process.env.NODE_ENV !== 'production',

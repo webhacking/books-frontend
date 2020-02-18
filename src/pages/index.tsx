@@ -50,7 +50,7 @@ const createHomeSlug = (genre: string) => {
 };
 
 const fetchHomeSections = async (genre: string, req?: Request, params = {}) => {
-  const url = new URL(`/pages/${createHomeSlug(genre)}/`, publicRuntimeConfig.STORE_API);
+  const url = new URL(`/pages/${createHomeSlug(genre)}/`, process.env.STORE_API);
   const headers = req && {
     Cookie: `ridi-at=${req?.cookies['ridi-at'] ?? ''}; ridi-rt=${req?.cookies[
       'ridi-rt'

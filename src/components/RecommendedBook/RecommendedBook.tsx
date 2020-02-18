@@ -16,7 +16,7 @@ import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import { authorsRenderer } from 'src/components/BookMeta/BookMeta';
 
 const backgroundImageCSS = css`
-  background: url(${`${publicRuntimeConfig.STATIC_CDN_URL}/static/image/recommended_book_background@desktop.png`})
+  background: url(${`${process.env.STATIC_CDN_URL}/static/image/recommended_book_background@desktop.png`})
     center center no-repeat #17202e;
   background-size: contain;
   ${orBelow(

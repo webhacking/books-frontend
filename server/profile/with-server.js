@@ -3,14 +3,12 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https');
 
-const { createConfig, injectConfig } = require('../../env/publicRuntimeConfig');
 const { createServer } = require('../common');
 const { profile } = require('./core');
 
 require('dotenv').config({
-  path: path.resolve(__dirname, 'profile.env'),
+  path: path.resolve(__dirname, '.env'),
 });
-injectConfig(createConfig());
 
 const dev = true;
 const app = next({ dev, dir: path.resolve(__dirname, '../../src') });
@@ -27,7 +25,7 @@ const port = 8443;
     const server = https.createServer({ key, cert }, expressServer).listen(port);
     server.on('listening', () => resolve(server));
   });
-  await profile(publicRuntimeConfig.BOOKS_HOST);
+  await profile(process.env.BOOKS_HOST);
   server.close();
 })().then(
   () => {

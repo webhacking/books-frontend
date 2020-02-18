@@ -15,7 +15,6 @@ module.exports = {
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
-    publicRuntimeConfig: 'readonly',
   },
   plugins: ['jest'],
   rules: {

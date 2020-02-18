@@ -196,14 +196,14 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
   useEffect(() => {
     const tempLoginPath = new URL(
       '/account/login',
-      publicRuntimeConfig.STORE_MASTER_HOST,
+      process.env.STORE_MASTER_HOST,
     );
     const tempSignUpPath = new URL(
       '/account/signup',
-      publicRuntimeConfig.STORE_MASTER_HOST,
+      process.env.STORE_MASTER_HOST,
     );
     setCashOrderPath(
-      new URL('/order/checkout/cash', publicRuntimeConfig.STORE_MASTER_HOST).toString(),
+      new URL('/order/checkout/cash', process.env.STORE_MASTER_HOST).toString(),
     );
 
     const returnUrl = new URL(route.asPath, location.href);
@@ -227,7 +227,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
       try {
         const cartUrl = new URL(
           '/api/schedule/events',
-          publicRuntimeConfig.STORE_TEMP_API_HOST,
+          process.env.STORE_TEMP_API_HOST,
         );
 
         const result = await pRetry(
@@ -311,7 +311,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
             </a>
           </li>
           <li>
-            <a href={publicRuntimeConfig.LIBRARY_HOST} aria-label="내 서재 홈으로 이동">
+            <a href={process.env.LIBRARY_HOST} aria-label="내 서재 홈으로 이동">
               <Button type="primary" label="내 서재" />
             </a>
           </li>
@@ -358,10 +358,10 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
     };
   }, []);
 
-  const loginPath = new URL('/account/login', publicRuntimeConfig.STORE_HOST);
-  loginPath.searchParams.append('return_url', path || publicRuntimeConfig.BOOKS_HOST);
+  const loginPath = new URL('/account/login', process.env.STORE_HOST);
+  loginPath.searchParams.append('return_url', path || process.env.BOOKS_HOST);
 
-  const homePath = new URL('/', publicRuntimeConfig.STORE_HOST);
+  const homePath = new URL('/', process.env.STORE_HOST);
   return (
     // @ts-ignore
     <GNBWrapper className="new_gnb" id={props.id}>

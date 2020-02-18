@@ -39,7 +39,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
       try {
         const requestUrl = new URL(
           `/sections/home-${genre}-ai-recommendation/`,
-          publicRuntimeConfig.STORE_API,
+          process.env.STORE_API,
         );
         const result = await axios.get(requestUrl.toString(), {
           withCredentials: true,

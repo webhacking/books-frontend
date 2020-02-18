@@ -19,7 +19,7 @@ export interface NotificationUnreadCountResponse {
 export const requestNotificationAuth = async () => {
   const tokenUrl = new URL(
     '/users/me/notification-token/',
-    publicRuntimeConfig.STORE_API,
+    process.env.STORE_API,
   );
 
   const { data } = await axios.get<NotificationAuthResponse>(tokenUrl.toString(), {
@@ -31,7 +31,7 @@ export const requestNotificationAuth = async () => {
 };
 
 export const requestNotification = async (limit: number, token: string) => {
-  const notificationUrl = new URL('/notification', publicRuntimeConfig.STORE_API);
+  const notificationUrl = new URL('/notification', process.env.STORE_API);
 
   const { data } = await axios.get<NotificationResponse>(notificationUrl.toString(), {
     params: { limit },
@@ -45,7 +45,7 @@ export const requestNotification = async (limit: number, token: string) => {
 };
 
 export const requestNotificationRead = async (token: string) => {
-  const notificationUrl = new URL('/notification', publicRuntimeConfig.STORE_API);
+  const notificationUrl = new URL('/notification', process.env.STORE_API);
 
   const res = await axios.put(notificationUrl.toString(), null, {
     headers: {
@@ -59,7 +59,7 @@ export const requestNotificationRead = async (token: string) => {
 export const requestUnreadCount = async (token: string) => {
   const notificationUrl = new URL(
     '/notification/unread_count',
-    publicRuntimeConfig.STORE_API,
+    process.env.STORE_API,
   );
 
   const { data } = await axios.get<NotificationUnreadCountResponse>(

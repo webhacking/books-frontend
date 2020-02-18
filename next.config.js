@@ -10,13 +10,10 @@ const withCSS = require('@zeit/next-css');
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const webpack = require('webpack');
 const withTM = require('next-transpile-modules');
+const DotenvPlugin = require('dotenv-webpack');
 
-const { createConfig, addSentryConfig, getDefinitionsFromConfig } = require('./env/publicRuntimeConfig');
-require('dotenv').config();
-
-const ENVIRONMENT = process.env.ENVIRONMENT || 'local';
-const publicRuntimeConfig = createConfig();
-const STATIC_CDN_URL = publicRuntimeConfig.STATIC_CDN_URL || '';
+const ENVIRONMENT = process.env.ENVIRONMENT || 'production';
+const STATIC_CDN_URL = process.env.STATIC_CDN_URL || 'https://books.ridicdn.net';
 
 module.exports = withBundleAnalyzer(
   nextSourceMaps(
@@ -24,7 +21,7 @@ module.exports = withBundleAnalyzer(
       withTM({
         transpileModules: ['p-retry'], // for IE11
         distDir: '../build',
-        assetPrefix: STATIC_CDN_URL || 'https://books.ridicdn.net',
+        assetPrefix: STATIC_CDN_URL,
         useFileSystemPublicRoutes: false,
         exportPathMap: () => ({}),
         webpack(config, option) {
@@ -125,6 +122,13 @@ module.exports = withBundleAnalyzer(
           config.plugins.push(new webpack.DefinePlugin({
             'process.env.IS_SERVER': JSON.stringify(isServer),
           }));
+          
+          config.plugins.push(
+            new DotenvPlugin({
+              systemvars: true,
+              silent: true,
+            }),
+          );
 
           config.node = {
             net: 'empty',

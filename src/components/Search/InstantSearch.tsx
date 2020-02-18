@@ -286,7 +286,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         return;
       }
       try {
-        const url = new URL('/search', publicRuntimeConfig.SEARCH_API);
+        const url = new URL('/search', process.env.SEARCH_API);
         url.searchParams.append('site', 'ridi-store');
         url.searchParams.append('where', 'book');
         url.searchParams.append('where', 'author');

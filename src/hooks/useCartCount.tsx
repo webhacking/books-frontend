@@ -16,7 +16,7 @@ export const useCartCount = (loggedUserInfo: LoggedUser) => {
       try {
         const cartUrl = new URL(
           '/api/cart/count',
-          publicRuntimeConfig.STORE_TEMP_API_HOST,
+          process.env.STORE_TEMP_API_HOST,
         );
 
         const result = await pRetry(

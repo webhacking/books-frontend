@@ -6,8 +6,8 @@ export interface AppState {
 }
 
 export const appStateInitialState: AppState = {
-  version: publicRuntimeConfig.VERSION || 'UNKNOWN',
-  environment: publicRuntimeConfig.ENVIRONMENT || 'development',
+  version: process.env.VERSION || 'UNKNOWN',
+  environment: process.env.ENVIRONMENT || 'development',
 };
 
 export class AppReducer extends ImmerReducer<AppState> {
