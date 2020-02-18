@@ -5,7 +5,6 @@ import Lens from 'src/svgs/Lens.svg';
 import Clear from 'src/svgs/Clear.svg';
 import { RIDITheme, ZIndexLayer } from 'src/styles';
 import { useDebouncedCallback } from 'use-debounce';
-// import { Router } from 'server/routes';
 import localStorageKeys from 'src/constants/localStorage';
 import * as labels from 'src/labels/instantSearch.json';
 import { isOnsetNucleusCoda } from 'src/utils/hangle';
@@ -17,6 +16,8 @@ import { get } from 'ts-get';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import pRetry from 'p-retry';
 import sentry from 'src/utils/sentry';
+import styled from '@emotion/styled';
+import { useTheme } from 'emotion-theming';
 
 const { captureException } = sentry();
 
@@ -27,7 +28,6 @@ const fadeIn = keyframes`
   100% { 
     opacity: 1; 
   }
-  
 `;
 
 const placeHolderCSS = css`
@@ -38,7 +38,7 @@ const placeHolderCSS = css`
   font-weight: 500;
 `;
 
-const searchWrapper = (theme: RIDITheme) => css`
+const SearchWrapper = styled.div<{theme: RIDITheme}>`
   font-size: 16px;
   background-color: #ffffff;
   box-sizing: border-box;
@@ -73,15 +73,15 @@ const searchWrapper = (theme: RIDITheme) => css`
     color: #000000;
     ::placeholder {
       ${placeHolderCSS};
-      color: ${theme.input.placeholder};
+      color: ${(props) => props.theme.input.placeholder};
     }
     ::-moz-placeholder {
       ${placeHolderCSS};
-      color: ${theme.input.placeholder};
+      color: ${(props) => props.theme.input.placeholder};
     }
     :-moz-placeholder {
       ${placeHolderCSS};
-      color: ${theme.input.placeholder};
+      color: ${(props) => props.theme.input.placeholder};
     }
   }
   display: flex;
@@ -94,6 +94,14 @@ const iconStyle = (theme: RIDITheme) => css`
   margin: 5.5px 2.5px 5px 7.5px;
   width: 24px;
   height: 24px;
+`;
+
+const RemoveSearchButton = styled.button`
+  outline: none;
+  position: relative;
+  right: 10px;
+  display: flex;
+  align-items: center;
 `;
 
 const focused = (theme: RIDITheme) => css`
@@ -132,7 +140,7 @@ const initial = () => css`
   )};
 `;
 
-const searchFooter = css`
+const SearchFooter = styled.div`
   box-sizing: border-box;
   position: absolute;
   background-color: white;
@@ -190,7 +198,7 @@ const arrow = css`
   )};
 `;
 
-const arrowWrapperButton = css`
+const ArrowWrapperButton = styled.button`
   display: none;
   ${orBelow(
     BreakPoint.LG,
@@ -247,17 +255,18 @@ export interface InstantSearchResultScheme {
 
 interface InstantSearchProps {
   searchKeyword: string;
-  isPartials?: boolean;
 }
 
 const initialSearchResult = {
   books: [],
   authors: [],
 };
+
 export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
   (props: InstantSearchProps) => {
     const inputRef = React.useRef<HTMLInputElement>();
     const listWrapperRef = React.useRef<HTMLDivElement>();
+    const theme = useTheme<RIDITheme>();
     const [isLoaded, setLoaded] = useState(false);
     const [isFocused, setFocus] = useState(false);
     const [keyword, setKeyword] = useState<string>(props.searchKeyword);
@@ -269,7 +278,6 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const [searchResult, setSearchResult] = useState<InstantSearchResultScheme>(
       initialSearchResult,
     );
-    const { isPartials } = props;
 
     const handleSearch = useCallback(async (value: string) => {
       setFetching(true);
@@ -400,14 +408,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           url.searchParams.append('q', label);
 
           window.location.href = url.toString();
-          // if (isPartials) {
-          //   window.location.href = `${window.location.origin}/search/?q=${label}`;
-          // } else {
-          //   Router.pushRoute(`/search/?q=${label}`);
-          // }
         }
       },
-      [isPartials],
+      [],
     );
 
     const handleClickBookItem = useCallback(
@@ -420,14 +423,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         url.searchParams.append('_q', keyword);
 
         window.location.href = url.toString();
-        // if (isPartials) {
-        //   window.location.href = `${window.location.origin}/books/${bookId}?_s=instant&_q=${keyword}`;
-        // } else {
-        //   Router.pushRoute(`/books/${bookId}?_s=instant&_q=${keyword}`);
-        // }
         setFocus(false);
       },
-      [keyword, isPartials],
+      [keyword],
     );
     const handleClickAuthorItem = useCallback(
       (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -438,14 +436,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         url.searchParams.append('_q', keyword);
 
         window.location.href = url.toString();
-        // if (isPartials) {
-        //   window.location.href = `${window.location.origin}/author/${authorId}?_s=instant&_q=${keyword}`;
-        // } else {
-        //   Router.pushRoute(`/author/${authorId}?_s=instant&_q=${keyword}`);
-        // }
         setFocus(false);
       },
-      [keyword, isPartials],
+      [keyword],
     );
 
     const focusedWithSearch = () => {
@@ -474,12 +467,6 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           url.searchParams.append('q', keyword);
 
           window.location.href = url.toString();
-          //
-          // if (isPartials) {
-          //   window.location.href = `${window.location.origin}/search/?q=${keyword}`;
-          // } else {
-          //   Router.pushRoute(`/search/?q=${keyword}`);
-          // }
 
           setFocus(false);
           if (inputRef.current) {
@@ -487,7 +474,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           }
         }
       },
-      [keyword, enableSearchHistoryRecord, isPartials, searchHistory],
+      [keyword, enableSearchHistoryRecord, searchHistory],
     );
 
     const handleSetCurrentPosition = useCallback((pos: number) => {
@@ -585,7 +572,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
           tabIndex={0}
           onBlur={handleSearchWrapperBlur}
-          css={(theme) => [
+          css={[
             isFocused ? focused(theme) : initial(),
             css`
               outline: none;
@@ -594,14 +581,15 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           ]}
         >
           {isFocused && (
-            <button css={arrowWrapperButton} onClick={setFocus.bind(null, false)}>
+            // eslint-disable-next-line react/jsx-no-bind
+            <ArrowWrapperButton onClick={setFocus.bind(null, false)}>
               <ArrowLeft css={arrow} />
               <span className="a11y">{labels.goBack}</span>
-            </button>
+            </ArrowWrapperButton>
           )}
-          <div css={searchWrapper}>
+          <SearchWrapper theme={theme}>
             <Lens
-              css={(theme) => css`
+              css={css`
                 ${iconStyle(theme)};
                 opacity: ${isFocused ? 1 : 0.6};
               `}
@@ -626,14 +614,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
               />
             </form>
             {keyword.length > 0 && isFocused && (
-              <button
-                css={css`
-                  outline: none;
-                  position: relative;
-                  right: 10px;
-                  display: flex;
-                  align-items: center;
-                `}
+              <RemoveSearchButton
                 onClick={handleClearInput}
               >
                 <Clear
@@ -643,11 +624,11 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                   `}
                 />
                 <span className="a11y">모두 지우기</span>
-              </button>
+              </RemoveSearchButton>
             )}
-          </div>
+          </SearchWrapper>
           {showFooter && (
-            <div ref={listWrapperRef} css={searchFooter}>
+            <SearchFooter ref={listWrapperRef}>
               <form>
                 {keyword.length < 1 && searchHistory.length > 0 ? (
                   <InstantSearchHistory
@@ -670,7 +651,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                   />
                 )}
               </form>
-            </div>
+            </SearchFooter>
           )}
         </div>
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
