@@ -241,7 +241,7 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
   const { isPartials, loggedUserInfo } = props;
   const { hasNotification } = useSelector((store: RootState) => store.notifications);
   const router = useRouter();
-  const currentPath = router.asPath;
+  const currentPath = router.query.pathname ? router.query.pathname as string : router.asPath;
   const [, setHomeURL] = useState('/');
   const cartCount = useCartCount(loggedUserInfo);
   const dispatch = useDispatch();
