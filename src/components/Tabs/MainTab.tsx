@@ -306,7 +306,6 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
               />
             )
           }
-          isSPA
         />
         <TabItem
           isPartials={isPartials}
