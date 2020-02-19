@@ -38,7 +38,7 @@ const placeHolderCSS = css`
   font-weight: 500;
 `;
 
-const SearchWrapper = styled.div<{theme: RIDITheme}>`
+const SearchWrapper = styled.div<{}, RIDITheme>`
   font-size: 16px;
   background-color: #ffffff;
   box-sizing: border-box;
@@ -587,7 +587,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
               <span className="a11y">{labels.goBack}</span>
             </ArrowWrapperButton>
           )}
-          <SearchWrapper theme={theme}>
+          <SearchWrapper>
             <Lens
               css={css`
                 ${iconStyle(theme)};
