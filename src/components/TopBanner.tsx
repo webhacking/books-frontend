@@ -248,6 +248,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
     touchRef.current = {
       id: touch.identifier,
       startX: touch.clientX,
+      at: window.performance.now(),
     };
   }, []);
 
@@ -281,11 +282,14 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
       const touch = touches[i];
       if (touch.identifier === touchRef.current.id) {
         const diff = touch.clientX - touchRef.current.startX;
+        const dTime = window.performance.now() - touchRef.current.at;
+        const velocity = diff / dTime; // px/ms
+        const vThreshold = ((width + DIST) / 200) / 3;
         // threshold 처리
-        if (diff > width / 3) {
+        if (diff > width / 3 || velocity > vThreshold) {
           setCurrentIdx((idx) => (idx - 1 + len) % len);
         }
-        if (diff < -width / 3) {
+        if (diff < -width / 3 || velocity < -vThreshold) {
           setCurrentIdx((idx) => (idx + 1) % len);
         }
         setTouchDiff(undefined);
