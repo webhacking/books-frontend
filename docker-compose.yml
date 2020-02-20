@@ -23,6 +23,6 @@ services:
       NEXT_TELEMETRY_DISABLED: '1'
     command: >
       sh -c "yarn install --frozen-lockfile &&
-             node ./server/server.js"
+             node server.js"
 volumes:
   node_modules:

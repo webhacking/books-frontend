@@ -1,4 +1,4 @@
-const path = require('path');
+const sls = require('serverless-http');
 const next = require('next');
 const Koa = require('koa');
 const Router = require('@koa/router');
@@ -9,7 +9,7 @@ const Sentry = require('@sentry/node');
 
 const port = parseInt(process.env.PORT, 10) || 8081;
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev, dir: path.resolve(__dirname, dev ? '../src' : '../build') });
+const app = next({ dev });
 const handle = app.getRequestHandler();
 
 // const { Sentry } = initSentry(app.buildId);
@@ -61,6 +61,26 @@ if (!process.env.SERVERLESS) {
   });
 }
 
-module.exports = {
-  server,
-};
+// binary mode
+// https://github.com/dougmoscrop/serverless-http/blob/master/docs/ADVANCED.md#binary-mode
+module.exports.handler = sls(server, {
+  binary: [
+    'application/javascript',
+    'application/json',
+    'application/octet-stream',
+    'application/xml',
+    'font/eot',
+    'font/opentype',
+    'font/otf',
+    'image/jpeg',
+    'image/png',
+    'image/svg+xml',
+    'text/comma-separated-values',
+    'text/css',
+    'text/html',
+    'text/javascript',
+    'text/plain',
+    'text/text',
+    'text/xml',
+  ],
+});

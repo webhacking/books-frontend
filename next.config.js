@@ -20,7 +20,7 @@ module.exports = withBundleAnalyzer(
     withCSS(
       withTM({
         transpileModules: ['p-retry'], // for IE11
-        distDir: '../build',
+        distDir: './build',
         assetPrefix: STATIC_CDN_URL,
         // useFileSystemPublicRoutes: false,
         exportPathMap: () => ({}),
@@ -110,24 +110,24 @@ module.exports = withBundleAnalyzer(
               }),
             );
           }
-          config.plugins.push(
-            new CopyPlugin([
-              {
-                from: '../static/manifest.webmanifest',
-                to: '',
-                transform(content) {
-                  return Promise.resolve(
-                    Buffer.from(content, 'utf8')
-                      .toString()
-                      .replace(/<path>/gi, STATIC_CDN_URL),
-                  );
-                },
-              },
-            ]),
-          );
+          // config.plugins.push(
+          //   new CopyPlugin([
+          //     {
+          //       from: '../static/manifest.webmanifest',
+          //       to: '',
+          //       transform(content) {
+          //         return Promise.resolve(
+          //           Buffer.from(content, 'utf8')
+          //             .toString()
+          //             .replace(/<path>/gi, STATIC_CDN_URL),
+          //         );
+          //       },
+          //     },
+          //   ]),
+          // );
           config.plugins.push(
             new InjectManifest({
-              swSrc: 'static/service-worker.js',
+              swSrc: 'public/static/service-worker.js',
               exclude: [
                 /\.map$/,
                 /\/pages\/partials\//,
