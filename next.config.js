@@ -122,6 +122,9 @@ module.exports = withBundleAnalyzer(
           );
           const sentryConfig = addSentryConfig(publicRuntimeConfig, buildId);
           config.plugins.push(new webpack.DefinePlugin(getDefinitionsFromConfig(sentryConfig)));
+          config.plugins.push(new webpack.DefinePlugin({
+            'process.env.IS_SERVER': JSON.stringify(isServer),
+          }));
 
           config.node = {
             net: 'empty',

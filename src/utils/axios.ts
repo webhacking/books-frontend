@@ -37,11 +37,12 @@ export function wrapCatchCancel<F extends Function>(f: F): F {
 const createAxiosInstances = (): AxiosInstance => {
   const instance = axios.create({ timeout: TIME_OUT });
   instance.interceptors.response.use((onFulfilled) => onFulfilled, tokenInterceptor);
-  if (process.env.SERVERLESS) {
-    import('axios-logger').then((logger) => {
-      instance.interceptors.request.use(logger.requestLogger, logger.errorLogger);
-      instance.interceptors.response.use(logger.responseLogger, logger.errorLogger);
-    });
+  if (process.env.IS_SERVER) {
+    // 여기서는 Node.js가 로드한다는 걸 알고 있으므로 require를 직접 씁니다.
+    // eslint-disable-next-line global-require
+    const AxiosLogger = require('axios-logger');
+    instance.interceptors.request.use(AxiosLogger.requestLogger, AxiosLogger.errorLogger);
+    instance.interceptors.response.use(AxiosLogger.responseLogger, AxiosLogger.errorLogger);
   }
   return instance;
 };
