@@ -1769,19 +1769,7 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@sentry/apm@5.13.1":
-  version "5.13.1"
-  resolved "https://registry.yarnpkg.com/@sentry/apm/-/apm-5.13.1.tgz#152a7a54b06f344112477cb376e8554860a6af86"
-  integrity sha512-be6M8/TOA/K7jQNZEm1YC0Y9+LdM0jyX5LMwy9NWwhneE6Iq8xvsU/pYZByj6+AAs0tIpiFd9QFxFKNUtKIRUQ==
-  dependencies:
-    "@sentry/browser" "5.13.0"
-    "@sentry/hub" "5.13.0"
-    "@sentry/minimal" "5.13.0"
-    "@sentry/types" "5.12.4"
-    "@sentry/utils" "5.13.0"
-    tslib "^1.9.3"
-
-"@sentry/browser@5.13.0", "@sentry/browser@^5.10.2":
+"@sentry/browser@^5.10.2":
   version "5.13.0"
   resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.13.0.tgz#399b0a09d6603726d787b746bcc70659010bc50c"
   integrity sha512-adiW9gG/gCrl6FQAA6Fk8osXMHxP3pYltszRK0mr55O7GcTC8RQNI3mEW/YuQV9IySUL8dFWQ0v8n0lfssHf/A==
@@ -1839,21 +1827,6 @@
   dependencies:
     "@sentry/hub" "5.13.0"
     "@sentry/types" "5.12.4"
-    tslib "^1.9.3"
-
-"@sentry/node@^5.10.2":
-  version "5.13.1"
-  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-5.13.1.tgz#41d2eec02bc718a0f5aa59698635242d585470f2"
-  integrity sha512-6/HaewN2kX0za3LncYwp6nlvm/6i0S0/D/HO7VDHMSpc8z/8/Em6xTZy7hLV3phosMoLIa5P3CRXvLVybBTrpg==
-  dependencies:
-    "@sentry/apm" "5.13.1"
-    "@sentry/core" "5.13.0"
-    "@sentry/hub" "5.13.0"
-    "@sentry/types" "5.12.4"
-    "@sentry/utils" "5.13.0"
-    cookie "^0.3.1"
-    https-proxy-agent "^4.0.0"
-    lru_map "^0.3.3"
     tslib "^1.9.3"
 
 "@sentry/types@5.12.4":
@@ -4581,7 +4554,7 @@ cookie-signature@1.0.6:
   resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
   integrity sha1-4wOogrNCzD7oylE6eZmXNNqzriw=
 
-cookie@0.3.1, cookie@^0.3.1:
+cookie@0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
   integrity sha1-5+Ch+e9DtMi6klxcWpboBtFoc7s=
@@ -9224,11 +9197,6 @@ koa-convert@^1.2.0:
     co "^4.6.0"
     koa-compose "^3.0.0"
 
-koa-cookie@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/koa-cookie/-/koa-cookie-1.0.0.tgz#7c79723dd03b97abcfe430028b700bd47a36dafb"
-  integrity sha1-fHlyPdA7l6vP5DACi3AL1Ho22vs=
-
 koa@^2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/koa/-/koa-2.11.0.tgz#fe5a51c46f566d27632dd5dc8fd5d7dd44f935a4"
@@ -9676,11 +9644,6 @@ lru-queue@0.1:
   integrity sha1-Jzi9nw089PhEkMVzbEhpmsYyzaM=
   dependencies:
     es5-ext "~0.10.2"
-
-lru_map@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/lru_map/-/lru_map-0.3.3.tgz#b5c8351b9464cbd750335a79650a0ec0e56118dd"
-  integrity sha1-tcg1G5Rky9dQM1p5ZQoOwOVhGN0=
 
 lsmod@1.0.0:
   version "1.0.0"

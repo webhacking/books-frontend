@@ -1,9 +1,9 @@
-const Sentry = require('@sentry/node');
-const SentryIntegrations = require('@sentry/integrations');
+import * as Sentry from '@sentry/browser';
+// import SentryIntegrations from '@sentry/integrations';
 
 const { captureException, withScope, init } = Sentry;
 
-module.exports = (nextBuildId = process.env.SENTRY_RELEASE) => {
+export default (nextBuildId = process.env.SENTRY_RELEASE) => {
   const sentryOptions = {
     dsn: process.env.SENTRY_DSN,
     release: nextBuildId,
