@@ -16,7 +16,8 @@ const NotificationPlaceholderWrap = (theme: RIDITheme) => css`
     height: 1px;
     background: ${theme.dividerColor};
     opacity: ${theme.dividerOpacity};
-    bottom: 0px;
+    bottom: 0;
+    left: 0;
   }
 `;
 
