@@ -86,7 +86,8 @@ export const useSendDisplayEvent = (slug) => {
     (intersectionItems: IntersectionObserverEntry[]) => {
       const trackingItems = { section: `${deviceType}.${slug}`, items: [] };
       intersectionItems.forEach((item) => {
-        const bId = item.target.getAttribute('data-book-id');
+        // FIXME: Tracking Rule 변경 예정이라 기존에 맞춰진 형식에 알림도 낑겨 맞춰둠
+        const bId = item.target.getAttribute('data-book-id') || item.target.getAttribute('data-id');
         const order = item.target.getAttribute('data-order');
         trackingItems.items.push({
           id: bId,
