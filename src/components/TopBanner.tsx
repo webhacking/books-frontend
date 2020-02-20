@@ -18,10 +18,11 @@ const MD_IMAGE_WIDTH = 355;
 const SLIDE_RADIUS = 1;
 const SCROLL_DURATION = 5000;
 
-const CarouselWrapper = styled.div<{ itemWidth: number }>`
+const CarouselWrapper = styled.div<{ itemWidth: number; inactiveItemRatio: number }>`
   width: 100%;
   max-width: ${(props) => (
-    props.itemWidth * (RATIO * (SLIDE_RADIUS + 1) * 2 + 1) + DIST * (SLIDE_RADIUS + 1) * 2
+    props.itemWidth * (props.inactiveItemRatio * (SLIDE_RADIUS + 1) * 2 + 1)
+    + DIST * (SLIDE_RADIUS + 1) * 2
   )}px;
   margin: 0 auto;
   position: relative;
@@ -96,6 +97,7 @@ const BannerImage = styled.img`
 interface CarouselItemProps {
   width: number;
   height: number;
+  inactiveItemRatio: number;
   active?: boolean;
   invisible?: boolean;
 }
@@ -129,8 +131,8 @@ const CarouselItem = styled.li<CarouselItemProps>`
   }
 
   & ${BannerImage} {
-    width: ${(props) => props.width * (props.active ? 1 : RATIO)}px;
-    height: ${(props) => props.height * (props.active ? 1 : RATIO)}px;
+    width: ${(props) => props.width * (props.active ? 1 : props.inactiveItemRatio)}px;
+    height: ${(props) => props.height * (props.active ? 1 : props.inactiveItemRatio)}px;
   }
 `;
 
@@ -215,6 +217,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
   const isDesktop = useMediaQuery({ minWidth: '1000px' });
   const isTablet = useMediaQuery({ minWidth: '375px' });
   const [width, setWidth] = React.useState(IMAGE_WIDTH);
+  const [inactiveItemRatio, setInactiveItemRatio] = React.useState(1);
   React.useEffect(() => {
     function handleResize() {
       setWidth(window.innerWidth - DIST * 2);
@@ -228,6 +231,9 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
     }
     setWidth(newWidth);
   }, [isDesktop, isTablet]);
+  React.useEffect(() => {
+    setInactiveItemRatio(isDesktop ? RATIO : 1);
+  }, [isDesktop]);
 
   // 터치 핸들링
   const wrapperRef = React.useRef<HTMLDivElement>();
@@ -339,6 +345,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
     <CarouselWrapper
       ref={wrapperRef}
       itemWidth={width}
+      inactiveItemRatio={inactiveItemRatio}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchCancel}
@@ -349,7 +356,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
         totalItems={len}
         itemWidth={width}
         itemDist={DIST}
-        inactiveItemRatio={RATIO}
+        inactiveItemRatio={inactiveItemRatio}
         currentIdx={currentIdx}
         touchDiff={touchDiff}
       >
@@ -358,6 +365,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
             key={index}
             width={itemWidth}
             height={(itemWidth * 2) / 3}
+            inactiveItemRatio={inactiveItemRatio}
             active={index === activeIndex}
             invisible={!checkWithinRingRange(
               (activeIndex - SLIDE_RADIUS + len) % len,
