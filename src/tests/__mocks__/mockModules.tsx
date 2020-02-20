@@ -99,20 +99,4 @@ export const initModules = () => {
   jest.mock('src/utils/sentry', () => () => ({
     captureException: () => null,
   }));
-
-  jest.mock('server/routes', () => {
-    // eslint-disable-next-line global-require
-    require('react');
-    return {
-      default: {},
-      // @ts-ignore
-      Link: props => <div>{props.children}</div>,
-      Router: {
-        pushRoute: () => null,
-        push: () => null,
-        replace: () => null,
-        replaceRoute: () => null,
-      },
-    };
-  });
 };

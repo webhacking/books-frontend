@@ -7,12 +7,12 @@ import makeStore from '../../store/config';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from '../../styles';
 import { HomeProps } from '../../pages';
-import { Router } from 'server/routes';
+import Router from 'next/router'
 import { Provider } from 'react-redux';
 import { BrowserLocationWithRouter } from 'src/components/Context';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
-Router.replaceRoute = jest.fn(() => null);
+Router.replace = jest.fn(() => null);
 // @ts-ignore
 const mockWriteHead = jest.fn((code, header) => {
   window.history.pushState({}, 'Test', header.Location);

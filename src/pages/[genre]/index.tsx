@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 import { GenreTab } from 'src/components/Tabs';
 import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
-import { Router } from 'server/routes';
+import Router from 'next/router';
 import * as Cookies from 'js-cookie';
 import titleGenerator from 'src/utils/titleGenerator';
 import { useSelector } from 'react-redux';
@@ -33,15 +33,6 @@ export interface HomeProps {
   genre: string;
 }
 
-const redirect = (req: Request, res: ServerResponse, path: string) => {
-  if (req.path !== path && !res.finished) {
-    res.writeHead(302, {
-      Location: path,
-    });
-    res.end();
-  }
-};
-
 const createHomeSlug = (genre: string) => {
   if (!genre || genre === 'general') {
     return 'home-general';
@@ -51,16 +42,10 @@ const createHomeSlug = (genre: string) => {
 
 const fetchHomeSections = async (genre: string, req?: Request, params = {}) => {
   const url = new URL(`/pages/${createHomeSlug(genre)}/`, process.env.STORE_API);
-  const headers = req && {
-    Cookie: `ridi-at=${req?.cookies['ridi-at'] ?? ''}; ridi-rt=${req?.cookies[
-      'ridi-rt'
-    ] ?? ''};`,
-  };
 
   const result = await pRetry(
     () => axios.get<Page>(url.toString(), {
       withCredentials: true,
-      headers,
       params,
     }),
     {
@@ -143,7 +128,12 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
   const {
     query, res, req, store,
   } = ctx;
-  const genre = query?.genre || 'general';
+
+  const { genre = 'general' } = query;
+  if (!['general', 'romance', 'romance-serial', 'fantasy', 'fantasy-serial', 'comics', 'bl', 'bl-serial'].includes(genre as string)) {
+    throw new Error('Not Found');
+  }
+
   if (req && res) {
     if (res.statusCode !== 302) {
       try {
@@ -204,7 +194,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
       };
     } catch (error) {
       captureException(error, ctx);
-      Router.pushRoute('/error');
+      Router.push('/error');
     }
   }
   return {

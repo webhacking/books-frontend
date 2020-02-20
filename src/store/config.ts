@@ -8,7 +8,7 @@ import { ServerResponse } from 'http';
 
 import rootSaga from 'src/store/sagas';
 
-import { Router } from 'server/routes';
+import Router from 'next/router';
 import { initialState } from 'src/store/initialState';
 import {
   createRouterMiddleware,

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { a11y } from 'src/styles';
-import { Link } from 'server/routes';
 import * as labels from 'src/labels/menus.json';
 import * as Cookies from 'js-cookie';
 import Home from 'src/svgs/Home.svg';
@@ -256,7 +256,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
       }
     >
       {isSPA ? (
-        <Link to={path}>
+        <Link href={path}>
           <StyledAnchor aria-label={label}>
             <TabButton>
               {isActiveTab ? activeIcon : normalIcon}

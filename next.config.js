@@ -22,8 +22,27 @@ module.exports = withBundleAnalyzer(
         transpileModules: ['p-retry'], // for IE11
         distDir: '../build',
         assetPrefix: STATIC_CDN_URL,
-        useFileSystemPublicRoutes: false,
+        // useFileSystemPublicRoutes: false,
         exportPathMap: () => ({}),
+        experimental: {
+          redirects() {
+            return [
+              {
+                source: "/general/:path*",
+                destination: "/:path*",
+                permanent: true,
+              },
+            ];
+          },
+          rewrites() {
+            return [
+              ...['', 'bestsellers'].map(path => ({
+                source: `/${path}`,
+                destination: `/general/${path}`,
+              })),
+            ];
+          },
+        },
         webpack(config, option) {
           const { isServer, buildId } = option;
           if (!isServer) {

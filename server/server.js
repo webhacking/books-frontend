@@ -5,15 +5,12 @@ const Router = require('@koa/router');
 const cookie = require('koa-cookie');
 const koaConnect = require('koa-connect');
 const compression = require('compression');
- 
 const Sentry = require('@sentry/node');
-const { clientRoutes } = require('./routes');
 
 const port = parseInt(process.env.PORT, 10) || 8081;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev, dir: path.resolve(__dirname, dev ? '../src' : '../build') });
-// const handle = app.getRequestHandler();
-const handle = clientRoutes.getRequestHandler(app);
+const handle = app.getRequestHandler();
 
 // const { Sentry } = initSentry(app.buildId);
 // if (!dev) {
