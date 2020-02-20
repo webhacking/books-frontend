@@ -87,6 +87,7 @@ const wrapperCSS = (theme: RIDITheme) => css`
     background: ${theme.dividerColor};
     opacity: ${theme.dividerOpacity};
     bottom: -14px;
+    left: 0px;
   }
 `;
 
