@@ -22,7 +22,7 @@ module.exports = withBundleAnalyzer(
   nextSourceMaps(
     withCSS(
       withTM({
-        transpileModules: ['p-retry', 'ansi-styles', 'axios-logger', 'chalk'], // for IE11
+        transpileModules: ['p-retry'], // for IE11
         distDir: '../build',
         assetPrefix: STATIC_CDN_URL || 'https://books.ridicdn.net',
         useFileSystemPublicRoutes: false,

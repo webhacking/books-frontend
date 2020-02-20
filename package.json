@@ -15,7 +15,7 @@
     "@zeit/next-bundle-analyzer": "^0.1.2",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-source-maps": "^0.0.4-canary.1",
-    "axios": "0.18.1",
+    "axios": "^0.19.2",
     "axios-logger": "^2.3.1",
     "compression": "^1.7.4",
     "connected-next-router": "^1.0.1",
@@ -126,5 +126,8 @@
     "Android >= 4.2",
     "iOS >= 10",
     "ie >= 11"
-  ]
+  ],
+  "browser": {
+    "axios-logger": false
+  }
 }

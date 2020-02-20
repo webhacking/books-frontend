@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from 'axios';
-import * as AxiosLogger from 'axios-logger';
 import { AbortError } from 'p-retry';
 import { tokenInterceptor } from 'src/utils/axiosInterceptors';
 
@@ -38,9 +37,12 @@ export function wrapCatchCancel<F extends Function>(f: F): F {
 const createAxiosInstances = (): AxiosInstance => {
   const instance = axios.create({ timeout: TIME_OUT });
   instance.interceptors.response.use((onFulfilled) => onFulfilled, tokenInterceptor);
-  if (process.env.SERVERLESS) {
-    instance.interceptors.request.use(AxiosLogger.requestLogger, AxiosLogger.errorLogger);
-    instance.interceptors.response.use(AxiosLogger.responseLogger, AxiosLogger.errorLogger);
+  // HACK IE11 동작은 확인
+  if (typeof window === 'undefined' && publicRuntimeConfig.ENVIRONMENT !== 'local') {
+    import('axios-logger').then((logger) => {
+      instance.interceptors.request.use(logger.requestLogger, logger.errorLogger);
+      instance.interceptors.response.use(logger.responseLogger, logger.errorLogger);
+    });
   }
   return instance;
 };
