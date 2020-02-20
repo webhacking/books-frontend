@@ -1,4 +1,4 @@
-import { getByText, render } from '@testing-library/react';
+import { getByLabelText, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import { css } from '@emotion/core';
@@ -190,7 +190,7 @@ const renderBadge = book =>
 describe('test BoodBadgeRenderer', () => {
   it('should be render discountBadge', () => {
     const { container } = renderBadge(books[0]);
-    const itemNode = getByText(container, '10 할인');
+    const itemNode = getByLabelText(container, '10% 할인');
     expect(itemNode).not.toBe(null);
   });
 });

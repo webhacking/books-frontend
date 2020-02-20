@@ -36,6 +36,7 @@ function initWindow() {
   Object.defineProperty(window, 'location', {
     value: newLocation,
   });
+  location.href = 'https://books.local.ridi.io';
 }
 
 function initNextJSRuntimeConfig() {

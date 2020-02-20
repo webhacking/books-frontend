@@ -16,7 +16,7 @@
        (https://www.asciiart.eu/books/books)
 ```
 
-[![codecov](https://codecov.io/gl/ridicorp:frontend/books/branch/master/graph/badge.svg?token=SlneHi8wtU)](https://codecov.io/gl/ridicorp:frontend/books)
+[![codecov](https://codecov.io/gh/ridi/books-frontend/branch/master/graph/badge.svg)](https://codecov.io/gh/ridi/books-frontend)
 
 ## Infrastructure
 

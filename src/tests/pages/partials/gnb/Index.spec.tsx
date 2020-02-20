@@ -103,7 +103,7 @@ test('should be render book page with nav bar', async () => {
     isServer: false,
     asPath: '',
     store,
-    query: { type: '1', theme: 'dark', pathname: '/v2/Detail' },
+    query: { type: '1', theme: 'dark', pathname: '/books/123456661' },
   });
 
   const { queryByText } = render(
