@@ -1,28 +1,56 @@
 /* eslint-disable no-process-env */
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { InjectManifest } = require('workbox-webpack-plugin');
+
+const withPlugins = require('next-compose-plugins');
+const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
+const nextEnv = require('next-env');
+const dotenvLoad = require('dotenv-load');
+const withTM = require('next-transpile-modules');
+// const withImages = require('next-images')
+const withSvgr = require("next-svgr");
+const withCSS = require('@zeit/next-css');
 const nextSourceMaps = require('@zeit/next-source-maps')({
   devtool: 'hidden-source-map',
 });
 const SentryCliPlugin = require('@sentry/webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const withCSS = require('@zeit/next-css');
-const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
-const webpack = require('webpack');
-const withTM = require('next-transpile-modules');
 const DotenvPlugin = require('dotenv-webpack');
+const { InjectManifest } = require('workbox-webpack-plugin');
 
+dotenvLoad();
 const ENVIRONMENT = process.env.ENVIRONMENT || 'production';
 const STATIC_CDN_URL = process.env.STATIC_CDN_URL || 'https://books.ridicdn.net';
 
-module.exports = withBundleAnalyzer(
-  nextSourceMaps(
-    withCSS(
-      withTM({
-        transpileModules: ['p-retry'], // for IE11
-        distDir: './build',
+module.exports = withPlugins(
+  [
+    [withBundleAnalyzer, {
+      analyzeServer: ['server', 'both'].includes(process.env.BUNDLE_ANALYZE),
+      analyzeBrowser: ['browser', 'both'].includes(process.env.BUNDLE_ANALYZE),
+      bundleAnalyzerConfig: {
+        server: {
+          analyzerMode: 'static',
+          reportFilename: '../bundles/server.html',
+        },
+        browser: {
+          analyzerMode: 'static',
+          reportFilename: '../bundles/client.html',
+        },
+      },
+    }],
+    [withTM, {
+      transpileModules: ['p-retry'],
+    }],
+    // [withImages, {
+    //   // inlineImageLimit: 8192,
+    // }],
+    [withSvgr],
+    [withCSS],
+    [nextEnv()],
+    [nextSourceMaps],
+  ],
+  {
         assetPrefix: STATIC_CDN_URL,
-        // useFileSystemPublicRoutes: false,
+        compress: false,
+        distDir: 'build',
         exportPathMap: () => ({}),
         experimental: {
           redirects() {
@@ -43,12 +71,7 @@ module.exports = withBundleAnalyzer(
             ];
           },
         },
-        webpack(config, option) {
-          const { isServer, buildId } = option;
-          if (!isServer) {
-            config.resolve.alias['@sentry/node'] = '@sentry/browser';
-          }
-          // eslint-disable-next-line prefer-template
+        webpack (config, { buildId, isServer, webpack }) {
           config.output.publicPath = STATIC_CDN_URL + '/_next/';
 
           const modifyEntries = entries => {
@@ -92,10 +115,6 @@ module.exports = withBundleAnalyzer(
               },
             },
           });
-          config.module.rules.push({
-            test: /\.svg$/,
-            use: ['@svgr/webpack'],
-          });
 
           if (!['local', 'profile'].includes(ENVIRONMENT)) {
             config.plugins.push(
@@ -126,6 +145,12 @@ module.exports = withBundleAnalyzer(
           //   ]),
           // );
           config.plugins.push(
+            new DotenvPlugin({
+              systemvars: true,
+              silent: true,
+            }),
+          );
+          config.plugins.push(
             new InjectManifest({
               swSrc: 'public/static/service-worker.js',
               exclude: [
@@ -136,12 +161,11 @@ module.exports = withBundleAnalyzer(
               ],
             }),
           );
-          const sentryConfig = addSentryConfig(publicRuntimeConfig, buildId);
-          config.plugins.push(new webpack.DefinePlugin(getDefinitionsFromConfig(sentryConfig)));
+
           config.plugins.push(new webpack.DefinePlugin({
             'process.env.IS_SERVER': JSON.stringify(isServer),
           }));
-          
+
           config.plugins.push(
             new DotenvPlugin({
               systemvars: true,
@@ -155,19 +179,5 @@ module.exports = withBundleAnalyzer(
           };
           return config;
         },
-        analyzeServer: ['server', 'both'].includes(process.env.BUNDLE_ANALYZE),
-        analyzeBrowser: ['browser', 'both'].includes(process.env.BUNDLE_ANALYZE),
-        bundleAnalyzerConfig: {
-          server: {
-            analyzerMode: 'static',
-            reportFilename: '../bundles/server.html',
-          },
-          browser: {
-            analyzerMode: 'static',
-            reportFilename: '../bundles/client.html',
-          },
-        },
-      }),
-    ),
-  ),
+  },
 );
