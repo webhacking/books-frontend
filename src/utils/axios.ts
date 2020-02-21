@@ -42,7 +42,10 @@ const createAxiosInstances = (): AxiosInstance => {
     // eslint-disable-next-line global-require
     const AxiosLogger = require('axios-logger');
     instance.interceptors.request.use(AxiosLogger.requestLogger, AxiosLogger.errorLogger);
-    instance.interceptors.response.use(AxiosLogger.responseLogger, AxiosLogger.errorLogger);
+    instance.interceptors.response.use(
+      (res) => AxiosLogger.responseLogger(res, { data: false }),
+      AxiosLogger.errorLogger,
+    );
   }
   return instance;
 };
