@@ -47,37 +47,6 @@ const nextConfig = {
   webpack (config, { buildId, isServer, webpack }) {
     config.output.publicPath = STATIC_CDN_URL + '/_next/';
 
-    const modifyEntries = entries => {
-      if (!('main.js' in entries)) {
-        return entries;
-      }
-      if (typeof entries['main.js'] === 'string') {
-        entries['main.js'] = [entries['main.js']];
-      }
-      const entry = entries['main.js'];
-      if (!entry.includes('@babel/polyfill/noConflict')) {
-        entry.unshift('@babel/polyfill/noConflict');
-      }
-      if (!entry.includes('intersection-observer')) {
-        entry.unshift('intersection-observer');
-      }
-      return entries;
-    };
-    if (typeof config.entry === 'function') {
-      const prevEntry = config.entry;
-      config.entry = () => {
-        const entries = prevEntry();
-        if (typeof entries.then === 'function') {
-          return entries.then(modifyEntries);
-          // eslint-disable-next-line no-else-return
-        } else {
-          return modifyEntries(entries);
-        }
-      };
-    } else {
-      modifyEntries(config.entry);
-    }
-
     config.module.rules.push({
       test: /\.(eot|woff|woff2|ttf|png|jpg|gif)$/,
       use: {
