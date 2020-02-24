@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const { getDefinitions } = require('./env/publicRuntimeConfig');
+const { getDefinitionsFromConfig } = require('./env/publicRuntimeConfig');
 
 module.exports = (env, argv) => ({
   entry: {
@@ -64,7 +64,6 @@ module.exports = (env, argv) => ({
         minifyJS: argv.mode === 'production',
       },
     }),
-    new webpack.DefinePlugin(getDefinitions('')),
   ],
   devServer: {
     compress: true,
