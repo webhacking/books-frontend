@@ -6,6 +6,7 @@ import { useMediaQuery } from 'react-responsive';
 import Arrow from 'src/components/Carousel/Arrow';
 import BigBannerCarousel from 'src/components/Carousel/BigBannerCarousel';
 import { useEventTracker } from 'src/hooks/useEventTracker';
+import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { TopBanner } from 'src/types/sections';
 import { getDeviceType } from 'src/utils/common';
 
@@ -83,32 +84,39 @@ const arrowStyle = css`
 `;
 
 const BannerImageLink = styled.a`
+  width: 100%;
+  height: 100%;
+
   display: inline-block;
   outline: none;
 `;
 
 const BannerImage = styled.img`
-  transition: width 0.2s, height 0.2s;
+  width: 100%;
+  height: 100%;
 
   object-fit: cover;
   object-position: 0 0;
 `;
 
-interface CarouselItemProps {
-  width: number;
-  height: number;
+interface CarouselItemContainerProps {
+  imageWidth: number;
+  imageHeight: number;
   inactiveItemRatio: number;
   active?: boolean;
   invisible?: boolean;
 }
 
-const CarouselItem = styled.li<CarouselItemProps>`
+const CarouselItemContainer = styled.li<CarouselItemContainerProps>`
   flex: none;
   position: relative;
+  width: ${(props) => props.imageWidth * (props.active ? 1 : props.inactiveItemRatio)}px;
+  height: ${(props) => props.imageHeight * (props.active ? 1 : props.inactiveItemRatio)}px;
+
   overflow: hidden;
   border-radius: 6px;
   line-height: 0;
-  transition: box-shadow 0.2s, opacity 0.2s;
+  transition: width 0.2s, height 0.2s, box-shadow 0.2s, opacity 0.2s;
   opacity: ${(props) => (props.invisible ? 0 : 1)};
 
   &:focus-within {
@@ -128,11 +136,6 @@ const CarouselItem = styled.li<CarouselItemProps>`
     background-color: rgba(26, 26, 26, ${(props) => (props.active ? 0 : 0.5)});
 
     pointer-events: none;
-  }
-
-  & ${BannerImage} {
-    width: ${(props) => props.width * (props.active ? 1 : props.inactiveItemRatio)}px;
-    height: ${(props) => props.height * (props.active ? 1 : props.inactiveItemRatio)}px;
   }
 `;
 
@@ -191,6 +194,50 @@ function checkWithinRingRange(start: number, end: number, idx: number): boolean 
   // end < start일 때: [... start ... len-1, 0, ... end ...]
   // idx가 start 이상이거나 end 이하인지 확인하면 됩니다.
   return idx <= end || start <= idx;
+}
+
+interface CarouselItemProps {
+  itemWidth: number;
+  inactiveItemRatio: number;
+  banner: TopBanner;
+  active: boolean;
+  invisible: boolean;
+}
+
+function CarouselItem(props: CarouselItemProps) {
+  const {
+    itemWidth, inactiveItemRatio, banner, active, invisible,
+  } = props;
+  const [intersecting, setIntersecting] = React.useState(false);
+  const ref = useViewportIntersection<HTMLLIElement>(setIntersecting);
+  return (
+    <CarouselItemContainer
+      ref={ref}
+      imageWidth={itemWidth}
+      imageHeight={(itemWidth * 2) / 3}
+      inactiveItemRatio={inactiveItemRatio}
+      active={active}
+      invisible={invisible}
+    >
+      <BannerImageLink
+        href={banner.landing_url}
+        tabIndex={active ? 0 : -1}
+      >
+        {(!invisible || intersecting) && (
+          <BannerImage
+            alt={banner.title}
+            src={banner.main_image_url}
+          />
+        )}
+        {banner.is_badge_available && banner.badge != null && (
+          <BannerBadge>
+            {banner.badge === 'END_TODAY' && '오늘 마감'}
+            {banner.badge === 'END_IN_3DAY' && '마감 임박'}
+          </BannerBadge>
+        )}
+      </BannerImageLink>
+    </CarouselItemContainer>
+  );
 }
 
 export interface TopBannerCarouselProps {
@@ -367,33 +414,16 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
         {({ index, activeIndex, itemWidth }) => (
           <CarouselItem
             key={index}
-            width={itemWidth}
-            height={(itemWidth * 2) / 3}
+            itemWidth={itemWidth}
             inactiveItemRatio={inactiveItemRatio}
+            banner={banners[index]}
             active={index === activeIndex}
             invisible={!checkWithinRingRange(
               (activeIndex - SLIDE_RADIUS + len) % len,
               (activeIndex + SLIDE_RADIUS) % len,
               index,
             )}
-          >
-            <BannerImageLink
-              key={index}
-              href={banners[index].landing_url}
-              tabIndex={index === activeIndex ? 0 : -1}
-            >
-              <BannerImage
-                alt={banners[index].title}
-                src={banners[index].main_image_url}
-              />
-              {banners[index].is_badge_available && banners[index].badge != null && (
-                <BannerBadge>
-                  {banners[index].badge === 'END_TODAY' && '오늘 마감'}
-                  {banners[index].badge === 'END_IN_3DAY' && '마감 임박'}
-                </BannerBadge>
-              )}
-            </BannerImageLink>
-          </CarouselItem>
+          />
         )}
       </BigBannerCarousel>
       <CarouselControllerWrapper>

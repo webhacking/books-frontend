@@ -13,10 +13,11 @@ function computeTransform(options: TransformOptions) {
   const {
     delta, count, touchDiff, ratio, dist,
   } = options;
-  const percentage = (100 * delta) / (2 * count - 2 + 1 / ratio);
-  const pixels = (dist * delta) / (2 * count * ratio - 2 * ratio + 1);
+  const commonDivider = count * ratio - ratio + 1;
+  const percentage = (25 + 50 * delta * ratio) / commonDivider;
+  const negPixels = (count * dist * 0.5 + (ratio - 1) * dist * delta) / commonDivider;
   const touch = touchDiff ?? 0;
-  return `translateX(${-percentage}%) translateX(${-pixels}px) translateX(${touch}px)`;
+  return `translateX(${-percentage}%) translateX(${negPixels}px) translateX(${touch}px)`;
 }
 
 const CarouselView = styled.div`
@@ -34,8 +35,8 @@ const CarouselList = styled.ul<{ height: number; dist: number }>`
   align-items: center;
   height: ${(props) => props.height}px;
 
-  > * + * {
-    margin-left: ${(props) => props.dist}px;
+  > * {
+    margin-right: ${(props) => props.dist}px;
   }
 `;
 
@@ -120,7 +121,7 @@ export default function BigBannerCarousel(props: BigBannerCarouselProps) {
         }}
         onTransitionEnd={handleTransitionDone}
       >
-        {itemNodes.slice(1)}
+        {itemNodes}
         {itemNodes}
       </CarouselList>
     </CarouselView>
