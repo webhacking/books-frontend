@@ -36,7 +36,7 @@ test('should be render Index Component', async () => {
   });
 
   render(
-    <RouterContext.Provider value={{ asPath: '' }}>
+    <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
       <App Component={Index} router={{}} {...props} />
     </RouterContext.Provider>,
   );
@@ -62,7 +62,7 @@ test('should be render Partials Component', async () => {
   });
 
   const { container } = render(
-    <RouterContext.Provider value={{ asPath: '' }}>
+    <RouterContext.Provider value={{ asPath: '', query: { pathname: '/cart'} }}>
       <App Component={GNB} router={{}} {...props} />
     </RouterContext.Provider>,
   );
