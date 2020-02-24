@@ -13,7 +13,6 @@ const nextSourceMaps = require('@zeit/next-source-maps')({
   devtool: 'hidden-source-map',
 });
 const SentryCliPlugin = require('@sentry/webpack-plugin');
-const DotenvPlugin = require('dotenv-webpack');
 const { InjectManifest } = require('workbox-webpack-plugin');
 
 dotenvLoad();
@@ -87,12 +86,6 @@ const nextConfig = {
     //   ]),
     // );
     config.plugins.push(
-      new DotenvPlugin({
-        systemvars: true,
-        silent: true,
-      }),
-    );
-    config.plugins.push(
       new InjectManifest({
         swSrc: 'public/static/service-worker.js',
         exclude: [
@@ -108,17 +101,11 @@ const nextConfig = {
       'process.env.IS_SERVER': JSON.stringify(isServer),
     }));
 
-    config.plugins.push(
-      new DotenvPlugin({
-        systemvars: true,
-        silent: true,
-      }),
-    );
-
     config.node = {
       net: 'empty',
       fs: 'empty',
     };
+
     return config;
   },
 };
