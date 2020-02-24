@@ -1,12 +1,14 @@
 /* eslint-disable no-process-env */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
+const path = require('path');
 const withPlugins = require('next-compose-plugins');
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const nextEnv = require('next-env');
 const dotenvLoad = require('dotenv-load');
 const withTM = require('next-transpile-modules');
-// const withImages = require('next-images')
+const withImages = require('next-images');
+const withFonts = require('next-fonts');
 const withSvgr = require("next-svgr");
 const withCSS = require('@zeit/next-css');
 const nextSourceMaps = require('@zeit/next-source-maps')({
@@ -45,17 +47,6 @@ const nextConfig = {
   },
   webpack (config, { buildId, isServer, webpack }) {
     config.output.publicPath = STATIC_CDN_URL + '/_next/';
-
-    config.module.rules.push({
-      test: /\.(eot|woff|woff2|ttf|png|jpg|gif)$/,
-      use: {
-        loader: 'url-loader',
-        options: {
-          limit: 100000,
-          name: '[name].[ext]',
-        },
-      },
-    });
 
     if (!['local', 'profile'].includes(ENVIRONMENT)) {
       config.plugins.push(
@@ -128,9 +119,11 @@ module.exports = withPlugins([
   [withTM, {
     transpileModules: ['p-retry'],
   }],
-  // [withImages, {
-  //   // inlineImageLimit: 8192,
-  // }],
+  [withImages, {
+    inlineImageLimit: 8192,
+    exclude: path.resolve(__dirname, 'src/svgs'),
+  }],
+  [withFonts],
   [withSvgr],
   [withCSS],
   [nextEnv()],
