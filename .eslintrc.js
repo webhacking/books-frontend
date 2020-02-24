@@ -55,6 +55,7 @@ module.exports = {
     '@typescript-eslint/prefer-regexp-exec': 0,
     '@typescript-eslint/await-thenable': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
+    'import/no-unresolved': ['error', { ignore: ['assets\/'] }],
   },
   settings: {
     'import/resolver': {

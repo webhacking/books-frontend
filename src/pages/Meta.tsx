@@ -1,6 +1,7 @@
 import Head from 'next/head';
 
 import Favicon from 'src/pages/Favicon';
+import ogImage from 'src/assets/image/ridibooks.png';
 
 export default () => (
   <Head>
@@ -19,10 +20,7 @@ export default () => (
     <meta name="keywords" content="리디북스,리디,ridibooks,ridi,책,전자책,ebook" />
     <meta name="format-detection" content="telephone=no" />
     <meta property="og:url" content="https://ridibooks.com" />
-    <meta
-      property="og:image"
-      content={`${process.env.STATIC_CDN_URL}/static/image/ridibooks.png`}
-    />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:title" content="RIDIBOOKS" />
     <meta
       property="og:description"

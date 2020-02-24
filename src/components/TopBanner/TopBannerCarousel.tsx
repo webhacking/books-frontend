@@ -18,6 +18,9 @@ import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { useRouter } from 'next/router';
 import { getDeviceType } from 'src/utils/common';
 
+import expiredToday from 'src/assets/image/expired_today.png';
+import expiredSoon from 'src/assets/image/expired_soon.png';
+
 const TOP_BANNER_LG_WIDTH = 430;
 const TOP_BANNER_SM_WIDTH = 355;
 
@@ -278,7 +281,7 @@ const TopBannerCurrentPosition: React.FC<TopBannerCurrentPositionProps> = (props
     <span css={currentPosCSS}>
       {props.currentPosition}
       {' '}
-/
+      /
       <span css={totalCountCSS}>{props.total}</span>
     </span>
   </TopBannerCurrentPositionInner>
@@ -308,7 +311,7 @@ const BannerBadgeRenderer: React.FC<{
         alt="오늘 마감"
         width={44}
         height={44}
-        src={`${process.env.STATIC_CDN_URL}/static/image/expired_today.png`}
+        src={expiredToday}
       />
     );
   }
@@ -323,7 +326,7 @@ const BannerBadgeRenderer: React.FC<{
         alt="마감 임박"
         width={44}
         height={44}
-        src={`${process.env.STATIC_CDN_URL}/static/image/expired_soon.png`}
+        src={expiredSoon}
       />
     );
   }

@@ -7,6 +7,10 @@ import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { sendDisplayEvent } from 'src/hooks/useEventTracker';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 
+
+import coverAdult from 'src/assets/image/cover_adult.png';
+// import coverLazyload from 'src/assets/image/cover_lazyload.png';
+
 export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
 
 interface ThumbnailRendererProps {
@@ -22,14 +26,6 @@ interface ThumbnailRendererProps {
   sizes: string;
   bookDecorators?: React.ReactNode;
 }
-const ADULT_COVER_URL = new URL(
-  '/static/image/cover_adult.png',
-  process.env.STATIC_CDN_URL,
-).toString();
-const PLACEHOLDER_COVER_URL = new URL(
-  '/static/image/cover_lazyload.png',
-  process.env.STATIC_CDN_URL,
-).toString();
 
 const SIZE_PARAMS = [
   { width: 50, path: 'small' },
@@ -59,7 +55,7 @@ const computeThumbnailUrl = (
     return { src: undefined, srcset: undefined };
   }
   if (isAdultOnly && !isVerifiedAdult) {
-    return { src: ADULT_COVER_URL, srcset: undefined };
+    return { src: coverAdult, srcset: undefined };
   }
 
   let baseCoverUrl = new URL(`/cover/${bId}/`, IMG_RIDI_CDN_URL);

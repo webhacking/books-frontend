@@ -1,19 +1,9 @@
-export const ADULT_BADGE_URL = new URL(
-  '/static/svg/AdultBadge.svg',
-  process.env.STATIC_CDN_URL,
-).toString();
+import AdultBadge from 'src/assets/svg/AdultBadge.svg';
+import StarRating from 'src/assets/svg/StarRating.svg';
+import NoStarRating from 'src/assets/svg/NoStarRating.svg';
+import RidiWaitFree from 'src/assets/svg/RidiWaitFree.svg';
 
-export const STAR_RATING_URL = new URL(
-  '/static/svg/StarRating.svg',
-  process.env.STATIC_CDN_URL,
-).toString();
-
-export const NO_STAR_RATING_URL = new URL(
-  '/static/svg/NoStarRating.svg',
-  process.env.STATIC_CDN_URL,
-).toString();
-
-export const RIDI_WAIT_FREE_ICON_URL = new URL(
-  '/static/svg/RidiWaitFree.svg',
-  process.env.STATIC_CDN_URL,
-).toString();
+export const ADULT_BADGE_URL = AdultBadge;
+export const STAR_RATING_URL = StarRating;
+export const NO_STAR_RATING_URL = NoStarRating;
+export const RIDI_WAIT_FREE_ICON_URL = RidiWaitFree;
