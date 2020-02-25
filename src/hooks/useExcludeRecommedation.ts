@@ -8,8 +8,6 @@ export const useExcludeRecommendation = (): [
   (bId: string, rcmdId: string, genre: string) => void,
   (bId: string, genre: string) => void,
 ] => {
-  const requestURL = new URL('', process.env.STORE_API);
-
   // eslint-disable-next-line consistent-return
   const requestExcludeBook = async (bId: string, rcmd_id: string, genre: string) => {
     try {
@@ -18,7 +16,7 @@ export const useExcludeRecommendation = (): [
           `/recommendation/book/exclude/${bId}/?genre=${genre}`,
           { rcmd_id },
           {
-            baseURL: requestURL.toString(),
+            baseURL: process.env.NEXT_PUBLIC_STORE_API,
             withCredentials: true,
             custom: { authorizationRequestType: OAuthRequestType.CHECK },
           },
@@ -35,7 +33,7 @@ export const useExcludeRecommendation = (): [
     try {
       return pRetry(
         () => axios.delete(`/recommendation/book/exclude/${bId}/?genre=${genre}`, {
-          baseURL: requestURL.toString(),
+          baseURL: process.env.NEXT_PUBLIC_STORE_API,
           withCredentials: true,
           custom: { authorizationRequestType: OAuthRequestType.CHECK },
         }),

@@ -33,11 +33,8 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = (props) => {
   useEffect(() => {
     const requestUserPreferredBestSeller = async () => {
       try {
-        const requestUrl = new URL(
-          `/sections/home-${genre}-user-preferred-bestseller/`,
-          process.env.STORE_API,
-        );
-        const result = await axios.get(requestUrl.toString(), {
+        const requestUrl = `${process.env.NEXT_PUBLIC_STORE_API}/sections/home-${genre}-user-preferred-bestseller/`;
+        const result = await axios.get(requestUrl, {
           withCredentials: true,
           custom: { authorizationRequestType: OAuthRequestType.CHECK },
           timeout: 8000,

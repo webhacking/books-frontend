@@ -1,89 +1,106 @@
+import faviconWin8 from '../../public/static/favicon/favicon_win8.png';
+import favicon from '../../public/static/favicon/favicon.ico';
+import appleIcon57 from '../../public/static/favicon/apple-icon-57x57.png';
+import appleIcon60 from '../../public/static/favicon/apple-icon-60x60.png';
+import appleIcon72 from '../../public/static/favicon/apple-icon-72x72.png';
+import appleIcon76 from '../../public/static/favicon/apple-icon-76x76.png';
+import appleIcon114 from '../../public/static/favicon/apple-icon-114x114.png';
+import appleIcon120 from '../../public/static/favicon/apple-icon-120x120.png';
+import appleIcon144 from '../../public/static/favicon/apple-icon-144x144.png';
+import appleIcon152 from '../../public/static/favicon/apple-icon-152x152.png';
+import appleIcon180 from '../../public/static/favicon/apple-icon-180x180.png';
+import androidIcon192 from '../../public/static/favicon/android-icon-192x192.png';
+import appleTouchIcon from '../../public/static/favicon/apple-touch-icon.png';
+import favicon32 from '../../public/static/favicon/favicon-32x32.png';
+import favicon16 from '../../public/static/favicon/favicon-16x16.png';
+import androidChrome192 from '../../public/static/favicon/android-chrome-192x192.png';
+
 export default () => (
   <>
     <meta
       name="msapplication-TileImage"
-      content={`${process.env.STATIC_CDN_URL}/static/favicon/favicon_win8.png`}
+      content={faviconWin8}
     />
     <meta name="msapplication-TileColor" content="#1f8ee6" />
     <link
       rel="shortcut icon"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/favicon.ico`}
+      href={favicon}
     />
 
     <link
       rel="apple-touch-icon"
       sizes="57x57"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/apple-icon-57x57.png?150320`}
+      href={appleIcon57}
     />
     <link
       rel="apple-touch-icon"
       sizes="60x60"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/apple-icon-60x60.png?150320`}
+      href={appleIcon60}
     />
     <link
       rel="apple-touch-icon"
       sizes="72x72"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/apple-icon-72x72.png?150320`}
+      href={appleIcon72}
     />
     <link
       rel="apple-touch-icon"
       sizes="76x76"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/apple-icon-76x76.png?150320`}
+      href={appleIcon76}
     />
     <link
       rel="apple-touch-icon"
       sizes="114x114"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/apple-icon-114x114.png?150320`}
+      href={appleIcon114}
     />
     <link
       rel="apple-touch-icon"
       sizes="120x120"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/apple-icon-120x120.png?150320`}
+      href={appleIcon120}
     />
     <link
       rel="apple-touch-icon"
       sizes="144x144"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/apple-icon-144x144.png?150320`}
+      href={appleIcon144}
     />
     <link
       rel="apple-touch-icon"
       sizes="152x152"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/apple-icon-152x152.png?150320`}
+      href={appleIcon152}
     />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/apple-icon-180x180.png?150320`}
+      href={appleIcon180}
     />
     <link
       rel="icon"
       type="image/png"
       sizes="192x192"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/android-icon-192x192.png?150320`}
+      href={androidIcon192}
     />
 
     <link
       rel="apple-touch-icon"
       sizes="180x180"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/apple-touch-icon.png?190528`}
+      href={appleTouchIcon}
     />
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/favicon-32x32.png?190528`}
+      href={favicon32}
     />
     <link
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/favicon-16x16.png?190528`}
+      href={favicon16}
     />
     <link
       rel="icon"
       type="image/png"
       sizes="192x192"
-      href={`${process.env.STATIC_CDN_URL}/static/favicon/android-chrome-192x192.png?190528`}
+      href={androidChrome192}
     />
   </>
 );

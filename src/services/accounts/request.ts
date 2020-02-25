@@ -4,7 +4,7 @@ import { CancelTokenSource } from 'axios';
 
 export const checkLoggedIn = async (cancelToken: CancelTokenSource) => {
   const { data } = await wrapCatchCancel(axios.get)<LoggedUser>('/accounts/me', {
-    baseURL: process.env.ACCOUNT_API,
+    baseURL: process.env.NEXT_PUBLIC_ACCOUNT_API,
     withCredentials: true,
     custom: {
       authorizationRequestType: OAuthRequestType.CHECK,

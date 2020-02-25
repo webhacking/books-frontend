@@ -177,9 +177,19 @@ const logoAndSearchBox = css`
 interface GNBButtonsProps {
   loggedUser: null | LoggedUser;
   isPartialsLogin?: 'true' | 'false';
+  loginPath: string;
+  signUpPath: string;
+  cashOrderPath: string;
 }
 const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
-  const { loggedUser, isPartialsLogin } = props;
+  const {
+    loggedUser,
+    isPartialsLogin,
+    loginPath,
+    signUpPath,
+    cashOrderPath,
+  } = props;
+
   const [eventStatus, setEventStatus] = useState<{
     double_point: boolean;
     fifteen_night: boolean;
@@ -188,50 +198,15 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
     fifteen_night: false,
   });
 
-  const [cashOrderPath, setCashOrderPath] = useState('/');
-  const [loginPath, setLoginPath] = useState('/');
-  const [signUpPath, setSignUpPath] = useState('/');
   const route = useRouter();
-
-  useEffect(() => {
-    const tempLoginPath = new URL(
-      '/account/login',
-      process.env.STORE_MASTER_HOST,
-    );
-    const tempSignUpPath = new URL(
-      '/account/signup',
-      process.env.STORE_MASTER_HOST,
-    );
-    setCashOrderPath(
-      new URL('/order/checkout/cash', process.env.STORE_MASTER_HOST).toString(),
-    );
-
-    const returnUrl = new URL(route.asPath, location.href);
-    tempLoginPath.searchParams.append(
-      'return_url',
-      returnUrl.toString() || location.href,
-    );
-    tempSignUpPath.searchParams.append(
-      'return_url',
-      returnUrl.toString() || location.href,
-    );
-
-    setLoginPath(tempLoginPath.toString());
-    setSignUpPath(tempSignUpPath.toString());
-  }, [route.asPath]);
-
   useEffect(() => {
     const source = originalAxios.CancelToken.source();
 
     const requestRidiEventStatus = async () => {
       try {
-        const cartUrl = new URL(
-          '/api/schedule/events',
-          process.env.STORE_TEMP_API_HOST,
-        );
-
+        const cartUrl = `${process.env.NEXT_PUBLIC_LEGACY_STORE_API_HOST}/api/schedule/events`;
         const result = await pRetry(
-          () => wrapCatchCancel(axios.get)(cartUrl.toString(), {
+          () => wrapCatchCancel(axios.get)(cartUrl, {
             withCredentials: true,
             custom: { authorizationRequestType: OAuthRequestType.CHECK },
             cancelToken: source.token,
@@ -311,7 +286,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
             </a>
           </li>
           <li>
-            <a href={process.env.LIBRARY_HOST} aria-label="내 서재 홈으로 이동">
+            <a href={process.env.NEXT_PUBLIC_LIBRARY_HOST} aria-label="내 서재 홈으로 이동">
               <Button type="primary" label="내 서재" />
             </a>
           </li>
@@ -346,22 +321,30 @@ interface GNBProps {
 }
 export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   const { loggedUser } = useSelector<RootState, AccountState>((state) => state.account);
-  const [path, setPath] = useState(null);
   const dispatch = useDispatch();
+  const route = useRouter();
+
+  const [loginPath, setLoginPath] = useState('/');
+  const [signUpPath, setSignUpPath] = useState('/');
+  const [cashOrderPath, setCashOrderPath] = useState('/');
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.append('return_url', new URL(route.asPath, location.href).toString() || location.href);
+
+    setLoginPath(`${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/account/login?${params.toString()}`);
+    setSignUpPath(`${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/account/signup?${params.toString()}`);
+    setCashOrderPath(`${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/order/checkout/cash`);
+  }, [route.asPath]);
 
   useEffect(() => {
     const cancelToken = originalAxios.CancelToken.source();
     dispatch({ type: accountActions.checkLogged.type, payload: cancelToken });
-    setPath(window.location.href);
     return () => {
       cancelToken.cancel();
     };
   }, []);
 
-  const loginPath = new URL('/account/login', process.env.STORE_HOST);
-  loginPath.searchParams.append('return_url', path || process.env.BOOKS_HOST);
-
-  const homePath = new URL('/', process.env.STORE_HOST);
   return (
     // @ts-ignore
     <GNBWrapper className="new_gnb" id={props.id}>
@@ -371,7 +354,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
             <LogoWrapper>
               <li>
                 <a
-                  href={homePath.toString()}
+                  href="/"
                   aria-label="리디북스 홈으로 이동"
                   css={css`
                     display: flex;
@@ -396,6 +379,9 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               <GNBButtons
                 loggedUser={loggedUser}
                 isPartialsLogin={props.isLoginForPartials}
+                loginPath={loginPath}
+                signUpPath={signUpPath}
+                cashOrderPath={cashOrderPath}
               />
             </ButtonWrapper>
             <InstantSearch

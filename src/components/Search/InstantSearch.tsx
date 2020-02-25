@@ -22,11 +22,11 @@ import { useTheme } from 'emotion-theming';
 const { captureException } = sentry();
 
 const fadeIn = keyframes`
-  0% { 
-    opacity: 0; 
+  0% {
+    opacity: 0;
   }
-  100% { 
-    opacity: 1; 
+  100% {
+    opacity: 1;
   }
 `;
 
@@ -286,7 +286,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         return;
       }
       try {
-        const url = new URL('/search', process.env.SEARCH_API);
+        const url = new URL('/search', process.env.NEXT_PUBLIC_SEARCH_API);
         url.searchParams.append('site', 'ridi-store');
         url.searchParams.append('where', 'book');
         url.searchParams.append('where', 'author');

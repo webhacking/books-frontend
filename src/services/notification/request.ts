@@ -17,12 +17,8 @@ export interface NotificationUnreadCountResponse {
 }
 
 export const requestNotificationAuth = async () => {
-  const tokenUrl = new URL(
-    '/users/me/notification-token/',
-    process.env.STORE_API,
-  );
-
-  const { data } = await axios.get<NotificationAuthResponse>(tokenUrl.toString(), {
+  const tokenUrl = `${process.env.NEXT_PUBLIC_STORE_API}/users/me/notification-token/`;
+  const { data } = await axios.get<NotificationAuthResponse>(tokenUrl, {
     custom: { authorizationRequestType: OAuthRequestType.STRICT },
     withCredentials: true,
   });
@@ -31,9 +27,8 @@ export const requestNotificationAuth = async () => {
 };
 
 export const requestNotification = async (limit: number, token: string) => {
-  const notificationUrl = new URL('/notification', process.env.STORE_API);
-
-  const { data } = await axios.get<NotificationResponse>(notificationUrl.toString(), {
+  const notificationUrl = `${process.env.NEXT_PUBLIC_STORE_API}/notification`;
+  const { data } = await axios.get<NotificationResponse>(notificationUrl, {
     params: { limit },
     custom: { authorizationRequestType: OAuthRequestType.STRICT },
     headers: {
@@ -45,9 +40,8 @@ export const requestNotification = async (limit: number, token: string) => {
 };
 
 export const requestNotificationRead = async (token: string) => {
-  const notificationUrl = new URL('/notification', process.env.STORE_API);
-
-  const res = await axios.put(notificationUrl.toString(), null, {
+  const notificationUrl = `${process.env.NEXT_PUBLIC_STORE_API}/notification`;
+  const res = await axios.put(notificationUrl, null, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -57,13 +51,9 @@ export const requestNotificationRead = async (token: string) => {
 };
 
 export const requestUnreadCount = async (token: string) => {
-  const notificationUrl = new URL(
-    '/notification/unread_count',
-    process.env.STORE_API,
-  );
-
+  const notificationUrl = `${process.env.NEXT_PUBLIC_STORE_API}/notification/unread_count`;
   const { data } = await axios.get<NotificationUnreadCountResponse>(
-    notificationUrl.toString(),
+    notificationUrl,
     {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -41,10 +41,8 @@ const createHomeSlug = (genre: string) => {
 };
 
 const fetchHomeSections = async (genre: string, req?: Request, params = {}) => {
-  const url = new URL(`/pages/${createHomeSlug(genre)}/`, process.env.STORE_API);
-
   const result = await pRetry(
-    () => axios.get<Page>(url.toString(), {
+    () => axios.get<Page>(`${process.env.NEXT_PUBLIC_STORE_API}/pages/${createHomeSlug(genre)}/`, {
       withCredentials: true,
       params,
     }),
