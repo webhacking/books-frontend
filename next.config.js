@@ -19,7 +19,7 @@ const { InjectManifest } = require('workbox-webpack-plugin');
 require('dotenv').config()
 
 const nextConfig = {
-  assetPrefix: process.env.ASSET_PREFIX || '/',
+  assetPrefix: process.env.ASSET_PREFIX,
   distDir: 'build',
   experimental: {
     redirects() {
@@ -37,6 +37,10 @@ const nextConfig = {
           source: `/${path}`,
           destination: `/general/${path}`,
         })),
+        {
+          source: '/manifest.webmanifest',
+          destination: '/api/manifest.webmanifest',
+        },
       ];
     },
   },
@@ -54,21 +58,7 @@ const nextConfig = {
         }),
       );
     }
-    // config.plugins.push(
-    //   new CopyPlugin([
-    //     {
-    //       from: '../static/manifest.webmanifest',
-    //       to: '',
-    //       transform(content) {
-    //         return Promise.resolve(
-    //           Buffer.from(content, 'utf8')
-    //             .toString()
-    //             .replace(/<path>/gi, STATIC_CDN_URL),
-    //         );
-    //       },
-    //     },
-    //   ]),
-    // );
+
     config.plugins.push(
       new InjectManifest({
         swSrc: 'public/static/service-worker.js',
@@ -114,7 +104,7 @@ module.exports = withPlugins([
     transpileModules: ['p-retry'],
   }],
   [withImages, {
-    inlineImageLimit: 8192,
+    inlineImageLimit: 0,
     exclude: path.resolve(__dirname, 'src/svgs'),
   }],
   [withFonts],
