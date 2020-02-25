@@ -6,8 +6,7 @@ import styled from '@emotion/styled';
 import { flexColumnStart, RIDITheme } from 'src/styles';
 import { timeAgo } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
-import ArrowLeft from 'src/svgs/ChevronRight.svg';
-import NotificationIcon from 'src/svgs/Notification_solid.svg';
+import { NOTIFICATION_ICON_URL, ARROW_RIGHT_ICON_URL } from 'src/constants/icons';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
 import { notificationActions } from 'src/services/notification';
@@ -23,8 +22,8 @@ import sentry from 'src/utils/sentry';
 
 const { captureException } = sentry();
 
-const sectionCSS = (theme: RIDITheme) => css`
-  background-color: ${theme.backgroundColor};
+const Section = styled.section<{}, RIDITheme>`
+  background-color: ${(props) => props.theme.backgroundColor};
   padding: 31px 50px 0 50px;
   max-width: 1000px;
   min-height: 800px;
@@ -37,7 +36,7 @@ const sectionCSS = (theme: RIDITheme) => css`
   )};
 `;
 
-const notiListCSS = css`
+const NotiList = styled.ul`
   margin-bottom: 70px;
   ${orBelow(
     BreakPoint.LG,
@@ -47,7 +46,7 @@ const notiListCSS = css`
   )};
 `;
 
-const notiListItemCSS = (theme: RIDITheme) => css`
+const NotiListItem = styled.li<{}, RIDITheme>`
   margin: 0px;
   padding: 14px 0px;
   &:last-child {
@@ -55,7 +54,7 @@ const notiListItemCSS = (theme: RIDITheme) => css`
   }
 
   :hover {
-    background: ${theme.hoverBackground};
+    background: ${(props) => props.theme.hoverBackground};
   }
 
   ${orBelow(
@@ -72,7 +71,7 @@ const notiListItemCSS = (theme: RIDITheme) => css`
   )};
 `;
 
-const wrapperCSS = (theme: RIDITheme) => css`
+const NotiItemWrapper = styled.a<{}, RIDITheme>`
   position: relative;
   display: flex;
   justify-content: flex-start;
@@ -88,14 +87,14 @@ const wrapperCSS = (theme: RIDITheme) => css`
     width: 100%;
     position: absolute;
     height: 1px;
-    background: ${theme.dividerColor};
-    opacity: ${theme.dividerOpacity};
+    background: ${(props) => props.theme.dividerColor};
+    opacity: ${(props) => props.theme.dividerOpacity};
     bottom: -14px;
     left: 0px;
   }
 `;
 
-const imageWrapperCSS = css`
+const ImageWrapper = styled.div`
   text-align: center;
   flex-shrink: 0;
   position: relative;
@@ -103,23 +102,43 @@ const imageWrapperCSS = css`
   ${orBelow(BreakPoint.LG, css``)};
 `;
 
-const notificationTitleCSS = (theme: RIDITheme) => css`
+const Dot = styled.div<{ imageType: string }>`
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  left: -9px;
+  top: ${(props) => (props.imageType === 'book' ? '36px' : '24px')};
+  background: #1f8ce6;
+  border-radius: 999px;
+`;
+
+const NotificationMeta = styled.div`
+  ${flexColumnStart};
+  margin-left: 16px;
+`;
+
+const NotificationTitle = styled.h3<{}, RIDITheme>`
   font-weight: normal;
   font-size: 15px;
-  color: ${theme.textColor};
+  color: ${(props) => props.theme.textColor};
   word-break: keep-all;
   margin-bottom: 4px;
   letter-spacing: -0.5px;
 `;
 
-const notificationTimeCSS = css`
+const NotificationTime = styled.span`
   font-weight: normal;
   font-size: 14px;
   color: #808991;
   letter-spacing: -0.46px;
 `;
 
-const arrow = css`
+const ArrowWrapper = styled.div`
+  padding: 0 15px;
+  margin-left: auto;
+`;
+
+const ArrowImg = styled.img`
   height: 13px;
   width: 7px;
 `;
@@ -137,7 +156,7 @@ const NoEmptyNotification = styled.p`
   )};
 `;
 
-const notificationIcon = css`
+const NotificationIconImg = styled.img`
   width: 65px;
   height: 71px;
   fill: #e6e8eb;
@@ -184,50 +203,33 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
     item, createdAtTimeAgo, dot = false, tracker, slug, order,
   } = props;
   return (
-    <li css={notiListItemCSS}>
-      <a
+    <NotiListItem>
+      <NotiItemWrapper
+        // eslint-disable-next-line react/jsx-no-bind
         onClick={sendClickEvent.bind(null, tracker, item, slug, order)}
-        css={wrapperCSS}
         href={item.landingUrl}
       >
-        <div className={slug} css={imageWrapperCSS} data-id={item.id} data-order={order}>
-          <img alt={item.message} width="56px" src={item.imageUrl} />
-          {dot && (
-            <div
-              css={css`
-                position: absolute;
-                width: 4px;
-                height: 4px;
-                left: -9px;
-                top: ${item.imageType === 'book' ? '36px' : '24px'};
-                background: #1f8ce6;
-                border-radius: 999px;
-              `}
-            />
-          )}
-        </div>
-        <div
-          css={css`
-            ${flexColumnStart};
-            margin-left: 16px;
-          `}
+        <ImageWrapper
+          className={slug}
+          data-id={item.id}
+          data-order={order}
         >
-          <h3
-            css={notificationTitleCSS}
-            dangerouslySetInnerHTML={{ __html: item.message }}
+          <img
+            alt={item.message}
+            width="56px"
+            src={item.imageUrl}
           />
-          <span css={notificationTimeCSS}>{createdAtTimeAgo}</span>
-        </div>
-        <div
-          css={css`
-            padding: 0 15px;
-            margin-left: auto;
-          `}
-        >
-          <ArrowLeft css={arrow} />
-        </div>
-      </a>
-    </li>
+          { dot && <Dot imageType={item.imageType} /> }
+        </ImageWrapper>
+        <NotificationMeta>
+          <NotificationTitle dangerouslySetInnerHTML={{ __html: item.message }} />
+          <NotificationTime>{createdAtTimeAgo}</NotificationTime>
+        </NotificationMeta>
+        <ArrowWrapper>
+          <ArrowImg src={ARROW_RIGHT_ICON_URL} />
+        </ArrowWrapper>
+      </NotiItemWrapper>
+    </NotiListItem>
   );
 };
 
@@ -273,10 +275,10 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
         <Head>
           <title>리디북스 - 알림</title>
         </Head>
-        <section css={sectionCSS}>
+        <Section>
           <PageTitle title="알림" mobileHidden={isTitleHidden} />
           <NotificationPlaceholder num={5} />
-        </section>
+        </Section>
       </>
     );
   }
@@ -286,12 +288,12 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
       <Head>
         <title>리디북스 - 알림</title>
       </Head>
-      <section css={sectionCSS}>
+      <Section>
         <PageTitle title="알림" mobileHidden={isTitleHidden} />
-        <ul ref={ref} css={notiListCSS}>
+        <NotiList>
           {items.length === 0 ? (
             <NoEmptyNotification>
-              <NotificationIcon css={notificationIcon} />
+              <NotificationIconImg src={NOTIFICATION_ICON_URL} />
               <NoEmptyNotificationText>새로운 알림이 없습니다.</NoEmptyNotificationText>
             </NoEmptyNotification>
           ) : (
@@ -307,8 +309,8 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
               />
             ))
           )}
-        </ul>
-      </section>
+        </NotiList>
+      </Section>
     </>
   );
 };
