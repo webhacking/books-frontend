@@ -2,20 +2,20 @@ import styled from '@emotion/styled';
 import React from 'react';
 
 interface TransformOptions {
-  delta: number;
-  count: number;
+  slideToMove: number;
+  slideCount: number;
+  inactiveScale: number;
+  slideMargin: number;
   touchDiff?: number;
-  ratio: number;
-  dist: number;
 }
 
 function computeTransform(options: TransformOptions) {
   const {
-    delta, count, touchDiff, ratio, dist,
+    slideToMove: k, slideCount: n, inactiveScale: r, slideMargin: d, touchDiff,
   } = options;
-  const commonDivider = count * ratio - ratio + 1;
-  const percentage = (25 + 50 * delta * ratio) / commonDivider;
-  const negPixels = (count * dist * 0.5 + (ratio - 1) * dist * delta) / commonDivider;
+  const commonDivider = (n - 1) * r + 1;
+  const percentage = (25 + 50 * k * r) / commonDivider;
+  const negPixels = (0.5 * n * d + (r - 1) * d * k) / commonDivider;
   const touch = touchDiff ?? 0;
   return `translateX(${-percentage}%) translateX(${negPixels}px) translateX(${touch}px)`;
 }
@@ -28,7 +28,7 @@ const CarouselView = styled.div`
   align-items: center;
 `;
 
-const CarouselList = styled.ul<{ height: number; dist: number }>`
+const CarouselList = styled.ul<{ height: number; slideMargin: number }>`
   flex: none;
   display: flex;
   flex-wrap: nowrap;
@@ -36,7 +36,7 @@ const CarouselList = styled.ul<{ height: number; dist: number }>`
   height: ${(props) => props.height}px;
 
   > * {
-    margin-right: ${(props) => props.dist}px;
+    margin-right: ${(props) => props.slideMargin}px;
   }
 `;
 
@@ -44,15 +44,15 @@ export interface BigBannerCarouselProps {
   totalItems: number;
   currentIdx: number;
   itemWidth: number;
-  itemDist: number;
-  inactiveItemRatio: number;
+  itemMargin: number;
+  inactiveScale: number;
   children: (props: { index: number; activeIndex: number; itemWidth: number }) => React.ReactNode;
   touchDiff?: number;
 }
 
 export default function BigBannerCarousel(props: BigBannerCarouselProps) {
   const {
-    children, totalItems: len, touchDiff, currentIdx, itemWidth, itemDist, inactiveItemRatio,
+    children, totalItems: len, touchDiff, currentIdx, itemWidth, itemMargin, inactiveScale,
   } = props;
   const [previousIdx, setPreviousIdx] = React.useState(currentIdx);
   const [activeIdx, setActiveIdx] = React.useState(currentIdx);
@@ -108,15 +108,15 @@ export default function BigBannerCarousel(props: BigBannerCarouselProps) {
     <CarouselView>
       <CarouselList
         height={itemHeight}
-        dist={itemDist}
+        slideMargin={itemMargin}
         style={{
           transition: isMoving ? 'transform 0.2s' : undefined,
           transform: computeTransform({
-            delta,
-            count: len,
+            slideToMove: delta,
+            slideCount: len,
             touchDiff: activeDiff,
-            ratio: inactiveItemRatio,
-            dist: itemDist,
+            inactiveScale,
+            slideMargin: itemMargin,
           }),
         }}
         onTransitionEnd={handleTransitionDone}
@@ -129,6 +129,6 @@ export default function BigBannerCarousel(props: BigBannerCarouselProps) {
 }
 
 BigBannerCarousel.defaultProps = {
-  itemDist: 10,
-  inactiveItemRatio: 1,
+  itemMargin: 10,
+  inactiveScale: 1,
 };

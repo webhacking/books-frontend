@@ -10,8 +10,8 @@ import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { TopBanner } from 'src/types/sections';
 import { getDeviceType } from 'src/utils/common';
 
-const RATIO = 0.965;
-const DIST = 10;
+const DESKTOP_INACTIVE_SCALE = 0.965;
+const ITEM_MARGIN = 10;
 
 const IMAGE_WIDTH = 430;
 const MD_IMAGE_WIDTH = 355;
@@ -19,11 +19,11 @@ const MD_IMAGE_WIDTH = 355;
 const SLIDE_RADIUS = 1;
 const SCROLL_DURATION = 5000;
 
-const CarouselWrapper = styled.div<{ itemWidth: number; inactiveItemRatio: number }>`
+const CarouselWrapper = styled.div<{ itemWidth: number; inactiveScale: number }>`
   width: 100%;
   max-width: ${(props) => (
-    props.itemWidth * (props.inactiveItemRatio * (SLIDE_RADIUS + 1) * 2 + 1)
-    + DIST * (SLIDE_RADIUS + 1) * 2
+    props.itemWidth * (props.inactiveScale * (SLIDE_RADIUS + 1) * 2 + 1)
+    + ITEM_MARGIN * (SLIDE_RADIUS + 1) * 2
   )}px;
   margin: 0 auto;
   position: relative;
@@ -102,7 +102,7 @@ const BannerImage = styled.img`
 interface CarouselItemContainerProps {
   imageWidth: number;
   imageHeight: number;
-  inactiveItemRatio: number;
+  inactiveScale: number;
   active?: boolean;
   invisible?: boolean;
 }
@@ -110,8 +110,8 @@ interface CarouselItemContainerProps {
 const CarouselItemContainer = styled.li<CarouselItemContainerProps>`
   flex: none;
   position: relative;
-  width: ${(props) => props.imageWidth * (props.active ? 1 : props.inactiveItemRatio)}px;
-  height: ${(props) => props.imageHeight * (props.active ? 1 : props.inactiveItemRatio)}px;
+  width: ${(props) => props.imageWidth * (props.active ? 1 : props.inactiveScale)}px;
+  height: ${(props) => props.imageHeight * (props.active ? 1 : props.inactiveScale)}px;
 
   overflow: hidden;
   border-radius: 6px;
@@ -198,7 +198,7 @@ function checkWithinRingRange(start: number, end: number, idx: number): boolean 
 
 interface CarouselItemProps {
   itemWidth: number;
-  inactiveItemRatio: number;
+  inactiveScale: number;
   banner: TopBanner;
   active: boolean;
   invisible: boolean;
@@ -206,7 +206,7 @@ interface CarouselItemProps {
 
 function CarouselItem(props: CarouselItemProps) {
   const {
-    itemWidth, inactiveItemRatio, banner, active, invisible,
+    itemWidth, inactiveScale, banner, active, invisible,
   } = props;
   const [intersecting, setIntersecting] = React.useState(false);
   const ref = useViewportIntersection<HTMLLIElement>(setIntersecting);
@@ -215,7 +215,7 @@ function CarouselItem(props: CarouselItemProps) {
       ref={ref}
       imageWidth={itemWidth}
       imageHeight={(itemWidth * 2) / 3}
-      inactiveItemRatio={inactiveItemRatio}
+      inactiveScale={inactiveScale}
       active={active}
       invisible={invisible}
     >
@@ -264,10 +264,10 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
   const isDesktop = useMediaQuery({ minWidth: '1000px' });
   const isTablet = useMediaQuery({ minWidth: '375px' });
   const [width, setWidth] = React.useState(IMAGE_WIDTH);
-  const [inactiveItemRatio, setInactiveItemRatio] = React.useState(1);
+  const [inactiveScale, setInactiveScale] = React.useState(1);
   React.useEffect(() => {
     function handleResize() {
-      setWidth(window.innerWidth - DIST * 2);
+      setWidth(window.innerWidth - ITEM_MARGIN * 2);
     }
 
     const newWidth = calcItemWidth(isDesktop, isTablet);
@@ -279,7 +279,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
     setWidth(newWidth);
   }, [isDesktop, isTablet]);
   React.useEffect(() => {
-    setInactiveItemRatio(isDesktop ? RATIO : 1);
+    setInactiveScale(isDesktop ? DESKTOP_INACTIVE_SCALE : 1);
   }, [isDesktop]);
 
   // 터치 핸들링
@@ -331,7 +331,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
         const diff = touch.clientX - touchRef.current.startX;
         const dTime = window.performance.now() - touchRef.current.at;
         const velocity = diff / dTime; // px/ms
-        const vThreshold = ((width + DIST) / 200) / 3;
+        const vThreshold = ((width + ITEM_MARGIN) / 200) / 3;
         // threshold 처리
         if (diff > width / 3 || velocity > vThreshold) {
           setCurrentIdx((idx) => (idx - 1 + len) % len);
@@ -396,7 +396,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
     <CarouselWrapper
       ref={wrapperRef}
       itemWidth={width}
-      inactiveItemRatio={inactiveItemRatio}
+      inactiveScale={inactiveScale}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchCancel}
@@ -406,8 +406,8 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
       <BigBannerCarousel
         totalItems={len}
         itemWidth={width}
-        itemDist={DIST}
-        inactiveItemRatio={inactiveItemRatio}
+        itemMargin={ITEM_MARGIN}
+        inactiveScale={inactiveScale}
         currentIdx={currentIdx}
         touchDiff={touchDiff}
       >
@@ -415,7 +415,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
           <CarouselItem
             key={index}
             itemWidth={itemWidth}
-            inactiveItemRatio={inactiveItemRatio}
+            inactiveScale={inactiveScale}
             banner={banners[index]}
             active={index === activeIndex}
             invisible={!checkWithinRingRange(
