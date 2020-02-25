@@ -26,15 +26,13 @@ class App extends React.Component<{}, AppState> {
 
   public render() {
     return (
-      <Provider store={store}>
-        <>
-          {/* Todo Apply Layout */}
-          <Global styles={resetStyles} />
-          <Provider store={store}>
-            <InAppNotification theme={this.state.theme} />
-          </Provider>
-        </>
-      </Provider>
+      <>
+        {/* Todo Apply Layout */}
+        <Global styles={resetStyles} />
+        <Provider store={store}>
+          <InAppNotification theme={this.state.theme} />
+        </Provider>
+      </>
     );
   }
 }

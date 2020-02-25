@@ -9,17 +9,14 @@ interface InAppNotificationProps {
 }
 
 // eslint-disable-next-line react/prefer-stateless-function
-class InAppNotification extends React.Component<InAppNotificationProps> {
-  public render() {
-    const { theme } = this.props;
+function InAppNotification(props: InAppNotificationProps) {
+  const { theme } = props;
 
-    return (
-      <ThemeProvider theme={theme === 'dark' ? darkTheme : defaultTheme}>
-        <NotificationPage isTitleHidden />
-      </ThemeProvider>
-    );
-  }
+  return (
+    <ThemeProvider theme={theme === 'dark' ? darkTheme : defaultTheme}>
+      <NotificationPage isTitleHidden />
+    </ThemeProvider>
+  );
 }
-
 
 export default InAppNotification;
