@@ -30,9 +30,7 @@ provider:
   # serverSideEncryption: AES256
   environment:
     SERVERLESS: true
-    ENVIRONMENT: ${env:ENVIRONMENT}
-    SENTRY_DSN: ${env:SENTRY_DSN}
-    NODE_ENV: ${self:custom.secrets.NODE_ENV, production}
+    NODE_ENV: 'production'
     NODE_PATH: './:/opt'
   iamRoleStatements:
     - Effect: 'Allow'

@@ -5,7 +5,6 @@ const path = require('path');
 const withPlugins = require('next-compose-plugins');
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const nextEnv = require('next-env');
-const dotenvLoad = require('dotenv-load');
 const withTM = require('next-transpile-modules');
 const withImages = require('next-images');
 const withFonts = require('next-fonts');
@@ -17,15 +16,11 @@ const nextSourceMaps = require('@zeit/next-source-maps')({
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
 
-dotenvLoad();
-const ENVIRONMENT = process.env.ENVIRONMENT || 'production';
-const STATIC_CDN_URL = process.env.STATIC_CDN_URL || 'https://books.ridicdn.net';
+require('dotenv').config()
 
 const nextConfig = {
-  assetPrefix: STATIC_CDN_URL,
-  compress: false,
+  assetPrefix: process.env.ASSET_PREFIX || '/',
   distDir: 'build',
-  exportPathMap: () => ({}),
   experimental: {
     redirects() {
       return [
@@ -46,9 +41,7 @@ const nextConfig = {
     },
   },
   webpack (config, { buildId, isServer, webpack }) {
-    config.output.publicPath = STATIC_CDN_URL + '/_next/';
-
-    if (!['local', 'profile'].includes(ENVIRONMENT)) {
+    if (process.env.NODE_ENV === 'production') {
       config.plugins.push(
         new SentryCliPlugin({
           include: ['./build/', './src/'],
@@ -90,6 +83,7 @@ const nextConfig = {
 
     config.plugins.push(new webpack.DefinePlugin({
       'process.env.IS_SERVER': JSON.stringify(isServer),
+      'process.env.IS_PRODUCTION': JSON.stringify(process.env.NODE_ENV === 'production'),
     }));
 
     config.node = {
