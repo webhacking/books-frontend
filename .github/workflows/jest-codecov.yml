@@ -3,8 +3,7 @@ name: Jest With Upload Codecov
 on: [push, pull_request]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -12,19 +11,25 @@ jobs:
         node-version: [10.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Run Jest ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm run test --if-present
-      env:
-        CI: true
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        fail_ci_if_error: true
-        yml: ./codecov.yml #optional
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Packages
+        run: |
+          yarn install
+      - name: Run Jest
+        run: |
+          yarn test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          yml: ./codecov.yml #optional
 
