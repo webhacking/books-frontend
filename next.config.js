@@ -61,7 +61,7 @@ const nextConfig = {
 
     config.plugins.push(
       new InjectManifest({
-        swSrc: 'public/static/service-worker.js',
+        swSrc: 'src/service-worker.js',
         exclude: [
           /\.map$/,
           /\/pages\/partials\//,
