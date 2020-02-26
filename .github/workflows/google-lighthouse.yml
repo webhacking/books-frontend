@@ -1,21 +1,26 @@
-name: Google Lighthouse 
+name: Google Lighthouse
 
 on:
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '*/5 * * * *'
 
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Audit ridibooks.com using Lighthouse
-      uses: treosh/lighthouse-ci-action@v2
-      with:
-        urls: |
-          https://ridibooks.com
-    - name: Save Results
-      uses: actions/upload-artifact@v1
-      with:
-        name: lighthouse-results
-        path: '.lighthouseci' # This will save the Lighthouse results as .json files
+      - name: Setup NodeJS
+          uses: actions/setup-node@v1
+          with:
+            node-version: 10.x
+      - name: Install LHCI Package
+        run: |
+          yarn global add @lhci/cli@0.3.x
+
+      - name: Collect
+        run: |
+          lhci collect --numberOfRuns=5 --url=https://ridibooks.com
+      - name: Save Results
+        uses: actions/upload-artifact@v1
+        with:
+          name: lighthouse-results
+          path: '.lighthouseci' # This will save the Lighthouse results as .json files
