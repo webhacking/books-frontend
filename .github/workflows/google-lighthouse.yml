@@ -10,6 +10,7 @@ on:
 
 jobs:
   lighthouse:
+    name: Lighthouse CI
     runs-on: ubuntu-latest
     steps:
       - name: Setup NodeJS
@@ -17,9 +18,9 @@ jobs:
         with:
           node-version: 10.x
 
-      - name: Install LHCI Package & Collect LH
+      - name: Run Lighhouse CI
         run: |
-          npm install -G @lhci/cli
+          npm install -g @lhci/cli
           lhci collect --numberOfRuns=5 --url=https://ridibooks.com
 
       - name: Save Results
