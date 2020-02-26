@@ -13,6 +13,9 @@ jobs:
     name: Lighthouse CI
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Setup NodeJS
         uses: actions/setup-node@v1
         with:
@@ -21,7 +24,10 @@ jobs:
       - name: Run Lighhouse CI
         run: |
           npm install -g @lhci/cli
-          lhci collect --numberOfRuns=5 --url=https://ridibooks.com
+          lhci collect --numberOfRuns=5 --url=https://ridibooks.com --url=https://ridibooks.com/comics
+          lhci upload --config=./lighthouserc.json
+          lhci upload --target=temporary-public-storage
+
 
       - name: Save Results
         uses: actions/upload-artifact@v1

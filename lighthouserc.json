@@ -1,13 +1,32 @@
 {
   "ci": {
     "collect": {
-      "numberOfRuns": 5
+      "numberOfRuns": 3,
+      "url": [
+        "https://ridibooks.com",
+        "https://ridibooks.com/fantasy",
+        "https://ridibooks.com/comics",
+        "https://ridibooks.com/romance"
+      ]
     },
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
-        "offscreen-images": "off",
-        "uses-webp-images": "off"
+        "first-contentful-paint": [
+          "warn",
+          {
+            "maxNumericValue": 2500,
+            "aggregationMethod": "optimistic"
+          }
+        ],
+        "interactive": [
+          "warn",
+          {
+            "maxNumericValue": 5000,
+            "aggregationMethod": "optimistic"
+          }
+        ],
+        "uses-long-cache-ttl": "off"
       }
     },
     "upload": {
