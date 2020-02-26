@@ -5,10 +5,8 @@ import NotificationPage from 'src/pages/notification';
 
 interface InAppNotificationProps {
   theme?: string;
-  // tslint:disable-next-line
 }
 
-// eslint-disable-next-line react/prefer-stateless-function
 function InAppNotification(props: InAppNotificationProps) {
   const { theme } = props;
 

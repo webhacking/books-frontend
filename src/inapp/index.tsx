@@ -10,31 +10,17 @@ import * as Cookies from 'js-cookie';
 const RIDI_APP_THEME = 'ridi_app_theme';
 
 const store = makeStore({}, { isServer: false });
+const theme = Cookies.get(RIDI_APP_THEME) || '';
 
-interface AppState {
-  theme: string;
-}
 
-class App extends React.Component<{}, AppState> {
-  constructor(props: {}) {
-    super(props);
-    const theme = Cookies.get(RIDI_APP_THEME) || '';
-    this.state = {
-      theme,
-    };
-  }
-
-  public render() {
-    return (
-      <>
-        {/* Todo Apply Layout */}
-        <Global styles={resetStyles} />
-        <Provider store={store}>
-          <InAppNotification theme={this.state.theme} />
-        </Provider>
-      </>
-    );
-  }
-}
+const App: React.FC = () => (
+  <>
+    {/* Todo Apply Layout */}
+    <Global styles={resetStyles} />
+    <Provider store={store}>
+      <InAppNotification theme={theme} />
+    </Provider>
+  </>
+);
 
 render(<App />, document.getElementById('app'));
