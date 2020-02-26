@@ -1,5 +1,4 @@
-const helmet = require('helmet');
-const uuid_v4 = require('uuid');
+import builder from 'content-security-policy-builder';
 
 const thirdPartyVendors = [
   'www.google-analytics.com',
@@ -13,7 +12,7 @@ const thirdPartyVendors = [
   'www.facebook.com',
   'stats.g.doubleclick.net',
   'staticxx.facebook.com',
-  'connect.facebook.net'
+  'connect.facebook.net',
 ];
 
 const whiteList = [
@@ -24,22 +23,14 @@ const whiteList = [
   'https://*.ridicdn.net',
 ];
 
-module.exports = function csp(app) {
-  app.use((req, res, next) => {
-    res.locals.nonce = Buffer.from(uuid_v4()).toString('base64');
-    next();
-  });
-
-  const nonce = (req, res) => `'nonce-${res.locals.nonce}'`;
-
-
+export default () => {
   const scriptSrc = [
-    nonce,
-    "'strict-dynamic'",
+    `'nonce-${__webpack_nonce__}'`,
     "'self'",
     ...thirdPartyVendors,
     ...whiteList,
   ];
+
   const styleSrc = [
     "'self'",
     "'unsafe-inline'",
@@ -53,9 +44,10 @@ module.exports = function csp(app) {
     // styleSrc.push(nonce);
   }
 
-  app.use(
-    helmet({
-      contentSecurityPolicy: {
+  return (
+    <meta
+      httpEquiv="Content-Security-Policy"
+      content={builder({
         directives: {
           baseUri: ["'none'"],
           objectSrc: ["'none'"],
@@ -76,9 +68,9 @@ module.exports = function csp(app) {
             ...thirdPartyVendors,
             ...whiteList,
           ],
-          reportUri: `https://sentry.io/api/1402572/security/?sentry_key=a0a997382844435fa6c89803ef6ce8e5&sentry_environment=${process.env.NODE_ENV};`,
+          'report-uri': `https://sentry.io/api/1402572/security/?sentry_key=a0a997382844435fa6c89803ef6ce8e5&sentry_environment=${process.env.NODE_ENV};`,
         },
-      },
-    }),
+      })}
+    />
   );
 };

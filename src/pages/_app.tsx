@@ -24,7 +24,7 @@ import { cache } from 'emotion';
 import createCache from '@emotion/cache';
 
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
-import Meta from 'src/pages/Meta';
+import Meta from 'src/components/Meta';
 import sentry from 'src/utils/sentry';
 
 const { captureException } = sentry();

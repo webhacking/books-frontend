@@ -1,12 +1,12 @@
 import axios from 'axios';
 import * as React from 'react';
-import Index from 'src/pages';
+import Index from 'src/components/Meta';
 import { act, render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../store/config';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from '../../styles';
-import { HomeProps } from '../../pages';
+import { HomeProps } from '../../components/Meta';
 import Router from 'next/router'
 import { Provider } from 'react-redux';
 import { BrowserLocationWithRouter } from 'src/components/Context';

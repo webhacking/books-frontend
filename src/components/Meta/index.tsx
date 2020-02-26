@@ -1,6 +1,7 @@
 import Head from 'next/head';
 
-import Favicon from 'src/pages/Favicon';
+import Favicon from 'src/components/Meta/Favicon';
+import CSP from 'src/components/Meta/CSP';
 import ogImage from 'src/assets/image/ridibooks.png';
 
 export default () => (
@@ -12,6 +13,7 @@ export default () => (
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes"
     />
+    <CSP />
     <meta name="twitter:site" content="@ridibooks" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@ridibooks" />

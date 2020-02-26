@@ -9,7 +9,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 import NotFoundIcon from 'src/svgs/NotFound.svg';
 
-import Meta from 'src/pages/Meta';
+import Meta from 'src/components/Meta';
 
 const { captureException } = sentry();
 

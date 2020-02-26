@@ -1,6 +1,6 @@
 import * as React from 'react';
 import App from 'src/pages/_app';
-import Index from 'src/pages';
+import Index from 'src/components/Meta';
 import GNB from 'src/pages/partials/gnb';
 import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
