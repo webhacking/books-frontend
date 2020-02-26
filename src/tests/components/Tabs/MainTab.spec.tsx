@@ -13,7 +13,7 @@ afterEach(cleanup);
 const renderComponent = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <RouterContext.Provider value={{ asPath: '' }}>
+      <RouterContext.Provider value={{ asPath: '' , query: { pathname: '/'}}}>
         <Provider store={store}>
           <MainTab isPartials={false} />
         </Provider>

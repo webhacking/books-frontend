@@ -23,7 +23,7 @@ test('should be render Index Component', async () => {
 
   const { queryByText } = render(
     <Provider store={store}>
-      <RouterContext.Provider value={{ asPath: '' }}>
+      <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
         <Index {...props} />
       </RouterContext.Provider>
     </Provider>,
@@ -43,7 +43,7 @@ test('should be render with CategoryList', async () => {
 
   const { queryByText } = render(
     <Provider store={store}>
-      <RouterContext.Provider value={{ asPath: '' }}>
+      <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
         <Index {...props} />
       </RouterContext.Provider>
     </Provider>,
@@ -64,7 +64,7 @@ test('should be render event page with nav bar', async () => {
 
   const { queryByText } = render(
     <Provider store={store}>
-      <RouterContext.Provider value={{ asPath: '' }}>
+      <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
         <Index {...props} />
       </RouterContext.Provider>
     </Provider>,
@@ -86,7 +86,7 @@ test('should be render event page with nav bar', async () => {
 
   const { queryByText } = render(
     <Provider store={store}>
-      <RouterContext.Provider value={{ asPath: '' }}>
+      <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
         <Index {...props} />
       </RouterContext.Provider>
     </Provider>,
@@ -103,12 +103,12 @@ test('should be render book page with nav bar', async () => {
     isServer: false,
     asPath: '',
     store,
-    query: { type: '1', theme: 'dark', pathname: '/v2/Detail' },
+    query: { type: '1', theme: 'dark', pathname: '/books/123456661' },
   });
 
   const { queryByText } = render(
     <Provider store={store}>
-      <RouterContext.Provider value={{ asPath: '' }}>
+      <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
         <Index {...props} />
       </RouterContext.Provider>
     </Provider>,
@@ -130,7 +130,7 @@ test('should be render book page with nav bar', async () => {
 
   const { queryByText } = render(
     <Provider store={store}>
-      <RouterContext.Provider value={{ asPath: '' }}>
+      <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
         <Index {...props} />
       </RouterContext.Provider>
     </Provider>,

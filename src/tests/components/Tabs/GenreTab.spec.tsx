@@ -11,7 +11,7 @@ afterEach(cleanup);
 const renderComponent = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
-      <RouterContext.Provider value={{ asPath: '/bl' }}>
+      <RouterContext.Provider value={{ asPath: '/bl', query: { pathname: '/'}}}>
         <GenreTab currentGenre={'fantasy'} />
       </RouterContext.Provider>
     </ThemeProvider>,

@@ -59,7 +59,9 @@ export const initModules = () => {
             return ret._getHandler()('delete', ...args);
           },
           interceptors: {
-            request: {},
+            request: {
+              use: () => null,
+            },
             response: {
               use: () => null,
             },

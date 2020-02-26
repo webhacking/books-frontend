@@ -41,11 +41,9 @@ const renderComponent = async ({ props, isPartials = false }: RenderOptions) => 
   await act(async () => {
     component = render(
       <ThemeProvider theme={defaultTheme}>
-        <RouterContext.Provider value={{ asPath: '/' }}>
+        <RouterContext.Provider value={{ asPath: '/', query: { pathname: '/'} }}>
           <Provider store={store}>
-            <BrowserLocationWithRouter isPartials={isPartials} pathname={'/'}>
-              <Index {...props} />
-            </BrowserLocationWithRouter>
+            <Index {...props} />
           </Provider>
         </RouterContext.Provider>
       </ThemeProvider>,
