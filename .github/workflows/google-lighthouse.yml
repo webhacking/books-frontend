@@ -1,6 +1,10 @@
 name: Google Lighthouse
 
 on:
+  push:
+    branches:
+      - chore/add-lighthouserc.json
+      - master
   schedule:
     - cron: '*/5 * * * *'
 
@@ -9,16 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup NodeJS
-          uses: actions/setup-node@v1
-          with:
-            node-version: 10.x
-      - name: Install LHCI Package
-        run: |
-          yarn global add @lhci/cli@0.3.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
 
-      - name: Collect
+      - name: Install LHCI Package & Collect LH
         run: |
+          yarn global add @lhci/cli
           lhci collect --numberOfRuns=5 --url=https://ridibooks.com
+
       - name: Save Results
         uses: actions/upload-artifact@v1
         with:
