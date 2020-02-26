@@ -22,11 +22,12 @@ jobs:
           node-version: 10.x
 
       - name: Run Lighhouse CI
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
         run: |
           npm install -g @lhci/cli
-          lhci collect --numberOfRuns=5 --url=https://ridibooks.com --url=https://ridibooks.com/comics
-          lhci upload --config=./lighthouserc.json
-          lhci upload --target=temporary-public-storage
+          lhci autorun
+#          lhci upload --target=temporary-public-storage
 
 
       - name: Save Results
