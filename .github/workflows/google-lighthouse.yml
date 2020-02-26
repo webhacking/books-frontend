@@ -19,7 +19,7 @@ jobs:
 
       - name: Install LHCI Package & Collect LH
         run: |
-          yarn global add @lhci/cli
+          npm install -G @lhci/cli
           lhci collect --numberOfRuns=5 --url=https://ridibooks.com
 
       - name: Save Results
