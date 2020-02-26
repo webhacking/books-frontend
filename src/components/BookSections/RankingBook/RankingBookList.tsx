@@ -248,7 +248,7 @@ const ItemList: React.FC<ItemListProps> = (props) => {
                       <BookBadgeRenderer
                         type={DisplayType.BestSeller}
                         isRentable={
-                          (!!book.detail?.price_info?.rent ||
+                            (!!book.detail?.price_info?.rent||
                             !!book.detail?.series?.price_info?.rent) &&
                           ['general', 'romance', 'bl'].includes(genre)
                         }
