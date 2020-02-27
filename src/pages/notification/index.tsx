@@ -25,8 +25,7 @@ const { captureException } = sentry();
 
 const Section = styled.section<{}, RIDITheme>`
   background-color: ${(props) => props.theme.backgroundColor};
-  padding: 31px 50px 0 50px;
-  max-width: 1000px;
+  max-width: 952px;
   min-height: 800px;
   margin: 0 auto;
   ${orBelow(
@@ -61,7 +60,7 @@ const NotiListItem = styled.li<{}, RIDITheme>`
   ${orBelow(
     BreakPoint.LG,
     css`
-      padding: 14px 24px;
+      padding: 14px 20px;
     `,
   )};
   ${orBelow(
@@ -95,13 +94,31 @@ const NotiItemWrapper = styled.a<{}, RIDITheme>`
   }
 `;
 
-const ImageWrapper = styled.div`
+const BookShadowStyle = css`
+  ::after {
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,rgba(0,0,0,.2) 0,rgba(0,0,0,0) 5%,rgba(0,0,0,0) 95%,rgba(0,0,0,.2) 100% );
+    border: solid 1px rgba(0,0,0,.1);
+    content: '';    
+  };
+`;
+
+const ImageWrapper = styled.div<{ imageType: string }>`
   text-align: center;
   flex-shrink: 0;
   position: relative;
+  align-self: flex-start;  
 
   ${orBelow(BreakPoint.LG, css``)};
+  ${(props) => props.imageType === 'book' && BookShadowStyle};
 `;
+
 
 const Dot = styled.div<{ imageType: string }>`
   position: absolute;
@@ -123,15 +140,18 @@ const NotificationTitle = styled.h3<{}, RIDITheme>`
   font-size: 15px;
   color: ${(props) => props.theme.textColor};
   word-break: keep-all;
-  margin-bottom: 4px;
-  letter-spacing: -0.5px;
+  margin-bottom: 3px;
+  letter-spacing: -0.3px;
+  > p {
+    line-height: 1.53em;
+  }
 `;
 
 const NotificationTime = styled.span`
   font-weight: normal;
   font-size: 14px;
   color: #808991;
-  letter-spacing: -0.46px;
+  letter-spacing: -0.3px;
 `;
 
 const ArrowWrapper = styled.div`
@@ -168,7 +188,7 @@ const NoEmptyNotificationText = styled.span`
   margin-top: 20px;
   font-size: 14px;
   color: #808991;
-  letter-spacing: -0.46;
+  letter-spacing: -0.3px;
   font-weight: normal;
 `;
 
@@ -212,6 +232,7 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
       >
         <ImageWrapper
           className={slug}
+          imageType={item.imageType}
           data-id={item.id}
           data-order={order}
         >
