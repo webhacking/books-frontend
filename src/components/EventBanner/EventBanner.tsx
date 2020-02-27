@@ -3,8 +3,9 @@ import { css } from '@emotion/core';
 import { EventBannerList } from 'src/components/EventBanner';
 import { EventBanner as EventBannerItem } from 'src/types/sections';
 import { orBelow } from 'src/utils/mediaQuery';
+import styled from '@emotion/styled';
 
-const eventBannerWrapperCSS = css`
+const Section = styled.section`
   margin: 0 auto;
   width: 100%;
   padding: 24px 0;
@@ -24,9 +25,9 @@ interface EventBannerProps {
 }
 
 const EventBanner: React.FC<EventBannerProps> = (props) => (
-  <section css={eventBannerWrapperCSS}>
+  <Section>
     <EventBannerList items={props.items} genre={props.genre} slug={props.slug} />
-  </section>
+  </Section>
 );
 
 export default EventBanner;

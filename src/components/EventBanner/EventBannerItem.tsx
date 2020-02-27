@@ -4,23 +4,13 @@ import {
   between, BreakPoint, greaterThanOrEqualTo, orBelow,
 } from 'src/utils/mediaQuery';
 
-const desktopBannerLayout = css`
-  width: 234px;
-`;
-const mobileBannerLayout = css`
-  //min-width: 194px;
-`;
-
 const EventBannerItem = styled.li`
   display: inline-block;
-
-  //box-sizing: content-box;
-  ${desktopBannerLayout};
+  width: 234px;
 
   ${orBelow(
     BreakPoint.MD,
     css`
-      ${mobileBannerLayout};
       :not(:nth-of-type(2n)) {
         margin-right: 4px;
       }
@@ -32,7 +22,6 @@ const EventBannerItem = styled.li`
     BreakPoint.MD + 1,
     BreakPoint.LG,
     css`
-      ${mobileBannerLayout};
       :not(:last-of-type) {
         margin-right: 6px;
       }
