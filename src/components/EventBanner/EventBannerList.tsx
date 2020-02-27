@@ -6,6 +6,27 @@ import { EventBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { getDeviceType } from 'src/utils/common';
+import styled from '@emotion/styled';
+
+const List = styled.ul`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ${orBelow(
+    BreakPoint.MD,
+    css`
+      flex-wrap: wrap;
+    `,
+  )};
+  ${between(
+    BreakPoint.MD + 1,
+    BreakPoint.LG,
+    css`
+      padding-left: 20px;
+      padding-right: 20px;
+    `,
+  )};
+`;
 
 interface EventBannerListProps {
   items: EventBanner[];
@@ -32,28 +53,7 @@ const EventBannerList: React.FC<EventBannerListProps> = (props) => {
     }
   }, [isIntersecting, props.items, props.slug, tracker]);
   return (
-    <ul
-      ref={targetRef}
-      css={css`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        ${orBelow(
-        BreakPoint.MD,
-        css`
-            flex-wrap: wrap;
-          `,
-      )};
-        ${between(
-        BreakPoint.MD + 1,
-        BreakPoint.LG,
-        css`
-            padding-left: 20px;
-            padding-right: 20px;
-          `,
-      )};
-      `}
-    >
+    <List ref={targetRef}>
       {props.items.slice(0, 4).map((item, index) => (
         <EventBannerItem key={index}>
           <a
@@ -64,7 +64,7 @@ const EventBannerList: React.FC<EventBannerListProps> = (props) => {
           </a>
         </EventBannerItem>
       ))}
-    </ul>
+    </List>
   );
 };
 
