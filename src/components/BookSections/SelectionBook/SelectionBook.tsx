@@ -153,16 +153,10 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo((p
             order={order}
             slug={slug}
             responsiveWidth={[
-              css`
-                width: 140px;
-              `,
-              orBelow(
-                999,
-                css`
-                  width: 100px;
-                `,
-              ),
+              css`width: 140px;`,
+              orBelow(999, css`width: 100px;`),
             ]}
+            sizes="(max-width: 999px) 100px, 140px"
             book={{ b_id: book.b_id, detail: book.detail }}
             imgSize="large"
             isIntersecting={isIntersecting}
@@ -310,16 +304,10 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = React.
                   imgSize="large"
                   isIntersecting={isIntersecting}
                   responsiveWidth={[
-                    css`
-                      width: 140px;
-                    `,
-                    orBelow(
-                      999,
-                      css`
-                        width: 100px;
-                      `,
-                    ),
+                    css`width: 140px;`,
+                    orBelow(999, css`width: 100px;`),
                   ]}
+                  sizes="(max-width: 999px) 100px, 140px"
                 />
               </ThumbnailWrapper>
               {book.detail && (

@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as BookApi from 'src/types/book';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
-import { css } from '@emotion/core';
+import { css, Interpolation } from '@emotion/core';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
-import { SerializedStyles } from '@emotion/serialize';
+
 
 export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
 
@@ -18,7 +18,8 @@ interface ThumbnailRendererProps {
   slug?: string;
   order?: number;
   className?: string;
-  responsiveWidth: Array<SerializedStyles>;
+  responsiveWidth: Interpolation;
+  sizes: string;
   bookDecorators?: React.ReactNode;
 }
 const ADULT_COVER_URL = new URL(
@@ -29,6 +30,22 @@ const PLACEHOLDER_COVER_URL = new URL(
   '/static/image/cover_lazyload.png',
   publicRuntimeConfig.STATIC_CDN_URL,
 ).toString();
+
+const SIZE_PARAMS = [
+  { width: 50, path: 'small' },
+  { width: 90, path: 'small' },
+  { width: 120, path: 'small?dpi=xhdpi' },
+  { width: 165, path: 'large' },
+  { width: 180, path: 'small?dpi=xxhdpi' },
+  { width: 220, path: 'large?dpi=xhdpi' },
+  { width: 225, path: 'xlarge' },
+  { width: 300, path: 'xlarge?dpi=xhdpi' },
+  { width: 330, path: 'large?dpi=xxhdpi' },
+  { width: 450, path: 'xlarge?dpi=xxhdpi' },
+  { width: 480, path: 'xxlarge' },
+  { width: 640, path: 'xxlarge?dpi=xhdpi' },
+  { width: 960, path: 'xxlarge?dpi=xxhdpi' },
+];
 
 const computeThumbnailUrl = (
   isAdultOnly: boolean,
@@ -43,32 +60,27 @@ const computeThumbnailUrl = (
   //   return PLACEHOLDER_COVER_URL;
   // }
   if (isAdultOnly && !isVerifiedAdult) {
-    return ADULT_COVER_URL;
+    return { src: ADULT_COVER_URL, srcset: undefined };
   }
 
+  let baseCoverUrl = new URL(`/cover/${bId}/`, IMG_RIDI_CDN_URL);
   if (book?.series) {
-    if (book.series.property.is_completed) {
-      return new URL(
-        imageSize
-          ? `/cover/${bId}/${imageSize}?dpi=xhdpi`
-          : `/cover/${bId}/large?dpi=xhdpi`,
+    if (!book.series.property.is_completed && book.series.property.opened_last_volume_id.length !== 0) {
+      baseCoverUrl = new URL(
+        `/cover/${book.series.property.opened_last_volume_id}/`,
         IMG_RIDI_CDN_URL,
-      ).toString();
-    }
-    if (book?.series.property.opened_last_volume_id.length !== 0) {
-      return new URL(
-        imageSize
-          ? `/cover/${book.series.property.opened_last_volume_id}/${imageSize}?dpi=xhdpi`
-          : `/cover/${book.series.property.opened_last_volume_id}/large?dpi=xhdpi`,
-        IMG_RIDI_CDN_URL,
-      ).toString();
+      );
     }
   }
 
-  return new URL(
-    imageSize ? `/cover/${bId}/${imageSize}?dpi=xhdpi` : `/cover/${bId}/large?dpi=xhdpi`,
-    IMG_RIDI_CDN_URL,
+  const src = new URL(
+    imageSize ? `${imageSize}?dpi=xhdpi` : 'large?dpi=xhdpi',
+    baseCoverUrl,
   ).toString();
+  const srcset = SIZE_PARAMS.map(({ width, path }) => (
+    `${new URL(path, baseCoverUrl).toString()} ${width}w`
+  )).join(', ');
+  return { src, srcset };
 };
 
 const thumbnailWrapperCSS = css`
@@ -83,7 +95,7 @@ const thumbnailWrapperCSS = css`
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
+    background:
     linear-gradient(to right,rgba(0, 0, 0, .2) 0,
       rgba(0, 0, 0, 0) 5%,
       rgba(0, 0, 0, 0) 95%,
@@ -100,14 +112,13 @@ const thumbnailWrapperCSS = css`
 const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) => {
   // @ts-ignore
   const {
-    book, isIntersecting, imgSize, responsiveWidth, children, slug, order,
+    book, isIntersecting, imgSize, responsiveWidth, sizes, children, slug, order,
   } = props;
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const [isImageLoaded, setImageLoaded] = useState(false);
   const is_adult_only = book.detail?.property?.is_adult_only ?? false;
-  const imgRef = useRef<HTMLImageElement>(null);
 
-  const imageUrl = computeThumbnailUrl(
+  const { src: imageUrl, srcset: imageUrlSet } = computeThumbnailUrl(
     is_adult_only,
     isIntersecting,
     loggedUser?.is_verified_adult,
@@ -121,20 +132,14 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
 
   const title = bookTitleGenerator(book.detail);
 
-  useEffect(() => {
-    if (imgRef.current) {
-      imgRef.current.src = imageUrl;
-    }
-  }, []);
   return (
     <div
-      css={[thumbnailWrapperCSS]}
-      className={props.className || ''}
+      css={thumbnailWrapperCSS}
+      className={props.className}
       data-order={order}
       data-book-id={book.b_id}
     >
       <img
-        ref={imgRef}
         css={[
           responsiveWidth,
           isIntersecting || isImageLoaded
@@ -150,6 +155,8 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
               `,
         ]}
         src={imageUrl}
+        srcSet={imageUrlSet}
+        sizes={sizes}
         alt={title}
         onLoad={imageOnLoad}
       />

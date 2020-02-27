@@ -174,22 +174,11 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
               className={slug}
               slug={slug}
               responsiveWidth={[
-                css`
-                  width: 140px;
-                `,
-                orBelow(
-                  999,
-                  css`
-                    width: 120px;
-                  `,
-                ),
-                orBelow(
-                  432,
-                  css`
-                    width: 100%;
-                  `,
-                ),
+                css`width: 140px;`,
+                orBelow(999, css`width: 120px;`),
+                orBelow(432, css`width: 100%;`),
               ]}
+              sizes="(max-width: 999px) 120px, 140px"
               book={{ b_id: item.b_id, detail: item.detail }}
               imgSize="large"
               isIntersecting={isIntersecting}

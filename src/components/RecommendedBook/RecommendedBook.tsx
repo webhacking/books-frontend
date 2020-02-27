@@ -303,16 +303,10 @@ const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo
                 book={{ b_id: book.b_id, detail: book.detail }}
                 imgSize="large"
                 responsiveWidth={[
-                  css`
-                    width: 140px;
-                  `,
-                  orBelow(
-                    999,
-                    css`
-                      width: 100px;
-                    `,
-                  ),
+                  css`width: 140px;`,
+                  orBelow(999, css`width: 100px;`),
                 ]}
+                sizes="(max-width: 999px) 100px, 140px"
                 isIntersecting={isIntersecting}
               />
             </ThumbnailWrapper>
