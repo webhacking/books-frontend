@@ -150,6 +150,60 @@ const currentTab = css`
   top: 1px;
 `;
 
+const NotificationAddOn = styled.div`
+  position: absolute;
+  left: 13.5px;
+  top: 4px;
+  border: 2px solid #1f8ce6;
+  width: 11px;
+  height: 11px;
+  background: #ffde24;
+  border-radius: 11px;
+  ${orBelow(BreakPoint.LG, css`
+    left: 17.5px;
+  `)};
+`;
+
+const CartAddOnWrapper = styled.div`
+  position: absolute;
+  justify-content: flex-end;
+  margin-left: auto;
+  width: 100%;
+  max-width: 30px;
+  align-items: center;
+  top: -10px;
+  left: 10px;
+  display: flex;
+  max-height: 31px;
+  height: 100%;
+  ${orBelow(BreakPoint.LG, css`
+      left: 12.5px;
+      top: -10px;
+  `)};
+`;
+
+const CartAddOnBackground = styled.div`
+  align-items: center;
+  border-radius: 6px;
+  border: 2px solid #1f8ce6;
+  background: white;
+  height: 20px;
+  display: flex;
+  ${orBelow(BreakPoint.LG, css`
+      margin-left: 4px;
+  `)};
+  background-clip: padding-box !important;
+`;
+
+const CartAddOnCount = styled.span`
+  font-weight: bold;
+  padding: 1.5px 2.4px;
+  font-size: 11.5px;
+  line-height: 11.5px;
+  color: #1f8ce6;
+`;
+
+
 interface MainTabProps {
   isPartials: boolean;
   loggedUserInfo: null | LoggedUser;
@@ -284,28 +338,9 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           label={labels.mainTab.notification}
           path="/notification/"
           pathRegexp={/^\/notification\/$/g}
-          addOn={
-            hasNotification && (
-              <div
-                css={css`
-                  position: absolute;
-                  left: 13.5px;
-                  top: 4px;
-                  border: 2px solid #1f8ce6;
-                  width: 11px;
-                  height: 11px;
-                  background: #ffde24;
-                  border-radius: 11px;
-                  ${orBelow(
-                  BreakPoint.LG,
-                  css`
-                      left: 17.5px;
-                    `,
-                )}
-                `}
-              />
-            )
-          }
+          addOn={hasNotification && (
+          <NotificationAddOn />
+          )}
         />
         <TabItem
           isPartials={isPartials}
@@ -317,58 +352,13 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           pathRegexp={/^\/cart\/$/gu}
           addOn={
             cartCount > 0 && (
-              <div
-                css={css`
-                  position: absolute;
-                  justify-content: flex-end;
-                  margin-left: auto;
-                  width: 100%;
-                  max-width: 30px;
-                  align-items: center;
-                  top: -10px;
-                  left: 10px;
-                  display: flex;
-                  max-height: 31px;
-                  height: 100%;
-                  ${orBelow(
-                  BreakPoint.LG,
-                  css`
-                      left: 12.5px;
-                      top: -10px;
-                    `,
-                )}
-                `}
-              >
-                <div
-                  css={css`
-                    align-items: center;
-                    border-radius: 6px;
-                    border: 2px solid #1f8ce6;
-                    background: white;
-                    height: 20px;
-                    display: flex;
-                    ${orBelow(
-                    BreakPoint.LG,
-                    css`
-                        margin-left: 4px;
-                      `,
-                  )};
-                    background-clip: padding-box !important;
-                  `}
-                >
-                  <span
-                    css={css`
-                      font-weight: bold;
-                      padding: 1.5px 2.4px;
-                      font-size: 11.5px;
-                      line-height: 11.5px;
-                      color: #1f8ce6;
-                    `}
-                  >
+              <CartAddOnWrapper>
+                <CartAddOnBackground>
+                  <CartAddOnCount>
                     {cartCount}
-                  </span>
-                </div>
-              </div>
+                  </CartAddOnCount>
+                </CartAddOnBackground>
+              </CartAddOnWrapper>
             )
           }
         />
