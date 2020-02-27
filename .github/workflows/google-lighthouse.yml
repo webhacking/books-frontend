@@ -3,11 +3,10 @@ name: Google Lighthouse
 on:
   push:
     branches:
-      - chore/add-lighthouserc.json
       - master
       - release/*
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 */12 * * *'
 
 jobs:
   lighthouse:
