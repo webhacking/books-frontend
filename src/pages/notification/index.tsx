@@ -6,7 +6,8 @@ import styled from '@emotion/styled';
 import { flexColumnStart, RIDITheme } from 'src/styles';
 import { timeAgo } from 'src/utils/common';
 import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
-import { NOTIFICATION_ICON_URL, ARROW_RIGHT_ICON_URL } from 'src/constants/icons';
+import ArrowLeft from 'src/svgs/ChevronRight.svg';
+import NotificationIcon from 'src/svgs/Notification_solid.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
 import { notificationActions } from 'src/services/notification';
@@ -138,7 +139,7 @@ const ArrowWrapper = styled.div`
   margin-left: auto;
 `;
 
-const ArrowImg = styled.img`
+const arrowStyle = css`
   height: 13px;
   width: 7px;
 `;
@@ -156,7 +157,7 @@ const NoEmptyNotification = styled.p`
   )};
 `;
 
-const NotificationIconImg = styled.img`
+const notificationStyle = css`
   width: 65px;
   height: 71px;
   fill: #e6e8eb;
@@ -226,7 +227,7 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
           <NotificationTime>{createdAtTimeAgo}</NotificationTime>
         </NotificationMeta>
         <ArrowWrapper>
-          <ArrowImg src={ARROW_RIGHT_ICON_URL} />
+          <ArrowLeft css={arrowStyle} />
         </ArrowWrapper>
       </NotiItemWrapper>
     </NotiListItem>
@@ -290,10 +291,10 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
       </Head>
       <Section>
         <PageTitle title="알림" mobileHidden={isTitleHidden} />
-        <NotiList>
+        <NotiList ref={ref}>
           {items.length === 0 ? (
             <NoEmptyNotification>
-              <NotificationIconImg src={NOTIFICATION_ICON_URL} />
+              <NotificationIcon css={notificationStyle} />
               <NoEmptyNotificationText>새로운 알림이 없습니다.</NoEmptyNotificationText>
             </NoEmptyNotification>
           ) : (
