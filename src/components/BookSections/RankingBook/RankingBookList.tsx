@@ -229,18 +229,9 @@ const ItemList: React.FC<any> = (props) => {
                   className={slug}
                   order={index}
                   responsiveWidth={
-                    type === 'big'
-                      ? [
-                        css`
-                            width: 80px;
-                          `,
-                      ]
-                      : [
-                        css`
-                            width: 50px;
-                          `,
-                      ]
+                    css`width: ${type === 'big' ? 80 : 50}px;`
                   }
+                  sizes={type === 'big' ? '80px' : '50px'}
                   book={{ b_id: book.b_id, detail: book.detail }}
                   imgSize="large"
                   isIntersecting={isIntersecting}

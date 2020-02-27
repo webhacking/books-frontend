@@ -83,11 +83,8 @@ const ListItem = React.memo((props: ListItemProps) => {
           <ThumbnailRenderer
             className={slug}
             order={index}
-            responsiveWidth={[
-              css`
-                width: 100px;
-              `,
-            ]}
+            responsiveWidth={css`width: 100px;`}
+            sizes="100px"
             slug={slug}
             book={{ b_id: book.b_id, detail: book.detail }}
             imgSize="large"

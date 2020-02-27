@@ -81,11 +81,8 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = R
           <PortraitBook key={index}>
             <ThumbnailWrapper>
               <ThumbnailRenderer
-                responsiveWidth={[
-                  css`
-                    width: 147px;
-                  `,
-                ]}
+                responsiveWidth={css`width: 147px;`}
+                sizes="147px"
                 book={{ b_id: book.b_id, detail: book.detail }}
                 imgSize="large"
                 isIntersecting={props.isIntersecting}
@@ -165,11 +162,8 @@ const CarouselItem = React.memo((props: CarouselItemProps) => {
             <ThumbnailRenderer
               order={index}
               className={slug}
-              responsiveWidth={[
-                css`
-                  width: 140px;
-                `,
-              ]}
+              responsiveWidth={css`width: 140px;`}
+              sizes="140px"
               slug={slug}
               book={{ b_id: book.b_id, detail: book.detail }}
               imgSize="large"
