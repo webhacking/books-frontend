@@ -5,6 +5,7 @@ on:
     branches:
       - chore/add-lighthouserc.json
       - master
+      - release/*
   schedule:
     - cron: '*/5 * * * *'
 
@@ -30,7 +31,14 @@ jobs:
 #          lhci upload --target=temporary-public-storage
 
 
-      - name: Save Results
+      - name: Upload LHCI Server
+        env:
+          LHCI_BASE_URL: ${{ secrets.LHCI_BASE_URL }}
+          LHCI_SERVER_PROJECT_TOKEN: ${{ secrets.LHCI_SERVER_PROJECT_TOKEN }}
+        run: |
+          lhci upload --serverBaseUrl=$LHCI_BASE_URL --target lhci --token $LHCI_SERVER_PROJECT_TOKEN
+
+      - name: Save Aritifact
         uses: actions/upload-artifact@v1
         with:
           name: lighthouse-results
