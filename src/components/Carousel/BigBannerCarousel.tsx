@@ -11,7 +11,11 @@ interface TransformOptions {
 
 function computeTransform(options: TransformOptions) {
   const {
-    slideToMove: k, slideCount: n, inactiveScale: r, slideMargin: d, touchDiff,
+    slideToMove: k,
+    slideCount: n,
+    inactiveScale: r,
+    slideMargin: d,
+    touchDiff,
   } = options;
   const commonDivider = (n - 1) * r + 1;
   const percentage = (25 + 50 * k * r) / commonDivider;
@@ -35,7 +39,7 @@ const CarouselList = styled.ul<{ height: number; slideMargin: number }>`
   align-items: center;
   height: ${(props) => props.height}px;
 
-  > * {
+  > li {
     margin-right: ${(props) => props.slideMargin}px;
   }
 `;
