@@ -7,6 +7,7 @@ import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import 'url-search-params-polyfill';
+import styled from '@emotion/styled';
 
 interface Keyword {
   genre: string;
@@ -378,7 +379,7 @@ const popularKeywords: StaticKeywords = {
   ],
 };
 
-const sectionStyle = css`
+const Section = styled.section`
   position: relative;
   max-width: 1000px;
   margin: 0 auto;
@@ -394,7 +395,7 @@ const sectionStyle = css`
   )}
 `;
 
-const titleStyle = css`
+const SectionTitle = styled.h2`
   font-weight: normal;
   height: 21px;
   line-height: 21px;
@@ -412,7 +413,7 @@ const titleStyle = css`
   )};
 `;
 
-const keywordItemStyle = css`
+const Keyword = styled.li`
   height: 31px;
   flex: none;
   :not(:last-of-type) {
@@ -437,7 +438,7 @@ const keywordItemStyle = css`
   )};
 `;
 
-const anchorStyle = css`
+const KeywordAnchor = styled.a`
   border: 1px solid #b8bfc4;
   height: 30px;
   border-radius: 20px;
@@ -447,6 +448,20 @@ const anchorStyle = css`
   font-weight: bold;
   color: #525a61;
   padding: 0 10px;
+`;
+
+const arrowWrapperStyle = css`
+  z-index: 2;
+  position: absolute;
+  transition: opacity 0.2s;
+  top: 40px;
+`;
+
+const List = styled.ul`
+  display: flex;
+  overflow-x: auto;
+  ${scrollBarHidden};
+  -webkit-overflow-scrolling: touch;
 `;
 
 interface HomeKeywordFinderSectionProps {
@@ -466,51 +481,38 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = (props
   }
 
   return (
-    <section css={sectionStyle}>
-      <h2 aria-label="키워드 파인더로 이동" css={titleStyle}>
+    <Section>
+      <SectionTitle aria-label="키워드 파인더로 이동">
         <a
           href={`/keyword-finder/${parentGenre}?${genreSearchParam.toString()}`}
           aria-label="키워드 파인더"
         >
           <span>키워드로 검색하기</span>
-          <span
+          <ArrowV
             css={css`
               margin-left: 7.8px;
             `}
-          >
-            <ArrowV />
-          </span>
+          />
         </a>
-      </h2>
-      <div>
-        <ul
-          ref={ref}
-          css={css`
-            display: flex;
-            overflow-x: auto;
-            ${scrollBarHidden};
-            -webkit-overflow-scrolling: touch;
-          `}
-        >
-          {genreKeywords.map((keyword, index) => {
-            const keywordSetAndTagSearchParam = new URLSearchParams(genreSearchParam);
-            keywordSetAndTagSearchParam.append('set_id', keyword.set_id.toString());
-            keywordSetAndTagSearchParam.append('tag_ids[]', keyword.tag_id.toString());
-            return (
-              <li key={index} css={keywordItemStyle}>
-                <a
-                  href={`/keyword-finder/${parentGenre}?${keywordSetAndTagSearchParam.toString()}`}
-                  aria-label={keyword.name}
-                  css={anchorStyle}
-                >
-                  #
-                  {keyword.name}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      </SectionTitle>
+      <List ref={ref}>
+        {genreKeywords.map((keyword, index) => {
+          const keywordSetAndTagSearchParam = new URLSearchParams(genreSearchParam);
+          keywordSetAndTagSearchParam.append('set_id', keyword.set_id.toString());
+          keywordSetAndTagSearchParam.append('tag_ids[]', keyword.tag_id.toString());
+          return (
+            <Keyword key={index}>
+              <KeywordAnchor
+                href={`/keyword-finder/${parentGenre}?${keywordSetAndTagSearchParam.toString()}`}
+                aria-label={keyword.name}
+              >
+                #
+                {keyword.name}
+              </KeywordAnchor>
+            </Keyword>
+          );
+        })}
+      </List>
       {!['mobile', 'tablet'].includes(deviceType) && (
         <form
           css={[
@@ -525,12 +527,9 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = (props
             side="left"
             onClickHandler={moveLeft}
             wrapperStyle={[
+              arrowWrapperStyle,
               css`
-                z-index: 2;
-                position: absolute;
                 left: 5px;
-                transition: opacity 0.2s;
-                top: 40px;
               `,
               !isOnTheLeft && arrowTransition,
             ]}
@@ -541,19 +540,16 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = (props
             side="right"
             onClickHandler={moveRight}
             wrapperStyle={[
+              arrowWrapperStyle,
               css`
-                z-index: 2;
-                position: absolute;
                 right: 5px;
-                transition: opacity 0.2s;
-                top: 40px;
               `,
               !isOnTheRight && arrowTransition,
             ]}
           />
         </form>
       )}
-    </section>
+    </Section>
   );
 };
 
