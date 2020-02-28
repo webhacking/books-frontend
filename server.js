@@ -17,8 +17,8 @@ router.all("*", async ctx => {
 });
 
 server.use(async (ctx, next) => {
-  ctx.res.statusCode = 200
-  await next()
+  ctx.res.statusCode = 200;
+  await next();
 });
 
 server.use(router.routes());
