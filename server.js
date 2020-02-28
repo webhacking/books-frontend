@@ -2,8 +2,6 @@ const serverless = require('serverless-http');
 const next = require('next');
 const Koa = require('koa');
 const Router = require('@koa/router');
-const koaConnect = require('koa-connect');
-const compression = require('compression');
 
 const port = parseInt(process.env.PORT, 10) || 8081;
 const dev = process.env.NODE_ENV !== 'production';
@@ -12,10 +10,6 @@ const handle = app.getRequestHandler();
 
 const server = new Koa();
 const router = new Router();
-
-if (!dev) {
-  server.use(koaConnect(compression()));
-}
 
 router.all("*", async ctx => {
   await handle(ctx.req, ctx.res);
