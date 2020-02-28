@@ -13,7 +13,9 @@ const store = makeStore(
   {
     books: {
       itmes: {
-        '12345': null,
+        '12345666': {
+          b_id: '12345666'
+        }
       },
       isFetching: false,
     },
