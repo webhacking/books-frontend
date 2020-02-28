@@ -159,6 +159,7 @@ const NotificationAddOn = styled.div`
   height: 11px;
   background: #ffde24;
   border-radius: 11px;
+  background-clip: padding-box;
   ${orBelow(BreakPoint.LG, css`
     left: 17.5px;
   `)};
@@ -178,7 +179,6 @@ const CartAddOnWrapper = styled.div`
   height: 100%;
   ${orBelow(BreakPoint.LG, css`
       left: 12.5px;
-      top: -10px;
   `)};
 `;
 
@@ -190,9 +190,9 @@ const CartAddOnBackground = styled.div`
   height: 20px;
   display: flex;
   ${orBelow(BreakPoint.LG, css`
-      margin-left: 4px;
+    margin-left: 4px;
   `)};
-  background-clip: padding-box !important;
+  background-clip: padding-box;
 `;
 
 const CartAddOnCount = styled.span`
@@ -339,7 +339,7 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           path="/notification/"
           pathRegexp={/^\/notification\/$/g}
           addOn={hasNotification && (
-          <NotificationAddOn />
+            <NotificationAddOn />
           )}
         />
         <TabItem
