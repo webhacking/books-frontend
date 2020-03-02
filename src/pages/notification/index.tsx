@@ -114,8 +114,6 @@ const ImageWrapper = styled.div<{ imageType: string }>`
   flex-shrink: 0;
   position: relative;
   align-self: flex-start;  
-
-  ${orBelow(BreakPoint.LG, css``)};
   ${(props) => props.imageType === 'book' && BookShadowStyle};
 `;
 
