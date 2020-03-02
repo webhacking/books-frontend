@@ -218,12 +218,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
                 z-index: 2;
                 position: absolute;
                 transition: opacity 0.2s;
-                top: calc(
-                  ${getArrowVerticalCenterPosition(
-                ref,
-                type === DisplayType.HotRelease ? '30px' : '0px',
-              )}
-                );
+                top: ${getArrowVerticalCenterPosition(type === DisplayType.HotRelease ? 30 : 0)};
               `,
               !isOnTheLeft && arrowTransition,
             ]}
@@ -239,12 +234,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
                 right: 9px;
                 position: absolute;
                 transition: opacity 0.2s;
-                top: calc(
-                  ${getArrowVerticalCenterPosition(
-                ref,
-                type === DisplayType.HotRelease ? '30px' : '0px',
-              )}
-                );
+                top: ${getArrowVerticalCenterPosition(type === DisplayType.HotRelease ? 30 : 0)};
               `,
               !isOnTheRight && arrowTransition,
             ]}

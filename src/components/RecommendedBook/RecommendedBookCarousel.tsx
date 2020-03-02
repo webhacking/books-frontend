@@ -242,15 +242,12 @@ const RecommendedBookCarousel = React.memo((
 ) => {
   const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>();
-  const wrapperRef = useRef<HTMLDivElement>();
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const {
     theme, type, slug, isIntersecting, genre,
   } = props;
   // @ts-ignore
   const [isMounted, setMounted] = useState(false);
-  const [arrowPosition, setArrowPosition] = useState(
-    getArrowVerticalCenterPosition(wrapperRef),
-  );
   const setInitialized = useCallback(() => {
     setCarouselInitialized(true);
   }, []);
@@ -269,10 +266,7 @@ const RecommendedBookCarousel = React.memo((
 
   useEffect(() => {
     setMounted(true);
-    if (carouselInitialize) {
-      setArrowPosition(getArrowVerticalCenterPosition(wrapperRef));
-    }
-  }, [carouselInitialize]);
+  }, []);
 
   const { items } = props;
   const carouselItems = React.useMemo(
@@ -333,12 +327,10 @@ const RecommendedBookCarousel = React.memo((
                 ${arrowWrapperCSS};
                 ${greaterThanOrEqualTo(
                 BreakPoint.XL + 1,
-                css`
-                    left: -31px;
-                  `,
+                css`left: -31px;`,
               )};
                 left: 5px;
-                top: calc(${arrowPosition});
+                top: ${getArrowVerticalCenterPosition()};
               `}
             />
             <Arrow
@@ -350,12 +342,10 @@ const RecommendedBookCarousel = React.memo((
                 ${arrowWrapperCSS};
                 ${greaterThanOrEqualTo(
                 BreakPoint.XL + 1,
-                css`
-                    right: -27px;
-                  `,
+                css`right: -27px;`,
               )};
                 right: 5px;
-                top: calc(${arrowPosition});
+                top: ${getArrowVerticalCenterPosition()};
               `}
             />
           </form>

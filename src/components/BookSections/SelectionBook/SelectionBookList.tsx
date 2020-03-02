@@ -169,7 +169,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
                 position: absolute;
                 left: 5px;
                 transition: opacity 0.2s;
-                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+                top: ${getArrowVerticalCenterPosition()};
               `,
               !isOnTheLeft && arrowTransition,
             ]}
@@ -184,7 +184,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
                 position: absolute;
                 right: 5px;
                 transition: opacity 0.2s;
-                top: calc(${getArrowVerticalCenterPosition(wrapperRef)});
+                top: ${getArrowVerticalCenterPosition()};
               `,
               !isOnTheRight && arrowTransition,
             ]}
