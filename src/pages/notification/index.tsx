@@ -14,7 +14,11 @@ import { notificationActions } from 'src/services/notification';
 import { RootState } from 'src/store/config';
 import NotificationPlaceholder from 'src/components/Placeholder/NotificationItemPlaceholder';
 import { Tracker } from '@ridi/event-tracker';
-import { sendClickEvent, useEventTracker, useSendDisplayEvent } from 'src/hooks/useEventTracker';
+import {
+  sendClickEvent,
+  useEventTracker,
+  useSendDisplayEvent,
+} from 'src/hooks/useEventTracker';
 import sentry from 'src/utils/sentry';
 
 const { captureException } = sentry();
@@ -186,17 +190,8 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
         css={wrapperCSS}
         href={item.landingUrl}
       >
-        <div
-          className={slug}
-          css={imageWrapperCSS}
-          data-id={item.id}
-          data-order={order}
-        >
-          <img
-            alt={item.message}
-            width="56px"
-            src={item.imageUrl}
-          />
+        <div className={slug} css={imageWrapperCSS} data-id={item.id} data-order={order}>
+          <img alt={item.message} width="56px" src={item.imageUrl} />
           {dot && (
             <div
               css={css`
@@ -243,6 +238,7 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
     (store: RootState) => store.notifications,
   );
   const { loggedUser } = useSelector((state: RootState) => state.account);
+  const noti = useSelector((store: RootState) => store.notifications);
   const slug = 'notification-item';
   const sendDisplayEvent = useSendDisplayEvent(slug);
   const dispatch = useDispatch();
