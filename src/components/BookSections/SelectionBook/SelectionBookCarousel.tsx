@@ -63,9 +63,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
   } = props;
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [, setMounted] = useState(false);
-  const [arrowPosition, setArrowPosition] = useState(
-    getArrowVerticalCenterPosition(wrapperRef),
-  );
   const setInitialized = useCallback(() => {
     setCarouselInitialized(true);
   }, []);
@@ -84,8 +81,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
 
   useEffect(() => {
     setMounted(true);
-    setArrowPosition(getArrowVerticalCenterPosition(wrapperRef));
-  }, [wrapperRef]);
+  }, []);
 
   const { items } = props;
   const carouselItems = React.useMemo(
@@ -140,11 +136,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
           {carouselItems}
         </SliderCarouselWrapper>
         {carouselInitialize && props.items.length > 6 && (
-          <form
-            css={css`
-              height: 0;
-            `}
-          >
+          <form css={css`height: 0;`}>
             <Arrow
               label="이전"
               onClickHandler={handleLeftArrow}
@@ -153,12 +145,10 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
                 ${arrowWrapperCSS};
                 ${greaterThanOrEqualTo(
                 BreakPoint.XL + 1,
-                css`
-                    left: -29px;
-                  `,
+                css`left: -29px;`,
               )};
                 left: 5px;
-                top: calc(${arrowPosition});
+                top: ${getArrowVerticalCenterPosition()};
               `}
             />
 
@@ -170,12 +160,10 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
                 ${arrowWrapperCSS};
                 ${greaterThanOrEqualTo(
                 BreakPoint.XL + 1,
-                css`
-                    right: -36px;
-                  `,
+                css`right: -36px;`,
               )};
                 right: 5px;
-                top: calc(${arrowPosition});
+                top: ${getArrowVerticalCenterPosition()};
               `}
             />
           </form>
