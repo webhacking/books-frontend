@@ -178,7 +178,7 @@ const CartAddOnWrapper = styled.div`
   max-height: 31px;
   height: 100%;
   ${orBelow(BreakPoint.LG, css`
-      left: 12.5px;
+    left: 12.5px;
   `)};
 `;
 
