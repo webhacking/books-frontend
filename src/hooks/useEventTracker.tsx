@@ -21,7 +21,7 @@ export const createTracker = (userId: string | null) => {
         beaconSrc: process.env.NEXT_PUBLIC_BEACON_URL,
       },
       // eslint-disable-next-line no-process-env
-      debug: process.env.NODE_ENV !== 'production',
+      debug: !process.env.IS_PRODUCTION,
       gaOptions: {
         trackingId: GA_KEY,
         fields: {
@@ -35,7 +35,7 @@ export const createTracker = (userId: string | null) => {
         trackingId: GTM_KEY,
       },
       // eslint-disable-next-line no-process-env
-      development: process.env.NODE_ENV !== 'production',
+      development: !process.env.IS_PRODUCTION,
     });
   }
   return null;

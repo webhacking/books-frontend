@@ -3,7 +3,6 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import createSagaMiddleware, { Task } from 'redux-saga';
 import { rootReducers } from 'src/store/reducers';
-import { AppState } from 'src/services/app/reducer';
 import { ServerResponse } from 'http';
 
 import rootSaga from 'src/store/sagas';
@@ -21,7 +20,6 @@ import { CategoryState } from 'src/services/category/reducer';
 import { NotificationState } from 'src/services/notification/reducer';
 
 export interface RootState {
-  app?: AppState;
   router?: RouteState;
   account: AccountState;
   books: BooksState;

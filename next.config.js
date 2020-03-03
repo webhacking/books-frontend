@@ -72,6 +72,8 @@ const nextConfig = {
     );
 
     config.plugins.push(new webpack.DefinePlugin({
+      'process.env.STAGE': JSON.stringify(process.env.STAGE),
+      'process.env.BUILD_ID': JSON.stringify(buildId),
       'process.env.IS_SERVER': JSON.stringify(isServer),
       'process.env.IS_PRODUCTION': JSON.stringify(process.env.NODE_ENV === 'production'),
     }));

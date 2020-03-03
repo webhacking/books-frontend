@@ -29,6 +29,7 @@ provider:
     name: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
   # serverSideEncryption: AES256
   environment:
+    ASSET_PREFIX: ${env:ASSET_PREFIX}
     SERVERLESS: true
     NODE_ENV: 'production'
     NODE_PATH: './:/opt'

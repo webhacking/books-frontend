@@ -3,12 +3,12 @@ import * as Sentry from '@sentry/browser';
 
 const { captureException, withScope, init } = Sentry;
 
-export default (nextBuildId = process.env.SENTRY_RELEASE) => {
+export default () => {
   const sentryOptions = {
-    dsn: process.env.SENTRY_DSN,
-    release: nextBuildId,
+    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    release: process.env.BUILD_ID,
     maxBreadcrumbs: 30,
-    environment: process.env.ENVIRONMENT || 'local',
+    environment: process.env.STAGE,
     attachStacktrace: true,
     ignoreErrors: [
       'ERR_BLOCKED_BY_CLIENT',
