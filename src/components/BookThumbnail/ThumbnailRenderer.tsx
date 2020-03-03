@@ -6,7 +6,6 @@ import styled from '@emotion/styled';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { sendDisplayEvent } from 'src/hooks/useEventTracker';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
-import styled from '@emotion/styled';
 
 
 import coverAdult from 'src/assets/image/cover_adult.png';

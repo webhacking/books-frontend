@@ -1,13 +1,14 @@
 import * as React from 'react';
-import RankingBookList from 'src/components/BookSections/RankingBook/RankingBookList';
-import { render, cleanup, getAllByAltText } from '@testing-library/react';
+import { act, render, cleanup, getAllByAltText, RenderResult } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
-import { defaultTheme } from 'src/styles';
 import { Provider } from 'react-redux';
-import fixture from './rankingbook.fixture.json';
+import { defaultTheme } from 'src/styles';
 import makeStore from 'src/store/config';
+import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
+import RankingBookList from 'src/components/BookSections/RankingBook/RankingBookList';
+import fixture from './rankingbook.fixture.json';
 
 afterEach(cleanup);
 const store = makeStore(
@@ -17,7 +18,7 @@ const store = makeStore(
         '3306000063': {
           id: '3306000063',
           title: {
-            main: '나는 책 입니다',
+            main: '도서 표지',
           },
           property: {
             is_adult_only: true,
@@ -41,19 +42,51 @@ const renderSelectionBookList = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
       <Provider store={store}>
-        <RankingBookList
-          {...fixture}
-          genre={'fantasy'}
-          showTimer={true}
-        />
+        <ViewportIntersectionProvider>
+          <RankingBookList
+            {...fixture}
+            items={[
+              {
+                b_id: '3306000063',
+                type: 'test',
+                detail: {
+                  title: { main: '도서 표지' },
+                  authors: [{ name: 'hi' }],
+                  property: { is_adult_only: false },
+                  file: { is_comic: false },
+                },
+              },
+            ]}
+          />
+        </ViewportIntersectionProvider>
       </Provider>
     </ThemeProvider>,
   );
 
+function actRender(renderFunction: () => RenderResult) {
+  let ret: RenderResult;
+  act(() => {
+    ret = renderFunction();
+  });
+  return ret;
+}
+
 describe('test SelectionBookContainer', () => {
+  let originalIO: typeof IntersectionObserver;
+
+  // simulate non-IO environment
+  beforeAll(() => {
+    originalIO = window.IntersectionObserver;
+    window.IntersectionObserver = undefined;
+  });
+
+  afterAll(() => {
+    window.IntersectionObserver = originalIO;
+  });
+
   it('should be render SelectionBookList item', () => {
-    const { container } = renderSelectionBookList();
-    const itemNode = getAllByAltText(container, '나는 책 입니다');
+    const { container } = actRender(renderSelectionBookList);
+    const itemNode = getAllByAltText(container, '도서 표지');
     expect(itemNode).not.toBe(null);
   });
 });

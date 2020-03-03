@@ -4,7 +4,6 @@ import React, {
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
-import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
@@ -25,15 +24,9 @@ import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
-import {
-  sendClickEventByDataAttribute,
-  sendClickEvent,
-  useSendDisplayEvent,
-  useEventTracker
-} from 'src/hooks/useEventTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
-import { VerticalAnchorArrow } from 'src/components/Icon/VerticalAnchorArrow';
+import { VERTICAL_RIGHT_ARROW_ICON_URL } from 'src/constants/icons';
 import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 
 const SectionWrapper = styled.section`
@@ -155,7 +148,7 @@ const List = styled.ul<{ type: 'big' | 'small' }>`
   overflow-x: auto;
 `;
 
-const RankingBookItem = styled.li<{ height: number }>`
+const RankingBookItem = styled.li<{ type: 'big' | 'small' }>`
   flex: none;
   display: flex;
   align-items: center;
@@ -174,7 +167,7 @@ const RankingBookItem = styled.li<{ height: number }>`
     }
   }
   width: 308px;
-  height: ${(props) => props.height}px;
+  height: ${({ type }) => (type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT)}px;
 `;
 
 const BadgeWrapper = styled.div`
@@ -201,12 +194,11 @@ interface ItemListProps {
   genre: string;
   type: 'small' | 'big';
   showSomeDeal: boolean;
-  isIntersecting: boolean;
 }
 
 const ItemList: React.FC<ItemListProps> = (props) => {
   const {
-    books, slug, type, genre, isIntersecting, showSomeDeal,
+    books, slug, type, genre, showSomeDeal,
   } = props;
   const ref = useRef<HTMLUListElement>();
 
@@ -214,17 +206,13 @@ const ItemList: React.FC<ItemListProps> = (props) => {
   const deviceType = useContext(DeviceTypeContext);
   return (
     <>
-      <List ref={ref} type="big">
+      <List ref={ref} type={type}>
         {books
           .filter((book) => book.detail)
           .slice(0, 9)
           .map((book, index) => (
-            <RankingBookItem
-              height={type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT}
-              key={index}
-            >
+            <RankingBookItem type={type} key={index}>
               <ThumbnailAnchor
-                onClick={sendClickEventByDataAttribute}
                 data-book-id={book.b_id}
                 data-order={index}
                 data-slug={slug}
@@ -241,16 +229,15 @@ const ItemList: React.FC<ItemListProps> = (props) => {
                   sizes={type === 'big' ? '80px' : '50px'}
                   book={{ b_id: book.b_id, detail: book.detail }}
                   imgSize="large"
-                  isIntersecting={isIntersecting}
                 >
                   {type === 'big' && (
                     <BadgeContainer>
                       <BookBadgeRenderer
                         type={DisplayType.BestSeller}
                         isRentable={
-                            (!!book.detail?.price_info?.rent||
-                            !!book.detail?.series?.price_info?.rent) &&
-                          ['general', 'romance', 'bl'].includes(genre)
+                          (!!book.detail?.price_info?.rent
+                            || !!book.detail?.series?.price_info?.rent)
+                          && ['general', 'romance', 'bl'].includes(genre)
                         }
                         isWaitFree={book.detail?.series?.property.is_wait_free}
                         discountPercentage={getMaxDiscountPercentage(book.detail)}
@@ -324,7 +311,6 @@ const ItemList: React.FC<ItemListProps> = (props) => {
 
 const RankingBookList: React.FC<RankingBookListProps> = (props) => {
   const targetRef = useRef(null);
-  const isIntersecting = useIntersectionObserver(targetRef, '100px');
   const [books] = useBookDetailSelector(props.items);
   const {
     genre, type, showSomeDeal, slug,
@@ -339,7 +325,12 @@ const RankingBookList: React.FC<RankingBookListProps> = (props) => {
             {props.extra?.detail_link ? (
               <a href={props.extra.detail_link}>
                 {props.title}
-                <VerticalAnchorArrow marginLeft={7.8} />
+                <img
+                  width={11}
+                  height={14}
+                  src={VERTICAL_RIGHT_ARROW_ICON_URL}
+                  alt="페이지 이동"
+                />
               </a>
             ) : (
               props.title
@@ -352,7 +343,6 @@ const RankingBookList: React.FC<RankingBookListProps> = (props) => {
           genre={genre}
           type={type}
           showSomeDeal={showSomeDeal}
-          isIntersecting={isIntersecting}
         />
       </SectionWrapper>
     </>

@@ -53,6 +53,9 @@ export const RankingBookTitle = styled.h2`
     > * {
       flex: none;
     }
+    > img {
+      margin-left: 7.8px;
+    }
   }
 `;
 

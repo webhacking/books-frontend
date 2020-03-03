@@ -6,7 +6,6 @@
     {
       "b_id": "3306000063",
       "type": "book",
-      "score": 50,
       "rank": 1,
       "rating": {"total_rating_count": 3, "buyer_rating_count": 1, "buyer_rating_score": 4},
       "detail": null
