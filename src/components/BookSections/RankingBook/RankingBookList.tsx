@@ -127,13 +127,13 @@ const Timer: React.FC = () => {
   );
 };
 
-const List = styled.ul<{ height: number }>`
+const List = styled.ul<{ type: 'big' | 'small' }>`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   padding-left: 16px;
   padding-right: 16px;
-  height: ${(props) => props.height}px;
+  height: ${({ type }) => (type === 'big' ? BIG_LIST_HEIGHT : SMALL_LIST_HEIGHT)}px;
 
   ${greaterThanOrEqualTo(
     BreakPoint.MD + 1,
@@ -214,7 +214,7 @@ const ItemList: React.FC<ItemListProps> = (props) => {
   const deviceType = useContext(DeviceTypeContext);
   return (
     <>
-      <List ref={ref} height={type === 'big' ? BIG_LIST_HEIGHT : SMALL_LIST_HEIGHT}>
+      <List ref={ref} type="big">
         {books
           .filter((book) => book.detail)
           .slice(0, 9)
@@ -324,7 +324,7 @@ const ItemList: React.FC<ItemListProps> = (props) => {
 
 const RankingBookList: React.FC<RankingBookListProps> = (props) => {
   const targetRef = useRef(null);
-  const isIntersecting = useIntersectionObserver(targetRef, '-100px');
+  const isIntersecting = useIntersectionObserver(targetRef, '100px');
   const [books] = useBookDetailSelector(props.items);
   const {
     genre, type, showSomeDeal, slug,
