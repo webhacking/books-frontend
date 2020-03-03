@@ -16,7 +16,7 @@ commands:
             - <<parameters.key>>-
       - run:
           name: Install yarn packages
-          command: yarn install && yarn add -D @types/react @types/node typescript babel-plugin-module-resolver @babel/plugin-proposal-optional-chaining @babel/plugin-proposal-nullish-coalescing-operator @emotion/babel-preset-css-prop @svgr/webpack --frozen-lockfile
+          command: yarn install && yarn add -D @types/react @types/node typescript babel-plugin-module-resolver @babel/plugin-proposal-optional-chaining @babel/plugin-proposal-nullish-coalescing-operator @emotion/babel-preset-css-prop @svgr/webpack serverless-apigw-binary serverless serverless-offline serverless-plugin-warmup --frozen-lockfile
       - save_cache:
           key: <<parameters.key>>-{{ .Branch }}--{{ checksum "yarn.lock" }}
           paths: ~/.cache/yarn
