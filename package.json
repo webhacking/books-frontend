@@ -127,7 +127,7 @@
     "deploy": "serverless deploy -v",
     "test": "jest --passWithNoTests --collectCoverage --colors",
     "analyze": "BUNDLE_ANALYZE=both yarn build",
-    "inapp-build": "webpack --mode production"
+    "inapp-build": "webpack --config inapp/webpack.config.js --mode production"
   },
   "browserslist": [
     "last 2 versions",

@@ -4,15 +4,14 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const { getDefinitionsFromConfig } = require('./env/publicRuntimeConfig');
 
 module.exports = (env, argv) => ({
   entry: {
-    app: ['@babel/polyfill', './src/inapp/index.tsx'],
+    app: ['@babel/polyfill', './inapp/index.tsx'],
   },
   output: {
     filename: '[name].[hash].js',
-    path: path.join(__dirname, 'dist/inapp'),
+    path: path.join(__dirname, 'dist'),
     publicPath: '/',
   },
   module: {
@@ -57,7 +56,7 @@ module.exports = (env, argv) => ({
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: 'src/inapp/index.html',
+      template: 'inapp/index.html',
       minify: {
         collapseWhitespace: true,
         processConditionalComments: true,
