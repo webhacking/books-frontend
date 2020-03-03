@@ -28,7 +28,6 @@ interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
   theme: 'dark' | 'white';
-  isIntersecting: boolean;
   slug: string;
   genre: string;
 }
@@ -38,14 +37,13 @@ interface ListItemProps {
   index: number;
   type: DisplayType;
   theme: string;
-  isIntersecting: boolean;
   slug: string;
   genre: string;
 }
 
 const ListItem = React.memo((props: ListItemProps) => {
   const {
-    book, index, type, theme, isIntersecting, slug, genre,
+    book, index, type, theme, slug, genre,
   } = props;
   return (
     <PortraitBook
@@ -88,7 +86,6 @@ const ListItem = React.memo((props: ListItemProps) => {
             slug={slug}
             book={{ b_id: book.b_id, detail: book.detail }}
             imgSize="large"
-            isIntersecting={isIntersecting}
           >
             <div
               css={css`
@@ -155,7 +152,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const {
-    theme, type, slug, isIntersecting, genre,
+    theme, type, slug, genre,
   } = props;
   const deviceType = useContext(DeviceTypeContext);
 
@@ -173,12 +170,11 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
           index={index}
           type={type}
           theme={theme}
-          isIntersecting={isIntersecting}
           slug={slug}
           genre={genre}
         />
       )),
-    [items, type, theme, isIntersecting, slug],
+    [items, type, theme, slug],
   );
 
   return (
