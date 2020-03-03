@@ -16,7 +16,9 @@ const nextSourceMaps = require('@zeit/next-source-maps')({
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
 
-require('dotenv').config()
+require('dotenv').config(process.env.STAGE === 'production' ? {
+  path: path.resolve(process.cwd(), '.env.production'),
+} : {});
 
 const nextConfig = {
   assetPrefix: process.env.ASSET_PREFIX,

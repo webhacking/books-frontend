@@ -66,11 +66,11 @@ jobs:
       - image: circleci/node:lts
     working_directory: ~/books-frontend
     parameters:
-      environment:
+      stage:
         type: string
         default: production
     environment:
-      ENVIRONMENT: << parameters.environment >>
+      STAGE: << parameters.stage >>
     steps:
       - checkout
       - install
@@ -101,7 +101,7 @@ jobs:
         type: steps
         default: []
     environment:
-      ENVIRONMENT: << parameters.stage >>
+      STAGE: << parameters.stage >>
     steps:
       - checkout
       - attach_workspace:
@@ -177,7 +177,7 @@ workflows:
           filters:
             branches:
               only: master
-          environment: development
+          stage: development
       - deploy:
           name: deploy-dev
           requires:

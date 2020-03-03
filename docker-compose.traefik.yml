@@ -10,6 +10,7 @@ services:
         aliases:
           - books
     environment:
+      - ASSET_PREFIX=books.local.ridi.io
       - PORT=8081
     ports:
       - 8081
