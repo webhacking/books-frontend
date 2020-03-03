@@ -16,11 +16,17 @@ class MockIO {
   }
 
   observe(e: Element) {
+    if (!(e instanceof Element)) {
+      throw new TypeError('not an element');
+    }
     this.elements.add(e);
     this.changeVisibility(e, MockIO.visibleElements.has(e));
   }
 
   unobserve(e: Element) {
+    if (!(e instanceof Element)) {
+      throw new TypeError('not an element');
+    }
     this.elements.delete(e);
   }
 
