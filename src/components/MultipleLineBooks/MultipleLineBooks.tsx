@@ -7,18 +7,12 @@ import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper'
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import React, { useEffect, useRef, useState } from 'react';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
-import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
-import {
-  sendClickEvent,
-  useEventTracker,
-  useSendDisplayEvent,
-} from 'src/hooks/useEventTracker';
+import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { Tracker } from '@ridi/event-tracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
-import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
 
 interface MultipleLineBooks {
@@ -31,7 +25,6 @@ interface MultipleLineBooks {
 interface MultipleLineBookItemProps {
   genre: string;
   item: MdBook;
-  isIntersecting: boolean;
   slug: string;
   order: number;
   tracker: Tracker;
@@ -104,7 +97,7 @@ const itemCSS = css`
 
 const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((props) => {
   const {
-    item, genre, isIntersecting, slug, order, tracker,
+    item, genre, slug, order, tracker,
   } = props;
   return (
     <li css={itemCSS}>
@@ -181,7 +174,6 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
               sizes="(max-width: 999px) 120px, 140px"
               book={{ b_id: item.b_id, detail: item.detail }}
               imgSize="large"
-              isIntersecting={isIntersecting}
             >
               <div
                 css={css`
@@ -268,21 +260,15 @@ const multipleLineSectionCSS = css`
 `;
 
 const ItemList: React.FC<any> = (props) => {
-  const {
-    isIntersecting, slug, genre, books,
-  } = props;
-  const ref = useRef<HTMLUListElement>(null);
+  const { slug, genre, books } = props;
   const [isMounted, setMounted] = useState(false);
   const [tracker] = useEventTracker();
-  const sendDisplayEvent = useSendDisplayEvent(slug);
-  useMultipleIntersectionObserver(ref, slug, sendDisplayEvent, isMounted);
   useEffect(() => {
     setMounted(true);
   }, []);
 
   return (
     <ul
-      ref={ref}
       css={css`
           display: flex;
           flex-wrap: wrap;
@@ -331,7 +317,6 @@ const ItemList: React.FC<any> = (props) => {
             key={index}
             genre={genre}
             item={item}
-            isIntersecting={isIntersecting}
             tracker={tracker}
           />
         ))}
@@ -345,7 +330,6 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = (props) => {
   } = props;
   const [books] = useBookDetailSelector(items);
   const targetRef = useRef(null);
-  const isIntersecting = useIntersectionObserver(targetRef, '-150px');
 
   return (
     <section ref={targetRef} css={multipleLineSectionCSS}>
@@ -368,7 +352,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = (props) => {
       >
         <span>{title}</span>
       </h2>
-      <ItemList genre={genre} slug={slug} books={books} isIntersecting={isIntersecting} />
+      <ItemList genre={genre} slug={slug} books={books} />
     </section>
   );
 };

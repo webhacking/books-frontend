@@ -20,8 +20,6 @@ import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { displayNoneForTouchDevice } from 'src/styles';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { getMaxDiscountPercentage } from 'src/utils/common';
-import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
-import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
 
 interface RecommendedBookListProps {
@@ -155,9 +153,6 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
     theme, type, slug, genre,
   } = props;
   const deviceType = useContext(DeviceTypeContext);
-
-  const sendDisplayEvent = useSendDisplayEvent(slug);
-  useMultipleIntersectionObserver(ref, slug, sendDisplayEvent);
 
   const { items } = props;
   const carouselItems = React.useMemo(

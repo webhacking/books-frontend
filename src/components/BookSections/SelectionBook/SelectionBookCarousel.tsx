@@ -14,8 +14,6 @@ import {
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
 import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
-import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
-import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
 
 const recommendedBookCarouselLoadingCSS = css`
   .slick-slide {
@@ -60,7 +58,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
   const {
     genre, type, isAIRecommendation, slug,
   } = props;
-  const wrapperRef = useRef<HTMLDivElement>(null);
   const [isMounted, setMounted] = useState(false);
 
   const handleLeftArrow = (e: FormEvent) => {
@@ -72,8 +69,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
     slider.current?.slickNext();
   };
   const [requestExclude, requestCancel] = useExcludeRecommendation();
-  const sendDisplayEvent = useSendDisplayEvent(slug);
-  useMultipleIntersectionObserver(wrapperRef, slug, sendDisplayEvent);
 
   useEffect(() => {
     window.setImmediate(() => setMounted(true));
@@ -117,7 +112,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
   }
 
   return (
-    <CarouselWrapper ref={wrapperRef}>
+    <CarouselWrapper>
       <SliderCarouselWrapper
         forwardedRef={slider}
         css={recommendedBookCarouselLoadingCSS}

@@ -79,6 +79,20 @@ export const sendClickEvent = (eventTracker, item, section, order) => {
   });
 };
 
+export const sendDisplayEvent = (options: { slug: string; id: string; order: number }) => {
+  const { slug, id, order } = options;
+  const device = getDeviceType();
+  const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
+  tracker.sendEvent('display', {
+    section: `${deviceType}.${slug}`,
+    items: [{
+      id,
+      idx: order,
+      ts: Date.now(),
+    }],
+  });
+};
+
 export const useSendDisplayEvent = (slug) => {
   const device = getDeviceType();
   const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';

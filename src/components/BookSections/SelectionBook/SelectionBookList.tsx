@@ -9,8 +9,6 @@ import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DisplayType, MdBook } from 'src/types/sections';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
-import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
-import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
 
 export const listCSS = css`
   box-sizing: content-box;
@@ -107,19 +105,14 @@ interface SelectionBookListProps {
 
 const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) => {
   const ref = useRef<HTMLUListElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const { genre, type, slug } = props;
   const deviceType = useContext(DeviceTypeContext);
   // @ts-ignore
   const [requestExclude, requestCancel] = useExcludeRecommendation();
 
-  const sendDisplayEvent = useSendDisplayEvent(slug);
-  useMultipleIntersectionObserver(ref, slug, sendDisplayEvent);
-
   return (
     <div
-      ref={wrapperRef}
       css={css`
         margin-top: 6px;
         position: relative;

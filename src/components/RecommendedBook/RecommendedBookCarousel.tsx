@@ -17,8 +17,6 @@ import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import SliderCarouselWrapper from 'src/components/Carousel/CarouselWrapper';
 import { getMaxDiscountPercentage } from 'src/utils/common';
-import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
-import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
 
 const recommendedBookCarouselLoadingCSS = css`
@@ -233,7 +231,6 @@ const RecommendedBookCarousel = React.memo((
   props: RecommendedBookCarouselProps,
 ) => {
   const slider = useRef<SliderCarousel>();
-  const wrapperRef = useRef<HTMLDivElement>(null);
   const {
     theme, type, slug, genre,
   } = props;
@@ -248,9 +245,6 @@ const RecommendedBookCarousel = React.memo((
     e.preventDefault();
     slider.current?.slickNext();
   };
-
-  const sendDisplayEvent = useSendDisplayEvent(slug);
-  useMultipleIntersectionObserver(wrapperRef, slug, sendDisplayEvent);
 
   useEffect(() => {
     window.setImmediate(() => setMounted(true));
@@ -287,7 +281,7 @@ const RecommendedBookCarousel = React.memo((
   }
 
   return (
-    <CarouselWrapper ref={wrapperRef}>
+    <CarouselWrapper>
       <SliderCarouselWrapper
         forwardedRef={slider}
         css={recommendedBookCarouselLoadingCSS}
