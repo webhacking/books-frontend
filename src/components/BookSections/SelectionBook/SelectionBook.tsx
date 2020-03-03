@@ -21,7 +21,6 @@ import {
   SelectionOption,
 } from 'src/components/BookSections/BookSectionContainer';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
-import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import ArrowV from 'src/svgs/ArrowV.svg';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import BookMeta from 'src/components/BookMeta/BookMeta';
@@ -72,7 +71,6 @@ interface SelectionBookItemProps {
   };
   width: number;
   type: DisplayType;
-  isIntersecting: boolean;
   slug: string;
   order?: number;
   excluded?: boolean;
@@ -84,7 +82,6 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo((p
     isAIRecommendation,
     genre,
     type,
-    isIntersecting,
     slug,
     order,
     aiRecommendationCallback,
@@ -159,7 +156,6 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo((p
             sizes="(max-width: 999px) 100px, 140px"
             book={{ b_id: book.b_id, detail: book.detail }}
             imgSize="large"
-            isIntersecting={isIntersecting}
           >
             <div
               css={css`
@@ -257,14 +253,13 @@ export interface SelectionBookCarouselProps {
   isAIRecommendation: boolean;
   genre: string;
   type: DisplayType;
-  isIntersecting?: boolean;
   bookFetching?: boolean;
   slug?: string;
 }
 
 export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = React.memo(
   (props) => {
-    const { isIntersecting, genre, type } = props;
+    const { genre, type } = props;
 
     return (
       <div
@@ -302,7 +297,6 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = React.
                 <ThumbnailRenderer
                   book={{ b_id: book.b_id, detail: book.detail }}
                   imgSize="large"
-                  isIntersecting={isIntersecting}
                   responsiveWidth={[
                     css`width: 140px;`,
                     orBelow(999, css`width: 100px;`),
@@ -349,7 +343,6 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo((props) => {
   //
   // }
   const targetRef = useRef(null);
-  const isIntersecting = useIntersectionObserver(targetRef, '-150px');
   return (
     <SectionWrapper ref={targetRef}>
       <SectionTitle aria-label={title}>
@@ -376,43 +369,31 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo((props) => {
           <span>{title}</span>
         )}
       </SectionTitle>
-      {!isIntersecting ? (
-        <SelectionBookLoading
-          genre={genre}
-          type={type}
-          isIntersecting={isIntersecting}
-          isAIRecommendation={props.option.isAIRecommendation}
-          items={books.slice(0, 6)}
-        />
-      ) : (
-        <WindowWidthQuery>
-          <View maxWidth={1000}>
-            <div>
-              <SelectionBookList
-                slug={slug}
-                isIntersecting={isIntersecting}
-                type={type}
-                genre={genre}
-                isAIRecommendation={props.option.isAIRecommendation}
-                items={books}
-              />
-            </div>
-          </View>
-          <View>
-            <div>
-              <SelectionBookCarousel
-                type={type}
-                slug={slug}
-                isIntersecting={isIntersecting}
-                genre={genre}
-                isAIRecommendation={props.option.isAIRecommendation}
-                items={books}
-                bookFetching={isFetching}
-              />
-            </div>
-          </View>
-        </WindowWidthQuery>
-      )}
+      <WindowWidthQuery>
+        <View maxWidth={1000}>
+          <div>
+            <SelectionBookList
+              slug={slug}
+              type={type}
+              genre={genre}
+              isAIRecommendation={props.option.isAIRecommendation}
+              items={books}
+            />
+          </div>
+        </View>
+        <View>
+          <div>
+            <SelectionBookCarousel
+              type={type}
+              slug={slug}
+              genre={genre}
+              isAIRecommendation={props.option.isAIRecommendation}
+              items={books}
+              bookFetching={isFetching}
+            />
+          </div>
+        </View>
+      </WindowWidthQuery>
     </SectionWrapper>
   );
 });

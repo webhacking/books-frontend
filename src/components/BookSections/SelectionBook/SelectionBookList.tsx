@@ -102,7 +102,6 @@ interface SelectionBookListProps {
   isAIRecommendation: boolean;
   type: DisplayType;
   genre: string;
-  isIntersecting: boolean;
   slug: string;
 }
 
@@ -110,9 +109,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
   const ref = useRef<HTMLUListElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
-  const {
-    genre, type, isIntersecting, slug,
-  } = props;
+  const { genre, type, slug } = props;
   const deviceType = useContext(DeviceTypeContext);
   // @ts-ignore
   const [requestExclude, requestCancel] = useExcludeRecommendation();
@@ -136,7 +133,6 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
               <SelectionBookItem
                 order={index}
                 slug={slug}
-                isIntersecting={isIntersecting}
                 genre={genre}
                 type={type}
                 isAIRecommendation={props.isAIRecommendation}

@@ -1,5 +1,5 @@
 import React, {
-  useCallback, FormEvent, useEffect, useRef, useState,
+  FormEvent, useEffect, useRef, useState,
 } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
@@ -56,16 +56,12 @@ const BookItemWrapper = styled.div`
 `;
 
 const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((props) => {
-  const [carouselInitialize, setCarouselInitialized] = useState(false);
   const slider = useRef<SliderCarousel>(null);
   const {
-    genre, type, isAIRecommendation, isIntersecting, slug,
+    genre, type, isAIRecommendation, slug,
   } = props;
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [, setMounted] = useState(false);
-  const setInitialized = useCallback(() => {
-    setCarouselInitialized(true);
-  }, []);
+  const [isMounted, setMounted] = useState(false);
 
   const handleLeftArrow = (e: FormEvent) => {
     e.preventDefault();
@@ -80,7 +76,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
   useMultipleIntersectionObserver(wrapperRef, slug, sendDisplayEvent);
 
   useEffect(() => {
-    setMounted(true);
+    window.setImmediate(() => setMounted(true));
   }, []);
 
   const { items } = props;
@@ -93,7 +89,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
             order={index}
             genre={genre}
             slug={slug}
-            isIntersecting={isIntersecting}
             isAIRecommendation={isAIRecommendation}
             aiRecommendationCallback={{
               exclude: requestExclude,
@@ -106,70 +101,70 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
           />
         </BookItemWrapper>
       )),
-    [items, genre, slug, isIntersecting, isAIRecommendation, type],
+    [items, genre, slug, isAIRecommendation, type],
   );
 
-  return (
-    <>
-      {/* Flickering 없는 UI 를 위해 추가함 */}
-      {!carouselInitialize && (
-        <SelectionBookLoading
-          genre={genre}
-          type={type}
-          isAIRecommendation={props.isAIRecommendation}
-          items={props.items.slice(0, 6)}
-        />
-      )}
-      <CarouselWrapper ref={wrapperRef}>
-        <SliderCarouselWrapper
-          forwardedRef={slider}
-          css={recommendedBookCarouselLoadingCSS}
-          className="slider"
-          slidesToShow={Math.min(props.items.length, 6)}
-          slidesToScroll={6}
-          speed={200}
-          autoplay={false}
-          arrows={false}
-          onInit={setInitialized}
-          infinite
-        >
-          {carouselItems}
-        </SliderCarouselWrapper>
-        {carouselInitialize && props.items.length > 6 && (
-          <form css={css`height: 0;`}>
-            <Arrow
-              label="이전"
-              onClickHandler={handleLeftArrow}
-              side="left"
-              wrapperStyle={css`
-                ${arrowWrapperCSS};
-                ${greaterThanOrEqualTo(
-                BreakPoint.XL + 1,
-                css`left: -29px;`,
-              )};
-                left: 5px;
-                top: ${getArrowVerticalCenterPosition()};
-              `}
-            />
+  if (!isMounted) {
+    // Flickering 없는 UI 를 위해 추가함
+    return (
+      <SelectionBookLoading
+        genre={genre}
+        type={type}
+        isAIRecommendation={props.isAIRecommendation}
+        items={props.items.slice(0, 6)}
+      />
+    );
+  }
 
-            <Arrow
-              label="다음"
-              side="right"
-              onClickHandler={handleRightArrow}
-              wrapperStyle={css`
-                ${arrowWrapperCSS};
-                ${greaterThanOrEqualTo(
-                BreakPoint.XL + 1,
-                css`right: -36px;`,
-              )};
-                right: 5px;
-                top: ${getArrowVerticalCenterPosition()};
-              `}
-            />
-          </form>
-        )}
-      </CarouselWrapper>
-    </>
+  return (
+    <CarouselWrapper ref={wrapperRef}>
+      <SliderCarouselWrapper
+        forwardedRef={slider}
+        css={recommendedBookCarouselLoadingCSS}
+        className="slider"
+        slidesToShow={Math.min(props.items.length, 6)}
+        slidesToScroll={6}
+        speed={200}
+        autoplay={false}
+        arrows={false}
+        infinite
+      >
+        {carouselItems}
+      </SliderCarouselWrapper>
+      {props.items.length > 6 && (
+        <form css={css`height: 0;`}>
+          <Arrow
+            label="이전"
+            onClickHandler={handleLeftArrow}
+            side="left"
+            wrapperStyle={css`
+              ${arrowWrapperCSS};
+              ${greaterThanOrEqualTo(
+              BreakPoint.XL + 1,
+              css`left: -29px;`,
+            )};
+              left: 5px;
+              top: ${getArrowVerticalCenterPosition()};
+            `}
+          />
+
+          <Arrow
+            label="다음"
+            side="right"
+            onClickHandler={handleRightArrow}
+            wrapperStyle={css`
+              ${arrowWrapperCSS};
+              ${greaterThanOrEqualTo(
+              BreakPoint.XL + 1,
+              css`right: -36px;`,
+            )};
+              right: 5px;
+              top: ${getArrowVerticalCenterPosition()};
+            `}
+          />
+        </form>
+      )}
+    </CarouselWrapper>
   );
 });
 

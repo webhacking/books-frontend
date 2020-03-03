@@ -1,22 +1,18 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import { View } from 'libreact/lib/View';
 import { css } from '@emotion/core';
 import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
 import styled from '@emotion/styled';
-import { flexRowStart, lineClamp, scrollBarHidden } from 'src/styles';
+import { lineClamp, scrollBarHidden } from 'src/styles';
 // import NewBadge from 'src/svgs/NewBadge.svg';
 import AtSelectIcon from 'src/svgs/Book1.svg';
 import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedBookCarousel';
-import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
-import { RecommendedPortraitBook } from 'src/components/Book/PortraitBook';
-import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
-import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import * as BookApi from 'src/types/book';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
-import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { authorsRenderer } from 'src/components/BookMeta/BookMeta';
 
 const backgroundImageCSS = css`
@@ -229,122 +225,6 @@ export const sentenceStyle = css`
   )};
 `;
 
-const RecommendedBookLoading: React.FC<RecommendedBookLoadingProps> = React.memo(
-  (props) => {
-    const {
-      books, type, isIntersecting, theme,
-    } = props;
-    const dummyBooks: HotRelease[] = books.length < 6 ? Array(6).fill(dummyBook) : books;
-    return (
-      <BookList
-        css={[
-          props.type === DisplayType.HotRelease
-            ? hotReleaseBookListCSS
-            : recommendedBookListCSS,
-          css`
-            padding-left: 0 !important;
-          `,
-          props.type === DisplayType.TodayRecommendation
-            ? css`
-                ${orBelow(
-              999,
-              css`
-                    padding-left: 23px !important;
-                  `,
-            )}
-              `
-            : css`
-                padding-left: 1px !important;
-                ${orBelow(
-              999,
-              css`
-                    padding-left: 13px !important;
-                  `,
-            )}
-              `,
-        ]}
-      >
-        {/* // @ts-ignore */}
-        {dummyBooks.map((book, index) => (
-          <RecommendedPortraitBook
-            css={[
-              css`
-                padding-left: 0 !important;
-              `,
-              props.type === DisplayType.HotRelease
-                ? css`
-                    ${orBelow(
-                  833,
-                  css`
-                        margin-right: 12px !important;
-                      `,
-                )}
-                    ${between(
-                  834,
-                  999,
-                  css`
-                        margin-right: 20px !important;
-                      `,
-                )}
-                  `
-                : css`
-                    ${orBelow(
-                  999,
-                  css`
-                        margin-right: 30px !important;
-                      `,
-                )}
-                  `,
-            ]}
-            key={index}
-          >
-            <ThumbnailWrapper>
-              <ThumbnailRenderer
-                book={{ b_id: book.b_id, detail: book.detail }}
-                imgSize="large"
-                responsiveWidth={[
-                  css`width: 140px;`,
-                  orBelow(999, css`width: 100px;`),
-                ]}
-                sizes="(max-width: 999px) 100px, 140px"
-                isIntersecting={isIntersecting}
-              />
-            </ThumbnailWrapper>
-            {book.detail && type === DisplayType.HotRelease && (
-              <BookMeta book={book.detail} showSelect />
-            )}
-            {book.detail && type === DisplayType.TodayRecommendation && (
-              <h4
-                css={[
-                  css`
-                    padding-left: 0;
-                    position: relative;
-                    margin-top: 2px;
-                    ${sentenceStyle};
-                  `,
-                  theme === 'dark'
-                    && css`
-                      color: white;
-                    `,
-                ]}
-              >
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: (book).sentence.replace(
-                      /(?:\r\n|\r|\n)/g,
-                      '<br />',
-                    ),
-                  }}
-                />
-              </h4>
-            )}
-          </RecommendedPortraitBook>
-        ))}
-      </BookList>
-    );
-  },
-);
-
 interface RecommendedBookProps {
   items: RecommendedBookType;
   title: string;
@@ -358,13 +238,9 @@ const RecommendedBook: React.FC<RecommendedBookProps> = (props) => {
   const {
     theme, type, slug, genre,
   } = props;
-  const targetRef = useRef(null);
-  const isIntersecting = useIntersectionObserver(targetRef, '-50px');
-
   const [books] = useBookDetailSelector(props.items);
   return (
     <section
-      ref={targetRef}
       css={[
         props.type === DisplayType.HotRelease
           ? hotReleaseRecommendedBookWrapperCSS
@@ -400,41 +276,30 @@ const RecommendedBook: React.FC<RecommendedBookProps> = (props) => {
           {props.title}
         </span>
       </h2>
-      {!isIntersecting ? (
-        <RecommendedBookLoading
-          type={type}
-          books={books.filter((book) => book.detail).slice(0, 6) as HotRelease[]}
-          isIntersecting={isIntersecting}
-          theme={theme}
-        />
-      ) : (
-        <WindowWidthQuery>
-          <View maxWidth={1000}>
-            <div>
-              <RecommendedBookList
-                type={props.type}
-                slug={slug}
-                items={books as HotRelease[]}
-                theme={theme}
-                genre={genre}
-                isIntersecting={isIntersecting}
-              />
-            </div>
-          </View>
-          <View>
-            <div>
-              <RecommendedBookCarousel
-                type={props.type}
-                slug={slug}
-                genre={genre}
-                items={books as HotRelease[]}
-                theme={theme}
-                isIntersecting={isIntersecting}
-              />
-            </div>
-          </View>
-        </WindowWidthQuery>
-      )}
+      <WindowWidthQuery>
+        <View maxWidth={1000}>
+          <div>
+            <RecommendedBookList
+              type={props.type}
+              slug={slug}
+              items={books as HotRelease[]}
+              theme={theme}
+              genre={genre}
+            />
+          </div>
+        </View>
+        <View>
+          <div>
+            <RecommendedBookCarousel
+              type={props.type}
+              slug={slug}
+              genre={genre}
+              items={books as HotRelease[]}
+              theme={theme}
+            />
+          </div>
+        </View>
+      </WindowWidthQuery>
     </section>
   );
 };
