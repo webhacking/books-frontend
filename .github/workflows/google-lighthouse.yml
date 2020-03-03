@@ -1,21 +1,40 @@
-name: Google Lighthouse 
+name: Google Lighthouse
 
 on:
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '0 */1 * * *'
 
 jobs:
   lighthouse:
+    name: Lighthouse CI
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Audit ridibooks.com using Lighthouse
-      uses: treosh/lighthouse-ci-action@v2
-      with:
-        urls: |
-          https://ridibooks.com
-    - name: Save Results
-      uses: actions/upload-artifact@v1
-      with:
-        name: lighthouse-results
-        path: '.lighthouseci' # This will save the Lighthouse results as .json files
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
+      - name: Run Lighhouse CI
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun
+#          lhci upload --target=temporary-public-storage
+
+
+      - name: Upload LHCI Server
+        env:
+          LHCI_BASE_URL: ${{ secrets.LHCI_BASE_URL }}
+          LHCI_SERVER_PROJECT_TOKEN: ${{ secrets.LHCI_SERVER_PROJECT_TOKEN }}
+        run: |
+          lhci upload --serverBaseUrl=$LHCI_BASE_URL --target lhci --token $LHCI_SERVER_PROJECT_TOKEN
+
+      - name: Save Aritifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: lighthouse-results
+          path: '.lighthouseci' # This will save the Lighthouse results as .json files

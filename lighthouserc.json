@@ -1,0 +1,88 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 3,
+      "url": [
+        "https://ridibooks.com",
+        "https://ridibooks.com/fantasy",
+        "https://ridibooks.com/comics",
+        "https://ridibooks.com/romance"
+      ]
+    },
+    "assert": {
+      "preset": "lighthouse:recommended",
+      "assertions": {
+        "color-contrast": [
+          "warn", {}
+        ],
+        "dom-size": [
+          "warn",{}
+        ],
+        "errors-in-console": [
+          "warn",{}
+        ],
+        "image-alt": [
+          "warn",{}
+        ],
+        "image-aspect-ratio": [
+          "warn",{}
+        ],
+        "list": [
+          "warn",{}
+        ],
+        "offline-start-url": [
+          "warn",{}
+        ],
+        "offscreen-images": [
+          "warn",{}
+        ],
+        "tap-targets": [
+          "warn",{}
+        ],
+        "total-byte-weight": [
+          "warn",{}
+        ],
+        "unminified-css": [
+          "warn",{}
+        ],
+        "unused-css-rules": [
+          "warn",{}
+        ],
+        "uses-optimized-images": [
+          "warn",{}
+        ],
+        "uses-rel-preconnect": [
+          "warn",{}
+        ],
+        "uses-responsive-images": [
+          "warn",{}
+        ],
+        "works-offline": [
+          "off",{}
+        ],
+
+        "service-worker": [
+          "warn",{}
+        ],
+        "first-contentful-paint": [
+          "warn",
+          {
+            "maxNumericValue": 2500,
+            "aggregationMethod": "optimistic"
+          }
+        ],
+        "interactive": [
+          "warn",
+          {
+            "maxNumericValue": 5000,
+            "aggregationMethod": "optimistic"
+          }
+        ],
+        "uses-long-cache-ttl": "off"
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}
