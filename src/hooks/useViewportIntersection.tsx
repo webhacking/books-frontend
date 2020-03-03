@@ -19,13 +19,18 @@ export function ViewportIntersectionProvider(props: Props) {
     (callback: Callback) => {
       let previousNode = null;
       const ref: <T extends Element>(node: T | null) => void = (node) => {
+        if (node === previousNode) {
+          return;
+        }
+
         const { observer } = observerRef.current;
-        if (node == null && previousNode != null) {
+        if (previousNode != null) {
           targets.current.delete(previousNode);
           if (observer) {
             observer.unobserve(previousNode);
           }
-        } else {
+        }
+        if (node != null) {
           targets.current.set(node, callback);
           if (observer === false) {
             callback(true);
