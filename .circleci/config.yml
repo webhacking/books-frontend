@@ -11,14 +11,14 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - <<parameters.key>>-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - <<parameters.key>>-{{ .Branch }}-
+            - <<parameters.key>>-{{ .Branch }}--{{ checksum "yarn.lock" }}
+            - <<parameters.key>>-{{ .Branch }}--
             - <<parameters.key>>-
       - run:
           name: Install yarn packages
           command: yarn install --frozen-lockfile
       - save_cache:
-          key: <<parameters.key>>-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: <<parameters.key>>-{{ .Branch }}--{{ checksum "yarn.lock" }}
           paths: ~/.cache/yarn
   notify:
     parameters:
