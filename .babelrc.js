@@ -26,6 +26,7 @@ const plugins = [
       root: ['./'],
       alias: {
         src: './src',
+        inapp: './inapp',
         server: './server',
       },
       extensions: ['.js', '.ts', '.tsx'],

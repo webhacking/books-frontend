@@ -10,5 +10,5 @@ build/
 node_modules/
 out/
 tracing-*
-dist/
+inapp/dist/
 
