@@ -20,6 +20,7 @@ import { PartialSeparator } from 'src/components/Misc';
 import { cache } from 'emotion';
 import createCache from '@emotion/cache';
 
+import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
 import Meta from 'src/pages/Meta';
 import sentry from 'src/utils/sentry';
 
@@ -149,15 +150,17 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
             <ConnectedRouter>
               {/* Todo Apply Layout */}
               <ThemeProvider theme={defaultTheme}>
-                <GNB
-                  searchKeyword={query.search || query.q}
-                  isPartials={false}
-                  isLoginForPartials={query.is_login}
-                />
-                <Contents>
-                  <Component {...pageProps} />
-                </Contents>
-                <Footer />
+                <ViewportIntersectionProvider rootMargin="100px">
+                  <GNB
+                    searchKeyword={query.search || query.q}
+                    isPartials={false}
+                    isLoginForPartials={query.is_login}
+                  />
+                  <Contents>
+                    <Component {...pageProps} />
+                  </Contents>
+                  <Footer />
+                </ViewportIntersectionProvider>
               </ThemeProvider>
             </ConnectedRouter>
           </Provider>
