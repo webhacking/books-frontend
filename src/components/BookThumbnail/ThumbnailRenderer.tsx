@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import { css, Interpolation } from '@emotion/core';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
+import { sendDisplayEvent } from 'src/hooks/useEventTracker';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 
 export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
@@ -119,10 +120,19 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
   const {
     book, imgSize, responsiveWidth, sizes, children, slug, order,
   } = props;
+  const bId = book.b_id;
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isVisible, setVisible] = useState(false);
-  const ref = useViewportIntersection<HTMLDivElement>(setVisible);
+  const handleVisibleRef = React.useRef<boolean>(false);
+  const handleVisible = React.useCallback((visible) => {
+    setVisible(visible);
+    if (!handleVisibleRef.current && visible) {
+      sendDisplayEvent({ slug, id: bId, order });
+      handleVisibleRef.current = true;
+    }
+  }, [slug, bId, order]);
+  const ref = useViewportIntersection<HTMLDivElement>(handleVisible);
   const is_adult_only = book.detail?.property?.is_adult_only ?? false;
 
   const { src: imageUrl, srcset: imageUrlSet } = computeThumbnailUrl(
@@ -144,8 +154,6 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
       ref={ref}
       css={thumbnailWrapperCSS}
       className={props.className}
-      data-order={order}
-      data-book-id={book.b_id}
     >
       {isVisible ? (
         <img
