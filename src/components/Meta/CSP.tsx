@@ -25,7 +25,6 @@ const whiteList = [
 
 export default () => {
   const scriptSrc = [
-    `'nonce-${__webpack_nonce__}'`,
     "'self'",
     ...thirdPartyVendors,
     ...whiteList,
