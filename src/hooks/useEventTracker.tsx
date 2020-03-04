@@ -7,17 +7,15 @@ import sentry from 'src/utils/sentry';
 import { getDeviceType } from 'src/utils/common';
 
 const { captureException } = sentry();
+const deviceType = ['mobile', 'tablet'].includes(getDeviceType()) ? DeviceType.Mobile : DeviceType.PC;
 
 export const createTracker = (userId: string | null) => {
   if (typeof window !== 'undefined') {
-    const device = getDeviceType();
     return new Tracker({
       // @ts-ignore
       userId: userId || null,
       // Todo device 판단  User-Agent ?
-      deviceType: ['mobile', 'tablet'].includes(device)
-        ? DeviceType.Mobile
-        : DeviceType.PC,
+      deviceType,
       beaconOptions: {
         use: true,
         beaconSrc: publicRuntimeConfig.BEACON_URL,
@@ -54,13 +52,10 @@ export const useEventTracker = () => {
   }
   const { loggedUser } = useSelector((state: RootState) => state.account);
   useEffect(() => {
-    const device = getDeviceType();
     try {
       tracker.set({
         userId: loggedUser?.id || null,
-        deviceType: ['mobile', 'tablet'].includes(device)
-          ? DeviceType.Mobile
-          : DeviceType.PC,
+        deviceType,
       });
     } catch (error) {
       captureException(error);
@@ -71,8 +66,6 @@ export const useEventTracker = () => {
 
 // Todo refactor
 export const sendClickEvent = (eventTracker, item, section, order) => {
-  const device = getDeviceType();
-  const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
   eventTracker.sendEvent('click', {
     section: `${deviceType}.${section}`,
     items: [{ id: item.b_id || item.id, idx: order, ts: new Date().getTime() }],
@@ -81,8 +74,6 @@ export const sendClickEvent = (eventTracker, item, section, order) => {
 
 export const sendDisplayEvent = (options: { slug: string; id: string; order: number }) => {
   const { slug, id, order } = options;
-  const device = getDeviceType();
-  const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
   tracker.sendEvent('display', {
     section: `${deviceType}.${slug}`,
     items: [{
@@ -93,26 +84,22 @@ export const sendDisplayEvent = (options: { slug: string; id: string; order: num
   });
 };
 
-export const useSendDisplayEvent = (slug) => {
-  const device = getDeviceType();
-  const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
-  return useCallback(
-    (intersectionItems: IntersectionObserverEntry[]) => {
-      const trackingItems = { section: `${deviceType}.${slug}`, items: [] };
-      intersectionItems.forEach((item) => {
-        // FIXME: Tracking Rule 변경 예정이라 기존에 맞춰진 형식에 알림도 낑겨 맞춰둠
-        const bId = item.target.getAttribute('data-book-id') || item.target.getAttribute('data-id');
-        const order = item.target.getAttribute('data-order');
-        trackingItems.items.push({
-          id: bId,
-          idx: order,
-          ts: Date.now(),
-        });
+export const useSendDisplayEvent = (slug) => useCallback(
+  (intersectionItems: IntersectionObserverEntry[]) => {
+    const trackingItems = { section: `${deviceType}.${slug}`, items: [] };
+    intersectionItems.forEach((item) => {
+      // FIXME: Tracking Rule 변경 예정이라 기존에 맞춰진 형식에 알림도 낑겨 맞춰둠
+      const bId = item.target.getAttribute('data-book-id') || item.target.getAttribute('data-id');
+      const order = item.target.getAttribute('data-order');
+      trackingItems.items.push({
+        id: bId,
+        idx: order,
+        ts: Date.now(),
       });
-      if (trackingItems.items.length > 0) {
-        tracker.sendEvent('display', trackingItems);
-      }
-    },
-    [deviceType, slug],
-  );
-};
+    });
+    if (trackingItems.items.length > 0) {
+      tracker.sendEvent('display', trackingItems);
+    }
+  },
+  [deviceType, slug],
+);
