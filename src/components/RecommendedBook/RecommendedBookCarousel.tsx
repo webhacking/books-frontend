@@ -53,6 +53,8 @@ const CarouselWrapper = styled.div`
   margin-top: 6px;
 `;
 
+const bookWidthStyle = css`width: 140px;`;
+
 interface RecommendedBookCarouselProps {
   items: TodayRecommendation[] | HotRelease[];
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
@@ -77,7 +79,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = R
           <PortraitBook key={index} css={css`position: relative; left: 7px; top: 7px;`}>
             <ThumbnailWrapper>
               <ThumbnailRenderer
-                responsiveWidth={css`width: 140px;`}
+                css={bookWidthStyle}
                 sizes="140px"
                 book={{ b_id: book.b_id, detail: book.detail }}
                 imgSize="large"
@@ -153,7 +155,7 @@ const CarouselItem = React.memo((props: CarouselItemProps) => {
             <ThumbnailRenderer
               order={index}
               className={slug}
-              responsiveWidth={css`width: 140px;`}
+              css={bookWidthStyle}
               sizes="140px"
               slug={slug}
               book={{ b_id: book.b_id, detail: book.detail }}

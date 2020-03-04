@@ -95,6 +95,16 @@ const itemCSS = css`
   margin-bottom: 24px;
 `;
 
+const bookWidthStyles = css`
+  width: 140px;
+  @media (max-width: 999px) {
+    width: 120px;
+  }
+  @media (max-width: 432px) {
+    width: 100%;
+  }
+`;
+
 const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((props) => {
   const {
     item, genre, slug, order, tracker,
@@ -166,11 +176,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
               order={order}
               className={slug}
               slug={slug}
-              responsiveWidth={[
-                css`width: 140px;`,
-                orBelow(999, css`width: 120px;`),
-                orBelow(432, css`width: 100%;`),
-              ]}
+              css={bookWidthStyles}
               sizes="(max-width: 999px) 120px, 140px"
               book={{ b_id: item.b_id, detail: item.detail }}
               imgSize="large"

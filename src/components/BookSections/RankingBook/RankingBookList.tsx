@@ -220,9 +220,7 @@ const ItemList: React.FC<any> = (props) => {
                   slug={slug}
                   className={slug}
                   order={index}
-                  responsiveWidth={
-                    css`width: ${type === 'big' ? 80 : 50}px;`
-                  }
+                  css={css`width: ${type === 'big' ? 80 : 50}px;`}
                   sizes={type === 'big' ? '80px' : '50px'}
                   book={{ b_id: book.b_id, detail: book.detail }}
                   imgSize="large"
