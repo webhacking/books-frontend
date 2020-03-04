@@ -49,6 +49,13 @@ const SectionWrapper = styled.section`
   -webkit-overflow-scrolling: touch;
 `;
 
+const bookWidthStyle = css`
+  width: 140px;
+  @media (max-width: 999px) {
+    width: 100px;
+  }
+`;
+
 interface SelectionBookProps {
   items: MdBook[];
   title: string;
@@ -149,10 +156,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo((p
             className={slug}
             order={order}
             slug={slug}
-            responsiveWidth={[
-              css`width: 140px;`,
-              orBelow(999, css`width: 100px;`),
-            ]}
+            css={bookWidthStyle}
             sizes="(max-width: 999px) 100px, 140px"
             book={{ b_id: book.b_id, detail: book.detail }}
             imgSize="large"
@@ -297,10 +301,7 @@ export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = React.
                 <ThumbnailRenderer
                   book={{ b_id: book.b_id, detail: book.detail }}
                   imgSize="large"
-                  responsiveWidth={[
-                    css`width: 140px;`,
-                    orBelow(999, css`width: 100px;`),
-                  ]}
+                  css={bookWidthStyle}
                   sizes="(max-width: 999px) 100px, 140px"
                 />
               </ThumbnailWrapper>

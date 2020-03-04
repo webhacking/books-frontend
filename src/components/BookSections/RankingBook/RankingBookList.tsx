@@ -23,13 +23,8 @@ import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
-import {
-  sendClickEvent,
-  useEventTracker,
-  useSendDisplayEvent,
-} from 'src/hooks/useEventTracker';
+import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
-import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
 
 const SectionWrapper = styled.section`
@@ -194,13 +189,10 @@ const ItemList: React.FC<any> = (props) => {
   const {
     books, slug, type, genre, isIntersecting, showSomeDeal,
   } = props;
-  const ref = useRef<HTMLUListElement>();
 
-  const sendDisplayEvent = useSendDisplayEvent(slug);
   const [tracker] = useEventTracker();
-  useMultipleIntersectionObserver(ref, slug, sendDisplayEvent);
   return (
-    <ul css={listCSS} ref={ref}>
+    <ul css={listCSS}>
       {books
         .filter((book) => book.detail)
         .slice(0, 9)
@@ -228,9 +220,7 @@ const ItemList: React.FC<any> = (props) => {
                   slug={slug}
                   className={slug}
                   order={index}
-                  responsiveWidth={
-                    css`width: ${type === 'big' ? 80 : 50}px;`
-                  }
+                  css={css`width: ${type === 'big' ? 80 : 50}px;`}
                   sizes={type === 'big' ? '80px' : '50px'}
                   book={{ b_id: book.b_id, detail: book.detail }}
                   imgSize="large"

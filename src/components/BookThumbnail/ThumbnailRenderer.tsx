@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import * as BookApi from 'src/types/book';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
-import { css, Interpolation } from '@emotion/core';
+import styled from '@emotion/styled';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
+import { sendDisplayEvent } from 'src/hooks/useEventTracker';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 
 export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
@@ -18,7 +19,6 @@ interface ThumbnailRendererProps {
   slug?: string;
   order?: number;
   className?: string;
-  responsiveWidth: Interpolation;
   sizes: string;
   bookDecorators?: React.ReactNode;
 }
@@ -82,7 +82,7 @@ const computeThumbnailUrl = (
   return { src, srcset };
 };
 
-const thumbnailWrapperCSS = css`
+const ThumbnailWrapper = styled.div`
   position: relative;
   line-height: 0;
   max-height: inherit;
@@ -105,24 +105,35 @@ const thumbnailWrapperCSS = css`
   },
 `;
 
-const inactiveStyle = css`
-  padding-bottom: 142%;
-  height: 0;
-  background-image: linear-gradient(147deg, #e6e8eb, #edeff2 55%, #e6e8eb);
+const Thumbnail = styled.img<{ active?: boolean }>`
+  ${(props) => !props.active && `
+    padding-bottom: 142%;
+    height: 0;
+    background-image: linear-gradient(147deg, #e6e8eb, #edeff2 55%, #e6e8eb);
+  `}
 `;
+const ThumbnailNoImg = Thumbnail.withComponent('div');
 
 // 썸네일을 보여줄 수 있는 상태 ( intersecting 되거나 fetch 종료 ) 일 때도 체크
 // loggedUser 가 성인 인증 상태일 경우는 정상 렌더링
 // 아닌 경우는 성인 도서 Placeholder 표지
 const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) => {
-  // @ts-ignore
   const {
-    book, imgSize, responsiveWidth, sizes, children, slug, order,
+    book, imgSize, sizes, children, slug, order,
   } = props;
+  const bId = book.b_id;
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isVisible, setVisible] = useState(false);
-  const ref = useViewportIntersection<HTMLDivElement>(setVisible);
+  const handleVisibleRef = React.useRef<boolean>(false);
+  const handleVisible = React.useCallback((visible) => {
+    setVisible(visible);
+    if (!handleVisibleRef.current && visible) {
+      sendDisplayEvent({ slug, id: bId, order });
+      handleVisibleRef.current = true;
+    }
+  }, [slug, bId, order]);
+  const ref = useViewportIntersection<HTMLDivElement>(handleVisible);
   const is_adult_only = book.detail?.property?.is_adult_only ?? false;
 
   const { src: imageUrl, srcset: imageUrlSet } = computeThumbnailUrl(
@@ -140,19 +151,11 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
   const title = bookTitleGenerator(book.detail);
 
   return (
-    <div
-      ref={ref}
-      css={thumbnailWrapperCSS}
-      className={props.className}
-      data-order={order}
-      data-book-id={book.b_id}
-    >
+    <ThumbnailWrapper ref={ref}>
       {isVisible ? (
-        <img
-          css={[
-            responsiveWidth,
-            !isImageLoaded && inactiveStyle,
-          ]}
+        <Thumbnail
+          active={isImageLoaded}
+          className={props.className}
           src={imageUrl}
           srcSet={imageUrlSet}
           sizes={sizes}
@@ -160,14 +163,14 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
           onLoad={imageOnLoad}
         />
       ) : (
-        <div
-          css={[responsiveWidth, inactiveStyle]}
+        <ThumbnailNoImg
+          className={props.className}
           role="img"
           aria-label={title}
         />
       )}
       {children}
-    </div>
+    </ThumbnailWrapper>
   );
 });
 export default ThumbnailRenderer;

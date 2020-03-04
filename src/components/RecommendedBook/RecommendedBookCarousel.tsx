@@ -17,8 +17,6 @@ import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import SliderCarouselWrapper from 'src/components/Carousel/CarouselWrapper';
 import { getMaxDiscountPercentage } from 'src/utils/common';
-import { useSendDisplayEvent } from 'src/hooks/useEventTracker';
-import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
 
 const recommendedBookCarouselLoadingCSS = css`
@@ -55,6 +53,8 @@ const CarouselWrapper = styled.div`
   margin-top: 6px;
 `;
 
+const bookWidthStyle = css`width: 140px;`;
+
 interface RecommendedBookCarouselProps {
   items: TodayRecommendation[] | HotRelease[];
   type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
@@ -79,7 +79,7 @@ const RecommendedBookCarouselLoading: React.FC<RecommendedBookCarouselProps> = R
           <PortraitBook key={index} css={css`position: relative; left: 7px; top: 7px;`}>
             <ThumbnailWrapper>
               <ThumbnailRenderer
-                responsiveWidth={css`width: 140px;`}
+                css={bookWidthStyle}
                 sizes="140px"
                 book={{ b_id: book.b_id, detail: book.detail }}
                 imgSize="large"
@@ -155,7 +155,7 @@ const CarouselItem = React.memo((props: CarouselItemProps) => {
             <ThumbnailRenderer
               order={index}
               className={slug}
-              responsiveWidth={css`width: 140px;`}
+              css={bookWidthStyle}
               sizes="140px"
               slug={slug}
               book={{ b_id: book.b_id, detail: book.detail }}
@@ -233,7 +233,6 @@ const RecommendedBookCarousel = React.memo((
   props: RecommendedBookCarouselProps,
 ) => {
   const slider = useRef<SliderCarousel>();
-  const wrapperRef = useRef<HTMLDivElement>(null);
   const {
     theme, type, slug, genre,
   } = props;
@@ -248,9 +247,6 @@ const RecommendedBookCarousel = React.memo((
     e.preventDefault();
     slider.current?.slickNext();
   };
-
-  const sendDisplayEvent = useSendDisplayEvent(slug);
-  useMultipleIntersectionObserver(wrapperRef, slug, sendDisplayEvent);
 
   useEffect(() => {
     window.setImmediate(() => setMounted(true));
@@ -287,7 +283,7 @@ const RecommendedBookCarousel = React.memo((
   }
 
   return (
-    <CarouselWrapper ref={wrapperRef}>
+    <CarouselWrapper>
       <SliderCarouselWrapper
         forwardedRef={slider}
         css={recommendedBookCarouselLoadingCSS}
