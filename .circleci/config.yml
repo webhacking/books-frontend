@@ -140,7 +140,7 @@ jobs:
           command: |
             mkdir /tmp/traces
             cd /tmp/traces
-            node ~/books-frontend/server/profile/live.js '<< parameters.url >>'
+            node ~/books-frontend/profile/live.js '<< parameters.url >>'
       - store_artifacts:
           path: /tmp/traces
   rollback:

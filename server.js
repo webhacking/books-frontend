@@ -32,6 +32,8 @@ if (!process.env.SERVERLESS) {
   });
 }
 
+module.exports.server = server;
+
 // binary mode
 // https://github.com/dougmoscrop/serverless-http/blob/master/docs/ADVANCED.md#binary-mode
 module.exports.handler = serverless(server, {
