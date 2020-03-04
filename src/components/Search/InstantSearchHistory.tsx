@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import * as labels from 'src/labels/instantSearch.json';
+import * as colors from '@ridi/colors';
 import { RIDITheme } from 'src/styles';
 import Exclamation from 'src/svgs/Exclamation_1.svg';
 import Close from 'src/svgs/Close_2.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
-const turnOffSearchHistory = (theme: RIDITheme) => css`
+const TurnOffSearchHistory = styled.div`
   text-align: center;
   width: 100%;
   height: 160px;
@@ -18,14 +19,18 @@ const turnOffSearchHistory = (theme: RIDITheme) => css`
   vertical-align: middle;
   box-sizing: content-box;
   font-size: 14px;
-  color: ${theme.label3};
+  color: ${colors.slateGray80}; 
 `;
 
-const recentHistoryLabel = (theme: RIDITheme) => css`
+const RecentHistoryLabel = styled.p`
   padding: 13px 0 13px 16px;
   font-size: 14px;
   font-weight: normal;
-  color: ${theme.label2};
+  color: ${colors.slateGray50};
+`;
+
+const RemoveHistoryButton = styled.button`
+  margin-left: 16px;
 `;
 
 const closeIcon = (theme: RIDITheme) => css`
@@ -41,7 +46,7 @@ const exclamation = (theme: RIDITheme) => css`
   height: 14px;
 `;
 
-const historyListCSS = () => css`
+const HistoryList = styled.ul`
   li {
     box-sizing: border-box;
   }
@@ -83,21 +88,25 @@ const SearchHistoryItem = styled.li`
   outline: none;
 `;
 
-const historyOptionPanelCSS = (theme) => css`
+const HistoryOptionPanel = styled.div`
   padding: 13px 16px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  background-color: ${theme.divider};
-  color: ${theme.input.placeholder};
+  background-color: ${colors.slateGray5};
+  color: ${colors.slateGray50};
   font-size: 14px;
   line-height: 1;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   button {
-    color: ${theme.label3};
+    color: ${colors.slateGray80};
     opacity: 0.7;
   }
+`;
+
+const HistoryOptionButton = styled.button`
+  font-size: 14px;
 `;
 
 interface InstantSearchHistoryProps {
@@ -138,8 +147,8 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = (props) => {
   }, [focusedPosition]);
   return (
     <>
-      <p css={recentHistoryLabel}>{labels.recentKeywords}</p>
-      <ul css={historyListCSS} ref={wrapperRef}>
+      <RecentHistoryLabel>{labels.recentKeywords}</RecentHistoryLabel>
+      <HistoryList ref={wrapperRef}>
         {enableSearchHistoryRecord ? (
           <>
             {searchHistory.slice(0, 5).map((history: string, index: number) => (
@@ -154,22 +163,19 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = (props) => {
                 <a href="#history">
                   <span>{history}</span>
                 </a>
-                <button
-                  css={css`
-                    margin-left: 16px;
-                  `}
+                <RemoveHistoryButton
                   data-value={history}
-                  type="submit"
+                  type="button"
                   onClick={handleRemoveHistory}
                 >
                   <Close css={closeIcon} />
                   <span className="a11y">{labels.removeHistory}</span>
-                </button>
+                </RemoveHistoryButton>
               </SearchHistoryItem>
             ))}
           </>
         ) : (
-          <div css={turnOffSearchHistory}>
+          <TurnOffSearchHistory>
             <Exclamation css={exclamation} />
             <span
               css={css`
@@ -178,31 +184,25 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = (props) => {
             >
               {labels.turnOffStatus}
             </span>
-          </div>
+          </TurnOffSearchHistory>
         )}
-      </ul>
-      <div css={historyOptionPanelCSS}>
-        <button
-          css={css`
-            font-size: 14px;
-          `}
-          type="submit"
+      </HistoryList>
+      <HistoryOptionPanel>
+        <HistoryOptionButton
+          type="button"
           onClick={handleToggleSearchHistoryRecord}
         >
           {enableSearchHistoryRecord
             ? labels.turnOffSearchHistory
             : labels.turnOnSearchHistory}
-        </button>
-        <button
-          css={css`
-            font-size: 14px;
-          `}
-          type="submit"
+        </HistoryOptionButton>
+        <HistoryOptionButton
+          type="button"
           onClick={handleClearHistory}
         >
           {enableSearchHistoryRecord && labels.clearSearchHistory}
-        </button>
-      </div>
+        </HistoryOptionButton>
+      </HistoryOptionPanel>
     </>
   );
 };
