@@ -2,7 +2,9 @@ import React, {
   useContext, useEffect, useRef, useState,
 } from 'react';
 import { displayNoneForTouchDevice, flexRowStart, scrollBarHidden } from 'src/styles';
-import { SelectionBookItem, SelectionBookLoading } from 'src/components/BookSections/SelectionBook/SelectionBook';
+import {
+  SelectionBookItem,
+} from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { css } from '@emotion/core';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
@@ -119,17 +121,8 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
   }, []);
 
   if (!isMounted) {
-    // Flickering 없는 UI 를 위해 추가함
-    return (
-      <SelectionBookLoading
-        genre={genre}
-        type={type}
-        isAIRecommendation={props.isAIRecommendation}
-        items={props.items.slice(0, 6)}
-      />
-    );
+    return null;
   }
-
   return (
     <div
       css={css`
