@@ -46,8 +46,7 @@
     "src/types/global.d.ts"
   ],
   "include": [
-    "src/**/*",
-    "inapp/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules/**/*"
