@@ -1,74 +1,67 @@
 import * as React from 'react';
-import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { RIDITheme } from 'src/styles';
-import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
-const NotificationPlaceholderWrap = (theme: RIDITheme) => css`
+const NotificationPlaceholderWrap = styled.div<{ opacity: number }, RIDITheme>`
   position: relative;
   display: flex;
   margin: 0px 16px;
   padding: 14px 0px;
+  opacity: ${(props) => props.opacity};
   ::after {
     content: '';
     width: 100%;
     position: absolute;
     height: 1px;
-    background: ${theme.dividerColor};
-    opacity: ${theme.dividerOpacity};
+    background: ${(props) => props.theme.dividerColor};
+    opacity: ${(props) => props.theme.dividerOpacity};
     bottom: 0;
     left: 0;
   }
 `;
 
-const NotificationThumbnail = (theme: RIDITheme) => css`
+const NotificationThumbnail = styled.div<{}, RIDITheme>`
   flex: none;
   width: 56px;
   height: 80px;
-  background: ${theme.placeholderColor};
+  background: ${(props) => props.theme.placeholderColor};
 `;
 
 const NotificationMeta = styled.div`
   margin-left: 16px;
+  padding-right: 26px;
+  flex: 1;
 `;
 
-const NotificationTitle = (theme: RIDITheme) => css`
-  width: 854px;
+const NotificationTitle = styled.div<{}, RIDITheme>`
+  width: 100%;
   height: 20px;
   margin-bottom: 7px;
-  background: ${theme.placeholderColor};
-  ${orBelow(
-    BreakPoint.LG,
-    css`
-      width: 696px;
-    `,
-  )};
-  ${orBelow(
-    BreakPoint.MD,
-    css`
-      width: 245px;
-    `,
-  )};
+  background: ${(props) => props.theme.placeholderColor};
 `;
 
-const NotificationDate = (theme: RIDITheme) => css`
+const NotificationDate = styled.div<{}, RIDITheme>`
   width: 84px;
   height: 20px;
-  background: ${theme.placeholderColor};
+  background: ${(props) => props.theme.placeholderColor};
 `;
 
 interface NotificationPlaceholderProps {
   num: number;
 }
 
-const NotificationItemPlaceholder: React.FC = () => (
-  <div css={NotificationPlaceholderWrap}>
-    <div css={NotificationThumbnail} />
+interface NotificationItemPlaceholderProps {
+  opacity: number;
+}
+
+const NotificationItemPlaceholder: React.FC<NotificationItemPlaceholderProps> = (props) => (
+  <NotificationPlaceholderWrap opacity={props.opacity}>
+    <NotificationThumbnail />
     <NotificationMeta>
-      <div css={NotificationTitle} />
-      <div css={NotificationDate} />
+      <NotificationTitle />
+      <NotificationDate />
     </NotificationMeta>
-  </div>
+  </NotificationPlaceholderWrap>
 );
 
 const NotificationPlaceholder: React.FC<NotificationPlaceholderProps> = (props) => {
@@ -77,7 +70,7 @@ const NotificationPlaceholder: React.FC<NotificationPlaceholderProps> = (props) 
   return (
     <>
       {[...Array(num)].map((item, i) => (
-        <NotificationItemPlaceholder key={i} />
+        <NotificationItemPlaceholder key={i} opacity={Number((1 - (i * 0.14)).toFixed(1))} />
       ))}
     </>
   );
