@@ -1,11 +1,10 @@
-import React, { useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import PageTitle from 'src/components/PageTitle/PageTitle';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { flexColumnStart, RIDITheme } from 'src/styles';
 import { timeAgo } from 'src/utils/common';
-import { useMultipleIntersectionObserver } from 'src/hooks/useMultipleIntersectionObserver';
 import ArrowLeft from 'src/svgs/ChevronRight.svg';
 import NotificationIcon from 'src/svgs/Notification_solid.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
@@ -16,9 +15,10 @@ import NotificationPlaceholder from 'src/components/Placeholder/NotificationItem
 import { Tracker } from '@ridi/event-tracker';
 import {
   sendClickEvent,
+  sendDisplayEvent,
   useEventTracker,
-  useSendDisplayEvent,
 } from 'src/hooks/useEventTracker';
+import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import sentry from 'src/utils/sentry';
 
 const { captureException } = sentry();
@@ -221,8 +221,19 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
   const {
     item, createdAtTimeAgo, dot = false, tracker, slug, order,
   } = props;
+
+  const handleVisibleRef = React.useRef<boolean>(false);
+  const handleVisible = React.useCallback((visible) => {
+    if (!handleVisibleRef.current && visible) {
+      sendDisplayEvent({ slug, id: item.id, order });
+      handleVisibleRef.current = true;
+    }
+  }, [slug, item.id, order]);
+
+  const ref = useViewportIntersection<HTMLLIElement>(handleVisible);
+
   return (
-    <NotiListItem>
+    <NotiListItem ref={ref}>
       <NotiItemWrapper
         // eslint-disable-next-line react/jsx-no-bind
         onClick={sendClickEvent.bind(null, tracker, item, slug, order)}
@@ -255,17 +266,13 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
 
 const NotificationPage: React.FC<NotificationPageProps> = (props) => {
   const { isTitleHidden = false } = props;
-  const ref = useRef<HTMLUListElement>(null);
   const { items, isLoaded, unreadCount } = useSelector(
     (store: RootState) => store.notifications,
   );
   const { loggedUser } = useSelector((state: RootState) => state.account);
-  const noti = useSelector((store: RootState) => store.notifications);
   const slug = 'notification-item';
-  const sendDisplayEvent = useSendDisplayEvent(slug);
   const dispatch = useDispatch();
   const [tracker] = useEventTracker();
-  useMultipleIntersectionObserver(ref, slug, sendDisplayEvent);
 
   const setPageView = useCallback(() => {
     if (tracker) {
@@ -310,7 +317,7 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
       </Head>
       <Section>
         <PageTitle title="알림" mobileHidden={isTitleHidden} />
-        <NotiList ref={ref}>
+        <NotiList>
           {items.length === 0 ? (
             <NoEmptyNotification>
               <NotificationIcon css={notificationStyle} />
