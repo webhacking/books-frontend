@@ -107,14 +107,6 @@ jobs:
       - attach_workspace:
           at: .
       - aws-s3/sync:
-          from: static
-          to: s3://${<< parameters.s3-bucket >>}/static/
-          aws-access-key-id: << parameters.aws-access-key-id >>
-          aws-secret-access-key: << parameters.aws-secret-access-key >>
-          arguments: |
-            --exclude "*.map" \
-            --cache-control public,max-age=31536000
-      - aws-s3/sync:
           from: build
           to: s3://${<< parameters.s3-bucket >>}/_next/
           aws-access-key-id: << parameters.aws-access-key-id >>
