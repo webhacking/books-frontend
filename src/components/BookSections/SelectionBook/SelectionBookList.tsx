@@ -112,7 +112,6 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const { genre, type, slug } = props;
   const deviceType = useContext(DeviceTypeContext);
-  // @ts-ignore
   const [requestExclude, requestCancel] = useExcludeRecommendation();
   const [isMounted, setMounted] = useState(false);
 
