@@ -70,8 +70,6 @@ describe('test SelectionBookContainer', () => {
   it('should be render SelectionBookList item', async () => {
     const { container } = actRender(renderSelectionBookList);
     const item = await waitForElement(() => getAllByAltText(container, '도서 표지'));
-
-
     expect(item).not.toBe(null);
   });
 });
