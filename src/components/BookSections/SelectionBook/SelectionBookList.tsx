@@ -1,6 +1,10 @@
-import React, { useContext, useRef } from 'react';
+import React, {
+  useContext, useEffect, useRef, useState,
+} from 'react';
 import { displayNoneForTouchDevice, flexRowStart, scrollBarHidden } from 'src/styles';
-import { SelectionBookItem } from 'src/components/BookSections/SelectionBook/SelectionBook';
+import {
+  SelectionBookItem,
+} from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { css } from '@emotion/core';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
@@ -108,9 +112,16 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const { genre, type, slug } = props;
   const deviceType = useContext(DeviceTypeContext);
-  // @ts-ignore
   const [requestExclude, requestCancel] = useExcludeRecommendation();
+  const [isMounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    window.setImmediate(() => setMounted(true));
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
   return (
     <div
       css={css`

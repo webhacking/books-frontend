@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { act, render, cleanup, getAllByAltText, RenderResult } from '@testing-library/react';
+import { act, render, cleanup, getAllByAltText, RenderResult, waitForElement } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-// @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { Provider } from 'react-redux';
 import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
@@ -67,9 +66,9 @@ describe('test SelectionBookContainer', () => {
     window.IntersectionObserver = originalIO;
   });
 
-  it('should be render SelectionBookList item', () => {
+  it('should be render SelectionBookList item', async () => {
     const { container } = actRender(renderSelectionBookList);
-    const itemNode = getAllByAltText(container, '도서 표지');
-    expect(itemNode).not.toBe(null);
+    const item = await waitForElement(() => getAllByAltText(container, '도서 표지'));
+    expect(item).not.toBe(null);
   });
 });
