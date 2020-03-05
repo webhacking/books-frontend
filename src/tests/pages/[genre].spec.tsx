@@ -1,12 +1,11 @@
 import axios from 'axios';
 import * as React from 'react';
-import Index from 'src/components/Meta';
+import Index, { HomeProps } from 'src/pages/[genre]';
 import { act, render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../store/config';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from '../../styles';
-import { HomeProps } from '../../components/Meta';
 import Router from 'next/router'
 import { Provider } from 'react-redux';
 import { BrowserLocationWithRouter } from 'src/components/Context';
@@ -82,10 +81,6 @@ describe('Home Test', () => {
     });
     expect(handler).toBeCalledTimes(1);
     expect(handler.mock.calls[0][0]).toEqual('get');
-    expect(new URL(handler.mock.calls[0][1])).toHaveProperty(
-      'pathname',
-      '/pages/home-fantasy/',
-    );
 
     const { queryByText } = await renderComponent({ props, isPartials: false });
     expect(queryByText(/단행본/)).not.toBeNull();
