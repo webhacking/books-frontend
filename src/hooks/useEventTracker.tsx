@@ -83,23 +83,3 @@ export const sendDisplayEvent = (options: { slug: string; id: string; order: num
     }],
   });
 };
-
-export const useSendDisplayEvent = (slug) => useCallback(
-  (intersectionItems: IntersectionObserverEntry[]) => {
-    const trackingItems = { section: `${deviceType}.${slug}`, items: [] };
-    intersectionItems.forEach((item) => {
-      // FIXME: Tracking Rule 변경 예정이라 기존에 맞춰진 형식에 알림도 낑겨 맞춰둠
-      const bId = item.target.getAttribute('data-book-id') || item.target.getAttribute('data-id');
-      const order = item.target.getAttribute('data-order');
-      trackingItems.items.push({
-        id: bId,
-        idx: order,
-        ts: Date.now(),
-      });
-    });
-    if (trackingItems.items.length > 0) {
-      tracker.sendEvent('display', trackingItems);
-    }
-  },
-  [deviceType, slug],
-);
