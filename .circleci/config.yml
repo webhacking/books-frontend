@@ -69,8 +69,12 @@ jobs:
       stage:
         type: string
         default: production
+      assetPrefix:
+        type: string
+        default: books.ridicdn.net
     environment:
       STAGE: << parameters.stage >>
+      ASSET_PREFIX: << parameters.assetPrefix >>
     steps:
       - checkout
       - install
@@ -174,6 +178,7 @@ workflows:
             branches:
               only: master
           stage: development
+          assetPrefix: books.ridi.io
       - deploy:
           name: deploy-dev
           requires:
