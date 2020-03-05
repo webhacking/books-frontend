@@ -5,7 +5,9 @@ import {
 import { DisplayType, MdBook } from 'src/types/sections';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import BookMeta from 'src/components/BookMeta/BookMeta';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
@@ -14,6 +16,8 @@ import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { Tracker } from '@ridi/event-tracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
+import styled from '@emotion/styled';
+import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 
 interface MultipleLineBooks {
   items: MdBook[];
@@ -30,7 +34,17 @@ interface MultipleLineBookItemProps {
   tracker: Tracker;
 }
 
-const itemCSS = css`
+const bookWidthStyles = css`
+  width: 140px;
+  @media (max-width: 999px) {
+    width: 120px;
+  }
+  @media (max-width: 432px) {
+    width: 100%;
+  }
+`;
+
+const Item = styled.li`
   ${orBelow(
     426,
     css`
@@ -95,148 +109,128 @@ const itemCSS = css`
   margin-bottom: 24px;
 `;
 
-const bookWidthStyles = css`
-  width: 140px;
-  @media (max-width: 999px) {
-    width: 120px;
-  }
-  @media (max-width: 432px) {
-    width: 100%;
-  }
+const thumbnailOverrideStyle = css`
+  ${orBelow(
+    BreakPoint.SM,
+    css`
+      width: 100%;
+      min-width: 70px;
+      height: calc(90px * 1.618 - 10px);
+    `,
+  )};
+  ${between(
+    BreakPoint.SM + 1,
+    BreakPoint.M,
+    css`
+      width: 100%;
+      min-width: 100px;
+      height: calc(100px * 1.618 - 10px);
+    `,
+  )};
+
+  ${between(
+    BreakPoint.M + 1,
+    BreakPoint.MD,
+    css`
+      width: 120px;
+    `,
+  )};
+  ${between(
+    BreakPoint.MD + 1,
+    BreakPoint.LG,
+    css`
+      width: 120px;
+    `,
+  )};
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+      width: 140px;
+      img {
+        width: 140px;
+      }
+    `,
+  )};
+`;
+
+const ItemAnchor = styled.a`
+  display: inline-block;
+`;
+
+const bookMetaWrapperStyle = css`
+  ${between(
+    BreakPoint.M + 1,
+    BreakPoint.LG,
+    css`
+      width: 120px;
+    `,
+  )}
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+      width: 140px;
+    `,
+  )}
 `;
 
 const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((props) => {
   const {
     item, genre, slug, order, tracker,
   } = props;
-  return (
-    <li css={itemCSS}>
-      <ThumbnailWrapper
-        css={css`
-          ${orBelow(
-          BreakPoint.SM,
-          css`
-              width: 100%;
-              min-width: 70px;
-              height: calc(90px * 1.618 - 10px);
-            `,
-        )};
-          ${between(
-          BreakPoint.SM + 1,
-          BreakPoint.M,
-          css`
-              width: 100%;
-              min-width: 100px;
-              height: calc(100px * 1.618 - 10px);
-            `,
-        )};
 
-          ${between(
-          BreakPoint.M + 1,
-          BreakPoint.MD,
-          css`
-              width: 120px;
-            `,
-        )};
-          ${between(
-          BreakPoint.MD + 1,
-          BreakPoint.LG,
-          css`
-              width: 120px;
-            `,
-        )};
-          ${greaterThanOrEqualTo(
-          BreakPoint.LG + 1,
-          css`
-              width: 140px;
-            `,
-        )};
-        `}
-      >
-        <div
-          css={css`
-            ${greaterThanOrEqualTo(
-            BreakPoint.LG,
-            css`
-                img {
-                  width: 140px;
-                }
-              `,
-          )}
-          `}
+  const trackerEvent = useCallback(() => {
+    sendClickEvent(tracker, item, slug, order);
+  }, []);
+  return (
+    <Item>
+      <ThumbnailWrapper css={thumbnailOverrideStyle}>
+        <ItemAnchor
+          onClick={trackerEvent}
+          href={`/books/${item.b_id}`}
         >
-          <a
-            css={css`
-              display: inline-block;
-            `}
-            onClick={sendClickEvent.bind(null, tracker, item, slug, order)}
-            href={`/books/${item.b_id}`}
+          <ThumbnailRenderer
+            order={order}
+            className={slug}
+            slug={slug}
+            css={bookWidthStyles}
+            sizes="(max-width: 999px) 120px, 140px"
+            book={{ b_id: item.b_id, detail: item.detail }}
+            imgSize="large"
           >
-            <ThumbnailRenderer
-              order={order}
-              className={slug}
-              slug={slug}
-              css={bookWidthStyles}
-              sizes="(max-width: 999px) 120px, 140px"
-              book={{ b_id: item.b_id, detail: item.detail }}
-              imgSize="large"
-            >
-              <div
-                css={css`
-                  position: absolute;
-                  display: block;
-                  top: -7px;
-                  left: -7px;
-                `}
-              >
-                <BookBadgeRenderer
-                  type={DisplayType.RecommendedBook}
-                  isWaitFree={item.detail?.series?.property.is_wait_free}
-                  discountPercentage={getMaxDiscountPercentage(item.detail)}
-                />
-              </div>
-              <FreeBookRenderer
-                freeBookCount={
-                  item.detail?.series?.price_info?.rent?.free_book_count
-                  || item.detail?.series?.price_info?.buy?.free_book_count
-                  || 0
-                }
-                unit={item.detail?.series?.property.unit || '권'}
+            <BadgeContainer>
+              <BookBadgeRenderer
+                type={DisplayType.RecommendedBook}
+                isWaitFree={item.detail?.series?.property.is_wait_free}
+                discountPercentage={getMaxDiscountPercentage(item.detail)}
               />
-              {item.detail?.property?.is_adult_only && <AdultBadge />}
-            </ThumbnailRenderer>
-          </a>
-        </div>
+            </BadgeContainer>
+            <FreeBookRenderer
+              freeBookCount={
+                item.detail?.series?.price_info?.rent?.free_book_count
+                || item.detail?.series?.price_info?.buy?.free_book_count
+                || 0
+              }
+              unit={item.detail?.series?.property.unit || '권'}
+            />
+            {item.detail?.property?.is_adult_only && <AdultBadge />}
+          </ThumbnailRenderer>
+        </ItemAnchor>
       </ThumbnailWrapper>
       {item.detail && (
         <BookMeta
           book={item.detail}
           showTag={['bl', 'bl-serial'].includes(genre)}
-          wrapperCSS={css`
-            ${between(
-            BreakPoint.M + 1,
-            BreakPoint.LG,
-            css`
-                width: 120px;
-              `,
-          )}
-            ${greaterThanOrEqualTo(
-            BreakPoint.LG + 1,
-            css`
-                width: 140px;
-              `,
-          )}
-          `}
+          wrapperCSS={bookMetaWrapperStyle}
           showRating
           isAIRecommendation={false}
         />
       )}
-    </li>
+    </Item>
   );
 });
 
-const multipleLineSectionCSS = css`
-  max-width: 1000px;
+const Section = styled.section`
+ max-width: 1000px;
   margin: 0 auto;
   padding-bottom: 24px;
   padding-top: 24px;
@@ -265,55 +259,55 @@ const multipleLineSectionCSS = css`
   )}
 `;
 
-const ItemList: React.FC<any> = (props) => {
+const List = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  flex: none;
+  justify-content: space-around;
+  margin-bottom: -24px;
+  ${orBelow(
+    432,
+    css`
+      justify-content: space-between;
+      margin-left: -10px;
+    `,
+  )};
+   ${between(
+    BreakPoint.M + 1,
+    BreakPoint.MD,
+    css`
+       justify-content: space-between;
+       margin-left: -10px;
+     `,
+  )}
+          ${between(
+    BreakPoint.MD + 1,
+    BreakPoint.LG,
+    css`
+              justify-content: space-between;
+              margin-left: -6px;
+            `,
+  )}
+          ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    css`
+              left: -19px;
+              position: relative;
+            `,
+  )}
+`;
+
+const ItemList: React.FC<{ slug: string; genre: string; books: MdBook[] }> = (props) => {
   const { slug, genre, books } = props;
-  const [isMounted, setMounted] = useState(false);
+  const [, setMounted] = useState(false);
   const [tracker] = useEventTracker();
   useEffect(() => {
     setMounted(true);
   }, []);
 
   return (
-    <ul
-      css={css`
-          display: flex;
-          flex-wrap: wrap;
-          flex: none;
-          justify-content: space-around;
-          margin-bottom: -24px;
-          ${orBelow(
-        432,
-        css`
-              justify-content: space-between;
-              margin-left: -10px;
-            `,
-      )};
-           ${between(
-        BreakPoint.M + 1,
-        BreakPoint.MD,
-        css`
-               justify-content: space-between;
-               margin-left: -10px;
-             `,
-      )}
-          ${between(
-        BreakPoint.MD + 1,
-        BreakPoint.LG,
-        css`
-              justify-content: space-between;
-              margin-left: -6px;
-            `,
-      )}
-          ${greaterThanOrEqualTo(
-        BreakPoint.LG + 1,
-        css`
-              left: -19px;
-              position: relative;
-            `,
-      )}
-        `}
-    >
-      {(books as MdBook[])
+    <List>
+      {books
         .filter((book) => book.detail)
         .slice(0, 18)
         .map((item, index) => (
@@ -326,9 +320,24 @@ const ItemList: React.FC<any> = (props) => {
             tracker={tracker}
           />
         ))}
-    </ul>
+    </List>
   );
 };
+
+const Title = styled.h2`
+  font-size: 19px;
+  font-weight: normal;
+  line-height: 26px;
+  margin-bottom: 10px;
+  color: #000000;
+  word-break: keep-all;
+  ${orBelow(
+    BreakPoint.MD,
+    css`
+      margin-left: -2px;
+    `,
+  )}
+`;
 
 export const MultipleLineBooks: React.FC<MultipleLineBooks> = (props) => {
   const {
@@ -336,29 +345,10 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = (props) => {
   } = props;
   const [books] = useBookDetailSelector(items);
   const targetRef = useRef(null);
-
   return (
-    <section ref={targetRef} css={multipleLineSectionCSS}>
-      <h2
-        aria-label={title}
-        css={css`
-          font-size: 19px;
-          font-weight: normal;
-          line-height: 26px;
-          margin-bottom: 10px;
-          color: #000000;
-          word-break: keep-all;
-          ${orBelow(
-          BreakPoint.MD,
-          css`
-              margin-left: -2px;
-            `,
-        )}
-        `}
-      >
-        <span>{title}</span>
-      </h2>
-      <ItemList genre={genre} slug={slug} books={books} />
-    </section>
+    <Section ref={targetRef}>
+      <Title aria-label={title}>{title}</Title>
+      <ItemList genre={genre} slug={slug} books={books as MdBook[]} />
+    </Section>
   );
 };
