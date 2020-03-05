@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+require('dotenv').config();
+
 export const initModules = () => {
   // jest.mock('src/utils/sentry', () => ({ notifySentry: () => null }));
   jest.mock('axios', () => {
