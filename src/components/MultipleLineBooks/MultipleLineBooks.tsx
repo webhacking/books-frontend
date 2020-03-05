@@ -184,10 +184,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
   return (
     <Item>
       <ThumbnailWrapper css={thumbnailOverrideStyle}>
-        <ItemAnchor
-          onClick={trackerEvent}
-          href={`/books/${item.b_id}`}
-        >
+        <ItemAnchor onClick={trackerEvent} href={`/books/${item.b_id}`}>
           <ThumbnailRenderer
             order={order}
             className={slug}
@@ -272,28 +269,28 @@ const List = styled.ul`
       margin-left: -10px;
     `,
   )};
-   ${between(
+  ${between(
     BreakPoint.M + 1,
     BreakPoint.MD,
     css`
-       justify-content: space-between;
-       margin-left: -10px;
-     `,
-  )}
-          ${between(
+      justify-content: space-between;
+      margin-left: -10px;
+    `,
+  )};
+  ${between(
     BreakPoint.MD + 1,
     BreakPoint.LG,
     css`
-              justify-content: space-between;
-              margin-left: -6px;
-            `,
+      justify-content: space-between;
+      margin-left: -6px;
+    `,
   )}
-          ${greaterThanOrEqualTo(
+  ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
     css`
-              left: -19px;
-              position: relative;
-            `,
+      left: -19px;
+      position: relative;
+    `,
   )}
 `;
 
