@@ -26,6 +26,7 @@ import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
+import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -220,22 +221,16 @@ const ItemList: React.FC<any> = (props) => {
                   slug={slug}
                   className={slug}
                   order={index}
-                  css={css`width: ${type === 'big' ? 80 : 50}px;`}
+                  css={css`
+                    width: ${type === 'big' ? 80 : 50}px;
+                  `}
                   sizes={type === 'big' ? '80px' : '50px'}
                   book={{ b_id: book.b_id, detail: book.detail }}
                   imgSize="large"
                   isIntersecting={isIntersecting}
                 >
                   {type === 'big' && (
-                    <div
-                      css={css`
-                        position: absolute;
-                        display: block;
-                        top: -7px;
-                        left: -7px;
-                        z-index: 2;
-                      `}
-                    >
+                    <BadgeContainer>
                       <BookBadgeRenderer
                         type={DisplayType.BestSeller}
                         isRentable={
@@ -246,7 +241,7 @@ const ItemList: React.FC<any> = (props) => {
                         isWaitFree={book.detail?.series?.property.is_wait_free}
                         discountPercentage={getMaxDiscountPercentage(book.detail)}
                       />
-                    </div>
+                    </BadgeContainer>
                   )}
                   {type === 'big' && (
                     <>

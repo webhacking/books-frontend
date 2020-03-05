@@ -33,6 +33,7 @@ import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { flexRowStart, scrollBarHidden } from 'src/styles';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
+import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -161,15 +162,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo((p
             book={{ b_id: book.b_id, detail: book.detail }}
             imgSize="large"
           >
-            <div
-              css={css`
-                position: absolute;
-                display: block;
-                top: -7px;
-                left: -7px;
-                z-index: 2;
-              `}
-            >
+            <BadgeContainer>
               <BookBadgeRenderer
                 type={type}
                 isRentable={
@@ -180,7 +173,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo((p
                 isWaitFree={book.detail?.series?.property.is_wait_free}
                 discountPercentage={getMaxDiscountPercentage(book.detail)}
               />
-            </div>
+            </BadgeContainer>
             <FreeBookRenderer
               freeBookCount={
                 book.detail?.series?.price_info?.rent?.free_book_count
@@ -353,9 +346,7 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo((props) => {
             css={css`
               display: flex;
             `}
-            href={
-              extra?.detail_link ?? `/selection/${selectionId}`
-            }
+            href={extra?.detail_link ?? `/selection/${selectionId}`}
           >
             <span>{title}</span>
             <span
