@@ -5,11 +5,9 @@ import makeStore from 'src/store/config';
 
 import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { appStateInitialState } from 'src/services/app/reducer';
 
 const store = makeStore(
   {
-    app: appStateInitialState,
     account: {
       loggedUser: null,
     },
@@ -59,7 +57,6 @@ test('should be render placeholder', async () => {
 
 const notificationStore = makeStore(
   {
-    app: appStateInitialState,
     account: {
       loggedUser: null,
     },

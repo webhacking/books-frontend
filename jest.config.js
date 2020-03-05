@@ -10,6 +10,7 @@ module.exports = {
   ],
   moduleNameMapper: {
     '\\.(css|less)$': 'identity-obj-proxy',
+    '\\.(jpg|png|webp|ico|ttf|otf|woff|woff2)$': '<rootDir>/src/tests/__mocks__/fileMock.ts',
     '\\.svg': '<rootDir>/src/tests/__mocks__/svgrMock.tsx',
   },
   coveragePathIgnorePatterns: ['/node_modules/'],
