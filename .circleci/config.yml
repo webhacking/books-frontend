@@ -97,11 +97,15 @@ jobs:
       stage:
         type: string
         default: production
+      assetPrefix:
+        type: string
+        default: books.ridicdn.net
       after-scripts:
         type: steps
         default: []
     environment:
       STAGE: << parameters.stage >>
+      ASSET_PREFIX: << parameters.assetPrefix >>
     steps:
       - checkout
       - attach_workspace:
@@ -178,6 +182,7 @@ workflows:
           aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
           s3-bucket: DEV_S3_BUCKET
           stage: development
+          assetPrefix: books.ridi.io
           after-scripts:
             - notify:
                 channel: deploy-store-dev
