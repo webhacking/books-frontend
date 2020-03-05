@@ -109,9 +109,9 @@ $ docker-compose -f ./docker-compose.cypress.yml up --force-recreate --build
 
 - You should be able to guess the issue by branch name.
 
-> ex)  
-> feat/add-background-color  
-> hotfix/fix-login-bug  
+> ex)
+> feat/add-background-color
+> hotfix/fix-login-bug
 > refactor/refactoring-layout-component
 
 ### FAQ
@@ -120,6 +120,31 @@ $ docker-compose -f ./docker-compose.cypress.yml up --force-recreate --build
 
 > https://docs.cypress.io/guides/overview/why-cypress.html#In-a-nutshell
 
-#### Custom routing
+---
 
-> Look `server/routes.js` and `https://github.com/fridays/next-routes`
+## Environment variables
+
+#### build time
+```
+ASSET_PREFIX
+  * next plugins
+STAGE
+  * dotenv
+  * CSP
+NODE_ENV
+  * next custom server
+  * SentryCliPlugin
+  * DefinePlugin
+NEXT_PUBLIC_*
+  * source codes
+```
+
+#### runtime
+```
+ASSET_PREFIX
+  * next/document
+NODE_ENV
+  * next custom server
+SERVERLESS
+  * next custom server
+```
