@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { act, render, cleanup, getAllByAltText, RenderResult, waitForElement } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-// @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { Provider } from 'react-redux';
 import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
