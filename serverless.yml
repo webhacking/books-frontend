@@ -17,8 +17,6 @@ package:
     - coverage/**
     - yarn.lock
     - tsconfig.json
-  include:
-    - src/utils/sentry.js
 
 provider:
   name: aws
@@ -31,9 +29,9 @@ provider:
     name: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
   # serverSideEncryption: AES256
   environment:
-    ENVIRONMENT: ${env:ENVIRONMENT}
-    SENTRY_DSN: ${env:SENTRY_DSN}
-    NODE_ENV: ${self:custom.secrets.NODE_ENV}
+    ASSET_PREFIX: ${env:ASSET_PREFIX}
+    SERVERLESS: true
+    NODE_ENV: 'production'
     NODE_PATH: './:/opt'
   iamRoleStatements:
     - Effect: 'Allow'
@@ -50,7 +48,7 @@ provider:
 functions:
   server:
     path: /
-    handler: server/index.handler
+    handler: server.handler
     warmup:
       enabled:
         - development
@@ -69,6 +67,7 @@ plugins:
   - serverless-offline
   - serverless-apigw-binary
   - serverless-plugin-warmup
+  - serverless-stage-manager
 
 custom:
   warmup:
@@ -78,6 +77,11 @@ custom:
     timeout: 20
     prewarm: true
     concurrency: 1
+
+  stages:
+    - development
+    - staging
+    - production
 
   stage: ${opt:stage, 'development'}
   secrets: ${file(secrets.json)}

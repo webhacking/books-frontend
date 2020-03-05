@@ -14,9 +14,10 @@ import * as BookApi from 'src/types/book';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import { authorsRenderer } from 'src/components/BookMeta/BookMeta';
+import recommendedBookBackground from 'src/assets/image/recommended_book_background@desktop.png';
 
 const backgroundImageCSS = css`
-  background: url(${`${publicRuntimeConfig.STATIC_CDN_URL}/static/image/recommended_book_background@desktop.png`})
+  background: url(${recommendedBookBackground})
     center center no-repeat #17202e;
   background-size: contain;
   ${orBelow(

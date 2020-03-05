@@ -3,12 +3,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import createSagaMiddleware, { Task } from 'redux-saga';
 import { rootReducers } from 'src/store/reducers';
-import { AppState } from 'src/services/app/reducer';
 import { ServerResponse } from 'http';
 
 import rootSaga from 'src/store/sagas';
 
-import { Router } from 'server/routes';
+import Router from 'next/router';
 import { initialState } from 'src/store/initialState';
 import {
   createRouterMiddleware,
@@ -21,7 +20,6 @@ import { CategoryState } from 'src/services/category/reducer';
 import { NotificationState } from 'src/services/notification/reducer';
 
 export interface RootState {
-  app?: AppState;
   router?: RouteState;
   account: AccountState;
   books: BooksState;
@@ -62,7 +60,7 @@ const makeStore = (
   const store = createStore(
     rootReducers,
     preLoadedState,
-    publicRuntimeConfig.STORE_HOST === 'https://ridibooks.com'
+    process.env.IS_PRODUCTION
       ? applyMiddleware(routerMiddleware, sagaMiddleware)
       : composeWithDevTools(applyMiddleware(routerMiddleware, sagaMiddleware)),
   );

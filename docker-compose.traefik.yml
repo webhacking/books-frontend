@@ -9,6 +9,9 @@ services:
       traefik:
         aliases:
           - books
+    environment:
+      - ASSET_PREFIX=https://books.local.ridi.io
+      - PORT=8081
     ports:
       - 8081
 networks:

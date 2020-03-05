@@ -14,13 +14,10 @@ export const useCartCount = (loggedUserInfo: LoggedUser) => {
     const cartRequestTokenSource = originalAxios.CancelToken.source();
     const requestCartCount = async () => {
       try {
-        const cartUrl = new URL(
-          '/api/cart/count',
-          publicRuntimeConfig.STORE_TEMP_API_HOST,
-        );
+        const cartUrl = `${process.env.NEXT_PUBLIC_LEGACY_STORE_API_HOST}/api/cart/count`;
 
         const result = await pRetry(
-          () => axios.get(cartUrl.toString(), {
+          () => axios.get(cartUrl, {
             withCredentials: true,
             cancelToken: cartRequestTokenSource.token,
             custom: { authorizationRequestType: OAuthRequestType.CHECK },

@@ -1,3 +1,6 @@
+import '@babel/polyfill/noConflict';
+import 'intersection-observer';
+
 import App, { AppContext } from 'next/app';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
@@ -21,7 +24,7 @@ import { cache } from 'emotion';
 import createCache from '@emotion/cache';
 
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
-import Meta from 'src/pages/Meta';
+import Meta from 'src/components/Meta';
 import sentry from 'src/utils/sentry';
 
 const { captureException } = sentry();

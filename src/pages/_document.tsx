@@ -35,7 +35,8 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
       enhanceComponent: (Component) => (props) => <Component {...props} />,
     });
     // @ts-ignore
-    const { locals } = context.res;
+    const { locals = { nonce: '' } } = context.res;
+
     const page = context.renderPage(locals.nonce);
 
     // @ts-ignore

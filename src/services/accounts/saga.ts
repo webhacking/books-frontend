@@ -6,7 +6,7 @@ import { checkLoggedIn } from 'src/services/accounts/request';
 import pRetry from 'p-retry';
 import { Actions } from 'immer-reducer';
 import { CancelTokenSource } from 'axios';
-import { configureScope } from '@sentry/node';
+import { configureScope } from '@sentry/browser';
 
 function* watchCheckLogged(action: Actions<typeof AccountReducer>) {
   try {

@@ -1,5 +1,5 @@
 import React, { AnchorHTMLAttributes } from 'react';
-import { Link } from 'server/routes';
+import Link from 'next/link';
 
 interface AnchorProps {
   // tslint:disable-next-line
@@ -13,7 +13,7 @@ interface AnchorProps {
 export const Anchor: React.FC<AnchorProps> = (props) => {
   if (!props.isPartials) {
     return (
-      <Link shallow={props.shallow} replace={props.replace} route={props.path}>
+      <Link shallow={props.shallow} replace={props.replace} href={props.path}>
         {props.children}
       </Link>
     );

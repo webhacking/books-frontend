@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": false,
     "sourceMap": true,
     "removeComments": true,
     "jsx": "preserve",
@@ -10,20 +10,46 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "target": "es3",
-    "lib": ["esnext", "dom", "dom.iterable"],
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable"
+    ],
     "outDir": "./dist/",
     "baseUrl": ".",
     "noUnusedParameters": false,
     "noUnusedLocals": false,
     "downlevelIteration": true,
     "paths": {
-      "src/*": ["./src/*"],
-      "server/*": ["./server/*"],
-      "@ridi/web-ui/dist/index.node": ["./node_modules/@ridi/web-ui/dist/index.d.ts"]
+      "src/*": [
+        "./src/*"
+      ],
+      "server/*": [
+        "./server/*"
+      ],
+      "@ridi/web-ui/dist/index.node": [
+        "./node_modules/@ridi/web-ui/dist/index.d.ts"
+      ]
     },
-    "typeRoots": ["./src/types", "node_modules/@types"]
+    "typeRoots": [
+      "./src/types",
+      "node_modules/@types"
+    ],
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "isolatedModules": true
   },
-  "files": ["./src/types/svg.d.ts", "src/types/global.d.ts"],
-  "include": ["src/**/*", "inapp/**/*"],
-  "exclude": ["node_modules/**/*"]
+  "files": [
+    "./src/types/svg.d.ts",
+    "src/types/global.d.ts"
+  ],
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules/**/*",
+    "**/tests/**/*"
+  ]
 }

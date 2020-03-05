@@ -2,8 +2,8 @@ import axios, { AxiosError } from 'axios';
 import { OAuthRequestType } from 'src/utils/axios';
 
 export const redirectOAuthLoginPage = () => {
-  const loginURL = new URL('/ridi/authorize/', publicRuntimeConfig.ACCOUNT_API);
-  loginURL.searchParams.append('client_id', publicRuntimeConfig.RIDI_OAUTH2_CLIENT_ID);
+  const loginURL = new URL('/ridi/authorize/', process.env.NEXT_PUBLIC_ACCOUNT_API);
+  loginURL.searchParams.append('client_id', process.env.NEXT_PUBLIC_RIDI_OAUTH2_CLIENT_ID);
   loginURL.searchParams.append('response_type', 'code');
   loginURL.searchParams.append('redirect_uri', location.href);
 
@@ -13,12 +13,12 @@ export const redirectOAuthLoginPage = () => {
 export const authorizeTokenFallback = async (rejectedError: AxiosError) => {
   await axios.get('/ridi/authorize/', {
     withCredentials: true,
-    baseURL: publicRuntimeConfig.ACCOUNT_API,
+    baseURL: process.env.NEXT_PUBLIC_ACCOUNT_API,
     custom: rejectedError.config.custom,
     params: {
-      client_id: publicRuntimeConfig.RIDI_OAUTH2_CLIENT_ID,
+      client_id: process.env.NEXT_PUBLIC_RIDI_OAUTH2_CLIENT_ID,
       response_type: 'code',
-      redirect_uri: new URL('/ridi/complete', publicRuntimeConfig.ACCOUNT_API).toString(),
+      redirect_uri: `${process.env.NEXT_PUBLIC_ACCOUNT_API}/ridi/complete`,
     },
   });
 
@@ -29,7 +29,7 @@ export const authorizeTokenFallback = async (rejectedError: AxiosError) => {
 export const refreshTokenFallback = async (rejectedError: AxiosError) => {
   try {
     await axios.post('/ridi/token', null, {
-      baseURL: publicRuntimeConfig.ACCOUNT_API,
+      baseURL: process.env.NEXT_PUBLIC_ACCOUNT_API,
       withCredentials: true,
       custom: rejectedError.config.custom,
     });
@@ -69,7 +69,7 @@ export const tokenInterceptor = (onRejected: AxiosError) => {
     return Promise.reject(onRejected);
   }
 
-  const tokenUrl = new URL('/ridi/token/', publicRuntimeConfig.ACCOUNT_API).toString();
+  const tokenUrl = `${process.env.NEXT_PUBLIC_ACCOUNT_API}/ridi/token/`;
   if (
     (response.status === 401 || response.status === 403)
     && response.config.url !== tokenUrl

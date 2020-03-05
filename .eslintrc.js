@@ -15,7 +15,6 @@ module.exports = {
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
-    publicRuntimeConfig: 'readonly',
   },
   plugins: ['jest'],
   rules: {
@@ -56,6 +55,10 @@ module.exports = {
     '@typescript-eslint/prefer-regexp-exec': 0,
     '@typescript-eslint/await-thenable': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
+    'import/extensions': [1, {
+      ts: 'never',
+      tsx: 'never',
+    }],
   },
   settings: {
     'import/resolver': {

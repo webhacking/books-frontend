@@ -9,7 +9,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 import NotFoundIcon from 'src/svgs/NotFound.svg';
 
-import Meta from 'src/pages/Meta';
+import Meta from 'src/components/Meta';
 
 const { captureException } = sentry();
 
@@ -20,6 +20,7 @@ interface CustomErrorProps extends ErrorProps {
 export default class ErrorPage extends React.Component<CustomErrorProps> {
   public static getInitialProps(context: NextPageContext) {
     const { res, req, err } = context;
+    const statusCode = res?.statusCode || err?.statusCode || 404;
 
     if (req && res && res.statusCode >= 400) {
       captureException(err || new Error(NextError[res.statusCode]), context);
@@ -29,7 +30,8 @@ export default class ErrorPage extends React.Component<CustomErrorProps> {
       captureException(err, context);
       return { statusCode: NextError.INTERNAL };
     }
-    return {};
+
+    return { statusCode };
   }
 
   public errorCodeRender() {

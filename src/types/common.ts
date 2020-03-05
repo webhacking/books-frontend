@@ -7,8 +7,3 @@ export interface ConnectedInitializeProps extends NextPageContext {
   req?: Request;
   isServer: boolean;
 }
-
-export interface PublicRuntimeConfig {
-  STATIC_CDN_URL: string;
-  SEARCH_API: string;
-}
