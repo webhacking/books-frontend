@@ -81,6 +81,10 @@ describe('Home Test', () => {
     });
     expect(handler).toBeCalledTimes(1);
     expect(handler.mock.calls[0][0]).toEqual('get');
+    expect(new URL(handler.mock.calls[0][1])).toHaveProperty(
+      'pathname',
+      '/pages/home-fantasy/',
+    );
 
     const { queryByText } = await renderComponent({ props, isPartials: false });
     expect(queryByText(/단행본/)).not.toBeNull();
