@@ -3,10 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const DotenvPlugin = require('dotenv-webpack');
 
-require('dotenv').config(process.env.STAGE === 'production' ? {
-  path: path.resolve(process.cwd(), '.env.production'),
-} : {});
-
 module.exports = (env, argv) => ({
   entry: {
     app: ['@babel/polyfill', './inapp/index.tsx'],
@@ -65,7 +61,7 @@ module.exports = (env, argv) => ({
       },
     }),
     new DotenvPlugin({
-      systemvars: true,
+      path: process.env.STAGE === 'production' ? './.env.production' : './.env',
     }),
   ],
   devServer: {
