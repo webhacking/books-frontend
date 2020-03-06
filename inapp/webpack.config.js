@@ -1,12 +1,11 @@
 const path = require('path');
-
-const webpack = require('webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const DotenvPlugin = require('dotenv-webpack');
 
-require('dotenv').config();
+require('dotenv').config(process.env.STAGE === 'production' ? {
+  path: path.resolve(process.cwd(), '.env.production'),
+} : {});
 
 module.exports = (env, argv) => ({
   entry: {
@@ -51,13 +50,12 @@ module.exports = (env, argv) => ({
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
-    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
-    alias: {
-      '@sentry/node': '@sentry/browser',
-    },
+    modules: [
+      path.resolve(__dirname, 'src'),
+      'node_modules',
+    ],
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: 'inapp/index.html',
       minify: {
@@ -68,7 +66,7 @@ module.exports = (env, argv) => ({
     }),
     new DotenvPlugin({
       systemvars: true,
-    }),    
+    }),
   ],
   devServer: {
     compress: true,
@@ -78,7 +76,7 @@ module.exports = (env, argv) => ({
     hot: true,
     open: false,
     port: 9000,
-  }, 
+  },
   devtool: 'cheap-source-map',
   optimization: {
     minimizer: [
