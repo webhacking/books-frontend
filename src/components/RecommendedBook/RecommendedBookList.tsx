@@ -21,6 +21,7 @@ import { displayNoneForTouchDevice } from 'src/styles';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
+import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 
 interface RecommendedBookListProps {
   items: TodayRecommendation[] | HotRelease[];
@@ -85,15 +86,7 @@ const ListItem = React.memo((props: ListItemProps) => {
             book={{ b_id: book.b_id, detail: book.detail }}
             imgSize="large"
           >
-            <div
-              css={css`
-                position: absolute;
-                display: block;
-                top: -7px;
-                left: -7px;
-                z-index: 2;
-              `}
-            >
+            <BadgeContainer>
               <BookBadgeRenderer
                 type={type}
                 isRentable={
@@ -104,7 +97,7 @@ const ListItem = React.memo((props: ListItemProps) => {
                 isWaitFree={book.detail?.series?.property.is_wait_free}
                 discountPercentage={getMaxDiscountPercentage(book.detail)}
               />
-            </div>
+            </BadgeContainer>
             <FreeBookRenderer
               freeBookCount={
                 book.detail?.series?.price_info?.rent?.free_book_count

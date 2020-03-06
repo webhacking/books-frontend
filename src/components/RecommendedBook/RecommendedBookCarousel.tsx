@@ -18,6 +18,7 @@ import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import SliderCarouselWrapper from 'src/components/Carousel/CarouselWrapper';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
+import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 
 const recommendedBookCarouselLoadingCSS = css`
   overflow: hidden;
@@ -161,15 +162,7 @@ const CarouselItem = React.memo((props: CarouselItemProps) => {
               book={{ b_id: book.b_id, detail: book.detail }}
               imgSize="large"
             >
-              <div
-                css={css`
-                  position: absolute;
-                  display: block;
-                  top: -7px;
-                  left: -7px;
-                  z-index: 2;
-                `}
-              >
+              <BadgeContainer>
                 <BookBadgeRenderer
                   type={type}
                   isRentable={
@@ -180,7 +173,7 @@ const CarouselItem = React.memo((props: CarouselItemProps) => {
                   isWaitFree={book.detail?.series?.property.is_wait_free}
                   discountPercentage={getMaxDiscountPercentage(book.detail)}
                 />
-              </div>
+              </BadgeContainer>
               <FreeBookRenderer
                 freeBookCount={
                   book.detail?.series?.price_info?.rent?.free_book_count
