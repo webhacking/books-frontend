@@ -1,18 +1,18 @@
-import ArrowV from 'src/svgs/ArrowV.svg';
-import { css, SerializedStyles } from '@emotion/core';
-import React, { FormEvent } from 'react';
+import { css, Interpolation } from '@emotion/core';
+import React from 'react';
 import { clearOutline } from 'src/styles';
+import ArrowV from 'src/svgs/ArrowV.svg';
 
 interface ArrowProps {
   side?: 'left' | 'right';
   color?: 'white' | 'dark';
-  wrapperStyle?: SerializedStyles | SerializedStyles[];
-  arrowStyle?: SerializedStyles;
+  wrapperStyle?: Interpolation;
+  className?: string;
   width?: string;
   height?: string;
   fill?: string;
   label: string;
-  onClickHandler?: (e: FormEvent) => void;
+  onClickHandler?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const defaultOpacity = css`
@@ -41,7 +41,7 @@ export const arrowTransition = css`
 
 const Arrow: React.FC<ArrowProps> = (props) => {
   const {
-    color, side, arrowStyle, onClickHandler,
+    color, side, wrapperStyle, onClickHandler,
   } = props;
   const handleClick = (e) => {
     e.preventDefault();
@@ -49,7 +49,6 @@ const Arrow: React.FC<ArrowProps> = (props) => {
   };
   const mergedStyle = [
     side === 'left' ? leftRotate : null,
-    arrowStyle,
     css`
       top: 1.5px;
       fill: ${color === 'dark' ? '#b8bfc4' : '#808991'};
@@ -57,7 +56,7 @@ const Arrow: React.FC<ArrowProps> = (props) => {
   ];
   return (
     <button
-      type="submit"
+      type="button"
       onClick={handleClick}
       css={[
         css`
@@ -69,8 +68,9 @@ const Arrow: React.FC<ArrowProps> = (props) => {
         `,
         clearOutline,
         defaultOpacity,
-        props.wrapperStyle,
+        wrapperStyle,
       ]}
+      className={props.className}
     >
       <ArrowV css={mergedStyle} />
 
