@@ -324,17 +324,16 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   const dispatch = useDispatch();
   const route = useRouter();
 
-  const [loginPath, setLoginPath] = useState('/');
-  const [signUpPath, setSignUpPath] = useState('/');
-  const [cashOrderPath, setCashOrderPath] = useState('/');
+  const [loginPath, setLoginPath] = useState(`${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/account/login`);
+  const [signUpPath, setSignUpPath] = useState(`${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/account/signup`);
+  const [cashOrderPath, setCashOrderPath] = useState(`${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/order/checkout/cash`);
 
   useEffect(() => {
     const params = new URLSearchParams();
     params.append('return_url', new URL(route.asPath, location.href).toString() || location.href);
 
-    setLoginPath(`${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/account/login?${params.toString()}`);
-    setSignUpPath(`${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/account/signup?${params.toString()}`);
-    setCashOrderPath(`${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/order/checkout/cash`);
+    setLoginPath(`${loginPath}?${params.toString()}`);
+    setSignUpPath(`${signUpPath}?${params.toString()}`);
   }, [route.asPath]);
 
   useEffect(() => {
