@@ -5,7 +5,6 @@ import CSP from 'src/components/Meta/CSP';
 import { render, cleanup, waitForElement } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-
 describe('testing Meta & Head', () => {
   afterEach(cleanup);
 
