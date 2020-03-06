@@ -23,6 +23,3 @@ describe('testing Meta & Head', () => {
   });
 
 });
-
-
-
