@@ -39,6 +39,7 @@ export default () => {
 
   if (!process.env.IS_PRODUCTION) {
     scriptSrc.push("'unsafe-eval'");
+    scriptSrc.push("'unsafe-inline'");
   } else {
     // styleSrc.push(nonce);
   }
@@ -67,7 +68,8 @@ export default () => {
             ...thirdPartyVendors,
             ...whiteList,
           ],
-          'report-uri': `https://sentry.io/api/1402572/security/?sentry_key=a0a997382844435fa6c89803ef6ce8e5&sentry_environment=${process.env.STAGE};`,
+          // <meta/> 에서 report-uri 는 동작하지 않습니다. https://developers.google.com/web/fundamentals/security/csp?hl=ko
+          // 'report-uri': `https://sentry.io/api/1402572/security/?sentry_key=a0a997382844435fa6c89803ef6ce8e5&sentry_environment=${process.env.STAGE};`,
         },
       })}
     />
