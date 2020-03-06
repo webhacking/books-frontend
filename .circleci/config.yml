@@ -71,7 +71,7 @@ jobs:
         default: production
       assetPrefix:
         type: string
-        default: books.ridicdn.net
+        default: https://books.ridicdn.net
     environment:
       STAGE: << parameters.stage >>
       ASSET_PREFIX: << parameters.assetPrefix >>
@@ -103,7 +103,7 @@ jobs:
         default: production
       assetPrefix:
         type: string
-        default: books.ridicdn.net
+        default: https://books.ridicdn.net
       after-scripts:
         type: steps
         default: []
@@ -139,7 +139,7 @@ jobs:
     parameters:
       url:
         type: string
-        default: 'https://ridibooks.com/'
+        default: https://ridibooks.com/
     steps:
       - checkout
       - install
@@ -178,7 +178,7 @@ workflows:
             branches:
               only: master
           stage: development
-          assetPrefix: books.ridi.io
+          assetPrefix: https://books-static.ridi.io
       - deploy:
           name: deploy-dev
           requires:
@@ -187,7 +187,7 @@ workflows:
           aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
           s3-bucket: DEV_S3_BUCKET
           stage: development
-          assetPrefix: books.ridi.io
+          assetPrefix: https://books-static.ridi.io
           after-scripts:
             - notify:
                 channel: deploy-store-dev
@@ -221,7 +221,7 @@ workflows:
           name: profile-live-prod
           requires:
             - deploy-prod
-          url: 'https://ridibooks.com/'
+          url: https://ridibooks.com/
       - rollback-approval:
           type: approval
           requires:
