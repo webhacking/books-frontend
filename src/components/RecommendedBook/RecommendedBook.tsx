@@ -1,6 +1,4 @@
 import React from 'react';
-import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
-import { View } from 'libreact/lib/View';
 import { css } from '@emotion/core';
 import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
 import styled from '@emotion/styled';
@@ -12,6 +10,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import * as BookApi from 'src/types/book';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
+import useIsTablet from 'src/hooks/useIsTablet';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import { authorsRenderer } from 'src/components/BookMeta/BookMeta';
 import recommendedBookBackground from 'src/assets/image/recommended_book_background@desktop.png';
@@ -240,6 +239,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = (props) => {
     theme, type, slug, genre,
   } = props;
   const [books] = useBookDetailSelector(props.items);
+  const isTablet = useIsTablet();
   return (
     <section
       css={[
@@ -277,30 +277,25 @@ const RecommendedBook: React.FC<RecommendedBookProps> = (props) => {
           {props.title}
         </span>
       </h2>
-      <WindowWidthQuery>
-        <View maxWidth={1000}>
-          <div>
-            <RecommendedBookList
-              type={props.type}
-              slug={slug}
-              items={books as HotRelease[]}
-              theme={theme}
-              genre={genre}
-            />
-          </div>
-        </View>
-        <View>
-          <div>
-            <RecommendedBookCarousel
-              type={props.type}
-              slug={slug}
-              genre={genre}
-              items={books as HotRelease[]}
-              theme={theme}
-            />
-          </div>
-        </View>
-      </WindowWidthQuery>
+      <div>
+        {isTablet ? (
+          <RecommendedBookList
+            type={props.type}
+            slug={slug}
+            items={books as HotRelease[]}
+            theme={theme}
+            genre={genre}
+          />
+        ) : (
+          <RecommendedBookCarousel
+            type={props.type}
+            slug={slug}
+            genre={genre}
+            items={books as HotRelease[]}
+            theme={theme}
+          />
+        )}
+      </div>
     </section>
   );
 };
