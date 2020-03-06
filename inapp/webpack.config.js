@@ -4,6 +4,9 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const DotenvPlugin = require('dotenv-webpack');
+
+require('dotenv').config();
 
 module.exports = (env, argv) => ({
   entry: {
@@ -63,6 +66,9 @@ module.exports = (env, argv) => ({
         minifyJS: argv.mode === 'production',
       },
     }),
+    new DotenvPlugin({
+      systemvars: true,
+    }),    
   ],
   devServer: {
     compress: true,
