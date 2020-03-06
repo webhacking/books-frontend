@@ -336,8 +336,8 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           normalIcon={<Notification_regular css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.notification}
-          path="/notification/"
-          pathRegexp={/^\/notification\/$/g}
+          path="/notification"
+          pathRegexp={/^\/notification$/g}
           addOn={hasNotification && (
             <NotificationAddOn />
           )}

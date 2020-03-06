@@ -27,6 +27,11 @@ const nextConfig = {
     redirects() {
       return [
         {
+          source: "/:path+/",
+          destination: "/:path+",
+          permanent: true,
+        },
+        {
           source: "/general/:path*",
           destination: "/:path*",
           permanent: true,
