@@ -324,11 +324,7 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           currentPath={currentPath}
           label={labels.mainTab.home}
           path="/"
-          pathRegexp={
-            // Hack, Apply lint
-            // eslint-disable-next-line require-unicode-regexp,prefer-named-capture-group
-            /(^[^/]*\/$|^(\/)(\/?\?{0}|\/?\?{1}.*)$|^\/(fantasy|romance|bl|bl-serial|fantasy-serial|romance-serial|comics)(\/.*$|$))/
-          }
+          pathRegexp={/^\/(romance|romance-serial|fantasy|fantasy-serial|bl|bl-serial|comics)?\/?$/}
         />
         <TabItem
           isPartials={isPartials}
@@ -337,7 +333,7 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           currentPath={currentPath}
           label={labels.mainTab.notification}
           path="/notification"
-          pathRegexp={/^\/notification$/g}
+          pathRegexp={/^\/notification\/?$/g}
           addOn={hasNotification && (
             <NotificationAddOn />
           )}
@@ -348,8 +344,8 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           normalIcon={<Cart_regular css={iconStyle} />}
           currentPath={currentPath}
           label={labels.mainTab.cart}
-          path="/cart/"
-          pathRegexp={/^\/cart\/$/gu}
+          path="/cart"
+          pathRegexp={/^\/cart\/?$/gu}
           addOn={
             cartCount > 0 && (
               <CartAddOnWrapper>
@@ -369,7 +365,7 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           currentPath={currentPath}
           label={labels.mainTab.myRidi}
           path="/account/myridi"
-          pathRegexp={/^\/account\/myridi$/gu}
+          pathRegexp={/^\/account\/myridi\/?$/gu}
         />
       </Tabs>
     </>
