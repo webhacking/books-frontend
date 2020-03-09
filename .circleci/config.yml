@@ -151,6 +151,37 @@ jobs:
             node ~/books-frontend/profile/live.js '<< parameters.url >>'
       - store_artifacts:
           path: /tmp/traces
+  lhci:
+    docker:
+      - image: circleci/node:10.16-browsers
+    working_directory: ~/books-frontend
+    parameters:
+      url:
+        type: string
+        default: https://ridibooks.com/
+      lhci-github-app-token:
+        type: env_var_name
+        default: LHCI_GITHUB_APP_TOKEN
+      lhci-server-base-url:
+        type: env_var_name
+        default: LHCI_SERVER_BASE_URL
+      lhci-project-token:
+        type: env_var_name
+        default: LHCI_PROJECT_TOKEN
+    steps:
+      - checkout
+      - run:
+          name: run lhci
+          command: |
+            yarn add @lhci/cli
+            echo << parameters.lhci-server-base-url >>
+            echo << parameters.lhci-project-token >>
+            echo ${<< parameters.lhci-server-base-url >>}
+            echo ${<< parameters.lhci-project-token >>}
+            ./node_modules/.bin/lhci autorun
+            ./node_modules/.bin/lhci upload --serverBaseUrl=${LHCI_SERVER_BASE_URL} --target lhci --token ${LHCI_PROJECT_TOKEN}
+      - store_artifacts:
+          path: /tmp/lhci
   rollback:
     docker:
       - image: circleci/node:lts
@@ -233,3 +264,14 @@ workflows:
             - notify:
                 color: '#805b24'
                 rollback: true
+  nightly:
+    triggers:
+      - schedule:
+          cron: "* * * * *"
+          filters:
+            branches:
+              only:
+                - fix/lighthouse-ci
+    jobs:
+      - lhci:
+          name: Lighthouse-CI
