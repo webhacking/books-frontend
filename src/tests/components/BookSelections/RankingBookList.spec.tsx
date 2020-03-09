@@ -1,37 +1,53 @@
 import * as React from 'react';
 import { act, render, cleanup, getAllByAltText, RenderResult, waitForElement } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+// @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { Provider } from 'react-redux';
-import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
 import { defaultTheme } from 'src/styles';
 import makeStore from 'src/store/config';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
+import RankingBookList from 'src/components/BookSections/RankingBook/RankingBookList';
+import fixture from './rankingbook.fixture.json';
 
 afterEach(cleanup);
 const store = makeStore(
   {
     books: {
-      itmes: {
-        '12345666': {
-          b_id: '12345666'
-        }
+      items: {
+        '3306000063': {
+          id: '3306000063',
+          title: {
+            main: '도서 표지',
+          },
+          property: {
+            is_adult_only: true,
+            is_somedeal: true,
+            is_novel: false,
+
+          },
+          file: {
+            is_comic: true,
+            is_comic_hd: true,
+          },
+          authors: [{name: 'Ridi', id: '1', role: 'author'}]
+        },
       },
       isFetching: false,
     },
   },
   { asPath: 'test', isServer: false },
 );
-const renderSelectionBookList = () =>
+const renderRankingBookList = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
       <Provider store={store}>
         <ViewportIntersectionProvider>
-          <SelectionBookList
-            isAIRecommendation={false}
+          <RankingBookList
+            {...fixture}
             items={[
               {
-                b_id: '12345666',
+                b_id: '3306000063',
                 type: 'test',
                 detail: {
                   title: { main: '도서 표지' },
@@ -55,7 +71,7 @@ function actRender(renderFunction: () => RenderResult) {
   return ret;
 }
 
-describe('test SelectionBookContainer', () => {
+describe('test RankingBookList', () => {
   let originalIO: typeof IntersectionObserver;
 
   // simulate non-IO environment
@@ -68,9 +84,9 @@ describe('test SelectionBookContainer', () => {
     window.IntersectionObserver = originalIO;
   });
 
-  it('should be render SelectionBookList item', async () => {
-    const { container } = actRender(renderSelectionBookList);
-    const item = await waitForElement(() => getAllByAltText(container, '도서 표지'));
-    expect(item).not.toBe(null);
+  it('should be render RankingBookList item', async () => {
+    const { container } = actRender(renderRankingBookList);
+    const itemNode = await waitForElement(() => getAllByAltText(container, '도서 표지'));
+    expect(itemNode).not.toBe(null);
   });
 });

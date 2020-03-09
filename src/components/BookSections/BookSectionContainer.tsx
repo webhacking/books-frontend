@@ -39,7 +39,7 @@ const titleCSS = css`
     }
   }
 `;
-// Fixme isn't same ? SectionBookTitle
+
 export const RankingBookTitle = styled.h2`
   ${fontStyle};
   max-width: 1000px;
@@ -47,6 +47,16 @@ export const RankingBookTitle = styled.h2`
   margin-bottom: 20px;
   padding-top: 6px;
   ${titleCSS};
+  > a {
+    display: flex;
+    align-items: center;
+    > * {
+      flex: none;
+    }
+    > img {
+      margin-left: 7.8px;
+    }
+  }
 `;
 
 export const SectionTitle = styled.h2`
