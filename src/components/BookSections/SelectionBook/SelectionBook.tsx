@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useEffect, useRef, useState,
+  useCallback, useRef, useState,
 } from 'react';
 import styled from '@emotion/styled';
 import {
@@ -8,7 +8,6 @@ import {
   MdBook,
   SectionExtra,
 } from 'src/types/sections';
-import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import SelectionBookList, {
   loadingItemCSS,
 } from 'src/components/BookSections/SelectionBook/SelectionBookList';
@@ -23,6 +22,7 @@ import {
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import ArrowV from 'src/svgs/ArrowV.svg';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
+import useIsTablet from 'src/hooks/useIsTablet';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
@@ -324,13 +324,9 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo((props) => {
   const {
     genre, type, slug, title, extra, selectionId,
   } = props;
-  const [, setMounted] = useState(false);
 
   const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isTablet = useIsTablet();
 
   // Todo
   // const handleExceptAIRecommendation = (bId: string) => {
@@ -361,31 +357,26 @@ const SelectionBook: React.FC<SelectionBookProps> = React.memo((props) => {
           <span>{title}</span>
         )}
       </SectionTitle>
-      <WindowWidthQuery>
-        <View maxWidth={1000}>
-          <div>
-            <SelectionBookList
-              slug={slug}
-              type={type}
-              genre={genre}
-              isAIRecommendation={props.option.isAIRecommendation}
-              items={books}
-            />
-          </div>
-        </View>
-        <View>
-          <div>
-            <SelectionBookCarousel
-              type={type}
-              slug={slug}
-              genre={genre}
-              isAIRecommendation={props.option.isAIRecommendation}
-              items={books}
-              bookFetching={isFetching}
-            />
-          </div>
-        </View>
-      </WindowWidthQuery>
+      <div>
+        {isTablet ? (
+          <SelectionBookList
+            slug={slug}
+            type={type}
+            genre={genre}
+            isAIRecommendation={props.option.isAIRecommendation}
+            items={books}
+          />
+        ) : (
+          <SelectionBookCarousel
+            type={type}
+            slug={slug}
+            genre={genre}
+            isAIRecommendation={props.option.isAIRecommendation}
+            items={books}
+            bookFetching={isFetching}
+          />
+        )}
+      </div>
     </SectionWrapper>
   );
 });

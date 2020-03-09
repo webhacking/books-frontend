@@ -6,9 +6,9 @@ import { GenreTab } from 'src/components/Tabs';
 import PageTitle from 'src/components/PageTitle/PageTitle';
 import { css } from '@emotion/core';
 import Desktop from 'src/components/CategoryList/Desktop';
-import { View, WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
 import Mobile from 'src/components/CategoryList/Mobile';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import useIsTablet from 'src/hooks/useIsTablet';
 
 export interface Category {
   id: number;
@@ -313,9 +313,20 @@ const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = (p
   const [categoryList] = useState(
     props.categoryList || { general: [], curatedCategory: [] },
   );
+  const isTablet = useIsTablet();
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  function renderCategory() {
+    if (!isMounted) {
+      return <div />;
+    }
+    if (isTablet) {
+      return <Mobile categoryList={categoryList}>hey...</Mobile>;
+    }
+    return <Desktop categoryList={categoryList} />;
+  }
   return (
     <>
       <Head>
@@ -324,18 +335,7 @@ const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = (p
       <GenreTab currentGenre="general" />
       <section css={sectionCSS}>
         <PageTitle title="카테고리" mobileHidden />
-        {isMounted ? (
-          <WindowWidthQuery>
-            <View maxWidth={1000}>
-              <Mobile categoryList={categoryList}>hey...</Mobile>
-            </View>
-            <View>
-              <Desktop categoryList={categoryList} />
-            </View>
-          </WindowWidthQuery>
-        ) : (
-          <div />
-        )}
+        {renderCategory()}
       </section>
     </>
   );

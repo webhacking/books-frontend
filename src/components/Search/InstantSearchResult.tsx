@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { css } from '@emotion/core';
-import { View } from 'libreact/lib/View';
-import { WindowWidthQuery } from 'libreact/lib/WindowWidthQuery';
-import { lineClamp, RIDITheme } from 'src/styles';
 import styled from '@emotion/styled';
 import * as colors from '@ridi/colors';
+
+import { lineClamp, RIDITheme } from 'src/styles';
 import { getEscapedString } from 'src/utils/highlight';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
+import useIsTablet from 'src/hooks/useIsTablet';
+
 import {
   AuthorInfo as AuthorInfoScheme,
   InstantSearchAuthorResultScheme,
@@ -128,7 +129,7 @@ const BookMeta = styled.div`
   flex-direction: column;
   align-items: start;
   text-align: left;
-  justify-content: center;  
+  justify-content: center;
 `;
 
 const BookTitle = styled.span`
@@ -137,7 +138,7 @@ const BookTitle = styled.span`
   word-break: keep-all;
   margin-right: 4px;
   margin-bottom: 3px;
-  color: #252525; 
+  color: #252525;
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
     css`
@@ -278,20 +279,39 @@ const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = (
 
 const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) => {
   const { result, handleKeyDown, handleClickBookItem } = props;
+  const isTablet = useIsTablet();
 
   return (
-    <>
-      <ul>
-        {result.books.map((book: InstantSearchBookResultScheme, index) => (
-          <BookListItem data-book-id={book.b_id} key={index}>
-            <BookListItemButton
-              type="button"
-              data-book-id={book.b_id}
-              onKeyDown={handleKeyDown}
-              onClick={handleClickBookItem}
-            >
-              <WindowWidthQuery>
-                <View maxWidth={1000}>
+    <ul>
+      {result.books.map((book: InstantSearchBookResultScheme, index) => (
+        <BookListItem data-book-id={book.b_id} key={index}>
+          <BookListItemButton
+            type="button"
+            data-book-id={book.b_id}
+            onKeyDown={handleKeyDown}
+            onClick={handleClickBookItem}
+          >
+            {isTablet ? (
+              <>
+                <BookTitle
+                  dangerouslySetInnerHTML={{
+                    __html: getEscapedString(
+                      book.highlight.web_title_title_raw || book.web_title_title_raw,
+                    ),
+                  }}
+                />
+                <AuthorLabel author={book.author} authors={book.authors_info} />
+                <AuthorPublisher>{book.publisher}</AuthorPublisher>
+              </>
+            ) : (
+              <ItemWrapper>
+                <BookThumbnail
+                  alt={book.web_title_title}
+                  width="38px"
+                  height="58px"
+                  src={`https://img.ridicdn.net/cover/${book.b_id}/small`}
+                />
+                <BookMeta>
                   <BookTitle
                     dangerouslySetInnerHTML={{
                       __html: getEscapedString(
@@ -299,38 +319,17 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) 
                       ),
                     }}
                   />
-                  <AuthorLabel author={book.author} authors={book.authors_info} />
-                  <AuthorPublisher>{book.publisher}</AuthorPublisher>
-                </View>
-                <View>
-                  <ItemWrapper>
-                    <BookThumbnail
-                      alt={book.web_title_title}
-                      width="38px"
-                      height="58px"
-                      src={`https://img.ridicdn.net/cover/${book.b_id}/small`}
-                    />
-                    <BookMeta>
-                      <BookTitle
-                        dangerouslySetInnerHTML={{
-                          __html: getEscapedString(
-                            book.highlight.web_title_title_raw || book.web_title_title_raw,
-                          ),
-                        }}
-                      />
-                      <BookAuthors>
-                        <AuthorLabel author={book.author} authors={book.authors_info} />
-                        <AuthorPublisher>{book.publisher}</AuthorPublisher>
-                      </BookAuthors>
-                    </BookMeta>
-                  </ItemWrapper>
-                </View>
-              </WindowWidthQuery>
-            </BookListItemButton>
-          </BookListItem>
-        ))}
-      </ul>
-    </>
+                  <BookAuthors>
+                    <AuthorLabel author={book.author} authors={book.authors_info} />
+                    <AuthorPublisher>{book.publisher}</AuthorPublisher>
+                  </BookAuthors>
+                </BookMeta>
+              </ItemWrapper>
+            )}
+          </BookListItemButton>
+        </BookListItem>
+      ))}
+    </ul>
   );
 });
 
@@ -343,6 +342,7 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo((prop
     handleKeyDown,
   } = props;
   const wrapperRef = React.useRef<HTMLDivElement>();
+  const isTablet = useIsTablet();
   useEffect(() => {
     if (wrapperRef.current && !!focusedPosition) {
       const items = wrapperRef.current.querySelectorAll('li button');
@@ -368,16 +368,13 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo((prop
                   onKeyDown={handleKeyDown}
                   onClick={handleClickAuthorItem}
                 >
-                  <WindowWidthQuery>
-                    <View maxWidth={1000}>
+                  {isTablet ? (
+                    <AuthorInfo author={author} />
+                  ) : (
+                    <ItemWrapper>
                       <AuthorInfo author={author} />
-                    </View>
-                    <View>
-                      <ItemWrapper>
-                        <AuthorInfo author={author} />
-                      </ItemWrapper>
-                    </View>
-                  </WindowWidthQuery>
+                    </ItemWrapper>
+                  )}
                 </AuthorListItemButton>
               </AuthorListItem>
             ))}
