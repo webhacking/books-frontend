@@ -7,7 +7,7 @@ import { RankingBookTitle } from 'src/components/BookSections/BookSectionContain
 import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
-import Clock from 'src/svgs/Clock.svg';
+
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { createTimeLabel } from 'src/utils/dateTime';
 import {
@@ -26,7 +26,7 @@ import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
-import { VERTICAL_RIGHT_ARROW_ICON_URL } from 'src/constants/icons';
+import { CLOCK_ICON_URL, VERTICAL_RIGHT_ARROW_ICON_URL } from 'src/constants/icons';
 import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 
 const SectionWrapper = styled.section`
@@ -114,7 +114,7 @@ const Timer: React.FC = () => {
   }, [label, setLabel]);
   return (
     <TimerWrapper opacity={!label ? 0 : 1}>
-      <Clock />
+      <img src={CLOCK_ICON_URL} height={12} width={12} alt="현재 시각" />
       <span>{label}</span>
     </TimerWrapper>
   );

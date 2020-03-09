@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { act, render, cleanup, getAllByAltText, RenderResult } from '@testing-library/react';
+import { act, render, cleanup, getAllByAltText, RenderResult, waitForElement } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
@@ -38,7 +38,7 @@ const store = makeStore(
   },
   { asPath: 'test', isServer: false },
 );
-const renderSelectionBookList = () =>
+const renderRankingBookList = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
       <Provider store={store}>
@@ -71,7 +71,7 @@ function actRender(renderFunction: () => RenderResult) {
   return ret;
 }
 
-describe('test SelectionBookContainer', () => {
+describe('test RankingBookList', () => {
   let originalIO: typeof IntersectionObserver;
 
   // simulate non-IO environment
@@ -84,9 +84,9 @@ describe('test SelectionBookContainer', () => {
     window.IntersectionObserver = originalIO;
   });
 
-  it('should be render SelectionBookList item', () => {
-    const { container } = actRender(renderSelectionBookList);
-    const itemNode = getAllByAltText(container, '도서 표지');
+  it('should be render RankingBookList item', async () => {
+    const { container } = actRender(renderRankingBookList);
+    const itemNode = await waitForElement(() => getAllByAltText(container, '도서 표지'));
     expect(itemNode).not.toBe(null);
   });
 });
