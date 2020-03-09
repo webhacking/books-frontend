@@ -153,7 +153,7 @@ jobs:
           path: /tmp/traces
   lhci:
     docker:
-      - image: circleci/node:10.16-browsers
+      - image: circleci/node:lts-browsers
     working_directory: ~/books-frontend
     parameters:
       url:
