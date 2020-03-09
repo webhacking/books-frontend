@@ -171,13 +171,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: run lhci
+          name: Run Lighthouse CI
           command: |
             yarn add @lhci/cli
-            echo << parameters.lhci-server-base-url >>
-            echo << parameters.lhci-project-token >>
-            echo ${<< parameters.lhci-server-base-url >>}
-            echo ${<< parameters.lhci-project-token >>}
             ./node_modules/.bin/lhci autorun
             ./node_modules/.bin/lhci upload --serverBaseUrl=${LHCI_SERVER_BASE_URL} --target lhci --token ${LHCI_PROJECT_TOKEN}
       - store_artifacts:
@@ -267,11 +263,11 @@ workflows:
   nightly:
     triggers:
       - schedule:
-          cron: "* * * * *"
+          cron: "0 0 * * *"
           filters:
             branches:
               only:
-                - fix/lighthouse-ci
+                - master
     jobs:
       - lhci:
           name: Lighthouse-CI
