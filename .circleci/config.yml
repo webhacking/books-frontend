@@ -249,6 +249,10 @@ workflows:
           requires:
             - deploy-prod
           url: https://ridibooks.com/
+      - lhci:
+          name: Lighthouse-CI
+          requires:
+            - deploy-prod
       - rollback-approval:
           type: approval
           requires:
