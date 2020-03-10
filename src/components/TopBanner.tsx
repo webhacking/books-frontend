@@ -282,6 +282,14 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
     setInactiveScale(isDesktop ? DESKTOP_INACTIVE_SCALE : 1);
   }, [isDesktop]);
 
+  const [isMobile, setMobile] = React.useState(true);
+  React.useEffect(() => {
+    const device = getDeviceType();
+    if (!['mobile', 'tablet'].includes(device)) {
+      setMobile(false);
+    }
+  }, []);
+
   // 터치 핸들링
   const wrapperRef = React.useRef<HTMLDivElement>();
   const touchRef = React.useRef(null);
@@ -434,25 +442,27 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
           </SlideBadge>
         </CarouselController>
       </CarouselControllerWrapper>
-      <CarouselControllerWrapper>
-        <ArrowWrapper>
-          <Arrow
-            side="left"
-            onClickHandler={handleLeftClick}
-            label="이전 배너 보기"
-            css={arrowStyle}
-          />
-        </ArrowWrapper>
-        <CarouselController itemWidth={width} />
-        <ArrowWrapper>
-          <Arrow
-            onClickHandler={handleRightClick}
-            side="right"
-            label="다음 배너 보기"
-            css={arrowStyle}
-          />
-        </ArrowWrapper>
-      </CarouselControllerWrapper>
+      {!isMobile && (
+        <CarouselControllerWrapper>
+          <ArrowWrapper>
+            <Arrow
+              side="left"
+              onClickHandler={handleLeftClick}
+              label="이전 배너 보기"
+              css={arrowStyle}
+            />
+          </ArrowWrapper>
+          <CarouselController itemWidth={width} />
+          <ArrowWrapper>
+            <Arrow
+              onClickHandler={handleRightClick}
+              side="right"
+              label="다음 배너 보기"
+              css={arrowStyle}
+            />
+          </ArrowWrapper>
+        </CarouselControllerWrapper>
+      )}
     </CarouselWrapper>
   );
 }
