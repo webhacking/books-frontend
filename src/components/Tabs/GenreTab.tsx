@@ -8,8 +8,7 @@ import { orBelow } from 'src/utils/mediaQuery';
 import { useRouter } from 'next/router';
 import * as Cookies from 'js-cookie';
 import { safeJSONParse } from 'src/utils/common';
-// import { useSelector } from 'react-redux';
-// import { RootState } from 'src/store/config';
+
 const GenreTabWrapper = styled.ul`
   max-width: 1000px;
   margin: 0 auto;
@@ -382,7 +381,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
                 }
               }
             `
-        : props.labelCSS(theme)}
+        : props.labelCSS(theme)};
       `}
     >
       <a
@@ -445,19 +444,6 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
     fantasy: '/fantasy',
     bl: '/bl',
   });
-  // let book = null;
-  // // @ts-ignore
-  // if (props.hasBookId) {
-  //   console.log((/(\/v2\/Detail\?id=|\/books\/)\d{9,11}$/));
-  //   const bookId = props.bookPath.match(/\d{9,11}/g)[0] || null;
-  //   if (bookId) {
-  //     book = useSelector((state: RootState) => state.books.items[bookId]);
-  //     // eslint-disable-next-line no-empty
-  //   } else {
-  //
-  //   }
-  //   console.log(book);
-  // }
 
   useEffect(() => {
     const latestSubService = safeJSONParse(localStorage.getItem('latest_sub_service'), {
@@ -555,7 +541,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
             <li
               css={css`
                 outline: none;
-                ${router.query?.pathname?.toString().startsWith('/category/list')
+                ${router.asPath.startsWith('/category/list')
                 ? css`
                       :hover {
                         opacity: 1 !important;
@@ -577,7 +563,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
                   <GNBCategory
                     css={(theme: RIDITheme) => css`
                       ${iconCSS(theme)};
-                      ${router.query?.pathname?.toString().startsWith('/category/list')
+                      ${router.asPath.startsWith('/category/list')
                       ? css`
                             fill: ${theme.primaryColor};
                           `
@@ -592,14 +578,8 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
               normalCSS={normal}
               currentCSS={genreTab}
               labelCSS={genreTabLabelCSS}
-              currentPath={
-                // Todo refactor
-                router.pathname === '/'
-                && router.route === '/'
-                && router.asPath.split('?')[0] === '/'
-                && '/'
-              }
-              activePath={['/']}
+              currentPath={router.asPath}
+              activePath={['/', '']}
               label="일반"
               route="/"
               isPartial={isPartials}
@@ -608,7 +588,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
               normalCSS={normal}
               currentCSS={genreTab}
               labelCSS={genreTabLabelCSS}
-              currentPath={router?.query?.genre?.toString()}
+              currentPath={router.asPath}
               activePath={[
                 '/romance',
                 '/romance-serial',
@@ -625,7 +605,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
               normalCSS={normal}
               currentCSS={genreTab}
               labelCSS={genreTabLabelCSS}
-              currentPath={router?.query?.genre?.toString()}
+              currentPath={router.asPath}
               activePath={[
                 '/fantasy',
                 '/fantasy-serial',
@@ -642,7 +622,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
               normalCSS={normal}
               currentCSS={genreTab}
               labelCSS={genreTabLabelCSS}
-              currentPath={router?.query?.genre?.toString()}
+              currentPath={router.asPath}
               activePath={['/comics', '/comics/', 'comics']}
               label="만화"
               route="/comics"
@@ -652,7 +632,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
               normalCSS={normal}
               currentCSS={genreTab}
               labelCSS={genreTabLabelCSS}
-              currentPath={router?.query?.genre?.toString()}
+              currentPath={router.asPath}
               activePath={['/bl', '/bl-serial', '/bl/', '/bl-serial/', 'bl', 'bl-serial']}
               label="BL"
               route={latestSubServices.bl || '/bl'}
@@ -674,7 +654,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
                     normalCSS={normal}
                     currentCSS={subServiceTab}
                     labelCSS={subServiceTabLabelCSS}
-                    currentPath={router?.query?.genre?.toString()}
+                    currentPath={router.asPath}
                     activePath={service.activePaths}
                     label={service.name}
                     isPartial={isPartials}
