@@ -80,7 +80,6 @@ export const bookMetaWrapperCSS = css`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-left: 7px;
 `;
 
 export const BookTitle = styled.h2`
@@ -184,32 +183,11 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
 
 type RecommendedBookType = TodayRecommendation[] | HotRelease[];
 
-interface RecommendedBookLoadingProps {
-  type: DisplayType;
-  books: RecommendedBookType;
-  isIntersecting: boolean;
-  theme: 'dark' | 'white';
-}
-
-const dummyBook = {
-  b_id: '',
-  rating: {
-    buyer_rating_score: 0,
-    buyer_rating_count: 0,
-    total_rating_count: 0,
-  },
-  detail: null,
-  type: '',
-  order: 0,
-  sentence: '',
-};
-
 export const sentenceStyle = css`
   line-height: 16px;
   text-align: center;
   font-weight: bold;
   white-space: nowrap;
-  left: 7px;
   margin-top: 2px;
   font-size: 0.84em;
 
@@ -235,9 +213,7 @@ interface RecommendedBookProps {
 }
 
 const RecommendedBook: React.FC<RecommendedBookProps> = (props) => {
-  const {
-    theme, type, slug, genre,
-  } = props;
+  const { theme, slug, genre } = props;
   const [books] = useBookDetailSelector(props.items);
   const isTablet = useIsTablet();
   return (

@@ -9,29 +9,11 @@ export const PortraitBook = styled.li`
   min-width: 140px;
   width: 140px;
 
-  :first-of-type {
-    margin-right: 23px;
-  }
-  :last-of-type {
-    padding-right: 20px;
-  }
-  :not(:last-of-type) {
-    margin-right: 23px;
-  }
   ${orBelow(
     BreakPoint.MD,
     css`
       min-width: 100px;
       width: 100px;
-      :first-of-type {
-        //padding-left: 16px;
-      }
-      :last-of-type {
-        padding-right: 24px;
-      }
-      :not(:last-of-type) {
-        margin-right: 12px;
-      }
     `,
   )}
   ${between(
@@ -40,15 +22,6 @@ export const PortraitBook = styled.li`
     css`
       min-width: 100px;
       width: 100px;
-      :first-of-type {
-        //padding-left: 16px;
-      }
-      :last-of-type {
-        padding-right: 24px;
-      }
-      :not(:last-of-type) {
-        margin-right: 20px;
-      }
     `,
   )};
 `;
@@ -60,30 +33,11 @@ export const RecommendedPortraitBook = styled.li`
   min-width: 140px;
   width: 140px;
 
-  :first-of-type {
-    margin-right: 22px;
-  }
-  :last-of-type {
-    padding-right: 20px;
-  }
-  :not(:last-of-type) {
-    margin-right: 22px;
-  }
-
   ${orBelow(
     BreakPoint.LG,
     css`
       min-width: 100px;
       width: 100px;
-      :first-of-type {
-        //padding-left: 16px;
-      }
-      :last-of-type {
-        padding-right: 24px;
-      }
-      :not(:last-of-type) {
-        margin-right: 12px;
-      }
     `,
   )}
 `;
