@@ -10,7 +10,6 @@ import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper'
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { css } from '@emotion/core';
-import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
@@ -50,24 +49,18 @@ const ListItem = React.memo((props: ListItemProps) => {
       css={[
         props.type === DisplayType.HotRelease
           ? css`
-              margin-right: 12px !important;
-              @media (min-width: 834px) {
-                margin-right: 20px !important;
-              }
-              @media (min-width: 1000px) {
-                margin-right: inherit !important;
-              }
-            `
+            margin-right: 12px;
+            @media (min-width: 834px) {
+              margin-right: 20px;
+            }
+            @media (min-width: 1000px) {
+              margin-right: inherit !important;
+            }
+          `
           : css`
-              margin-right: 30px !important;
-              :last-of-type {
-                padding-right: 35px !important;
-              }
-              @media (min-width: 1000px) {
-                margin-right: inherit !important;
-                padding-right: inherit !important;
-              }
-            `,
+            align-items: center;
+            margin-right: 30px;
+          `,
       ]}
     >
       <a
@@ -119,7 +112,7 @@ const ListItem = React.memo((props: ListItemProps) => {
             css`
               padding-left: 0;
               position: relative;
-              margin-top: 2px;
+              margin-top: 10px;
               ${sentenceStyle}
             `,
             theme === 'dark'
@@ -180,10 +173,10 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
             : recommendedBookListCSS,
           type === DisplayType.TodayRecommendation
             ? css`
-                padding-left: 23px !important;
+                padding-left: 35px;
               `
             : css`
-                padding-left: 13px !important;
+                padding-left: 13px;
               `,
         ]}
       >
@@ -202,7 +195,10 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
                 z-index: 2;
                 position: absolute;
                 transition: opacity 0.2s;
-                top: ${getArrowVerticalCenterPosition(type === DisplayType.HotRelease ? 30 : 0)};
+                top: 88px;
+                @media (max-width: 999px) {
+                  top: 72px;
+                }
               `,
               !isOnTheLeft && arrowTransition,
             ]}
@@ -218,7 +214,10 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
                 right: 9px;
                 position: absolute;
                 transition: opacity 0.2s;
-                top: ${getArrowVerticalCenterPosition(type === DisplayType.HotRelease ? 30 : 0)};
+                top: 88px;
+                @media (max-width: 999px) {
+                  top: 72px;
+                }
               `,
               !isOnTheRight && arrowTransition,
             ]}

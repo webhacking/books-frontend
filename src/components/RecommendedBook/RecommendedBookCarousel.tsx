@@ -104,7 +104,7 @@ const CarouselItem = React.memo((props: CarouselItemProps) => {
             css`
               padding-left: 0;
               position: relative;
-              margin-top: 2px;
+              margin-top: 10px;
               ${sentenceStyle};
             `,
             theme === 'dark'
@@ -171,7 +171,6 @@ const RecommendedBookCarousel = React.memo((
         currentIdx={currentIdx}
         itemWidth={140}
         itemMargin={22}
-        css={css`margin-left: auto; margin-right: auto;`}
       >
         {({ index }) => (
           <CarouselItem

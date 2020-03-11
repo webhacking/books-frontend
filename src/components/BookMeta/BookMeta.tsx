@@ -24,9 +24,9 @@ const bookTitleCSS = css`
 `;
 
 const bookMetaCSS = css`
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  padding-left: 7px;
   transition: opacity 0.2s ease-in-out;
 `;
 
@@ -116,9 +116,9 @@ export const authorsRenderer = (authors: BookApi.Author[]) => {
         ))}
         <span>
           {' '}
-외
+          외
           {authors.length - 2}
-명
+          명
         </span>
       </>
     );

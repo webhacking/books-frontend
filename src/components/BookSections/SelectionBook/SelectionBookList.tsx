@@ -15,6 +15,8 @@ import { DeviceTypeContext } from 'src/components/Context/DeviceType';
 import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
 
 export const listCSS = css`
+  padding-top: 7px;
+  padding-left: 7px;
   box-sizing: content-box;
   overflow: auto;
   overflow-y: hidden;

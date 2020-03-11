@@ -1,29 +1,21 @@
 import styled from '@emotion/styled';
-import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import { css } from '@emotion/core';
+import { BreakPoint } from 'src/utils/mediaQuery';
 
-export const ThumbnailWrapper = styled.div`
+export const ThumbnailWrapper = styled.div<{ lgWidth?: 100 | 120 }>`
   width: 140px;
   height: 216px;
   display: flex;
   align-items: flex-end;
-  margin-bottom: 8px;
   flex-shrink: 0;
-  ${orBelow(
-    BreakPoint.LG,
-    css`
-      width: 100px;
-      height: 184px;
-    `,
-  )};
+  @media (max-width: ${BreakPoint.LG}px) {
+    width: ${(props) => props.lgWidth || 100}px;
+    height: ${(props) => (props.lgWidth === 120 ? 184 : 153)}px;
+  }
 
   img {
     max-height: calc(140px * 1.618 - 10px);
-    ${orBelow(
-    BreakPoint.LG,
-    css`
-        max-height: calc(120px * 1.618 - 10px);
-      `,
-  )};
+    @media (max-width: ${BreakPoint.LG}px) {
+      max-height: calc(${(props) => props.lgWidth || 100}px * 1.618 - 10px);
+    }
   }
 `;
