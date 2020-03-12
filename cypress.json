@@ -1,4 +1,6 @@
 {
   "integrationFolder": "cypress/integration",
-  "baseUrl": "https://ridibooks.com"
+  "baseUrl": "https://ridibooks.com",
+  "fixturesFolder": false,
+  "supportFile": false
 }
