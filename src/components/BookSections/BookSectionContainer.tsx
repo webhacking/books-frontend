@@ -12,6 +12,11 @@ const fontStyle = css`
 `;
 
 const titleCSS = css`
+  max-width: 950px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 16px;
+  padding-top: 6px;
   ${between(
     BreakPoint.MD + 1,
     BreakPoint.LG,
@@ -27,7 +32,6 @@ const titleCSS = css`
       padding-right: 16px;
     `,
   )};
-  padding-left: 24px;
   display: flex;
   flex-direction: column;
   a {
@@ -42,10 +46,6 @@ const titleCSS = css`
 
 export const RankingBookTitle = styled.h2`
   ${fontStyle};
-  max-width: 1000px;
-  margin: 0 auto;
-  margin-bottom: 20px;
-  padding-top: 6px;
   ${titleCSS};
   > a {
     display: flex;

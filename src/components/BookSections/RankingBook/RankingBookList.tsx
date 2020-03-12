@@ -317,35 +317,33 @@ const RankingBookList: React.FC<RankingBookListProps> = (props) => {
   } = props;
 
   return (
-    <>
-      <SectionWrapper ref={targetRef}>
-        {props.title && (
-          <RankingBookTitle>
-            {props.showTimer && <Timer />}
-            {props.extra?.detail_link ? (
-              <a href={props.extra.detail_link}>
-                {props.title}
-                <img
-                  width={11}
-                  height={14}
-                  src={VERTICAL_RIGHT_ARROW_ICON_URL}
-                  alt="페이지 이동"
-                />
-              </a>
-            ) : (
-              props.title
-            )}
-          </RankingBookTitle>
-        )}
-        <ItemList
-          books={books}
-          slug={slug}
-          genre={genre}
-          type={type}
-          showSomeDeal={showSomeDeal}
-        />
-      </SectionWrapper>
-    </>
+    <SectionWrapper ref={targetRef}>
+      {props.title && (
+        <RankingBookTitle>
+          {props.showTimer && <Timer />}
+          {props.extra?.detail_link ? (
+            <a href={props.extra.detail_link}>
+              {props.title}
+              <img
+                width={11}
+                height={14}
+                src={VERTICAL_RIGHT_ARROW_ICON_URL}
+                alt="페이지 이동"
+              />
+            </a>
+          ) : (
+            props.title
+          )}
+        </RankingBookTitle>
+      )}
+      <ItemList
+        books={books}
+        slug={slug}
+        genre={genre}
+        type={type}
+        showSomeDeal={showSomeDeal}
+      />
+    </SectionWrapper>
   );
 };
 

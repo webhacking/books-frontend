@@ -35,7 +35,6 @@ interface MultipleLineBookItemProps {
 }
 
 const bookWidthStyles = css`
-  width: 140px;
   @media (max-width: 999px) {
     width: 120px;
   }
@@ -127,30 +126,6 @@ const thumbnailOverrideStyle = css`
       height: calc(100px * 1.618 - 10px);
     `,
   )};
-
-  ${between(
-    BreakPoint.M + 1,
-    BreakPoint.MD,
-    css`
-      width: 120px;
-    `,
-  )};
-  ${between(
-    BreakPoint.MD + 1,
-    BreakPoint.LG,
-    css`
-      width: 120px;
-    `,
-  )};
-  ${greaterThanOrEqualTo(
-    BreakPoint.LG + 1,
-    css`
-      width: 140px;
-      img {
-        width: 140px;
-      }
-    `,
-  )};
 `;
 
 const ItemAnchor = styled.a`
@@ -183,7 +158,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
   }, []);
   return (
     <Item>
-      <ThumbnailWrapper css={thumbnailOverrideStyle}>
+      <ThumbnailWrapper lgWidth={120} css={thumbnailOverrideStyle}>
         <ItemAnchor onClick={trackerEvent} href={`/books/${item.b_id}`}>
           <ThumbnailRenderer
             order={order}

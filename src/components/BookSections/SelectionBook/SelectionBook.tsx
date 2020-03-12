@@ -8,9 +8,7 @@ import {
   MdBook,
   SectionExtra,
 } from 'src/types/sections';
-import SelectionBookList, {
-  loadingItemCSS,
-} from 'src/components/BookSections/SelectionBook/SelectionBookList';
+import SelectionBookList from 'src/components/BookSections/SelectionBook/SelectionBookList';
 import SelectionBookCarousel from 'src/components/BookSections/SelectionBook/SelectionBookCarousel';
 // import BookMeta from 'src/components/BookMeta/BookMeta';
 import { css } from '@emotion/core';
@@ -19,19 +17,17 @@ import {
   SectionTitle,
   SelectionOption,
 } from 'src/components/BookSections/BookSectionContainer';
-import { PortraitBook } from 'src/components/Book/PortraitBook';
 import ArrowV from 'src/svgs/ArrowV.svg';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import useIsTablet from 'src/hooks/useIsTablet';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
-import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import { orBelow } from 'src/utils/mediaQuery';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { getMaxDiscountPercentage } from 'src/utils/common';
-import { flexRowStart, scrollBarHidden } from 'src/styles';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
 import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 
@@ -253,72 +249,6 @@ export interface SelectionBookCarouselProps {
   bookFetching?: boolean;
   slug?: string;
 }
-
-export const SelectionBookLoading: React.FC<SelectionBookCarouselProps> = React.memo(
-  (props) => {
-    const { genre, type } = props;
-
-    return (
-      <div
-        css={css`
-          position: relative;
-          width: 1005px;
-          max-width: 1005px;
-          margin: 0 auto;
-          margin-top: 6px;
-          height: 100%;
-          margin-left: -2px;
-        `}
-      >
-        <ul
-          css={[
-            flexRowStart,
-            scrollBarHidden,
-            loadingItemCSS,
-            css`
-              justify-content: space-between;
-              padding-left: 16px;
-              ${orBelow(
-              BreakPoint.LG,
-              css`
-                  padding-left: 16px;
-                  justify-content: start;
-                `,
-            )}
-            `,
-          ]}
-        >
-          {props.items.map((book, index) => (
-            <PortraitBook key={index}>
-              <ThumbnailWrapper>
-                <ThumbnailRenderer
-                  book={{ b_id: book.b_id, detail: book.detail }}
-                  imgSize="large"
-                  css={bookWidthStyle}
-                  sizes="(max-width: 999px) 100px, 140px"
-                />
-              </ThumbnailWrapper>
-              {book.detail && (
-                <BookMeta
-                  showTag={['bl', 'bl-serial'].includes(genre)}
-                  book={book.detail}
-                  showRating={type === DisplayType.HomeMdSelection}
-                  ratingInfo={book.rating}
-                />
-              )}
-            </PortraitBook>
-          ))}
-        </ul>
-      </div>
-    );
-  },
-  (prev, next) => {
-    if (prev.genre === next.genre && prev.items.length === next.items.length) {
-      return true;
-    }
-    return false;
-  },
-);
 
 const SelectionBook: React.FC<SelectionBookProps> = React.memo((props) => {
   const {

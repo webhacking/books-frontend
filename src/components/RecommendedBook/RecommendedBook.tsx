@@ -25,12 +25,10 @@ const backgroundImageCSS = css`
       background-size: cover;
     `,
   )};
-  padding-top: 36px !important;
-  padding-bottom: 36px !important;
 `;
 
 const hotReleaseRecommendedBookWrapperCSS = css`
-  padding-top: 36px;
+  padding-top: 40px;
   ${orBelow(
     999,
     css`
@@ -41,35 +39,33 @@ const hotReleaseRecommendedBookWrapperCSS = css`
   margin-bottom: 0;
 `;
 const recommendedBookWrapperCSS = css`
-  padding-top: 24px;
-  padding-bottom: 24px;
+  padding-top: 40px;
+  padding-bottom: 50px;
 
   ${orBelow(
     999,
     css`
-      padding-top: 24px;
-      padding-bottom: 24px;
+      padding-bottom: 40px;
     `,
   )}
 `;
 
 export const hotReleaseBookListCSS = css`
   max-width: 1000px;
-  padding-left: 3px;
 `;
 export const recommendedBookListCSS = css`
-  padding-left: 3px;
 `;
 
 export const BookList = styled.ul`
   overflow: auto;
   ${scrollBarHidden};
 
-  margin: 0 auto;
+  margin: 6px auto 0;
+  padding-top: 7px;
+  padding-left: 7px;
   display: flex;
   justify-content: start;
   flex-wrap: nowrap;
-  margin-top: 6px;
 
   @media (min-width: 1000px) {
     justify-content: center;
@@ -80,7 +76,6 @@ export const bookMetaWrapperCSS = css`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-left: 7px;
 `;
 
 export const BookTitle = styled.h2`
@@ -103,11 +98,10 @@ export const BookAuthor = styled.span`
 `;
 
 const hotReleaseTitleCSS = css`
-  max-width: 1000px;
-  margin: 0 auto;
+  max-width: 950px;
+  margin: 0 auto 27px;
   display: flex;
   align-items: center;
-  padding-left: 24px;
   font-weight: normal;
 
   ${orBelow(
@@ -117,9 +111,8 @@ const hotReleaseTitleCSS = css`
     `,
   )};
 
-  height: 19px;
-  line-height: 19px;
-  font-size: 19px;
+  line-height: 21px;
+  font-size: 21px;
   color: white;
 `;
 
@@ -184,43 +177,18 @@ export const BookMeta: React.FC<BookMetaProps> = React.memo(props => {
 
 type RecommendedBookType = TodayRecommendation[] | HotRelease[];
 
-interface RecommendedBookLoadingProps {
-  type: DisplayType;
-  books: RecommendedBookType;
-  isIntersecting: boolean;
-  theme: 'dark' | 'white';
-}
-
-const dummyBook = {
-  b_id: '',
-  rating: {
-    buyer_rating_score: 0,
-    buyer_rating_count: 0,
-    total_rating_count: 0,
-  },
-  detail: null,
-  type: '',
-  order: 0,
-  sentence: '',
-};
-
 export const sentenceStyle = css`
-  line-height: 16px;
+  line-height: 18px;
   text-align: center;
   font-weight: bold;
   white-space: nowrap;
-  left: 7px;
-  margin-top: 2px;
   font-size: 0.84em;
 
   width: 140px;
   ${orBelow(
     BreakPoint.LG,
     css`
-      display: flex;
       width: 130px;
-      justify-content: center;
-      left: -10px;
     `,
   )};
 `;
@@ -235,9 +203,7 @@ interface RecommendedBookProps {
 }
 
 const RecommendedBook: React.FC<RecommendedBookProps> = (props) => {
-  const {
-    theme, type, slug, genre,
-  } = props;
+  const { theme, slug, genre } = props;
   const [books] = useBookDetailSelector(props.items);
   const isTablet = useIsTablet();
   return (
@@ -252,9 +218,9 @@ const RecommendedBook: React.FC<RecommendedBookProps> = (props) => {
             ${orBelow(
             999,
             css`
-                padding-bottom: 16px;
-                padding-top: 16px;
-              `,
+              padding-bottom: 16px;
+              padding-top: 16px;
+            `,
           )}
           `,
       ]}

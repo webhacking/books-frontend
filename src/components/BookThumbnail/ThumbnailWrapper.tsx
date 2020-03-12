@@ -1,32 +1,21 @@
 import styled from '@emotion/styled';
-import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import { css } from '@emotion/core';
+import { BreakPoint } from 'src/utils/mediaQuery';
 
-export const ThumbnailWrapper = styled.div`
-  max-height: 234.9px; // 배지 관련
-  height: 234.9px; // 배지 관련 216 + 7
+export const ThumbnailWrapper = styled.div<{ lgWidth?: 100 | 120 }>`
+  width: 140px;
+  height: 216px;
   display: flex;
   align-items: flex-end;
-  min-width: 140px;
-  margin-bottom: 8px;
   flex-shrink: 0;
-  position: relative;
-  left: 7px; // 배지 관련
-  ${orBelow(
-    BreakPoint.LG,
-    css`
-      min-width: 100px;
-      max-height: 174px; //  배지 관련 184 + 7
-      height: 174px; //  배지 관련 184 + 7
-    `,
-  )};
+  @media (max-width: ${BreakPoint.LG}px) {
+    width: ${(props) => props.lgWidth || 100}px;
+    height: ${(props) => (props.lgWidth === 120 ? 184 : 153)}px;
+  }
+
   img {
-    ${orBelow(
-    BreakPoint.LG,
-    css`
-        max-height: calc(107px * 1.618 - 10px); // 120 + 7
-      `,
-  )};
-    max-height: calc(147px * 1.618 - 10px); // 140 + 7
+    max-height: calc(140px * 1.618 - 10px);
+    @media (max-width: ${BreakPoint.LG}px) {
+      max-height: calc(${(props) => props.lgWidth || 100}px * 1.618 - 10px);
+    }
   }
 `;
