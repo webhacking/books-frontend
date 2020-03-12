@@ -480,7 +480,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = (props
     genreSearchParam.append('from', genre);
   }
 
-  return (
+  return genreKeywords ? (
     <Section>
       <SectionTitle aria-label="키워드 파인더로 이동">
         <a
@@ -550,7 +550,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = (props
         </form>
       )}
     </Section>
-  );
+  ) : null;
 };
 
 export default HomeKeywordFinderSection;
