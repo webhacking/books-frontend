@@ -15,7 +15,6 @@ import pRetry from 'p-retry';
 import { keyToArray } from 'src/utils/common';
 import axios from 'src/utils/axios';
 import { booksActions } from 'src/services/books';
-import { Request } from 'express';
 import sentry from 'src/utils/sentry';
 import { categoryActions } from 'src/services/category';
 import { NextPage } from 'next';
@@ -32,16 +31,10 @@ export interface HomeProps {
   genre: string;
 }
 
-const createHomeSlug = (genre: string) => {
-  if (!genre || genre === 'general') {
-    return 'home-general';
-  }
-  return `home-${genre}`;
-};
-
-const fetchHomeSections = async (genre: string, req?: Request, params = {}) => {
+const fetchHomeSections = async (genre = 'general', params = {}) => {
   const result = await pRetry(
-    () => axios.get<Page>(`${process.env.NEXT_PUBLIC_STORE_API}/pages/${createHomeSlug(genre)}/`, {
+    () => axios.get<Page>(`/pages/home-${genre}/`, {
+      baseURL: process.env.NEXT_PUBLIC_STORE_API,
       withCredentials: true,
       params,
     }),
@@ -53,7 +46,6 @@ const fetchHomeSections = async (genre: string, req?: Request, params = {}) => {
   return result.data;
 };
 
-// Lambda 에서 올바르게 동작할까. 공유되지 않을까?
 // legacy genre 로 쿠키 값 설정
 const setCookie = (genre: string) => {
   let convertedLegacyGenre = '';
@@ -85,17 +77,15 @@ export const Home: NextPage<HomeProps> = (props) => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const dispatch = useDispatch();
 
+  const { genre = 'general' } = props;
+  const previousGenre = usePrevious(genre);
   const [branches, setBranches] = useState(props.branches);
-  const previousGenre = usePrevious(props.genre);
+
   useEffect(() => {
-    const fetch = async () => {
-      if (!branches || previousGenre !== props.genre) {
-        // store.dispatch({ type: booksActions.setFetching.type, payload: true });
-        setBranches([]);
-        const result = await fetchHomeSections(
-          // @ts-ignore
-          props.genre || 'general',
-        );
+    if (!branches.length || (previousGenre && previousGenre !== props.genre)) {
+      setBranches([]);
+      // store.dispatch({ type: booksActions.setFetching.type, payload: true });
+      fetchHomeSections(props.genre).then((result) => {
         setBranches(result.branches);
         const bIds = keyToArray(result.branches, 'b_id');
         dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
@@ -109,13 +99,11 @@ export const Home: NextPage<HomeProps> = (props) => {
           'b_id',
         );
         dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
-      }
-    };
-    fetch();
-  }, [props.genre, dispatch]);
+      });
+    }
+  }, [genre, dispatch]);
 
   const [tracker] = useEventTracker();
-
   const setPageView = useCallback(() => {
     if (tracker) {
       try {
@@ -131,18 +119,16 @@ export const Home: NextPage<HomeProps> = (props) => {
     setPageView();
   }, [props.genre, loggedUser, setPageView]);
 
-  const { genre } = props;
-  const currentGenre = genre || 'general';
   return (
     <>
       <Head>
-        <title>{`${titleGenerator(currentGenre)} - 리디북스`}</title>
+        <title>{`${titleGenerator(genre)} - 리디북스`}</title>
       </Head>
-      <GenreTab currentGenre={currentGenre} />
+      <GenreTab currentGenre={genre} />
       <DeviceType>
         {branches && branches.map((section, index) => (
           <React.Fragment key={index}>
-            <HomeSectionRenderer section={section} order={index} genre={currentGenre} />
+            <HomeSectionRenderer section={section} order={index} genre={genre} />
           </React.Fragment>
         ))}
         <div
@@ -159,13 +145,12 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
   const {
     query,
     res,
-    req,
     store,
     isServer,
   } = ctx;
 
   const { genre = 'general' } = query;
-  if (!['general', 'romance', 'romance-serial', 'fantasy', 'fantasy-serial', 'comics', 'bl', 'bl-serial'].includes(genre as string)) {
+  if (!['general', 'romance', 'romance-serial', 'fantasy', 'fantasy-serial', 'comics', 'bl', 'bl-serial'].includes(genre.toString())) {
     throw new Error('Not Found');
   }
 
@@ -173,11 +158,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
     if (res.statusCode !== 302) {
       try {
         // store.dispatch({ type: booksActions.setFetching.type, payload: true });
-        const result = await fetchHomeSections(
-          // @ts-ignore
-          genre,
-          req,
-        );
+        const result = await fetchHomeSections(genre.toString());
         const bIds = keyToArray(result.branches, 'b_id');
         store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
         const categoryIds = keyToArray(result.branches, 'category_id');
@@ -186,7 +167,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
           payload: categoryIds,
         });
         return {
-          genre,
+          genre: genre.toString(),
           store,
           ...query,
           ...result,
@@ -198,7 +179,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
     }
   }
   return {
-    genre,
+    genre: genre.toString(),
     store,
     branches: [],
     ...query,
