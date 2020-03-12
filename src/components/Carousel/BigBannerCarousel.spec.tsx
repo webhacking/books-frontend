@@ -16,7 +16,6 @@ function renderCarousel(
     <BigBannerCarousel
       totalItems={TOTAL_ITEMS}
       currentIdx={currentIdx}
-      itemWidth={ITEM_WIDTH}
       itemMargin={ITEM_MARGIN}
       touchDiff={touchDiff}
     >
@@ -29,11 +28,10 @@ describe('BigBannerCarousel', () => {
   afterAll(cleanup);
 
   const renderImpl: Parameters<typeof BigBannerCarousel>[0]['children'] =
-    ({ index, activeIndex, itemWidth }) => (
+    ({ index, activeIndex }) => (
       <div
         key={index}
         className="item"
-        data-width={itemWidth}
         data-index={index}
         data-active={index === activeIndex}
       />
@@ -55,8 +53,6 @@ describe('BigBannerCarousel', () => {
       result = render(renderCarousel(renderFn, 0));
     });
     expect(result.container.querySelectorAll('.item'))
-      .toHaveLength(TOTAL_ITEMS * 2);
-    expect(result.container.querySelectorAll('.item[data-width="100"]'))
       .toHaveLength(TOTAL_ITEMS * 2);
     expect(result.container.querySelectorAll('.item[data-active][data-index="0"]'))
       .toHaveLength(2);
