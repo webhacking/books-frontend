@@ -30,14 +30,14 @@ const CarouselView = styled.div`
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
+  justify-content: center;
 `;
 
-const CarouselList = styled.ul<{ height: number; slideMargin: number }>`
+const CarouselList = styled.ul<{ slideMargin: number }>`
   flex: none;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  height: ${(props) => props.height}px;
 
   > li {
     margin-right: ${(props) => props.slideMargin}px;
@@ -47,22 +47,21 @@ const CarouselList = styled.ul<{ height: number; slideMargin: number }>`
 export interface BigBannerCarouselProps {
   totalItems: number;
   currentIdx: number;
-  itemWidth: number;
   itemMargin: number;
   inactiveScale: number;
-  children: (props: { index: number; activeIndex: number; itemWidth: number }) => React.ReactNode;
+  children: (props: { index: number; activeIndex: number }) => React.ReactNode;
   touchDiff?: number;
+  className?: string;
 }
 
 export default function BigBannerCarousel(props: BigBannerCarouselProps) {
   const {
-    children, totalItems: len, touchDiff, currentIdx, itemWidth, itemMargin, inactiveScale,
+    className, children, totalItems: len, touchDiff, currentIdx, itemMargin, inactiveScale,
   } = props;
   const [previousIdx, setPreviousIdx] = React.useState(currentIdx);
   const [activeIdx, setActiveIdx] = React.useState(currentIdx);
   const [activeDiff, setActiveDiff] = React.useState(touchDiff);
   const [isMoving, setMoving] = React.useState(false);
-  const itemHeight = (itemWidth * 2) / 3;
 
   const handleTransitionDone = React.useCallback(
     (e: React.TransitionEvent<HTMLUListElement>) => {
@@ -99,7 +98,7 @@ export default function BigBannerCarousel(props: BigBannerCarouselProps) {
   );
 
   const itemNodes = idxArray.map(
-    (index) => children({ index, activeIndex: activeIdx, itemWidth }),
+    (index) => children({ index, activeIndex: activeIdx }),
   );
   let delta = activeIdx - previousIdx;
   if (Math.abs(delta) > Math.abs(delta + len)) {
@@ -109,9 +108,8 @@ export default function BigBannerCarousel(props: BigBannerCarouselProps) {
     delta -= len;
   }
   return (
-    <CarouselView>
+    <CarouselView className={className}>
       <CarouselList
-        height={itemHeight}
         slideMargin={itemMargin}
         style={{
           transition: isMoving ? 'transform 0.2s' : undefined,
