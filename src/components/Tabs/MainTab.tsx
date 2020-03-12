@@ -214,7 +214,6 @@ interface TabItemProps {
   replace?: boolean;
   shallow?: boolean;
   path: string;
-  currentPath: string;
   activeIcon: React.ReactNode;
   normalIcon: React.ReactNode;
   label: string;
@@ -232,14 +231,21 @@ const TabItem: React.FC<TabItemProps> = (props) => {
     // isPartials,
     path,
     pathRegexp,
-    currentPath,
     label,
     activeIcon,
     normalIcon,
     addOn,
     isSPA = false,
   } = props;
-  const isActiveTab = currentPath.match(pathRegexp);
+  const router = useRouter();
+
+  const [isActiveTab, setIsActiveTab] = useState(false);
+
+  useEffect(() => {
+    const pathname = Array.isArray(router.query.pathname) ? router.query.pathname[0] : router.query.pathname || router.asPath;
+    setIsActiveTab(pathRegexp.test(pathname));
+  }, [pathRegexp, router]);
+
   return (
     <TabItemWrapper
       css={
@@ -295,7 +301,6 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
   const { isPartials, loggedUserInfo } = props;
   const { hasNotification } = useSelector((store: RootState) => store.notifications);
   const router = useRouter();
-  const currentPath = router.query.pathname ? router.query.pathname as string : router.asPath;
   const [, setHomeURL] = useState('/');
   const cartCount = useCartCount(loggedUserInfo);
   const dispatch = useDispatch();
@@ -305,14 +310,14 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
     setHomeURL(
       visitedGenre && visitedGenre !== 'general' ? genreValueReplace(visitedGenre) : '/',
     );
-  }, [currentPath]);
+  }, [router.asPath]);
 
   useEffect(() => {
     // Notification Page에서는 호출 X
-    if (loggedUserInfo && currentPath !== '/notification/') {
+    if (loggedUserInfo && /^\/notification\/?/.test(router.asPath)) {
       dispatch(notificationActions.loadNotificationUnreadCount());
     }
-  }, [dispatch, loggedUserInfo, currentPath]);
+  }, [dispatch, loggedUserInfo, router.asPath]);
 
   return (
     <>
@@ -321,7 +326,6 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           isPartials={isPartials}
           activeIcon={<HomeSolid css={iconStyle} />}
           normalIcon={<Home css={iconStyle} />}
-          currentPath={currentPath}
           label={labels.mainTab.home}
           path="/"
           pathRegexp={/^\/(romance|romance-serial|fantasy|fantasy-serial|bl|bl-serial|comics)?\/?$/}
@@ -330,7 +334,6 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           isPartials={isPartials}
           activeIcon={<Notification_solid css={iconStyle} />}
           normalIcon={<Notification_regular css={iconStyle} />}
-          currentPath={currentPath}
           label={labels.mainTab.notification}
           path="/notification"
           pathRegexp={/^\/notification\/?$/g}
@@ -342,7 +345,6 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           isPartials={isPartials}
           activeIcon={<Cart_solid css={iconStyle} />}
           normalIcon={<Cart_regular css={iconStyle} />}
-          currentPath={currentPath}
           label={labels.mainTab.cart}
           path="/cart"
           pathRegexp={/^\/cart\/?$/gu}
@@ -362,7 +364,6 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           isPartials={isPartials}
           activeIcon={<MyRIDI_solid css={iconStyle} />}
           normalIcon={<MyRIDI_regular css={iconStyle} />}
-          currentPath={currentPath}
           label={labels.mainTab.myRidi}
           path="/account/myridi"
           pathRegexp={/^\/account\/myridi\/?$/gu}
