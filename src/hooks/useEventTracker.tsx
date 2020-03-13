@@ -1,13 +1,17 @@
 import { DeviceType, Tracker } from '@ridi/event-tracker';
-import { FB_KEYS, GA_KEY, GTM_KEY } from 'src/constants/eventTracking';
-import { useCallback, useEffect } from 'react';
+import {
+  FB_KEYS, GA_KEY, GTM_KEY, SendEventType,
+} from 'src/constants/eventTracking';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
 import { getDeviceType } from 'src/utils/common';
 
 const { captureException } = sentry();
-const deviceType = ['mobile', 'tablet'].includes(getDeviceType()) ? DeviceType.Mobile : DeviceType.PC;
+const deviceType = ['mobile', 'tablet'].includes(getDeviceType())
+  ? DeviceType.Mobile
+  : DeviceType.PC;
 
 export const createTracker = (userId: string | null) => {
   if (typeof window !== 'undefined') {
@@ -66,20 +70,26 @@ export const useEventTracker = () => {
 
 // Todo refactor
 export const sendClickEvent = (eventTracker, item, section, order) => {
-  eventTracker.sendEvent('click', {
+  eventTracker.sendEvent(SendEventType.Click, {
     section: `${deviceType}.${section}`,
     items: [{ id: item.b_id || item.id, idx: order, ts: new Date().getTime() }],
   });
 };
 
-export const sendDisplayEvent = (options: { slug: string; id: string; order: number }) => {
+export const sendDisplayEvent = (options: {
+  slug: string;
+  id: string;
+  order: number;
+}) => {
   const { slug, id, order } = options;
-  tracker.sendEvent('display', {
+  tracker.sendEvent(SendEventType.Display, {
     section: `${deviceType}.${slug}`,
-    items: [{
-      id,
-      idx: order,
-      ts: Date.now(),
-    }],
+    items: [
+      {
+        id,
+        idx: order,
+        ts: Date.now(),
+      },
+    ],
   });
 };

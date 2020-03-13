@@ -9,6 +9,7 @@ import { useEventTracker } from 'src/hooks/useEventTracker';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { TopBanner } from 'src/types/sections';
 import { getDeviceType } from 'src/utils/common';
+import { SendEventType } from 'src/constants/eventTracking';
 
 const DESKTOP_INACTIVE_SCALE = 0.965;
 const ITEM_MARGIN = 10;
@@ -417,7 +418,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
         order: currentIdx,
         ts: new Date().getTime(),
       };
-      tracker.sendEvent('display', {
+      tracker.sendEvent(SendEventType.Display, {
         section: `${deviceType}.${slug}`,
         items: [item],
       });

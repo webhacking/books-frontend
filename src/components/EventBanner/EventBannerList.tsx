@@ -7,6 +7,7 @@ import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { getDeviceType } from 'src/utils/common';
 import styled from '@emotion/styled';
+import { SendEventType } from 'src/constants/eventTracking';
 
 const List = styled.ul`
   display: flex;
@@ -42,7 +43,7 @@ const EventBannerList: React.FC<EventBannerListProps> = (props) => {
     if (isIntersecting) {
       const device = getDeviceType();
       const deviceType = ['mobile', 'tablet'].includes(device) ? 'Mobile' : 'Pc';
-      tracker.sendEvent('display', {
+      tracker.sendEvent(SendEventType.Display, {
         section: `${deviceType}.${props.slug}`,
         items: props.items.map((item, index) => ({
           id: item.id,
