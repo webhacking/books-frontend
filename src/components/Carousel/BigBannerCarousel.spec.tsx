@@ -28,12 +28,12 @@ describe('BigBannerCarousel', () => {
   afterAll(cleanup);
 
   const renderImpl: Parameters<typeof BigBannerCarousel>[0]['children'] =
-    ({ index, activeIndex }) => (
+    ({ index, active }) => (
       <div
         key={index}
         className="item"
         data-index={index}
-        data-active={index === activeIndex}
+        data-active={active ? '' : undefined}
       />
     );
 
@@ -41,7 +41,7 @@ describe('BigBannerCarousel', () => {
     const ul = result.container.querySelector('ul');
     const raw = ul.style.transform.split(' ');
     const parsed = raw.map(item => Number(/\(([+-]?\d+(?:\.\d+)?)/.exec(item)[1]));
-    const width = (ITEM_WIDTH + ITEM_MARGIN) * TOTAL_ITEMS * 2;
+    const width = (ITEM_WIDTH + ITEM_MARGIN) * TOTAL_ITEMS * 2 + ITEM_WIDTH;
     const offset = parsed[0] * width + parsed[1] + parsed[2];
     return offset;
   }
@@ -53,9 +53,9 @@ describe('BigBannerCarousel', () => {
       result = render(renderCarousel(renderFn, 0));
     });
     expect(result.container.querySelectorAll('.item'))
-      .toHaveLength(TOTAL_ITEMS * 2);
+      .toHaveLength(TOTAL_ITEMS * 2 + 1);
     expect(result.container.querySelectorAll('.item[data-active][data-index="0"]'))
-      .toHaveLength(2);
+      .toHaveLength(1);
   });
 
   describe('movement', () => {
