@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, useContext,
+} from 'react';
 import { css, keyframes } from '@emotion/core';
 import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
 import Lens from 'src/svgs/Lens.svg';
@@ -18,6 +20,7 @@ import pRetry from 'p-retry';
 import sentry from 'src/utils/sentry';
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
+import { GNBContext } from 'src/components/GNB';
 
 const { captureException } = sentry();
 
@@ -279,6 +282,8 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       initialSearchResult,
     );
 
+    const { origin } = useContext(GNBContext);
+
     const handleSearch = useCallback(async (value: string) => {
       setFetching(true);
       if (value.trim().length < 1) {
@@ -404,7 +409,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           setFocus(false);
           setSearchResult(initialSearchResult);
 
-          const url = new URL('/search/', location.href);
+          const url = new URL('/search/', origin || location.href);
           url.searchParams.append('q', label);
 
           window.location.href = url.toString();
@@ -418,7 +423,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         e.preventDefault();
         const { bookId } = e.currentTarget.dataset;
 
-        const url = new URL(`/books/${bookId}`, location.href);
+        const url = new URL(`/books/${bookId}`, origin || location.href);
         url.searchParams.append('_s', 'instant');
         url.searchParams.append('_q', keyword);
 
@@ -431,7 +436,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const { authorId } = e.currentTarget.dataset;
-        const url = new URL(`/author/${authorId}`, location.href);
+        const url = new URL(`/author/${authorId}`, origin || location.href);
         url.searchParams.append('_s', 'instant');
         url.searchParams.append('_q', keyword);
 
@@ -463,7 +468,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           // Move search result page
           // Todo conditional check for partial component
 
-          const url = new URL('/search/', location.href);
+          const url = new URL('/search/', origin || location.href);
           url.searchParams.append('q', keyword);
 
           window.location.href = url.toString();

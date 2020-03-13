@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { css } from '@emotion/core';
@@ -21,6 +21,7 @@ import { useCartCount } from 'src/hooks/useCartCount';
 import { useDispatch, useSelector } from 'react-redux';
 import { notificationActions } from 'src/services/notification';
 import { RootState } from 'src/store/config';
+import { GNBContext } from 'src/components/GNB';
 
 const StyledAnchor = styled.a`
   height: 100%;
@@ -228,7 +229,6 @@ interface TabItemProps {
 // 반응형 레거시 코드 작업이 종료되면 이 부분 개선 해야 함.
 const TabItem: React.FC<TabItemProps> = (props) => {
   const {
-    // isPartials,
     path,
     pathRegexp,
     label,
@@ -237,7 +237,9 @@ const TabItem: React.FC<TabItemProps> = (props) => {
     addOn,
     isSPA = false,
   } = props;
+
   const router = useRouter();
+  const { origin } = useContext(GNBContext);
 
   const [isActiveTab, setIsActiveTab] = useState(false);
 
@@ -273,7 +275,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
           </StyledAnchor>
         </Link>
       ) : (
-        <StyledAnchor href={path} aria-label={label}>
+        <StyledAnchor href={`${origin}${path}`} aria-label={label}>
           <TabButton>
             {isActiveTab ? activeIcon : normalIcon}
             {addOn}
