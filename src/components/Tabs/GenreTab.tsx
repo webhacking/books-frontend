@@ -205,9 +205,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
 
   return (
     <li
-      css={css`
-        ${isActivePath ? activeLabelCSS : genreLabelCSS}
-      `}
+      css={isActivePath ? activeLabelCSS : genreLabelCSS}
     >
       <a
         aria-label={label}
