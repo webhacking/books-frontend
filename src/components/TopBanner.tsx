@@ -442,11 +442,11 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
         touchDiff={touchDiff}
         css={carouselHeight}
       >
-        {({ index, activeIndex }) => (
+        {({ index, active, activeIndex }) => (
           <CarouselItem
             key={index}
             banner={banners[index]}
-            active={index === activeIndex}
+            active={active}
             invisible={!checkWithinRingRange(
               (activeIndex - SLIDE_RADIUS + len) % len,
               (activeIndex + SLIDE_RADIUS) % len,
