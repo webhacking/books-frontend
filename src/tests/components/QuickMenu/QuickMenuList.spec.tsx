@@ -25,11 +25,18 @@ const renderComponent = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
       <Provider store={store}>
-      <QuickMenuList
-        items={[
-          { id: 1, name: '이벤트 만세', icon: '/', bg_color: '#ffffff', url: '/event/12345', order: 1 },
-        ]}
-      />
+        <QuickMenuList
+          items={[
+            {
+              id: 1,
+              name: '이벤트 만세',
+              icon: '/',
+              bg_color: '#ffffff',
+              url: '/event/12345',
+              order: 1,
+            },
+          ]}
+        />
       </Provider>
     </ThemeProvider>,
   );

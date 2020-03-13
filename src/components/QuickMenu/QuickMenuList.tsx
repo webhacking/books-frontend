@@ -153,7 +153,7 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = (props) => {
   return (
     <Section>
       <h2 className="a11y">퀵 메뉴</h2>
-      <MenuList role="button" ref={ref}>
+      <MenuList ref={ref}>
         {props.items.map((menu, index) => (
           <MemoizedQuickMenuItem key={index} menu={menu} />
         ))}
