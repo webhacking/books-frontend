@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import styled from '@emotion/styled';
 import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
 import { css } from '@emotion/core';
@@ -8,6 +8,8 @@ import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { QuickMenu } from 'src/types/sections';
 import { DeviceTypeContext } from 'src/components/Context/DeviceType';
+import { useEventTracker } from 'src/hooks/useEventTracker';
+import { SendEventType } from 'src/constants/eventTracking';
 
 const QuickMenuLabel = styled.span`
   font-size: 13px;
@@ -101,11 +103,22 @@ const quickMenuShape = css`
   top: 0;
   z-index: 1;
 `;
-const Menu: React.FC<{ menu: QuickMenu }> = React.memo((props) => {
-  const { menu } = props;
+
+function Item({ menu }) {
+  const [tracker] = useEventTracker();
+  const sendQuickMenuClickEvent = useCallback(() => {
+    tracker.sendEvent(SendEventType.QuickMenu, {
+      action: window.location.href,
+      label: menu.url,
+    });
+  }, [tracker]);
   return (
     <MenuItem>
-      <MenuAnchor href={menu.url} aria-label={menu.name}>
+      <MenuAnchor
+        onClick={sendQuickMenuClickEvent}
+        href={menu.url}
+        aria-label={menu.name}
+      >
         <QuickMenuShape
           css={[
             quickMenuShape,
@@ -119,7 +132,8 @@ const Menu: React.FC<{ menu: QuickMenu }> = React.memo((props) => {
       </MenuAnchor>
     </MenuItem>
   );
-});
+}
+const MemoizedQuickMenuItem: React.FC<{ menu: QuickMenu }> = React.memo(Item);
 
 const arrowWrapper = css`
   z-index: 2;
@@ -139,9 +153,9 @@ export const QuickMenuList: React.FC<QuickMenuListProps> = (props) => {
   return (
     <Section>
       <h2 className="a11y">퀵 메뉴</h2>
-      <MenuList ref={ref}>
+      <MenuList role="button" ref={ref}>
         {props.items.map((menu, index) => (
-          <Menu key={index} menu={menu} />
+          <MemoizedQuickMenuItem key={index} menu={menu} />
         ))}
       </MenuList>
       {!['mobile', 'tablet'].includes(deviceType) && (
