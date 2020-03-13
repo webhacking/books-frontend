@@ -13,7 +13,7 @@ import { Page, Section } from 'src/types/sections';
 import { HomeSectionRenderer } from 'src/components/Section/HomeSectionRenderer';
 import pRetry from 'p-retry';
 import { keyToArray } from 'src/utils/common';
-import axios from 'src/utils/axios';
+import axios, { CancelToken } from 'src/utils/axios';
 import { booksActions } from 'src/services/books';
 import sentry from 'src/utils/sentry';
 import { categoryActions } from 'src/services/category';
@@ -31,12 +31,13 @@ export interface HomeProps {
   genre: string;
 }
 
-const fetchHomeSections = async (genre = 'general', params = {}) => {
+const fetchHomeSections = async (genre = 'general', params = {}, options = {}) => {
   const result = await pRetry(
     () => axios.get<Page>(`/pages/home-${genre}/`, {
       baseURL: process.env.NEXT_PUBLIC_STORE_API,
       withCredentials: true,
       params,
+      ...options,
     }),
     {
       retries: 2,
@@ -82,10 +83,13 @@ export const Home: NextPage<HomeProps> = (props) => {
   const [branches, setBranches] = useState(props.branches);
 
   useEffect(() => {
+    const source = CancelToken.source();
     if (!branches.length || (previousGenre && previousGenre !== props.genre)) {
       setBranches([]);
       // store.dispatch({ type: booksActions.setFetching.type, payload: true });
-      fetchHomeSections(props.genre).then((result) => {
+      fetchHomeSections(props.genre, {}, {
+        cancelToken: source.token,
+      }).then((result) => {
         setBranches(result.branches);
         const bIds = keyToArray(result.branches, 'b_id');
         dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
@@ -101,6 +105,7 @@ export const Home: NextPage<HomeProps> = (props) => {
         dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
       });
     }
+    return source.cancel;
   }, [genre, dispatch]);
 
   const [tracker] = useEventTracker();

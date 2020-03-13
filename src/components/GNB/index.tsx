@@ -17,8 +17,7 @@ import { useRouter } from 'next/router';
 import DoublePointIcon from 'src/svgs/DoublePoint.svg';
 import CashIcon from 'src/svgs/Cash.svg';
 import pRetry from 'p-retry';
-import axios, { OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
-import originalAxios from 'axios';
+import axios, { CancelToken, OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 
 const { captureException } = sentry();
@@ -200,7 +199,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
 
   const route = useRouter();
   useEffect(() => {
-    const source = originalAxios.CancelToken.source();
+    const source = CancelToken.source();
 
     const requestRidiEventStatus = async () => {
       try {
@@ -224,9 +223,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
     };
     requestRidiEventStatus();
 
-    return () => {
-      source.cancel();
-    };
+    return source.cancel;
   }, [route]);
 
   return (
@@ -353,11 +350,9 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   }, [route.asPath, route.query.origin]);
 
   useEffect(() => {
-    const cancelToken = originalAxios.CancelToken.source();
-    dispatch({ type: accountActions.checkLogged.type, payload: cancelToken });
-    return () => {
-      cancelToken.cancel();
-    };
+    const source = CancelToken.source();
+    dispatch({ type: accountActions.checkLogged.type, payload: source });
+    return source.cancel;
   }, []);
 
   return (

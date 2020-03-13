@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import originalAxios from 'axios';
 import pRetry from 'p-retry';
-import axios, { OAuthRequestType } from 'src/utils/axios';
+import axios, { CancelToken, OAuthRequestType } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 import { LoggedUser } from 'src/types/account';
 
@@ -11,15 +10,14 @@ export const useCartCount = (loggedUserInfo: LoggedUser) => {
   const [cartCount, setCartCount] = useState<number>(0);
 
   useEffect(() => {
-    const cartRequestTokenSource = originalAxios.CancelToken.source();
+    const source = CancelToken.source();
     const requestCartCount = async () => {
       try {
-        const cartUrl = `${process.env.NEXT_PUBLIC_LEGACY_STORE_API_HOST}/api/cart/count`;
-
         const result = await pRetry(
-          () => axios.get(cartUrl, {
+          () => axios.get('/api/cart/count', {
+            baseURL: process.env.NEXT_PUBLIC_LEGACY_STORE_API_HOST,
             withCredentials: true,
-            cancelToken: cartRequestTokenSource.token,
+            cancelToken: source.token,
             custom: { authorizationRequestType: OAuthRequestType.CHECK },
           }),
           { retries: 2 },
@@ -36,9 +34,7 @@ export const useCartCount = (loggedUserInfo: LoggedUser) => {
     if (loggedUserInfo) {
       requestCartCount();
     }
-    return () => {
-      cartRequestTokenSource.cancel();
-    };
+    return source.cancel;
   }, [loggedUserInfo]);
 
   return cartCount;

@@ -12,6 +12,8 @@ export interface CustomRequestConfig {
   authorizationRequestType: OAuthRequestType;
 }
 
+export const { CancelToken } = axios;
+
 // eslint-disable-next-line no-process-env
 const TIME_OUT = 7000;
 
