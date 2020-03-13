@@ -17,11 +17,11 @@ function computeTransform(options: TransformOptions) {
     slideMargin: d,
     touchDiff,
   } = options;
-  const commonDivider = (n - 1) * r + 1;
-  const percentage = (25 + 50 * k * r) / commonDivider;
-  const negPixels = (0.5 * n * d + (r - 1) * d * k) / commonDivider;
+  const commonDivider = 2 * n * r + 1;
+  const percentage = (100 * r * k) / commonDivider;
+  const pixels = (d * k) / commonDivider;
   const touch = touchDiff ?? 0;
-  return `translateX(${-percentage}%) translateX(${negPixels}px) translateX(${touch}px)`;
+  return `translateX(${-percentage}%) translateX(${-pixels}px) translateX(${touch}px)`;
 }
 
 const CarouselView = styled.div`
@@ -39,8 +39,8 @@ const CarouselList = styled.ul<{ slideMargin: number }>`
   flex-wrap: nowrap;
   align-items: center;
 
-  > li {
-    margin-right: ${(props) => props.slideMargin}px;
+  > li + li {
+    margin-left: ${(props) => props.slideMargin}px;
   }
 `;
 
@@ -49,7 +49,7 @@ export interface BigBannerCarouselProps {
   currentIdx: number;
   itemMargin: number;
   inactiveScale: number;
-  children: (props: { index: number; activeIndex: number }) => React.ReactNode;
+  children: (props: { index: number; active: boolean; activeIndex: number }) => React.ReactNode;
   touchDiff?: number;
   className?: string;
 }
@@ -97,8 +97,11 @@ export default function BigBannerCarousel(props: BigBannerCarouselProps) {
     (_, idx) => (idx + previousIdx) % len,
   );
 
+  const itemNodesSub = idxArray.map(
+    (index) => children({ index, active: false, activeIndex: activeIdx }),
+  );
   const itemNodes = idxArray.map(
-    (index) => children({ index, activeIndex: activeIdx }),
+    (index) => children({ index, active: index === activeIdx, activeIndex: activeIdx }),
   );
   let delta = activeIdx - previousIdx;
   if (Math.abs(delta) > Math.abs(delta + len)) {
@@ -123,8 +126,9 @@ export default function BigBannerCarousel(props: BigBannerCarouselProps) {
         }}
         onTransitionEnd={handleTransitionDone}
       >
+        {itemNodesSub}
         {itemNodes}
-        {itemNodes}
+        {children({ index: previousIdx, active: false, activeIndex: activeIdx })}
       </CarouselList>
     </CarouselView>
   );
