@@ -216,7 +216,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
           }
         }}
       >
-        { isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
+        {isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
       </a>
     </li>
   );
