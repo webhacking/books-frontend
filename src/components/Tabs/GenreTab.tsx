@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import * as labels from 'src/labels/common.json';
 import GNBCategory from 'src/svgs/GNB_Category.svg';
-import { css, SerializedStyles } from '@emotion/core';
-import { clearOutline, RIDITheme } from 'src/styles';
+import { css } from '@emotion/core';
+import { clearOutline } from 'src/styles';
 import { orBelow } from 'src/utils/mediaQuery';
 import { useRouter } from 'next/router';
 import * as Cookies from 'js-cookie';
+import * as colors from '@ridi/colors';
 import { safeJSONParse } from 'src/utils/common';
 
 const GenreTabWrapper = styled.ul`
@@ -15,150 +16,97 @@ const GenreTabWrapper = styled.ul`
   background: white;
 `;
 
-const rulerCSS = (theme) => css`
+const Ruler = styled.hr`
   position: absolute;
   width: 100vw;
   border: 0 none;
   left: 0;
   height: 1px;
-  background-color: ${theme.divider2};
+  background-color: ${colors.slateGray10};
 `;
 
-const genreListPartialsCSS = (theme) => css`
+const genreListPartialsCSS = css`
+  line-height: 47px;
+  position: relative;
+  top: -2px;
+`;
+
+const GenreList = styled.ul<{ isPartials: boolean }>`
   display: flex;
   flex-direction: row;
   height: 47px;
   align-items: center;
   li {
+    outline: none;
     a {
       display: inline-block;
       padding: 0 22px;
-      ${orBelow(
-    999,
-    css`
+      ${orBelow(999, css`
           padding: 0;
-        `,
-  )};
+      `)};
       font-size: 16px;
       font-weight: 500;
       line-height: 47px;
       height: 100%;
       width: 100%;
       ${clearOutline};
+      button {
+        outline: none;
+      }
     }
     height: 100%;
     text-align: center;
-    color: ${theme.genreTab.normal};
-    cursor: pointer;
-    :first-of-type {
-      line-height: 47px;
-      position: relative;
-      top: -2px;
-      margin-right: 0;
-      a {
-        padding: 0 20px;
-        ${orBelow(
-    999,
-    css`
-            padding: 0;
-          `,
-  )};
-      }
-    }
-    margin-right: 10px;
-  }
-
-  ${orBelow(
-    999,
-    css`
-      justify-content: space-around;
-      li {
-        flex-grow: 1;
-        padding: 0;
-        margin: 0;
-        :first-of-type {
-          padding: 0;
-        }
-      }
-    `,
-  )};
-`;
-
-// Todo Refactor css
-const genreListCSS = (theme) => css`
-  display: flex;
-  flex-direction: row;
-  height: 47px;
-  align-items: center;
-  li {
-    a {
-      display: inline-block;
-      padding: 0 22px;
-      ${orBelow(
-    999,
-    css`
-          padding: 0;
-        `,
-  )};
-      font-size: 16px;
-      font-weight: 500;
-      line-height: 47px;
-      height: 100%;
-      width: 100%;
-      ${clearOutline};
-    }
-    height: 100%;
-    text-align: center;
-    color: ${theme.genreTab.normal};
+    color: ${colors.slateGray80};
     cursor: pointer;
     :first-of-type {
       line-height: 56px;
+      ${(props) => props.isPartials && genreListPartialsCSS};
       margin-right: 0;
       a {
         padding: 0 20px;
-        ${orBelow(
-    999,
-    css`
+        ${orBelow(999, css`
             padding: 0;
-          `,
-  )};
+        `)};
       }
     }
     margin-right: 10px;
   }
-
-  ${orBelow(
-    999,
-    css`
-      justify-content: space-around;
-      li {
-        flex-grow: 1;
+  ${orBelow(999, css`
+    justify-content: space-around;
+    li {
+      flex-grow: 1;
+      padding: 0;
+      margin: 0;
+      :first-of-type {
         padding: 0;
-        margin: 0;
-        :first-of-type {
-          padding: 0;
-        }
       }
-    `,
-  )};
+    }
+  `)};
 `;
 
-const iconCSS = (theme: RIDITheme) => css`
+const GenreListItem = styled.li<{ isCategory: boolean }>`
+  :hover {
+    opacity: 1;
+    ${(props) => props.isCategory && css`opacity: 0.7;`}
+  }
+`;
+
+const iconCSS = css`
   position: relative;
   top: 2px;
   width: 24px;
   height: 24px;
-  fill: ${theme.genreTab.icon};
+  fill: ${colors.slateGray60};
 `;
 
-const subServicesListCSS = (theme) => css`
+const SubServicesList = styled.ul`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   height: 50px;
   font-size: 17px;
-  color: ${theme.subServiceTab.normal};
+  color: ${colors.slateGray50};
   li {
     height: 100%;
     line-height: 50px;
@@ -180,49 +128,55 @@ const subServicesListCSS = (theme) => css`
         font-size: 13px;
         top: -3px;
         margin: 0 16px;
-        color: ${theme.divider3};
+        color: ${colors.slateGray20};
       }
     }
   }
 `;
 
-const genreTab = (theme: RIDITheme) => css`
-  color: ${theme.primaryColor};
+const activeLabelCSS = css`
+  :hover {
+    opacity: 1;
+    color: #1f8ce6;
+  }
+  @media (hover: hover) {
+    :hover {
+      opacity: 1;
+    }
+  }
+  @media (hover: none) {
+    :hover {
+      opacity: 1;
+    }
+  }
+`;
+
+const genreLabelCSS = css`
+  :hover {
+    opacity: 0.7;
+  }
+`;
+
+const ActiveText = styled.span`
+  color: ${colors.dodgerBlue50};
   font-weight: bold;
   :hover {
     opacity: 1;
   }
 `;
-const subServiceTab = (theme: RIDITheme) => css`
-  color: ${theme.primaryColor};
-  font-weight: 600;
-`;
 
-// @ts-ignore
-const normal = (theme: RIDITheme) => css``;
+const GenreTabDivider = styled.hr`
+  border: 0;
+  height: 1px;
+  display: block !important;
+  background: #e6e8eb;
+`;
 
 interface TabItemProps {
   label: string;
   activePath: RegExp;
-  currentCSS: (theme: RIDITheme) => SerializedStyles;
-  normalCSS: (theme: RIDITheme) => SerializedStyles;
-  labelCSS: (theme: RIDITheme) => SerializedStyles;
   route?: string;
-  isPartial?: boolean;
 }
-
-// @ts-ignore
-const genreTabLabelCSS = (theme: RIDITheme) => css`
-  :hover {
-    opacity: 0.7;
-  }
-`;
-// @ts-ignore
-const subServiceTabLabelCSS = (theme: RIDITheme) => css`
-  :hover {
-    color: #303538;
-  }
-`;
 
 const subGenres: { [genre: string]: Array<{ name: string; path: string; activePaths: RegExp }> } = {
   bl: [
@@ -241,7 +195,7 @@ const subGenres: { [genre: string]: Array<{ name: string; path: string; activePa
 
 const TabItem: React.FC<TabItemProps> = (props) => {
   const router = useRouter();
-  const { route, activePath } = props;
+  const { route, activePath, label } = props;
   const [isActivePath, setIsActivePath] = useState(false);
   const cookieGenre = Cookies.get('main_genre') || '';
 
@@ -251,29 +205,10 @@ const TabItem: React.FC<TabItemProps> = (props) => {
 
   return (
     <li
-      css={(theme) => css`
-        ${isActivePath
-        ? css`
-              :hover {
-                opacity: 1;
-                color: #1f8ce6;
-              }
-              @media (hover: hover) {
-                :hover {
-                  opacity: 1;
-                }
-              }
-              @media (hover: none) {
-                :hover {
-                  opacity: 1;
-                }
-              }
-            `
-        : props.labelCSS(theme)};
-      `}
+      css={isActivePath ? activeLabelCSS : genreLabelCSS}
     >
       <a
-        aria-label={props.label}
+        aria-label={label}
         href={route}
         onClick={() => {
           if (route === '/' && cookieGenre) {
@@ -281,7 +216,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
           }
         }}
       >
-        <span css={isActivePath ? props.currentCSS : props.normalCSS}>{props.label}</span>
+        {isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
       </a>
     </li>
   );
@@ -310,6 +245,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
     fantasy: '/fantasy',
     bl: '/bl',
   });
+  const isCategoryList = router.asPath.startsWith('/category/list');
 
   useEffect(() => {
     const latestSubService = safeJSONParse(localStorage.getItem('latest_sub_service'), subServices);
@@ -325,120 +261,66 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
       localStorage.setItem('latest_sub_service', JSON.stringify(updatedSubService));
     }
   }, [router.asPath]);
-
   return (
     <>
       <GenreTabWrapper>
         <li>
-          <ul
-            css={
-              props.isPartials
-                ? (theme) => genreListPartialsCSS(theme)
-                : (theme) => genreListCSS(theme)
-            }
-          >
-            <li
-              css={css`
-                outline: none;
-                ${router.asPath.startsWith('/category/list')
-                ? css`
-                      :hover {
-                        opacity: 1 !important;
-                      }
-                    `
-                : css`
-                      :hover {
-                        opacity: 0.7;
-                      }
-                    `}
-              `}
-            >
+          <GenreList isPartials={isPartials}>
+            <GenreListItem isCategory={isCategoryList}>
               <a href="/category/list" aria-label="카테고리 목록">
-                <button
+                <GNBCategory
                   css={css`
-                    outline: none;
+                    ${iconCSS};
+                    ${isCategoryList && css`
+                      fill: ${colors.dodgerBlue50};
+                      `};
                   `}
-                >
-                  <GNBCategory
-                    css={(theme: RIDITheme) => css`
-                      ${iconCSS(theme)};
-                      ${router.asPath.startsWith('/category/list')
-                      ? css`
-                            fill: ${theme.primaryColor};
-                          `
-                      : ''};
-                    `}
-                  />
-                  <span className="a11y">{labels.category}</span>
-                </button>
+                />
+                <span className="a11y">{labels.category}</span>
               </a>
-            </li>
+            </GenreListItem>
             <TabItem
-              normalCSS={normal}
-              currentCSS={genreTab}
-              labelCSS={genreTabLabelCSS}
               activePath={/^\/?$/}
               label="일반"
               route="/"
-              isPartial={isPartials}
             />
             <TabItem
-              normalCSS={normal}
-              currentCSS={genreTab}
-              labelCSS={genreTabLabelCSS}
               activePath={/^\/romance(-serial)?\/?$/}
               label="로맨스"
               route={subServices.romance || '/romance'}
-              isPartial={isPartials}
             />
             <TabItem
-              normalCSS={normal}
-              currentCSS={genreTab}
-              labelCSS={genreTabLabelCSS}
               activePath={/^\/fantasy(-serial)?\/?$/}
               label="판타지"
               route={subServices.fantasy || '/fantasy'}
-              isPartial={isPartials}
             />
             <TabItem
-              normalCSS={normal}
-              currentCSS={genreTab}
-              labelCSS={genreTabLabelCSS}
               activePath={/^\/comics\/?$/}
               label="만화"
               route="/comics"
-              isPartial={isPartials}
             />
             <TabItem
-              normalCSS={normal}
-              currentCSS={genreTab}
-              labelCSS={genreTabLabelCSS}
               activePath={/^\/bl(-serial)?\/?$/}
               label="BL"
               route={subServices.bl || '/bl'}
-              isPartial={isPartials}
             />
-          </ul>
+          </GenreList>
         </li>
         <li>
-          <hr css={rulerCSS} />
+          <Ruler />
         </li>
         {subGenreData ? (
           <li>
-            <ul css={subServicesListCSS}>
+            <SubServicesList>
               {subGenreData.map((service, index) => (
                 <TabItem
                   key={index}
                   route={service.path}
-                  normalCSS={normal}
-                  currentCSS={subServiceTab}
-                  labelCSS={subServiceTabLabelCSS}
                   activePath={service.activePaths}
                   label={service.name}
-                  isPartial={isPartials}
                 />
               ))}
-            </ul>
+            </SubServicesList>
           </li>
         ) : (
           <div
@@ -451,16 +333,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
           />
         )}
       </GenreTabWrapper>
-      {props.isPartials && (
-        <hr
-          css={css`
-            border: 0;
-            height: 1px;
-            display: block !important;
-            background: #e6e8eb;
-          `}
-        />
-      )}
+      {props.isPartials && <GenreTabDivider />}
     </>
   );
 });
