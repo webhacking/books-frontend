@@ -39,8 +39,8 @@ const CarouselList = styled.ul<{ slideMargin: number }>`
   flex-wrap: nowrap;
   align-items: center;
 
-  > li + li {
-    margin-left: ${(props) => props.slideMargin}px;
+  > li {
+    margin: 0 ${(props) => props.slideMargin / 2}px;
   }
 `;
 
