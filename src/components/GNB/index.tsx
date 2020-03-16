@@ -319,10 +319,16 @@ interface GNBProps {
   pathname?: string;
   isLoginForPartials?: 'true' | 'false';
 }
+
+export const GNBContext = React.createContext<{
+  origin?: string;
+}>({});
+
 export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   const { loggedUser } = useSelector<RootState, AccountState>((state) => state.account);
   const dispatch = useDispatch();
   const route = useRouter();
+  const { isPartials } = props;
 
   const initialLoginPath = `${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/account/login`;
   const initialSignupPath = `${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/account/signup`;
@@ -332,13 +338,19 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   const [signUpPath, setSignUpPath] = useState(initialSignupPath);
   const [cashOrderPath, setCashOrderPath] = useState(initialCashOrderPath);
 
+  const [origin, setOrigin] = useState('');
+
   useEffect(() => {
     const params = new URLSearchParams();
     params.append('return_url', new URL(route.asPath, location.href).toString() || location.href);
 
     setLoginPath(`${initialLoginPath}?${params.toString()}`);
     setSignUpPath(`${initialSignupPath}?${params.toString()}`);
-  }, [route.asPath]);
+
+    if (isPartials) {
+      setOrigin(Array.isArray(route.query.origin) ? route.query.origin[0] : route.query.origin || '');
+    }
+  }, [route.asPath, route.query.origin]);
 
   useEffect(() => {
     const cancelToken = originalAxios.CancelToken.source();
@@ -351,49 +363,51 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   return (
     // @ts-ignore
     <GNBWrapper className="new_gnb" id={props.id}>
-      <Header>
-        <Navigation>
-          <div css={logoAndSearchBox}>
-            <LogoWrapper>
-              <li>
-                <a
-                  href="/"
-                  aria-label="리디북스 홈으로 이동"
-                  css={css`
-                    display: flex;
-                    align-items: center;
-                  `}
-                >
-                  <RidiLogo css={ridiLogo} />
-                  <span className="a11y">RIDIBOOKS</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://select.ridibooks.com"
-                  aria-label="리디셀렉트 홈으로 이동"
-                >
-                  <RidiSelectLogo css={ridiSelectLogo} />
-                  <span className="a11y">리디셀렉트</span>
-                </a>
-              </li>
-            </LogoWrapper>
-            <ButtonWrapper>
-              <GNBButtons
-                loggedUser={loggedUser}
-                isPartialsLogin={props.isLoginForPartials}
-                loginPath={loginPath}
-                signUpPath={signUpPath}
-                cashOrderPath={cashOrderPath}
+      <GNBContext.Provider value={{ origin }}>
+        <Header>
+          <Navigation>
+            <div css={logoAndSearchBox}>
+              <LogoWrapper>
+                <li>
+                  <a
+                    href={isPartials ? `${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/` : '/'}
+                    aria-label="리디북스 홈으로 이동"
+                    css={css`
+                      display: flex;
+                      align-items: center;
+                    `}
+                  >
+                    <RidiLogo css={ridiLogo} />
+                    <span className="a11y">RIDIBOOKS</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://select.ridibooks.com"
+                    aria-label="리디셀렉트 홈으로 이동"
+                  >
+                    <RidiSelectLogo css={ridiSelectLogo} />
+                    <span className="a11y">리디셀렉트</span>
+                  </a>
+                </li>
+              </LogoWrapper>
+              <ButtonWrapper>
+                <GNBButtons
+                  loggedUser={loggedUser}
+                  isPartialsLogin={props.isLoginForPartials}
+                  loginPath={loginPath}
+                  signUpPath={signUpPath}
+                  cashOrderPath={cashOrderPath}
+                />
+              </ButtonWrapper>
+              <InstantSearch
+                searchKeyword={props.searchKeyword || ''}
               />
-            </ButtonWrapper>
-            <InstantSearch
-              searchKeyword={props.searchKeyword || ''}
-            />
-          </div>
-        </Navigation>
-        <MainTab isPartials={props.isPartials} loggedUserInfo={loggedUser} />
-      </Header>
+            </div>
+          </Navigation>
+          <MainTab isPartials={props.isPartials} loggedUserInfo={loggedUser} />
+        </Header>
+      </GNBContext.Provider>
     </GNBWrapper>
   );
 });
