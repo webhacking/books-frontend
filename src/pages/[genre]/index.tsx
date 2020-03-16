@@ -22,8 +22,6 @@ import { useEventTracker } from 'src/hooks/useEventTracker';
 import { RootState } from 'src/store/config';
 import { css } from '@emotion/core';
 
-import { DeviceType } from 'src/components/Context/DeviceType';
-
 const { captureException } = sentry();
 
 export interface HomeProps {
@@ -130,18 +128,16 @@ export const Home: NextPage<HomeProps> = (props) => {
         <title>{`${titleGenerator(genre)} - 리디북스`}</title>
       </Head>
       <GenreTab currentGenre={genre} />
-      <DeviceType>
-        {branches && branches.map((section, index) => (
-          <React.Fragment key={index}>
-            <HomeSectionRenderer section={section} order={index} genre={genre} />
-          </React.Fragment>
-        ))}
-        <div
-          css={css`
-            margin-bottom: 24px;
-          `}
-        />
-      </DeviceType>
+      {branches && branches.map((section, index) => (
+        <React.Fragment key={index}>
+          <HomeSectionRenderer section={section} order={index} genre={genre} />
+        </React.Fragment>
+      ))}
+      <div
+        css={css`
+          margin-bottom: 24px;
+        `}
+      />
     </>
   );
 };
