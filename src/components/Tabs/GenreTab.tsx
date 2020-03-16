@@ -7,9 +7,17 @@ import { clearOutline } from 'src/styles';
 import { orBelow } from 'src/utils/mediaQuery';
 import { useRouter } from 'next/router';
 import * as Cookies from 'js-cookie';
-import * as colors from '@ridi/colors';
+
 import { safeJSONParse } from 'src/utils/common';
 import Link from 'next/link';
+import {
+  dodgerBlue60,
+  slateGray10,
+  slateGray20,
+  slateGray50,
+  slateGray60,
+  slateGray80,
+} from '@ridi/colors';
 
 const GenreTabWrapper = styled.ul`
   max-width: 1000px;
@@ -23,7 +31,7 @@ const Ruler = styled.hr`
   border: 0 none;
   left: 0;
   height: 1px;
-  background-color: ${colors.slateGray10};
+  background-color: ${slateGray10};
 `;
 
 const genreListPartialsCSS = css`
@@ -42,9 +50,12 @@ const GenreList = styled.ul<{ isPartials: boolean }>`
     a {
       display: inline-block;
       padding: 0 22px;
-      ${orBelow(999, css`
+      ${orBelow(
+    999,
+    css`
           padding: 0;
-      `)};
+        `,
+  )};
       font-size: 16px;
       font-weight: 500;
       line-height: 47px;
@@ -57,7 +68,7 @@ const GenreList = styled.ul<{ isPartials: boolean }>`
     }
     height: 100%;
     text-align: center;
-    color: ${colors.slateGray80};
+    color: ${slateGray80};
     cursor: pointer;
     :first-of-type {
       line-height: 56px;
@@ -65,30 +76,39 @@ const GenreList = styled.ul<{ isPartials: boolean }>`
       margin-right: 0;
       a {
         padding: 0 20px;
-        ${orBelow(999, css`
+        ${orBelow(
+    999,
+    css`
             padding: 0;
-        `)};
+          `,
+  )};
       }
     }
     margin-right: 10px;
   }
-  ${orBelow(999, css`
-    justify-content: space-around;
-    li {
-      flex-grow: 1;
-      padding: 0;
-      margin: 0;
-      :first-of-type {
+  ${orBelow(
+    999,
+    css`
+      justify-content: space-around;
+      li {
+        flex-grow: 1;
         padding: 0;
+        margin: 0;
+        :first-of-type {
+          padding: 0;
+        }
       }
-    }
-  `)};
+    `,
+  )};
 `;
 
 const GenreListItem = styled.li<{ isCategory: boolean }>`
   :hover {
     opacity: 1;
-    ${(props) => props.isCategory && css`opacity: 0.7;`}
+    ${(props) => props.isCategory
+      && css`
+        opacity: 0.7;
+      `}
   }
 `;
 
@@ -97,7 +117,7 @@ const iconCSS = css`
   top: 2px;
   width: 24px;
   height: 24px;
-  fill: ${colors.slateGray60};
+  fill: ${slateGray60};
 `;
 
 const SubServicesList = styled.ul`
@@ -107,7 +127,7 @@ const SubServicesList = styled.ul`
   align-items: center;
   height: 50px;
   font-size: 17px;
-  color: ${colors.slateGray50};
+  color: ${slateGray50};
   li {
     height: 100%;
     line-height: 50px;
@@ -133,7 +153,7 @@ const SubServicesList = styled.ul`
         font-size: 13px;
         top: -3px;
         margin: 0 16px;
-        color: ${colors.slateGray20};
+        color: ${slateGray20};
       }
     }
   }
@@ -142,7 +162,7 @@ const SubServicesList = styled.ul`
 const activeLabelCSS = css`
   :hover {
     opacity: 1;
-    color: #1f8ce6;
+    color: ${dodgerBlue60};
   }
   @media (hover: hover) {
     :hover {
@@ -163,7 +183,7 @@ const genreLabelCSS = css`
 `;
 
 const ActiveText = styled.span`
-  color: ${colors.dodgerBlue50};
+  color: ${dodgerBlue60};
   font-weight: bold;
   :hover {
     opacity: 1;
@@ -183,7 +203,9 @@ interface TabItemProps {
   href: string;
 }
 
-const subGenres: { [genre: string]: Array<{ name: string; path: string; activePaths: RegExp }> } = {
+const subGenres: {
+  [genre: string]: Array<{ name: string; path: string; activePaths: RegExp }>;
+} = {
   bl: [
     { name: '단행본', path: '/bl', activePaths: /^\/bl\/?$/ },
     { name: '연재', path: '/bl-serial', activePaths: /^\/bl-serial\/?$/ },
@@ -209,9 +231,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
   }, [activePath, router.asPath]);
 
   return (
-    <li
-      css={isActivePath ? activeLabelCSS : genreLabelCSS}
-    >
+    <li css={isActivePath ? activeLabelCSS : genreLabelCSS}>
       {process.env.IS_PRODUCTION ? (
         <a
           aria-label={label}
@@ -262,7 +282,10 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
   const isCategoryList = router.asPath.startsWith('/category/list');
 
   useEffect(() => {
-    const latestSubService = safeJSONParse(localStorage.getItem('latest_sub_service'), subServices);
+    const latestSubService = safeJSONParse(
+      localStorage.getItem('latest_sub_service'),
+      subServices,
+    );
     setSubServices(latestSubService);
 
     const genre = /romance|fantasy|bl/.exec(router.asPath)?.[0];
@@ -285,19 +308,16 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
                 <GNBCategory
                   css={css`
                     ${iconCSS};
-                    ${isCategoryList && css`
-                      fill: ${colors.dodgerBlue50};
+                    ${isCategoryList
+                      && css`
+                        fill: ${dodgerBlue60};
                       `};
                   `}
                 />
                 <span className="a11y">{labels.category}</span>
               </a>
             </GenreListItem>
-            <TabItem
-              activePath={/^\/?$/}
-              label="일반"
-              href="/"
-            />
+            <TabItem activePath={/^\/?$/} label="일반" href="/" />
             <TabItem
               activePath={/^\/romance(-serial)?\/?$/}
               label="로맨스"
@@ -308,11 +328,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
               label="판타지"
               href={subServices.fantasy || '/fantasy'}
             />
-            <TabItem
-              activePath={/^\/comics\/?$/}
-              label="만화"
-              href="/comics"
-            />
+            <TabItem activePath={/^\/comics\/?$/} label="만화" href="/comics" />
             <TabItem
               activePath={/^\/bl(-serial)?\/?$/}
               label="BL"

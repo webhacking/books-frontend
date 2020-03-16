@@ -14,6 +14,7 @@ import useIsTablet from 'src/hooks/useIsTablet';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import { authorsRenderer } from 'src/components/BookMeta/BookMeta';
 import recommendedBookBackground from 'src/assets/image/recommended_book_background@desktop.png';
+import { slateGray60 } from '@ridi/colors';
 
 const SectionTitle = styled.h2`
   max-width: 1000px;
@@ -92,7 +93,7 @@ export const BookAuthor = styled.span`
   font-size: 14px;
   line-height: 1.36em;
   max-height: 1.36em;
-  color: #808991;
+  color: ${slateGray60};
   margin-bottom: 5px;
   ${lineClamp(1)};
 `;

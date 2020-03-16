@@ -7,6 +7,7 @@ import * as BookApi from 'src/types/book';
 import { StarRating as StarRatingType } from 'src/types/sections';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import { orBelow } from 'src/utils/mediaQuery';
+import { slateGray60 } from '@ridi/colors';
 
 const bookTitleCSS = css`
   font-size: 15px;
@@ -34,7 +35,7 @@ const authorCSS = css`
   height: 19px;
   font-size: 14px;
   line-height: 1.36;
-  color: #808991;
+  color: ${slateGray60};
   margin-bottom: 2px;
   ${lineClamp(1)};
 `;

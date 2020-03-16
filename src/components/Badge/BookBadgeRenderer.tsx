@@ -2,6 +2,7 @@ import React from 'react';
 import { DisplayType } from 'src/types/sections';
 import styled from '@emotion/styled';
 import { RIDI_WAIT_FREE_ICON_URL } from 'src/constants/icons';
+import { blueGray40 } from '@ridi/colors';
 
 interface BookBadgeRendererProps {
   isWaitFree?: boolean;
@@ -81,7 +82,7 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = (props) => {
     return (
       <DiscountBadge
         className="badge"
-        backgroundColor="#70808f"
+        backgroundColor={blueGray40}
         role="img"
         aria-label={`${discountPercentage}% 할인`}
       >
