@@ -1,5 +1,10 @@
 export function createTimeLabel() {
   const date = new Date();
+  date.setHours(
+    date.getHours()
+    + date.getTimezoneOffset() / 60
+    + 9,
+  );
   const hour = date
     .getHours()
     .toString()

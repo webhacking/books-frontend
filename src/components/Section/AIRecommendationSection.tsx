@@ -3,7 +3,7 @@ import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBo
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
-import axios, { OAuthRequestType } from 'src/utils/axios';
+import axios, { CancelToken, OAuthRequestType } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 import { keyToArray } from 'src/utils/common';
 import { booksActions } from 'src/services/books';
@@ -34,14 +34,17 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
   const genre = (router.query.genre as string) || 'general';
 
   useEffect(() => {
+    const source = CancelToken.source();
     // @ts-ignore
     const requestAiRecommendationItems = async () => {
       try {
-        const requestUrl = `${process.env.NEXT_PUBLIC_STORE_API}/sections/home-${genre}-ai-recommendation/`;
+        const requestUrl = `/sections/home-${genre}-ai-recommendation/`;
         const result = await axios.get(requestUrl, {
+          baseURL: process.env.NEXT_PUBLIC_STORE_API,
           withCredentials: true,
           custom: { authorizationRequestType: OAuthRequestType.CHECK },
           timeout: 8000,
+          cancelToken: source.token,
         });
         if (result.status < 400 && result.status >= 200) {
           setSections(result.data.items.map((item) => ({ ...item, excluded: false })));
@@ -78,7 +81,10 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
         requestAiRecommendationItems();
       }
     }
+
+    return source.cancel;
   }, [dispatch, genre, router, aiItems.length, items, loggedUser, isRequestError]);
+
   if (!loggedUser || !aiItems || aiItems.length < 1) {
     return null;
   }

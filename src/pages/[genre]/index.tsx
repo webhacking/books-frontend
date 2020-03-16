@@ -1,27 +1,25 @@
-import React, { useCallback, useEffect } from 'react';
+import React, {
+  useState, useCallback, useEffect, useRef,
+} from 'react';
 import Head from 'next/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 import { GenreTab } from 'src/components/Tabs';
 import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
-import Router from 'next/router';
 import * as Cookies from 'js-cookie';
 import titleGenerator from 'src/utils/titleGenerator';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Page, Section } from 'src/types/sections';
 import { HomeSectionRenderer } from 'src/components/Section/HomeSectionRenderer';
 import pRetry from 'p-retry';
 import { keyToArray } from 'src/utils/common';
-import axios from 'src/utils/axios';
+import axios, { CancelToken } from 'src/utils/axios';
 import { booksActions } from 'src/services/books';
-import { Request } from 'express';
-import { ServerResponse } from 'http';
 import sentry from 'src/utils/sentry';
 import { categoryActions } from 'src/services/category';
 import { NextPage } from 'next';
 import { useEventTracker } from 'src/hooks/useEventTracker';
 import { RootState } from 'src/store/config';
-import useIsSelectFetch from 'src/hooks/useIsSelectFetch';
 import { css } from '@emotion/core';
 
 import { DeviceType } from 'src/components/Context/DeviceType';
@@ -33,18 +31,13 @@ export interface HomeProps {
   genre: string;
 }
 
-const createHomeSlug = (genre: string) => {
-  if (!genre || genre === 'general') {
-    return 'home-general';
-  }
-  return `home-${genre}`;
-};
-
-const fetchHomeSections = async (genre: string, req?: Request, params = {}) => {
+const fetchHomeSections = async (genre = 'general', params = {}, options = {}) => {
   const result = await pRetry(
-    () => axios.get<Page>(`${process.env.NEXT_PUBLIC_STORE_API}/pages/${createHomeSlug(genre)}/`, {
+    () => axios.get<Page>(`/pages/home-${genre}/`, {
+      baseURL: process.env.NEXT_PUBLIC_STORE_API,
       withCredentials: true,
       params,
+      ...options,
     }),
     {
       retries: 2,
@@ -54,7 +47,6 @@ const fetchHomeSections = async (genre: string, req?: Request, params = {}) => {
   return result.data;
 };
 
-// Lambda 에서 올바르게 동작할까. 공유되지 않을까?
 // legacy genre 로 쿠키 값 설정
 const setCookie = (genre: string) => {
   let convertedLegacyGenre = '';
@@ -74,14 +66,49 @@ const setCookie = (genre: string) => {
   });
 };
 
+const usePrevious = <T extends {}>(value: T) => {
+  const ref = useRef<T>();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+};
+
 export const Home: NextPage<HomeProps> = (props) => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
-  const bIds = keyToArray(
-    props.branches.filter((section) => section.extra.use_select_api),
-    'b_id',
-  );
-  const [tracker] = useEventTracker();
+  const dispatch = useDispatch();
 
+  const { genre = 'general' } = props;
+  const previousGenre = usePrevious(genre);
+  const [branches, setBranches] = useState(props.branches);
+
+  useEffect(() => {
+    const source = CancelToken.source();
+    if (!branches.length || (previousGenre && previousGenre !== props.genre)) {
+      setBranches([]);
+      // store.dispatch({ type: booksActions.setFetching.type, payload: true });
+      fetchHomeSections(props.genre, {}, {
+        cancelToken: source.token,
+      }).then((result) => {
+        setBranches(result.branches);
+        const bIds = keyToArray(result.branches, 'b_id');
+        dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+        const categoryIds = keyToArray(result.branches, 'category_id');
+        dispatch({
+          type: categoryActions.insertCategoryIds.type,
+          payload: categoryIds,
+        });
+        const selectBIds = keyToArray(
+          result.branches.filter((section) => section.extra.use_select_api),
+          'b_id',
+        );
+        dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
+      });
+    }
+    return source.cancel;
+  }, [genre, dispatch]);
+
+  const [tracker] = useEventTracker();
   const setPageView = useCallback(() => {
     if (tracker) {
       try {
@@ -92,26 +119,23 @@ export const Home: NextPage<HomeProps> = (props) => {
     }
   }, [tracker]);
 
-  useIsSelectFetch(bIds);
   useEffect(() => {
     setCookie(props.genre);
     setPageView();
-  }, [props.genre, loggedUser, props.branches, setPageView]);
-  const { genre } = props;
-  const currentGenre = genre || 'general';
+  }, [props.genre, loggedUser, setPageView]);
+
   return (
     <>
       <Head>
-        <title>{`${titleGenerator(currentGenre)} - 리디북스`}</title>
+        <title>{`${titleGenerator(genre)} - 리디북스`}</title>
       </Head>
-      <GenreTab currentGenre={currentGenre} />
+      <GenreTab currentGenre={genre} />
       <DeviceType>
-        {props.branches
-          && props.branches.map((section, index) => (
-            <React.Fragment key={index}>
-              <HomeSectionRenderer section={section} order={index} genre={currentGenre} />
-            </React.Fragment>
-          ))}
+        {branches && branches.map((section, index) => (
+          <React.Fragment key={index}>
+            <HomeSectionRenderer section={section} order={index} genre={genre} />
+          </React.Fragment>
+        ))}
         <div
           css={css`
             margin-bottom: 24px;
@@ -124,23 +148,22 @@ export const Home: NextPage<HomeProps> = (props) => {
 
 Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
   const {
-    query, res, req, store,
+    query,
+    res,
+    store,
+    isServer,
   } = ctx;
 
   const { genre = 'general' } = query;
-  if (!['general', 'romance', 'romance-serial', 'fantasy', 'fantasy-serial', 'comics', 'bl', 'bl-serial'].includes(genre as string)) {
+  if (!['general', 'romance', 'romance-serial', 'fantasy', 'fantasy-serial', 'comics', 'bl', 'bl-serial'].includes(genre.toString())) {
     throw new Error('Not Found');
   }
 
-  if (req && res) {
+  if (isServer) {
     if (res.statusCode !== 302) {
       try {
         // store.dispatch({ type: booksActions.setFetching.type, payload: true });
-        const result = await fetchHomeSections(
-          // @ts-ignore
-          genre,
-          req,
-        );
+        const result = await fetchHomeSections(genre.toString());
         const bIds = keyToArray(result.branches, 'b_id');
         store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
         const categoryIds = keyToArray(result.branches, 'category_id');
@@ -149,54 +172,19 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
           payload: categoryIds,
         });
         return {
-          genre,
+          genre: genre.toString(),
           store,
           ...query,
           ...result,
         };
       } catch (error) {
-        console.log(error);
         captureException(error, ctx);
-        // redirect(req, res, '/error');
+        throw new Error(error);
       }
-    }
-  } else {
-    // Client Side
-    try {
-      const result = await fetchHomeSections(
-        // @ts-ignore
-        genre || 'general',
-        null,
-        // Hack
-        // 사파리 BFCache 디스크에서 캐시 된 데이터가 그대로 사용되는데 끄걸 회피하기 위해 Query Param 에 초를 삽입하는 꼼수
-        // 30초 단위로 잘라 보냄
-        { sec: Math.floor(Date.now() / 30000) },
-      );
-      const bIds = keyToArray(result.branches, 'b_id');
-      store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
-      const categoryIds = keyToArray(result.branches, 'category_id');
-      store.dispatch({
-        type: categoryActions.insertCategoryIds.type,
-        payload: categoryIds,
-      });
-      const selectBIds = keyToArray(
-        result.branches.filter((section) => section.extra.use_select_api),
-        'b_id',
-      );
-      store.dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
-      return {
-        genre,
-        store,
-        ...query,
-        ...result,
-      };
-    } catch (error) {
-      captureException(error, ctx);
-      Router.push('/error');
     }
   }
   return {
-    genre,
+    genre: genre.toString(),
     store,
     branches: [],
     ...query,
