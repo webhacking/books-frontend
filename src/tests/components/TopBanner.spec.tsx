@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 
 import TopBanner from 'src/components/TopBanner';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
-import { DeviceTypeProvider } from 'src/hooks/useDeviceType';
 
 import makeStore from 'src/store/config';
 
@@ -83,9 +82,7 @@ describe('TopBanner', () => {
         render(
           <Provider store={store}>
             <ViewportIntersectionProvider>
-              <DeviceTypeProvider>
-                <TopBanner banners={BANNERS} slug="test" />
-              </DeviceTypeProvider>
+              <TopBanner banners={BANNERS} slug="test" />
             </ViewportIntersectionProvider>
           </Provider>
         )
