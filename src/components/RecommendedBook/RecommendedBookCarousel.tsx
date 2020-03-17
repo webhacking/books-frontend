@@ -26,7 +26,7 @@ const CarouselWrapper = styled.div`
   width: 1005px;
   margin: 0 auto;
   position: relative;
-  margin-top: 6px;
+  margin-top: 20px;
 `;
 
 const bookWidthStyle = css`width: 140px;`;

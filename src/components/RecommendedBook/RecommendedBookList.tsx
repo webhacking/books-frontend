@@ -38,6 +38,14 @@ interface ListItemProps {
   genre: string;
 }
 
+const bookWidthStyle = css`
+  width: 100px;
+
+  @media (min-width: 1000px) {
+    width: 140px;
+  }
+`;
+
 const ListItem = React.memo((props: ListItemProps) => {
   const {
     book, index, type, theme, slug, genre,
@@ -53,7 +61,7 @@ const ListItem = React.memo((props: ListItemProps) => {
               margin-right: 20px;
             }
             @media (min-width: 1000px) {
-              margin-right: inherit !important;
+              margin-right: 22px;
             }
           `
           : css`
@@ -72,7 +80,7 @@ const ListItem = React.memo((props: ListItemProps) => {
           <ThumbnailRenderer
             className={slug}
             order={index}
-            css={css`width: 100px;`}
+            css={bookWidthStyle}
             sizes="100px"
             slug={slug}
             book={{ b_id: book.b_id, detail: book.detail }}
@@ -168,7 +176,8 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
     <div
       css={css`
         position: relative;
-        margin-top: 6px;
+        margin: 6px auto 0;
+        max-width: 1000px;
       `}
     >
       <ScrollContainer>
@@ -178,9 +187,17 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
             type === DisplayType.TodayRecommendation
               ? css`
                   padding-left: 35px;
+
+                  @media (min-width: 1000px) {
+                    padding-left: 25px;
+                  }
                 `
               : css`
                   padding-left: 13px;
+
+                  @media (min-width: 1000px) {
+                    padding-left: 25px;
+                  }
                 `,
           ]}
         >

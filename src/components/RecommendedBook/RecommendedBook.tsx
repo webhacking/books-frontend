@@ -21,7 +21,7 @@ const SectionTitle = styled.h2`
   padding-left: 25px;
   padding-right: 8px;
 
-  font-size: 21px;
+  font-size: 19px;
   font-weight: normal;
 
   @media (max-width: ${BreakPoint.LG}px) {
