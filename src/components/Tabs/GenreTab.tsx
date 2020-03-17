@@ -40,6 +40,13 @@ const genreListPartialsCSS = css`
   top: -2px;
 `;
 
+const resetPadding = orBelow(
+  999,
+  css`
+    padding: 0;
+  `,
+);
+
 const GenreList = styled.ul<{ isPartials: boolean }>`
   display: flex;
   flex-direction: row;
@@ -50,12 +57,7 @@ const GenreList = styled.ul<{ isPartials: boolean }>`
     a {
       display: inline-block;
       padding: 0 22px;
-      ${orBelow(
-    999,
-    css`
-          padding: 0;
-        `,
-  )};
+      ${resetPadding};
       font-size: 16px;
       font-weight: 500;
       line-height: 47px;
@@ -76,12 +78,7 @@ const GenreList = styled.ul<{ isPartials: boolean }>`
       margin-right: 0;
       a {
         padding: 0 20px;
-        ${orBelow(
-    999,
-    css`
-            padding: 0;
-          `,
-  )};
+        ${resetPadding};
       }
     }
     margin-right: 10px;
@@ -108,7 +105,7 @@ const GenreListItem = styled.li<{ isCategory: boolean }>`
     ${(props) => props.isCategory
       && css`
         opacity: 0.7;
-      `}
+      `};
   }
 `;
 
