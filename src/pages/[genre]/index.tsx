@@ -78,7 +78,7 @@ export const Home: NextPage<HomeProps> = (props) => {
 
   const { genre = 'general' } = props;
   const previousGenre = usePrevious(genre);
-  const [branches, setBranches] = useState(props.branches);
+  const [branches, setBranches] = useState(props.branches || []);
 
   useEffect(() => {
     const source = CancelToken.source();
@@ -88,23 +88,27 @@ export const Home: NextPage<HomeProps> = (props) => {
       fetchHomeSections(props.genre, {}, {
         cancelToken: source.token,
       }).then((result) => {
-        setBranches(result.branches);
-        const bIds = keyToArray(result.branches, 'b_id');
+        const { branches: data = [] } = result;
+        setBranches(data);
+        const bIds = keyToArray(data, 'b_id');
         dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
-        const categoryIds = keyToArray(result.branches, 'category_id');
+        const categoryIds = keyToArray(data, 'category_id');
         dispatch({
           type: categoryActions.insertCategoryIds.type,
           payload: categoryIds,
         });
-        const selectBIds = keyToArray(
-          result.branches.filter((section) => section.extra.use_select_api),
-          'b_id',
-        );
-        dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
       });
     }
     return source.cancel;
   }, [genre, dispatch]);
+
+  useEffect(() => {
+    const selectBIds = keyToArray(
+      branches.filter((section) => section.extra.use_select_api),
+      'b_id',
+    );
+    dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
+  }, [branches]);
 
   const [tracker] = useEventTracker();
   const setPageView = useCallback(() => {
@@ -167,6 +171,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
           type: categoryActions.insertCategoryIds.type,
           payload: categoryIds,
         });
+
         return {
           genre: genre.toString(),
           store,
