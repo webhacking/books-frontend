@@ -153,7 +153,7 @@ const CarouselItemContainer = styled.li<{ active?: boolean; invisible?: boolean 
     transition: background-color 0.2s;
     background-color: rgba(26, 26, 26, ${(props) => (props.active ? 0 : 0.5)});
 
-    pointer-events: none;
+    ${(props) => !props.invisible && 'pointer-events: none;'}
   }
 `;
 
