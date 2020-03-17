@@ -2,7 +2,7 @@ import React from 'react';
 import { DisplayType } from 'src/types/sections';
 import styled from '@emotion/styled';
 import { RIDI_WAIT_FREE_ICON_URL } from 'src/constants/icons';
-import { blueGray40 } from '@ridi/colors';
+import { blueGray40, dodgerBlue50 } from '@ridi/colors';
 
 interface BookBadgeRendererProps {
   isWaitFree?: boolean;
@@ -66,14 +66,15 @@ const BookBadgeRenderer: React.FC<BookBadgeRendererProps> = (props) => {
   const { isWaitFree, discountPercentage, isRentable } = props;
   if (isRentable) {
     return (
-      <Badge className="badge" backgroundColor="#1abc9c">
+      // @ridi/colors 패키지 업데이트 후 'sea_green' 으로 바꾸기
+      <Badge className="badge" backgroundColor="#3ea590">
         <Rentable>대여</Rentable>
       </Badge>
     );
   }
   if (isWaitFree) {
     return (
-      <Badge className="badge" backgroundColor="#1f8ce6">
+      <Badge className="badge" backgroundColor={dodgerBlue50}>
         <WaitFree src={RIDI_WAIT_FREE_ICON_URL} alt="리디 기다리면 무료" />
       </Badge>
     );
