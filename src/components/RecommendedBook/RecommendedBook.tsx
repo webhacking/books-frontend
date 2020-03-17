@@ -2,7 +2,7 @@ import React from 'react';
 import { css } from '@emotion/core';
 import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
 import styled from '@emotion/styled';
-import { lineClamp, scrollBarHidden } from 'src/styles';
+import { lineClamp } from 'src/styles';
 // import NewBadge from 'src/svgs/NewBadge.svg';
 import AtSelectIcon from 'src/svgs/Book1.svg';
 import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedBookCarousel';
@@ -15,56 +15,55 @@ import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import { authorsRenderer } from 'src/components/BookMeta/BookMeta';
 import recommendedBookBackground from 'src/assets/image/recommended_book_background@desktop.png';
 
-const backgroundImageCSS = css`
-  background: url(${recommendedBookBackground})
-    center center no-repeat #17202e;
-  background-size: contain;
-  ${orBelow(
-    BreakPoint.MD,
-    css`
-      background-size: cover;
-    `,
-  )};
-`;
-
-const hotReleaseRecommendedBookWrapperCSS = css`
-  padding-top: 40px;
-  ${orBelow(
-    999,
-    css`
-      padding-top: 36px;
-    `,
-  )};
-
-  margin-bottom: 0;
-`;
-const recommendedBookWrapperCSS = css`
-  padding-top: 40px;
-  padding-bottom: 50px;
-
-  ${orBelow(
-    999,
-    css`
-      padding-bottom: 40px;
-    `,
-  )}
-`;
-
-export const hotReleaseBookListCSS = css`
+const SectionTitle = styled.h2`
   max-width: 1000px;
+  margin: 0 auto;
+  padding-left: 25px;
+  padding-right: 8px;
+
+  font-size: 21px;
+  font-weight: normal;
+
+  @media (max-width: ${BreakPoint.LG}px) {
+    padding-left: 20px;
+  }
+
+  @media (max-width: ${BreakPoint.MD}px) {
+    padding-left: 16px;
+  }
 `;
-export const recommendedBookListCSS = css`
+
+const RecommendedBookWrapper = styled.section<{ bg: 'white' | 'dark' }>`
+  padding-top: ${({ bg }) => (bg === 'white' ? 16 : 36)}px;
+  padding-bottom: ${({ bg }) => (bg === 'white' ? 16 : 36)}px;
+
+  ${({ bg }) => bg === 'white' && `
+    @media (min-width: 1000px) {
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  `}
+
+  ${({ bg }) => bg === 'dark' && `
+    background: url(${recommendedBookBackground})
+      center center no-repeat #17202e;
+    background-size: contain;
+    @media (max-width: ${BreakPoint.MD}px) {
+      background-size: cover;
+    }
+  `}
+
+  > ${SectionTitle} {
+    ${({ bg }) => bg === 'dark' && 'color: white;'}
+  }
 `;
 
 export const BookList = styled.ul`
-  overflow: auto;
-  ${scrollBarHidden};
-
+  flex: none;
   margin: 6px auto 0;
   padding-top: 7px;
   padding-left: 7px;
   display: flex;
-  justify-content: start;
   flex-wrap: nowrap;
 
   @media (min-width: 1000px) {
@@ -76,6 +75,7 @@ export const bookMetaWrapperCSS = css`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-top: 8px;
 `;
 
 export const BookTitle = styled.h2`
@@ -95,25 +95,6 @@ export const BookAuthor = styled.span`
   color: #808991;
   margin-bottom: 5px;
   ${lineClamp(1)};
-`;
-
-const hotReleaseTitleCSS = css`
-  max-width: 950px;
-  margin: 0 auto 27px;
-  display: flex;
-  align-items: center;
-  font-weight: normal;
-
-  ${orBelow(
-    BreakPoint.LG,
-    css`
-      padding-left: 16px;
-    `,
-  )};
-
-  line-height: 21px;
-  font-size: 21px;
-  color: white;
 `;
 
 interface BookMetaProps {
@@ -207,42 +188,8 @@ const RecommendedBook: React.FC<RecommendedBookProps> = (props) => {
   const [books] = useBookDetailSelector(props.items);
   const isTablet = useIsTablet();
   return (
-    <section
-      css={[
-        props.type === DisplayType.HotRelease
-          ? hotReleaseRecommendedBookWrapperCSS
-          : recommendedBookWrapperCSS,
-        theme === 'dark' && backgroundImageCSS,
-        theme === 'white'
-          && css`
-            ${orBelow(
-            999,
-            css`
-              padding-bottom: 16px;
-              padding-top: 16px;
-            `,
-          )}
-          `,
-      ]}
-    >
-      <h2
-        css={[
-          hotReleaseTitleCSS,
-          theme === 'white'
-            && css`
-              color: black;
-            `,
-        ]}
-        aria-label={props.title}
-      >
-        <span
-          css={css`
-            margin-right: 8px;
-          `}
-        >
-          {props.title}
-        </span>
-      </h2>
+    <RecommendedBookWrapper bg={theme}>
+      <SectionTitle>{props.title}</SectionTitle>
       <div>
         {isTablet ? (
           <RecommendedBookList
@@ -262,7 +209,7 @@ const RecommendedBook: React.FC<RecommendedBookProps> = (props) => {
           />
         )}
       </div>
-    </section>
+    </RecommendedBookWrapper>
   );
 };
 

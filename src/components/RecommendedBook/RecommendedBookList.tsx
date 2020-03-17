@@ -2,21 +2,20 @@ import React, { useRef } from 'react';
 import {
   BookList,
   BookMeta,
-  hotReleaseBookListCSS,
-  recommendedBookListCSS,
   sentenceStyle,
 } from 'src/components/RecommendedBook/RecommendedBook';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import { PortraitBook } from 'src/components/Book/PortraitBook';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
-import { displayNoneForTouchDevice } from 'src/styles';
+import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
 import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
@@ -132,6 +131,13 @@ const ListItem = React.memo((props: ListItemProps) => {
   );
 });
 
+const ScrollContainer = styled.div`
+  overflow: auto;
+  ${scrollBarHidden}
+
+  display: flex;
+`;
+
 const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((props) => {
   const ref = useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
@@ -165,23 +171,22 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
         margin-top: 6px;
       `}
     >
-      <BookList
-        ref={ref}
-        css={[
-          type === DisplayType.HotRelease
-            ? hotReleaseBookListCSS
-            : recommendedBookListCSS,
-          type === DisplayType.TodayRecommendation
-            ? css`
-                padding-left: 35px;
-              `
-            : css`
-                padding-left: 13px;
-              `,
-        ]}
-      >
-        {carouselItems}
-      </BookList>
+      <ScrollContainer>
+        <BookList
+          ref={ref}
+          css={[
+            type === DisplayType.TodayRecommendation
+              ? css`
+                  padding-left: 35px;
+                `
+              : css`
+                  padding-left: 13px;
+                `,
+          ]}
+        >
+          {carouselItems}
+        </BookList>
+      </ScrollContainer>
       {!isMobile && (
         <form css={displayNoneForTouchDevice}>
           <Arrow

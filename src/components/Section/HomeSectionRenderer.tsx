@@ -87,42 +87,15 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = React.mem
           />
         );
       }
-
       case DisplayType.TodayRecommendation: {
         return (
           <RecommendedBook
             slug={slug}
-            genre={genre}
             title={title}
             items={items as TodayRecommendation[]}
             type={type}
+            genre={genre}
             theme={['bl', 'romance', 'fantasy'].includes(genre) ? 'dark' : 'white'}
-          />
-        );
-      }
-
-      case DisplayType.BestSeller:
-        return (
-          <RankingBookList
-            slug={slug}
-            items={items as ReadingRanking[]}
-            title={title}
-            genre={genre}
-            type="big"
-            showTimer={false}
-            extra={extra}
-          />
-        );
-      case DisplayType.HomeQuickMenu: {
-        return <QuickMenuList items={items as QuickMenu[]} />;
-      }
-      case DisplayType.UserPreferredBestseller: {
-        return (
-          <UserPreferredSection
-            slug={slug}
-            items={items as MdSelection[]}
-            genre={genre}
-            type={type}
           />
         );
       }
@@ -168,6 +141,31 @@ export const HomeSectionRenderer: React.FC<HomeSectionRendererProps> = React.mem
           );
         }
         return null;
+      }
+      case DisplayType.BestSeller:
+        return (
+          <RankingBookList
+            slug={slug}
+            items={items as ReadingRanking[]}
+            title={title}
+            genre={genre}
+            type="big"
+            showTimer={false}
+            extra={extra}
+          />
+        );
+      case DisplayType.HomeQuickMenu: {
+        return <QuickMenuList items={items as QuickMenu[]} />;
+      }
+      case DisplayType.UserPreferredBestseller: {
+        return (
+          <UserPreferredSection
+            slug={slug}
+            items={items as MdSelection[]}
+            genre={genre}
+            type={type}
+          />
+        );
       }
       case DisplayType.AiRecommendation: {
         return (
