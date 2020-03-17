@@ -220,6 +220,7 @@ const InstantSearchDivider = styled.hr`
   border: 0;
   border-top: 1px solid #e6e8e0;
   margin: 8px 16px;
+  display: block;
 `;
 
 interface InstantSearchResultProps {
