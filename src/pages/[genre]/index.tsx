@@ -103,13 +103,11 @@ export const Home: NextPage<HomeProps> = (props) => {
   }, [genre, dispatch]);
 
   useEffect(() => {
-    if (branches?.length > 0) {
-      const selectBIds = keyToArray(
-        branches.filter((section) => section.extra.use_select_api),
-        'b_id',
-      );
-      dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
-    }
+    const selectBIds = keyToArray(
+      branches.filter((section) => section.extra.use_select_api),
+      'b_id',
+    );
+    dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
   }, [branches]);
 
   const [tracker] = useEventTracker();
