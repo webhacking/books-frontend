@@ -25,7 +25,7 @@ export const createTracker = (userId: string | null) => {
         beaconSrc: process.env.NEXT_PUBLIC_BEACON_URL,
       },
       // eslint-disable-next-line no-process-env
-      debug: !process.env.IS_PRODUCTION,
+      debug: !process.env.IS_PRODUCTION && JSON.parse(localStorage.getItem('event-tracker/debug') || 'true'),
       gaOptions: {
         trackingId: GA_KEY,
         fields: {
