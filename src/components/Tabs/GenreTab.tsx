@@ -242,7 +242,10 @@ const TabItem: React.FC<TabItemProps> = (props) => {
           {isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
         </a>
       ) : (
-        <Link href={href === '/' ? '/' : '/[genre]'} as={href}>
+        <Link
+          href={href === '/' ? { pathname: '/[genre]', query: { genre: 'general' } } : '/[genre]'}
+          as={href}
+        >
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a aria-label={label}>
             {isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
