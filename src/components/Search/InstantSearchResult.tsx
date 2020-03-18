@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import * as colors from '@ridi/colors';
-
-import { lineClamp, RIDITheme } from 'src/styles';
+import { lineClamp } from 'src/styles';
 import { getEscapedString } from 'src/utils/highlight';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import useIsTablet from 'src/hooks/useIsTablet';
+import { slateGray60, slateGray30, lightSteelBlue5 } from '@ridi/colors';
 
 import {
   AuthorInfo as AuthorInfoScheme,
@@ -51,16 +50,16 @@ const BookListItem = styled.li`
         }
 
         :hover {
-          background-color: ${colors.lightSteelBlue5};
+          background-color: ${lightSteelBlue5};
         }
       `,
   )}
     :hover {
-    background-color: ${colors.lightSteelBlue5};
+    background-color: ${lightSteelBlue5};
   }
   button {
     :focus {
-      background-color: ${colors.lightSteelBlue5};
+      background-color: ${lightSteelBlue5};
       outline: none !important;
     }
   }
@@ -90,11 +89,11 @@ const AuthorListItem = styled.li`
     `,
   )};
   :hover {
-    background-color: ${colors.lightSteelBlue5};
+    background-color: ${lightSteelBlue5};
   }
   button {
     :focus {
-      background-color: ${colors.lightSteelBlue5};
+      background-color: ${lightSteelBlue5};
       outline: none !important;
     }
   }
@@ -119,7 +118,7 @@ const BookListItemButton = styled.button`
 
 const BookThumbnail = styled.img`
   margin-right: 12px;
-  border: 1px solid ${colors.slateGray30};
+  border: 1px solid ${slateGray30};
   flex-shrink: 0;
   width: 38px;
 `;
@@ -162,7 +161,7 @@ const BookAuthors = styled.div`
 const authorPublisherCSS = css`
   font-size: 14px;
   line-height: 1.36;
-  color: #808991;
+  color: ${slateGray60};
   -webkit-font-smoothing: antialiased;
   max-width: 298px;
 `;
@@ -190,7 +189,7 @@ const AuthorName = styled.span`
 const AuthorBooksInfo = styled.span`
   font-size: 14px;
   word-break: keep-all;
-  color: ${colors.slateGray50};
+  color: ${slateGray60};
   ${lineClamp(1)};
 `;
 
