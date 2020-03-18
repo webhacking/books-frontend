@@ -14,7 +14,7 @@ import { EventBanner } from 'src/components/EventBanner';
 import { QuickMenuList } from 'src/components/QuickMenu';
 import React from 'react';
 import RankingBookList from 'src/components/BookSections/RankingBook/RankingBookList';
-import { RecommendedBook } from 'src/components/RecommendedBook';
+import RecommendedBook from 'src/components/RecommendedBook';
 import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBook';
 import HomeKeywordFinderSection from 'src/components/KeywordFinder/HomeKeywordFinderSection';
 import { MultipleLineBooks } from 'src/components/MultipleLineBooks/MultipleLineBooks';
