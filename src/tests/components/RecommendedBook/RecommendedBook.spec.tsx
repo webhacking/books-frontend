@@ -3,11 +3,8 @@ import { act, render, cleanup, getAllByAltText, RenderResult } from '@testing-li
 import '@testing-library/jest-dom/extend-expect';
 import { ThemeProvider } from 'emotion-theming';
 import { Provider } from 'react-redux';
-import {
-  RecommendedBook,
-  RecommendedBookCarousel,
-  RecommendedBookList,
-} from 'src/components/RecommendedBook';
+import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedBookCarousel';
+import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
 import { defaultTheme } from 'src/styles';
 import makeStore from 'src/store/config';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
@@ -43,17 +40,6 @@ function actRender(renderFunction: () => RenderResult) {
   return ret;
 }
 
-const renderRecommendedBookWrapper = () =>
-  render(
-    <ThemeProvider theme={defaultTheme}>
-      <Provider store={store}>
-        <ViewportIntersectionProvider>
-          <RecommendedBook type={'hot_release'} currentGenre={'general'} items={books} />
-        </ViewportIntersectionProvider>
-      </Provider>
-    </ThemeProvider>,
-  );
-
 const renderList = () =>
   render(
     <ThemeProvider theme={defaultTheme}>
@@ -87,12 +73,6 @@ describe('test recommendedBook wrapper', () => {
 
   afterAll(() => {
     window.IntersectionObserver = originalIO;
-  });
-
-  it('should be render loading item', () => {
-    // const { container } = renderRecommendedBookWrapper();
-    // const itemNode = getAllByAltText(container, '도서 표지');
-    // expect(itemNode).not.toBe(null);
   });
 
   it('should be render List', () => {

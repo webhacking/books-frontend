@@ -1,143 +1,15 @@
-import React, { useRef } from 'react';
-import {
-  BookList,
-  BookMeta,
-  sentenceStyle,
-} from 'src/components/RecommendedBook/RecommendedBook';
-import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
-import { PortraitBook } from 'src/components/Book/PortraitBook';
-import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
+import React from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import { useScrollSlider } from 'src/hooks/useScrollSlider';
-import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
-import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
-import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
-import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
-import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
-import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
-import { getMaxDiscountPercentage } from 'src/utils/common';
-import { AdultBadge } from 'src/components/Badge/AdultBadge';
-import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
+
+import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { useDeviceType } from 'src/hooks/useDeviceType';
+import { useScrollSlider } from 'src/hooks/useScrollSlider';
+import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
+import { DisplayType } from 'src/types/sections';
 
-interface RecommendedBookListProps {
-  items: TodayRecommendation[] | HotRelease[];
-  type: DisplayType.HotRelease | DisplayType.TodayRecommendation;
-  theme: 'dark' | 'white';
-  slug: string;
-  genre: string;
-}
-
-interface ListItemProps {
-  book: TodayRecommendation | HotRelease;
-  index: number;
-  type: DisplayType;
-  theme: string;
-  slug: string;
-  genre: string;
-}
-
-const bookWidthStyle = css`
-  width: 100px;
-
-  @media (min-width: 1000px) {
-    width: 140px;
-  }
-`;
-
-const ListItem = React.memo((props: ListItemProps) => {
-  const {
-    book, index, type, theme, slug, genre,
-  } = props;
-  return (
-    <PortraitBook
-      key={index}
-      css={[
-        props.type === DisplayType.HotRelease
-          ? css`
-            margin-right: 12px;
-            @media (min-width: 834px) {
-              margin-right: 20px;
-            }
-            @media (min-width: 1000px) {
-              margin-right: 22px;
-            }
-          `
-          : css`
-            align-items: center;
-            margin-right: 30px;
-          `,
-      ]}
-    >
-      <a
-        css={css`
-          display: inline-block;
-        `}
-        href={`/books/${book.b_id}`}
-      >
-        <ThumbnailWrapper>
-          <ThumbnailRenderer
-            className={slug}
-            order={index}
-            css={bookWidthStyle}
-            sizes="100px"
-            slug={slug}
-            book={{ b_id: book.b_id, detail: book.detail }}
-            imgSize="large"
-          >
-            <BadgeContainer>
-              <BookBadgeRenderer
-                type={type}
-                isRentable={
-                  (!!book.detail?.price_info?.rent
-                    || !!book.detail?.series?.price_info?.rent)
-                  && ['general', 'romance', 'bl'].includes(genre)
-                }
-                isWaitFree={book.detail?.series?.property.is_wait_free}
-                discountPercentage={getMaxDiscountPercentage(book.detail)}
-              />
-            </BadgeContainer>
-            <FreeBookRenderer
-              freeBookCount={
-                book.detail?.series?.price_info?.rent?.free_book_count
-                || book.detail?.series?.price_info?.buy?.free_book_count
-                || 0
-              }
-              unit={book.detail?.series?.property.unit || '권'}
-            />
-            <SetBookRenderer setBookCount={book.detail?.setbook?.member_books_count} />
-            {book.detail?.property?.is_adult_only && <AdultBadge />}
-          </ThumbnailRenderer>
-        </ThumbnailWrapper>
-      </a>
-      {/* Todo show sentence */}
-      {book.detail && type === DisplayType.HotRelease && <BookMeta book={book.detail} />}
-      {book.detail && type === DisplayType.TodayRecommendation && (
-        <h4
-          css={[
-            css`
-              padding-left: 0;
-              position: relative;
-              margin-top: 10px;
-              ${sentenceStyle}
-            `,
-            theme === 'dark'
-              && css`
-                color: white;
-              `,
-          ]}
-        >
-          <span
-            dangerouslySetInnerHTML={{
-              __html: (book).sentence.replace(/(?:\r\n|\r|\n)/g, '<br />'),
-            }}
-          />
-        </h4>
-      )}
-    </PortraitBook>
-  );
-});
+import ListItem from './RecommendedBookItem';
+import { RecommendedBookProps } from './types';
 
 const ScrollContainer = styled.div`
   overflow: auto;
@@ -146,8 +18,36 @@ const ScrollContainer = styled.div`
   display: flex;
 `;
 
-const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((props) => {
-  const ref = useRef<HTMLUListElement>(null);
+const BookList = styled.ul`
+  flex: none;
+  margin: 6px auto 0;
+  padding-top: 7px;
+  padding-left: 7px;
+  display: flex;
+  flex-wrap: nowrap;
+
+  @media (min-width: 1000px) {
+    justify-content: center;
+  }
+`;
+
+const hotReleaseMargin = css`
+  margin-right: 12px;
+  @media (min-width: 834px) {
+    margin-right: 20px;
+  }
+  @media (min-width: 1000px) {
+    margin-right: 22px;
+  }
+`;
+
+const todayRecommendationMargin = css`
+  align-items: center;
+  margin-right: 30px;
+`;
+
+function RecommendedBookList(props: Omit<RecommendedBookProps, 'title'>) {
+  const ref = React.useRef<HTMLUListElement>(null);
   const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const {
     theme, type, slug, genre,
@@ -167,6 +67,7 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
           theme={theme}
           slug={slug}
           genre={genre}
+          css={props.type === DisplayType.HotRelease ? hotReleaseMargin : todayRecommendationMargin}
         />
       )),
     [items, type, theme, slug],
@@ -248,6 +149,6 @@ const RecommendedBookList: React.FC<RecommendedBookListProps> = React.memo((prop
       )}
     </div>
   );
-});
+}
 
-export default RecommendedBookList;
+export default React.memo(RecommendedBookList);
