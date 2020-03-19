@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import { a11y } from 'src/styles';
 import * as labels from 'src/labels/menus.json';
 import * as Cookies from 'js-cookie';
+import HomeLink from 'src/components/GNB/HomeLink';
 import Home from 'src/svgs/Home.svg';
 import HomeSolid from 'src/svgs/Home_solid.svg';
 import Notification_solid from 'src/svgs/Notification_solid.svg';
@@ -220,7 +221,6 @@ interface TabItemProps {
   label: string;
   pathRegexp: RegExp;
   addOn?: React.ReactNode;
-  isSPA?: boolean;
 }
 
 // Todo
@@ -230,12 +230,12 @@ interface TabItemProps {
 const TabItem: React.FC<TabItemProps> = (props) => {
   const {
     path,
+    isPartials,
     pathRegexp,
     label,
     activeIcon,
     normalIcon,
     addOn,
-    isSPA = false,
   } = props;
 
   const router = useRouter();
@@ -247,6 +247,17 @@ const TabItem: React.FC<TabItemProps> = (props) => {
     const pathname = Array.isArray(router.query.pathname) ? router.query.pathname[0] : router.query.pathname || router.asPath;
     setIsActiveTab(pathRegexp.test(pathname));
   }, [pathRegexp, router]);
+
+  const TabButtonWithLine = () => (
+    <>
+      <TabButton>
+        {isActiveTab ? activeIcon : normalIcon}
+        {addOn}
+        <span css={labelStyle}>{label}</span>
+      </TabButton>
+      <BottomLine css={isActiveTab && currentTab} />
+    </>
+  );
 
   return (
     <TabItemWrapper
@@ -263,26 +274,23 @@ const TabItem: React.FC<TabItemProps> = (props) => {
           : ''
       }
     >
-      {isSPA ? (
-        <Link href={path}>
+      {/* eslint-disable-next-line no-nested-ternary */}
+      {process.env.IS_PRODUCTION ? (
+        <StyledAnchor href={`${origin}${path}`} aria-label={label}>
+          <TabButtonWithLine />
+        </StyledAnchor>
+      ) : path === '/' ? (
+        <HomeLink isPartials={isPartials} passHref>
           <StyledAnchor aria-label={label}>
-            <TabButton>
-              {isActiveTab ? activeIcon : normalIcon}
-              {addOn}
-              <span css={labelStyle}>{label}</span>
-            </TabButton>
-            <BottomLine css={isActiveTab ? currentTab : css``} />
+            <TabButtonWithLine />
+          </StyledAnchor>
+        </HomeLink>
+      ) : (
+        <Link href={path} passHref>
+          <StyledAnchor aria-label={label}>
+            <TabButtonWithLine />
           </StyledAnchor>
         </Link>
-      ) : (
-        <StyledAnchor href={`${origin}${path}`} aria-label={label}>
-          <TabButton>
-            {isActiveTab ? activeIcon : normalIcon}
-            {addOn}
-            <span css={labelStyle}>{label}</span>
-          </TabButton>
-          <BottomLine css={isActiveTab ? currentTab : css``} />
-        </StyledAnchor>
       )}
     </TabItemWrapper>
   );
