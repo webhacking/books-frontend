@@ -4,8 +4,6 @@ import React, {
 import Head from 'next/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 import { GenreTab } from 'src/components/Tabs';
-import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
-import * as Cookies from 'js-cookie';
 import titleGenerator from 'src/utils/titleGenerator';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -43,25 +41,6 @@ const fetchHomeSections = async (genre = 'general', params = {}, options = {}) =
     },
   );
   return result.data;
-};
-
-// legacy genre 로 쿠키 값 설정
-const setCookie = (genre: string) => {
-  let convertedLegacyGenre = '';
-  if (genre === 'comics') {
-    convertedLegacyGenre = 'comic';
-  } else if (genre.includes('-')) {
-    convertedLegacyGenre = genre.replace('-', '_');
-  } else if (genre === 'general') {
-    convertedLegacyGenre = '';
-  } else {
-    convertedLegacyGenre = genre;
-  }
-
-  Cookies.set(cookieKeys.main_genre, convertedLegacyGenre, {
-    expires: DEFAULT_COOKIE_EXPIRES,
-    sameSite: 'lax',
-  });
 };
 
 const usePrevious = <T extends {}>(value: T) => {
@@ -122,9 +101,8 @@ export const Home: NextPage<HomeProps> = (props) => {
   }, [tracker]);
 
   useEffect(() => {
-    setCookie(props.genre);
     setPageView();
-  }, [props.genre, loggedUser, setPageView]);
+  }, [genre, loggedUser, setPageView]);
 
   return (
     <>
