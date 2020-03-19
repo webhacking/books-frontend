@@ -22,7 +22,7 @@ export const createTracker = (userId: string | null) => {
       deviceType,
       beaconOptions: {
         use: true,
-        beaconSrc: process.env.NEXT_PUBLIC_BEACON_URL,
+        beaconSrc: process.env.NEXT_STATIC_BEACON_URL,
       },
       // eslint-disable-next-line no-process-env
       debug: !process.env.IS_PRODUCTION && JSON.parse(localStorage.getItem('event-tracker/debug') || 'true'),
