@@ -211,10 +211,14 @@ workflows:
             branches:
               only:
                 - /release\/.+/
+      - deploy-approval:
+          type: approval
+          requires:
+            - build-prod
       - deploy:
           name: deploy-prod
           requires:
-            - build-prod
+            - deploy-approval
           after-scripts:
             - notify
       - profile-live:
