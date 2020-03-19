@@ -203,7 +203,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
 
     const requestRidiEventStatus = async () => {
       try {
-        const cartUrl = `${process.env.NEXT_PUBLIC_LEGACY_STORE_API_HOST}/api/schedule/events`;
+        const cartUrl = `${process.env.NEXT_STATIC_LEGACY_STORE_API_HOST}/api/schedule/events`;
         const result = await pRetry(
           () => wrapCatchCancel(axios.get)(cartUrl, {
             withCredentials: true,
@@ -283,7 +283,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
             </a>
           </li>
           <li>
-            <a href={process.env.NEXT_PUBLIC_LIBRARY_HOST} aria-label="내 서재 홈으로 이동">
+            <a href={process.env.NEXT_STATIC_LIBRARY_HOST} aria-label="내 서재 홈으로 이동">
               <Button type="primary" label="내 서재" />
             </a>
           </li>
@@ -327,9 +327,9 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   const route = useRouter();
   const { isPartials } = props;
 
-  const initialLoginPath = `${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/account/login`;
-  const initialSignupPath = `${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/account/signup`;
-  const initialCashOrderPath = `${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/order/checkout/cash`;
+  const initialLoginPath = `${process.env.NEXT_STATIC_ACCOUNT_HOST}/account/login`;
+  const initialSignupPath = `${process.env.NEXT_STATIC_ACCOUNT_HOST}/account/signup`;
+  const initialCashOrderPath = `${process.env.NEXT_STATIC_ACCOUNT_HOST}/order/checkout/cash`;
 
   const [loginPath, setLoginPath] = useState(initialLoginPath);
   const [signUpPath, setSignUpPath] = useState(initialSignupPath);
@@ -365,7 +365,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               <LogoWrapper>
                 <li>
                   <a
-                    href={isPartials ? `${process.env.NEXT_PUBLIC_ACCOUNT_HOST}/` : '/'}
+                    href={isPartials ? `${process.env.NEXT_STATIC_ACCOUNT_HOST}/` : '/'}
                     aria-label="리디북스 홈으로 이동"
                     css={css`
                       display: flex;

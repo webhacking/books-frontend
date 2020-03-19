@@ -16,7 +16,7 @@ export const useExcludeRecommendation = (): [
           `/recommendation/book/exclude/${bId}/?genre=${genre}`,
           { rcmd_id },
           {
-            baseURL: process.env.NEXT_PUBLIC_STORE_API,
+            baseURL: process.env.NEXT_STATIC_STORE_API,
             withCredentials: true,
             custom: { authorizationRequestType: OAuthRequestType.CHECK },
           },
@@ -33,7 +33,7 @@ export const useExcludeRecommendation = (): [
     try {
       return pRetry(
         () => axios.delete(`/recommendation/book/exclude/${bId}/?genre=${genre}`, {
-          baseURL: process.env.NEXT_PUBLIC_STORE_API,
+          baseURL: process.env.NEXT_STATIC_STORE_API,
           withCredentials: true,
           custom: { authorizationRequestType: OAuthRequestType.CHECK },
         }),

@@ -15,7 +15,7 @@ export const useCartCount = (loggedUserInfo: LoggedUser) => {
       try {
         const result = await pRetry(
           () => axios.get('/api/cart/count', {
-            baseURL: process.env.NEXT_PUBLIC_LEGACY_STORE_API_HOST,
+            baseURL: process.env.NEXT_STATIC_LEGACY_STORE_API_HOST,
             withCredentials: true,
             cancelToken: source.token,
             custom: { authorizationRequestType: OAuthRequestType.CHECK },

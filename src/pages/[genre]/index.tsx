@@ -32,7 +32,7 @@ export interface HomeProps {
 const fetchHomeSections = async (genre = 'general', params = {}, options = {}) => {
   const result = await pRetry(
     () => axios.get<Page>(`/pages/home-${genre}/`, {
-      baseURL: process.env.NEXT_PUBLIC_STORE_API,
+      baseURL: process.env.NEXT_STATIC_STORE_API,
       withCredentials: true,
       params,
       ...options,

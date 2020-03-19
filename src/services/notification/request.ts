@@ -17,7 +17,7 @@ export interface NotificationUnreadCountResponse {
 }
 
 export const requestNotificationAuth = async () => {
-  const tokenUrl = `${process.env.NEXT_PUBLIC_STORE_API}/users/me/notification-token/`;
+  const tokenUrl = `${process.env.NEXT_STATIC_STORE_API}/users/me/notification-token/`;
   const { data } = await axios.get<NotificationAuthResponse>(tokenUrl, {
     custom: { authorizationRequestType: OAuthRequestType.STRICT },
     withCredentials: true,
@@ -27,7 +27,7 @@ export const requestNotificationAuth = async () => {
 };
 
 export const requestNotification = async (limit: number, token: string) => {
-  const notificationUrl = `${process.env.NEXT_PUBLIC_STORE_API}/notification`;
+  const notificationUrl = `${process.env.NEXT_STATIC_STORE_API}/notification`;
   const { data } = await axios.get<NotificationResponse>(notificationUrl, {
     params: { limit },
     custom: { authorizationRequestType: OAuthRequestType.STRICT },
@@ -40,7 +40,7 @@ export const requestNotification = async (limit: number, token: string) => {
 };
 
 export const requestNotificationRead = async (token: string) => {
-  const notificationUrl = `${process.env.NEXT_PUBLIC_STORE_API}/notification`;
+  const notificationUrl = `${process.env.NEXT_STATIC_STORE_API}/notification`;
   const res = await axios.put(notificationUrl, null, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ export const requestNotificationRead = async (token: string) => {
 };
 
 export const requestUnreadCount = async (token: string) => {
-  const notificationUrl = `${process.env.NEXT_PUBLIC_STORE_API}/notification/unread_count`;
+  const notificationUrl = `${process.env.NEXT_STATIC_STORE_API}/notification/unread_count`;
   const { data } = await axios.get<NotificationUnreadCountResponse>(
     notificationUrl,
     {

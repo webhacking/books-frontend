@@ -40,7 +40,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
       try {
         const requestUrl = `/sections/home-${genre}-ai-recommendation/`;
         const result = await axios.get(requestUrl, {
-          baseURL: process.env.NEXT_PUBLIC_STORE_API,
+          baseURL: process.env.NEXT_STATIC_STORE_API,
           withCredentials: true,
           custom: { authorizationRequestType: OAuthRequestType.CHECK },
           timeout: 8000,

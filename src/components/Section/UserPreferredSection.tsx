@@ -33,7 +33,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = (props) => {
   useEffect(() => {
     const requestUserPreferredBestSeller = async () => {
       try {
-        const requestUrl = `${process.env.NEXT_PUBLIC_STORE_API}/sections/home-${genre}-user-preferred-bestseller/`;
+        const requestUrl = `${process.env.NEXT_STATIC_STORE_API}/sections/home-${genre}-user-preferred-bestseller/`;
         const result = await axios.get(requestUrl, {
           withCredentials: true,
           custom: { authorizationRequestType: OAuthRequestType.CHECK },
