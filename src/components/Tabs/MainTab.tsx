@@ -272,7 +272,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
       }
     >
       {/* eslint-disable-next-line no-nested-ternary */}
-      {process.env.IS_PRODUCTION ? (
+      {!process.env.USE_CSR ? (
         <StyledAnchor href={`${origin}${path}`} aria-label={label}>
           <TabButtonWithLine />
         </StyledAnchor>

@@ -253,7 +253,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
 
   return (
     <li css={isActivePath ? activeLabelCSS : genreLabelCSS}>
-      {process.env.IS_PRODUCTION ? (
+      {!process.env.USE_CSR ? (
         <a
           aria-label={label}
           href={href}
