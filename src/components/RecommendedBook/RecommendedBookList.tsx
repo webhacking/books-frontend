@@ -45,7 +45,11 @@ const hotReleaseMargin = css`
 
 const todayRecommendationMargin = css`
   align-items: center;
+
   margin-right: 30px;
+  @media (min-width: 1000px) {
+    margin-right: 22px;
+  }
 `;
 
 function RecommendedBookList(props: Omit<RecommendedBookProps, 'title'>) {
