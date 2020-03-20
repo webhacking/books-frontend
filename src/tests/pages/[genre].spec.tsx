@@ -6,9 +6,10 @@ import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../store/config';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from '../../styles';
-import Router from 'next/router'
+import Router from 'next/router';
 import { Provider } from 'react-redux';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { ConnectedRouter } from 'connected-next-router';
 
 Router.replace = jest.fn(() => null);
 // @ts-ignore
@@ -20,7 +21,7 @@ const mockRes = {
   writeHead: mockWriteHead,
   end: () => null,
 };
-const store = makeStore({}, { asPath: 'test', isServer: false });
+const store = makeStore({ router: {} }, { asPath: 'test', isServer: false });
 const mockSomeProps = {
   isServer: true,
   asPath: '',
@@ -39,9 +40,11 @@ const renderComponent = async ({ props, isPartials = false }: RenderOptions) => 
   await act(async () => {
     component = render(
       <ThemeProvider theme={defaultTheme}>
-        <RouterContext.Provider value={{ asPath: '/', query: { pathname: '/'} }}>
+        <RouterContext.Provider value={{ asPath: '/', query: { pathname: '/' } }}>
           <Provider store={store}>
-            <Index {...props} />
+            <ConnectedRouter>
+              <Index {...props} />
+            </ConnectedRouter>
           </Provider>
         </RouterContext.Provider>
       </ThemeProvider>,
