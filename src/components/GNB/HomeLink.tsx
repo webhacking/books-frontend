@@ -28,7 +28,7 @@ const HomeLink: React.FC<Props> = (props) => {
   useEffect(() => {
     const cookie = Cookies.get(cookieKeys.main_genre);
     setGenre(legacyCookieMap[cookie] ?? cookie);
-  });
+  }, []);
 
   if (process.env.IS_PRODUCTION) {
     return React.cloneElement(
