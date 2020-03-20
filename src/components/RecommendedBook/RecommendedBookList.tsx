@@ -18,15 +18,17 @@ const ScrollContainer = styled.div`
   display: flex;
 `;
 
-const BookList = styled.ul`
+const BookList = styled.ul<{ type: RecommendedBookProps['type'] }>`
   flex: none;
-  margin: 6px auto 0;
+  margin-top: -7px;
+  margin-left: ${(props) => (props.type === DisplayType.TodayRecommendation ? 28 : 6)}px;
   padding-top: 7px;
   padding-left: 7px;
   display: flex;
   flex-wrap: nowrap;
 
   @media (min-width: 1000px) {
+    margin-left: 0;
     justify-content: center;
   }
 `;
@@ -77,31 +79,15 @@ function RecommendedBookList(props: Omit<RecommendedBookProps, 'title'>) {
     <div
       css={css`
         position: relative;
-        margin: 6px auto 0;
-        max-width: 1000px;
+        margin: 20px auto 0;
+
+        @media (min-width: 1000px) {
+          width: 964px; // 950 + 14
+        }
       `}
     >
       <ScrollContainer>
-        <BookList
-          ref={ref}
-          css={[
-            type === DisplayType.TodayRecommendation
-              ? css`
-                  padding-left: 35px;
-
-                  @media (min-width: 1000px) {
-                    padding-left: 25px;
-                  }
-                `
-              : css`
-                  padding-left: 13px;
-
-                  @media (min-width: 1000px) {
-                    padding-left: 25px;
-                  }
-                `,
-          ]}
-        >
+        <BookList type={type} ref={ref}>
           {carouselItems}
         </BookList>
       </ScrollContainer>
