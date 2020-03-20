@@ -195,6 +195,29 @@ const GenreTabDivider = styled.hr`
   background: #e6e8eb;
 `;
 
+const legacyCookieMap = {
+  general: '',
+  comics: 'comic',
+  'romance-serial': 'romance_serial',
+  'fantasy-serial': 'fantasy_serial',
+  'bl-serial': 'bl_serial',
+};
+
+const routeChangeCompleteHandler = () => {
+  const { pathname, query } = Router.router;
+  if (pathname === '/[genre]') {
+    const genre = query.genre?.toString();
+    Cookies.set(
+      cookieKeys.main_genre,
+      legacyCookieMap[genre] ?? genre,
+      {
+        expires: DEFAULT_COOKIE_EXPIRES,
+        sameSite: 'lax',
+      },
+    );
+  }
+};
+
 interface TabItemProps {
   label: string;
   activePath: RegExp;
@@ -306,6 +329,14 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
       localStorage.setItem('latest_sub_service', JSON.stringify(updatedSubService));
     }
   }, [router.asPath]);
+
+  useEffect(() => {
+    Router.events.on('routeChangeComplete', routeChangeCompleteHandler);
+    return () => {
+      Router.events.off('routeChangeComplete', routeChangeCompleteHandler);
+    };
+  }, []);
+
   return (
     <>
       <GenreTabWrapper>
@@ -374,29 +405,6 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
       {props.isPartials && <GenreTabDivider />}
     </>
   );
-});
-
-const legacyCookieMap = {
-  general: '',
-  comics: 'comic',
-  'romance-serial': 'romance_serial',
-  'fantasy-serial': 'fantasy_serial',
-  'bl-serial': 'bl_serial',
-};
-
-Router.events.on('routeChangeComplete', () => {
-  const { pathname, query } = Router.router;
-  if (pathname === '/[genre]') {
-    const genre = query.genre?.toString();
-    Cookies.set(
-      cookieKeys.main_genre,
-      legacyCookieMap[genre] ?? genre,
-      {
-        expires: DEFAULT_COOKIE_EXPIRES,
-        sameSite: 'lax',
-      },
-    );
-  }
 });
 
 export default GenreTab;
