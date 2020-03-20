@@ -6,6 +6,7 @@ import { ConnectedInitializeProps } from 'src/types/common';
 import { GenreTab } from 'src/components/Tabs';
 import titleGenerator from 'src/utils/titleGenerator';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 import { Page, Section } from 'src/types/sections';
 import { HomeSectionRenderer } from 'src/components/Section/HomeSectionRenderer';
@@ -19,6 +20,10 @@ import { NextPage } from 'next';
 import { useEventTracker } from 'src/hooks/useEventTracker';
 import { RootState } from 'src/store/config';
 import { css } from '@emotion/core';
+
+import * as Cookies from 'js-cookie';
+import cookieKeys from 'src/constants/cookies';
+import { legacyCookieMap } from 'src/components/GNB/HomeLink';
 
 const { captureException } = sentry();
 
@@ -54,10 +59,18 @@ const usePrevious = <T extends {}>(value: T) => {
 export const Home: NextPage<HomeProps> = (props) => {
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const dispatch = useDispatch();
+  const route = useRouter();
 
   const { genre = 'general' } = props;
   const previousGenre = usePrevious(genre);
   const [branches, setBranches] = useState(props.branches || []);
+
+  useEffect(() => {
+    const cookie = Cookies.get(cookieKeys.main_genre);
+    if (process.env.USE_CSR && genre === 'general' && cookie) {
+      route.replace('/[genre]', `/${legacyCookieMap[cookie] ?? cookie}`);
+    }
+  }, []);
 
   useEffect(() => {
     const source = CancelToken.source();

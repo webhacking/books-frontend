@@ -332,6 +332,9 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
 
   useEffect(() => {
     Router.events.on('routeChangeComplete', routeChangeCompleteHandler);
+    if (process.env.USE_CSR && router.query.genre !== 'general') {
+      routeChangeCompleteHandler();
+    }
     return () => {
       Router.events.off('routeChangeComplete', routeChangeCompleteHandler);
     };
