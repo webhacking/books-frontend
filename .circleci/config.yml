@@ -111,6 +111,13 @@ jobs:
       STAGE: << parameters.stage >>
       ASSET_PREFIX: << parameters.assetPrefix >>
     steps:
+      - run:
+          command:
+            yarn serverless deploy list -s << parameters.stage >> | awk '/Timestamp/ {print $NF}' | tail -n 1 > .lastdeploytimestamp
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .lastdeploytimestamp
       - checkout
       - attach_workspace:
           at: .
@@ -124,13 +131,6 @@ jobs:
       - install
       - run:
           command: yarn deploy -s << parameters.stage >>
-      - run:
-          command:
-            yarn serverless deploy list -s << parameters.stage >> | awk '/Timestamp/ {print $NF}' | tail -n 1 > .deploytimestamp
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .deploytimestamp
       - steps: << parameters.after-scripts >>
   profile-live:
     docker:
@@ -166,7 +166,7 @@ jobs:
             curl -o- -L https://slss.io/install | bash
             export PATH="$HOME/.serverless/bin:$PATH"
       - run:
-          command: serverless rollback -t `cat .deploytimestamp`
+          command: serverless rollback -t `cat .lastdeploytimestamp`
       - steps: << parameters.after-scripts >>
 workflows:
   version: 2
