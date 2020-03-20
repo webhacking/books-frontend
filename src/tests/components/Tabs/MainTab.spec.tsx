@@ -15,7 +15,7 @@ const renderComponent = () =>
     <ThemeProvider theme={defaultTheme}>
       <RouterContext.Provider value={{ asPath: '' , query: { pathname: '/'}}}>
         <Provider store={store}>
-          <MainTab isPartials={false} />
+          <MainTab />
         </Provider>
       </RouterContext.Provider>
     </ThemeProvider>,

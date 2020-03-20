@@ -402,7 +402,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               />
             </div>
           </Navigation>
-          <MainTab isPartials={props.isPartials} loggedUserInfo={loggedUser} />
+          <MainTab loggedUserInfo={loggedUser} />
         </Header>
       </GNBContext.Provider>
     </GNBWrapper>

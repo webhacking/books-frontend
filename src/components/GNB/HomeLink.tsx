@@ -7,7 +7,6 @@ import cookieKeys from 'src/constants/cookies';
 
 interface Props {
   passHref?: boolean;
-  isPartials: boolean;
 }
 
 const legacyCookieMap = {
@@ -20,7 +19,6 @@ const legacyCookieMap = {
 const HomeLink: React.FC<Props> = (props) => {
   const {
     passHref = false,
-    isPartials,
     children,
   } = props;
 
