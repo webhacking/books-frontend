@@ -36,13 +36,32 @@ const BookAuthor = styled.span`
   ${lineClamp(1)};
 `;
 
+const AvailableOnSelectContainer = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #22b8cf;
+`;
+
+const selectIconStyle = css`
+  width: 14px;
+  height: 12px;
+  margin-right: 6px;
+  fill: #22b8cf;
+`;
+
 interface BookMetaProps {
   book: BookApi.Book;
   showSelect?: boolean;
 }
 
 function BookMeta(props: BookMetaProps) {
-  const authors = props.book?.authors.filter((author) => (
+  if (props.book.is_deleted) {
+    return null;
+  }
+
+  const authors = props.book.authors.filter((author) => (
     [
       'author',
       'comic_author',
@@ -50,44 +69,26 @@ function BookMeta(props: BookMetaProps) {
       'illustrator',
       'original_author',
     ].includes(author.role)
-  )) ?? [];
+  ));
   return (
     <Wrapper>
       <a
         css={css`display: inline-block;`}
         href={`/books/${props.book.id}`}
       >
-        <BookTitle aria-label={props.book?.title?.main || ''}>
+        <BookTitle>
           {bookTitleGenerator(props.book)}
         </BookTitle>
       </a>
-      {props.book.authors && <BookAuthor>{authorsRenderer(authors)}</BookAuthor>}
-      {props.book?.clientBookFields.isAvailableSelect && (
-        <div
-          css={css`
-            display: flex;
-            align-items: center;
-          `}
-          aria-label="리디 셀렉트 이용 가능 도서"
+      {authors && <BookAuthor>{authorsRenderer(authors)}</BookAuthor>}
+      {props.book.clientBookFields?.isAvailableSelect && (
+        <AvailableOnSelectContainer
+          role="img"
+          aria-label="리디셀렉트 이용 가능 도서"
         >
-          <AtSelectIcon
-            css={css`
-              width: 14px;
-              fill: #22b8cf;
-              height: 12px;
-              margin-right: 6px;
-            `}
-          />
-          <span
-            css={css`
-              font-size: 13px;
-              font-weight: bold;
-              color: #22b8cf;
-            `}
-          >
-            리디셀렉트
-          </span>
-        </div>
+          <AtSelectIcon css={selectIconStyle} />
+          리디셀렉트
+        </AvailableOnSelectContainer>
       )}
     </Wrapper>
   );

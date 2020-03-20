@@ -12,6 +12,7 @@ import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
 import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 import { getMaxDiscountPercentage } from 'src/utils/common';
+import { newlineToReactNode } from 'src/utils/highlight';
 import { BreakPoint } from 'src/utils/mediaQuery';
 
 import BookMeta from './BookMeta';
@@ -68,6 +69,8 @@ function RecommendedBookItem(props: Props) {
     book, index, type, theme, slug, genre, className,
   } = props;
   const href = `/books/${book.b_id}`;
+  const singlePriceInfo = book.detail?.price_info;
+  const seriesPriceInfo = book.detail?.series?.price_info;
   return (
     <PortraitBook className={className}>
       <a
@@ -88,8 +91,8 @@ function RecommendedBookItem(props: Props) {
               <BookBadgeRenderer
                 type={type}
                 isRentable={
-                  (!!book.detail?.price_info?.rent
-                    || !!book.detail?.series?.price_info?.rent)
+                  (!!singlePriceInfo?.rent
+                    || !!seriesPriceInfo?.rent)
                   && ['general', 'romance', 'bl'].includes(genre)
                 }
                 isWaitFree={book.detail?.series?.property.is_wait_free}
@@ -98,8 +101,8 @@ function RecommendedBookItem(props: Props) {
             </BadgeContainer>
             <FreeBookRenderer
               freeBookCount={
-                book.detail?.series?.price_info?.rent?.free_book_count
-                || book.detail?.series?.price_info?.buy?.free_book_count
+                seriesPriceInfo?.rent?.free_book_count
+                || seriesPriceInfo?.buy?.free_book_count
                 || 0
               }
               unit={book.detail?.series?.property.unit || '권'}
@@ -113,11 +116,7 @@ function RecommendedBookItem(props: Props) {
       {book.detail && type === DisplayType.HotRelease && <BookMeta book={book.detail} />}
       {book.detail && type === DisplayType.TodayRecommendation && (
         <RecommendationText bg={theme}>
-          <span
-            dangerouslySetInnerHTML={{
-              __html: book.sentence.replace(/(?:\r\n|\r|\n)/g, '<br />'),
-            }}
-          />
+          {newlineToReactNode(book.sentence)}
         </RecommendationText>
       )}
     </PortraitBook>

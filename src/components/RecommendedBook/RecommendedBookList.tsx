@@ -13,7 +13,7 @@ import { RecommendedBookProps } from './types';
 
 const ScrollContainer = styled.div`
   overflow: auto;
-  ${scrollBarHidden};
+  ${scrollBarHidden}
 
   display: flex;
 `;
