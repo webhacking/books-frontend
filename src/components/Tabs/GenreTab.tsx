@@ -5,7 +5,8 @@ import GNBCategory from 'src/svgs/GNB_Category.svg';
 import { css } from '@emotion/core';
 import { clearOutline } from 'src/styles';
 import { orBelow } from 'src/utils/mediaQuery';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
+import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
 import * as Cookies from 'js-cookie';
 
 import { safeJSONParse } from 'src/utils/common';
@@ -194,6 +195,29 @@ const GenreTabDivider = styled.hr`
   background: #e6e8eb;
 `;
 
+const legacyCookieMap = {
+  general: '',
+  comics: 'comic',
+  'romance-serial': 'romance_serial',
+  'fantasy-serial': 'fantasy_serial',
+  'bl-serial': 'bl_serial',
+};
+
+const routeChangeCompleteHandler = () => {
+  const { pathname, query } = Router.router;
+  if (pathname === '/[genre]') {
+    const genre = query.genre?.toString();
+    Cookies.set(
+      cookieKeys.main_genre,
+      legacyCookieMap[genre] ?? genre,
+      {
+        expires: DEFAULT_COOKIE_EXPIRES,
+        sameSite: 'lax',
+      },
+    );
+  }
+};
+
 interface TabItemProps {
   label: string;
   activePath: RegExp;
@@ -242,9 +266,19 @@ const TabItem: React.FC<TabItemProps> = (props) => {
           {isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
         </a>
       ) : (
-        <Link href={href === '/' ? '/' : '/[genre]'} as={href}>
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <a aria-label={label}>
+        <Link
+          href={href === '/' ? { pathname: '/[genre]', query: { genre: 'general' } } : '/[genre]'}
+          as={href}
+        >
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+          <a
+            aria-label={label}
+            onClick={() => {
+              if (href === '/' && cookieGenre) {
+                Cookies.set('main_genre', '', { sameSite: 'lax' });
+              }
+            }}
+          >
             {isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
           </a>
         </Link>
@@ -295,6 +329,14 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
       localStorage.setItem('latest_sub_service', JSON.stringify(updatedSubService));
     }
   }, [router.asPath]);
+
+  useEffect(() => {
+    Router.events.on('routeChangeComplete', routeChangeCompleteHandler);
+    return () => {
+      Router.events.off('routeChangeComplete', routeChangeCompleteHandler);
+    };
+  }, []);
+
   return (
     <>
       <GenreTabWrapper>

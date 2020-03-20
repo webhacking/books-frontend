@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import { a11y } from 'src/styles';
 import * as labels from 'src/labels/menus.json';
 import * as Cookies from 'js-cookie';
+import HomeLink from 'src/components/GNB/HomeLink';
 import Home from 'src/svgs/Home.svg';
 import HomeSolid from 'src/svgs/Home_solid.svg';
 import Notification_solid from 'src/svgs/Notification_solid.svg';
@@ -206,12 +207,10 @@ const CartAddOnCount = styled.span`
 
 
 interface MainTabProps {
-  isPartials: boolean;
   loggedUserInfo: null | LoggedUser;
 }
 
 interface TabItemProps {
-  isPartials: boolean;
   replace?: boolean;
   shallow?: boolean;
   path: string;
@@ -220,7 +219,6 @@ interface TabItemProps {
   label: string;
   pathRegexp: RegExp;
   addOn?: React.ReactNode;
-  isSPA?: boolean;
 }
 
 // Todo
@@ -235,7 +233,6 @@ const TabItem: React.FC<TabItemProps> = (props) => {
     activeIcon,
     normalIcon,
     addOn,
-    isSPA = false,
   } = props;
 
   const router = useRouter();
@@ -247,6 +244,17 @@ const TabItem: React.FC<TabItemProps> = (props) => {
     const pathname = Array.isArray(router.query.pathname) ? router.query.pathname[0] : router.query.pathname || router.asPath;
     setIsActiveTab(pathRegexp.test(pathname));
   }, [pathRegexp, router]);
+
+  const TabButtonWithLine = () => (
+    <>
+      <TabButton>
+        {isActiveTab ? activeIcon : normalIcon}
+        {addOn}
+        <span css={labelStyle}>{label}</span>
+      </TabButton>
+      <BottomLine css={isActiveTab && currentTab} />
+    </>
+  );
 
   return (
     <TabItemWrapper
@@ -263,26 +271,23 @@ const TabItem: React.FC<TabItemProps> = (props) => {
           : ''
       }
     >
-      {isSPA ? (
-        <Link href={path}>
+      {/* eslint-disable-next-line no-nested-ternary */}
+      {process.env.IS_PRODUCTION ? (
+        <StyledAnchor href={`${origin}${path}`} aria-label={label}>
+          <TabButtonWithLine />
+        </StyledAnchor>
+      ) : path === '/' ? (
+        <HomeLink passHref>
           <StyledAnchor aria-label={label}>
-            <TabButton>
-              {isActiveTab ? activeIcon : normalIcon}
-              {addOn}
-              <span css={labelStyle}>{label}</span>
-            </TabButton>
-            <BottomLine css={isActiveTab ? currentTab : css``} />
+            <TabButtonWithLine />
+          </StyledAnchor>
+        </HomeLink>
+      ) : (
+        <Link href={path} passHref>
+          <StyledAnchor aria-label={label}>
+            <TabButtonWithLine />
           </StyledAnchor>
         </Link>
-      ) : (
-        <StyledAnchor href={`${origin}${path}`} aria-label={label}>
-          <TabButton>
-            {isActiveTab ? activeIcon : normalIcon}
-            {addOn}
-            <span css={labelStyle}>{label}</span>
-          </TabButton>
-          <BottomLine css={isActiveTab ? currentTab : css``} />
-        </StyledAnchor>
       )}
     </TabItemWrapper>
   );
@@ -300,7 +305,7 @@ const genreValueReplace = (visitedGenre: string) => {
 };
 
 export const MainTab: React.FC<MainTabProps> = (props) => {
-  const { isPartials, loggedUserInfo } = props;
+  const { loggedUserInfo } = props;
   const { hasNotification } = useSelector((store: RootState) => store.notifications);
   const router = useRouter();
   const [, setHomeURL] = useState('/');
@@ -325,7 +330,6 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
     <>
       <Tabs>
         <TabItem
-          isPartials={isPartials}
           activeIcon={<HomeSolid css={iconStyle} />}
           normalIcon={<Home css={iconStyle} />}
           label={labels.mainTab.home}
@@ -333,7 +337,6 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           pathRegexp={/^\/(romance|romance-serial|fantasy|fantasy-serial|bl|bl-serial|comics)?\/?$/}
         />
         <TabItem
-          isPartials={isPartials}
           activeIcon={<Notification_solid css={iconStyle} />}
           normalIcon={<Notification_regular css={iconStyle} />}
           label={labels.mainTab.notification}
@@ -344,7 +347,6 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           )}
         />
         <TabItem
-          isPartials={isPartials}
           activeIcon={<Cart_solid css={iconStyle} />}
           normalIcon={<Cart_regular css={iconStyle} />}
           label={labels.mainTab.cart}
@@ -363,7 +365,6 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           }
         />
         <TabItem
-          isPartials={isPartials}
           activeIcon={<MyRIDI_solid css={iconStyle} />}
           normalIcon={<MyRIDI_regular css={iconStyle} />}
           label={labels.mainTab.myRidi}

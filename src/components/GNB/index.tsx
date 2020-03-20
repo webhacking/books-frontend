@@ -14,6 +14,7 @@ import { RootState } from 'src/store/config';
 import { AccountState } from 'src/services/accounts/reducer';
 import { LoggedUser } from 'src/types/account';
 import { useRouter } from 'next/router';
+import HomeLink from 'src/components/GNB/HomeLink';
 import DoublePointIcon from 'src/svgs/DoublePoint.svg';
 import CashIcon from 'src/svgs/Cash.svg';
 import pRetry from 'p-retry';
@@ -364,17 +365,18 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
             <div css={logoAndSearchBox}>
               <LogoWrapper>
                 <li>
-                  <a
-                    href={isPartials ? `${process.env.NEXT_STATIC_ACCOUNT_HOST}/` : '/'}
-                    aria-label="리디북스 홈으로 이동"
-                    css={css`
-                      display: flex;
-                      align-items: center;
-                    `}
-                  >
-                    <RidiLogo css={ridiLogo} />
-                    <span className="a11y">RIDIBOOKS</span>
-                  </a>
+                  <HomeLink passHref>
+                    <a
+                      aria-label="리디북스 홈으로 이동"
+                      css={css`
+                        display: flex;
+                        align-items: center;
+                      `}
+                    >
+                      <RidiLogo css={ridiLogo} />
+                      <span className="a11y">RIDIBOOKS</span>
+                    </a>
+                  </HomeLink>
                 </li>
                 <li>
                   <a
@@ -400,7 +402,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               />
             </div>
           </Navigation>
-          <MainTab isPartials={props.isPartials} loggedUserInfo={loggedUser} />
+          <MainTab loggedUserInfo={loggedUser} />
         </Header>
       </GNBContext.Provider>
     </GNBWrapper>
