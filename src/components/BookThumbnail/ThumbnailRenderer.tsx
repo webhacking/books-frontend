@@ -121,14 +121,12 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isVisible, setVisible] = useState(false);
-  const handleVisibleRef = React.useRef<boolean>(false);
   const handleVisible = React.useCallback((visible) => {
-    setVisible(visible);
-    if (!handleVisibleRef.current && visible) {
+    if (!isVisible && visible) {
+      setVisible(visible);
       sendDisplayEvent({ slug, id: bId, order });
-      handleVisibleRef.current = true;
     }
-  }, [slug, bId, order]);
+  }, [slug, bId, order, isVisible]);
   const ref = useViewportIntersection<HTMLDivElement>(handleVisible);
   const is_adult_only = book.detail?.property?.is_adult_only ?? false;
 
