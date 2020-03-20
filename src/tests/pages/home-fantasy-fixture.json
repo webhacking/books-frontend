@@ -1,0 +1,1522 @@
+{
+  "slug": "home-fantasy",
+  "type": "Page",
+  "title": "판타지 홈",
+  "branches": [
+    {
+      "slug": "home-fantasy-today-recommendation",
+      "title": "오늘, 리디의 발견",
+      "type": "TodayRecommendation",
+      "extra": {},
+      "total": 3645,
+      "next": "http://store-api.ridibooks.com/sections/home-fantasy-today-recommendation/?page=2",
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        {
+          "b_id": "777071769",
+          "type": "book",
+          "sentence": "시나리오 속에 \r\n빠질 수 있는 능력",
+          "order": 75544
+        },
+        {
+          "b_id": "875124051",
+          "type": "book",
+          "sentence": "이 문 너머에는\r\n별천지가 있다",
+          "order": 75543
+        },
+        {
+          "b_id": "2057102185",
+          "type": "book",
+          "sentence": "잃어버린 시간을 \r\n묻고 싶다",
+          "order": 75542
+        },
+        {
+          "b_id": "2057107133",
+          "type": "book",
+          "sentence": "낯선 정령들이\r\n날 너무 좋아한다?",
+          "order": 75541
+        },
+        {
+          "b_id": "2008019454",
+          "type": "book",
+          "sentence": "여기 지구 아님\r\n차원 미아가 되었다",
+          "order": 75540
+        },
+        {
+          "b_id": "777071755",
+          "type": "book",
+          "sentence": "돌아온 고향에는\r\n남은 것이 없었다",
+          "order": 75539
+        },
+        {
+          "b_id": "875123961",
+          "type": "book",
+          "sentence": "애를 버렸다간 \r\n저승행일 줄 알아",
+          "order": 75537
+        },
+        {
+          "b_id": "2057106519",
+          "type": "book",
+          "sentence": "버려졌던 첫 소설이\r\n다시 나를 살렸다",
+          "order": 75536
+        },
+        {
+          "b_id": "425142367",
+          "type": "book",
+          "sentence": "나는 지금 비극의 \r\n한가운데에 서있다",
+          "order": 75486
+        },
+        {
+          "b_id": "2057107147",
+          "type": "book",
+          "sentence": "미래를 읽는 자!\r\n경기는 내 손안에",
+          "order": 75485
+        },
+        {
+          "b_id": "3076004519",
+          "type": "book",
+          "sentence": "[새로운 서버에 \r\n접속합니다]",
+          "order": 75434
+        },
+        {
+          "b_id": "425155025",
+          "type": "book",
+          "sentence": "환생했더니 \r\n삼국시대에 떨어짐",
+          "order": 75432
+        },
+        {
+          "b_id": "111020379",
+          "type": "book",
+          "sentence": "벼랑 끝의 인생에서\r\n14살 천재로 리셋!",
+          "order": 75416
+        },
+        {
+          "b_id": "1811164173",
+          "type": "book",
+          "sentence": "등선한 줄 알았는데\r\n다시 시작하라고?",
+          "order": 75415
+        },
+        {
+          "b_id": "425154329",
+          "type": "book",
+          "sentence": "귀환 성공률 0%\r\n최초가 되어주마!",
+          "order": 75382
+        },
+        {
+          "b_id": "2351039928",
+          "type": "book",
+          "sentence": "이 기사 어디서\r\n많이 봤는데?",
+          "order": 75381
+        },
+        {
+          "b_id": "1377071129",
+          "type": "book",
+          "sentence": "모두가 놀랄 만한 \r\n그의 숨겨진 재능",
+          "order": 75354
+        },
+        {
+          "b_id": "2057106361",
+          "type": "book",
+          "sentence": "이 곳이 나의 무대!\r\n'아니마 드 문두스'",
+          "order": 75352
+        },
+        {
+          "b_id": "777071755",
+          "type": "book",
+          "sentence": "폭주하는 그를 \r\n말릴 자는 없다!",
+          "order": 75351
+        },
+        {
+          "b_id": "2057106368",
+          "type": "book",
+          "sentence": "새로운 발할라에\r\n레전드가 강림하다",
+          "order": 75349
+        }
+      ]
+    },
+    {
+      "slug": "home-fantasy-quickmenu",
+      "title": "퀵메뉴",
+      "type": "HomeQuickMenu",
+      "extra": {},
+      "total": 9,
+      "next": null,
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        {
+          "id": 71,
+          "name": "신간",
+          "url": "/new-releases/fantasy",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/+new.png",
+          "bg_color": "#E8CB99",
+          "order": 1
+        },
+        {
+          "id": 72,
+          "name": "베스트셀러",
+          "url": "/bestsellers/fantasy",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/+best.png",
+          "bg_color": "#B9BEF1",
+          "order": 2
+        },
+        {
+          "id": 73,
+          "name": "이벤트",
+          "url": "/event/fantasy",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/+gift.png",
+          "bg_color": "#99D1CB",
+          "order": 3
+        },
+        {
+          "id": 74,
+          "name": "신간캘린더",
+          "url": "/event/20293",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/20200101003743_743985.png",
+          "bg_color": "#99C0E1",
+          "order": 4
+        },
+        {
+          "id": 77,
+          "name": "캐시충전",
+          "url": "/order/checkout/cash",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/20191213164412_276447.png",
+          "bg_color": "#BADBA1",
+          "order": 5
+        },
+        {
+          "id": 75,
+          "name": "대여책방",
+          "url": "/event/17638",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/20200322154337_318225.png",
+          "bg_color": "#F1C0A7",
+          "order": 6
+        },
+        {
+          "id": 87,
+          "name": "위클리쿠폰",
+          "url": "/event/19350",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/20200121161739_741963.png",
+          "bg_color": "#D5ADEB",
+          "order": 7
+        },
+        {
+          "id": 88,
+          "name": "최신완결관",
+          "url": "/special-room/53",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/20200102161459_044214.png",
+          "bg_color": "#E8B4CE",
+          "order": 8
+        },
+        {
+          "id": 76,
+          "name": "키워드검색",
+          "url": "/keyword-finder/fantasy?from=fantasy",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/20191217191226_511003.png",
+          "bg_color": "#F0B9B9",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "slug": "home-fantasy-reading-books",
+      "title": "사람들이 지금 많이 읽고 있는 책",
+      "type": "ReadingBooksRanking",
+      "extra": { "genre": "fantasy" },
+      "total": 99,
+      "next": "http://store-api.ridibooks.com/sections/home-fantasy-reading-books/?page=2",
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        { "b_id": "777071755", "type": "book", "score": 436.0 },
+        { "b_id": "111020367", "type": "book", "score": 298.0 },
+        { "b_id": "2057107133", "type": "book", "score": 187.0 },
+        { "b_id": "1811164074", "type": "book", "score": 172.0 },
+        { "b_id": "2057106368", "type": "book", "score": 166.0 },
+        { "b_id": "425155025", "type": "book", "score": 138.0 },
+        { "b_id": "2093030554", "type": "book", "score": 118.0 },
+        { "b_id": "102082663", "type": "book", "score": 93.0 },
+        { "b_id": "102087083", "type": "book", "score": 86.0 },
+        { "b_id": "1377071129", "type": "book", "score": 84.0 },
+        { "b_id": "425154329", "type": "book", "score": 80.0 },
+        { "b_id": "1847007125", "type": "book", "score": 79.0 },
+        { "b_id": "425146983", "type": "book", "score": 79.0 },
+        { "b_id": "3228012537", "type": "book", "score": 78.0 },
+        { "b_id": "2065023139", "type": "book", "score": 76.0 },
+        { "b_id": "2391012781", "type": "book", "score": 74.0 },
+        { "b_id": "1534086630", "type": "book", "score": 64.0 },
+        { "b_id": "1534086249", "type": "book", "score": 60.0 },
+        { "b_id": "875123722", "type": "book", "score": 58.0 },
+        { "b_id": "425138625", "type": "book", "score": 58.0 }
+      ]
+    },
+    {
+      "slug": "home-fantasy-keywordfinder",
+      "title": "키워드로 검색하기",
+      "type": "KeywordFinder",
+      "extra": { "is_placeholder": true },
+      "items": []
+    },
+    {
+      "slug": "home-fantasy-event-banner-top",
+      "title": "이벤트 배너",
+      "type": "HomeEventBanner",
+      "extra": {},
+      "total": 19,
+      "next": null,
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        {
+          "id": 26921,
+          "title": "전권대여 레고레고 포인트 블록쌓기",
+          "order": 1,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320120212_1584673332745.jpg",
+          "url": "/event/20769",
+          "badge": ""
+        },
+        {
+          "id": 26812,
+          "title": "[90일 대여] 고광 <음악천재를 위하여> 최강 30% 포인트백",
+          "order": 2,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200317110033_1584410433418.jpg",
+          "url": "/event/20680",
+          "badge": ""
+        },
+        {
+          "id": 26857,
+          "title": "리뷰를 남긴 자 포인트를 얻으리!",
+          "order": 3,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200318155158_1584514318997.jpg",
+          "url": "/event/20713",
+          "badge": ""
+        },
+        {
+          "id": 26899,
+          "title": "<재벌가 망나니> 완결! 구매 10% 할인",
+          "order": 4,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319153403_1584599642977.jpg",
+          "url": "/event/20741",
+          "badge": ""
+        },
+        {
+          "id": 26798,
+          "title": "그래서! 귀환하면 신선 OR 최강자",
+          "order": 5,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200316122139_1584328899904.jpg",
+          "url": "/event/20658",
+          "badge": ""
+        },
+        {
+          "id": 25162,
+          "title": "매주 화요일 10% 할인! 위클리 쿠폰",
+          "order": 7,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200112173938_1578818378671.jpg",
+          "url": "/event/19350",
+          "badge": ""
+        },
+        {
+          "id": 26760,
+          "title": "내 손 안의 방송국 연예계물 기획전",
+          "order": 8,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200313151919_1584080359687.jpg",
+          "url": "/event/20632",
+          "badge": ""
+        },
+        {
+          "id": 26745,
+          "title": "<망향무사> 성상현 작가전",
+          "order": 9,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200313143338_1584077618009.jpg",
+          "url": "/event/20628",
+          "badge": ""
+        },
+        {
+          "id": 26677,
+          "title": "헤라클레스의 심장이 뛴다! <신화 속 영웅의 귀환>",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200311153209_1583908329794.jpg",
+          "url": "/event/20561",
+          "badge": ""
+        },
+        {
+          "id": 26706,
+          "title": "사이다 원샷! 현실에서 먼치킨!",
+          "order": 11,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200312141153_1583989913082.jpg",
+          "url": "/event/20593",
+          "badge": ""
+        },
+        {
+          "id": 4542,
+          "title": "금요일에 신작UP 판타지 대여책방 ",
+          "order": 12,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20191002153029_1569997829770.jpg",
+          "url": "/event/17638",
+          "badge": ""
+        },
+        {
+          "id": 26674,
+          "title": "자기 전에 읽기 딱 좋은 판타지",
+          "order": 13,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200311151940_1583907580954.jpg",
+          "url": "/event/20558",
+          "badge": ""
+        },
+        {
+          "id": 26601,
+          "title": "새로운 세계의 최강직업대전",
+          "order": 15,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200309142200_1583731320237.jpg",
+          "url": "/event/20498",
+          "badge": ""
+        },
+        {
+          "id": 26628,
+          "title": "<입금 완료, S급 용병!> 전권대여 30%↓",
+          "order": 16,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200310113611_1583807771227.jpg",
+          "url": "/event/20523",
+          "badge": ""
+        },
+        {
+          "id": 26622,
+          "title": "가상 현실 게임 새로운 인생역전!",
+          "order": 17,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200310110244_1583805764417.jpg",
+          "url": "/event/20520",
+          "badge": ""
+        },
+        {
+          "id": 26597,
+          "title": "3월 무림 대회 무협 신간 제일경",
+          "order": 18,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200309115717_1583722637954.jpg",
+          "url": "/event/20493",
+          "badge": ""
+        },
+        {
+          "id": 25739,
+          "title": "3월 판타지 신간 캘린더",
+          "order": 19,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200228160627_1582873587345.jpg",
+          "url": "/event/20293",
+          "badge": ""
+        },
+        {
+          "id": 4558,
+          "title": "리디페이퍼 오늘 정식 출시",
+          "order": 21,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20191206144051_1575610851160.jpg",
+          "url": "https://paper.ridibooks.com/",
+          "badge": ""
+        },
+        {
+          "id": 4539,
+          "title": "디바이스_페이퍼 프로 판매(상시)",
+          "order": 22,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20180220141232_1519103552675.jpg",
+          "url": "https://paper.ridibooks.com/",
+          "badge": ""
+        }
+      ]
+    },
+    {
+      "slug": "home-fantasy-weekly-bestseller",
+      "title": "베스트셀러",
+      "type": "BestSeller",
+      "extra": {
+        "detail_link": "https://ridibooks.com/bestsellers/fantasy?order=weekly",
+        "category": "fantasy",
+        "period": "weekly",
+        "options": "0"
+      },
+      "total": 200,
+      "next": "http://store-api.ridibooks.com/sections/home-fantasy-weekly-bestseller/?page=2",
+      "previous": null,
+      "item_metadata": { "period": "주간" },
+      "items": [
+        {
+          "b_id": "777071755",
+          "type": "book",
+          "rank": 1,
+          "rating": {
+            "total_rating_count": 200,
+            "buyer_rating_count": 94,
+            "buyer_rating_score": 4.0
+          }
+        },
+        {
+          "b_id": "111020379",
+          "type": "book",
+          "rank": 2,
+          "rating": {
+            "total_rating_count": 157,
+            "buyer_rating_count": 107,
+            "buyer_rating_score": 3.9
+          }
+        },
+        {
+          "b_id": "425154329",
+          "type": "book",
+          "rank": 3,
+          "rating": {
+            "total_rating_count": 122,
+            "buyer_rating_count": 65,
+            "buyer_rating_score": 3.6
+          }
+        },
+        {
+          "b_id": "1811164074",
+          "type": "book",
+          "rank": 4,
+          "rating": {
+            "total_rating_count": 243,
+            "buyer_rating_count": 135,
+            "buyer_rating_score": 3.5
+          }
+        },
+        {
+          "b_id": "1377071129",
+          "type": "book",
+          "rank": 5,
+          "rating": {
+            "total_rating_count": 91,
+            "buyer_rating_count": 63,
+            "buyer_rating_score": 4.1
+          }
+        },
+        {
+          "b_id": "2057106368",
+          "type": "book",
+          "rank": 6,
+          "rating": {
+            "total_rating_count": 75,
+            "buyer_rating_count": 30,
+            "buyer_rating_score": 4.1
+          }
+        },
+        {
+          "b_id": "2057107133",
+          "type": "book",
+          "rank": 7,
+          "rating": {
+            "total_rating_count": 99,
+            "buyer_rating_count": 52,
+            "buyer_rating_score": 3.4
+          }
+        },
+        {
+          "b_id": "1811164173",
+          "type": "book",
+          "rank": 8,
+          "rating": {
+            "total_rating_count": 63,
+            "buyer_rating_count": 25,
+            "buyer_rating_score": 2.6
+          }
+        },
+        {
+          "b_id": "111020367",
+          "type": "book",
+          "rank": 9,
+          "rating": {
+            "total_rating_count": 157,
+            "buyer_rating_count": 107,
+            "buyer_rating_score": 3.9
+          }
+        },
+        {
+          "b_id": "425155025",
+          "type": "book",
+          "rank": 10,
+          "rating": {
+            "total_rating_count": 72,
+            "buyer_rating_count": 42,
+            "buyer_rating_score": 4.0
+          }
+        },
+        {
+          "b_id": "2351039928",
+          "type": "book",
+          "rank": 11,
+          "rating": {
+            "total_rating_count": 68,
+            "buyer_rating_count": 39,
+            "buyer_rating_score": 3.6
+          }
+        },
+        {
+          "b_id": "1534064943",
+          "type": "book",
+          "rank": 12,
+          "rating": {
+            "total_rating_count": 557,
+            "buyer_rating_count": 269,
+            "buyer_rating_score": 4.1
+          }
+        },
+        {
+          "b_id": "102087083",
+          "type": "book",
+          "rank": 13,
+          "rating": {
+            "total_rating_count": 136,
+            "buyer_rating_count": 72,
+            "buyer_rating_score": 4.2
+          }
+        },
+        {
+          "b_id": "777035894",
+          "type": "book",
+          "rank": 14,
+          "rating": {
+            "total_rating_count": 4017,
+            "buyer_rating_count": 3115,
+            "buyer_rating_score": 4.4
+          }
+        },
+        {
+          "b_id": "3076004519",
+          "type": "book",
+          "rank": 15,
+          "rating": {
+            "total_rating_count": 56,
+            "buyer_rating_count": 20,
+            "buyer_rating_score": 2.6
+          }
+        },
+        {
+          "b_id": "1534086249",
+          "type": "book",
+          "rank": 16,
+          "rating": {
+            "total_rating_count": 1137,
+            "buyer_rating_count": 900,
+            "buyer_rating_score": 4.4
+          }
+        },
+        {
+          "b_id": "1534086630",
+          "type": "book",
+          "rank": 17,
+          "rating": {
+            "total_rating_count": 220,
+            "buyer_rating_count": 95,
+            "buyer_rating_score": 4.6
+          }
+        },
+        {
+          "b_id": "1847007125",
+          "type": "book",
+          "rank": 18,
+          "rating": {
+            "total_rating_count": 123,
+            "buyer_rating_count": 53,
+            "buyer_rating_score": 3.7
+          }
+        },
+        {
+          "b_id": "425142367",
+          "type": "book",
+          "rank": 19,
+          "rating": {
+            "total_rating_count": 80,
+            "buyer_rating_count": 23,
+            "buyer_rating_score": 4.0
+          }
+        },
+        {
+          "b_id": "777072003",
+          "type": "book",
+          "rank": 20,
+          "rating": {
+            "total_rating_count": 36,
+            "buyer_rating_count": 15,
+            "buyer_rating_score": 2.9
+          }
+        }
+      ]
+    },
+    {
+      "slug": "home-fantasy-md-selection",
+      "title": "MD 추천",
+      "type": "HomeMdSelection",
+      "extra": {},
+      "total": 4,
+      "next": null,
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        {
+          "id": 1944,
+          "title": "[최대 30%▼] 믿고 보는 성상현 작가전",
+          "order": 0,
+          "books": [
+            {
+              "b_id": "777071755",
+              "rating": {
+                "total_rating_count": 200,
+                "buyer_rating_count": 94,
+                "buyer_rating_score": 4.0
+              },
+              "order": 0,
+              "type": "book"
+            },
+            {
+              "b_id": "777036961",
+              "rating": {
+                "total_rating_count": 831,
+                "buyer_rating_count": 566,
+                "buyer_rating_score": 4.0
+              },
+              "order": 1,
+              "type": "book"
+            },
+            {
+              "b_id": "777002436",
+              "rating": {
+                "total_rating_count": 375,
+                "buyer_rating_count": 273,
+                "buyer_rating_score": 3.8
+              },
+              "order": 2,
+              "type": "book"
+            },
+            {
+              "b_id": "777001014",
+              "rating": {
+                "total_rating_count": 672,
+                "buyer_rating_count": 473,
+                "buyer_rating_score": 4.2
+              },
+              "order": 3,
+              "type": "book"
+            },
+            {
+              "b_id": "777037157",
+              "rating": {
+                "total_rating_count": 80,
+                "buyer_rating_count": 37,
+                "buyer_rating_score": 4.1
+              },
+              "order": 4,
+              "type": "book"
+            },
+            {
+              "b_id": "777037202",
+              "rating": {
+                "total_rating_count": 61,
+                "buyer_rating_count": 26,
+                "buyer_rating_score": 4.0
+              },
+              "order": 5,
+              "type": "book"
+            },
+            {
+              "b_id": "777041555",
+              "rating": {
+                "total_rating_count": 98,
+                "buyer_rating_count": 48,
+                "buyer_rating_score": 3.4
+              },
+              "order": 6,
+              "type": "book"
+            }
+          ]
+        },
+        {
+          "id": 1941,
+          "title": "[5,000원] 리뷰를 남긴 자 포인트를 얻으리!",
+          "order": 1,
+          "books": [
+            {
+              "b_id": "2057107133",
+              "rating": {
+                "total_rating_count": 99,
+                "buyer_rating_count": 52,
+                "buyer_rating_score": 3.4
+              },
+              "order": 0,
+              "type": "book"
+            },
+            {
+              "b_id": "3076004519",
+              "rating": {
+                "total_rating_count": 56,
+                "buyer_rating_count": 20,
+                "buyer_rating_score": 2.6
+              },
+              "order": 1,
+              "type": "book"
+            },
+            {
+              "b_id": "425155025",
+              "rating": {
+                "total_rating_count": 72,
+                "buyer_rating_count": 42,
+                "buyer_rating_score": 4.0
+              },
+              "order": 2,
+              "type": "book"
+            },
+            {
+              "b_id": "2200032101",
+              "rating": {
+                "total_rating_count": 7,
+                "buyer_rating_count": 3,
+                "buyer_rating_score": 3.0
+              },
+              "order": 3,
+              "type": "book"
+            },
+            {
+              "b_id": "2057107147",
+              "rating": {
+                "total_rating_count": 46,
+                "buyer_rating_count": 22,
+                "buyer_rating_score": 3.6
+              },
+              "order": 4,
+              "type": "book"
+            },
+            {
+              "b_id": "1534087873",
+              "rating": {
+                "total_rating_count": 37,
+                "buyer_rating_count": 26,
+                "buyer_rating_score": 2.9
+              },
+              "order": 5,
+              "type": "book"
+            },
+            {
+              "b_id": "875124051",
+              "rating": {
+                "total_rating_count": 32,
+                "buyer_rating_count": 10,
+                "buyer_rating_score": 4.1
+              },
+              "order": 6,
+              "type": "book"
+            },
+            {
+              "b_id": "875123961",
+              "rating": {
+                "total_rating_count": 18,
+                "buyer_rating_count": 3,
+                "buyer_rating_score": 2.3
+              },
+              "order": 7,
+              "type": "book"
+            },
+            {
+              "b_id": "777072003",
+              "rating": {
+                "total_rating_count": 36,
+                "buyer_rating_count": 15,
+                "buyer_rating_score": 2.9
+              },
+              "order": 8,
+              "type": "book"
+            }
+          ]
+        },
+        {
+          "id": 1540,
+          "title": "금요일에 신작 UP! 판타지 대여책방!",
+          "order": 2,
+          "books": [
+            {
+              "b_id": "2313008382",
+              "rating": {
+                "total_rating_count": 14,
+                "buyer_rating_count": 0,
+                "buyer_rating_score": 0.0
+              },
+              "order": 0,
+              "type": "book"
+            },
+            {
+              "b_id": "3403001016",
+              "rating": {
+                "total_rating_count": 8,
+                "buyer_rating_count": 1,
+                "buyer_rating_score": 4.0
+              },
+              "order": 1,
+              "type": "book"
+            },
+            {
+              "b_id": "425155146",
+              "rating": {
+                "total_rating_count": 5,
+                "buyer_rating_count": 2,
+                "buyer_rating_score": 4.0
+              },
+              "order": 2,
+              "type": "book"
+            },
+            {
+              "b_id": "4108000029",
+              "rating": {
+                "total_rating_count": 10,
+                "buyer_rating_count": 2,
+                "buyer_rating_score": 2.5
+              },
+              "order": 3,
+              "type": "book"
+            },
+            {
+              "b_id": "1377071514",
+              "rating": {
+                "total_rating_count": 16,
+                "buyer_rating_count": 10,
+                "buyer_rating_score": 2.5
+              },
+              "order": 4,
+              "type": "book"
+            },
+            {
+              "b_id": "961035686",
+              "rating": {
+                "total_rating_count": 6,
+                "buyer_rating_count": 2,
+                "buyer_rating_score": 2.5
+              },
+              "order": 5,
+              "type": "book"
+            },
+            {
+              "b_id": "3228013870",
+              "rating": {
+                "total_rating_count": 12,
+                "buyer_rating_count": 3,
+                "buyer_rating_score": 1.3
+              },
+              "order": 6,
+              "type": "book"
+            },
+            {
+              "b_id": "4108000019",
+              "rating": {
+                "total_rating_count": 17,
+                "buyer_rating_count": 3,
+                "buyer_rating_score": 1.0
+              },
+              "order": 7,
+              "type": "book"
+            },
+            {
+              "b_id": "1811163881",
+              "rating": {
+                "total_rating_count": 52,
+                "buyer_rating_count": 16,
+                "buyer_rating_score": 3.2
+              },
+              "order": 8,
+              "type": "book"
+            },
+            {
+              "b_id": "3214012200",
+              "rating": {
+                "total_rating_count": 3,
+                "buyer_rating_count": 1,
+                "buyer_rating_score": 3.0
+              },
+              "order": 9,
+              "type": "book"
+            }
+          ]
+        },
+        {
+          "id": 1925,
+          "title": "3월 무림 대회! 무협 신간 최강자는?",
+          "order": 3,
+          "books": [
+            {
+              "b_id": "875123722",
+              "rating": {
+                "total_rating_count": 32,
+                "buyer_rating_count": 5,
+                "buyer_rating_score": 3.4
+              },
+              "order": 0,
+              "type": "book"
+            },
+            {
+              "b_id": "1534086982",
+              "rating": {
+                "total_rating_count": 54,
+                "buyer_rating_count": 25,
+                "buyer_rating_score": 3.9
+              },
+              "order": 1,
+              "type": "book"
+            },
+            {
+              "b_id": "1847007125",
+              "rating": {
+                "total_rating_count": 123,
+                "buyer_rating_count": 53,
+                "buyer_rating_score": 3.7
+              },
+              "order": 2,
+              "type": "book"
+            },
+            {
+              "b_id": "961035556",
+              "rating": {
+                "total_rating_count": 9,
+                "buyer_rating_count": 6,
+                "buyer_rating_score": 3.5
+              },
+              "order": 3,
+              "type": "book"
+            },
+            {
+              "b_id": "1534086988",
+              "rating": {
+                "total_rating_count": 25,
+                "buyer_rating_count": 4,
+                "buyer_rating_score": 2.8
+              },
+              "order": 4,
+              "type": "book"
+            },
+            {
+              "b_id": "961035569",
+              "rating": {
+                "total_rating_count": 52,
+                "buyer_rating_count": 21,
+                "buyer_rating_score": 4.0
+              },
+              "order": 5,
+              "type": "book"
+            },
+            {
+              "b_id": "2264008371",
+              "rating": {
+                "total_rating_count": 11,
+                "buyer_rating_count": 5,
+                "buyer_rating_score": 2.4
+              },
+              "order": 6,
+              "type": "book"
+            },
+            {
+              "b_id": "961035549",
+              "rating": {
+                "total_rating_count": 4,
+                "buyer_rating_count": 2,
+                "buyer_rating_score": 3.5
+              },
+              "order": 7,
+              "type": "book"
+            },
+            {
+              "b_id": "961035563",
+              "rating": {
+                "total_rating_count": 5,
+                "buyer_rating_count": 2,
+                "buyer_rating_score": 3.5
+              },
+              "order": 8,
+              "type": "book"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "home-fantasy-event-banner-middle",
+      "title": "이벤트 배너",
+      "type": "HomeEventBanner",
+      "extra": {},
+      "total": 19,
+      "next": null,
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        {
+          "id": 26602,
+          "title": "새로운 세계의 최강직업대전",
+          "order": 1,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200309142308_1583731388158.jpg",
+          "url": "/event/20498",
+          "badge": ""
+        },
+        {
+          "id": 26799,
+          "title": "그래서! 귀환하면 신선 OR 최강자",
+          "order": 2,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200316122219_1584328939249.jpg",
+          "url": "/event/20658",
+          "badge": ""
+        },
+        {
+          "id": 26746,
+          "title": "<망향무사> 성상현 작가전",
+          "order": 3,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200313143414_1584077654063.jpg",
+          "url": "/event/20628",
+          "badge": ""
+        },
+        {
+          "id": 26678,
+          "title": "헤라클레스의 심장이 뛴다! <신화 속 영웅의 귀환>",
+          "order": 4,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200311153344_1583908424902.jpg",
+          "url": "/event/20561",
+          "badge": ""
+        },
+        {
+          "id": 26623,
+          "title": "가상 현실 게임 새로운 인생역전!",
+          "order": 5,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200310110338_1583805818311.jpg",
+          "url": "/event/20520",
+          "badge": ""
+        },
+        {
+          "id": 25163,
+          "title": "매주 화요일 10% 할인! 위클리 쿠폰",
+          "order": 6,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200112174056_1578818456156.jpg",
+          "url": "/event/19350",
+          "badge": ""
+        },
+        {
+          "id": 12733,
+          "title": "금요일에 신작UP 판타지 대여책방 ",
+          "order": 7,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20191002153029_1569997829770.jpg",
+          "url": "/event/17638",
+          "badge": ""
+        },
+        {
+          "id": 26707,
+          "title": "사이다 원샷! 현실에서 먼치킨!",
+          "order": 8,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200312141236_1583989956015.jpg",
+          "url": "/event/20593",
+          "badge": ""
+        },
+        {
+          "id": 25839,
+          "title": "3월 캘린더",
+          "order": 9,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200301001103_1582989063645.jpg",
+          "url": "/event/20293",
+          "badge": ""
+        },
+        {
+          "id": 26675,
+          "title": "자기 전에 읽기 딱 좋은 판타지",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200311152022_1583907622050.jpg",
+          "url": "/event/20558",
+          "badge": ""
+        },
+        {
+          "id": 26629,
+          "title": "<입금 완료, S급 용병!> 전권대여 30%↓",
+          "order": 11,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200310113700_1583807820396.jpg",
+          "url": "/event/20523",
+          "badge": ""
+        },
+        {
+          "id": 26761,
+          "title": "내 손 안의 방송국 연예계물 기획전",
+          "order": 12,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200313152008_1584080408367.jpg",
+          "url": "/event/20632",
+          "badge": ""
+        },
+        {
+          "id": 26598,
+          "title": "3월 무림 대회 무협 신간 제일경",
+          "order": 14,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200309115823_1583722703402.jpg",
+          "url": "/event/20493",
+          "badge": ""
+        },
+        {
+          "id": 25491,
+          "title": "전권대여 레고레고 포인트 블록쌓기",
+          "order": 16,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200121135825_1579582705555.jpg",
+          "url": "/event/20769",
+          "badge": ""
+        },
+        {
+          "id": 26900,
+          "title": "<재벌가 망나니> 완결! 구매 10% 할인",
+          "order": 17,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319153446_1584599686503.jpg",
+          "url": "/event/20741",
+          "badge": ""
+        },
+        {
+          "id": 26858,
+          "title": "리뷰를 남긴 자 포인트를 얻으리!",
+          "order": 18,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200318155254_1584514374305.jpg",
+          "url": "/event/20713",
+          "badge": ""
+        },
+        {
+          "id": 26813,
+          "title": "[90일 대여] 고광 <음악천재를 위하여> 최강 30% 포인트백",
+          "order": 19,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200317110219_1584410539644.jpg",
+          "url": "/event/20680",
+          "badge": ""
+        },
+        {
+          "id": 12749,
+          "title": "리디페이퍼 오늘 정식 출시",
+          "order": 20,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20191206144051_1575610851160.jpg",
+          "url": "https://paper.ridibooks.com/",
+          "badge": ""
+        },
+        {
+          "id": 12730,
+          "title": "디바이스_페이퍼 프로 판매(상시)",
+          "order": 24,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20180220141232_1519103552675.jpg",
+          "url": "https://paper.ridibooks.com/",
+          "badge": ""
+        }
+      ]
+    },
+    {
+      "slug": "home-fantasy-ai-recommendation",
+      "title": "님을 위한 AI 추천",
+      "type": "AiRecommendation",
+      "extra": {
+        "detail_link": "https://ridibooks.com/personalized-recommendation/fantasy",
+        "genre": "fantasy",
+        "is_placeholder": true
+      },
+      "items": []
+    },
+    {
+      "slug": "home-fantasy-recommended-new-book",
+      "title": "화제의 인기작",
+      "type": "RecommendedNewBook",
+      "extra": { "genre": "fantasy", "type": "normal" },
+      "total": 18,
+      "next": null,
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        { "b_id": "875123749", "type": "book", "order": 5496 },
+        { "b_id": "777071769", "type": "book", "order": 5495 },
+        { "b_id": "2057106519", "type": "book", "order": 5494 },
+        { "b_id": "1377071129", "type": "book", "order": 5493 },
+        { "b_id": "2351039912", "type": "book", "order": 5492 },
+        { "b_id": "2065023139", "type": "book", "order": 5491 },
+        { "b_id": "777071755", "type": "book", "order": 5490 },
+        { "b_id": "2057106431", "type": "book", "order": 5489 },
+        { "b_id": "2264008363", "type": "book", "order": 5488 },
+        { "b_id": "2057106354", "type": "book", "order": 5487 },
+        { "b_id": "1811164074", "type": "book", "order": 5486 },
+        { "b_id": "3586005475", "type": "book", "order": 5485 },
+        { "b_id": "2057106361", "type": "book", "order": 5484 },
+        { "b_id": "3586005463", "type": "book", "order": 5483 },
+        { "b_id": "2057106368", "type": "book", "order": 5482 },
+        { "b_id": "102087083", "type": "book", "order": 5481 },
+        { "b_id": "1811163858", "type": "book", "order": 5480 },
+        { "b_id": "1534086630", "type": "book", "order": 5479 }
+      ]
+    },
+    {
+      "slug": "home-fantasy-today-new-book",
+      "title": "최신 단행본",
+      "type": "TodayNewBook",
+      "extra": {
+        "detail_link": "https://ridibooks.com/new-releases/fantasy",
+        "genre": "fantasy",
+        "type": "1"
+      },
+      "items": [
+        {
+          "b_id": "2391021327",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T11:44:07Z"
+        },
+        {
+          "b_id": "2351040152",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T00:03:13Z"
+        },
+        {
+          "b_id": "1377071529",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T00:03:12Z"
+        },
+        {
+          "b_id": "2313008391",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T00:02:30Z"
+        },
+        {
+          "b_id": "4108000028",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T00:02:23Z"
+        },
+        {
+          "b_id": "961035694",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T00:02:14Z"
+        },
+        {
+          "b_id": "425155154",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T00:02:04Z"
+        },
+        {
+          "b_id": "3403001022",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T00:01:56Z"
+        },
+        {
+          "b_id": "4108000034",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T00:01:47Z"
+        },
+        {
+          "b_id": "425155150",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T00:01:40Z"
+        },
+        {
+          "b_id": "1534087940",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T00:01:17Z"
+        },
+        {
+          "b_id": "425156607",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-19T15:00:58Z"
+        },
+        {
+          "b_id": "3135000014",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-19T10:19:19Z"
+        },
+        {
+          "b_id": "2749012804",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-19T07:00:21Z"
+        },
+        {
+          "b_id": "2057107146",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-19T00:05:27Z"
+        },
+        {
+          "b_id": "2057107157",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-19T00:04:57Z"
+        },
+        {
+          "b_id": "777072015",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-19T00:04:33Z"
+        },
+        {
+          "b_id": "875124060",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-19T00:04:31Z"
+        },
+        {
+          "b_id": "3076004528",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-19T00:04:13Z"
+        },
+        {
+          "b_id": "2200032110",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-19T00:04:06Z"
+        }
+      ]
+    },
+    {
+      "slug": "home-fantasy-event-banner-bottom",
+      "title": "이벤트 배너",
+      "type": "HomeEventBanner",
+      "extra": {},
+      "total": 20,
+      "next": null,
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        {
+          "id": 20924,
+          "title": "금요일에 신작UP 판타지 대여책방 ",
+          "order": 1,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20191002153029_1569997829770.jpg",
+          "url": "/event/17638",
+          "badge": ""
+        },
+        {
+          "id": 26599,
+          "title": "3월 무림 대회 무협 신간 제일경",
+          "order": 2,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200309115918_1583722758402.jpg",
+          "url": "/event/20493",
+          "badge": ""
+        },
+        {
+          "id": 26762,
+          "title": "내 손 안의 방송국 연예계물 기획전",
+          "order": 3,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200313152111_1584080471509.jpg",
+          "url": "/event/20632",
+          "badge": ""
+        },
+        {
+          "id": 25164,
+          "title": "매주 화요일 10% 할인! 위클리 쿠폰",
+          "order": 4,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200112174121_1578818481651.jpg",
+          "url": "/event/19350",
+          "badge": ""
+        },
+        {
+          "id": 26631,
+          "title": "<입금 완료, S급 용병!> 전권대여 30%↓",
+          "order": 5,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200310113825_1583807905782.jpg",
+          "url": "/event/20523",
+          "badge": ""
+        },
+        {
+          "id": 26708,
+          "title": "사이다 원샷! 현실에서 먼치킨!",
+          "order": 6,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200312141331_1583990011676.jpg",
+          "url": "/event/20593",
+          "badge": ""
+        },
+        {
+          "id": 26624,
+          "title": "가상 현실 게임 새로운 인생역전!",
+          "order": 7,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200310110435_1583805875635.jpg",
+          "url": "/event/20520",
+          "badge": ""
+        },
+        {
+          "id": 25673,
+          "title": "화제의 신작 리스트",
+          "order": 9,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200129154155_1580280115939.jpg",
+          "url": "/special-room/20",
+          "badge": ""
+        },
+        {
+          "id": 26800,
+          "title": "그래서! 귀환하면 신선 OR 최강자",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200316122258_1584328978124.jpg",
+          "url": "/event/20658",
+          "badge": ""
+        },
+        {
+          "id": 25672,
+          "title": "베스트셀러 (1월)",
+          "order": 11,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200129154042_1580280042029.jpg",
+          "url": "/books/425146983",
+          "badge": ""
+        },
+        {
+          "id": 26747,
+          "title": "<망향무사> 성상현 작가전",
+          "order": 12,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200313143457_1584077697488.jpg",
+          "url": "/event/20628",
+          "badge": ""
+        },
+        {
+          "id": 26679,
+          "title": "헤라클레스의 심장이 뛴다! <신화 속 영웅의 귀환>",
+          "order": 14,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200311153439_1583908479038.jpg",
+          "url": "/event/20561",
+          "badge": ""
+        },
+        {
+          "id": 26901,
+          "title": "<재벌가 망나니> 완결! 구매 10% 할인",
+          "order": 15,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319153604_1584599764709.jpg",
+          "url": "/event/20741",
+          "badge": ""
+        },
+        {
+          "id": 25492,
+          "title": "전권대여 레고레고 포인트 블록쌓기",
+          "order": 16,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200121135906_1579582746261.jpg",
+          "url": "/event/20769",
+          "badge": ""
+        },
+        {
+          "id": 26859,
+          "title": "리뷰를 남긴 자 포인트를 얻으리!",
+          "order": 17,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200318155359_1584514439930.jpg",
+          "url": "/event/20713",
+          "badge": ""
+        },
+        {
+          "id": 26814,
+          "title": "[90일 대여] 고광 <음악천재를 위하여> 최강 30% 포인트백",
+          "order": 18,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200317110316_1584410596954.jpg",
+          "url": "/event/20680",
+          "badge": ""
+        },
+        {
+          "id": 26676,
+          "title": "자기 전에 읽기 딱 좋은 판타지",
+          "order": 19,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200311152106_1583907666847.jpg",
+          "url": "/event/20558",
+          "badge": ""
+        },
+        {
+          "id": 26603,
+          "title": "새로운 세계의 최강직업대전",
+          "order": 20,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200309142402_1583731442275.jpg",
+          "url": "/event/20498",
+          "badge": ""
+        },
+        {
+          "id": 20940,
+          "title": "리디페이퍼 오늘 정식 출시",
+          "order": 21,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20191206144051_1575610851160.jpg",
+          "url": "https://paper.ridibooks.com/",
+          "badge": ""
+        },
+        {
+          "id": 20921,
+          "title": "디바이스_페이퍼 프로 판매(상시)",
+          "order": 25,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20180220141232_1519103552675.jpg",
+          "url": "https://paper.ridibooks.com/",
+          "badge": ""
+        }
+      ]
+    }
+  ]
+}

@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import { Page, Section } from 'src/types/sections';
-import { HomeSectionRenderer } from 'src/components/Section/HomeSectionRenderer';
+import HomeSectionRenderer from 'src/components/Section/HomeSectionRenderer';
 import pRetry from 'p-retry';
 import { keyToArray } from 'src/utils/common';
 import axios, { CancelToken } from 'src/utils/axios';
@@ -96,7 +96,7 @@ export const Home: NextPage<HomeProps> = (props) => {
 
   useEffect(() => {
     const selectBIds = keyToArray(
-      branches.filter((section) => section.extra.use_select_api),
+      branches.filter((section) => section.extra?.use_select_api),
       'b_id',
     );
     dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
