@@ -61,7 +61,10 @@
         "works-offline": [
           "off",{}
         ],
-
+        "link-name": [
+          "warn",
+          {}
+        ],
         "service-worker": [
           "warn",{}
         ],
