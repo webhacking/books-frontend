@@ -1,12 +1,7 @@
 import axios from 'axios';
 import * as React from 'react';
 import Index from 'src/pages/[genre]';
-import {
-  act,
-  render,
-  RenderResult,
-  waitForElement,
-} from '@testing-library/react';
+import { act, render, RenderResult, waitForElement } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../store/config';
 import { ThemeProvider } from 'emotion-theming';
@@ -23,11 +18,14 @@ const mockRes = {
   end: () => null,
 };
 
-const router = createRouter('', { user: 'nikita' }, '', {
+const router = createRouter('/', { genre: 'general' }, '', {
+  subscription: jest.fn(),
   initialProps: {},
   pageLoader: jest.fn(),
   App: jest.fn(),
   Component: jest.fn(),
+  isFallback: false,
+  wrapApp: jest.fn(),
 });
 
 const store = makeStore(
@@ -80,7 +78,6 @@ const mockSomeProps = {
   store,
   res: mockRes,
 };
-
 
 function actRender(renderFunction: () => RenderResult) {
   let ret: RenderResult;
@@ -157,9 +154,7 @@ describe('Genre Home Test', () => {
     expect(handler.mock.calls[0][0]).toEqual('get');
     expect(handler.mock.calls[0][1]).toEqual('/pages/home-fantasy/');
 
-    const { getAllByText } = actRender(() =>
-      renderComponent({ props }),
-    );
+    const { getAllByText } = actRender(() => renderComponent({ props }));
     expect(getAllByText(/판타지 도서 타이/)[0]).not.toBeNull();
   });
 
@@ -192,6 +187,6 @@ describe('Genre Home Test', () => {
       timeout: 2000,
       container,
     });
-    expect(renderer[0]).not.toBe(null)
+    expect(renderer[0]).not.toBe(null);
   });
 });

@@ -5,6 +5,16 @@ import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
 import * as labels from 'src/labels/common.json';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { createRouter } from 'next/router';
+const router = createRouter('/', { genre: 'general' }, '', {
+  subscription: jest.fn(),
+  initialProps: {},
+  pageLoader: jest.fn(),
+  App: jest.fn(),
+  Component: jest.fn(),
+  isFallback: false,
+  wrapApp: jest.fn(),
+});
 
 afterEach(cleanup);
 

@@ -6,7 +6,16 @@ import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../store/config';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
-import { Provider } from 'react-redux';
+import { createRouter } from 'next/router';
+const router = createRouter('/', { genre: 'general' }, '', {
+  subscription: jest.fn(),
+  initialProps: {},
+  pageLoader: jest.fn(),
+  App: jest.fn(),
+  Component: jest.fn(),
+  isFallback: false,
+  wrapApp: jest.fn(),
+});
 
 afterEach(cleanup);
 
