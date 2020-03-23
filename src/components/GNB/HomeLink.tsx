@@ -9,7 +9,7 @@ interface Props {
   passHref?: boolean;
 }
 
-const legacyCookieMap = {
+export const legacyCookieMap = {
   comic: 'comics',
   romance_serial: 'romance-serial',
   fantasy_serial: 'fantasy-serial',
@@ -30,7 +30,7 @@ const HomeLink: React.FC<Props> = (props) => {
     setGenre(legacyCookieMap[cookie] ?? cookie);
   }, []);
 
-  if (process.env.IS_PRODUCTION) {
+  if (!process.env.USE_CSR) {
     return React.cloneElement(
       children as React.ReactElement,
       { href: `${origin}/` },
