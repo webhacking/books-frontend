@@ -4,7 +4,6 @@ import { ThemeProvider } from 'emotion-theming';
 import { ConnectedInitializeProps } from 'src/types/common';
 import GNB from 'src/components/GNB';
 import { PartialSeparator } from 'src/components/Misc';
-import { BrowserLocationWithRouter } from 'src/components/Context';
 import { GenreTab } from 'src/components/Tabs';
 
 interface GNBState {
@@ -50,33 +49,31 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
   public render() {
     return (
       <ThemeProvider theme={!this.state.theme ? defaultTheme : darkTheme}>
-        <BrowserLocationWithRouter isPartials pathname={this.props.pathname || ''}>
-          <PartialSeparator name="GNB" wrapped={!this.state.isMounted}>
-            <GNB
-              id="gnb"
-              pathname={this.props.pathname}
-              isPartials
-              isLoginForPartials={this.props.is_login}
-              type={this.props.type}
-              searchKeyword=""
-            />
-            {this.props.pathname === '/category/list' && (
-              <GenreTab isPartials currentGenre="category" />
-            )}
+        <PartialSeparator name="GNB" wrapped={!this.state.isMounted}>
+          <GNB
+            id="gnb"
+            pathname={this.props.pathname}
+            isPartials
+            isLoginForPartials={this.props.is_login}
+            type={this.props.type}
+            searchKeyword=""
+          />
+          {this.props.pathname === '/category/list' && (
+            <GenreTab isPartials currentGenre="category" />
+          )}
 
-            {['/v2/Detail'].includes(this.props.pathname) && (
-              <GenreTab isPartials currentGenre="" />
-            )}
+          {['/v2/Detail'].includes(this.props.pathname) && (
+            <GenreTab isPartials currentGenre="" />
+          )}
 
-            {this.props.pathname?.startsWith('/books') && (
-              <GenreTab isPartials currentGenre="" />
-            )}
+          {this.props.pathname?.startsWith('/books') && (
+            <GenreTab isPartials currentGenre="" />
+          )}
 
-            {this.props.pathname?.startsWith('/event') && (
-              <GenreTab isPartials currentGenre="" />
-            )}
-          </PartialSeparator>
-        </BrowserLocationWithRouter>
+          {this.props.pathname?.startsWith('/event') && (
+            <GenreTab isPartials currentGenre="" />
+          )}
+        </PartialSeparator>
       </ThemeProvider>
     );
   }

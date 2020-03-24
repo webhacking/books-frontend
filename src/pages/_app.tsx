@@ -15,7 +15,6 @@ import GNB from 'src/components/GNB';
 import { ThemeProvider } from 'emotion-theming';
 import Footer from 'src/components/Footer';
 import styled from '@emotion/styled';
-import { BrowserLocationWithRouter } from 'src/components/Context';
 import React, { ErrorInfo } from 'react';
 import { PartialSeparator } from 'src/components/Misc';
 import { cache } from 'emotion';
