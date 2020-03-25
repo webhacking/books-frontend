@@ -32,8 +32,8 @@ const nextConfig = {
           permanent: true,
         },
         {
-          source: "/general/:path*",
-          destination: "/:path*",
+          source: "/general/:path+",
+          destination: "/:path+",
           permanent: true,
         },
       ];
