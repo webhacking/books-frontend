@@ -8,7 +8,6 @@ import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from '../../styles';
 import Router from 'next/router'
 import { Provider } from 'react-redux';
-import { BrowserLocationWithRouter } from 'src/components/Context';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
 Router.replace = jest.fn(() => null);
