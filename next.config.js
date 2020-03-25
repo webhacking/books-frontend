@@ -81,6 +81,7 @@ const nextConfig = {
     config.plugins.push(new webpack.DefinePlugin({
       'process.env.USE_CSR': JSON.stringify(process.env.USE_CSR),
       'process.env.STAGE': JSON.stringify(process.env.STAGE),
+      'process.env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN),
       'process.env.BUILD_ID': JSON.stringify(buildId),
       'process.env.IS_SERVER': JSON.stringify(isServer),
       'process.env.IS_PRODUCTION': JSON.stringify(process.env.NODE_ENV === 'production'),
