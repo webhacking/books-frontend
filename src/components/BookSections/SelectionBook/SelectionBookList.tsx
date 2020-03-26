@@ -1,18 +1,13 @@
-import React, {
-  useEffect, useRef, useState,
-} from 'react';
-import { displayNoneForTouchDevice, flexRowStart, scrollBarHidden } from 'src/styles';
-import {
-  SelectionBookItem,
-} from 'src/components/BookSections/SelectionBook/SelectionBook';
+import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/core';
+
+import ScrollContainer from 'src/components/ScrollContainer';
+import { flexRowStart } from 'src/styles';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
-import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
-import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { DisplayType, MdBook } from 'src/types/sections';
 import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
-import { useDeviceType } from 'src/hooks/useDeviceType';
+
+import { SelectionBookItem } from './SelectionBook';
 
 export const listCSS = css`
   padding-top: 7px;
@@ -110,10 +105,7 @@ interface SelectionBookListProps {
 }
 
 const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) => {
-  const ref = useRef<HTMLUListElement>(null);
-  const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const { genre, type, slug } = props;
-  const { isMobile } = useDeviceType();
   const [requestExclude, requestCancel] = useExcludeRecommendation();
   const [isMounted, setMounted] = useState(false);
 
@@ -125,13 +117,13 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
     return null;
   }
   return (
-    <div
+    <ScrollContainer
       css={css`
         margin-top: 6px;
         position: relative;
       `}
     >
-      <ul ref={ref} css={[flexRowStart, scrollBarHidden, listCSS]}>
+      <ul css={[flexRowStart, listCSS]}>
         {props.items
           .filter((item) => item.detail)
           .map((item, index) => (
@@ -153,47 +145,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
             </li>
           ))}
       </ul>
-      {!isMobile && (
-        <form
-          css={[
-            css`
-              height: 0;
-            `,
-            displayNoneForTouchDevice,
-          ]}
-        >
-          <Arrow
-            label="이전"
-            side="left"
-            onClickHandler={moveLeft}
-            wrapperStyle={[
-              css`
-                position: absolute;
-                left: 5px;
-                transition: opacity 0.2s;
-                top: ${getArrowVerticalCenterPosition()};
-              `,
-              !isOnTheLeft && arrowTransition,
-            ]}
-          />
-
-          <Arrow
-            label="다음"
-            side="right"
-            onClickHandler={moveRight}
-            wrapperStyle={[
-              css`
-                position: absolute;
-                right: 5px;
-                transition: opacity 0.2s;
-                top: ${getArrowVerticalCenterPosition()};
-              `,
-              !isOnTheRight && arrowTransition,
-            ]}
-          />
-        </form>
-      )}
-    </div>
+    </ScrollContainer>
   );
 });
 

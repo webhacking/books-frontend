@@ -2,24 +2,11 @@ import React from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
-import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
-import { useDeviceType } from 'src/hooks/useDeviceType';
-import { useScrollSlider } from 'src/hooks/useScrollSlider';
-import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
+import ScrollContainer from 'src/components/ScrollContainer';
 import { DisplayType } from 'src/types/sections';
 
 import ListItem from './RecommendedBookItem';
 import { RecommendedBookProps } from './types';
-
-const ScrollContainer = styled.div`
-  overflow: auto;
-  ${scrollBarHidden}
-
-
-  margin-top: -7px;
-  // <BooksCarouselWrapper /> margin -8px 과 같은 맥락의 음수 마진
-  display: flex;
-`;
 
 const BookList = styled.ul<{ type: RecommendedBookProps['type'] }>`
   flex: none;
@@ -34,6 +21,11 @@ const BookList = styled.ul<{ type: RecommendedBookProps['type'] }>`
     margin-left: 0;
     justify-content: center;
   }
+`;
+
+const containerAdjustStyle = css`
+  // <BooksCarouselWrapper /> margin -8px 과 같은 맥락의 음수 마진
+  margin-top: -7px;
 `;
 
 const hotReleaseMargin = css`
@@ -58,12 +50,9 @@ const todayRecommendationMargin = css`
 `;
 
 function RecommendedBookList(props: Omit<RecommendedBookProps, 'title'>) {
-  const ref = React.useRef<HTMLUListElement>(null);
-  const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref);
   const {
     theme, type, slug, genre,
   } = props;
-  const { isMobile } = useDeviceType();
 
   const { items } = props;
   const carouselItems = React.useMemo(
@@ -99,53 +88,11 @@ function RecommendedBookList(props: Omit<RecommendedBookProps, 'title'>) {
         }
       `}
     >
-      <ScrollContainer>
-        <BookList type={type} ref={ref}>
+      <ScrollContainer css={containerAdjustStyle}>
+        <BookList type={type}>
           {carouselItems}
         </BookList>
       </ScrollContainer>
-      {!isMobile && (
-        <form css={displayNoneForTouchDevice}>
-          <Arrow
-            onClickHandler={moveLeft}
-            label="이전"
-            color={theme}
-            side="left"
-            wrapperStyle={[
-              css`
-                left: 5px;
-                z-index: 2;
-                position: absolute;
-                transition: opacity 0.2s;
-                top: 88px;
-                @media (max-width: 999px) {
-                  top: 72px;
-                }
-              `,
-              !isOnTheLeft && arrowTransition,
-            ]}
-          />
-          <Arrow
-            label="다음"
-            onClickHandler={moveRight}
-            color={theme}
-            side="right"
-            wrapperStyle={[
-              css`
-                z-index: 2;
-                right: 9px;
-                position: absolute;
-                transition: opacity 0.2s;
-                top: 88px;
-                @media (max-width: 999px) {
-                  top: 72px;
-                }
-              `,
-              !isOnTheRight && arrowTransition,
-            ]}
-          />
-        </form>
-      )}
     </div>
   );
 }

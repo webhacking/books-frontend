@@ -1,0 +1,125 @@
+import React from 'react';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
+
+import Arrow from 'src/components/Carousel/Arrow';
+import { useDeviceType } from 'src/hooks/useDeviceType';
+import { useScrollSlider } from 'src/hooks/useScrollSlider';
+import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
+
+const ControllerContainer = styled.div`
+  position: relative;
+`;
+
+const SlidingContainer = styled.div`
+  display: flex;
+  flex-wrap: none;
+  overflow: auto;
+  ${scrollBarHidden}
+`;
+
+const Marker = styled.div`
+  flex: none;
+  width: 0;
+`;
+
+const Content = styled.div`
+  flex: 1;
+`;
+
+const SliderControllerContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+
+  ${displayNoneForTouchDevice}
+`;
+
+const arrowStyle = css`
+  transition: opacity 0.2s;
+  pointer-events: auto;
+`;
+
+const arrowHiddenStyle = css`
+  opacity: 0;
+  pointer-events: none;
+`;
+
+interface SliderControllerProps {
+  theme?: 'white' | 'dark';
+  showLeftArrow?: boolean;
+  showRightArrow?: boolean;
+  onLeftClick?(): void;
+  onRightClick?(): void;
+}
+
+function SliderController(props: SliderControllerProps) {
+  const { isMobile } = useDeviceType();
+  if (isMobile) {
+    return null;
+  }
+
+  const {
+    theme, showLeftArrow, showRightArrow, onLeftClick, onRightClick,
+  } = props;
+  return (
+    <SliderControllerContainer>
+      <Arrow
+        onClickHandler={onLeftClick}
+        label="이전"
+        color={theme}
+        side="left"
+        wrapperStyle={[
+          arrowStyle,
+          !showLeftArrow && arrowHiddenStyle,
+        ]}
+      />
+      <Arrow
+        label="다음"
+        onClickHandler={onRightClick}
+        color={theme}
+        side="right"
+        wrapperStyle={[
+          arrowStyle,
+          !showRightArrow && arrowHiddenStyle,
+        ]}
+      />
+    </SliderControllerContainer>
+  );
+}
+
+interface Props {
+  theme?: 'white' | 'dark';
+  className?: string;
+  children?: React.ReactNode;
+}
+
+export default function ScrollContainer(props: Props) {
+  const { theme, className, children } = props;
+  const [ref, moveLeft, moveRight, isOnStart, isOnEnd, leftMarkerRef, rightMarkerRef] = useScrollSlider();
+  return (
+    <ControllerContainer className={className}>
+      <SlidingContainer ref={ref as React.Ref<HTMLDivElement>}>
+        <Marker ref={leftMarkerRef as React.Ref<HTMLDivElement>} />
+        <Content>
+          {children}
+        </Content>
+        <Marker ref={rightMarkerRef as React.Ref<HTMLDivElement>} />
+      </SlidingContainer>
+      <SliderController
+        theme={theme}
+        showLeftArrow={!isOnStart}
+        showRightArrow={!isOnEnd}
+        onLeftClick={moveLeft}
+        onRightClick={moveRight}
+      />
+    </ControllerContainer>
+  );
+}
