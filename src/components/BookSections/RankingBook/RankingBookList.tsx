@@ -48,9 +48,6 @@ const SectionWrapper = styled.section`
 const BIG_ITEM_HEIGHT = 138;
 const SMALL_ITEM_HEIGHT = 94;
 
-const BIG_LIST_HEIGHT = 414;
-const SMALL_LIST_HEIGHT = 282;
-
 const RankPosition = styled.h3`
   height: 22px;
   font-size: 18px;
@@ -121,12 +118,15 @@ const Timer: React.FC = () => {
 };
 
 const List = styled.ul<{ type: 'big' | 'small' }>`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  display: -ms-grid; // emotion이 쓰는 stylis.js가 grid를 지원하지 않음
+  -ms-grid-rows: (${({ type }) => (type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT)}px)[3];
+  -ms-grid-columns: 308px 14px 308px 14px 308px;
+  display: grid;
+  grid: repeat(3, ${({ type }) => (type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT)}px) / auto-flow 308px;
+  grid-column-gap: 14px;
+
   padding-left: 16px;
   padding-right: 16px;
-  height: ${({ type }) => (type === 'big' ? BIG_LIST_HEIGHT : SMALL_LIST_HEIGHT)}px;
 
   ${greaterThanOrEqualTo(
     BreakPoint.MD + 1,
@@ -149,11 +149,9 @@ const List = styled.ul<{ type: 'big' | 'small' }>`
 `;
 
 const RankingBookItem = styled.li<{ type: 'big' | 'small' }>`
-  flex: none;
   display: flex;
   align-items: center;
   box-sizing: content-box;
-  padding-right: 14px;
   .book-meta-box {
     display: flex;
     align-items: center;
@@ -166,8 +164,6 @@ const RankingBookItem = styled.li<{ type: 'big' | 'small' }>`
       border-bottom: 0;
     }
   }
-  width: 308px;
-  height: ${({ type }) => (type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT)}px;
 `;
 
 const BadgeWrapper = styled.div`
@@ -211,7 +207,14 @@ const ItemList: React.FC<ItemListProps> = (props) => {
           .filter((book) => book.detail)
           .slice(0, 9)
           .map((book, index) => (
-            <RankingBookItem type={type} key={index}>
+            <RankingBookItem
+              type={type}
+              key={index}
+              style={{
+                msGridColumn: (Math.floor(index / 3) * 2) + 1,
+                msGridRow: (index % 3) + 1,
+              }}
+            >
               <ThumbnailAnchor
                 data-book-id={book.b_id}
                 data-order={index}
