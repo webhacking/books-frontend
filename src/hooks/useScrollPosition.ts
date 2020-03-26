@@ -15,8 +15,9 @@ function useRefWithPrevious<T>(
 
 // [ref, isOnStart, isOnEnd, startMarkerRef, endMarkerRef, scrollBy]
 export const useScrollPosition = (): [React.RefCallback<HTMLElement>, boolean, boolean, React.Ref<Element>, React.Ref<Element>, (leftValue: number) => void] => {
-  const [isOnStart, setOnStart] = React.useState(false);
-  const [isOnEnd, setOnEnd] = React.useState(false);
+  // 둘 다 보인다고 가정
+  const [isOnStart, setOnStart] = React.useState(true);
+  const [isOnEnd, setOnEnd] = React.useState(true);
 
   const nodeRef = React.useRef<HTMLElement>();
 
