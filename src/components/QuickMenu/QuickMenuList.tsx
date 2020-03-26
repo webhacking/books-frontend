@@ -147,7 +147,11 @@ const Section = styled.section`
 export const QuickMenuList: React.FC<QuickMenuListProps> = (props) => (
   <Section>
     <h2 className="a11y">퀵 메뉴</h2>
-    <ScrollContainer css={centered}>
+    <ScrollContainer
+      leftArrowLabel="이전 퀵 메뉴"
+      rightArrowLabel="다음 퀵 메뉴"
+      css={centered}
+    >
       <MenuList>
         {props.items.map((menu, index) => (
           <MemoizedQuickMenuItem key={index} menu={menu} />

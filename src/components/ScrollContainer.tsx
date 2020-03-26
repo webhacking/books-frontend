@@ -54,6 +54,8 @@ const arrowHiddenStyle = css`
 
 interface SliderControllerProps {
   theme?: 'white' | 'dark';
+  leftArrowLabel?: string;
+  rightArrowLabel?: string;
   showLeftArrow?: boolean;
   showRightArrow?: boolean;
   onLeftClick?(): void;
@@ -67,13 +69,19 @@ function SliderController(props: SliderControllerProps) {
   }
 
   const {
-    theme, showLeftArrow, showRightArrow, onLeftClick, onRightClick,
+    theme,
+    leftArrowLabel,
+    rightArrowLabel,
+    showLeftArrow,
+    showRightArrow,
+    onLeftClick,
+    onRightClick,
   } = props;
   return (
     <SliderControllerContainer>
       <Arrow
         onClickHandler={onLeftClick}
-        label="이전"
+        label={leftArrowLabel}
         color={theme}
         side="left"
         wrapperStyle={[
@@ -82,7 +90,7 @@ function SliderController(props: SliderControllerProps) {
         ]}
       />
       <Arrow
-        label="다음"
+        label={rightArrowLabel}
         onClickHandler={onRightClick}
         color={theme}
         side="right"
@@ -97,12 +105,16 @@ function SliderController(props: SliderControllerProps) {
 
 interface Props {
   theme?: 'white' | 'dark';
+  leftArrowLabel: string;
+  rightArrowLabel: string;
   className?: string;
   children?: React.ReactNode;
 }
 
 export default function ScrollContainer(props: Props) {
-  const { theme, className, children } = props;
+  const {
+    theme, leftArrowLabel, rightArrowLabel, className, children,
+  } = props;
   const [ref, moveLeft, moveRight, isOnStart, isOnEnd, leftMarkerRef, rightMarkerRef] = useScrollSlider();
   return (
     <ControllerContainer className={className}>
@@ -115,6 +127,8 @@ export default function ScrollContainer(props: Props) {
       </SlidingContainer>
       <SliderController
         theme={theme}
+        leftArrowLabel={leftArrowLabel}
+        rightArrowLabel={rightArrowLabel}
         showLeftArrow={!isOnStart}
         showRightArrow={!isOnEnd}
         onLeftClick={moveLeft}
@@ -123,3 +137,8 @@ export default function ScrollContainer(props: Props) {
     </ControllerContainer>
   );
 }
+
+ScrollContainer.defaultProps = {
+  leftArrowLabel: '이전',
+  rightArrowLabel: '다음',
+};

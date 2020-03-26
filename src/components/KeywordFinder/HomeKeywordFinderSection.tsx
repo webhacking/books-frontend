@@ -479,7 +479,10 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = (props
           />
         </a>
       </SectionTitle>
-      <ScrollContainer>
+      <ScrollContainer
+        leftArrowLabel="이전 키워드 보기"
+        rightArrowLabel="다음 키워드 보기"
+      >
         <List>
           {genreKeywords.map((keyword, index) => {
             const keywordSetAndTagSearchParam = new URLSearchParams(genreSearchParam);
