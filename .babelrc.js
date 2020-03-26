@@ -4,8 +4,11 @@ const presets = [
     {
       'preset-env': {
         exclude: process.env.NODE_ENV === 'test' ? ['transform-classes'] : undefined, // jest class invoke 'new' related
+        targets: {
+          browsers: ['defaults'],
+        },
         useBuiltIns: 'entry',
-        corejs: 3,
+        corejs: 2,
       },
     },
   ],
@@ -13,7 +16,6 @@ const presets = [
 ];
 
 const plugins = [
-  ['emotion', { inline: true }],
   [
     /*
     tsconfig 의 paths 는 IDE & tsc 에서만 경로를 도와주고
