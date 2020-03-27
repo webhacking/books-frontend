@@ -9,7 +9,6 @@ const withTM = require('next-transpile-modules');
 const withImages = require('next-images');
 const withFonts = require('next-fonts');
 const withSvgr = require("next-svgr");
-const withCSS = require('@zeit/next-css');
 const nextSourceMaps = require('@zeit/next-source-maps')({
   devtool: 'hidden-source-map',
 });
@@ -66,6 +65,20 @@ const nextConfig = {
       );
     }
 
+    const originalEntry = config.entry;
+    config.entry = async () => {
+      const entries = await originalEntry();
+
+      if (
+        entries['main.js'] &&
+        !entries['main.js'].includes('./src/polyfills.js')
+      ) {
+        entries['main.js'].unshift('./src/polyfills.js');
+      }
+
+      return entries;
+    };
+
     config.plugins.push(
       new InjectManifest({
         swSrc: 'src/service-worker.js',
@@ -120,7 +133,6 @@ module.exports = withPlugins([
   }],
   [withFonts],
   [withSvgr],
-  [withCSS],
   [nextEnv()],
   [nextSourceMaps],
 ], nextConfig);

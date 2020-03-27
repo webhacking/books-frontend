@@ -5,7 +5,6 @@ import ArrowV from 'src/svgs/ArrowV.svg';
 import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
 import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 import { useScrollSlider } from 'src/hooks/useScrollSlider';
-import 'url-search-params-polyfill';
 import styled from '@emotion/styled';
 import { useDeviceType } from 'src/hooks/useDeviceType';
 

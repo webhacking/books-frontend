@@ -1,6 +1,3 @@
-import '@babel/polyfill/noConflict';
-import 'intersection-observer';
-
 import App, { AppContext } from 'next/app';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
