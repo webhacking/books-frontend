@@ -21,8 +21,6 @@ import pRetry from 'p-retry';
 import axios, { CancelToken, OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 
-const { captureException } = sentry();
-
 const GNBWrapper = styled.div`
   width: 100%;
   background-color: ${(props: { theme: RIDITheme }) => props.theme.primaryColor};
@@ -219,7 +217,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
           setEventStatus(result.data);
         }
       } catch (error) {
-        captureException(error);
+        sentry.captureException(error);
       }
     };
     requestRidiEventStatus();

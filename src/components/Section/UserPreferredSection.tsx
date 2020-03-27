@@ -10,8 +10,6 @@ import { booksActions } from 'src/services/books';
 import { categoryActions } from 'src/services/category';
 import { useRouter } from 'next/router';
 
-const { captureException } = sentry();
-
 interface UserPreferredSectionProps {
   items: MdSelection[];
   genre: string;
@@ -50,7 +48,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = (props) => {
           });
         }
       } catch (error) {
-        captureException(error);
+        sentry.captureException(error);
       }
     };
 

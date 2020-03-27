@@ -8,7 +8,6 @@ import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
 import { getDeviceType } from 'src/hooks/useDeviceType';
 
-const { captureException } = sentry();
 const deviceType = getDeviceType() === 'mobile'
   ? DeviceType.Mobile
   : DeviceType.PC;
@@ -62,7 +61,7 @@ export const useEventTracker = () => {
         deviceType,
       });
     } catch (error) {
-      captureException(error);
+      sentry.captureException(error);
     }
   }, [loggedUser]);
   return [tracker];

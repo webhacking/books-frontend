@@ -21,8 +21,6 @@ import {
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import sentry from 'src/utils/sentry';
 
-const { captureException } = sentry();
-
 const Section = styled.section<{}, RIDITheme>`
   background-color: ${(props) => props.theme.backgroundColor};
   max-width: 952px;
@@ -276,7 +274,7 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
       try {
         tracker.sendPageView(window.location.href, document.referrer);
       } catch (error) {
-        captureException(error);
+        sentry.captureException(error);
       }
     }
   }, [tracker]);

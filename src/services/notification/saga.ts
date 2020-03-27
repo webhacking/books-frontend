@@ -78,7 +78,7 @@ function* watchNotificationUnreadCountRequest(
     if (error.response && error.response.status === 401) {
       cookies.remove(RIDI_NOTIFICATION_TOKEN);
     } else {
-      captureException(error);
+      sentry.captureException(error);
     }
   }
 }
@@ -104,7 +104,7 @@ function* watchNotificationRequest(action: Actions<typeof NotificationReducer>) 
     }
   } catch (error) {
     yield put({ type: notificationActions.setLoaded.type, payload: false });
-    captureException(error);
+    sentry.captureException(error);
   }
 }
 

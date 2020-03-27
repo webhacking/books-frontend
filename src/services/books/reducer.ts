@@ -2,7 +2,6 @@ import { createActionCreators, createReducerFunction, ImmerReducer } from 'immer
 import * as BookApi from 'src/types/book';
 import sentry from 'src/utils/sentry';
 
-const { captureException } = sentry();
 
 export interface BooksState {
   items: { [key: string]: BookApi.Book | null };
@@ -27,7 +26,7 @@ export class BooksReducer extends ImmerReducer<BooksState> {
       this.draftState.isFetching = true;
       this.draftState.items = { ...this.draftState.items, ...books };
     } catch (error) {
-      captureException(error);
+      sentry.captureException(error);
     }
   }
 
@@ -45,7 +44,7 @@ export class BooksReducer extends ImmerReducer<BooksState> {
       });
       this.draftState.items = { ...this.draftState.items, ...books };
     } catch (error) {
-      captureException(error);
+      sentry.captureException(error);
     }
   }
 
@@ -83,7 +82,7 @@ export class BooksReducer extends ImmerReducer<BooksState> {
         // this.draftState.items[bId].isAvailableSelect = true;
       });
     } catch (error) {
-      captureException(error);
+      sentry.captureException(error);
     }
   }
 

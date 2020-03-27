@@ -2,8 +2,6 @@ import axios, { OAuthRequestType } from 'src/utils/axios';
 import pRetry from 'p-retry';
 import sentry from 'src/utils/sentry';
 
-const { captureException } = sentry();
-
 export const useExcludeRecommendation = (): [
   (bId: string, rcmdId: string, genre: string) => void,
   (bId: string, genre: string) => void,
@@ -24,7 +22,7 @@ export const useExcludeRecommendation = (): [
         { retries: 2 },
       );
     } catch (error) {
-      captureException(error);
+      sentry.captureException(error);
     }
   };
 
@@ -40,7 +38,7 @@ export const useExcludeRecommendation = (): [
         { retries: 2 },
       );
     } catch (error) {
-      captureException(error);
+      sentry.captureException(error);
     }
   };
 

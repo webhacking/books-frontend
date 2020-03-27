@@ -11,8 +11,6 @@ import NotFoundIcon from 'src/svgs/NotFound.svg';
 
 import Meta from 'src/components/Meta';
 
-const { captureException } = sentry();
-
 interface CustomErrorProps extends ErrorProps {
   error?: Error | ErrorInfo;
 }
@@ -23,11 +21,11 @@ export default class ErrorPage extends React.Component<CustomErrorProps> {
     const statusCode = res?.statusCode || err?.statusCode || 404;
 
     if (req && res && res.statusCode >= 400) {
-      captureException(err || new Error(NextError[res.statusCode]), context);
+      sentry.captureException(err || new Error(NextError[res.statusCode]), context);
       return { statusCode: res.statusCode };
     }
     if (err) {
-      captureException(err, context);
+      sentry.captureException(err, context);
       return { statusCode: NextError.INTERNAL };
     }
 
@@ -43,15 +41,15 @@ export default class ErrorPage extends React.Component<CustomErrorProps> {
     if (error && error?.isAxiosError) {
       // @ts-ignore
       if ((error as AxiosError)?.response) {
-        captureException(error);
+        sentry.captureException(error);
         // @ts-ignore
         return (error.response as AxiosResponse).status;
       }
-      captureException(error);
+      sentry.captureException(error);
       return '';
     }
     if (error) {
-      captureException(error);
+      sentry.captureException(error);
     }
     return '';
   }
