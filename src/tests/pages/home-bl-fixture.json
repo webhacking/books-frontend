@@ -1,0 +1,1152 @@
+{
+  "slug": "home-bl",
+  "type": "Page",
+  "title": "BL 단행본 홈",
+  "branches": [
+    {
+      "slug": "home-bl-today-recommendation",
+      "title": "오늘, 리디의 발견",
+      "type": "TodayRecommendation",
+      "extra": {},
+      "total": 3379,
+      "next": "http://store-api.ridibooks.com/sections/home-bl-today-recommendation/?page=2",
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        {
+          "b_id": "2336003629",
+          "type": "book",
+          "sentence": "소설 | 손이 발이\r\n되도록 빌어 #능욕공",
+          "order": 75549
+        },
+        {
+          "b_id": "3720000127",
+          "type": "book",
+          "sentence": "만화 | 시선 때문에 뜨거워…\r\n'화가공 + 모델&매니저수'",
+          "order": 75548
+        },
+        {
+          "b_id": "1629002361",
+          "type": "book",
+          "sentence": "소설 | 선택은 선배가\r\n해요 #오메가버스",
+          "order": 75547
+        },
+        {
+          "b_id": "2107059230",
+          "type": "book",
+          "sentence": "소설 | 네가 포기가\r\n안돼 #신분차이",
+          "order": 75546
+        },
+        {
+          "b_id": "505018300",
+          "type": "book",
+          "sentence": "만화 | 반짝이는 청춘.\r\n'여름청게 + 순정공'",
+          "order": 75545
+        },
+        {
+          "b_id": "2200031988",
+          "type": "book",
+          "sentence": "소설 | 어디 부러뜨려\r\n놓을 걸 #굴림수",
+          "order": 75535
+        },
+        {
+          "b_id": "297027387",
+          "type": "book",
+          "sentence": "소설 | 당신 곁을 지키고\r\n싶습니다 #헌신공",
+          "order": 75533
+        },
+        {
+          "b_id": "297023548",
+          "type": "book",
+          "sentence": "소설 | 날 진심으로\r\n사랑하긴 했습니까?",
+          "order": 75532
+        },
+        {
+          "b_id": "1016005703",
+          "type": "book",
+          "sentence": "만화 | 더 세게 묶어 줘.\r\n'짝사랑공 + 유혹수'",
+          "order": 75531
+        },
+        {
+          "b_id": "1629002654",
+          "type": "book",
+          "sentence": "소설 | 자꾸 이상한\r\n놈들과 엮인다?!",
+          "order": 75514
+        },
+        {
+          "b_id": "777072037",
+          "type": "book",
+          "sentence": "소설 | 넌 변한 게\r\n없네 #첫사랑",
+          "order": 75512
+        },
+        {
+          "b_id": "2802000893",
+          "type": "book",
+          "sentence": "소설 | 널 독점하고\r\n싶어 #도망수",
+          "order": 75511
+        },
+        {
+          "b_id": "4013000055",
+          "type": "book",
+          "sentence": "만화 | 어느 것을 먹을까요❤\r\n'삼각관계 + 유혹수'",
+          "order": 75508
+        },
+        {
+          "b_id": "1483017109",
+          "type": "book",
+          "sentence": "소설 | 사십 대에\r\n새로운 재능 발견?",
+          "order": 75507
+        },
+        {
+          "b_id": "2107049158",
+          "type": "book",
+          "sentence": "소설 | 내 세상엔\r\n아직 네가 있어 #빙의",
+          "order": 75476
+        },
+        {
+          "b_id": "2495000534",
+          "type": "book",
+          "sentence": "소설 | 제발 날\r\n밀어내지 마 #애증",
+          "order": 75475
+        },
+        {
+          "b_id": "1561006203",
+          "type": "book",
+          "sentence": "만화 | 반려가 되고 싶어요.\r\n'늑대인간 순정공 + 연상수'",
+          "order": 75445
+        },
+        {
+          "b_id": "4148000001",
+          "type": "book",
+          "sentence": "소설 | 저한테 왜\r\n잘해주세요? #연예계",
+          "order": 75444
+        },
+        {
+          "b_id": "4150000001",
+          "type": "book",
+          "sentence": "행님, 내한테 반했습니까?\r\n#순정공 #응답하라_1992 ",
+          "order": 75431
+        },
+        {
+          "b_id": "1629002087",
+          "type": "book",
+          "sentence": "소설 | 나 좋아한다고\r\n했잖아 #베타공",
+          "order": 75430
+        }
+      ]
+    },
+    {
+      "slug": "home-bl-quickmenu",
+      "title": "퀵메뉴",
+      "type": "HomeQuickMenu",
+      "extra": {},
+      "total": 9,
+      "next": null,
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        {
+          "id": 51,
+          "name": "신간",
+          "url": "/new-releases/bl",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/+new.png",
+          "bg_color": "#E8CB99",
+          "order": 1
+        },
+        {
+          "id": 52,
+          "name": "소설 베스트",
+          "url": "/bestsellers/bl/novel",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/+best.png",
+          "bg_color": "#B9BEF1",
+          "order": 2
+        },
+        {
+          "id": 93,
+          "name": "만화 베스트",
+          "url": "/bestsellers/bl/comic",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/+best.png",
+          "bg_color": "#F1C0A7",
+          "order": 3
+        },
+        {
+          "id": 53,
+          "name": "이벤트",
+          "url": "/event/bl",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/+gift.png",
+          "bg_color": "#99D1CB",
+          "order": 4
+        },
+        {
+          "id": 54,
+          "name": "소설 캘린더",
+          "url": "/event/20279",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/20191213124338_421951.png",
+          "bg_color": "#99C0E1",
+          "order": 5
+        },
+        {
+          "id": 92,
+          "name": "만화 캘린더",
+          "url": "/event/11792",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/20191216185713_449568.png",
+          "bg_color": "#B9BEF1",
+          "order": 6
+        },
+        {
+          "id": 55,
+          "name": "10% 할인전",
+          "url": "/event/2916",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/20191213124418_369435.png",
+          "bg_color": "#ABDCBA",
+          "order": 7
+        },
+        {
+          "id": 56,
+          "name": "리디ONLY",
+          "url": "/event/3746",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/20191218113326_377111.png",
+          "bg_color": "#99D1CB",
+          "order": 8
+        },
+        {
+          "id": 57,
+          "name": "위클리 쿠폰",
+          "url": "/event/19910",
+          "icon": "//active.ridibooks.com/responsive-quick-menu/20200203143529_178991.png",
+          "bg_color": "#D5ADEB",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "slug": "home-bl-keywordfinder",
+      "title": "키워드로 검색하기",
+      "type": "KeywordFinder",
+      "extra": { "is_placeholder": true },
+      "items": []
+    },
+    {
+      "slug": "home-bl-event-banner-top",
+      "title": "이벤트 배너",
+      "type": "HomeEventBanner",
+      "extra": {},
+      "total": 182,
+      "next": "http://store-api.ridibooks.com/sections/home-bl-event-banner-top/?page=2",
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        {
+          "id": 26924,
+          "title": "[소설] 리디 마크다운 100% (~3/25)",
+          "order": 1,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320145319_1584683599429.jpg",
+          "url": "/event/20778",
+          "badge": ""
+        },
+        {
+          "id": 26918,
+          "title": "[소설] 뿡빵뀨/저수리 <과호흡> {~3/26)",
+          "order": 2,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320112922_1584671362630.jpg",
+          "url": "/event/20765",
+          "badge": ""
+        },
+        {
+          "id": 26854,
+          "title": "[소설] 코드 딱 맞는  # MODE (~3/29)",
+          "order": 3,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200318144256_1584510176426.jpg",
+          "url": "/event/20708",
+          "badge": ""
+        },
+        {
+          "id": 26724,
+          "title": "[만화] 무나무 <대리화가> 단행본 출간! (~3/29) ",
+          "order": 4,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200316104606_1584323166406.jpg",
+          "url": "/event/20602",
+          "badge": ""
+        },
+        {
+          "id": 26534,
+          "title": "[만화] <데뷔를 피하는 방법> 웹툰 출간(~3/26)",
+          "order": 5,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200305144259_1583386979704.jpg",
+          "url": "/event/20426",
+          "badge": ""
+        },
+        {
+          "id": 26833,
+          "title": "[소설] 키워드 추천대전! 뭐 볼지 고민이면 여기서 다 골라줌 (~3/24)",
+          "order": 6,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200318102645_1584494805050.jpg",
+          "url": "/event/20699",
+          "badge": ""
+        },
+        {
+          "id": 26821,
+          "title": "[만화] <나를 봐 줘, 선생님> 출간! (~3/31)",
+          "order": 7,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200317141019_1584421819334.jpg",
+          "url": "/event/20689",
+          "badge": ""
+        },
+        {
+          "id": 26934,
+          "title": "[만화] 취향저격★ 3월의 최애수 (~4/6)",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320162139_1584688899257.jpg",
+          "url": "/event/20782",
+          "badge": ""
+        },
+        {
+          "id": 26942,
+          "title": "[소설] 끔뻑 <감정의 발현> 화별댓글 달면 포인트! (~3/27)",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200323101722_1584926242124.jpg",
+          "url": "/event/20787",
+          "badge": ""
+        },
+        {
+          "id": 26945,
+          "title": "[소설] 새몬 <키스 더 그라운드> 연재 재개! 열람만 해도 추첨 500원! (~3/29)",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200323102058_1584926458880.jpg",
+          "url": "/event/20789",
+          "badge": ""
+        },
+        {
+          "id": 26948,
+          "title": "[소설] 회귀하는 포인트 요정 (3월 4차) (~3/29)",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200323102345_1584926625824.jpg",
+          "url": "/event/20790",
+          "badge": ""
+        },
+        {
+          "id": 26951,
+          "title": "[소설] 명탐정 벨러 여섯개의 무료로 진짜를 찾아라 (~3/25)",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200323102717_1584926837233.jpg",
+          "url": "/event/20791",
+          "badge": ""
+        },
+        {
+          "id": 26931,
+          "title": "[만화] 재회, 그리고 사랑 <나와 모나리자> (~4/19)",
+          "order": 12,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320160506_1584687906470.jpg",
+          "url": "/event/20781",
+          "badge": ""
+        },
+        {
+          "id": 26915,
+          "title": "[만화] <여우는 달콤한 포도를 먹는다> 단행본! (~4/3)",
+          "order": 14,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320111744_1584670664259.jpg",
+          "url": "/event/20763",
+          "badge": ""
+        },
+        {
+          "id": 26830,
+          "title": "[소설] 리뷰 전원 2,500포인트 <나이트크럽 연정戀情> (~3/24)",
+          "order": 16,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200318100539_1584493539330.jpg",
+          "url": "/event/20698",
+          "badge": ""
+        },
+        {
+          "id": 26896,
+          "title": "[만화] <정의로운 연애> 무료 보고 포인트! (~4/3)",
+          "order": 18,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319151902_1584598742270.jpg",
+          "url": "/event/20744",
+          "badge": ""
+        },
+        {
+          "id": 26893,
+          "title": "[만화] <메이데이 메이데이 메이데이> 무료보고 포인트! (~4/5)",
+          "order": 19,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319145731_1584597451472.jpg",
+          "url": "/event/20742",
+          "badge": ""
+        },
+        {
+          "id": 26890,
+          "title": "[만화] <네코×네코> 출간! (~4/16)",
+          "order": 21,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319143337_1584596017563.jpg",
+          "url": "/event/20740",
+          "badge": ""
+        },
+        {
+          "id": 26887,
+          "title": "[만화] <더 묶어줘, 벌려줘 빨리> 출간! (~4/16)",
+          "order": 22,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319141820_1584595100482.jpg",
+          "url": "/event/20723",
+          "badge": ""
+        },
+        {
+          "id": 26883,
+          "title": "[만화] <끝난 줄 알았냐!> 출간! (~4/2)",
+          "order": 23,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319141316_1584594796431.jpg",
+          "url": "/event/20738",
+          "badge": ""
+        }
+      ]
+    },
+    {
+      "slug": "home-bl-reading-books",
+      "title": "사람들이 지금 많이 읽고 있는 책",
+      "type": "ReadingBooksRanking",
+      "extra": { "genre": "bl" },
+      "total": 97,
+      "next": "http://store-api.ridibooks.com/sections/home-bl-reading-books/?page=2",
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        { "b_id": "4150000001", "type": "book", "score": 209.0 },
+        { "b_id": "777063298", "type": "book", "score": 75.0 },
+        { "b_id": "777072037", "type": "book", "score": 70.0 },
+        { "b_id": "4148000001", "type": "book", "score": 44.0 },
+        { "b_id": "809018277", "type": "book", "score": 43.0 },
+        { "b_id": "2259002404", "type": "book", "score": 40.0 },
+        { "b_id": "2336002908", "type": "book", "score": 33.0 },
+        { "b_id": "3274000002", "type": "book", "score": 26.0 },
+        { "b_id": "3686000001", "type": "book", "score": 25.0 },
+        { "b_id": "2093030672", "type": "book", "score": 24.0 },
+        { "b_id": "3201000001", "type": "book", "score": 23.0 },
+        { "b_id": "120040305", "type": "book", "score": 22.0 },
+        { "b_id": "2336003577", "type": "book", "score": 17.0 },
+        { "b_id": "809015943", "type": "book", "score": 17.0 },
+        { "b_id": "2259000361", "type": "book", "score": 16.0 },
+        { "b_id": "3420000001", "type": "book", "score": 16.0 },
+        { "b_id": "3579000001", "type": "book", "score": 16.0 },
+        { "b_id": "211029494", "type": "book", "score": 15.0 },
+        { "b_id": "2336003641", "type": "book", "score": 14.0 },
+        { "b_id": "3061000133", "type": "book", "score": 14.0 }
+      ]
+    },
+    {
+      "slug": "home-bl-today-new-book",
+      "title": "오늘의 신간",
+      "type": "TodayNewBook",
+      "extra": {
+        "detail_link": "https://ridibooks.com/new-releases/bl",
+        "genre": "bl",
+        "type": "1"
+      },
+      "items": [
+        {
+          "b_id": "120045861",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T23:05:04Z"
+        },
+        {
+          "b_id": "102088227",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T23:05:03Z"
+        },
+        {
+          "b_id": "1824007446",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T23:05:02Z"
+        },
+        {
+          "b_id": "2066001234",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T23:00:00Z"
+        },
+        {
+          "b_id": "111020514",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T12:13:12Z"
+        },
+        {
+          "b_id": "1016005705",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T10:30:34Z"
+        },
+        {
+          "b_id": "840029681",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T10:27:09Z"
+        },
+        {
+          "b_id": "3963000002",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T07:01:08Z"
+        },
+        {
+          "b_id": "3963000003",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T07:01:00Z"
+        },
+        {
+          "b_id": "3720000127",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-23T06:30:22Z"
+        },
+        {
+          "b_id": "2336003655",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T23:05:04Z"
+        },
+        {
+          "b_id": "1580000079",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T23:05:03Z"
+        },
+        {
+          "b_id": "1629002654",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T23:05:02Z"
+        },
+        {
+          "b_id": "2802001139",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T23:05:01Z"
+        },
+        {
+          "b_id": "777072040",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T23:05:00Z"
+        },
+        {
+          "b_id": "1016005704",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T23:00:00Z"
+        },
+        {
+          "b_id": "111020512",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T22:58:45Z"
+        },
+        {
+          "b_id": "111020511",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T22:58:27Z"
+        },
+        {
+          "b_id": "111020510",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T22:57:59Z"
+        },
+        {
+          "b_id": "111020509",
+          "type": "book",
+          "reg_date_latest_vol": "2020-03-20T21:51:43Z"
+        }
+      ]
+    },
+    {
+      "slug": "home-bl-novel-weekly-bestseller",
+      "title": "소설 베스트셀러",
+      "type": "BestSeller",
+      "extra": {
+        "detail_link": "https://ridibooks.com/bestsellers/bl/novel?order=weekly",
+        "category": "bl_novel",
+        "period": "weekly",
+        "options": "0"
+      },
+      "total": 200,
+      "next": "http://store-api.ridibooks.com/sections/home-bl-novel-weekly-bestseller/?page=2",
+      "previous": null,
+      "item_metadata": { "period": "주간" },
+      "items": [
+        {
+          "b_id": "777072037",
+          "type": "book",
+          "rank": 1,
+          "rating": {
+            "total_rating_count": 4409,
+            "buyer_rating_count": 3879,
+            "buyer_rating_score": 4.8
+          }
+        },
+        {
+          "b_id": "4150000001",
+          "type": "book",
+          "rank": 2,
+          "rating": {
+            "total_rating_count": 5172,
+            "buyer_rating_count": 4449,
+            "buyer_rating_score": 4.8
+          }
+        },
+        {
+          "b_id": "2336002908",
+          "type": "book",
+          "rank": 3,
+          "rating": {
+            "total_rating_count": 3492,
+            "buyer_rating_count": 2887,
+            "buyer_rating_score": 4.3
+          }
+        },
+        {
+          "b_id": "809018277",
+          "type": "book",
+          "rank": 4,
+          "rating": {
+            "total_rating_count": 5839,
+            "buyer_rating_count": 5252,
+            "buyer_rating_score": 4.5
+          }
+        },
+        {
+          "b_id": "120045459",
+          "type": "book",
+          "rank": 5,
+          "rating": {
+            "total_rating_count": 737,
+            "buyer_rating_count": 576,
+            "buyer_rating_score": 4.5
+          }
+        },
+        {
+          "b_id": "4148000001",
+          "type": "book",
+          "rank": 6,
+          "rating": {
+            "total_rating_count": 3673,
+            "buyer_rating_count": 3174,
+            "buyer_rating_score": 4.7
+          }
+        },
+        {
+          "b_id": "2336003641",
+          "type": "book",
+          "rank": 7,
+          "rating": {
+            "total_rating_count": 869,
+            "buyer_rating_count": 759,
+            "buyer_rating_score": 4.6
+          }
+        },
+        {
+          "b_id": "297026977",
+          "type": "book",
+          "rank": 8,
+          "rating": {
+            "total_rating_count": 3119,
+            "buyer_rating_count": 2822,
+            "buyer_rating_score": 4.7
+          }
+        },
+        {
+          "b_id": "1483016794",
+          "type": "book",
+          "rank": 9,
+          "rating": {
+            "total_rating_count": 1038,
+            "buyer_rating_count": 876,
+            "buyer_rating_score": 4.5
+          }
+        },
+        {
+          "b_id": "2093030672",
+          "type": "book",
+          "rank": 10,
+          "rating": {
+            "total_rating_count": 3260,
+            "buyer_rating_count": 2870,
+            "buyer_rating_score": 4.5
+          }
+        },
+        {
+          "b_id": "2336002895",
+          "type": "book",
+          "rank": 11,
+          "rating": {
+            "total_rating_count": 3364,
+            "buyer_rating_count": 3031,
+            "buyer_rating_score": 4.5
+          }
+        },
+        {
+          "b_id": "2036000030",
+          "type": "book",
+          "rank": 12,
+          "rating": {
+            "total_rating_count": 5067,
+            "buyer_rating_count": 4372,
+            "buyer_rating_score": 4.4
+          }
+        },
+        {
+          "b_id": "809020892",
+          "type": "book",
+          "rank": 13,
+          "rating": {
+            "total_rating_count": 1856,
+            "buyer_rating_count": 1546,
+            "buyer_rating_score": 4.2
+          }
+        },
+        {
+          "b_id": "845019377",
+          "type": "book",
+          "rank": 14,
+          "rating": {
+            "total_rating_count": 220,
+            "buyer_rating_count": 192,
+            "buyer_rating_score": 4.1
+          }
+        },
+        {
+          "b_id": "2336003577",
+          "type": "book",
+          "rank": 15,
+          "rating": {
+            "total_rating_count": 3469,
+            "buyer_rating_count": 3129,
+            "buyer_rating_score": 4.5
+          }
+        },
+        {
+          "b_id": "2259002404",
+          "type": "book",
+          "rank": 16,
+          "rating": {
+            "total_rating_count": 6879,
+            "buyer_rating_count": 6142,
+            "buyer_rating_score": 4.8
+          }
+        },
+        {
+          "b_id": "793012486",
+          "type": "book",
+          "rank": 17,
+          "rating": {
+            "total_rating_count": 180,
+            "buyer_rating_count": 158,
+            "buyer_rating_score": 4.1
+          }
+        },
+        {
+          "b_id": "1962071401",
+          "type": "book",
+          "rank": 18,
+          "rating": {
+            "total_rating_count": 225,
+            "buyer_rating_count": 190,
+            "buyer_rating_score": 4.4
+          }
+        },
+        {
+          "b_id": "120032930",
+          "type": "book",
+          "rank": 19,
+          "rating": {
+            "total_rating_count": 1742,
+            "buyer_rating_count": 1410,
+            "buyer_rating_score": 4.3
+          }
+        },
+        {
+          "b_id": "211030721",
+          "type": "book",
+          "rank": 20,
+          "rating": {
+            "total_rating_count": 110,
+            "buyer_rating_count": 86,
+            "buyer_rating_score": 3.8
+          }
+        }
+      ]
+    },
+    {
+      "slug": "home-bl-comic-weekly-bestseller",
+      "title": "만화 베스트셀러",
+      "type": "BestSeller",
+      "extra": {
+        "detail_link": "https://ridibooks.com/bestsellers/bl/comic?order=weekly",
+        "category": "bl_comic",
+        "period": "weekly",
+        "options": "0"
+      },
+      "total": 200,
+      "next": "http://store-api.ridibooks.com/sections/home-bl-comic-weekly-bestseller/?page=2",
+      "previous": null,
+      "item_metadata": { "period": "주간" },
+      "items": [
+        {
+          "b_id": "3720000123",
+          "type": "book",
+          "rank": 1,
+          "rating": {
+            "total_rating_count": 1369,
+            "buyer_rating_count": 1296,
+            "buyer_rating_score": 4.7
+          }
+        },
+        {
+          "b_id": "3683000045",
+          "type": "book",
+          "rank": 2,
+          "rating": {
+            "total_rating_count": 455,
+            "buyer_rating_count": 434,
+            "buyer_rating_score": 4.4
+          }
+        },
+        {
+          "b_id": "777055509",
+          "type": "book",
+          "rank": 3,
+          "rating": {
+            "total_rating_count": 7515,
+            "buyer_rating_count": 6971,
+            "buyer_rating_score": 4.7
+          }
+        },
+        {
+          "b_id": "111020352",
+          "type": "book",
+          "rank": 4,
+          "rating": {
+            "total_rating_count": 930,
+            "buyer_rating_count": 787,
+            "buyer_rating_score": 4.9
+          }
+        },
+        {
+          "b_id": "1515013078",
+          "type": "book",
+          "rank": 5,
+          "rating": {
+            "total_rating_count": 543,
+            "buyer_rating_count": 496,
+            "buyer_rating_score": 4.5
+          }
+        },
+        {
+          "b_id": "505018300",
+          "type": "book",
+          "rank": 6,
+          "rating": {
+            "total_rating_count": 275,
+            "buyer_rating_count": 250,
+            "buyer_rating_score": 4.5
+          }
+        },
+        {
+          "b_id": "565026850",
+          "type": "book",
+          "rank": 7,
+          "rating": {
+            "total_rating_count": 2134,
+            "buyer_rating_count": 1871,
+            "buyer_rating_score": 4.8
+          }
+        },
+        {
+          "b_id": "505018357",
+          "type": "book",
+          "rank": 8,
+          "rating": {
+            "total_rating_count": 84,
+            "buyer_rating_count": 78,
+            "buyer_rating_score": 4.3
+          }
+        },
+        {
+          "b_id": "1016005652",
+          "type": "book",
+          "rank": 9,
+          "rating": {
+            "total_rating_count": 218,
+            "buyer_rating_count": 137,
+            "buyer_rating_score": 4.7
+          }
+        },
+        {
+          "b_id": "1016004035",
+          "type": "book",
+          "rank": 10,
+          "rating": {
+            "total_rating_count": 1443,
+            "buyer_rating_count": 1338,
+            "buyer_rating_score": 4.6
+          }
+        },
+        {
+          "b_id": "505018345",
+          "type": "book",
+          "rank": 11,
+          "rating": {
+            "total_rating_count": 101,
+            "buyer_rating_count": 88,
+            "buyer_rating_score": 4.2
+          }
+        },
+        {
+          "b_id": "4013000053",
+          "type": "book",
+          "rank": 12,
+          "rating": {
+            "total_rating_count": 109,
+            "buyer_rating_count": 84,
+            "buyer_rating_score": 4.6
+          }
+        },
+        {
+          "b_id": "297027394",
+          "type": "book",
+          "rank": 13,
+          "rating": {
+            "total_rating_count": 89,
+            "buyer_rating_count": 84,
+            "buyer_rating_score": 3.9
+          }
+        },
+        {
+          "b_id": "1016005703",
+          "type": "book",
+          "rank": 14,
+          "rating": {
+            "total_rating_count": 97,
+            "buyer_rating_count": 83,
+            "buyer_rating_score": 4.2
+          }
+        },
+        {
+          "b_id": "840029427",
+          "type": "book",
+          "rank": 15,
+          "rating": {
+            "total_rating_count": 150,
+            "buyer_rating_count": 132,
+            "buyer_rating_score": 4.1
+          }
+        },
+        {
+          "b_id": "2498005106",
+          "type": "book",
+          "rank": 16,
+          "rating": {
+            "total_rating_count": 80,
+            "buyer_rating_count": 68,
+            "buyer_rating_score": 4.1
+          }
+        },
+        {
+          "b_id": "1016004322",
+          "type": "book",
+          "rank": 17,
+          "rating": {
+            "total_rating_count": 1196,
+            "buyer_rating_count": 1066,
+            "buyer_rating_score": 4.5
+          }
+        },
+        {
+          "b_id": "2007001366",
+          "type": "book",
+          "rank": 18,
+          "rating": {
+            "total_rating_count": 68,
+            "buyer_rating_count": 59,
+            "buyer_rating_score": 4.6
+          }
+        },
+        {
+          "b_id": "2404001546",
+          "type": "book",
+          "rank": 19,
+          "rating": {
+            "total_rating_count": 89,
+            "buyer_rating_count": 76,
+            "buyer_rating_score": 4.3
+          }
+        },
+        {
+          "b_id": "1561006200",
+          "type": "book",
+          "rank": 20,
+          "rating": {
+            "total_rating_count": 61,
+            "buyer_rating_count": 48,
+            "buyer_rating_score": 4.1
+          }
+        }
+      ]
+    },
+    {
+      "slug": "home-bl-event-banner-middle",
+      "title": "이벤트 배너",
+      "type": "HomeEventBanner",
+      "extra": {},
+      "total": 181,
+      "next": "http://store-api.ridibooks.com/sections/home-bl-event-banner-middle/?page=2",
+      "previous": null,
+      "item_metadata": {},
+      "items": [
+        {
+          "id": 26831,
+          "title": "[소설] 리뷰 전원 2,500포인트 <나이트크럽 연정戀情> (~3/24)",
+          "order": 1,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200318100543_1584493543991.jpg",
+          "url": "/event/20698",
+          "badge": ""
+        },
+        {
+          "id": 26941,
+          "title": "[소설] 끔뻑 <감정의 발현> (~3/23)",
+          "order": 2,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320225618_1584712578326.jpg",
+          "url": "/event/20786",
+          "badge": ""
+        },
+        {
+          "id": 26871,
+          "title": "[소설] 시아 <CTRL> 화별댓글 달면 포인트! (~3/25)",
+          "order": 3,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200318172433_1584519873257.jpg",
+          "url": "/event/20718",
+          "badge": ""
+        },
+        {
+          "id": 26935,
+          "title": "[만화] 취향저격★ 3월의 최애수 (~4/6)",
+          "order": 4,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320162209_1584688929594.jpg",
+          "url": "/event/20782",
+          "badge": ""
+        },
+        {
+          "id": 26704,
+          "title": "[만화] <카스트 헤븐> 5권 출간! (~4/9)",
+          "order": 5,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200312114450_1583981090139.jpg",
+          "url": "/event/20582",
+          "badge": ""
+        },
+        {
+          "id": 26797,
+          "title": "[만화] 이 만화 보고가세요! (~3/28)",
+          "order": 6,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200314141437_1584162877951.jpg",
+          "url": "https://ridibooks.com/event/20652",
+          "badge": ""
+        },
+        {
+          "id": 26897,
+          "title": "[만화] <정의로운 연애> 무료 보고 포인트! (~4/3)",
+          "order": 9,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319151937_1584598777555.jpg",
+          "url": "/event/20744",
+          "badge": ""
+        },
+        {
+          "id": 26943,
+          "title": "[소설] 끔뻑 <감정의 발현> 화별댓글 달면 포인트! (~3/27)",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200323101731_1584926251058.jpg",
+          "url": "/event/20787",
+          "badge": ""
+        },
+        {
+          "id": 26946,
+          "title": "[소설] 새몬 <키스 더 그라운드> 연재 재개! 열람만 해도 추첨 500원! (~3/29)",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200323102109_1584926469404.jpg",
+          "url": "/event/20789",
+          "badge": ""
+        },
+        {
+          "id": 26949,
+          "title": "[소설] 회귀하는 포인트 요정 (3월 4차) (~3/29)",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200323102349_1584926629248.jpg",
+          "url": "/event/20790",
+          "badge": ""
+        },
+        {
+          "id": 26952,
+          "title": "[소설] 명탐정 벨러 여섯개의 무료로 진짜를 찾아라 (~3/25)",
+          "order": 10,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200323102718_1584926838715.jpg",
+          "url": "/event/20791",
+          "badge": ""
+        },
+        {
+          "id": 26932,
+          "title": "[만화] 재회, 그리고 사랑 <나와 모나리자> (~4/19)",
+          "order": 12,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320160539_1584687939434.jpg",
+          "url": "/event/20781",
+          "badge": ""
+        },
+        {
+          "id": 26925,
+          "title": "[소설] 리디 마크다운 100% (~3/25)",
+          "order": 13,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320145328_1584683608554.jpg",
+          "url": "/event/20778",
+          "badge": ""
+        },
+        {
+          "id": 26919,
+          "title": "[소설] 뿡빵뀨/저수리 <과호흡> {~3/26)",
+          "order": 14,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320112935_1584671375886.jpg",
+          "url": "/event/20765",
+          "badge": ""
+        },
+        {
+          "id": 26164,
+          "title": "[상시] 14일 6시부터 십오야! 포인트夜! (상시)",
+          "order": 15,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200218202512_1582025112293.jpg",
+          "url": "/event/3799",
+          "badge": ""
+        },
+        {
+          "id": 26916,
+          "title": "[만화] <여우는 달콤한 포도를 먹는다> 단행본! (~4/3)",
+          "order": 16,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200320111814_1584670694453.jpg",
+          "url": "/event/20763",
+          "badge": ""
+        },
+        {
+          "id": 26894,
+          "title": "[만화] <메이데이 메이데이 메이데이> 무료보고 포인트! (~4/5)",
+          "order": 17,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319145802_1584597482851.jpg",
+          "url": "/event/20742",
+          "badge": ""
+        },
+        {
+          "id": 26891,
+          "title": "[만화] <네코×네코> 출간! (~4/16)",
+          "order": 19,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319143428_1584596068836.jpg",
+          "url": "/event/20740",
+          "badge": ""
+        },
+        {
+          "id": 26855,
+          "title": "[소설] 코드 딱 맞는  # MODE (~3/29)",
+          "order": 20,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200318144259_1584510179176.jpg",
+          "url": "/event/20708",
+          "badge": ""
+        },
+        {
+          "id": 26889,
+          "title": "[만화] <더 묶어줘, 벌려줘 빨리> 출간! (~4/16)",
+          "order": 21,
+          "image_url": "//active.ridibooks.com/ridibooks_banner/20200319142006_1584595206444.jpg",
+          "url": "/event/20723",
+          "badge": ""
+        }
+      ]
+    }
+  ]
+}

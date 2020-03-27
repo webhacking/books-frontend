@@ -6,6 +6,16 @@ import { Provider } from 'react-redux';
 import makeStore from 'src/store/config';
 import { defaultTheme } from 'src/styles';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { createRouter } from 'next/router';
+const router = createRouter('/', { genre: 'general' }, '', {
+  subscription: jest.fn(),
+  initialProps: {},
+  pageLoader: jest.fn(),
+  App: jest.fn(),
+  Component: jest.fn(),
+  isFallback: false,
+  wrapApp: jest.fn(),
+});
 
 const store = makeStore({}, { asPath: 'test', isServer: false });
 afterEach(cleanup);
