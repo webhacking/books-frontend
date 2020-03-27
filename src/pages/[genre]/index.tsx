@@ -21,7 +21,7 @@ import { useEventTracker } from 'src/hooks/useEventTracker';
 import { RootState } from 'src/store/config';
 import { css } from '@emotion/core';
 
-import * as Cookies from 'js-cookie';
+import Cookies from 'universal-cookie';
 import cookieKeys from 'src/constants/cookies';
 import { legacyCookieMap } from 'src/components/GNB/HomeLink';
 
@@ -66,7 +66,8 @@ export const Home: NextPage<HomeProps> = (props) => {
   const [branches, setBranches] = useState(props.branches || []);
 
   useEffect(() => {
-    const cookie = Cookies.get(cookieKeys.main_genre);
+    const cookies = new Cookies();
+    const cookie = cookies.get(cookieKeys.main_genre);
     if (process.env.USE_CSR && genre === 'general' && cookie) {
       route.replace('/[genre]', `/${legacyCookieMap[cookie] ?? cookie}`);
     }

@@ -5,7 +5,7 @@ import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { a11y } from 'src/styles';
 import * as labels from 'src/labels/menus.json';
-import * as Cookies from 'js-cookie';
+import Cookies from 'universal-cookie';
 import HomeLink from 'src/components/GNB/HomeLink';
 import Home from 'src/svgs/Home.svg';
 import HomeSolid from 'src/svgs/Home_solid.svg';
@@ -311,9 +311,9 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
   const [, setHomeURL] = useState('/');
   const cartCount = useCartCount(loggedUserInfo);
   const dispatch = useDispatch();
-
   useEffect(() => {
-    const visitedGenre = Cookies.get(`${cookieKeys.main_genre}`);
+    const cookies = new Cookies();
+    const visitedGenre = cookies.get(`${cookieKeys.main_genre}`);
     setHomeURL(
       visitedGenre && visitedGenre !== 'general' ? genreValueReplace(visitedGenre) : '/',
     );

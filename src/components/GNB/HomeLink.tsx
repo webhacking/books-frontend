@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
-import * as Cookies from 'js-cookie';
+import Cookies from 'universal-cookie';
 
 import { GNBContext } from 'src/components/GNB';
 import cookieKeys from 'src/constants/cookies';
@@ -26,7 +26,8 @@ const HomeLink: React.FC<Props> = (props) => {
   const [genre, setGenre] = useState('');
 
   useEffect(() => {
-    const cookie = Cookies.get(cookieKeys.main_genre);
+    const cookies = new Cookies();
+    const cookie = cookies.get(cookieKeys.main_genre);
     setGenre(legacyCookieMap[cookie] ?? cookie);
   }, []);
 

@@ -61,14 +61,13 @@ export const resetFont = css`
   -moz-osx-font-smoothing: grayscale;
 `;
 
-export const resetStyles = (theme: RIDITheme) => css`
+export const resetStyles = css`
   html {
     ${css([resetSpacing, resetFont])};
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     font-size: 14px;
-    background-color: ${theme.backgroundColor};
   }
   body {
     ${css([resetSpacing])};

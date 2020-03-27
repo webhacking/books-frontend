@@ -7,7 +7,7 @@ import { clearOutline } from 'src/styles';
 import { orBelow } from 'src/utils/mediaQuery';
 import Router, { useRouter } from 'next/router';
 import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
-import * as Cookies from 'js-cookie';
+import Cookies from 'universal-cookie';
 
 import { safeJSONParse } from 'src/utils/common';
 import Link from 'next/link';
@@ -200,7 +200,8 @@ const routeChangeCompleteHandler = () => {
   const { pathname, query } = Router.router;
   if (pathname === '/[genre]') {
     const genre = query.genre?.toString();
-    Cookies.set(
+    const cookies = new Cookies();
+    cookies.set(
       cookieKeys.main_genre,
       legacyCookieMap[genre] ?? genre,
       {
@@ -238,7 +239,8 @@ const TabItem: React.FC<TabItemProps> = (props) => {
   const router = useRouter();
   const { href, activePath, label } = props;
   const [isActivePath, setIsActivePath] = useState(false);
-  const cookieGenre = Cookies.get('main_genre') || '';
+  const cookies = new Cookies();
+  const cookieGenre = cookies.get('main_genre') || '';
 
   useEffect(() => {
     setIsActivePath(activePath.test(router.asPath));
@@ -252,7 +254,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
           href={href}
           onClick={() => {
             if (href === '/' && cookieGenre) {
-              Cookies.set('main_genre', '', { sameSite: 'lax' });
+              cookies.set('main_genre', '', { sameSite: 'lax' });
             }
           }}
         >
@@ -268,7 +270,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
             aria-label={label}
             onClick={() => {
               if (href === '/' && cookieGenre) {
-                Cookies.set('main_genre', '', { sameSite: 'lax' });
+                cookies.set('main_genre', '', { sameSite: 'lax' });
               }
             }}
           >

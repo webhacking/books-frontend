@@ -7,9 +7,7 @@ import makeStore, { RootState } from 'src/store/config';
 import withReduxSaga from 'next-redux-saga';
 import { ConnectedRouter } from 'connected-next-router';
 import { CacheProvider, Global } from '@emotion/core';
-import {
-  defaultTheme, darkTheme, partialResetStyles, resetStyles,
-} from 'src/styles';
+import { defaultTheme, partialResetStyles, resetStyles } from 'src/styles';
 import GNB from 'src/components/GNB';
 import { ThemeProvider } from 'emotion-theming';
 import Footer from 'src/components/Footer';
@@ -23,7 +21,7 @@ import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection'
 import Meta from 'src/components/Meta';
 import DisallowedHostsFilter from 'src/components/Misc/DisallowedHostsFilter';
 import sentry from 'src/utils/sentry';
-import cookies from 'next-cookies';
+import InAppThemeProvider, { getAppTheme, Theme } from 'src/components/Misc/InAppThemeProvider';
 
 const { captureException } = sentry();
 
@@ -33,7 +31,7 @@ interface StoreAppProps {
   pageProps: any;
   isPartials?: boolean;
   isInApp?: boolean;
-  theme?: string;
+  theme?: Theme;
   // tslint:disable-next-line
   query: any;
   ctxPathname?: string;
@@ -60,8 +58,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
       : {};
-
-    const { ridi_app_theme: theme } = cookies(ctx);
+    const theme = getAppTheme(ctx.req.headers);
 
     // @ts-ignore
     return {
@@ -159,14 +156,13 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
           <CacheProvider value={createCache({ ...cache, nonce })}>
             <Provider store={store}>
               <ConnectedRouter>
-                <ThemeProvider theme={theme === 'dark' ? darkTheme : defaultTheme}>
-                  <Global styles={resetStyles} />
+                <InAppThemeProvider theme={theme}>
                   <ViewportIntersectionProvider>
                     <Contents>
                       <Component {...pageProps} />
                     </Contents>
                   </ViewportIntersectionProvider>
-                </ThemeProvider>
+                </InAppThemeProvider>
               </ConnectedRouter>
             </Provider>
           </CacheProvider>
