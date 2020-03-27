@@ -110,7 +110,7 @@ const Timer: React.FC = () => {
 const List = styled.ul<{ type: 'big' | 'small' }>`
   display: -ms-grid; // emotion이 쓰는 stylis.js가 grid를 지원하지 않음
   -ms-grid-rows: (${({ type }) => (type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT)}px)[3];
-  -ms-grid-columns: 308px 13px 308px 13px 308px;
+  -ms-grid-columns: 308px 13px 308px 13px 308px; // gap 시뮬레이션
   display: grid;
   grid: repeat(3, ${({ type }) => (type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT)}px) / auto-flow 308px;
   grid-column-gap: 13px;
@@ -182,6 +182,7 @@ const ItemList: React.FC<ItemListProps> = (props) => {
           .filter((book) => book.detail)
           .slice(0, 9)
           .map((book, index) => (
+            // auto-flow 안 되는 IE11을 위한 땜빵
             <RankingBookItem
               type={type}
               key={index}

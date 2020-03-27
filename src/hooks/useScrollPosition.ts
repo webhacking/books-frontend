@@ -74,6 +74,7 @@ export const useScrollPosition = (): [React.RefCallback<HTMLElement>, boolean, b
     if (node != null) {
       node.addEventListener('wheel', handleWheelEvent);
       if (typeof IntersectionObserver === 'function') {
+        // root가 다르기 때문에 컨테이너 하나당 하나의 IntersectionObserver가 필요함
         ioRef.current = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
             const visible = Boolean(entry.isIntersecting || entry.intersectionRatio > 0);
