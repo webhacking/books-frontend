@@ -1,5 +1,4 @@
 declare module '*.svg' {
-  // eslint-disable-next-line init-declarations
-  const content: string;
+  const content: React.ComponentType<React.SVGProps<SVGElement>>;
   export default content;
 }

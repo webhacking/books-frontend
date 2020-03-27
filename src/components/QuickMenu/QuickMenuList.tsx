@@ -96,15 +96,12 @@ const QuickMenuImage = styled.img`
   position: absolute;
   width: 44px;
   height: 44px;
-  z-index: 2;
 `;
 
 const quickMenuShape = css`
   flex: none;
   height: 44px;
   width: 44px;
-  top: 0;
-  z-index: 1;
 `;
 
 function Item({ menu }) {
@@ -125,12 +122,8 @@ function Item({ menu }) {
         aria-label={menu.name}
       >
         <QuickMenuShape
-          css={[
-            quickMenuShape,
-            css`
-              fill: ${menu.bg_color};
-            `,
-          ]}
+          css={quickMenuShape}
+          style={{ fill: menu.bg_color }}
         />
         <QuickMenuImage alt={menu.name} src={menu.icon} />
         <QuickMenuLabel>{menu.name}</QuickMenuLabel>
