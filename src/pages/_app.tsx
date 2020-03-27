@@ -97,9 +97,8 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     sentry.captureException(error, {
-      err: error,
-      componentStack: errorInfo.componentStack,
       ...this.props,
+      err: error,
     });
     super.componentDidCatch(error, errorInfo);
   }

@@ -98,7 +98,4 @@ export const initModules = () => {
     return DynamicComponent;
   });
 
-  jest.mock('src/utils/sentry', () => () => ({
-    captureException: () => null,
-  }));
 };

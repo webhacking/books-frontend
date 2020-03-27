@@ -5,8 +5,7 @@ module.exports = {
     '**/*.{ts,tsx}',
     '!**/types/**/*',
     '!**/__test__/*.*',
-    '!**/_document.tsx',
-    '!**/utils/sentry.ts',
+    '!**/_document.tsx'
   ],
   moduleNameMapper: {
     '\\.(css|less)$': 'identity-obj-proxy',

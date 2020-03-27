@@ -1,7 +1,4 @@
-import * as Sentry from '@sentry/node';
-// import SentryIntegrations from '@sentry/integrations';
-
-const { captureException, withScope, init } = Sentry;
+import { captureException, withScope, init } from '@sentry/node';
 
 const sentryOptions = {
   dsn: process.env.SENTRY_DSN,
@@ -66,11 +63,7 @@ const sentryOptions = {
 };
 
 
-class SingletonSentry {
-  static instance = null;
-
-  private Sentry = null;
-
+const Sentry = {
   captureException(error, ctx = null) {
     let eventId;
     withScope((scope) => {
@@ -85,7 +78,7 @@ class SingletonSentry {
       }
       if (ctx) {
         const {
-          isServer, req, res, err, asPath, query, componentStack = null,
+          isServer, req, res, err, asPath, query,
         } = ctx;
         scope.setTag('isServer', isServer);
         scope.setTag('path', asPath);
@@ -95,26 +88,11 @@ class SingletonSentry {
         if (req && res) {
           scope.setExtra('NEXT_JS_RES_STATUS_CODE', res.statusCode);
         }
-
-        // ComponentDidCatch
-        if (componentStack) {
-          scope.setExtra('React Component Stack', componentStack.toString());
-        }
       }
       eventId = captureException(error);
     });
     return eventId;
-  }
-
-  constructor() {
-    if (SingletonSentry.instance) {
-      return SingletonSentry.instance;
-    }
-    init(sentryOptions);
-    this.Sentry = Sentry;
-    SingletonSentry.instance = this;
-  }
-}
-
-const sentryInstance = new SingletonSentry();
-export default sentryInstance;
+  },
+};
+init(sentryOptions);
+export default Sentry;

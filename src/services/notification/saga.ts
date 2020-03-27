@@ -20,9 +20,7 @@ import {
 import jwt_decode from 'jwt-decode';
 import Cookies from 'universal-cookie';
 
-
 const RIDI_NOTIFICATION_TOKEN = 'ridi_notification_token';
-const { captureException } = sentry();
 const cookies = new Cookies();
 
 function* notificationAuth() {
