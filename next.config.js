@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const path = require('path');
+const fs = require('fs');
 const withPlugins = require('next-compose-plugins');
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const nextEnv = require('next-env');
@@ -39,10 +40,13 @@ const nextConfig = {
     },
     rewrites() {
       return [
-        ...['', 'bestsellers'].map(path => ({
-          source: `/${path}`,
-          destination: `/general/${path}`,
-        })),
+        ...fs
+          .readdirSync('./src/pages/[genre]')
+          .map(filename => filename.replace('index', '').replace('.tsx', ''))
+          .map(path => ({
+            source: `/${path}`,
+            destination: `/general/${path}`,
+          })),
         {
           source: '/manifest.webmanifest',
           destination: '/api/manifest.webmanifest',
