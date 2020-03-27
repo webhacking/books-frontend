@@ -50,6 +50,44 @@
 
 ```
 
+cloudflare (proxied=true)
+```
+  CNAME *.cloudfront.net
+    * pagerules
+      * Cache on Cookie
+```
+
+cloudfront
+```
+  * Path Pattern
+    * Default (*)
+      * origin: alb
+      * Forward Cookies
+    * _next/static/
+      * origin: s3
+      * 비고
+        * developemnt only
+        * books-static.ridi.io 대체
+```
+
+alb
+```
+  invoke lambda by cookie
+```
+
+lambda
+```
+  serverless application
+```
+
+s3
+```
+  * _next/static/
+  * serverless/books/
+```
+
+
+
 ## Development
 
 ### Requirements
@@ -135,11 +173,13 @@ ASSET_PREFIX
 STAGE
   * dotenv
   * CSP
+  * Sentry Environment
 NODE_ENV
   * next custom server
   * SentryCliPlugin
   * DefinePlugin
-NEXT_PUBLIC_*
+  * @ridi/event-tracker:development
+NEXT_STATIC_*
   * source codes
 ```
 
