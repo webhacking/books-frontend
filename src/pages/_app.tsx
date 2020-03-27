@@ -23,8 +23,6 @@ import DisallowedHostsFilter from 'src/components/Misc/DisallowedHostsFilter';
 import sentry from 'src/utils/sentry';
 import InAppThemeProvider, { getAppTheme, Theme } from 'src/components/Misc/InAppThemeProvider';
 
-const { captureException } = sentry();
-
 interface StoreAppProps {
   store: Store<RootState>;
   // tslint:disable-next-line
@@ -87,7 +85,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         // wb.register();
       }
     } catch (error) {
-      captureException(error);
+      sentry.captureException(error);
     }
   }
 
@@ -98,8 +96,9 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    captureException(error, {
-      err: errorInfo,
+    sentry.captureException(error, {
+      err: error,
+      componentStack: errorInfo.componentStack,
       ...this.props,
     });
     super.componentDidCatch(error, errorInfo);
