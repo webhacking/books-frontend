@@ -97,6 +97,7 @@ function RecommendedBookList(props: Omit<RecommendedBookProps, 'title'>) {
       `}
     >
       <ScrollContainer
+        theme={theme}
         css={containerAdjustStyle}
         arrowStyle={arrowVerticalStyle}
       >
