@@ -3,39 +3,34 @@ service: books
 package:
   excludeDevDependencies: true
   exclude:
-    - '**/*.map'
-    - .cache
-    - 'static/**'
-    - 'src/tests/**'
-    - 'provisioning/**'
-    - 'cypress/**'
-    - 'src/**'
-    - 'dist/**'
-    - 'build/cache/**'
-    - '.circleci/**'
-    - secrets.json
+    - .circleci/**
+    - .github/**
+    - build/cache/**
+    - build/static/**
     - coverage/**
-    - yarn.lock
-    - tsconfig.json
+    - cypress/**
+    - profile/**
+    - src/**
+    - traces/**
+    - '**/*.map'
 
 provider:
   name: aws
   runtime: nodejs10.x
   memorySize: 2048
   timeout: 30
-  region: ${self:custom.secrets.REGION}
+  region: ${opt:region, 'ap-northeast-2'}
   stage: ${opt:stage, 'development'}
-  # CloudFormation Name
-  stackName: books-sls-${opt:stage, 'development'}
+  stackName: books-sls-${self:provider.stage} # CloudFormation stack name
   deploymentBucket:
-    name: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
-  # serverSideEncryption: AES256
+    name: ${env:S3_BUCKET}
+    # serverSideEncryption: AES256
   environment:
     ASSET_PREFIX: ${env:ASSET_PREFIX}
     SERVERLESS: true
     NODE_ENV: 'production'
     NODE_PATH: './:/opt'
-  iamRoleStatements:
+  iamRoleStatements: # for serverless-plugin-warmup
     - Effect: 'Allow'
       Action:
         - 'lambda:InvokeFunction'
@@ -54,57 +49,21 @@ functions:
     warmup:
       enabled:
         - development
-        - staging
         - production
-    events:
-      - cors: true
-      - http:
-          method: ANY
-          path: /
-      - http:
-          method: ANY
-          path: /{proxy+}
 
 plugins:
   - serverless-offline
-  - serverless-apigw-binary
   - serverless-plugin-warmup
   - serverless-stage-manager
 
 custom:
   warmup:
     enabled: true
-    cleanFolder: false
     memorySize: 256
     timeout: 20
     prewarm: true
-    concurrency: 1
-
   stages:
     - development
     - staging
+    - prerelease
     - production
-
-  stage: ${opt:stage, 'development'}
-  secrets: ${file(secrets.json)}
-
-  apigwBinary:
-    types:
-      - '*/*'
-
-resources:
-  Resources:
-    StaticBucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        Bucket: books.sls.${opt:stage, 'development'}.${self:provider.region}.deploys
-        PolicyDocument:
-          Statement:
-            - Sid: 'AllowPublicRead'
-              Action:
-                - 's3:GetObject'
-              Effect: 'Allow'
-              Resource:
-                - arn:aws:s3:::books.sls.${opt:stage,'development'}.${self:provider.region}.deploys/_next/*
-                - arn:aws:s3:::books.sls.${opt:stage,'development'}.${self:provider.region}.deploys/static/*
-              Principal: '*'
