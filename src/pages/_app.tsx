@@ -7,7 +7,9 @@ import makeStore, { RootState } from 'src/store/config';
 import withReduxSaga from 'next-redux-saga';
 import { ConnectedRouter } from 'connected-next-router';
 import { CacheProvider, Global } from '@emotion/core';
-import { defaultTheme, partialResetStyles, resetStyles } from 'src/styles';
+import {
+  defaultTheme, darkTheme, partialResetStyles, resetStyles,
+} from 'src/styles';
 import GNB from 'src/components/GNB';
 import { ThemeProvider } from 'emotion-theming';
 import Footer from 'src/components/Footer';
@@ -18,10 +20,10 @@ import { cache } from 'emotion';
 import createCache from '@emotion/cache';
 
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
-import InAppThemeProvider from 'src/components/Misc/InAppThemeProvider';
 import Meta from 'src/components/Meta';
 import DisallowedHostsFilter from 'src/components/Misc/DisallowedHostsFilter';
 import sentry from 'src/utils/sentry';
+import cookies from 'next-cookies';
 
 const { captureException } = sentry();
 
@@ -31,6 +33,7 @@ interface StoreAppProps {
   pageProps: any;
   isPartials?: boolean;
   isInApp?: boolean;
+  theme?: string;
   // tslint:disable-next-line
   query: any;
   ctxPathname?: string;
@@ -58,11 +61,14 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       ? await Component.getInitialProps(ctx)
       : {};
 
+    const { ridi_app_theme: theme } = cookies(ctx);
+
     // @ts-ignore
     return {
       pageProps,
       isPartials,
       isInApp,
+      theme,
       ctxPathname: rest.router ? rest.router.asPath : '/',
       query: {
         ...ctx.query,
@@ -110,6 +116,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       pageProps,
       isPartials,
       isInApp,
+      theme,
       store,
       // @ts-ignore
       nonce,
@@ -150,16 +157,16 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
           <Meta />
           <DisallowedHostsFilter />
           <CacheProvider value={createCache({ ...cache, nonce })}>
-            <Global styles={resetStyles} />
             <Provider store={store}>
               <ConnectedRouter>
-                <InAppThemeProvider>
+                <ThemeProvider theme={theme === 'dark' ? darkTheme : defaultTheme}>
+                  <Global styles={resetStyles} />
                   <ViewportIntersectionProvider>
                     <Contents>
                       <Component {...pageProps} />
                     </Contents>
                   </ViewportIntersectionProvider>
-                </InAppThemeProvider>
+                </ThemeProvider>
               </ConnectedRouter>
             </Provider>
           </CacheProvider>

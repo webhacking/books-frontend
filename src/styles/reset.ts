@@ -1,4 +1,5 @@
 import { css } from '@emotion/core';
+import { RIDITheme } from 'src/styles';
 import fonts from './fonts';
 
 export const inheritFont = css`
@@ -60,13 +61,14 @@ export const resetFont = css`
   -moz-osx-font-smoothing: grayscale;
 `;
 
-export const resetStyles = css`
+export const resetStyles = (theme: RIDITheme) => css`
   html {
     ${css([resetSpacing, resetFont])};
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     font-size: 14px;
+    background-color: ${theme.backgroundColor};
   }
   body {
     ${css([resetSpacing])};
