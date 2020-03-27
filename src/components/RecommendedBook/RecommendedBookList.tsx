@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import ScrollContainer from 'src/components/ScrollContainer';
 import { DisplayType } from 'src/types/sections';
+import { BreakPoint } from 'src/utils/mediaQuery';
 
 import ListItem from './RecommendedBookItem';
 import { RecommendedBookProps } from './types';
@@ -49,6 +50,13 @@ const todayRecommendationMargin = css`
   }
 `;
 
+const arrowVerticalStyle = css`
+  padding-top: 98px;
+  @media (max-width: ${BreakPoint.LG}px) {
+    padding-top: 69px;
+  }
+`;
+
 function RecommendedBookList(props: Omit<RecommendedBookProps, 'title'>) {
   const {
     theme, type, slug, genre,
@@ -88,7 +96,10 @@ function RecommendedBookList(props: Omit<RecommendedBookProps, 'title'>) {
         }
       `}
     >
-      <ScrollContainer css={containerAdjustStyle}>
+      <ScrollContainer
+        css={containerAdjustStyle}
+        arrowStyle={arrowVerticalStyle}
+      >
         <BookList type={type}>
           {carouselItems}
         </BookList>

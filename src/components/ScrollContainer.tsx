@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from '@emotion/core';
+import { css, Interpolation } from '@emotion/core';
 import styled from '@emotion/styled';
 
 import Arrow from 'src/components/Carousel/Arrow';
@@ -33,16 +33,16 @@ const SliderControllerContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  padding: 0 4px;
 
   display: flex;
-  align-items: center;
   justify-content: space-between;
   pointer-events: none;
 
   ${displayNoneForTouchDevice}
 `;
 
-const arrowStyle = css`
+const baseArrowStyle = css`
   transition: opacity 0.2s;
   pointer-events: auto;
 `;
@@ -50,6 +50,10 @@ const arrowStyle = css`
 const arrowHiddenStyle = css`
   opacity: 0;
   pointer-events: none;
+`;
+
+const arrowCenterStyle = css`
+  align-items: center;
 `;
 
 interface SliderControllerProps {
@@ -60,6 +64,7 @@ interface SliderControllerProps {
   showRightArrow?: boolean;
   onLeftClick?(): void;
   onRightClick?(): void;
+  className?: string;
 }
 
 function SliderController(props: SliderControllerProps) {
@@ -76,16 +81,17 @@ function SliderController(props: SliderControllerProps) {
     showRightArrow,
     onLeftClick,
     onRightClick,
+    className,
   } = props;
   return (
-    <SliderControllerContainer>
+    <SliderControllerContainer className={className}>
       <Arrow
         onClickHandler={onLeftClick}
         label={leftArrowLabel}
         color={theme}
         side="left"
         wrapperStyle={[
-          arrowStyle,
+          baseArrowStyle,
           !showLeftArrow && arrowHiddenStyle,
         ]}
       />
@@ -95,7 +101,7 @@ function SliderController(props: SliderControllerProps) {
         color={theme}
         side="right"
         wrapperStyle={[
-          arrowStyle,
+          baseArrowStyle,
           !showRightArrow && arrowHiddenStyle,
         ]}
       />
@@ -107,13 +113,19 @@ interface Props {
   theme?: 'white' | 'dark';
   leftArrowLabel: string;
   rightArrowLabel: string;
+  arrowStyle?: 'center' | Interpolation;
   className?: string;
   children?: React.ReactNode;
 }
 
 export default function ScrollContainer(props: Props) {
   const {
-    theme, leftArrowLabel, rightArrowLabel, className, children,
+    theme,
+    leftArrowLabel,
+    rightArrowLabel,
+    arrowStyle = 'center',
+    className,
+    children,
   } = props;
   const [ref, moveLeft, moveRight, isOnStart, isOnEnd, leftMarkerRef, rightMarkerRef] = useScrollSlider();
   return (
@@ -133,6 +145,7 @@ export default function ScrollContainer(props: Props) {
         showRightArrow={!isOnEnd}
         onLeftClick={moveLeft}
         onRightClick={moveRight}
+        css={arrowStyle === 'center' ? arrowCenterStyle : arrowStyle}
       />
     </ControllerContainer>
   );

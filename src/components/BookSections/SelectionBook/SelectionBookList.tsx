@@ -32,18 +32,12 @@ export const itemCSS = css`
     padding-left: 20px;
   }
   margin-right: 20px;
-  :last-of-type {
-    padding-right: 20px;
-  }
   box-sizing: content-box;
 
   ${orBelow(
     BreakPoint.MD,
     css`
       margin-right: 12px;
-      :last-of-type {
-        padding-right: 24px;
-      }
       :first-of-type {
         padding-left: 16px;
       }
@@ -66,18 +60,12 @@ export const loadingItemCSS = css`
     padding-left: 18px;
   }
   margin-right: 20px;
-  :last-of-type {
-    padding-right: 19px;
-  }
   box-sizing: content-box;
 
   ${orBelow(
     BreakPoint.MD,
     css`
       margin-right: 12px;
-      :last-of-type {
-        padding-right: 24px;
-      }
       :first-of-type {
         padding-left: 13px;
       }
@@ -94,6 +82,13 @@ export const loadingItemCSS = css`
     `,
   )};
   align-items: flex-start;
+`;
+
+const arrowVerticalStyle = css`
+  padding-top: 98px;
+  @media (max-width: ${BreakPoint.LG}px) {
+    padding-top: 69px;
+  }
 `;
 
 interface SelectionBookListProps {
@@ -122,6 +117,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
         margin-top: 6px;
         position: relative;
       `}
+      arrowStyle={arrowVerticalStyle}
     >
       <ul css={[flexRowStart, listCSS]}>
         {props.items
