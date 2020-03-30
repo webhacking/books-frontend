@@ -42,7 +42,7 @@ const nextConfig = {
       return [
         ...fs
           .readdirSync('./src/pages/[genre]')
-          .map(filename => filename.replace('index', '').replace('.tsx', ''))
+          .map(filename => filename.replace(/^(?:index|(.*))\.tsx$/, '$1'))
           .map(path => ({
             source: `/${path}`,
             destination: `/general/${path}`,
