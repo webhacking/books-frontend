@@ -3,12 +3,9 @@ import React, {
 } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
-import { RankingBookTitle } from 'src/components/BookSections/BookSectionContainer';
-import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
-import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
-import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
 
-import { useScrollSlider } from 'src/hooks/useScrollSlider';
+import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
+
 import { createTimeLabel } from 'src/utils/dateTime';
 import {
   BookItem,
@@ -19,15 +16,17 @@ import {
 } from 'src/types/sections';
 import BookMeta from 'src/components/BookMeta/BookMeta';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
+import { AdultBadge } from 'src/components/Badge/AdultBadge';
+import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
-import { useDeviceType } from 'src/hooks/useDeviceType';
+import ScrollContainer from 'src/components/ScrollContainer';
 import { getMaxDiscountPercentage } from 'src/utils/common';
-import { AdultBadge } from 'src/components/Badge/AdultBadge';
 import { CLOCK_ICON_URL, VERTICAL_RIGHT_ARROW_ICON_URL } from 'src/constants/icons';
-import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
+
+import { RankingBookTitle } from '../BookSectionContainer';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -47,9 +46,6 @@ const SectionWrapper = styled.section`
 
 const BIG_ITEM_HEIGHT = 138;
 const SMALL_ITEM_HEIGHT = 94;
-
-const BIG_LIST_HEIGHT = 414;
-const SMALL_LIST_HEIGHT = 282;
 
 const RankPosition = styled.h3`
   height: 22px;
@@ -79,15 +75,6 @@ const TimerWrapper = styled.div<{ opacity: number }>`
   svg {
     flex: none;
   }
-`;
-
-const arrowPosition = (side: 'left' | 'right') => css`
-  ${side}: 5px;
-  position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  transition: opacity 0.2s;
-  z-index: 2;
 `;
 
 interface RankingBookListProps {
@@ -121,12 +108,15 @@ const Timer: React.FC = () => {
 };
 
 const List = styled.ul<{ type: 'big' | 'small' }>`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  display: -ms-grid; // emotion이 쓰는 stylis.js가 grid를 지원하지 않음
+  -ms-grid-rows: (${({ type }) => (type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT)}px)[3];
+  -ms-grid-columns: 308px 13px 308px 13px 308px; // gap 시뮬레이션
+  display: grid;
+  grid: repeat(3, ${({ type }) => (type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT)}px) / auto-flow 308px;
+  grid-column-gap: 13px;
+
   padding-left: 16px;
   padding-right: 16px;
-  height: ${({ type }) => (type === 'big' ? BIG_LIST_HEIGHT : SMALL_LIST_HEIGHT)}px;
 
   ${greaterThanOrEqualTo(
     BreakPoint.MD + 1,
@@ -143,17 +133,12 @@ const List = styled.ul<{ type: 'big' | 'small' }>`
       padding-right: 24px;
     `,
   )};
-
-  ${scrollBarHidden};
-  overflow-x: auto;
 `;
 
 const RankingBookItem = styled.li<{ type: 'big' | 'small' }>`
-  flex: none;
   display: flex;
   align-items: center;
   box-sizing: content-box;
-  padding-right: 14px;
   .book-meta-box {
     display: flex;
     align-items: center;
@@ -166,16 +151,6 @@ const RankingBookItem = styled.li<{ type: 'big' | 'small' }>`
       border-bottom: 0;
     }
   }
-  width: 308px;
-  height: ${({ type }) => (type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT)}px;
-`;
-
-const BadgeWrapper = styled.div`
-  position: absolute;
-  display: block;
-  top: -7px;
-  left: -7px;
-  z-index: 2;
 `;
 
 const ThumbnailAnchor = styled.a<{ marginRight: number }>`
@@ -200,18 +175,22 @@ const ItemList: React.FC<ItemListProps> = (props) => {
   const {
     books, slug, type, genre, showSomeDeal,
   } = props;
-  const ref = useRef<HTMLUListElement>();
-
-  const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
-  const { isMobile } = useDeviceType();
   return (
-    <>
-      <List ref={ref} type={type}>
+    <ScrollContainer>
+      <List type={type}>
         {books
           .filter((book) => book.detail)
           .slice(0, 9)
           .map((book, index) => (
-            <RankingBookItem type={type} key={index}>
+            // auto-flow 안 되는 IE11을 위한 땜빵
+            <RankingBookItem
+              type={type}
+              key={index}
+              style={{
+                msGridColumn: (Math.floor(index / 3) * 2) + 1,
+                msGridRow: (index % 3) + 1,
+              }}
+            >
               <ThumbnailAnchor
                 data-book-id={book.b_id}
                 data-order={index}
@@ -282,30 +261,7 @@ const ItemList: React.FC<ItemListProps> = (props) => {
             </RankingBookItem>
           ))}
       </List>
-      {!isMobile && (
-        <form
-          css={[
-            css`
-              height: 0;
-            `,
-            displayNoneForTouchDevice,
-          ]}
-        >
-          <Arrow
-            label="이전"
-            side="left"
-            onClickHandler={moveLeft}
-            wrapperStyle={[arrowPosition('left'), !isOnTheLeft && arrowTransition]}
-          />
-          <Arrow
-            label="다음"
-            side="right"
-            onClickHandler={moveRight}
-            wrapperStyle={[arrowPosition('right'), !isOnTheRight && arrowTransition]}
-          />
-        </form>
-      )}
-    </>
+    </ScrollContainer>
   );
 };
 

@@ -1,26 +1,28 @@
-import { useCallback } from 'react';
+import React from 'react';
 import { useScrollPosition } from './useScrollPosition';
 
-export const useScrollSlider = (
-  ref: React.RefObject<HTMLElement>,
-  listenResizeEvent = false,
-  debounceDelay = 50,
-): [() => void, (
-) => void, boolean, boolean] => {
-  const [isOnTheLeft, isOnTheRight, scrollTo] = useScrollPosition(
-    ref,
-    listenResizeEvent,
-    debounceDelay,
-  );
+// [ref, moveLeft, moveRight, isOnStart, isOnEnd, startMarkerRef, endMarkerRef]
+export const useScrollSlider = (): [React.RefCallback<HTMLElement>, () => void, () => void, boolean, boolean, React.Ref<Element>, React.Ref<Element>] => {
+  const [ref, isOnStart, isOnEnd, startMarkerRef, endMarkerRef, scrollBy] = useScrollPosition();
+
+  const nodeRef = React.useRef<HTMLElement>();
+  const callbackRef = React.useCallback((node: HTMLElement | null) => {
+    nodeRef.current = node;
+    ref(node);
+  }, [ref]);
 
   // Todo 디자이너와 협의 후 다른 비율로 움직일지 확인
-  const moveRight = useCallback(() => {
-    scrollTo(ref.current.clientWidth);
-  }, [scrollTo, ref]);
+  const moveRight = React.useCallback(() => {
+    if (nodeRef.current) {
+      scrollBy(nodeRef.current.clientWidth);
+    }
+  }, [scrollBy]);
 
-  const moveLeft = useCallback(() => {
-    scrollTo(ref.current.clientWidth * -1);
-  }, [scrollTo, ref]);
+  const moveLeft = React.useCallback(() => {
+    if (nodeRef.current) {
+      scrollBy(-nodeRef.current.clientWidth);
+    }
+  }, [scrollBy]);
 
-  return [moveLeft, moveRight, isOnTheLeft, isOnTheRight];
+  return [callbackRef, moveLeft, moveRight, isOnStart, isOnEnd, startMarkerRef, endMarkerRef];
 };

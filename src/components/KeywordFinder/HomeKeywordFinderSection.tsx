@@ -1,12 +1,10 @@
+import React from 'react';
 import { css } from '@emotion/core';
-import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import React, { useRef } from 'react';
-import ArrowV from 'src/svgs/ArrowV.svg';
-import { displayNoneForTouchDevice, scrollBarHidden } from 'src/styles';
-import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
-import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import styled from '@emotion/styled';
-import { useDeviceType } from 'src/hooks/useDeviceType';
+
+import ScrollContainer from 'src/components/ScrollContainer';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import ArrowV from 'src/svgs/ArrowV.svg';
 
 interface Keyword {
   genre: string;
@@ -449,18 +447,8 @@ const KeywordAnchor = styled.a`
   padding: 0 10px;
 `;
 
-const arrowWrapperStyle = css`
-  z-index: 2;
-  position: absolute;
-  transition: opacity 0.2s;
-  top: 40px;
-`;
-
 const List = styled.ul`
   display: flex;
-  overflow-x: auto;
-  ${scrollBarHidden};
-  -webkit-overflow-scrolling: touch;
 `;
 
 interface HomeKeywordFinderSectionProps {
@@ -471,9 +459,6 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = (props
   const { genre } = props;
   const genreKeywords = popularKeywords[genre];
   const parentGenre = genre !== 'comics' ? genre.replace('-serial', '') : 'comic';
-  const ref = useRef<HTMLUListElement>(null);
-  const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
-  const { isMobile } = useDeviceType();
   const genreSearchParam = new URLSearchParams();
   if (['bl', 'fantasy', 'romance'].includes(parentGenre)) {
     genreSearchParam.append('from', genre);
@@ -494,60 +479,29 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = (props
           />
         </a>
       </SectionTitle>
-      <List ref={ref}>
-        {genreKeywords.map((keyword, index) => {
-          const keywordSetAndTagSearchParam = new URLSearchParams(genreSearchParam);
-          keywordSetAndTagSearchParam.append('set_id', keyword.set_id.toString());
-          keywordSetAndTagSearchParam.append('tag_ids[]', keyword.tag_id.toString());
-          return (
-            <Keyword key={index}>
-              <KeywordAnchor
-                href={`/keyword-finder/${parentGenre}?${keywordSetAndTagSearchParam.toString()}`}
-                aria-label={keyword.name}
-              >
-                #
-                {keyword.name}
-              </KeywordAnchor>
-            </Keyword>
-          );
-        })}
-      </List>
-      {!isMobile && (
-        <form
-          css={[
-            css`
-              height: 0;
-            `,
-            displayNoneForTouchDevice,
-          ]}
-        >
-          <Arrow
-            label="이전 키워드 보기"
-            side="left"
-            onClickHandler={moveLeft}
-            wrapperStyle={[
-              arrowWrapperStyle,
-              css`
-                left: 5px;
-              `,
-              !isOnTheLeft && arrowTransition,
-            ]}
-          />
-
-          <Arrow
-            label="다음 키워드 보기"
-            side="right"
-            onClickHandler={moveRight}
-            wrapperStyle={[
-              arrowWrapperStyle,
-              css`
-                right: 5px;
-              `,
-              !isOnTheRight && arrowTransition,
-            ]}
-          />
-        </form>
-      )}
+      <ScrollContainer
+        leftArrowLabel="이전 키워드 보기"
+        rightArrowLabel="다음 키워드 보기"
+      >
+        <List>
+          {genreKeywords.map((keyword, index) => {
+            const keywordSetAndTagSearchParam = new URLSearchParams(genreSearchParam);
+            keywordSetAndTagSearchParam.append('set_id', keyword.set_id.toString());
+            keywordSetAndTagSearchParam.append('tag_ids[]', keyword.tag_id.toString());
+            return (
+              <Keyword key={index}>
+                <KeywordAnchor
+                  href={`/keyword-finder/${parentGenre}?${keywordSetAndTagSearchParam.toString()}`}
+                  aria-label={keyword.name}
+                >
+                  #
+                  {keyword.name}
+                </KeywordAnchor>
+              </Keyword>
+            );
+          })}
+        </List>
+      </ScrollContainer>
     </Section>
   ) : null;
 };

@@ -1,15 +1,19 @@
-import React, { useCallback, useRef } from 'react';
-import styled from '@emotion/styled';
-import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
+import React, { useCallback } from 'react';
 import { css } from '@emotion/core';
+import styled from '@emotion/styled';
+
+import ScrollContainer from 'src/components/ScrollContainer';
+import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
 import { scrollBarHidden } from 'src/styles';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import Arrow, { arrowTransition } from 'src/components/Carousel/Arrow';
-import { useScrollSlider } from 'src/hooks/useScrollSlider';
 import { QuickMenu } from 'src/types/sections';
-import { useDeviceType } from 'src/hooks/useDeviceType';
 import { useEventTracker } from 'src/hooks/useEventTracker';
 import { SendEventType } from 'src/constants/eventTracking';
+
+const centered = css`
+  max-width: 1000px;
+  margin: 0 auto;
+`;
 
 const QuickMenuLabel = styled.span`
   font-size: 13px;
@@ -29,8 +33,7 @@ const QuickMenuLabel = styled.span`
 `;
 
 const MenuList = styled.ul`
-  max-width: 1000px;
-  margin: 0 auto;
+  ${centered}
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -93,15 +96,12 @@ const QuickMenuImage = styled.img`
   position: absolute;
   width: 44px;
   height: 44px;
-  z-index: 2;
 `;
 
 const quickMenuShape = css`
   flex: none;
   height: 44px;
   width: 44px;
-  top: 0;
-  z-index: 1;
 `;
 
 function Item({ menu }) {
@@ -122,12 +122,8 @@ function Item({ menu }) {
         aria-label={menu.name}
       >
         <QuickMenuShape
-          css={[
-            quickMenuShape,
-            css`
-              fill: ${menu.bg_color};
-            `,
-          ]}
+          css={quickMenuShape}
+          style={{ fill: menu.bg_color }}
         />
         <QuickMenuImage alt={menu.name} src={menu.icon} />
         <QuickMenuLabel>{menu.name}</QuickMenuLabel>
@@ -137,64 +133,23 @@ function Item({ menu }) {
 }
 const MemoizedQuickMenuItem: React.FC<{ menu: QuickMenu }> = React.memo(Item);
 
-const arrowWrapper = css`
-  z-index: 2;
-  position: absolute;
-  top: 30px;
-  transition: opacity 0.2s;
-`;
-
 const Section = styled.section`
   position: relative;
 `;
 
-export const QuickMenuList: React.FC<QuickMenuListProps> = (props) => {
-  const ref = useRef<HTMLUListElement>(null);
-  const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
-  const { isMobile } = useDeviceType();
-  return (
-    <Section>
-      <h2 className="a11y">퀵 메뉴</h2>
-      <MenuList ref={ref}>
+export const QuickMenuList: React.FC<QuickMenuListProps> = (props) => (
+  <Section>
+    <h2 className="a11y">퀵 메뉴</h2>
+    <ScrollContainer
+      leftArrowLabel="이전 퀵 메뉴"
+      rightArrowLabel="다음 퀵 메뉴"
+      css={centered}
+    >
+      <MenuList>
         {props.items.map((menu, index) => (
           <MemoizedQuickMenuItem key={index} menu={menu} />
         ))}
       </MenuList>
-      {!isMobile && (
-        <form
-          css={css`
-            height: 0;
-            @media (hover: none) {
-              display: none;
-            }
-          `}
-        >
-          <Arrow
-            label="이전 퀵 메뉴"
-            side="left"
-            onClickHandler={moveLeft}
-            wrapperStyle={[
-              arrowWrapper,
-              css`
-                left: 5px;
-              `,
-              !isOnTheLeft && arrowTransition,
-            ]}
-          />
-          <Arrow
-            label="다음 퀵 메뉴"
-            side="right"
-            onClickHandler={moveRight}
-            wrapperStyle={[
-              arrowWrapper,
-              css`
-                right: 5px;
-              `,
-              !isOnTheRight && arrowTransition,
-            ]}
-          />
-        </form>
-      )}
-    </Section>
-  );
-};
+    </ScrollContainer>
+  </Section>
+);

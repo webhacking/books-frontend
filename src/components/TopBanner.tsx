@@ -289,11 +289,11 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
   // 반응형 너비 조정
   const isDesktop = useMediaQuery({ minWidth: '1000px' });
   const isTablet = useMediaQuery({ minWidth: '375px' });
-  const widthRef = React.useRef(IMAGE_WIDTH);
+  const widthRef = React.useRef<number>();
   const [inactiveScale, setInactiveScale] = React.useState(1);
   React.useEffect(() => {
     function handleResize() {
-      widthRef.current = window.innerWidth - ITEM_MARGIN * 2;
+      widthRef.current = undefined;
     }
 
     const newWidth = calcItemWidth(isDesktop, isTablet);
@@ -350,6 +350,10 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
   const handleTouchEnd = React.useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     if (touchRef.current == null) {
       return;
+    }
+    if (widthRef.current == null) {
+      // cache invalidated
+      widthRef.current = window.innerWidth - ITEM_MARGIN * 2;
     }
     const width = widthRef.current;
     const touches = e.changedTouches;
