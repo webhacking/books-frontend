@@ -11,7 +11,6 @@ const inappStyle = (theme: RIDITheme) => css`
   html {
     background-color: ${theme.backgroundColor};
   }
-  ${resetStyles};
 `;
 
 export type Theme = 'dark' | '';
@@ -23,10 +22,13 @@ export const getAppTheme = ({ cookie }: IncomingHttpHeaders): Theme => {
   }
   return '';
 };
-const InAppThemeProvider: React.FC<{ theme: Theme }> = ({ children, theme }) => (
-  <ThemeProvider theme={theme === 'dark' ? darkTheme : defaultTheme}>
-    <Global styles={inappStyle} />
-    {children}
-  </ThemeProvider>
-);
+const InAppThemeProvider: React.FC<{ theme: Theme }> = ({ children, theme }) => {
+  const inappTheme = theme === 'dark' ? darkTheme : defaultTheme;
+  return (
+    <ThemeProvider theme={inappTheme}>
+      <Global styles={[resetStyles, inappStyle(inappTheme)]} />
+      {children}
+    </ThemeProvider>
+  );
+};
 export default InAppThemeProvider;

@@ -6,7 +6,7 @@ import { css } from '@emotion/core';
 import { clearOutline } from 'src/styles';
 import { orBelow } from 'src/utils/mediaQuery';
 import Router, { useRouter } from 'next/router';
-import cookieKeys, { DEFAULT_COOKIE_EXPIRES } from 'src/constants/cookies';
+import cookieKeys from 'src/constants/cookies';
 import Cookies from 'universal-cookie';
 
 import { safeJSONParse } from 'src/utils/common';
@@ -205,7 +205,6 @@ const routeChangeCompleteHandler = () => {
       cookieKeys.main_genre,
       legacyCookieMap[genre] ?? genre,
       {
-        expires: DEFAULT_COOKIE_EXPIRES,
         sameSite: 'lax',
       },
     );
