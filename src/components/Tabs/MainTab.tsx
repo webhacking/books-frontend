@@ -313,7 +313,7 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const cookies = new Cookies();
-    const visitedGenre = cookies.get(`${cookieKeys.main_genre}`);
+    const visitedGenre = cookies.get(cookieKeys.main_genre);
     setHomeURL(
       visitedGenre && visitedGenre !== 'general' ? genreValueReplace(visitedGenre) : '/',
     );
