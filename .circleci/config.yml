@@ -139,9 +139,6 @@ jobs:
       assetPrefix:
         type: string
         default: https://books.ridicdn.net
-      after-scripts:
-        type: steps
-        default: []
     environment:
       STAGE: << parameters.stage >>
       ASSET_PREFIX: << parameters.assetPrefix >>
@@ -161,7 +158,6 @@ jobs:
             - .lastdeploytimestamp
       - run:
           command: yarn deploy -s << parameters.stage >>
-      - steps: << parameters.after-scripts >>
   profile-live:
     docker:
       - image: circleci/node:lts-browsers
@@ -192,9 +188,6 @@ jobs:
       aws-secret-access-key:
         type: env_var_name
         default: PROD_AWS_SECRET_ACCESS_KEY
-      after-scripts:
-        type: steps
-        default: []
     steps:
       - checkout
       - attach_workspace:
@@ -205,7 +198,6 @@ jobs:
       - run:
           command: |
             yarn serverless rollback -t `cat .lastdeploytimestamp`
-      - steps: << parameters.after-scripts >>
 workflows:
   version: 2
   deploy-dev:
@@ -232,7 +224,7 @@ workflows:
           aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
           stage: development
           assetPrefix: https://books-static.ridi.io
-          after-scripts:
+          post-steps:
             - notify:
                 channel: deploy-store-dev
       - rollback-approval:
@@ -245,7 +237,7 @@ workflows:
             - rollback-approval
           aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
           aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
-          after-scripts:
+          post-steps:
             - notify:
                 color: '#805b24'
                 channel: deploy-store-dev
@@ -270,7 +262,7 @@ workflows:
           name: deploy-prod
           requires:
             - deploy-approval
-          after-scripts:
+          post-steps:
             - notify
       - profile-live:
           name: profile-live-prod
@@ -285,7 +277,7 @@ workflows:
           name: rollback-prod
           requires:
             - rollback-approval
-          after-scripts:
+          post-steps:
             - notify:
                 color: '#805b24'
                 rollback: true
