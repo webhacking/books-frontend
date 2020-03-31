@@ -69,6 +69,10 @@ const nextConfig = {
       );
     }
 
+    if (!isServer) {
+      config.resolve.alias['@sentry/node'] = '@sentry/browser'
+    }
+
     const originalEntry = config.entry;
     config.entry = async () => {
       const entries = await originalEntry();

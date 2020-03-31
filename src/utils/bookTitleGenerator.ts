@@ -3,7 +3,6 @@ import { getEscapedString } from 'src/utils/highlight';
 
 import sentry from 'src/utils/sentry';
 
-const { captureException } = sentry();
 export const bookTitleGenerator = (book: BookApi.Book) => {
   try {
     if (!book) {
@@ -25,7 +24,7 @@ export const bookTitleGenerator = (book: BookApi.Book) => {
     }
     return getEscapedString(book.title.main);
   } catch (error) {
-    captureException(error);
+    sentry.captureException(error);
     return book.title.main;
   }
 };

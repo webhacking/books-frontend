@@ -13,8 +13,6 @@ import {
 } from 'src/services/category/reducer';
 import { requestCategories } from 'src/services/category/request';
 
-const { captureException } = sentry();
-
 const DEFAULT_CHUNK_SIZE = 20;
 
 function* fetchCategories(category_ids: number[]) {
@@ -41,7 +39,7 @@ function* watchInsertCategoryIds(action: Actions<typeof CategoryReducer>) {
     }
   } catch (error) {
     yield put({ type: categoryActions.setFetching.type, payload: false });
-    captureException(error);
+    sentry.captureException(error);
   }
 }
 

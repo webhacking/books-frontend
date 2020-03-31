@@ -10,8 +10,6 @@ import { booksActions } from 'src/services/books';
 import { categoryActions } from 'src/services/category';
 import { useRouter } from 'next/router';
 
-const { captureException } = sentry();
-
 interface AiRecommendationSectionProps {
   items?: MdBook[];
   genre: string;
@@ -61,7 +59,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
         }
       } catch (error) {
         setIsRequestError(true);
-        captureException(error);
+        sentry.captureException(error);
       }
     };
 

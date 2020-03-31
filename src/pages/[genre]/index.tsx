@@ -25,8 +25,6 @@ import Cookies from 'universal-cookie';
 import cookieKeys from 'src/constants/cookies';
 import { legacyCookieMap } from 'src/components/GNB/HomeLink';
 
-const { captureException } = sentry();
-
 export interface HomeProps {
   branches: Section[];
   genre: string;
@@ -109,7 +107,7 @@ export const Home: NextPage<HomeProps> = (props) => {
       try {
         tracker.sendPageView(window.location.href, document.referrer);
       } catch (error) {
-        captureException(error);
+        sentry.captureException(error);
       }
     }
   }, [tracker]);
@@ -163,7 +161,6 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
           type: categoryActions.insertCategoryIds.type,
           payload: categoryIds,
         });
-
         return {
           genre: genre.toString(),
           store,
@@ -171,7 +168,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
           ...result,
         };
       } catch (error) {
-        captureException(error, ctx);
+        sentry.captureException(error, ctx);
         throw new Error(error);
       }
     }

@@ -22,8 +22,6 @@ import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
 import { GNBContext } from 'src/components/GNB';
 
-const { captureException } = sentry();
-
 const fadeIn = keyframes`
   0% {
     opacity: 0;
@@ -306,7 +304,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       } catch (error) {
         setSearchResult(initialSearchResult);
         setFocusedPosition(0);
-        captureException(error);
+        sentry.captureException(error);
       } finally {
         setFetching(false);
       }

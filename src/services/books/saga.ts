@@ -9,8 +9,6 @@ import { splitArrayToChunk } from 'src/utils/common';
 import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
 
-const { captureException } = sentry();
-
 // 임시 청크
 const DEFAULT_BOOKS_ID_CHUNK_SIZE = 60;
 
@@ -36,7 +34,7 @@ function* isAvailableAtSelect(bIds: string[]) {
       });
     }
   } catch (e) {
-    captureException(e);
+    sentry.captureException(e);
   }
 }
 
@@ -56,7 +54,7 @@ function* watchCheckSelectBookIds(action: Actions<typeof BooksReducer>) {
     }
   } catch (error) {
     yield put({ type: booksActions.setFetching.type, payload: false });
-    captureException(error);
+    sentry.captureException(error);
   }
 }
 
@@ -75,7 +73,7 @@ function* watchInsertBookIds(action: Actions<typeof BooksReducer>) {
     }
   } catch (error) {
     yield put({ type: booksActions.setFetching.type, payload: false });
-    captureException(error);
+    sentry.captureException(error);
   }
 }
 

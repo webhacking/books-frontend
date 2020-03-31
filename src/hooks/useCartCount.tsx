@@ -4,8 +4,6 @@ import axios, { CancelToken, OAuthRequestType } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 import { LoggedUser } from 'src/types/account';
 
-const { captureException } = sentry();
-
 export const useCartCount = (loggedUserInfo: LoggedUser) => {
   const [cartCount, setCartCount] = useState<number>(0);
 
@@ -28,7 +26,7 @@ export const useCartCount = (loggedUserInfo: LoggedUser) => {
           }
         }
       } catch (error) {
-        captureException(error);
+        sentry.captureException(error);
       }
     };
     if (loggedUserInfo) {
