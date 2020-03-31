@@ -108,6 +108,7 @@ const ImageWrapper = styled.div<{ imageType: string }>`
   flex-shrink: 0;
   position: relative;
   align-self: flex-start;
+  line-height: 0;  
   ${(props) => props.imageType === 'book' && BookShadowStyle};
 `;
 
