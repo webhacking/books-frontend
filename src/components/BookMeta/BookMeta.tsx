@@ -60,93 +60,59 @@ interface RenderBookTagProps {
 const RenderBookTag: React.FC<RenderBookTagProps> = (props) => {
   const { isComic, isNovel } = props;
   if (isComic) {
-    return (
-      <>
-        <Tag.Comic />
-        <span className="a11y" aria-label="만화">
-          만화
-        </span>
-      </>
-    );
+    return <Tag.Comic />;
   }
   if (isNovel) {
-    return (
-      <>
-        <Tag.Novel />
-        <span className="a11y" aria-label="소설">
-          소설
-        </span>
-      </>
-    );
+    return <Tag.Novel />;
   }
   return null;
 };
 
-export const authorsRenderer = (authors: BookApi.Author[]) => {
-  if (authors.length === 1) {
-    return (
-      <a
-        href={
-          authors[0].id
-            ? `/author/${authors[0].id}`
-            : `/search?q=${encodeURIComponent(authors[0].name)}`
-        }
-        aria-label={authors[0].id ? authors[0].name : '작가 검색'}
-      >
-        {authors[0].name}
-      </a>
-    );
+function AuthorAnchor(props: { author: BookApi.Author }) {
+  const { id, name } = props.author;
+  return (
+    <a
+      href={
+        id
+          ? `/author/${id}`
+          : `/search?q=${encodeURIComponent(name)}`
+      }
+      aria-label={id ? name : '작가 검색'}
+    >
+      {name}
+    </a>
+  );
+}
+
+function Authors(props: { authors: BookApi.Author[] }): JSX.Element {
+  const { authors } = props;
+  const len = authors.length;
+  if (len === 0) {
+    return null;
   }
-  if (authors.length > 2) {
+  if (len === 1) {
+    return <AuthorAnchor author={authors[0]} />;
+  }
+  if (len === 2) {
     return (
       <>
-        {authors.slice(0, 2).map((author, index) => (
-          <React.Fragment key={index}>
-            <a
-              href={
-                author.id
-                  ? `/author/${author.id}`
-                  : `/search?q=${encodeURIComponent(author.name)}`
-              }
-              aria-label={author.id ? author.name : '작가 검색'}
-            >
-              {author.name}
-            </a>
-            {index !== 1 && ', '}
-          </React.Fragment>
-        ))}
-        <span>
-          {' '}
-          외
-          {authors.length - 2}
-          명
-        </span>
+        <AuthorAnchor author={authors[0]} />
+        {', '}
+        <AuthorAnchor author={authors[1]} />
       </>
     );
   }
-  if (authors.length === 2) {
-    return (
-      <>
-        {authors.map((author, index) => (
-          <React.Fragment key={index}>
-            <a
-              href={
-                author.id
-                  ? `/author/${author.id}`
-                  : `/search?q=${encodeURIComponent(author.name)}`
-              }
-              aria-label={author.id ? author.name : '작가 검색'}
-            >
-              {author.name}
-            </a>
-            {index !== 1 && ', '}
-          </React.Fragment>
-        ))}
-      </>
-    );
-  }
-  return '';
-};
+
+  // len > 2
+  return (
+    <>
+      <AuthorAnchor key="0" author={authors[0]} />
+      {', '}
+      <AuthorAnchor key="1" author={authors[1]} />
+      {` 외 ${len - 2}명`}
+    </>
+  );
+}
 
 // eslint-disable-next-line complexity
 const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
@@ -168,9 +134,9 @@ const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
     ratingInfo,
   } = props;
 
-  const mergedAuthors = authors.filter((author) => ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author'].includes(
-    author.role,
-  ));
+  const mergedAuthors = authors.filter(
+    (author) => ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author'].includes(author.role),
+  );
 
   return (
     <>
@@ -223,7 +189,7 @@ const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
               `,
           ]}
         >
-          {authorsRenderer(mergedAuthors)}
+          <Authors authors={mergedAuthors} />
         </span>
         {showRating && ratingInfo && (
           <>
@@ -278,14 +244,7 @@ const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
             {showTag && (
               <RenderBookTag isComic={is_comic_hd || is_comic} isNovel={is_novel} />
             )}
-            {showSomeDeal && is_somedeal && (
-              <>
-                <Tag.SomeDeal />
-                <span className="a11y" aria-label="썸딜 도서">
-                  썸딜 도서
-                </span>
-              </>
-            )}
+            {showSomeDeal && is_somedeal && <Tag.SomeDeal />}
           </span>
         </>
       </div>
