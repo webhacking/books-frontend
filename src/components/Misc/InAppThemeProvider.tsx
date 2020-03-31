@@ -5,7 +5,7 @@ import { ThemeProvider } from 'emotion-theming';
 import { Global, css } from '@emotion/core';
 import { defaultTheme, darkTheme, RIDITheme } from 'src/styles';
 
-const InappStyle = (theme: RIDITheme) => css`
+const InAppStyle = (theme: RIDITheme) => css`
   html {
     background-color: ${theme.backgroundColor};
   }
