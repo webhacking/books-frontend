@@ -243,7 +243,7 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = (props
     <AuthorInfoWrapper>
       <AuthorName
         dangerouslySetInnerHTML={{
-          __html: getEscapedString(author.highlight.name_raw || author.name_raw),
+          __html: getEscapedString(author.highlight.name || author.name),
         }}
       />
       <AuthorBooksInfo>
@@ -296,7 +296,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) 
                 <BookTitle
                   dangerouslySetInnerHTML={{
                     __html: getEscapedString(
-                      book.highlight.web_title_title_raw || book.web_title_title_raw,
+                      book.highlight.web_title_title || book.web_title_title,
                     ),
                   }}
                 />
@@ -315,7 +315,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) 
                   <BookTitle
                     dangerouslySetInnerHTML={{
                       __html: getEscapedString(
-                        book.highlight.web_title_title_raw || book.web_title_title_raw,
+                        book.highlight.web_title_title || book.web_title_title,
                       ),
                     }}
                   />

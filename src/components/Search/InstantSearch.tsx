@@ -222,14 +222,10 @@ export interface InstantSearchBookResultScheme {
   b_id: string;
   highlight: {
     web_title_title?: string;
-    web_title_title_raw?: string;
     author_title_title?: string;
-    author_title_title_raw?: string;
   };
   web_title_title?: string;
-  web_title_title_raw?: string;
   author_title_title?: string;
-  author_title_title_raw?: string;
   author: string;
   author2: string;
   authors_info: AuthorInfo[];
@@ -241,11 +237,8 @@ export interface InstantSearchAuthorResultScheme {
   book_count: number;
   name: string;
   id: number;
-  name_raw: string;
-  popular_book_title_raw: string;
   highlight: {
     name: string;
-    name_raw: string;
   };
 }
 
