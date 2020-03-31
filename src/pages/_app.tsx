@@ -154,6 +154,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
           <Meta />
           <DisallowedHostsFilter />
           <CacheProvider value={createCache({ ...cache, nonce })}>
+            <Global styles={resetStyles} />
             <Provider store={store}>
               <ConnectedRouter>
                 <InAppThemeProvider theme={theme}>

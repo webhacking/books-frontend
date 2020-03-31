@@ -3,15 +3,13 @@ import Cookies from 'universal-cookie';
 import { IncomingHttpHeaders } from 'http';
 import { ThemeProvider } from 'emotion-theming';
 import { Global, css } from '@emotion/core';
-import {
-  defaultTheme, darkTheme, resetStyles, RIDITheme,
-} from 'src/styles';
+import { defaultTheme, darkTheme, RIDITheme } from 'src/styles';
 
-const inappStyle = (theme: RIDITheme) => [resetStyles, css`
+const InappStyle = (theme: RIDITheme) => css`
   html {
     background-color: ${theme.backgroundColor};
   }
-`];
+`;
 
 export type Theme = 'dark' | '';
 export const getAppTheme = ({ cookie }: IncomingHttpHeaders): Theme => {
@@ -24,7 +22,7 @@ export const getAppTheme = ({ cookie }: IncomingHttpHeaders): Theme => {
 };
 const InAppThemeProvider: React.FC<{ theme: Theme }> = ({ children, theme }) => (
   <ThemeProvider theme={theme === 'dark' ? darkTheme : defaultTheme}>
-    <Global styles={inappStyle} />
+    <Global styles={InappStyle} />
     {children}
   </ThemeProvider>
 );
