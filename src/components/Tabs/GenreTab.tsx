@@ -205,6 +205,7 @@ const routeChangeCompleteHandler = () => {
       cookieKeys.main_genre,
       legacyCookieMap[genre] ?? genre,
       {
+        path: '/',
         sameSite: 'lax',
       },
     );
@@ -253,7 +254,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
           href={href}
           onClick={() => {
             if (href === '/' && cookieGenre) {
-              cookies.set('main_genre', '', { sameSite: 'lax' });
+              cookies.set('main_genre', '', { path: '/', sameSite: 'lax' });
             }
           }}
         >
@@ -269,7 +270,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
             aria-label={label}
             onClick={() => {
               if (href === '/' && cookieGenre) {
-                cookies.set('main_genre', '', { sameSite: 'lax' });
+                cookies.set('main_genre', '', { path: '/', sameSite: 'lax' });
               }
             }}
           >
