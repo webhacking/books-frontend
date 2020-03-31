@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { cleanup, render, getByText } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  createEvent,
+  fireEvent,
+  render,
+  getByText,
+} from '@testing-library/react';
 import { GenreTab } from 'src/components/Tabs';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
@@ -36,5 +43,33 @@ describe('GenreTab test', () => {
     const { container } = renderComponent();
     const categoryNode = getByText(container, labels.category);
     expect(categoryNode).not.toBe(null);
+  });
+
+  describe('cookie', () => {
+    let cookieGetSpy: jest.MockInstance<string, []>;
+    let cookieSetSpy: jest.MockInstance<void, [string]>;
+    beforeEach(() => {
+      cookieGetSpy = jest.spyOn(document, 'cookie', 'get');
+      cookieSetSpy = jest.spyOn(document, 'cookie', 'set');
+    });
+    afterEach(() => {
+      cookieGetSpy.mockRestore();
+      cookieSetSpy.mockRestore();
+    });
+
+    it('should set cookie with path=/', () => {
+      cookieGetSpy.mockReturnValue('main_genre=romance');
+      cookieSetSpy.mockImplementation(cookie => {
+        expect(cookie.split(';').map(x => x.trim().toLowerCase()))
+          .toContain('path=/');
+      });
+      const { container } = renderComponent();
+      const anchor = container.querySelector('a[href="/"]');
+      const anchorClickEvent = createEvent.click(anchor);
+      act(() => {
+        fireEvent(anchor, anchorClickEvent);
+      });
+      expect(cookieSetSpy).toHaveBeenCalled();
+    });
   });
 });
