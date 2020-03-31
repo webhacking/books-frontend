@@ -121,7 +121,7 @@
     "lint": "eslint src --ext .js,.ts,tsx",
     "start": "docker-compose -f docker-compose.yml -f docker-compose.traefik.yml up",
     "build": "next build",
-    "deploy": "serverless deploy -v",
+    "deploy": "serverless deploy -f server -v",
     "test": "jest --passWithNoTests --collectCoverage --colors",
     "analyze": "BUNDLE_ANALYZE=both yarn build",
     "profile": "SERVERLESS=true node ./profile/with-server.js"
