@@ -243,16 +243,6 @@ const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
                 totalReviewer={ratingInfo.buyer_rating_count}
                 rating={ratingInfo.buyer_rating_score || 0}
               />
-              <span
-                className="a11y"
-                aria-label={`총 리뷰어 ${
-                  ratingInfo.buyer_rating_count
-                }명. 구매자 평균 별점 ${ratingInfo.buyer_rating_score || 0}점.`}
-              >
-                {`총 리뷰어 ${
-                  ratingInfo.buyer_rating_count
-                }명. 구매자 평균 별점 ${ratingInfo.buyer_rating_score || 0}점.`}
-              </span>
             </span>
           </>
         )}
