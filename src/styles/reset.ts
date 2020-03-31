@@ -1,5 +1,4 @@
 import { css } from '@emotion/core';
-import { RIDITheme } from 'src/styles';
 import fonts from './fonts';
 
 export const inheritFont = css`
