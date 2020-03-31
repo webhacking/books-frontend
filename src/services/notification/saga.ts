@@ -18,17 +18,19 @@ import {
   requestNotificationRead,
 } from 'src/services/notification/request';
 import jwt_decode from 'jwt-decode';
-import * as Cookies from 'js-cookie';
+import Cookies from 'universal-cookie';
+
 
 const RIDI_NOTIFICATION_TOKEN = 'ridi_notification_token';
 const { captureException } = sentry();
+const cookies = new Cookies();
 
 function* notificationAuth() {
   let tokenResult = null;
   let expired = null;
 
   // 기존 Cookies의 Token 만료 확인
-  const savedTokenValue = Cookies.get(RIDI_NOTIFICATION_TOKEN) || '';
+  const savedTokenValue = cookies.get(RIDI_NOTIFICATION_TOKEN) || '';
   if (savedTokenValue.length > 0) {
     try {
       expired = jwt_decode(savedTokenValue).exp;
@@ -48,7 +50,7 @@ function* notificationAuth() {
         retries: 2,
       },
     );
-    Cookies.set(RIDI_NOTIFICATION_TOKEN, data.token, { SameSite: 'Lax' });
+    cookies.set(RIDI_NOTIFICATION_TOKEN, data.token, { sameSite: 'lax' });
     tokenResult = data.token;
   }
   return tokenResult;
@@ -74,7 +76,7 @@ function* watchNotificationUnreadCountRequest(
     }
   } catch (error) {
     if (error.response && error.response.status === 401) {
-      Cookies.remove(RIDI_NOTIFICATION_TOKEN);
+      cookies.remove(RIDI_NOTIFICATION_TOKEN);
     } else {
       captureException(error);
     }

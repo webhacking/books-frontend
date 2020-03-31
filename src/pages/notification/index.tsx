@@ -37,13 +37,7 @@ const Section = styled.section<{}, RIDITheme>`
 `;
 
 const NotiList = styled.ul`
-  margin-bottom: 70px;
-  ${orBelow(
-    BreakPoint.LG,
-    css`
-      margin-bottom: 0;
-    `,
-  )};
+  margin-bottom: 24px;
 `;
 
 const NotiListItem = styled.li<{}, RIDITheme>`
@@ -114,6 +108,7 @@ const ImageWrapper = styled.div<{ imageType: string }>`
   flex-shrink: 0;
   position: relative;
   align-self: flex-start;
+  line-height: 0;  
   ${(props) => props.imageType === 'book' && BookShadowStyle};
 `;
 
@@ -155,7 +150,7 @@ const NotificationTime = styled.span`
 `;
 
 const ArrowWrapper = styled.div`
-  padding: 0 15px;
+  padding: 0 0 0 16px;
   margin-left: auto;
 `;
 

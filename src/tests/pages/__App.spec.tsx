@@ -37,6 +37,9 @@ test('should be render Index Component', async () => {
       },
       pathname: '/',
       query: { genre: '1', search: 'testKeyword' },
+      req: {
+        headers: { cookie: ''},
+      }
     },
     req: {
       path: '/',
@@ -63,6 +66,9 @@ test('should be render Partials Component', async () => {
       },
       pathname: '/partials/gnb',
       query: { search: 'testKeyword', pathname: '/books' },
+      req: {
+        headers: { cookie: ''},
+      }
     },
     req: {
       path: '/',

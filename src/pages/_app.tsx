@@ -18,10 +18,10 @@ import { cache } from 'emotion';
 import createCache from '@emotion/cache';
 
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
-import InAppThemeProvider from 'src/components/Misc/InAppThemeProvider';
 import Meta from 'src/components/Meta';
 import DisallowedHostsFilter from 'src/components/Misc/DisallowedHostsFilter';
 import sentry from 'src/utils/sentry';
+import InAppThemeProvider, { getAppTheme, Theme } from 'src/components/Misc/InAppThemeProvider';
 
 const { captureException } = sentry();
 
@@ -31,6 +31,7 @@ interface StoreAppProps {
   pageProps: any;
   isPartials?: boolean;
   isInApp?: boolean;
+  theme?: Theme;
   // tslint:disable-next-line
   query: any;
   ctxPathname?: string;
@@ -57,12 +58,14 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
       : {};
+    const theme = getAppTheme(ctx.req.headers);
 
     // @ts-ignore
     return {
       pageProps,
       isPartials,
       isInApp,
+      theme,
       ctxPathname: rest.router ? rest.router.asPath : '/',
       query: {
         ...ctx.query,
@@ -110,6 +113,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       pageProps,
       isPartials,
       isInApp,
+      theme,
       store,
       // @ts-ignore
       nonce,
@@ -153,7 +157,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
             <Global styles={resetStyles} />
             <Provider store={store}>
               <ConnectedRouter>
-                <InAppThemeProvider>
+                <InAppThemeProvider theme={theme}>
                   <ViewportIntersectionProvider>
                     <Contents>
                       <Component {...pageProps} />
