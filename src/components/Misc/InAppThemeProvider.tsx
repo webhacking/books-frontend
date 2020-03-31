@@ -22,7 +22,7 @@ export const getAppTheme = ({ cookie }: IncomingHttpHeaders): Theme => {
 };
 const InAppThemeProvider: React.FC<{ theme: Theme }> = ({ children, theme }) => (
   <ThemeProvider theme={theme === 'dark' ? darkTheme : defaultTheme}>
-    <Global styles={InappStyle} />
+    <Global styles={InAppStyle} />
     {children}
   </ThemeProvider>
 );
