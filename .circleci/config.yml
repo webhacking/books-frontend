@@ -20,6 +20,20 @@ commands:
       - save_cache:
           key: <<parameters.key>>-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths: ~/.cache/yarn
+  serverless_setup:
+    parameters:
+      aws-access-key-id:
+        type: env_var_name
+      aws-secret-access-key:
+        type: env_var_name
+    steps:
+      - run:
+          command: |
+            npx js-yaml serverless.yml | jq -r '.plugins[]' | xargs yarn add serverless
+      - run:
+          command: |
+            echo "export AWS_ACCESS_KEY_ID=${<< parameters.aws-access-key-id >>}" >> $BASH_ENV
+            echo "export AWS_SECRET_ACCESS_KEY=${<< parameters.aws-secret-access-key >>}" >> $BASH_ENV
   notify:
     parameters:
       color:
@@ -154,19 +168,27 @@ jobs:
   rollback:
     docker:
       - image: circleci/node:lts
+    working_directory: ~/books-frontend
     parameters:
+      aws-access-key-id:
+        type: env_var_name
+        default: PROD_AWS_ACCESS_KEY_ID
+      aws-secret-access-key:
+        type: env_var_name
+        default: PROD_AWS_SECRET_ACCESS_KEY
       after-scripts:
         type: steps
         default: []
     steps:
+      - checkout
       - attach_workspace:
           at: .
+      - serverless_setup:
+          aws-access-key-id: << parameters.aws-access-key-id >>
+          aws-secret-access-key: << parameters.aws-secret-access-key >>
       - run:
           command: |
-            curl -o- -L https://slss.io/install | bash
-            export PATH="$HOME/.serverless/bin:$PATH"
-      - run:
-          command: serverless rollback -t `cat .lastdeploytimestamp`
+            yarn serverless rollback -t `cat .lastdeploytimestamp`
       - steps: << parameters.after-scripts >>
 workflows:
   version: 2
@@ -196,8 +218,11 @@ workflows:
           requires:
             - deploy-dev
       - rollback:
+          name: rollback-dev
           requires:
             - rollback-approval
+          aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
+          aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
           after-scripts:
             - notify:
                 color: '#805b24'
@@ -231,6 +256,7 @@ workflows:
           requires:
             - deploy-prod
       - rollback:
+          name: rollback-prod
           requires:
             - rollback-approval
           after-scripts:
