@@ -98,7 +98,7 @@ jobs:
           root: .
           paths:
             - build/
-  deploy:
+  deploy-s3:
     docker:
       - image: circleci/node:lts
     working_directory: ~/books-frontend
@@ -112,6 +112,27 @@ jobs:
       s3-bucket:
         type: env_var_name
         default: PROD_S3_BUCKET
+    steps:
+      - attach_workspace:
+          at: .
+      - aws-s3/sync:
+          from: build
+          to: s3://${<< parameters.s3-bucket >>}/_next/
+          aws-access-key-id: << parameters.aws-access-key-id >>
+          aws-secret-access-key: << parameters.aws-secret-access-key >>
+          arguments: |
+            --exclude "*.map"
+  deploy:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/books-frontend
+    parameters:
+      aws-access-key-id:
+        type: env_var_name
+        default: PROD_AWS_ACCESS_KEY_ID
+      aws-secret-access-key:
+        type: env_var_name
+        default: PROD_AWS_SECRET_ACCESS_KEY
       stage:
         type: string
         default: production
@@ -128,14 +149,9 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - aws-s3/sync:
-          from: build
-          to: s3://${<< parameters.s3-bucket >>}/_next/
+      - serverless_setup:
           aws-access-key-id: << parameters.aws-access-key-id >>
           aws-secret-access-key: << parameters.aws-secret-access-key >>
-          arguments: |
-            --exclude "*.map"
-      - install
       - run:
           command:
             yarn serverless deploy list -s << parameters.stage >> | awk '/Timestamp/ {print $NF}' | tail -n 1 > .lastdeploytimestamp
@@ -201,13 +217,19 @@ workflows:
               only: master
           stage: development
           assetPrefix: https://books-static.ridi.io
+      - deploy-s3:
+          name: deploy-dev/s3
+          requires:
+            - build-dev
+          aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
+          aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
+          s3-bucket: DEV_S3_BUCKET
       - deploy:
           name: deploy-dev
           requires:
             - build-dev
           aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
           aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
-          s3-bucket: DEV_S3_BUCKET
           stage: development
           assetPrefix: https://books-static.ridi.io
           after-scripts:
@@ -236,6 +258,10 @@ workflows:
             branches:
               only:
                 - /release\/.+/
+      - deploy-s3:
+          name: deploy-prod/s3
+          requires:
+            - build-prod
       - deploy-approval:
           type: approval
           requires:
