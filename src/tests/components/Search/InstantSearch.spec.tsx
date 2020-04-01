@@ -133,7 +133,7 @@ describe('test instant search', () => {
     });
     jest.useRealTimers();
     expect(
-      container.querySelector('[data-author-id="90615"] span:nth-child(1)')?.textContent,
+      container.querySelector('[data-author-id="90615"] span:nth-child(2)')?.textContent,
     ).toBe('ABC디이');
   });
 

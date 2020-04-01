@@ -10,7 +10,6 @@ import {
 } from '@ridi/colors';
 import { ADULT_BADGE_URL, AUTHOR_ICON_URL } from 'src/constants/icons';
 
-import { AdultBadge } from 'src/components/Badge/AdultBadge';
 import {
   AuthorInfo as AuthorInfoScheme,
   InstantSearchAuthorResultScheme,
