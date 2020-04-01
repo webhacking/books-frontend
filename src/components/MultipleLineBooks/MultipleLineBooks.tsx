@@ -192,7 +192,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
         <BookMeta
           book={item.detail}
           showTag={['bl', 'bl-serial'].includes(genre)}
-          wrapperCSS={bookMetaWrapperStyle}
+          css={bookMetaWrapperStyle}
           showRating
           isAIRecommendation={false}
         />
@@ -320,7 +320,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = (props) => {
   return (
     <Section ref={targetRef}>
       <Title aria-label={title}>{title}</Title>
-      <ItemList genre={genre} slug={slug} books={books as MdBook[]} />
+      <ItemList genre={genre} slug={slug} books={books} />
     </Section>
   );
 };

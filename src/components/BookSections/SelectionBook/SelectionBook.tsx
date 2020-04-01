@@ -191,7 +191,7 @@ export const SelectionBookItem: React.FC<SelectionBookItemProps> = React.memo((p
           showRating={type === DisplayType.HomeMdSelection}
           isAIRecommendation={false}
           ratingInfo={(book as MdBook).rating}
-          wrapperCSS={
+          css={
             localExcluded
             && css`
               opacity: 0.2;

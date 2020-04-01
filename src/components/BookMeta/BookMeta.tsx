@@ -48,7 +48,7 @@ interface BookMetaProps {
   isAIRecommendation?: boolean;
   showTag: boolean;
   width?: string;
-  wrapperCSS?: SerializedStyles;
+  className?: string;
   ratingInfo?: StarRatingType;
 }
 
@@ -130,7 +130,7 @@ const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
     titleLineClamp,
     showSomeDeal,
     showRating,
-    wrapperCSS,
+    className,
     ratingInfo,
   } = props;
 
@@ -140,12 +140,12 @@ const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
 
   return (
     <div
+      className={className}
       css={[
         bookMetaCSS,
         props.width
           ? css`width: ${props.width};`
           : css`width: 100%;`,
-        wrapperCSS,
       ]}
     >
       {/* Fixme available anchor */}
