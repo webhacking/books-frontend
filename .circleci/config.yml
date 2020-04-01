@@ -52,7 +52,7 @@ commands:
             echo "export TITLE='$(echo "$TITLE")'" >> $BASH_ENV
       - run:
           command: |
-            export LAST_RELEASE=$([ "$CIRCLE_BRANCH" = master ] && echo "HEAD^1" || echo "`git for-each-ref --count=1 --sort=-committerdate --format='%(objectname)' refs/remotes/origin/release/`")
+            export LAST_RELEASE=$([ "$CIRCLE_BRANCH" = master ] && echo "HEAD^1" || echo "`git for-each-ref --count=2 --sort=-committerdate --format='%(objectname)' refs/remotes/origin/release/ | tail -n1`")
             export MESSAGE="`git show -s --format=%b $CIRCLE_SHA1 | sed "s/'/\\\\\'/g"`"
             export MESSAGE="$MESSAGE\n\n$(git log $LAST_RELEASE..$CIRCLE_SHA1 --no-merges --pretty=format:'* `%h` %s')"
             echo "export MESSAGE='$(echo "$MESSAGE")'" >> $BASH_ENV
