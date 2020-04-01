@@ -84,7 +84,7 @@ function AuthorAnchor(props: { author: BookApi.Author }) {
   );
 }
 
-function Authors(props: { authors: BookApi.Author[] }): JSX.Element {
+export function Authors(props: { authors: BookApi.Author[] }) {
   const { authors } = props;
   const len = authors.length;
   if (len === 0) {
@@ -139,116 +139,50 @@ const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
   );
 
   return (
-    <>
-      <div
-        css={[
-          bookMetaCSS,
-          props.width
-            ? css`
-                width: ${props.width};
-              `
-            : css`
-                width: 100%;
-              `,
-          wrapperCSS,
-        ]}
+    <div
+      css={[
+        bookMetaCSS,
+        props.width
+          ? css`width: ${props.width};`
+          : css`width: 100%;`,
+        wrapperCSS,
+      ]}
+    >
+      {/* Fixme available anchor */}
+      <a
+        css={css`display: inline-block;`}
+        href={`/books/${props.book.id}`}
       >
-        {/* Fixme available anchor */}
-        <a
-          css={css`
-            display: inline-block;
-          `}
-          href={`/books/${props.book.id}`}
-        >
-          <h2
-            css={css`
-              ${bookTitleCSS};
-              ${lineClamp(titleLineClamp || 2)}
-            `}
-            aria-label={props.book.title.main}
-            dangerouslySetInnerHTML={{ __html: bookTitleGenerator(props.book) }}
-          />
-        </a>
-        {/* Todo Author Anchor Generator */}
-        <span
+        <h2
           css={[
-            authorCSS,
-            showSomeDeal
-              && !is_somedeal
-              && css`
-                margin-bottom: 0;
-              `,
-            !showRating
-              && css`
-                margin-bottom: 0;
-              `,
-            showSomeDeal
-              && is_somedeal
-              && css`
-                margin-bottom: 6px;
-              `,
+            bookTitleCSS,
+            lineClamp(titleLineClamp || 2),
           ]}
-        >
-          <Authors authors={mergedAuthors} />
+          aria-label={props.book.title.main}
+          dangerouslySetInnerHTML={{ __html: bookTitleGenerator(props.book) }}
+        />
+      </a>
+      {/* Todo Author Anchor Generator */}
+      <span css={authorCSS}>
+        <Authors authors={mergedAuthors} />
+      </span>
+      {showRating && ratingInfo && (
+        <span>
+          <StarRating
+            totalReviewer={ratingInfo.buyer_rating_count}
+            rating={ratingInfo.buyer_rating_score || 0}
+          />
         </span>
-        {showRating && ratingInfo && (
-          <>
-            <span
-              css={[
-                css`
-                  margin-bottom: 6px;
-                `,
-                !showTag
-                  && !showSomeDeal
-                  && css`
-                    margin-bottom: 0;
-                  `,
-              ]}
-            >
-              <StarRating
-                totalReviewer={ratingInfo.buyer_rating_count}
-                rating={ratingInfo.buyer_rating_score || 0}
-              />
-            </span>
-          </>
-        )}
-        <>
-          <span
-            css={[
-              css`
-                display: flex;
-              `,
-              (!showRating || !ratingInfo)
-                && css`
-                  margin-top: 6px;
-                `,
-              showSomeDeal
-                && is_somedeal
-                && css`
-                  margin-top: 0;
-                `,
-              !showTag
-                && !showSomeDeal
-                && !showRating
-                && !ratingInfo
-                && css`
-                  margin-top: 0;
-                `,
-              showSomeDeal
-                && !is_somedeal
-                && css`
-                  margin-top: 0;
-                `,
-            ]}
-          >
-            {showTag && (
-              <RenderBookTag isComic={is_comic_hd || is_comic} isNovel={is_novel} />
-            )}
-            {showSomeDeal && is_somedeal && <Tag.SomeDeal />}
-          </span>
-        </>
-      </div>
-    </>
+      )}
+      {(showTag || (showSomeDeal && is_somedeal)) && (
+        <span css={css`display: flex; margin-top: 6px;`}>
+          {showTag && (
+            <RenderBookTag isComic={is_comic_hd || is_comic} isNovel={is_novel} />
+          )}
+          {showSomeDeal && is_somedeal && <Tag.SomeDeal />}
+        </span>
+      )}
+    </div>
   );
 });
 

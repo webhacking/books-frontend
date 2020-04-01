@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { slateGray60 } from '@ridi/colors';
 
-import { authorsRenderer } from 'src/components/BookMeta/BookMeta';
+import { Authors } from 'src/components/BookMeta/BookMeta';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import { lineClamp } from 'src/styles';
 import AtSelectIcon from 'src/svgs/Book1.svg';
@@ -80,7 +80,7 @@ function BookMeta(props: BookMetaProps) {
           {bookTitleGenerator(props.book)}
         </BookTitle>
       </a>
-      {authors && <BookAuthor>{authorsRenderer(authors)}</BookAuthor>}
+      {authors && <BookAuthor><Authors authors={authors} /></BookAuthor>}
       {props.book.clientBookFields?.isAvailableSelect && (
         <AvailableOnSelectContainer
           role="img"
