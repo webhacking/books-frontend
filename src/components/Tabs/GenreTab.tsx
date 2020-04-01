@@ -240,7 +240,11 @@ const TabItem: React.FC<TabItemProps> = (props) => {
   const { href, activePath, label } = props;
   const [isActivePath, setIsActivePath] = useState(false);
   const cookies = new Cookies();
-  const cookieGenre = cookies.get('main_genre') || '';
+  const handleAnchorClick = () => {
+    if (href === '/') {
+      cookies.set('main_genre', '', { path: '/', sameSite: 'lax' });
+    }
+  };
 
   useEffect(() => {
     setIsActivePath(activePath.test(router.asPath));
@@ -252,11 +256,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
         <a
           aria-label={label}
           href={href}
-          onClick={() => {
-            if (href === '/' && cookieGenre) {
-              cookies.set('main_genre', '', { path: '/', sameSite: 'lax' });
-            }
-          }}
+          onClick={handleAnchorClick}
         >
           {isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
         </a>
@@ -268,11 +268,7 @@ const TabItem: React.FC<TabItemProps> = (props) => {
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
           <a
             aria-label={label}
-            onClick={() => {
-              if (href === '/' && cookieGenre) {
-                cookies.set('main_genre', '', { path: '/', sameSite: 'lax' });
-              }
-            }}
+            onClick={handleAnchorClick}
           >
             {isActivePath ? <ActiveText>{label}</ActiveText> : <span>{label}</span>}
           </a>
