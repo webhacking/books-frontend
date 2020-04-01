@@ -230,6 +230,7 @@ export interface InstantSearchBookResultScheme {
   author2: string;
   authors_info: AuthorInfo[];
   publisher: string;
+  age_limit: number;
 }
 
 export interface InstantSearchAuthorResultScheme {
