@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { css, SerializedStyles } from '@emotion/core';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import { lineClamp } from 'src/styles';
 import StarRating from 'src/components/StarRating/StarRating';
 import Tag from 'src/components/Tag/Tag';
@@ -9,7 +10,8 @@ import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import { orBelow } from 'src/utils/mediaQuery';
 import { slateGray60 } from '@ridi/colors';
 
-const bookTitleCSS = css`
+// FIXME: h2는 의미상 안 맞는 것 같음
+const BookTitle = styled.h2`
   font-size: 15px;
   font-weight: 700;
   line-height: 1.33em;
@@ -24,14 +26,15 @@ const bookTitleCSS = css`
   )}
 `;
 
-const bookMetaCSS = css`
+const Container = styled.div`
+  width: 100%;
   margin-top: 10px;
   display: flex;
   flex-direction: column;
   transition: opacity 0.2s ease-in-out;
 `;
 
-const authorCSS = css`
+const AuthorsWrapper = styled.span`
   height: 19px;
   font-size: 14px;
   line-height: 1.36;
@@ -139,33 +142,24 @@ const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
   );
 
   return (
-    <div
+    <Container
       className={className}
-      css={[
-        bookMetaCSS,
-        props.width
-          ? css`width: ${props.width};`
-          : css`width: 100%;`,
-      ]}
+      css={props.width && css`width: ${props.width};`}
     >
       {/* Fixme available anchor */}
       <a
         css={css`display: inline-block;`}
         href={`/books/${props.book.id}`}
       >
-        <h2
-          css={[
-            bookTitleCSS,
-            lineClamp(titleLineClamp || 2),
-          ]}
+        <BookTitle
+          css={lineClamp(titleLineClamp || 2)}
           aria-label={props.book.title.main}
           dangerouslySetInnerHTML={{ __html: bookTitleGenerator(props.book) }}
         />
       </a>
-      {/* Todo Author Anchor Generator */}
-      <span css={authorCSS}>
+      <AuthorsWrapper>
         <Authors authors={mergedAuthors} />
-      </span>
+      </AuthorsWrapper>
       {showRating && ratingInfo && (
         <span>
           <StarRating
@@ -182,7 +176,7 @@ const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
           {showSomeDeal && is_somedeal && <Tag.SomeDeal />}
         </span>
       )}
-    </div>
+    </Container>
   );
 });
 
