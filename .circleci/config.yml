@@ -20,6 +20,20 @@ commands:
       - save_cache:
           key: <<parameters.key>>-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths: ~/.cache/yarn
+  serverless_setup:
+    parameters:
+      aws-access-key-id:
+        type: env_var_name
+      aws-secret-access-key:
+        type: env_var_name
+    steps:
+      - run:
+          command: |
+            npx js-yaml serverless.yml | jq -r '.plugins[]' | xargs yarn add serverless
+      - run:
+          command: |
+            echo "export AWS_ACCESS_KEY_ID=${<< parameters.aws-access-key-id >>}" >> $BASH_ENV
+            echo "export AWS_SECRET_ACCESS_KEY=${<< parameters.aws-secret-access-key >>}" >> $BASH_ENV
   notify:
     parameters:
       color:
@@ -84,7 +98,7 @@ jobs:
           root: .
           paths:
             - build/
-  deploy:
+  deploy-s3:
     docker:
       - image: circleci/node:lts
     working_directory: ~/books-frontend
@@ -98,20 +112,7 @@ jobs:
       s3-bucket:
         type: env_var_name
         default: PROD_S3_BUCKET
-      stage:
-        type: string
-        default: production
-      assetPrefix:
-        type: string
-        default: https://books.ridicdn.net
-      after-scripts:
-        type: steps
-        default: []
-    environment:
-      STAGE: << parameters.stage >>
-      ASSET_PREFIX: << parameters.assetPrefix >>
     steps:
-      - checkout
       - attach_workspace:
           at: .
       - aws-s3/sync:
@@ -121,7 +122,33 @@ jobs:
           aws-secret-access-key: << parameters.aws-secret-access-key >>
           arguments: |
             --exclude "*.map"
-      - install
+  deploy:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/books-frontend
+    parameters:
+      aws-access-key-id:
+        type: env_var_name
+        default: PROD_AWS_ACCESS_KEY_ID
+      aws-secret-access-key:
+        type: env_var_name
+        default: PROD_AWS_SECRET_ACCESS_KEY
+      stage:
+        type: string
+        default: production
+      assetPrefix:
+        type: string
+        default: https://books.ridicdn.net
+    environment:
+      STAGE: << parameters.stage >>
+      ASSET_PREFIX: << parameters.assetPrefix >>
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - serverless_setup:
+          aws-access-key-id: << parameters.aws-access-key-id >>
+          aws-secret-access-key: << parameters.aws-secret-access-key >>
       - run:
           command:
             yarn serverless deploy list -s << parameters.stage >> | awk '/Timestamp/ {print $NF}' | tail -n 1 > .lastdeploytimestamp
@@ -131,7 +158,6 @@ jobs:
             - .lastdeploytimestamp
       - run:
           command: yarn deploy -s << parameters.stage >>
-      - steps: << parameters.after-scripts >>
   profile-live:
     docker:
       - image: circleci/node:lts-browsers
@@ -154,20 +180,24 @@ jobs:
   rollback:
     docker:
       - image: circleci/node:lts
+    working_directory: ~/books-frontend
     parameters:
-      after-scripts:
-        type: steps
-        default: []
+      aws-access-key-id:
+        type: env_var_name
+        default: PROD_AWS_ACCESS_KEY_ID
+      aws-secret-access-key:
+        type: env_var_name
+        default: PROD_AWS_SECRET_ACCESS_KEY
     steps:
+      - checkout
       - attach_workspace:
           at: .
+      - serverless_setup:
+          aws-access-key-id: << parameters.aws-access-key-id >>
+          aws-secret-access-key: << parameters.aws-secret-access-key >>
       - run:
           command: |
-            curl -o- -L https://slss.io/install | bash
-            export PATH="$HOME/.serverless/bin:$PATH"
-      - run:
-          command: serverless rollback -t `cat .lastdeploytimestamp`
-      - steps: << parameters.after-scripts >>
+            yarn serverless rollback -t `cat .lastdeploytimestamp`
 workflows:
   version: 2
   deploy-dev:
@@ -179,16 +209,22 @@ workflows:
               only: master
           stage: development
           assetPrefix: https://books-static.ridi.io
+      - deploy-s3:
+          name: deploy-dev/s3
+          requires:
+            - build-dev
+          aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
+          aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
+          s3-bucket: DEV_S3_BUCKET
       - deploy:
           name: deploy-dev
           requires:
             - build-dev
           aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
           aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
-          s3-bucket: DEV_S3_BUCKET
           stage: development
           assetPrefix: https://books-static.ridi.io
-          after-scripts:
+          post-steps:
             - notify:
                 channel: deploy-store-dev
       - rollback-approval:
@@ -196,9 +232,12 @@ workflows:
           requires:
             - deploy-dev
       - rollback:
+          name: rollback-dev
           requires:
             - rollback-approval
-          after-scripts:
+          aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
+          aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
+          post-steps:
             - notify:
                 color: '#805b24'
                 channel: deploy-store-dev
@@ -211,6 +250,10 @@ workflows:
             branches:
               only:
                 - /release\/.+/
+      - deploy-s3:
+          name: deploy-prod/s3
+          requires:
+            - build-prod
       - deploy-approval:
           type: approval
           requires:
@@ -219,7 +262,7 @@ workflows:
           name: deploy-prod
           requires:
             - deploy-approval
-          after-scripts:
+          post-steps:
             - notify
       - profile-live:
           name: profile-live-prod
@@ -231,9 +274,10 @@ workflows:
           requires:
             - deploy-prod
       - rollback:
+          name: rollback-prod
           requires:
             - rollback-approval
-          after-scripts:
+          post-steps:
             - notify:
                 color: '#805b24'
                 rollback: true
