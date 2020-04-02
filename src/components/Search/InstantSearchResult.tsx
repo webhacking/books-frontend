@@ -5,7 +5,10 @@ import { lineClamp } from 'src/styles';
 import { getEscapedString } from 'src/utils/highlight';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import useIsTablet from 'src/hooks/useIsTablet';
-import { slateGray60, slateGray30, lightSteelBlue5 } from '@ridi/colors';
+import {
+  slateGray60, slateGray30, slateGray5, lightSteelBlue5,
+} from '@ridi/colors';
+import { ADULT_BADGE_URL, AUTHOR_ICON_URL } from 'src/constants/icons';
 
 import {
   AuthorInfo as AuthorInfoScheme,
@@ -150,6 +153,8 @@ const BookTitle = styled.span`
 
 const BookAuthors = styled.div`
   word-break: keep-all;
+  display: flex;
+  align-items: center;
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
     css`
@@ -208,6 +213,7 @@ const AuthorPublisher = styled.span`
       max-width: 298px;
     `,
   )}
+  margin-right: 6px;
 `;
 
 const ItemWrapper = styled.div`
@@ -221,6 +227,26 @@ const InstantSearchDivider = styled.hr`
   margin: 8px 16px;
   display: block;
 `;
+
+const AuthorIconWrapper = styled.span`
+  width: 22px;
+  height: 22px;
+  margin-right: 6px;
+  background: ${slateGray5};
+  border-radius: 22px;
+`;
+
+const AuthorIcon = styled.img`
+  padding: 5px;
+`;
+
+function AuthorSymbol() {
+  return (
+    <AuthorIconWrapper>
+      <AuthorIcon src={AUTHOR_ICON_URL} alt="작가" />
+    </AuthorIconWrapper>
+  );
+}
 
 interface InstantSearchResultProps {
   result: InstantSearchResultScheme;
@@ -241,6 +267,7 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = (props
 
   return (
     <AuthorInfoWrapper>
+      <AuthorSymbol />
       <AuthorName
         dangerouslySetInnerHTML={{
           __html: getEscapedString(author.highlight.name || author.name),
@@ -261,11 +288,7 @@ const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = (
       .filter((author) => author.role === 'author' || author.role === 'illustrator')
       .map((author) => author.name);
   if (!viewedAuthors || viewedAuthors.length === 0) {
-    return (
-      <Author>
-        {props.author}
-      </Author>
-    );
+    return <Author>{props.author}</Author>;
   }
 
   return (
@@ -280,7 +303,6 @@ const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = (
 const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) => {
   const { result, handleKeyDown, handleClickBookItem } = props;
   const isTablet = useIsTablet();
-
   return (
     <ul>
       {result.books.map((book: InstantSearchBookResultScheme, index) => (
@@ -302,6 +324,9 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) 
                 />
                 <AuthorLabel author={book.author} authors={book.authors_info} />
                 <AuthorPublisher>{book.publisher}</AuthorPublisher>
+                {book.age_limit > 18 && (
+                  <img width={19} src={ADULT_BADGE_URL} alt="성인 전용 도서" />
+                )}
               </>
             ) : (
               <ItemWrapper>
@@ -322,6 +347,9 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) 
                   <BookAuthors>
                     <AuthorLabel author={book.author} authors={book.authors_info} />
                     <AuthorPublisher>{book.publisher}</AuthorPublisher>
+                    {book.age_limit > 18 && (
+                      <img width={19} src={ADULT_BADGE_URL} alt="성인 전용 도서" />
+                    )}
                   </BookAuthors>
                 </BookMeta>
               </ItemWrapper>

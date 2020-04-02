@@ -4,6 +4,7 @@ import NoStarRating from 'src/assets/svg/NoStarRating.svg';
 import RidiWaitFree from 'src/assets/svg/RidiWaitFree.svg';
 import VerticalArrow from 'src/assets/svg/VerticalArrow.svg';
 import Clock from 'src/assets/svg/Clock.svg';
+import Author from 'src/assets/svg/Author.svg';
 
 export const ADULT_BADGE_URL = AdultBadge;
 export const STAR_RATING_URL = StarRating;
@@ -11,3 +12,4 @@ export const NO_STAR_RATING_URL = NoStarRating;
 export const RIDI_WAIT_FREE_ICON_URL = RidiWaitFree;
 export const VERTICAL_RIGHT_ARROW_ICON_URL = VerticalArrow;
 export const CLOCK_ICON_URL = Clock;
+export const AUTHOR_ICON_URL = Author;

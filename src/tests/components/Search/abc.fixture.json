@@ -93,6 +93,55 @@
         "highlight": {
           "web_title_title": "<strong class=\"title_point\">ABC</strong> Alphabet Story"
         }
+      },
+      {
+        "buyer_rating_score": 4.2,
+        "is_series_complete": false,
+        "sub_title": "쉬운 회로에서부터 “장”의 사고방식까지",
+        "author": "후쿠시마 하지메",
+        "events_info": [],
+        "translator": "손영수",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "특별관_자기계발기타대여",
+            "tag_id": 2201
+          }
+        ],
+        "series_prices_info": [],
+        "title": "전자기학의 ABC",
+        "is_rental": true,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "2116000079",
+        "price": 6300,
+        "buyer_review_count": 2,
+        "publisher": "전파과학사",
+        "buyer_rating_count": 10,
+        "web_title_title": "전자기학의 ABC",
+        "authors_info": [
+          {
+            "role": "author",
+            "b_id": "2116000079",
+            "name": "후쿠시마 하지메",
+            "author_id": 73555,
+            "order": 0
+          },
+          {
+            "role": "translator",
+            "b_id": "2116000079",
+            "name": "손영수",
+            "author_id": 46237,
+            "order": 1
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n교과서보다 쉬운, 전자기학 입문서!\r\n\r\n상대론에 관한 입문서는 많은데 왜 전자기학 입문서는 거의 없을까? 전기장과 자기장이 자연계에 존재하고 있다는 것은 많은 사람들이 나름대로 듣고 알고 있는 일이다. 그러나 그것이 정말로 어떤 것이며, 왜 그런 것을 과학자가 생각하게 되었느냐고 하는 점에 대해서는 모르는 일이 많다. 따라서 이 책은 전자기의 여러 가지 현상을 살펴가면서, 이 전기장과 자기장을 철저히 추궁해 보려는 것이 이 책의 중심 테마이다.\r\n이 책에서는 엄밀한 개념의 정의에서부터 들어가서 기본 법칙을 설명하고, 그 응용 사례",
+        "web_title_title_raw": "전자기학의 ABC",
+        "highlight": {
+          "web_title_title": "전자기학의 <strong class=\"title_point\">ABC</strong>",
+          "web_title_title_raw": "전자기학의 <strong class=\"title_point\">ABC</strong>"
+        }
       }
     ]
   }
