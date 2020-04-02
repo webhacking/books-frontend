@@ -18,7 +18,7 @@ import {
 import ArrowV from 'src/svgs/ArrowV.svg';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import useIsTablet from 'src/hooks/useIsTablet';
-import BookMeta from 'src/components/BookMeta/BookMeta';
+import BookMeta from 'src/components/BookMeta';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import { orBelow } from 'src/utils/mediaQuery';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';

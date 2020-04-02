@@ -4,7 +4,7 @@ import {
 } from 'src/utils/mediaQuery';
 import { DisplayType, MdBook } from 'src/types/sections';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
-import BookMeta from 'src/components/BookMeta/BookMeta';
+import BookMeta from 'src/components/BookMeta';
 import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';

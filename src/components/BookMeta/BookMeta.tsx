@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { css } from '@emotion/core';
+import { css, Interpolation } from '@emotion/core';
 import styled from '@emotion/styled';
 import { lineClamp } from 'src/styles';
-import StarRating from 'src/components/StarRating/StarRating';
-import Tag from 'src/components/Tag/Tag';
 import * as BookApi from 'src/types/book';
-import { StarRating as StarRatingType } from 'src/types/sections';
 import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import { orBelow } from 'src/utils/mediaQuery';
 import { slateGray60 } from '@ridi/colors';
@@ -43,34 +40,6 @@ const AuthorsWrapper = styled.span`
   ${lineClamp(1)};
 `;
 
-interface BookMetaProps {
-  book: BookApi.Book;
-  titleLineClamp?: number;
-  showRating: boolean;
-  showSomeDeal?: boolean;
-  isAIRecommendation?: boolean;
-  showTag: boolean;
-  width?: string;
-  className?: string;
-  ratingInfo?: StarRatingType;
-}
-
-interface RenderBookTagProps {
-  isNovel: boolean;
-  isComic: boolean;
-}
-
-const RenderBookTag: React.FC<RenderBookTagProps> = (props) => {
-  const { isComic, isNovel } = props;
-  if (isComic) {
-    return <Tag.Comic />;
-  }
-  if (isNovel) {
-    return <Tag.Novel />;
-  }
-  return null;
-};
-
 function AuthorAnchor(props: { author: BookApi.Author }) {
   const { id, name } = props.author;
   return (
@@ -87,7 +56,7 @@ function AuthorAnchor(props: { author: BookApi.Author }) {
   );
 }
 
-export function Authors(props: { authors: BookApi.Author[] }) {
+function Authors(props: { authors: BookApi.Author[] }) {
   const { authors } = props;
   const len = authors.length;
   if (len === 0) {
@@ -117,24 +86,28 @@ export function Authors(props: { authors: BookApi.Author[] }) {
   );
 }
 
-// eslint-disable-next-line complexity
-const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
+interface BookMetaBaseProps {
+  book: BookApi.Book;
+  titleLineClamp?: number;
+  width?: string;
+  bookTitleStyle?: Interpolation;
+  className?: string;
+  children?: React.ReactNode;
+}
+
+const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
   if (props.book.is_deleted) {
     return null;
   }
   const {
     book: {
       authors,
-      property: { is_somedeal, is_novel },
-      file: { is_comic, is_comic_hd },
     },
-    // isAIRecommendation,
-    showTag,
     titleLineClamp,
-    showSomeDeal,
-    showRating,
+    width,
+    bookTitleStyle,
     className,
-    ratingInfo,
+    children,
   } = props;
 
   const mergedAuthors = authors.filter(
@@ -144,15 +117,12 @@ const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
   return (
     <Container
       className={className}
-      css={props.width && css`width: ${props.width};`}
+      css={width && css`width: ${width};`}
     >
       {/* Fixme available anchor */}
-      <a
-        css={css`display: inline-block;`}
-        href={`/books/${props.book.id}`}
-      >
+      <a href={`/books/${props.book.id}`}>
         <BookTitle
-          css={lineClamp(titleLineClamp || 2)}
+          css={[bookTitleStyle, lineClamp(titleLineClamp || 2)]}
           aria-label={props.book.title.main}
           dangerouslySetInnerHTML={{ __html: bookTitleGenerator(props.book) }}
         />
@@ -160,24 +130,9 @@ const BookMeta: React.FC<BookMetaProps> = React.memo((props) => {
       <AuthorsWrapper>
         <Authors authors={mergedAuthors} />
       </AuthorsWrapper>
-      {showRating && ratingInfo && (
-        <span>
-          <StarRating
-            totalReviewer={ratingInfo.buyer_rating_count}
-            rating={ratingInfo.buyer_rating_score || 0}
-          />
-        </span>
-      )}
-      {(showTag || (showSomeDeal && is_somedeal)) && (
-        <span css={css`display: flex; margin-top: 6px;`}>
-          {showTag && (
-            <RenderBookTag isComic={is_comic_hd || is_comic} isNovel={is_novel} />
-          )}
-          {showSomeDeal && is_somedeal && <Tag.SomeDeal />}
-        </span>
-      )}
+      {children}
     </Container>
   );
-});
+};
 
-export default BookMeta;
+export default React.memo(BookMetaBase);
