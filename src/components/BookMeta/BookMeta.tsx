@@ -7,8 +7,7 @@ import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
 import { orBelow } from 'src/utils/mediaQuery';
 import { slateGray60 } from '@ridi/colors';
 
-// FIXME: h2는 의미상 안 맞는 것 같음
-const BookTitle = styled.h2`
+const BookTitle = styled.div`
   font-size: 15px;
   font-weight: 700;
   line-height: 1.33em;
@@ -49,7 +48,6 @@ function AuthorAnchor(props: { author: BookApi.Author }) {
           ? `/author/${id}`
           : `/search?q=${encodeURIComponent(name)}`
       }
-      aria-label={id ? name : '작가 검색'}
     >
       {name}
     </a>
@@ -119,7 +117,6 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
       className={className}
       css={width && css`width: ${width};`}
     >
-      {/* Fixme available anchor */}
       <a href={`/books/${props.book.id}`}>
         <BookTitle
           css={[bookTitleStyle, lineClamp(titleLineClamp || 2)]}
