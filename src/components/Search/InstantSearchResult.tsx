@@ -4,9 +4,8 @@ import styled from '@emotion/styled';
 import { lineClamp } from 'src/styles';
 import { getEscapedString } from 'src/utils/highlight';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
-import useIsTablet from 'src/hooks/useIsTablet';
 import {
-  slateGray60, slateGray30, slateGray5, lightSteelBlue5,
+  slateGray50, slateGray5, lightSteelBlue5, gray100,
 } from '@ridi/colors';
 import { ADULT_BADGE_URL, AUTHOR_ICON_URL } from 'src/constants/icons';
 
@@ -28,7 +27,7 @@ const listItemCSS = css`
 `;
 
 const BookListItem = styled.li`
-  ${listItemCSS};
+  ${listItemCSS}
   ${orBelow(
     BreakPoint.LG,
     css`
@@ -39,7 +38,7 @@ const BookListItem = styled.li`
         background-color: white !important;
       }
     `,
-  )};
+  )}
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
     css`
@@ -116,57 +115,26 @@ const BookListItemButton = styled.button`
   display: flex;
   flex-wrap: wrap;
   text-align: left;
-  padding: 14px 16px;
+  padding: 12px 16px;
+  align-items: center;
 `;
-
-const BookThumbnail = styled.img`
-  margin-right: 12px;
-  border: 1px solid ${slateGray30};
-  flex-shrink: 0;
-  width: 38px;
-`;
-
-const BookMeta = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  text-align: left;
-  justify-content: center;
-`;
-
 const BookTitle = styled.span`
   font-size: 15px;
-  line-height: 1.33;
+  line-height: 1.4em;
   word-break: keep-all;
-  margin-right: 4px;
-  margin-bottom: 3px;
-  color: #252525;
+  margin-right: 6px;
+  color: ${gray100};
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
     css`
       max-width: 298px;
-      color: #303538;
-      margin-bottom: 4px;
     `,
   )};
 `;
 
-const BookAuthors = styled.div`
-  word-break: keep-all;
-  display: flex;
-  align-items: center;
-  ${greaterThanOrEqualTo(
-    BreakPoint.LG + 1,
-    css`
-      max-width: 298px;
-    `,
-  )}
-`;
-
 const authorPublisherCSS = css`
-  font-size: 14px;
-  line-height: 1.36;
-  color: ${slateGray60};
+  line-height: 1.4em;
+  color: ${slateGray50};
   -webkit-font-smoothing: antialiased;
   max-width: 298px;
 `;
@@ -179,45 +147,42 @@ const AuthorInfoWrapper = styled.div`
 
 const AuthorName = styled.span`
   font-size: 15px;
-  line-height: 1.33;
+  line-height: 1.4em;
   flex-shrink: 0;
   margin-right: 8px;
   ${orBelow(
     BreakPoint.LG,
     css`
-      margin-right: 3px;
+      margin-right: 6px;
     `,
   )};
-  color: #303538;
+  color: ${gray100};
 `;
 
 const AuthorBooksInfo = styled.span`
-  font-size: 14px;
+  font-size: 15px;
   word-break: keep-all;
-  color: ${slateGray60};
+  color: ${slateGray50};
   ${lineClamp(1)};
 `;
 
 const Author = styled.span`
   ${authorPublisherCSS};
-  margin-right: 4px;
+  font-size: 15px;
+  margin-right: 5px;
 `;
 
 const AuthorPublisher = styled.span`
   ${authorPublisherCSS};
-  padding-left: 4px;
-  border-left: 1px solid #e6e8eb;
+  font-size: 13px;
+  padding-left: 5px;
+  margin-right: 5px;
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
     css`
       max-width: 298px;
     `,
   )}
-  margin-right: 6px;
-`;
-
-const ItemWrapper = styled.div`
-  display: flex;
 `;
 
 const InstantSearchDivider = styled.hr`
@@ -247,6 +212,12 @@ function AuthorSymbol() {
     </AuthorIconWrapper>
   );
 }
+
+const Divider = styled.div`
+  height: 12px;
+  width: 1px;
+  background: #e6e8e0;
+`;
 
 interface InstantSearchResultProps {
   result: InstantSearchResultScheme;
@@ -302,7 +273,6 @@ const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = (
 
 const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) => {
   const { result, handleKeyDown, handleClickBookItem } = props;
-  const isTablet = useIsTablet();
   return (
     <ul>
       {result.books.map((book: InstantSearchBookResultScheme, index) => (
@@ -313,46 +283,19 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) 
             onKeyDown={handleKeyDown}
             onClick={handleClickBookItem}
           >
-            {isTablet ? (
-              <>
-                <BookTitle
-                  dangerouslySetInnerHTML={{
-                    __html: getEscapedString(
-                      book.highlight.web_title_title || book.web_title_title,
-                    ),
-                  }}
-                />
-                <AuthorLabel author={book.author} authors={book.authors_info} />
-                <AuthorPublisher>{book.publisher}</AuthorPublisher>
-                {book.age_limit > 18 && (
-                  <img width={19} src={ADULT_BADGE_URL} alt="성인 전용 도서" />
-                )}
-              </>
-            ) : (
-              <ItemWrapper>
-                <BookThumbnail
-                  alt={book.web_title_title}
-                  width="38px"
-                  height="58px"
-                  src={`https://img.ridicdn.net/cover/${book.b_id}/small`}
-                />
-                <BookMeta>
-                  <BookTitle
-                    dangerouslySetInnerHTML={{
-                      __html: getEscapedString(
-                        book.highlight.web_title_title || book.web_title_title,
-                      ),
-                    }}
-                  />
-                  <BookAuthors>
-                    <AuthorLabel author={book.author} authors={book.authors_info} />
-                    <AuthorPublisher>{book.publisher}</AuthorPublisher>
-                    {book.age_limit > 18 && (
-                      <img width={19} src={ADULT_BADGE_URL} alt="성인 전용 도서" />
-                    )}
-                  </BookAuthors>
-                </BookMeta>
-              </ItemWrapper>
+            <BookTitle
+              dangerouslySetInnerHTML={{
+                __html: getEscapedString(
+                  book.highlight.web_title_title || book.web_title_title,
+                ),
+              }}
+            />
+            <AuthorLabel author={book.author} authors={book.authors_info} />
+            <Divider />
+            <AuthorPublisher>{book.publisher}</AuthorPublisher>
+            {/* 성인 배지는 검색 반응형 완전 적용 이후에 표시하기로 결정  */}
+            {false && book.age_limit > 18 && (
+              <img width={19} src={ADULT_BADGE_URL} alt="성인 전용 도서" />
             )}
           </BookListItemButton>
         </BookListItem>
@@ -360,6 +303,10 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) 
     </ul>
   );
 });
+
+const ResultWrapper = styled.div`
+  padding: 4px 0;
+`;
 
 const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo((props) => {
   const {
@@ -370,7 +317,6 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo((prop
     handleKeyDown,
   } = props;
   const wrapperRef = React.useRef<HTMLDivElement>();
-  const isTablet = useIsTablet();
   useEffect(() => {
     if (wrapperRef.current && !!focusedPosition) {
       const items = wrapperRef.current.querySelectorAll('li button');
@@ -384,7 +330,7 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo((prop
   }, [focusedPosition, result]);
 
   return (
-    <div ref={wrapperRef}>
+    <ResultWrapper ref={wrapperRef}>
       {result.authors.length > 0 && (
         <>
           <ul>
@@ -396,13 +342,7 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo((prop
                   onKeyDown={handleKeyDown}
                   onClick={handleClickAuthorItem}
                 >
-                  {isTablet ? (
-                    <AuthorInfo author={author} />
-                  ) : (
-                    <ItemWrapper>
-                      <AuthorInfo author={author} />
-                    </ItemWrapper>
-                  )}
+                  <AuthorInfo author={author} />
                 </AuthorListItemButton>
               </AuthorListItem>
             ))}
@@ -417,7 +357,7 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo((prop
           result={result}
         />
       )}
-    </div>
+    </ResultWrapper>
   );
 });
 
