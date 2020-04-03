@@ -151,26 +151,21 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
 
   if (isServer) {
     if (res.statusCode !== 302) {
-      try {
-        // store.dispatch({ type: booksActions.setFetching.type, payload: true });
-        const result = await fetchHomeSections(genre.toString());
-        const bIds = keyToArray(result.branches, 'b_id');
-        store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
-        const categoryIds = keyToArray(result.branches, 'category_id');
-        store.dispatch({
-          type: categoryActions.insertCategoryIds.type,
-          payload: categoryIds,
-        });
-        return {
-          genre: genre.toString(),
-          store,
-          ...query,
-          ...result,
-        };
-      } catch (error) {
-        sentry.captureException(error, ctx);
-        throw new Error(error);
-      }
+      // store.dispatch({ type: booksActions.setFetching.type, payload: true });
+      const result = await fetchHomeSections(genre.toString());
+      const bIds = keyToArray(result.branches, 'b_id');
+      store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+      const categoryIds = keyToArray(result.branches, 'category_id');
+      store.dispatch({
+        type: categoryActions.insertCategoryIds.type,
+        payload: categoryIds,
+      });
+      return {
+        genre: genre.toString(),
+        store,
+        ...query,
+        ...result,
+      };
     }
   }
   return {
