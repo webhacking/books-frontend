@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import { NO_STAR_RATING_URL, STAR_RATING_URL } from 'src/constants/icons';
 
 interface StarRatingProps {
-  rating: number | null;
+  rating: number;
   totalReviewer?: number;
 }
 
-const wrapperCSS = css`
+const Wrapper = styled.div`
   display: inline-flex;
   align-items: center;
   font-size: 11px;
@@ -15,50 +15,52 @@ const wrapperCSS = css`
   line-height: 1.09;
 `;
 
-const totalReviewerCSS = css`
+const StarContainer = styled.div`
+  position: relative;
+  margin-right: 2px;
+  line-height: 0;
+`;
+
+const StarImage = styled.img`
+  width: 50px;
+  height: 10px;
+`;
+
+const StarMask = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  overflow: hidden;
+`;
+
+const TotalReviewer = styled.span`
   height: 10px;
   font-size: 11px;
   line-height: 1.09;
   color: #999999;
 `;
 
-const StarRating: React.FC<StarRatingProps> = (props) => (
-  <span css={wrapperCSS}>
-    <span
-      css={css`
-        position: relative;
-      `}
-    >
-      <img
-        src={NO_STAR_RATING_URL}
-        css={css`
-          width: 50px;
-          height: 10px;
-          margin-right: 2px;
-        `}
-      />
-      <span
-        css={css`
-          width: ${Math.floor((props.rating / 5) * 50)}px;
-          left: 0;
-          top: 0;
-          position: absolute;
-          height: 100%;
-          background-color: transparent;
-          overflow: hidden;
-        `}
-      >
-        <img
-          src={STAR_RATING_URL}
-          css={css`
-            width: 50px;
-            height: 10px;
-          `}
-        />
-      </span>
-    </span>
-    {props.totalReviewer && <span css={totalReviewerCSS}>{props.totalReviewer}</span>}
-  </span>
-);
-
-export default StarRating;
+export default function StarRating(props: StarRatingProps) {
+  const { rating, totalReviewer } = props;
+  let label = '별점 정보 없음';
+  if (totalReviewer > 0) {
+    label = `총 리뷰어 ${totalReviewer}명, `
+      + `구매자 평균 별점 ${rating}점`;
+  }
+  return (
+    <Wrapper role="img" aria-label={label}>
+      <StarContainer>
+        <StarImage src={NO_STAR_RATING_URL} alt="별점 회색 배경" />
+        <StarMask
+          style={{ width: `${Math.floor(rating * 10)}px` }}
+        >
+          <StarImage src={STAR_RATING_URL} alt="별점 표시" />
+        </StarMask>
+      </StarContainer>
+      {totalReviewer && (
+        <TotalReviewer>{totalReviewer}</TotalReviewer>
+      )}
+    </Wrapper>
+  );
+}

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { css } from '@emotion/core';
 import SomeDealIcon from 'src/svgs/SomeDealBadge.svg';
 
@@ -42,6 +42,8 @@ const SomeDealTag = () => (
       css={css`
         height: 12px;
       `}
+      role="img"
+      aria-label="썸딜 도서"
     />
   </span>
 );

@@ -4,7 +4,7 @@ import {
 } from 'src/utils/mediaQuery';
 import { DisplayType, MdBook } from 'src/types/sections';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
-import BookMeta from 'src/components/BookMeta/BookMeta';
+import BookMeta from 'src/components/BookMeta';
 import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
@@ -192,7 +192,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
         <BookMeta
           book={item.detail}
           showTag={['bl', 'bl-serial'].includes(genre)}
-          wrapperCSS={bookMetaWrapperStyle}
+          css={bookMetaWrapperStyle}
           showRating
           isAIRecommendation={false}
         />
@@ -320,7 +320,7 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = (props) => {
   return (
     <Section ref={targetRef}>
       <Title aria-label={title}>{title}</Title>
-      <ItemList genre={genre} slug={slug} books={books as MdBook[]} />
+      <ItemList genre={genre} slug={slug} books={books} />
     </Section>
   );
 };

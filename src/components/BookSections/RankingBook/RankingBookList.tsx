@@ -14,7 +14,7 @@ import {
   ReadingRanking,
   SectionExtra,
 } from 'src/types/sections';
-import BookMeta from 'src/components/BookMeta/BookMeta';
+import BookMeta from 'src/components/BookMeta';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
 import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
