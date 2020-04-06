@@ -7,7 +7,9 @@ import * as SearchTypes from './types';
 
 interface SearchProps {
   q?: string;
-  result: SearchTypes.SearchResult;
+  book?: SearchTypes.BookResult;
+  author?: SearchTypes.AuthorResult;
+  categories?: SearchTypes.Aggregation;
 }
 
 const SearchResultSection = styled.section`
@@ -25,7 +27,12 @@ function SearchPage(props: SearchProps) {
           검색 결과 - 리디북스
         </title>
       </Head>
-      <div>검색 결과</div>
+      <div>
+        <h3>검색 결과</h3>
+        {props.book?.books.map((book) => (
+          <span key={book.b_id}>{book.title}</span>
+        ))}
+      </div>
     </SearchResultSection>
   );
 }
@@ -42,11 +49,17 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   searchUrl.searchParams.append('what', 'base');
   searchUrl.searchParams.append('keyword', searchKeyword as string);
   if (isServer) {
-    const searchResult = await axios.get<SearchTypes.SearchResult>(searchUrl.toString());
+    const { data } = await axios.get<SearchTypes.SearchResult>(searchUrl.toString());
     // const result = await pRetry(() => axios.get(process.env.NEXT_STATIC_SEARCH_API), {
     //   retries: 3,
     // });
     // console.log(result, q);
+    return {
+      q: props.query.q,
+      book: data.book,
+      author: data.author,
+      categories: data.book.aggregations,
+    };
   }
   return { q: props.query.q };
 };

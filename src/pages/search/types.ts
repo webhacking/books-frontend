@@ -12,7 +12,7 @@ export interface AuthorResult {
 }
 
 export interface Aggregation {
-  category_id: 0;
+  category_id: number;
   category_name: string;
   doc_count: number;
 }
