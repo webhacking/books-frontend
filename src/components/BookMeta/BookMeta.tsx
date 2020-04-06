@@ -16,9 +16,7 @@ const BookTitle = styled.div`
   margin-bottom: 4.5px;
   ${orBelow(
     999,
-    css`
-      font-size: 14px;
-    `,
+    'font-size: 14px;',
   )}
 `;
 

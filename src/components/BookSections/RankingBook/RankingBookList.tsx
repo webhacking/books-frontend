@@ -36,7 +36,7 @@ const SectionWrapper = styled.section`
 
   ${orBelow(
     999,
-    css`
+    `
       padding-top: 16px;
       padding-bottom: 16px;
     `,
@@ -120,7 +120,7 @@ const List = styled.ul<{ type: 'big' | 'small' }>`
 
   ${greaterThanOrEqualTo(
     BreakPoint.MD + 1,
-    css`
+    `
       padding-left: 20px;
       padding-right: 20px;
     `,
@@ -128,7 +128,7 @@ const List = styled.ul<{ type: 'big' | 'small' }>`
 
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
-    css`
+    `
       padding-left: 24px;
       padding-right: 24px;
     `,

@@ -1,5 +1,4 @@
 import React from 'react';
-import { css } from '@emotion/core';
 import { EventBannerList } from 'src/components/EventBanner';
 import { EventBanner as EventBannerItem } from 'src/types/sections';
 import { orBelow } from 'src/utils/mediaQuery';
@@ -12,9 +11,7 @@ const Section = styled.section`
   height: 100%;
   ${orBelow(
     999,
-    css`
-      padding: 16px 0;
-    `,
+    'padding: 16px 0;',
   )}
 `;
 

@@ -37,7 +37,7 @@ const Ruler = styled.hr`
 
 const resetPadding = orBelow(
   999,
-  css`
+  `
     padding: 0;
   `,
 );
@@ -79,7 +79,7 @@ const GenreList = styled.ul`
   }
   ${orBelow(
     999,
-    css`
+    `
       justify-content: space-around;
       li {
         flex-grow: 1;

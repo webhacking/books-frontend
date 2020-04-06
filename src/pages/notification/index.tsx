@@ -28,9 +28,7 @@ const Section = styled.section<{}, RIDITheme>`
   margin: 0 auto;
   ${orBelow(
     BreakPoint.LG,
-    css`
-      padding: 0;
-    `,
+    'padding: 0;',
   )};
 `;
 
@@ -51,15 +49,11 @@ const NotiListItem = styled.li<{}, RIDITheme>`
 
   ${orBelow(
     BreakPoint.LG,
-    css`
-      padding: 14px 20px;
-    `,
+    'padding: 14px 20px;',
   )};
   ${orBelow(
     BreakPoint.M,
-    css`
-      padding: 14px 16px;
-    `,
+    'padding: 14px 16px;',
   )};
 `;
 
@@ -106,7 +100,7 @@ const ImageWrapper = styled.div<{ imageType: string }>`
   flex-shrink: 0;
   position: relative;
   align-self: flex-start;
-  line-height: 0;  
+  line-height: 0;
   ${(props) => props.imageType === 'book' && BookShadowStyle};
 `;
 
@@ -163,7 +157,7 @@ const NoEmptyNotification = styled.p`
   padding-bottom: 359px;
   ${orBelow(
     BreakPoint.M,
-    css`
+    `
       padding-top: 144px;
       padding-bottom: 200px;
     `,

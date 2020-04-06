@@ -89,7 +89,7 @@ function RecommendedBookCarousel(props: Omit<RecommendedBookProps, 'title'>) {
               ${arrowWrapperCSS};
               ${greaterThanOrEqualTo(
               BreakPoint.XL + 1,
-              css`left: -31px;`,
+              'left: -31px;',
             )};
               left: 5px;
               top: ${getArrowVerticalCenterPosition()};
@@ -104,7 +104,7 @@ function RecommendedBookCarousel(props: Omit<RecommendedBookProps, 'title'>) {
               ${arrowWrapperCSS};
               ${greaterThanOrEqualTo(
               BreakPoint.XL + 1,
-              css`right: -27px;`,
+              'right: -27px;',
             )};
               right: 5px;
               top: ${getArrowVerticalCenterPosition()};

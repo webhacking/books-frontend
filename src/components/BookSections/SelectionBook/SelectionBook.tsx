@@ -37,7 +37,7 @@ const SectionWrapper = styled.section`
   padding-bottom: 24px;
   ${orBelow(
     999,
-    css`
+    `
       padding-top: 16px;
       padding-bottom: 16px;
     `,

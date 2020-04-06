@@ -19,9 +19,7 @@ import {
 const listItemCSS = css`
   ${orBelow(
     BreakPoint.LG,
-    css`
-      min-height: 40px;
-    `,
+    'min-height: 40px;',
   )};
   cursor: pointer;
 `;
@@ -30,7 +28,7 @@ const BookListItem = styled.li`
   ${listItemCSS}
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       :hover {
         background-color: white !important;
       }
@@ -41,7 +39,7 @@ const BookListItem = styled.li`
   )}
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
-    css`
+    `
         :first-of-type {
           border-top-left-radius: 3px;
           border-top-right-radius: 3px;
@@ -72,7 +70,7 @@ const AuthorListItem = styled.li`
   display: flex;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       :hover {
         background-color: white !important;
       }
@@ -83,7 +81,7 @@ const AuthorListItem = styled.li`
   )};
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
-    css`
+    `
       :first-of-type {
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
@@ -126,9 +124,7 @@ const BookTitle = styled.span`
   color: ${gray100};
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
-    css`
-      max-width: 298px;
-    `,
+    'max-width: 298px;',
   )};
 `;
 
@@ -152,9 +148,7 @@ const AuthorName = styled.span`
   margin-right: 8px;
   ${orBelow(
     BreakPoint.LG,
-    css`
-      margin-right: 6px;
-    `,
+    'margin-right: 6px;',
   )};
   color: ${gray100};
 `;
@@ -179,9 +173,7 @@ const AuthorPublisher = styled.span`
   margin-right: 5px;
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
-    css`
-      max-width: 298px;
-    `,
+    'max-width: 298px;',
   )}
 `;
 

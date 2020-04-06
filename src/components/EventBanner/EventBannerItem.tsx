@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
 import {
   between, BreakPoint, greaterThanOrEqualTo, orBelow,
 } from 'src/utils/mediaQuery';
@@ -10,7 +9,7 @@ const EventBannerItem = styled.li`
 
   ${orBelow(
     BreakPoint.MD,
-    css`
+    `
       :not(:nth-of-type(2n)) {
         margin-right: 4px;
       }
@@ -21,7 +20,7 @@ const EventBannerItem = styled.li`
   ${between(
     BreakPoint.MD + 1,
     BreakPoint.LG,
-    css`
+    `
       :not(:last-of-type) {
         margin-right: 6px;
       }
@@ -30,7 +29,7 @@ const EventBannerItem = styled.li`
   )};
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
-    css`
+    `
       :not(:last-of-type) {
         margin-right: 8px;
       }
