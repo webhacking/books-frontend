@@ -12,6 +12,7 @@ import { Page, Section } from 'src/types/sections';
 import HomeSectionRenderer from 'src/components/Section/HomeSectionRenderer';
 import pRetry from 'p-retry';
 import { keyToArray } from 'src/utils/common';
+import { NotFoundError } from 'src/utils/error';
 import axios, { CancelToken } from 'src/utils/axios';
 import { booksActions } from 'src/services/books';
 import sentry from 'src/utils/sentry';
@@ -144,9 +145,9 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
     isServer,
   } = ctx;
 
-  const { genre = 'general' } = query;
-  if (!['general', 'romance', 'romance-serial', 'fantasy', 'fantasy-serial', 'comics', 'bl', 'bl-serial'].includes(genre.toString())) {
-    throw new Error('Not Found');
+  const genre = (query.genre || 'general').toString();
+  if (!['general', 'romance', 'romance-serial', 'fantasy', 'fantasy-serial', 'comics', 'bl', 'bl-serial'].includes(genre)) {
+    throw new NotFoundError(genre);
   }
 
   if (isServer) {
