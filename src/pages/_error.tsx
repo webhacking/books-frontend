@@ -6,6 +6,7 @@ import { ErrorProps } from 'next/error';
 import React from 'react';
 
 import Meta from 'src/components/Meta';
+import { NotFoundError } from 'src/utils/error';
 import sentry from 'src/utils/sentry';
 import NotFoundIcon from 'src/svgs/NotFound.svg';
 import RidiLogo from 'src/svgs/RidiLogo_1.svg';
@@ -122,8 +123,7 @@ export default function ErrorPage(props: ErrorProps) {
 ErrorPage.getInitialProps = (context: NextPageContext) => {
   const { res, err } = context;
 
-  // FIXME: Error 클래스 새로 만들기
-  if (err && err.message !== 'Not Found') {
+  if (err && !(err instanceof NotFoundError)) {
     sentry.captureException(err, context);
     const statusCode = err.statusCode || res?.statusCode || 500;
     return { statusCode };
