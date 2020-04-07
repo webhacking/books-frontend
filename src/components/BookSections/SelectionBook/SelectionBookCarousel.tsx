@@ -2,14 +2,12 @@ import React from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
-import {
-  SelectionBookCarouselProps,
-  SelectionBookItem,
-} from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import BooksCarousel from 'src/components/Carousel/BooksCarousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
-import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
+import { DisplayType, MdBook } from 'src/types/sections';
+
+import SelectionBookItem from './SelectionBookItem';
 
 const arrowWrapperCSS = css`
   position: absolute;
@@ -30,12 +28,19 @@ const BookItemWrapper = styled.li`
   outline: none;
 `;
 
-const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((props) => {
+export interface SelectionBookCarouselProps {
+  items: MdBook[]; // Fixme Md 타입 말고 comics UserPreferredSection 타입이 API 결과로 오는데 이 부분 확인해야 함
+  isAIRecommendation: boolean;
+  genre: string;
+  type: DisplayType;
+  bookFetching?: boolean;
+  slug?: string;
+}
+
+const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = (props) => {
   const {
     genre, type, isAIRecommendation, slug,
   } = props;
-
-  const [requestExclude, requestCancel] = useExcludeRecommendation();
 
   const { items } = props;
   const books = React.useMemo(
@@ -82,10 +87,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
               genre={genre}
               slug={slug}
               isAIRecommendation={isAIRecommendation}
-              aiRecommendationCallback={{
-                exclude: requestExclude,
-                excludeCancel: requestCancel,
-              }}
               excluded={books[index]?.excluded ?? false}
               book={books[index]}
               type={type}
@@ -129,6 +130,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
       )}
     </CarouselWrapper>
   );
-});
+};
 
-export default SelectionBookCarousel;
+export default React.memo(SelectionBookCarousel);
