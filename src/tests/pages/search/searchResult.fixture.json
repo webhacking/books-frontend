@@ -1,0 +1,2001 @@
+{
+  "author": {
+    "total": 8,
+    "authors": [
+      {
+        "popular_book_title": "[미즈] 미남들과 함께 가는 성교육 1화",
+        "book_count": 12,
+        "name": "후가 유유",
+        "id": 49057,
+        "highlight": {
+          "name": "후가 <strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "popular_book_title": "운명의 베타는 알파의 익애에 피어난다",
+        "book_count": 3,
+        "name": "아오이 유유",
+        "id": 67465,
+        "highlight": {
+          "name": "아오이 <strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "popular_book_title": "아홉 살에 처음 만나는 이상한 나라의 앨리스",
+        "book_count": 3,
+        "name": "유유",
+        "id": 81117,
+        "highlight": {
+          "name": "<strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "popular_book_title": "[코믹] 어서 오세요 실력지상주의 교실에 1권",
+        "book_count": 1,
+        "name": "이치노 유유",
+        "id": 97310,
+        "highlight": {
+          "name": "이치노 <strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "popular_book_title": "비밀스러운 오일 마사지",
+        "book_count": 6,
+        "name": "유유유",
+        "id": 97913,
+        "highlight": {}
+      },
+      {
+        "popular_book_title": "복종 1권",
+        "book_count": 1,
+        "name": "유유윤",
+        "id": 49805,
+        "highlight": {}
+      },
+      {
+        "popular_book_title": "소심토끼 유유의 내면노트",
+        "book_count": 1,
+        "name": "이유미",
+        "id": 6517,
+        "highlight": {}
+      },
+      {
+        "popular_book_title": "검정스타킹-백투더열일곱 10화",
+        "book_count": 1,
+        "name": "만유유",
+        "id": 94375,
+        "highlight": {}
+      }
+    ]
+  },
+  "book": {
+    "total": 147,
+    "books": [
+      {
+        "buyer_rating_score": 4.7,
+        "is_series_complete": true,
+        "sub_title": "",
+        "author": "한오디",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "학원/캠퍼스물",
+            "tag_id": 2394
+          },
+          {
+            "tag_name": "다정공",
+            "tag_id": 2398
+          },
+          {
+            "tag_name": "평점4점이상",
+            "tag_id": 2791
+          },
+          {
+            "tag_name": "리뷰100개이상",
+            "tag_id": 2792
+          },
+          {
+            "tag_name": "2권이하",
+            "tag_id": 2794
+          },
+          {
+            "tag_name": "5000원이하",
+            "tag_id": 2796
+          },
+          {
+            "tag_name": "일상물",
+            "tag_id": 2918
+          },
+          {
+            "tag_name": "단행본",
+            "tag_id": 3126
+          },
+          {
+            "tag_name": "별점1000개이상",
+            "tag_id": 3431
+          }
+        ],
+        "series_prices_info": [
+          {
+            "series_arg": 0,
+            "total_regular_price": 4000,
+            "total_price": 4000,
+            "type": "normal",
+            "free_book_count": 0,
+            "series_id": "1824002023",
+            "regular_price": 0,
+            "max_price": 3500,
+            "book_count": 2,
+            "min_price": 500,
+            "arg": 0,
+            "min_nonzero_price": 500,
+            "series_discount_rate": 0
+          }
+        ],
+        "title": "유유상종",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 2,
+        "web_title": "",
+        "b_id": "1824002023",
+        "price": 3500,
+        "buyer_review_count": 1266,
+        "publisher": "뉴콕",
+        "buyer_rating_count": 4945,
+        "web_title_title": " 유유상종",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "한오디",
+            "author_id": 81331,
+            "native_name": "",
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n“안녕. 도화 맞지? 유도화.”\r\n\r\n남자를 좋아한다는 이유로 따돌림 당하던 나에게 다가온, 너의 첫 인사.\r\n\r\n“이름 예뻐서 기억하고 있었어.”\r\n\r\n그건 그토록 싫어하던 이름에 대한 칭찬이었다.\r\n그리고 나는, 너를 정의하는 단어가 이를테면 이런 것이었으면 하게 됐다.\r\n\r\n목소리, 향기, 단정한 교복….\r\n\r\n책장을 넘기는 하얀 손가락이나, 웃을 때 그림처럼 접히는 눈매, 부드러운 말투, \r\n혹은… 한여름의 어느 날, 이유를 묻지 않고 그저 끌어안아 주었던 다정함 같은 것들이었으면.\n\n\n<b>&lt;저자 소개&gt;</b>\n",
+        "_score": 935.40424,
+        "highlight": {
+          "web_title_title": " <strong class=\"title_point\">유유</strong>상종"
+        }
+      },
+      {
+        "buyer_rating_score": 0.0,
+        "is_series_complete": false,
+        "sub_title": "",
+        "author": "한오디",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "학원/캠퍼스물",
+            "tag_id": 2394
+          },
+          {
+            "tag_name": "다정공",
+            "tag_id": 2398
+          },
+          {
+            "tag_name": "평점4점이상",
+            "tag_id": 2791
+          },
+          {
+            "tag_name": "리뷰100개이상",
+            "tag_id": 2792
+          },
+          {
+            "tag_name": "5000원이하",
+            "tag_id": 2796
+          },
+          {
+            "tag_name": "일상물",
+            "tag_id": 2918
+          },
+          {
+            "tag_name": "단행본",
+            "tag_id": 3126
+          },
+          {
+            "tag_name": "별점1000개이상",
+            "tag_id": 3431
+          }
+        ],
+        "series_prices_info": [],
+        "title": "<유유상종> 세트",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "111018969",
+        "price": 4000,
+        "buyer_review_count": 0,
+        "publisher": "뉴콕",
+        "buyer_rating_count": 0,
+        "web_title_title": " <유유상종> 세트",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "한오디",
+            "author_id": 81331,
+            "native_name": "",
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n“안녕. 도화 맞지? 유도화.”\r\n\r\n남자를 좋아한다는 이유로 따돌림 당하던 나에게 다가온, 너의 첫 인사.\r\n\r\n“이름 예뻐서 기억하고 있었어.”\r\n\r\n그건 그토록 싫어하던 이름에 대한 칭찬이었다.\r\n그리고 나는, 너를 정의하는 단어가 이를테면 이런 것이었으면 하게 됐다.\r\n\r\n목소리, 향기, 단정한 교복….\r\n\r\n책장을 넘기는 하얀 손가락이나, 웃을 때 그림처럼 접히는 눈매, 부드러운 말투, \r\n혹은… 한여름의 어느 날, 이유를 묻지 않고 그저 끌어안아 주었던 다정함 같은 것들이었으면.\n\n\n<b>&lt;저자 소개&gt;</b>\n",
+        "_score": 671.583,
+        "highlight": {
+          "web_title_title": " <<strong class=\"title_point\">유유</strong>상종> 세트"
+        }
+      },
+      {
+        "buyer_rating_score": 4.3,
+        "is_series_complete": false,
+        "sub_title": "",
+        "author": "나이토 키노스케",
+        "events_info": [],
+        "translator": "이원명",
+        "age_limit": 0,
+        "tags_info": [
+          {
+            "tag_name": "라이트노벨",
+            "tag_id": 1252
+          }
+        ],
+        "series_prices_info": [
+          {
+            "series_arg": 0,
+            "total_regular_price": 13000,
+            "total_price": 13000,
+            "type": "normal",
+            "free_book_count": 0,
+            "series_id": "2036055327",
+            "regular_price": 0,
+            "max_price": 6500,
+            "book_count": 2,
+            "min_price": 6500,
+            "arg": 0,
+            "min_nonzero_price": 6500,
+            "series_discount_rate": 0
+          }
+        ],
+        "title": "이세계 유유자적 농가",
+        "is_rental": false,
+        "author2": ", 야스모",
+        "book_count": 2,
+        "web_title": "",
+        "b_id": "2036055327",
+        "price": 6500,
+        "buyer_review_count": 13,
+        "publisher": "노블엔진",
+        "buyer_rating_count": 63,
+        "web_title_title": " 이세계 유유자적 농가",
+        "authors_info": [
+          {
+            "role": "story_writer",
+            "name": "나이토 키노스케",
+            "author_id": 103171,
+            "alias_name": "内藤騎之介,Naitou Kinosuke,Kinosuke Naitou",
+            "native_name": "Kinosuke Naitou",
+            "order": 0
+          },
+          {
+            "role": "illustrator",
+            "name": "야스모",
+            "author_id": 103172,
+            "alias_name": "やすも,Yasumo",
+            "native_name": "Yasumo",
+            "order": 1
+          },
+          {
+            "role": "translator",
+            "name": "이원명",
+            "author_id": 14273,
+            "native_name": "",
+            "order": 2
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n<strong>고생한 끝에 낙이 온다?!\r\n여유롭게 땅을 갈고 농사를 짓는 이색 슬로 라이프 스토리, 스타트!</strong>\r\n\r\n투병 끝에 젊은 나이로 세상을 떠난 청년, 마치오 히라쿠.\r\n신의 자비로 ‘건강한 몸’을 받아서 전이한 이세계에서, ‘만능농기구’ 하나로 생전에 꿈만 꿨던 농사일을 시작하는데――\r\n자유롭게 개척하는 대지, 개척한 농지로 하나둘 모여드는 새 가족들. 느긋하고 즐거운 삶이 여기에 있다!\r\n‘둥지 짓는 드래곤’ 제작사의 시나리오 라이터가 쓰는 이세계 슬로 라이프× 농업 판타지, 개막!\n\n\n<b>&lt;출판사",
+        "_score": 597.95404,
+        "highlight": {
+          "web_title_title": " 이세계 <strong class=\"title_point\">유유</strong>자적 농가"
+        }
+      },
+      {
+        "buyer_rating_score": 3.9,
+        "is_series_complete": false,
+        "sub_title": "",
+        "author": "키노조 미야",
+        "events_info": [],
+        "translator": "손종근",
+        "age_limit": 0,
+        "tags_info": [
+          {
+            "tag_name": "일본",
+            "tag_id": 263
+          },
+          {
+            "tag_name": "라이트노벨",
+            "tag_id": 1252
+          },
+          {
+            "tag_name": "판타지/SF",
+            "tag_id": 1377
+          },
+          {
+            "tag_name": "이계/이세계",
+            "tag_id": 3116
+          }
+        ],
+        "series_prices_info": [
+          {
+            "series_arg": 0,
+            "total_regular_price": 16800,
+            "total_price": 16800,
+            "type": "normal",
+            "free_book_count": 0,
+            "series_id": "2066000908",
+            "regular_price": 0,
+            "max_price": 7000,
+            "book_count": 3,
+            "min_price": 4900,
+            "arg": 0,
+            "min_nonzero_price": 4900,
+            "series_discount_rate": 0
+          }
+        ],
+        "title": "LV2부터 치트였던 전직 용사후보의 유유자적 이세계 라이프",
+        "is_rental": false,
+        "author2": ", 카타기리",
+        "book_count": 3,
+        "web_title": "",
+        "b_id": "2066000908",
+        "price": 4900,
+        "buyer_review_count": 16,
+        "publisher": "S노벨 플러스",
+        "buyer_rating_count": 86,
+        "web_title_title": " LV2부터 치트였던 전직 용사후보의 유유자적 이세계 라이프",
+        "authors_info": [
+          {
+            "role": "story_writer",
+            "name": "키노조 미야",
+            "author_id": 100823,
+            "alias_name": "Kinojo Miya,Miya Kinojo,鬼ノ城ミヤ,키노죠 미야",
+            "native_name": "Miya Kinojo",
+            "order": 0
+          },
+          {
+            "role": "illustrator",
+            "name": "카타기리",
+            "author_id": 100824,
+            "alias_name": "Katagiri,片桐",
+            "native_name": "Katagiri",
+            "order": 1
+          },
+          {
+            "role": "translator",
+            "name": "손종근",
+            "author_id": 43438,
+            "native_name": "",
+            "order": 2
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n<strong>치트 슬로우 라이프, 시작합니다.</strong>\r\n\r\n이세계 클라이로드 마법국에 용사 후보로 소환된 버나저는 능력이 일반시민이나 마찬가지였기에 용사 실격의 낙인이 찍히고 만다.\r\n착오로 인해 송환되지 못한 버나저는 원래의 세계로 돌아갈 수 없게 되어버리는데――?!\r\n어쩔 수 없이 이세계에서 살게 된 버나저는 숲을 덮친 슬라임을 격퇴하여 레벨 업을 한다.\r\n그 순간――\r\n\r\n“뭐야……?! 이 ∞는?!”\r\n\r\n레벨 2가 된 버나저의 능력치가 전부 “∞”――모든 스킬이나 마법을 습득하고 모든 능력치가 파격적인 수치로 바뀌",
+        "_score": 512.62787,
+        "highlight": {
+          "web_title_title": " LV2부터 치트였던 전직 용사후보의 <strong class=\"title_point\">유유</strong>자적 이세계 라이프"
+        }
+      },
+      {
+        "buyer_rating_score": 0.0,
+        "is_series_complete": false,
+        "sub_title": "",
+        "author": "양자오",
+        "events_info": [],
+        "translator": "류방승",
+        "age_limit": 0,
+        "tags_info": [],
+        "series_prices_info": [],
+        "title": "유유 동서양고전강의 세트",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "111017480",
+        "price": 86100,
+        "buyer_review_count": 0,
+        "publisher": "유유",
+        "buyer_rating_count": 0,
+        "web_title_title": " 유유 동서양고전강의 세트",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "양자오",
+            "author_id": 56514,
+            "native_name": "",
+            "order": 0
+          },
+          {
+            "role": "translator",
+            "name": "류방승",
+            "author_id": 10339,
+            "native_name": "",
+            "order": 1
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n타이완의 대형 서점 청핀서점誠品書店에서 마련한 독서 강좌에서 현대고전정독을 진행한 저자 양자오는 ‘고전’과 ‘현대’를 아우르면서 20세기에 가장 큰 영향을 미쳤던 세 작품을 선택했다. 인간과 자연의 관계를 바꾼 『종의 기원』, 인간과 인간의 관계를 바꾼 『자본론』 그리고 인간과 자아의 관계를 바꾼 『꿈의 해석』이었다. 19세기에서 20세기로 접어드는 시기의 서양사상사에 줄곧 깊은 흥미를 가지고 있었던 저자는 그 시대에 신선하고 자극적인 관념과 사상이 탄생했으며 지금까지도 우리의 삶에 큰 영향을 미치고 있다고 지적한다. 세 작품은 바",
+        "_score": 414.91446,
+        "highlight": {
+          "publisher": "<strong class=\"title_point\">유유</strong>",
+          "web_title_title": " <strong class=\"title_point\">유유</strong> 동서양고전강의 세트"
+        }
+      },
+      {
+        "buyer_rating_score": 4.2,
+        "is_series_complete": false,
+        "sub_title": "",
+        "author": "Mai Machi",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 0,
+        "tags_info": [
+          {
+            "tag_name": "일본",
+            "tag_id": 263
+          },
+          {
+            "tag_name": "캠퍼스",
+            "tag_id": 274
+          },
+          {
+            "tag_name": "일상",
+            "tag_id": 289
+          },
+          {
+            "tag_name": "현대배경",
+            "tag_id": 1422
+          },
+          {
+            "tag_name": "연하남",
+            "tag_id": 3231
+          }
+        ],
+        "series_prices_info": [
+          {
+            "series_arg": 0,
+            "total_regular_price": 19200,
+            "total_price": 19200,
+            "type": "normal",
+            "free_book_count": 0,
+            "series_id": "2007001292",
+            "regular_price": 0,
+            "max_price": 4800,
+            "book_count": 4,
+            "min_price": 4800,
+            "arg": 0,
+            "min_nonzero_price": 4800,
+            "series_discount_rate": 0
+          },
+          {
+            "series_arg": 7,
+            "total_regular_price": 19200,
+            "total_price": 9600,
+            "type": "rent",
+            "free_book_count": 0,
+            "series_id": "2007001292",
+            "regular_price": 0,
+            "max_price": 2400,
+            "book_count": 4,
+            "min_price": 2400,
+            "arg": 3,
+            "min_nonzero_price": 2400,
+            "series_discount_rate": 0
+          }
+        ],
+        "title": "아야메의 유유자적 육식일기",
+        "is_rental": true,
+        "author2": "",
+        "book_count": 4,
+        "web_title": "",
+        "b_id": "2007001292",
+        "price": 4800,
+        "buyer_review_count": 5,
+        "publisher": "삼양코믹스",
+        "buyer_rating_count": 14,
+        "web_title_title": " 아야메의 유유자적 육식일기",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "마치 마이",
+            "author_id": 99880,
+            "alias_name": "町麻衣,Machi Mai,Mai Machi",
+            "native_name": "Mai Machi",
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n무대는 모 대학교 생물학과 연구실. \r\n올해 새내기 신입생 아야메 슌은 특이한 청년이다. \r\n고고학자의 아들로, 영국에서 자랐으며, 호기심 왕성한 공룡 오타쿠. \r\n틀림없이 우수한 연구자가 될……줄 알았는데, 선배 츠바키의 알몸을 본 이후로 \r\n그녀에게 마구 들이대는데……?!",
+        "_score": 210.89781,
+        "highlight": {
+          "web_title_title": " 아야메의 <strong class=\"title_point\">유유</strong>자적 육식일기"
+        }
+      },
+      {
+        "buyer_rating_score": 4.1,
+        "is_series_complete": false,
+        "sub_title": "한뼘 BL 컬렉션 425",
+        "author": "유유유",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "현대물",
+            "tag_id": 2388
+          },
+          {
+            "tag_name": "코믹/개그물",
+            "tag_id": 2389
+          },
+          {
+            "tag_name": "무심공",
+            "tag_id": 2395
+          },
+          {
+            "tag_name": "순진수",
+            "tag_id": 2407
+          },
+          {
+            "tag_name": "평점4점이상",
+            "tag_id": 2791
+          },
+          {
+            "tag_name": "5000원이하",
+            "tag_id": 2796
+          },
+          {
+            "tag_name": "오해/착각",
+            "tag_id": 2812
+          },
+          {
+            "tag_name": "원나잇",
+            "tag_id": 2840
+          },
+          {
+            "tag_name": "미인공",
+            "tag_id": 2849
+          },
+          {
+            "tag_name": "츤데레공",
+            "tag_id": 2860
+          },
+          {
+            "tag_name": "평범수",
+            "tag_id": 2880
+          },
+          {
+            "tag_name": "일상물",
+            "tag_id": 2918
+          },
+          {
+            "tag_name": "단행본",
+            "tag_id": 3126
+          },
+          {
+            "tag_name": "별점100개이상",
+            "tag_id": 3429
+          }
+        ],
+        "series_prices_info": [],
+        "title": "비밀스러운 오일 마사지",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "1668001006",
+        "price": 1000,
+        "buyer_review_count": 95,
+        "publisher": "젤리빈",
+        "buyer_rating_count": 151,
+        "web_title_title": " 비밀스러운 오일 마사지",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "유유유",
+            "author_id": 97913,
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n#현대물 #오해/착각 #테라피스트 #원나잇 #코믹/개그물 #일상물\r\n#미인공 #무심공 #츤데레공 #능청공 #평범수 #순진수\r\n피곤한 직장인인 도형. 찌뿌둥한 몸을 불평하는 도형에게 친구가 오일 마사지 무료 체험권이 건넨다. 친구는 자신도 가 본 곳이라면서 절대로 이상한 곳이 아니고 마사지 솜씨가 좋다고 강력하게 추천한다. 남의 부탁이나 강권을 잘 거절하지 못하는 도형은 이것저것 망설여지지만, 친구의 말을 믿고 무료 체험을 하기 위해서 마사지 샵을 찾는다.\r\n\"아.... 조금만 살살....\" \"아직 덜 풀리신 곳이 있나요?\" \"아..",
+        "_score": 165.80608,
+        "highlight": {
+          "author": "유<strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 4.0,
+        "is_series_complete": false,
+        "sub_title": "하루 5분 내 마음을 들어줘",
+        "author": "이유미",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 0,
+        "tags_info": [],
+        "series_prices_info": [],
+        "title": "소심토끼 유유의 내면노트",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "684000022",
+        "price": 7800,
+        "buyer_review_count": 0,
+        "publisher": "가디언",
+        "buyer_rating_count": 1,
+        "web_title_title": " 소심토끼 유유의 내면노트",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "이유미",
+            "author_id": 6517,
+            "alias_name": "그림토끼 유유",
+            "native_name": "",
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n<b>20대의 치열한 일상 속에서 한 뼘의 여유를 찾게 해주는 책</b> \r\n“때로는 스스로를 부족하게 여기고, 자신감 없는 하루를 살더라도 마음속에는 크고, 빛나는 사랑이 자리하고 있다. 이것을 항상 기억하고, 진짜 ‘내 행복’을 향해서 힘을 내게 되었다.” \r\n\r\n<b>누구나 충분히 위로받고 난 후에야 다시 일어설 수 있는 힘이 생긴다 \r\n\r\n미래에 대한 불안과 두려움으로 점점 소심해지는 \r\n요즘 20대들을 위한 자신감 회복 프로젝트 </b>\r\n‘나는 왜 이렇게 키가 작을까?’ ‘조금 더 능력 있는 부모님이었다면?’ ‘좋은 대학",
+        "_score": 158.83995,
+        "highlight": {
+          "web_title_title": " 소심토끼 <strong class=\"title_point\">유유</strong>의 내면노트"
+        }
+      },
+      {
+        "buyer_rating_score": 4.3,
+        "is_series_complete": false,
+        "sub_title": "한뼘 BL 컬렉션 354",
+        "author": "유유유",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "코믹/개그물",
+            "tag_id": 2389
+          },
+          {
+            "tag_name": "강공",
+            "tag_id": 2399
+          },
+          {
+            "tag_name": "집착공",
+            "tag_id": 2402
+          },
+          {
+            "tag_name": "순진수",
+            "tag_id": 2407
+          },
+          {
+            "tag_name": "SF/미래물",
+            "tag_id": 2416
+          },
+          {
+            "tag_name": "친구>연인",
+            "tag_id": 2418
+          },
+          {
+            "tag_name": "연하공",
+            "tag_id": 2425
+          },
+          {
+            "tag_name": "연상수",
+            "tag_id": 2426
+          },
+          {
+            "tag_name": "5000원이하",
+            "tag_id": 2796
+          },
+          {
+            "tag_name": "오해/착각",
+            "tag_id": 2812
+          },
+          {
+            "tag_name": "감금",
+            "tag_id": 2813
+          },
+          {
+            "tag_name": "미인공",
+            "tag_id": 2849
+          },
+          {
+            "tag_name": "능글공",
+            "tag_id": 2858
+          },
+          {
+            "tag_name": "도망수",
+            "tag_id": 2908
+          },
+          {
+            "tag_name": "사건물",
+            "tag_id": 2921
+          },
+          {
+            "tag_name": "단행본",
+            "tag_id": 3126
+          }
+        ],
+        "series_prices_info": [],
+        "title": "우주 경비",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "1668000836",
+        "price": 1000,
+        "buyer_review_count": 3,
+        "publisher": "젤리빈",
+        "buyer_rating_count": 8,
+        "web_title_title": " 우주 경비",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "유유유",
+            "author_id": 97913,
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n#SF #오해/착각 #감금 #친구&gt;연인 #코믹/개그물 #사건물\r\n#연하공 #미인공 #강공 #능글공 #집착공 #도망수 #연상수 #순진수\r\n광활한 우주 공간을 누비면서 각종 임무를 수행하는 우주 비행사, 진우. 그에게는 지난 우주 비행에서 후배인 수윤과 억지로 하게 된 사연이 있다. 그 트라우마(?)에서 벗어나지 못한 진우는 수윤을 피해다니기만 하지만, 수윤은 끈질기게 그를 쫓아 다닌다. 하다못해 진우가 결심한 것은 단독으로만 임무를 수행하는 우주 경비 업무에 자원하는 것이었다. 그렇게 한 사람이 몸을 누일 정도로 작은 우주선을 ",
+        "_score": 129.74591,
+        "highlight": {
+          "author": "유<strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 4.2,
+        "is_series_complete": false,
+        "sub_title": "한뼘 BL 컬렉션 334",
+        "author": "유유유",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "5000원이하",
+            "tag_id": 2796
+          },
+          {
+            "tag_name": "단행본",
+            "tag_id": 3126
+          }
+        ],
+        "series_prices_info": [],
+        "title": "우주 조난",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "1668000778",
+        "price": 1000,
+        "buyer_review_count": 4,
+        "publisher": "젤리빈",
+        "buyer_rating_count": 12,
+        "web_title_title": " 우주 조난",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "유유유",
+            "author_id": 97913,
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n#현대물 #SF #오해/착각 #친구&gt;연인 #원나잇 #코믹/개그물 #사건물\r\n#미인공 #귀염공 #능글공 #연하공 #얼빠수 #순진수 #허당수 #연상수\r\n광활한 우주 공간을 누비면서 외계 생물을 감시하는 수색선을 타고 다니는 수윤과 진우. 우주 파일럿 양성학교를 수석으로 졸업하고, 엄청난 외모를 지닌 수윤. 수윤의 선배이지만 그에 비하면 평범하기 짝이 없는 진우. 우주선에서 예기치 않은 사고가 터지고, 이제 둘은 기약도 없는 구조선을 기다리면서 우주선 안에서 죽음을 기다리는 신세가 된다. 그동안 아껴두었던 와인과 음식을 모두 요리해",
+        "_score": 126.53408,
+        "highlight": {
+          "author": "유<strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 0.0,
+        "is_series_complete": false,
+        "sub_title": "",
+        "author": "윌키 콜린스",
+        "events_info": [],
+        "translator": "김보은",
+        "age_limit": 0,
+        "tags_info": [],
+        "series_prices_info": [],
+        "title": "게으른 작가들의 유유자적 여행기",
+        "is_rental": false,
+        "author2": ", 찰스 디킨스",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "754024870",
+        "price": 6500,
+        "buyer_review_count": 0,
+        "publisher": "북스피어",
+        "buyer_rating_count": 0,
+        "web_title_title": " 게으른 작가들의 유유자적 여행기",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "윌리엄 윌키 콜린스",
+            "author_id": 15944,
+            "alias_name": "윌키 콜린스,William Wilkie Collins,Wilkie Collins,윌리엄 윌키 콜린즈",
+            "native_name": "William Wilkie Collins",
+            "order": 0
+          },
+          {
+            "role": "author",
+            "name": "찰스 디킨스",
+            "author_id": 4972,
+            "alias_name": "찰스 디킨즈,찰스 존 허펌 디킨스,찰스디킨스,Charles Dickens,디킨스,C. 디킨즈,Charles Dickens(찰스 디킨스)",
+            "native_name": "Charles Dickens",
+            "order": 1
+          },
+          {
+            "role": "translator",
+            "name": "김보은",
+            "author_id": 69120,
+            "native_name": "",
+            "order": 2
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n박람강기 프로젝트는 장르소설을 탐독하는 독자들에게 여러 종류의 글, 이를테면 서간문, 기행문, 평전 등을 널리 소개하자는 취지로 장르소설가들이 쓴 '뜻밖에' 반가운 에세이를 모은 시리즈이다. 이 책은 그 첫번째 시리즈로, 영문학사에 위대한 족적을 남긴 찰스 디킨스와 미스터리 소설의 초창기에 지대한 공헌을 한 윌키 콜린스의 여행 에세이이다. \r\n\r\n1857년 가을, 번잡한 도시와 자신들의 주인인 문학이라는 부인으로부터 대탈주를 감행한 찰스 디킨스와 윌키 콜린스는 북잉글랜드를 향해 도보 여행을 하기로 마음먹는다. 하지만 이 계획은 빛의",
+        "_score": 123.14093,
+        "highlight": {
+          "web_title_title": " 게으른 작가들의 <strong class=\"title_point\">유유</strong>자적 여행기"
+        }
+      },
+      {
+        "buyer_rating_score": 3.9,
+        "is_series_complete": false,
+        "sub_title": "",
+        "author": "유유유",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "현대물",
+            "tag_id": 2388
+          },
+          {
+            "tag_name": "무심공",
+            "tag_id": 2395
+          },
+          {
+            "tag_name": "순진수",
+            "tag_id": 2407
+          },
+          {
+            "tag_name": "계약",
+            "tag_id": 2419
+          },
+          {
+            "tag_name": "5000원이하",
+            "tag_id": 2796
+          },
+          {
+            "tag_name": "OO버스",
+            "tag_id": 2801
+          },
+          {
+            "tag_name": "초능력",
+            "tag_id": 2808
+          },
+          {
+            "tag_name": "미인공",
+            "tag_id": 2849
+          },
+          {
+            "tag_name": "까칠공",
+            "tag_id": 2859
+          },
+          {
+            "tag_name": "소심수",
+            "tag_id": 2877
+          },
+          {
+            "tag_name": "짝사랑수",
+            "tag_id": 2905
+          },
+          {
+            "tag_name": "능력수",
+            "tag_id": 2912
+          },
+          {
+            "tag_name": "달달물",
+            "tag_id": 2916
+          },
+          {
+            "tag_name": "일상물",
+            "tag_id": 2918
+          },
+          {
+            "tag_name": "잔잔물",
+            "tag_id": 2923
+          },
+          {
+            "tag_name": "단행본",
+            "tag_id": 3126
+          }
+        ],
+        "series_prices_info": [],
+        "title": "당신의 세계로 (외전증보판)",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "120041895",
+        "price": 4000,
+        "buyer_review_count": 12,
+        "publisher": "비하인드",
+        "buyer_rating_count": 37,
+        "web_title_title": " 당신의 세계로 (외전증보판)",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "유유유",
+            "author_id": 97913,
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n현대물, 가이드버스, 가이드공, 초능력자수 / 짝사랑수, 소심수, 순진수, 미인공\r\n\r\n\r\n* 공 : 최은택. 28세. 가이드. 잘생겼고, 유능하고, 유명하다. 그러나 타인에게 무관심한 슈퍼 가이드.\r\n* 수 : 권지인. 21세. 어느 날 갑자기 발현하여 사이오닉이 된 소년. 얌전하고 무던한 성격.\r\n\r\n어느 날, 평범한 대학생이었던 지인은 사이오닉이라 불리는 초능력자가 된다. 그리고 가이드, 최은택에게 첫눈에 반한다. 그러나 최은택은 지인에게, 아니 사이오닉에게 무관심하다.\r\n“하지만 최은택 가이드는 사이오닉을 싫어하는 편이야.”",
+        "_score": 113.724304,
+        "highlight": {
+          "author": "유<strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 3.1,
+        "is_series_complete": true,
+        "sub_title": "",
+        "author": "유유윤",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "현대물",
+            "tag_id": 1
+          },
+          {
+            "tag_name": "복수",
+            "tag_id": 14
+          },
+          {
+            "tag_name": "나쁜남자",
+            "tag_id": 48
+          },
+          {
+            "tag_name": "고수위",
+            "tag_id": 150
+          },
+          {
+            "tag_name": "계략남",
+            "tag_id": 477
+          },
+          {
+            "tag_name": "상처녀",
+            "tag_id": 481
+          },
+          {
+            "tag_name": "2015년출간",
+            "tag_id": 2702
+          },
+          {
+            "tag_name": "단행본",
+            "tag_id": 3127
+          },
+          {
+            "tag_name": "3000~5000원",
+            "tag_id": 3433
+          }
+        ],
+        "series_prices_info": [
+          {
+            "series_arg": 0,
+            "total_regular_price": 5000,
+            "total_price": 5000,
+            "type": "normal",
+            "free_book_count": 1,
+            "series_id": "1823000158",
+            "regular_price": 0,
+            "max_price": 2500,
+            "book_count": 3,
+            "min_price": 0,
+            "arg": 0,
+            "min_nonzero_price": 2500,
+            "series_discount_rate": 0
+          },
+          {
+            "series_arg": 1,
+            "total_regular_price": 5000,
+            "total_price": 1800,
+            "type": "rent",
+            "free_book_count": 1,
+            "series_id": "1823000158",
+            "regular_price": 0,
+            "max_price": 900,
+            "book_count": 3,
+            "min_price": 0,
+            "arg": 1,
+            "min_nonzero_price": 900,
+            "series_discount_rate": 0
+          }
+        ],
+        "title": "복종",
+        "is_rental": true,
+        "author2": "",
+        "book_count": 3,
+        "web_title": "",
+        "b_id": "1823000158",
+        "price": 0,
+        "buyer_review_count": 4,
+        "publisher": "현나라",
+        "buyer_rating_count": 15,
+        "web_title_title": " 복종",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "유유윤",
+            "author_id": 49805,
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n[19금/현대 로맨스]\r\n\r\n 쪽.\r\n\r\n\r\n\r\n  유리의 말이 끝나기가 무섭게 그녀의 입술에 닿는 부드러운 무언가에 그녀는 서둘러 그를 밀어내었다. 사람들이 많은 이곳에서 더군다나 두호의 회사인 곳에서 이렇게 대담한 행동을 할 줄이라고는 상상도 못했던 그녀였다.\r\n\r\n\r\n\r\n  “다른 놈들한테 내숭 떠는 것처럼 나한테 그 반만이라도 해봐.”\r\n\r\n\r\n\r\n  갑작스러운 두호의 행동에 볼이 빨갛게 상기된 유리를 보면서 두호는 이겼다는 듯이 승리의 미소를 지으며 사장실로 그녀를 데려갔다.\n\n\n<b>&lt;저자 소개&gt;</b>\n\n이북",
+        "_score": 97.03602,
+        "highlight": {
+          "author": "<strong class=\"title_point\">유유</strong>윤"
+        }
+      },
+      {
+        "buyer_rating_score": 3.5,
+        "is_series_complete": true,
+        "sub_title": "",
+        "author": "후가 유유",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "Lady성인",
+            "tag_id": 419
+          },
+          {
+            "tag_name": "오피스물",
+            "tag_id": 516
+          },
+          {
+            "tag_name": "로맨틱코미디물",
+            "tag_id": 518
+          },
+          {
+            "tag_name": "현대물",
+            "tag_id": 519
+          },
+          {
+            "tag_name": "계약관계물",
+            "tag_id": 526
+          },
+          {
+            "tag_name": "재벌/귀족男",
+            "tag_id": 533
+          },
+          {
+            "tag_name": "다정男",
+            "tag_id": 540
+          },
+          {
+            "tag_name": "하드성인",
+            "tag_id": 550
+          },
+          {
+            "tag_name": "달달물",
+            "tag_id": 555
+          },
+          {
+            "tag_name": "일본성인",
+            "tag_id": 562
+          },
+          {
+            "tag_name": "순정만화",
+            "tag_id": 1374
+          },
+          {
+            "tag_name": "완결성인",
+            "tag_id": 1417
+          },
+          {
+            "tag_name": "성인웹툰",
+            "tag_id": 3083
+          },
+          {
+            "tag_name": "순진女",
+            "tag_id": 3513
+          }
+        ],
+        "series_prices_info": [
+          {
+            "series_arg": 0,
+            "total_regular_price": 3200,
+            "total_price": 3200,
+            "type": "normal",
+            "free_book_count": 0,
+            "series_id": "678010279",
+            "regular_price": 0,
+            "max_price": 400,
+            "book_count": 8,
+            "min_price": 400,
+            "arg": 0,
+            "min_nonzero_price": 400,
+            "series_discount_rate": 0
+          },
+          {
+            "series_arg": 1,
+            "total_regular_price": 3200,
+            "total_price": 1400,
+            "type": "rent",
+            "free_book_count": 1,
+            "series_id": "678010279",
+            "regular_price": 0,
+            "max_price": 200,
+            "book_count": 8,
+            "min_price": 0,
+            "arg": 1,
+            "min_nonzero_price": 200,
+            "series_discount_rate": 0
+          }
+        ],
+        "title": "1500번의 봉사 업무",
+        "is_rental": true,
+        "author2": "",
+        "book_count": 8,
+        "web_title": "[웹툰]",
+        "b_id": "678010279",
+        "price": 400,
+        "buyer_review_count": 1,
+        "publisher": "(주) 아이온스타",
+        "buyer_rating_count": 11,
+        "web_title_title": "[웹툰] 1500번의 봉사 업무",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "후가 유유",
+            "author_id": 49057,
+            "alias_name": "Fuuga Yuyu,Yuyu Fuuga,Fuga Yuyu,Yuyu Fuga,후우가 유유,風雅ゆゆ",
+            "native_name": "Yuyu Fuuga",
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n곤란한 사람을 보면 지나치지 못하는 성격 탓에 항상 손해만 보는 스나오.\r\n그러던 어느 날, 강도 사건에 휘말린 스나오는 1500만 엔이라는 빚을 지게 되지만,\r\n처음 보는 남자가 스나오의 빚을 대신 갚아준다.\r\n보답하고 싶다는 스나오의 말에 남자는 몸으로 보답하라는 제안을 하는데…!\r\n앞으로 1500번을 안기게 될 스나오의 운명은?!",
+        "_score": 88.56511,
+        "highlight": {
+          "author": "후가 <strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 3.3,
+        "is_series_complete": false,
+        "sub_title": "",
+        "author": "아오이 유유",
+        "events_info": [],
+        "translator": "반기모",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "순진수",
+            "tag_id": 2407
+          },
+          {
+            "tag_name": "판타지물",
+            "tag_id": 2412
+          },
+          {
+            "tag_name": "할리킹",
+            "tag_id": 2421
+          },
+          {
+            "tag_name": "해외소설",
+            "tag_id": 2790
+          },
+          {
+            "tag_name": "5000원이하",
+            "tag_id": 2796
+          },
+          {
+            "tag_name": "오메가버스",
+            "tag_id": 2802
+          },
+          {
+            "tag_name": "인외존재",
+            "tag_id": 2809
+          },
+          {
+            "tag_name": "신분차이",
+            "tag_id": 2844
+          },
+          {
+            "tag_name": "미인공",
+            "tag_id": 2849
+          },
+          {
+            "tag_name": "까칠공",
+            "tag_id": 2859
+          },
+          {
+            "tag_name": "절륜공",
+            "tag_id": 2872
+          },
+          {
+            "tag_name": "명랑수",
+            "tag_id": 2875
+          },
+          {
+            "tag_name": "소심수",
+            "tag_id": 2877
+          },
+          {
+            "tag_name": "짝사랑수",
+            "tag_id": 2905
+          },
+          {
+            "tag_name": "단행본",
+            "tag_id": 3126
+          }
+        ],
+        "series_prices_info": [],
+        "title": "운명의 베타는 알파의 익애에 피어난다",
+        "is_rental": false,
+        "author2": ", yoshi",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "2036052351",
+        "price": 3800,
+        "buyer_review_count": 2,
+        "publisher": "리체",
+        "buyer_rating_count": 12,
+        "web_title_title": " 운명의 베타는 알파의 익애에 피어난다",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "아오이 유유",
+            "author_id": 67465,
+            "alias_name": "Aoi yuyu,yuyu Aoi,유유 아오이",
+            "native_name": "Aoi yuyu",
+            "order": 0
+          },
+          {
+            "role": "illustrator",
+            "name": "요시",
+            "author_id": 76501,
+            "alias_name": "Yoshi,よし",
+            "native_name": "Yoshi",
+            "order": 1
+          },
+          {
+            "role": "translator",
+            "name": "반기모",
+            "author_id": 47198,
+            "order": 2
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n인간계와 비슷한 천사의 나라. 꽃집에서 일하는 베타 아키는 엘리트 알파 천사인 알렉시스의 반려로서 알파 전용 학원 기숙사에 들어가게 된다. 형식상의 반려라 하더라도 기숙사생의 호기심 어린 시선을 받고, 알렉시스의 본가에선 아이를 낳을 수 없는 아키 대신 오메가를 소개해주는 등 주눅이 드는 나날. 그런 환경에서도 그에게 어울리는 반려가 되기 위해 보답 없는 노력을 계속하는 아키의 모습에 알렉시스의 태도가 바뀌기 시작하는데……. 몸을 섞는 행위에서 시작된 두 사람의 사랑♡\n\n\n<b>&lt;출판사 서평&gt;</b>\n\n꽃집에서 일하는 베",
+        "_score": 86.85877,
+        "highlight": {
+          "author": "아오이 <strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 3.5,
+        "is_series_complete": true,
+        "sub_title": "",
+        "author": "후가 유유",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "Lady성인",
+            "tag_id": 419
+          },
+          {
+            "tag_name": "완결성인",
+            "tag_id": 1417
+          }
+        ],
+        "series_prices_info": [
+          {
+            "series_arg": 0,
+            "total_regular_price": 3500,
+            "total_price": 3500,
+            "type": "normal",
+            "free_book_count": 0,
+            "series_id": "840013482",
+            "regular_price": 0,
+            "max_price": 500,
+            "book_count": 7,
+            "min_price": 500,
+            "arg": 0,
+            "min_nonzero_price": 500,
+            "series_discount_rate": 0
+          },
+          {
+            "series_arg": 1,
+            "total_regular_price": 3500,
+            "total_price": 2100,
+            "type": "rent",
+            "free_book_count": 0,
+            "series_id": "840013482",
+            "regular_price": 0,
+            "max_price": 300,
+            "book_count": 7,
+            "min_price": 300,
+            "arg": 1,
+            "min_nonzero_price": 300,
+            "series_discount_rate": 0
+          }
+        ],
+        "title": "[미즈] 미남들과 함께 가는 성교육",
+        "is_rental": true,
+        "author2": "",
+        "book_count": 7,
+        "web_title": "[연재]",
+        "b_id": "840013482",
+        "price": 500,
+        "buyer_review_count": 5,
+        "publisher": "넥스큐브",
+        "buyer_rating_count": 43,
+        "web_title_title": "[연재] [미즈] 미남들과 함께 가는 성교육",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "후가 유유",
+            "author_id": 49057,
+            "alias_name": "Fuuga Yuyu,Yuyu Fuuga,Fuga Yuyu,Yuyu Fuga,후우가 유유,風雅ゆゆ",
+            "native_name": "Yuyu Fuuga",
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n\"이것 봐, 끈적한 액체가 잔뜩 묻었네.\"\r\n어렸을 때 친했던 두 오빠와 오랜만에 만났는데 바로 덮쳐지다니…?! \r\n느껴본 적 없을 정도로 안쪽부터 저려 오는 달콤한 느낌에 녹아버릴 것 같아!\r\n\r\n어떤 사정으로 남자를 싫어하게 된 대학생 이나호.\r\n몇 년 만에 만난 소꿉친구인 아오이와 아카네는 여성을 위한 컬쳐 스쿨 강사로,\r\n이나호에게 함께 살면서 수업의 모니터링을 해달라는 요구를 한다.\r\n부모님까지 부탁해온 탓에 거절하지 못한 이나호는\r\n두 남자의 '여성스러움을 끌어내는 성교육'을 직접 몸으로 배우게 되는데?!\r\n입술을 맞대고",
+        "_score": 84.790985,
+        "highlight": {
+          "author": "후가 <strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 4.1,
+        "is_series_complete": true,
+        "sub_title": "",
+        "author": "후가 유유",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "Lady성인",
+            "tag_id": 419
+          },
+          {
+            "tag_name": "완결성인",
+            "tag_id": 1417
+          },
+          {
+            "tag_name": "남녀성전환물",
+            "tag_id": 3146
+          }
+        ],
+        "series_prices_info": [
+          {
+            "series_arg": 0,
+            "total_regular_price": 12500,
+            "total_price": 12500,
+            "type": "normal",
+            "free_book_count": 0,
+            "series_id": "840010300",
+            "regular_price": 0,
+            "max_price": 500,
+            "book_count": 25,
+            "min_price": 500,
+            "arg": 0,
+            "min_nonzero_price": 500,
+            "series_discount_rate": 0
+          },
+          {
+            "series_arg": 1,
+            "total_regular_price": 12500,
+            "total_price": 7500,
+            "type": "rent",
+            "free_book_count": 0,
+            "series_id": "840010300",
+            "regular_price": 0,
+            "max_price": 300,
+            "book_count": 25,
+            "min_price": 300,
+            "arg": 1,
+            "min_nonzero_price": 300,
+            "series_discount_rate": 0
+          }
+        ],
+        "title": "[미즈] 재수 없는 그 녀석, 여자가 된 나를 덮쳐버렸다",
+        "is_rental": true,
+        "author2": "",
+        "book_count": 25,
+        "web_title": "[연재]",
+        "b_id": "840010300",
+        "price": 500,
+        "buyer_review_count": 7,
+        "publisher": "넥스큐브",
+        "buyer_rating_count": 147,
+        "web_title_title": "[연재] [미즈] 재수 없는 그 녀석, 여자가 된 나를 덮쳐버렸다",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "후가 유유",
+            "author_id": 49057,
+            "alias_name": "Fuuga Yuyu,Yuyu Fuuga,Fuga Yuyu,Yuyu Fuga,후우가 유유,風雅ゆゆ",
+            "native_name": "Yuyu Fuuga",
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n'여자의 몸은… 손가락을 넣는 것만으로 이렇게…….'\r\n패션 잡지의 표지도 장식하며 나름 잘 나가는 모델인 카나타.\r\n그러나 어째선지 같은 시기에 데뷔한 레오에게 조금씩 뒤처져 현재 스코어는 7승 11패.\r\n카나타도 실은 와일드한 모델이 목표였지만 조금 예쁘장하고 귀여울 뿐,\r\n애매한 위치에 있는 처지에 한탄으로 차라리 여자로 태어나고 싶다고 한다.\r\n…그런데 하룻밤 만에 진짜 여자로 바뀌다니! 말도 안 돼!!\r\n게다가 여자가 된 당일, 레오는 키스를 시작으로 점점 그(그녀?)의 몸을 탐하기 시작하는데….\r\n민감해도 너무 민감한 여",
+        "_score": 77.25254,
+        "highlight": {
+          "author": "후가 <strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 3.7,
+        "is_series_complete": true,
+        "sub_title": "",
+        "author": "후가 유유",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "현대극",
+            "tag_id": 2434
+          },
+          {
+            "tag_name": "능욕공",
+            "tag_id": 2444
+          },
+          {
+            "tag_name": "다정수",
+            "tag_id": 2451
+          },
+          {
+            "tag_name": "일본BL",
+            "tag_id": 2460
+          },
+          {
+            "tag_name": "순진수",
+            "tag_id": 2476
+          },
+          {
+            "tag_name": "단편모음",
+            "tag_id": 2481
+          },
+          {
+            "tag_name": "짝사랑",
+            "tag_id": 2509
+          },
+          {
+            "tag_name": "연재완결",
+            "tag_id": 3054
+          },
+          {
+            "tag_name": "절륜공",
+            "tag_id": 3375
+          },
+          {
+            "tag_name": "다공일수",
+            "tag_id": 3484
+          }
+        ],
+        "series_prices_info": [
+          {
+            "series_arg": 0,
+            "total_regular_price": 8500,
+            "total_price": 8500,
+            "type": "normal",
+            "free_book_count": 0,
+            "series_id": "840023249",
+            "regular_price": 0,
+            "max_price": 500,
+            "book_count": 17,
+            "min_price": 500,
+            "arg": 0,
+            "min_nonzero_price": 500,
+            "series_discount_rate": 0
+          },
+          {
+            "series_arg": 1,
+            "total_regular_price": 8500,
+            "total_price": 5100,
+            "type": "rent",
+            "free_book_count": 0,
+            "series_id": "840023249",
+            "regular_price": 0,
+            "max_price": 300,
+            "book_count": 17,
+            "min_price": 300,
+            "arg": 1,
+            "min_nonzero_price": 300,
+            "series_discount_rate": 0
+          }
+        ],
+        "title": "[페어리] 선배의 빅 매그넘과 사격 훈련",
+        "is_rental": true,
+        "author2": "",
+        "book_count": 17,
+        "web_title": "[연재]",
+        "b_id": "840023249",
+        "price": 500,
+        "buyer_review_count": 2,
+        "publisher": "넥스큐브",
+        "buyer_rating_count": 12,
+        "web_title_title": "[연재] [페어리] 선배의 빅 매그넘과 사격 훈련",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "후가 유유",
+            "author_id": 49057,
+            "alias_name": "Fuuga Yuyu,Yuyu Fuuga,Fuga Yuyu,Yuyu Fuga,후우가 유유,風雅ゆゆ",
+            "native_name": "Yuyu Fuuga",
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n\"이건 벌이니까… 네 꼴사나운 모습을 보여 줘!\"\r\n\r\n산악 구조대의 튼튼한 체력의 비결은… 남자들끼리만 할 수 있는 특별 훈련에 있다?\r\n친목 도모를 위한 회사간 운동회에서 생각지도 못한 곤경에 처해버리고 만 비서!\r\n디저트 가게의 VIP 손님만이 초대받는 으슥한 곳의 문란한 파티까지?!\r\n밤이면 밤마다 펼쳐지는 남자들만의 음란한 모습을 지금 살짝 엿보세요!",
+        "_score": 64.1253,
+        "highlight": {
+          "author": "후가 <strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 4.1,
+        "is_series_complete": false,
+        "sub_title": "내가 쓴 글, 내가 다듬는 법",
+        "author": "김정선",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 0,
+        "tags_info": [],
+        "series_prices_info": [],
+        "title": "내 문장이 그렇게 이상한가요?",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "852000076",
+        "price": 8400,
+        "buyer_review_count": 42,
+        "publisher": "유유",
+        "buyer_rating_count": 203,
+        "web_title_title": " 내 문장이 그렇게 이상한가요?",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "김정선",
+            "author_id": 60291,
+            "native_name": "",
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n교정의 숙수에게 배우는 내 문장 요리법\r\n\r\n전작 『동사의 맛』에서 유용한 우리말 지식과 이야기를 버무리는 새로운 형식의 글쓰기를 선보였던 저자는 이 책에서 그 형식을 조금 더 진전된 형태로 활용했다. 이번에는 어색한 문장을 다듬는 비법을 다루는 우리말 지식 부분과 외주 교정자와 저자가 등장하는 이야기 부분을 교차시켰는데, 두 대목이 모두 교정 교열과 관련된 문제의식을 담고 있어서 내용 면에서 정합성이 한층 높아졌다.\r\n\r\n저자는 좋은 문장을 만드는 가장 좋은 방법은 필요 없는 요소를 가능한 대로 덜어내는 것이라고 말하면서 ‘-적’",
+        "_score": 51.50616,
+        "highlight": {
+          "publisher": "<strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 4.1,
+        "is_series_complete": false,
+        "sub_title": "사소한 것이 언제나 더 중요하다",
+        "author": "엄지혜",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 0,
+        "tags_info": [],
+        "series_prices_info": [],
+        "title": "태도의 말들",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "852000507",
+        "price": 9100,
+        "buyer_review_count": 10,
+        "publisher": "유유",
+        "buyer_rating_count": 77,
+        "web_title_title": " 태도의 말들",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "엄지혜",
+            "author_id": 98056,
+            "native_name": "",
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n책을 읽고 사람을 읽고 태도를 읽어요 \r\n\r\n책을 좋아하지만 사람이 더 좋다고 말하는 사람, 말수가 적은 사람을 주시하는 취미를 가진 사람, 낯선 이에게도 선뜻 질문을 잘 던지는 사람. 인터넷서점 예스24에서 문화 웹진 『채널예스』와 팟캐스트 『책읽아웃』을 만드는 엄지혜 기자다. 책보다 사람이 더 좋다고 말하는 엄지혜 기자의 주력 분야는 인터뷰. 아마 한국에서 유명 인사를 가장 많이 만나 본 사람 중 한 명일 것이다. 엄 기자가 만난 유명 인사들에게는 유명하다는 점 외에도 한 가지 공통점이 있다. 바로 ‘책’이다. 책을 좋아하는 사",
+        "_score": 47.32617,
+        "highlight": {
+          "publisher": "<strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 5.0,
+        "is_series_complete": false,
+        "sub_title": "퓰리처상 수상 작가가 묻고 세계의 지성 100인이 답하다",
+        "author": "윌 듀런트",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 0,
+        "tags_info": [],
+        "series_prices_info": [],
+        "title": "내가 왜 계속 살아야 합니까",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "852000684",
+        "price": 9800,
+        "buyer_review_count": 0,
+        "publisher": "유유",
+        "buyer_rating_count": 5,
+        "web_title_title": " 내가 왜 계속 살아야 합니까",
+        "authors_info": [],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n삶을 지속할 의지와 용기는 어디에서 비롯되는가\r\n무엇이 인생을 더 가치 있게 만드는가\r\n삶의 이유를 고민하는 이들에게 전하는 전 세계 셀럽들의 메시지\r\n\r\n2019년 9월 세계보건기구 발표에 따르면 매년 80만 명이 스스로 목숨을 끊는다. 보건복지부 산하 중앙자살예방센터에서는 2018년 국내 자살사망자 수를 1만3,670명, 1일 평균 37.5명으로 집계했다. 2011년 이후 꾸준히 감소 추세를 보이던 자살률이 최근 들어 다시 증가하기 시작한 것이다. 사람들은 왜 이런 극단적인 선택을 할까? 무엇이 그들에게 삶이 아닌 죽음을 택하게",
+        "_score": 46.041157,
+        "highlight": {
+          "publisher": "<strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 0.0,
+        "is_series_complete": false,
+        "sub_title": "교양인을 위한 대화와 설득의 기술",
+        "author": "모티머 J. 애들러",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 0,
+        "tags_info": [],
+        "series_prices_info": [],
+        "title": "듣는 법, 말하는 법",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "852000692",
+        "price": 12600,
+        "buyer_review_count": 0,
+        "publisher": "유유",
+        "buyer_rating_count": 0,
+        "web_title_title": " 듣는 법, 말하는 법",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "모티머 J. 애들러",
+            "author_id": 105659,
+            "alias_name": "Mortimer J. Adler",
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n듣기와 말하기, 배움의 완성\r\n\r\n우리는 언어를 사용해 다른 사람과 소통한다. 쓰기와 말하기로 자신의 생각을 다른 사람에게 전달하고, 듣기와 읽기로 다른 사람의 정신에 가닿는다. 쓰기, 말하기, 듣기, 읽기는 \"\"하나의 정신이 다른 정신에 다가가고, 다른 정신이 언어로써 그에 응답\"\"하는 활동이다. 그런데 여러분은 각각의 활동을 제대로 배운 적이 있는가? 쓰기와 읽기는 배웠어도 듣기와 말하기는 배운 적이 없을 것이다. 듣기와 말하기 같은 일상적 행위는 따로 배울 필요가 없다고 생각하는 사람도 꽤 많을 테고 말이다. 각각의 특징을 살",
+        "_score": 46.041157,
+        "highlight": {
+          "publisher": "<strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 3.5,
+        "is_series_complete": true,
+        "sub_title": "",
+        "author": "유유유",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "현대물",
+            "tag_id": 2388
+          },
+          {
+            "tag_name": "시리어스물",
+            "tag_id": 2391
+          },
+          {
+            "tag_name": "2권이하",
+            "tag_id": 2794
+          },
+          {
+            "tag_name": "5000원이하",
+            "tag_id": 2796
+          },
+          {
+            "tag_name": "초능력",
+            "tag_id": 2808
+          },
+          {
+            "tag_name": "소꿉친구",
+            "tag_id": 2831
+          },
+          {
+            "tag_name": "애증",
+            "tag_id": 2838
+          },
+          {
+            "tag_name": "복흑/계략공",
+            "tag_id": 2866
+          },
+          {
+            "tag_name": "명랑수",
+            "tag_id": 2875
+          },
+          {
+            "tag_name": "허당수",
+            "tag_id": 2879
+          },
+          {
+            "tag_name": "수시점",
+            "tag_id": 2928
+          },
+          {
+            "tag_name": "단행본",
+            "tag_id": 3126
+          }
+        ],
+        "series_prices_info": [
+          {
+            "series_arg": 0,
+            "total_regular_price": 5000,
+            "total_price": 5000,
+            "type": "normal",
+            "free_book_count": 0,
+            "series_id": "2802001086",
+            "regular_price": 0,
+            "max_price": 2500,
+            "book_count": 2,
+            "min_price": 2500,
+            "arg": 0,
+            "min_nonzero_price": 2500,
+            "series_discount_rate": 0
+          }
+        ],
+        "title": "바인드 블라인드 블랭크",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 2,
+        "web_title": "",
+        "b_id": "2802001086",
+        "price": 2500,
+        "buyer_review_count": 3,
+        "publisher": "비터애플",
+        "buyer_rating_count": 11,
+        "web_title_title": " 바인드 블라인드 블랭크",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "유유유",
+            "author_id": 97913,
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n<img src=\"//misc.ridibooks.com/desc.intro/2802001086\"/>\n\n#현대물 #소꿉친구 #애증 #복흑/계략공 #명랑수 #허당수 #초능력 #시리어스물 #수시점\r\n\r\n\r\n강력한 초능력을 사용할 수 있는 물리계 ‘싱커’ 박이해.\r\n그는 누구에게도 말할 수 없는 초능력의 부작용을 앓고 있다.\r\n이해는 이것만 사라지면 지원과 다시 평범한 친구 사이로 돌아갈 수 있으리라고 생각한다. 그러나 이해의 생각과 달리, 지원과의 사이는 점점 어긋나기 시작하는데…….\r\n\r\n“지원아, 우리, 친구인 거지?”\r\n“나는, 한",
+        "_score": 43.857265,
+        "highlight": {
+          "author": "유<strong class=\"title_point\">유유</strong>"
+        }
+      },
+      {
+        "buyer_rating_score": 4.4,
+        "is_series_complete": false,
+        "sub_title": "",
+        "author": "유유유",
+        "events_info": [],
+        "translator": "",
+        "age_limit": 19,
+        "tags_info": [
+          {
+            "tag_name": "현대물",
+            "tag_id": 2388
+          },
+          {
+            "tag_name": "코믹/개그물",
+            "tag_id": 2389
+          },
+          {
+            "tag_name": "평점4점이상",
+            "tag_id": 2791
+          },
+          {
+            "tag_name": "5000원이하",
+            "tag_id": 2796
+          },
+          {
+            "tag_name": "오해/착각",
+            "tag_id": 2812
+          },
+          {
+            "tag_name": "스폰서",
+            "tag_id": 2841
+          },
+          {
+            "tag_name": "순진공",
+            "tag_id": 2852
+          },
+          {
+            "tag_name": "재벌공",
+            "tag_id": 2867
+          },
+          {
+            "tag_name": "상처공",
+            "tag_id": 2871
+          },
+          {
+            "tag_name": "적극수",
+            "tag_id": 2876
+          },
+          {
+            "tag_name": "잔망수",
+            "tag_id": 2878
+          },
+          {
+            "tag_name": "짝사랑수",
+            "tag_id": 2905
+          },
+          {
+            "tag_name": "달달물",
+            "tag_id": 2916
+          },
+          {
+            "tag_name": "3인칭시점",
+            "tag_id": 2926
+          },
+          {
+            "tag_name": "단행본",
+            "tag_id": 3126
+          }
+        ],
+        "series_prices_info": [],
+        "title": "완벽한 연애를 위하여",
+        "is_rental": false,
+        "author2": "",
+        "book_count": 1,
+        "web_title": "",
+        "b_id": "2155011725",
+        "price": 3000,
+        "buyer_review_count": 14,
+        "publisher": "연필",
+        "buyer_rating_count": 34,
+        "web_title_title": " 완벽한 연애를 위하여",
+        "authors_info": [
+          {
+            "role": "author",
+            "name": "유유유",
+            "author_id": 97913,
+            "order": 0
+          }
+        ],
+        "desc": "<b>&lt;책소개&gt;</b>\n\n한구원이 박해성과 하고 싶은 것은 연애였다. 그것도 완벽한 연애.\r\n\r\n해성과 구원, 두 사람은 미국에서 우연히 만나 관계를 가진다.\r\n해성은 구원과 스폰 관계라고 생각하지만,\r\n사실 구원은 해성에게 첫눈에 반했을 뿐이다. \r\n\r\n“너 우리 회사 들어와라.”\r\n\r\n그리고 어느 날, 해성은 제 이복동생의 뒤를 캐라며 구원을 그 밑으로 취칙시킨다. \r\n\r\n과연 구원은 상대가 진심이 되면 도망치기 바쁜 해성과 오해를 풀고\r\n원하던 완벽한 연애에 도달할 수 있을까?",
+        "_score": 43.50515,
+        "highlight": {
+          "author": "유<strong class=\"title_point\">유유</strong>"
+        }
+      }
+    ],
+    "aggregations": [
+      {
+        "category_id": 0,
+        "category_name": "전체",
+        "doc_count": 147
+      },
+      {
+        "category_id": 410,
+        "category_name": "인문",
+        "doc_count": 90
+      },
+      {
+        "category_id": 1535,
+        "category_name": "성인",
+        "doc_count": 10
+      },
+      {
+        "category_id": 111,
+        "category_name": "에세이",
+        "doc_count": 8
+      },
+      {
+        "category_id": 4002,
+        "category_name": "국내 소설",
+        "doc_count": 8
+      },
+      {
+        "category_id": 420,
+        "category_name": "정치/사회",
+        "doc_count": 7
+      },
+      {
+        "category_id": 1320,
+        "category_name": "어린이",
+        "doc_count": 3
+      },
+      {
+        "category_id": 1522,
+        "category_name": "해외 순정",
+        "doc_count": 3
+      },
+      {
+        "category_id": 4003,
+        "category_name": "해외 소설",
+        "doc_count": 3
+      },
+      {
+        "category_id": 440,
+        "category_name": "역사",
+        "doc_count": 3
+      },
+      {
+        "category_id": 1517,
+        "category_name": "학원",
+        "doc_count": 2
+      },
+      {
+        "category_id": 1519,
+        "category_name": "드라마",
+        "doc_count": 2
+      },
+      {
+        "category_id": 1901,
+        "category_name": "공부법",
+        "doc_count": 2
+      },
+      {
+        "category_id": 3001,
+        "category_name": "해외 라노벨",
+        "doc_count": 2
+      },
+      {
+        "category_id": 4055,
+        "category_name": "만화",
+        "doc_count": 2
+      },
+      {
+        "category_id": 1130,
+        "category_name": "자연과학",
+        "doc_count": 1
+      },
+      {
+        "category_id": 1527,
+        "category_name": "판타지/SF",
+        "doc_count": 1
+      },
+      {
+        "category_id": 1701,
+        "category_name": "현대물",
+        "doc_count": 1
+      },
+      {
+        "category_id": 1706,
+        "category_name": "19+",
+        "doc_count": 1
+      },
+      {
+        "category_id": 310,
+        "category_name": "성공/삶의자세",
+        "doc_count": 1
+      },
+      {
+        "category_id": 340,
+        "category_name": "취업/창업",
+        "doc_count": 1
+      },
+      {
+        "category_id": 430,
+        "category_name": "예술/문화",
+        "doc_count": 1
+      }
+    ]
+  }
+}
