@@ -2,7 +2,7 @@ import { css } from '@emotion/core';
 import {
   between, BreakPoint, greaterThanOrEqualTo, orBelow,
 } from 'src/utils/mediaQuery';
-import { DisplayType, MdBook } from 'src/types/sections';
+import { MdBook } from 'src/types/sections';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import BookMeta from 'src/components/BookMeta';
 import React, {
@@ -167,7 +167,6 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
           >
             <BadgeContainer>
               <BookBadgeRenderer
-                type={DisplayType.RecommendedBook}
                 isWaitFree={item.detail?.series?.property.is_wait_free}
                 discountPercentage={getMaxDiscountPercentage(item.detail)}
               />

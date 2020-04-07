@@ -1,4 +1,4 @@
-import { DisplayType, MdBook, SectionExtra } from 'src/types/sections';
+import { DisplayType, AIRecommendationBook, SectionExtra } from 'src/types/sections';
 import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBook';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,9 +11,9 @@ import { categoryActions } from 'src/services/category';
 import { useRouter } from 'next/router';
 
 interface AiRecommendationSectionProps {
-  items?: MdBook[];
+  items?: AIRecommendationBook[];
   genre: string;
-  type: DisplayType;
+  type: DisplayType.AiRecommendation;
   extra: SectionExtra;
   title: string;
   slug: string;
@@ -101,7 +101,6 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
       extra={extra}
       genre={genre}
       type={type}
-      option={{ isAIRecommendation: true }}
     />
   );
 };

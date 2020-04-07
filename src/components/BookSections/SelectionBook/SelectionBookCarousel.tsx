@@ -5,9 +5,9 @@ import Arrow from 'src/components/Carousel/Arrow';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import BooksCarousel from 'src/components/Carousel/BooksCarousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
-import { DisplayType, MdBook } from 'src/types/sections';
 
 import SelectionBookItem from './SelectionBookItem';
+import { SelectionBookListProps } from './types';
 
 const arrowWrapperCSS = css`
   position: absolute;
@@ -28,23 +28,12 @@ const BookItemWrapper = styled.li`
   outline: none;
 `;
 
-export interface SelectionBookCarouselProps {
-  items: MdBook[]; // Fixme Md 타입 말고 comics UserPreferredSection 타입이 API 결과로 오는데 이 부분 확인해야 함
-  isAIRecommendation: boolean;
-  genre: string;
-  type: DisplayType;
-  bookFetching?: boolean;
-  slug?: string;
-}
-
-const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = (props) => {
-  const {
-    genre, type, isAIRecommendation, slug,
-  } = props;
+const SelectionBookCarousel: React.FC<SelectionBookListProps> = (props) => {
+  const { genre, type, slug } = props;
 
   const { items } = props;
   const books = React.useMemo(
-    () => items.filter((book) => book.detail),
+    () => (items as any[]).filter((book: any) => book.detail),
     [items],
   );
   const totalItems = books.length;
@@ -86,7 +75,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = (props) => {
               order={index}
               genre={genre}
               slug={slug}
-              isAIRecommendation={isAIRecommendation}
               excluded={books[index]?.excluded ?? false}
               book={books[index]}
               type={type}

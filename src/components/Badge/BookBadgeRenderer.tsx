@@ -1,5 +1,4 @@
 import React from 'react';
-import { DisplayType } from 'src/types/sections';
 import styled from '@emotion/styled';
 import { RIDI_WAIT_FREE_ICON_URL } from 'src/constants/icons';
 import { blueGray40, dodgerBlue50 } from '@ridi/colors';
@@ -8,7 +7,6 @@ interface BookBadgeRendererProps {
   isWaitFree?: boolean;
   isRentable?: boolean;
   discountPercentage?: number;
-  type: DisplayType;
 }
 
 const Rentable = styled.span`

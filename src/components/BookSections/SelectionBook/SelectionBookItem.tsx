@@ -27,21 +27,29 @@ const bookWidthStyle = css`
   }
 `;
 
-interface SelectionBookItemProps {
-  book: MdBook | AIRecommendationBook;
+interface CommonProps {
   genre: string;
-  isAIRecommendation: boolean;
   width: number;
-  type: DisplayType;
   slug: string;
   order?: number;
   excluded?: boolean;
 }
 
-const SelectionBookItem: React.FC<SelectionBookItemProps> = (props) => {
+interface MdBookProps {
+  type: Exclude<DisplayType, DisplayType.AiRecommendation>;
+  book: MdBook;
+}
+
+interface AIRecommendationBookProps {
+  type: DisplayType.AiRecommendation;
+  book: AIRecommendationBook;
+}
+
+type Props = CommonProps & (MdBookProps | AIRecommendationBookProps);
+
+const SelectionBookItem: React.FC<Props> = (props) => {
   const {
     book,
-    isAIRecommendation,
     genre,
     type,
     slug,
@@ -115,7 +123,6 @@ const SelectionBookItem: React.FC<SelectionBookItemProps> = (props) => {
           >
             <BadgeContainer>
               <BookBadgeRenderer
-                type={type}
                 isRentable={
                   (!!book.detail?.price_info?.rent
                     || !!book.detail?.series?.price_info?.rent)
@@ -145,7 +152,6 @@ const SelectionBookItem: React.FC<SelectionBookItemProps> = (props) => {
           book={book.detail}
           width={`${props.width || 140}px`}
           showRating={type === DisplayType.HomeMdSelection}
-          isAIRecommendation={false}
           ratingInfo={(book as MdBook).rating}
           css={
             localExcluded
@@ -157,7 +163,7 @@ const SelectionBookItem: React.FC<SelectionBookItemProps> = (props) => {
         />
       )}
 
-      {isAIRecommendation && (
+      {props.type === DisplayType.AiRecommendation && (
         <button
           css={[
             css`
@@ -180,11 +186,11 @@ const SelectionBookItem: React.FC<SelectionBookItemProps> = (props) => {
           ]}
           onClick={
             localExcluded
-              ? requestCancelExclude.bind(null, book.b_id)
+              ? requestCancelExclude.bind(null, props.book.b_id)
               : requestExclude.bind(
                 null,
-                book.b_id,
-                (book as AIRecommendationBook).rcmd_id,
+                props.book.b_id,
+                props.book.rcmd_id,
               )
           }
           aria-label={localExcluded ? '다시 보기' : '추천 제외'}

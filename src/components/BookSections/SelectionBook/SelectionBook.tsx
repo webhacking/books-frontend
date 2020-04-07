@@ -2,18 +2,18 @@ import React, { useRef } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
-import {
-  SectionTitle,
-  SelectionOption,
-} from 'src/components/BookSections/BookSectionContainer';
+import { SectionTitle } from 'src/components/BookSections/BookSectionContainer';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import useIsTablet from 'src/hooks/useIsTablet';
 import ArrowV from 'src/svgs/ArrowV.svg';
-import { DisplayType, MdBook, SectionExtra } from 'src/types/sections';
+import {
+  DisplayType, MdBook, SectionExtra, AIRecommendationBook,
+} from 'src/types/sections';
 import { orBelow } from 'src/utils/mediaQuery';
 
 import SelectionBookCarousel from './SelectionBookCarousel';
 import SelectionBookList from './SelectionBookList';
+import { SelectionBookListProps } from './types';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -30,25 +30,29 @@ const SectionWrapper = styled.section`
   -webkit-overflow-scrolling: touch;
 `;
 
-interface SelectionBookProps {
-  items: MdBook[];
+interface SelectionBookOwnProps {
   title: string;
-  option: SelectionOption;
-  genre: string;
-  type: DisplayType;
   categoryId?: number;
   extra?: SectionExtra;
   selectionId?: number;
-  slug: string;
 }
+
+type SelectionBookProps = SelectionBookOwnProps & SelectionBookListProps;
 
 const SelectionBook: React.FC<SelectionBookProps> = (props) => {
   const {
     genre, type, slug, title, extra, selectionId,
   } = props;
 
-  const [books, isFetching] = useBookDetailSelector(props.items) as [MdBook[], boolean];
+  let _typecheckHack: typeof props.type extends DisplayType.AiRecommendation ? AIRecommendationBook : MdBook;
+  const [books] = useBookDetailSelector(props.items as (typeof _typecheckHack)[]);
   const isTablet = useIsTablet();
+  const listProps = {
+    genre,
+    slug,
+    type,
+    items: books as any,
+  };
 
   // Todo
   // const handleExceptAIRecommendation = (bId: string) => {
@@ -81,22 +85,9 @@ const SelectionBook: React.FC<SelectionBookProps> = (props) => {
       </SectionTitle>
       <div>
         {isTablet ? (
-          <SelectionBookList
-            slug={slug}
-            type={type}
-            genre={genre}
-            isAIRecommendation={props.option.isAIRecommendation}
-            items={books}
-          />
+          <SelectionBookList {...listProps} />
         ) : (
-          <SelectionBookCarousel
-            type={type}
-            slug={slug}
-            genre={genre}
-            isAIRecommendation={props.option.isAIRecommendation}
-            items={books}
-            bookFetching={isFetching}
-          />
+          <SelectionBookCarousel {...listProps} />
         )}
       </div>
     </SectionWrapper>
