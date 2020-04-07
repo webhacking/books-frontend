@@ -235,9 +235,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
               <Button
                 wrapperCSS={
                   eventStatus.double_point
-                  && css`
-                    border: 1px solid #ffde24;
-                  `
+                  && css`border: 1px solid #ffde24;`
                 }
                 type="primary"
                 label={(
@@ -259,7 +257,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
                     >
                       캐시
                       <span
-                        css={orBelow(330, 'display: none;')}
+                        css={css`${orBelow(330, 'display: none;')}`}
                       >
                         충전
                       </span>
