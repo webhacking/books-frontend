@@ -25,7 +25,7 @@ const QuickMenuLabel = styled.span`
   margin-top: 8px;
   ${orBelow(
     BreakPoint.MD,
-    css`
+    `
       min-width: 55px;
       width: 100%;
     `,
@@ -44,7 +44,7 @@ const MenuList = styled.ul`
 
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       padding-top: 16px;
       padding-bottom: 16px;
       padding-left: 3px;
@@ -73,9 +73,7 @@ const MenuItem = styled.li`
 const MenuAnchor = styled.a`
   ${orBelow(
     BreakPoint.LG,
-    css`
-      max-width: 50px;
-    `,
+    'max-width: 50px;',
   )};
   display: flex;
   flex-direction: column;

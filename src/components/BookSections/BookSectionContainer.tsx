@@ -20,14 +20,14 @@ const titleCSS = css`
   ${between(
     BreakPoint.MD + 1,
     BreakPoint.LG,
-    css`
+    `
       padding-left: 20px;
       padding-right: 20px;
     `,
   )};
   ${orBelow(
     BreakPoint.MD,
-    css`
+    `
       padding-left: 16px;
       padding-right: 16px;
     `,

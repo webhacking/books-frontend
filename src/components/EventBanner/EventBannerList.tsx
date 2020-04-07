@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { EventBannerItem } from 'src/components/EventBanner/index';
-import { css } from '@emotion/core';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { EventBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
@@ -15,14 +14,14 @@ const List = styled.ul`
   align-items: center;
   ${orBelow(
     BreakPoint.MD,
-    css`
+    `
       flex-wrap: wrap;
     `,
   )};
   ${between(
     BreakPoint.MD + 1,
     BreakPoint.LG,
-    css`
+    `
       padding-left: 20px;
       padding-right: 20px;
     `,

@@ -17,7 +17,7 @@ export const listCSS = css`
   overflow-y: hidden;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       margin-left: -5px;
       //margin-right: 6px;
     `,
@@ -36,7 +36,7 @@ export const itemCSS = css`
 
   ${orBelow(
     BreakPoint.MD,
-    css`
+    `
       margin-right: 12px;
       :first-of-type {
         padding-left: 16px;
@@ -46,7 +46,7 @@ export const itemCSS = css`
   ${between(
     834,
     999,
-    css`
+    `
       margin-right: 20px;
     `,
   )};
@@ -64,7 +64,7 @@ export const loadingItemCSS = css`
 
   ${orBelow(
     BreakPoint.MD,
-    css`
+    `
       margin-right: 12px;
       :first-of-type {
         padding-left: 13px;
@@ -74,7 +74,7 @@ export const loadingItemCSS = css`
   ${between(
     834,
     999,
-    css`
+    `
       :first-of-type {
         padding-left: 17px;
       }

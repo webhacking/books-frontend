@@ -19,7 +19,7 @@ const TurnOffSearchHistory = styled.div`
   vertical-align: middle;
   box-sizing: content-box;
   font-size: 14px;
-  color: ${colors.slateGray80}; 
+  color: ${colors.slateGray80};
 `;
 
 const RecentHistoryLabel = styled.p`
@@ -63,7 +63,7 @@ const SearchHistoryItem = styled.li`
   align-items: center;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       :hover {
         background-color: white !important;
       }

@@ -23,9 +23,7 @@ const createCSS = (theme: RIDITheme, type: 'primary' | 'secondary') => css`
 
   ${orBelow(
     BreakPoint.LG,
-    css`
-      padding: 0 8px;
-    `,
+    'padding: 0 8px;',
   )};
   :hover {
     opacity: 0.7;

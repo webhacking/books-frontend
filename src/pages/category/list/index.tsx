@@ -302,9 +302,7 @@ const sectionCSS = css`
   margin-top: -20px;
   ${orBelow(
     BreakPoint.LG,
-    css`
-      padding: 0;
-    `,
+    'padding: 0;',
   )}
 `;
 const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = (props) => {

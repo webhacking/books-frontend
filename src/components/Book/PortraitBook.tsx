@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import { css } from '@emotion/core';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 export const PortraitBook = styled.li`
   display: flex;
@@ -10,20 +9,12 @@ export const PortraitBook = styled.li`
   width: 140px;
 
   ${orBelow(
-    BreakPoint.MD,
-    css`
+    BreakPoint.LG,
+    `
       min-width: 100px;
       width: 100px;
     `,
   )}
-  ${between(
-    834,
-    999,
-    css`
-      min-width: 100px;
-      width: 100px;
-    `,
-  )};
 `;
 
 export const RecommendedPortraitBook = styled.li`
@@ -35,7 +26,7 @@ export const RecommendedPortraitBook = styled.li`
 
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       min-width: 100px;
       width: 100px;
     `,

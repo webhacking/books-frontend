@@ -9,24 +9,18 @@ const pageTitleCSS = css`
   padding: 15px 0;
   ${orBelow(
     BreakPoint.LG,
-    css`
-      padding: 15px 24px;
-    `,
+    'padding: 15px 24px;',
   )};
   ${orBelow(
     BreakPoint.M,
-    css`
-      padding: 15px 16px;
-    `,
+    'padding: 15px 16px;',
   )};
 `;
 
 const mobileDisplayNone = css`
   ${orBelow(
     BreakPoint.LG,
-    css`
-      display: none;
-    `,
+    'display: none;',
   )};
 `;
 

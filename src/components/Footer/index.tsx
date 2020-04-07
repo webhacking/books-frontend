@@ -39,7 +39,7 @@ const FlexBox = styled.div`
   justify-content: unset;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       flex-direction: column;
       justify-content: flex-start;
       align-items: unset;
@@ -72,9 +72,7 @@ const contactListCSS = (theme: RIDITheme) => css`
 
   ${orBelow(
     BreakPoint.LG,
-    css`
-      margin-bottom: 28px;
-    `,
+    'margin-bottom: 28px;',
   )}
 `;
 
@@ -97,7 +95,7 @@ const FooterMenuWrapper = styled.ul`
   margin-bottom: 48px;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       margin-bottom: 24px;
       transition: all 0.3s;
       max-height: 230px;
@@ -124,9 +122,7 @@ const FooterMenuLabel = styled.span`
 const hiddenMenu = css`
   ${orBelow(
     BreakPoint.LG,
-    css`
-      display: none;
-    `,
+    'display: none;',
   )};
 `;
 
@@ -143,7 +139,7 @@ const InformationWrapper = styled.address`
   margin-bottom: 8px;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       flex-direction: column;
       margin-bottom: 16px;
     `,
@@ -166,7 +162,7 @@ const MiscWrapper = styled.div`
   flex-direction: row;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
@@ -189,9 +185,7 @@ const Copyright = styled.p`
   margin-right: 24px;
   ${orBelow(
     BreakPoint.LG,
-    css`
-      margin-bottom: 16px;
-    `,
+    'margin-bottom: 16px;',
   )};
 `;
 
@@ -393,9 +387,7 @@ const Footer: React.FC<{}> = () => (
                   transition: height 0.3s ease-in-out;
                   ${greaterThanOrEqualTo(
                   BreakPoint.LG + 1,
-                  css`
-                      display: none;
-                    `,
+                  'display: none;',
                 )};
                 `}
               >
@@ -528,9 +520,7 @@ const Footer: React.FC<{}> = () => (
             border-left: 1px solid ${colors.slateGray70};
             ${orBelow(
             BreakPoint.LG,
-            css`
-                display: none;
-              `,
+            'display: none;',
           )};
           `}
         />

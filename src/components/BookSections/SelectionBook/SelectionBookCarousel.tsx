@@ -104,7 +104,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
               ${arrowWrapperCSS};
               ${greaterThanOrEqualTo(
               BreakPoint.XL + 1,
-              css`left: -29px;`,
+              'left: -29px;',
             )};
               left: 5px;
               top: ${getArrowVerticalCenterPosition()};
@@ -119,7 +119,7 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
               ${arrowWrapperCSS};
               ${greaterThanOrEqualTo(
               BreakPoint.XL + 1,
-              css`right: -36px;`,
+              'right: -36px;',
             )};
               right: 5px;
               top: ${getArrowVerticalCenterPosition()};

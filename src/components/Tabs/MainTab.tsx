@@ -36,9 +36,7 @@ const Tabs = styled.ul`
   padding: 0 20px;
   ${orBelow(
     BreakPoint.LG,
-    css`
-      padding: 0;
-    `,
+    'padding: 0;',
   )};
 `;
 
@@ -65,7 +63,7 @@ const iconStyle = () => css`
 
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       width: 24px;
       height: 24px;
       margin-right: 0;
@@ -83,7 +81,9 @@ const labelStyle = css`
   text-align: center;
   color: #ffffff;
 
-  ${orBelow(BreakPoint.LG, a11y)};
+  @media (max-width: ${BreakPoint.LG}px) {
+    ${a11y}
+  }
 `;
 
 const BottomLine = styled.span`
@@ -105,7 +105,7 @@ const TabItemWrapper = styled.li`
 
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       height: 40px;
       width: 25%;
       :not(:last-of-type) {
@@ -162,9 +162,7 @@ const NotificationAddOn = styled.div`
   background: #ffde24;
   border-radius: 11px;
   background-clip: padding-box;
-  ${orBelow(BreakPoint.LG, css`
-    left: 17.5px;
-  `)};
+  ${orBelow(BreakPoint.LG, 'left: 17.5px;')};
 `;
 
 const CartAddOnWrapper = styled.div`
@@ -179,9 +177,7 @@ const CartAddOnWrapper = styled.div`
   display: flex;
   max-height: 31px;
   height: 100%;
-  ${orBelow(BreakPoint.LG, css`
-    left: 12.5px;
-  `)};
+  ${orBelow(BreakPoint.LG, 'left: 12.5px;')};
 `;
 
 const CartAddOnBackground = styled.div`
@@ -191,9 +187,7 @@ const CartAddOnBackground = styled.div`
   background: white;
   height: 20px;
   display: flex;
-  ${orBelow(BreakPoint.LG, css`
-    margin-left: 4px;
-  `)};
+  ${orBelow(BreakPoint.LG, 'margin-left: 4px;')};
   background-clip: padding-box;
 `;
 

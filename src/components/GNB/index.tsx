@@ -38,9 +38,7 @@ const Navigation = styled.nav`
   flex-direction: column;
   ${orBelow(
     BreakPoint.LG,
-    css`
-      padding: 9px 10px;
-    `,
+    'padding: 9px 10px;',
   )};
 `;
 
@@ -50,7 +48,7 @@ const LogoWrapper = styled.ul`
   flex: none;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       height: 30px;
       margin-right: 0;
     `,
@@ -76,7 +74,7 @@ const LogoWrapper = styled.ul`
 
       ${orBelow(
     BreakPoint.LG,
-    css`
+    `
           margin: 0 6px 0 5px;
           top: 7px;
           font-size: 12px;
@@ -101,7 +99,7 @@ const ridiLogo = (theme: RIDITheme) => css`
   }
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       width: 88px;
       height: 14px;
       :hover {
@@ -123,7 +121,7 @@ const ridiSelectLogo = (theme: RIDITheme) => css`
 
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       width: 73px;
       height: 12px;
     `,
@@ -140,7 +138,7 @@ const ButtonWrapper = styled.ul`
   order: 3;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       right: 10px;
       order: 2;
       position: absolute;
@@ -153,9 +151,7 @@ const ButtonWrapper = styled.ul`
 
       ${orBelow(
     BreakPoint.LG,
-    css`
-          margin-right: 3px;
-        `,
+    'margin-right: 3px;',
   )};
     }
   }
@@ -166,9 +162,7 @@ const logoAndSearchBox = css`
   flex-direction: row;
   ${orBelow(
     BreakPoint.LG,
-    css`
-      flex-wrap: wrap;
-    `,
+    'flex-wrap: wrap;',
   )};
 `;
 
@@ -265,12 +259,7 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
                     >
                       캐시
                       <span
-                        css={orBelow(
-                          330,
-                          css`
-                            display: none;
-                          `,
-                        )}
+                        css={orBelow(330, 'display: none;')}
                       >
                         충전
                       </span>

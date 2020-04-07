@@ -49,7 +49,7 @@ const SearchWrapper = styled.div<{}, RIDITheme>`
   line-height: 32px;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       height: 36px;
       line-height: 36px;
       min-width: unset;
@@ -109,7 +109,7 @@ const focused = (theme: RIDITheme) => css`
   order: 2;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       margin-top: 0;
       position: absolute;
       top: 0;
@@ -134,7 +134,7 @@ const initial = () => css`
   order: 2;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       margin-top: 10px;
       order: 3;
     `,
@@ -152,7 +152,7 @@ const SearchFooter = styled.div`
   margin-top: 2px;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       width: 100vw;
       left: 6px;
       box-shadow: unset;
@@ -172,7 +172,7 @@ const dimmer = css`
   display: none;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       display: block;
       position: fixed;
       top: 0;
@@ -193,9 +193,7 @@ const arrow = css`
   height: 16px;
   ${orBelow(
     BreakPoint.LG,
-    css`
-      display: block;
-    `,
+    'display: block;',
   )};
 `;
 
@@ -203,7 +201,7 @@ const ArrowWrapperButton = styled.button`
   display: none;
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       display: block;
       padding: 0 11px 0 5px;
     `,
@@ -573,7 +571,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
             isFocused ? focused(theme) : initial(),
             css`
               outline: none;
-              ${orBelow(BreakPoint.LG, css`width: 100%;`)}
+              ${orBelow(BreakPoint.LG, 'width: 100%;')}
             `,
           ]}
         >

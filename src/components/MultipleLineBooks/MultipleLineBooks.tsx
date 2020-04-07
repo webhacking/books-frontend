@@ -46,7 +46,7 @@ const bookWidthStyles = css`
 const Item = styled.li`
   ${orBelow(
     426,
-    css`
+    `
       margin-right: 3px;
       :not(:nth-of-type(3n)) {
         margin-right: 20px;
@@ -56,7 +56,7 @@ const Item = styled.li`
   )};
   ${orBelow(
     432,
-    css`
+    `
       margin-right: 3px;
       :not(:nth-of-type(3n)) {
         margin-right: 20px;
@@ -67,7 +67,7 @@ const Item = styled.li`
   ${between(
     433,
     579,
-    css`
+    `
       :not(:nth-of-type(3n)) {
         margin-right: 4%;
       }
@@ -77,7 +77,7 @@ const Item = styled.li`
   ${between(
     580,
     833,
-    css`
+    `
       :not(:nth-of-type(3n)) {
         margin-right: 16%;
       }
@@ -87,7 +87,7 @@ const Item = styled.li`
   ${between(
     850,
     BreakPoint.LG,
-    css`
+    `
       :not(:nth-of-type(6n)) {
         margin-right: 2.1%;
       }
@@ -96,7 +96,7 @@ const Item = styled.li`
   )};
   ${greaterThanOrEqualTo(
     1001,
-    css`
+    `
       :not(:nth-of-type(6n)) {
         //margin-right: 20px;
         flex-grow: 0;
@@ -111,7 +111,7 @@ const Item = styled.li`
 const thumbnailOverrideStyle = css`
   ${orBelow(
     BreakPoint.SM,
-    css`
+    `
       width: 100%;
       min-width: 70px;
       height: calc(90px * 1.618 - 10px);
@@ -120,7 +120,7 @@ const thumbnailOverrideStyle = css`
   ${between(
     BreakPoint.SM + 1,
     BreakPoint.M,
-    css`
+    `
       width: 100%;
       min-width: 100px;
       height: calc(100px * 1.618 - 10px);
@@ -136,15 +136,11 @@ const bookMetaWrapperStyle = css`
   ${between(
     BreakPoint.M + 1,
     BreakPoint.LG,
-    css`
-      width: 120px;
-    `,
+    'width: 120px;',
   )}
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
-    css`
-      width: 140px;
-    `,
+    'width: 140px;',
   )}
 `;
 
@@ -208,7 +204,7 @@ const Section = styled.section`
   padding-top: 24px;
   ${orBelow(
     433,
-    css`
+    `
       justify-content: space-between;
       padding: 16px 10px;
       padding-right: 29px !important;
@@ -216,7 +212,7 @@ const Section = styled.section`
   )}
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       padding-left: 20px;
       padding-right: 26px;
       padding-top: 16px;
@@ -225,9 +221,7 @@ const Section = styled.section`
   )}
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
-    css`
-      padding-left: 24px;
-    `,
+    'padding-left: 24px;',
   )}
 `;
 
@@ -239,7 +233,7 @@ const List = styled.ul`
   margin-bottom: -24px;
   ${orBelow(
     432,
-    css`
+    `
       justify-content: space-between;
       margin-left: -10px;
     `,
@@ -247,7 +241,7 @@ const List = styled.ul`
   ${between(
     BreakPoint.M + 1,
     BreakPoint.MD,
-    css`
+    `
       justify-content: space-between;
       margin-left: -10px;
     `,
@@ -255,14 +249,14 @@ const List = styled.ul`
   ${between(
     BreakPoint.MD + 1,
     BreakPoint.LG,
-    css`
+    `
       justify-content: space-between;
       margin-left: -6px;
     `,
   )}
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
-    css`
+    `
       left: -19px;
       position: relative;
     `,
@@ -305,9 +299,7 @@ const Title = styled.h2`
   word-break: keep-all;
   ${orBelow(
     BreakPoint.MD,
-    css`
-      margin-left: -2px;
-    `,
+    'margin-left: -2px;',
   )}
 `;
 

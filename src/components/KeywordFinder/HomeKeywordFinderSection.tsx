@@ -385,7 +385,7 @@ const Section = styled.section`
   padding-top: 24px;
   ${orBelow(
     999,
-    css`
+    `
       padding-bottom: 16px;
       padding-top: 16px;
     `,
@@ -404,9 +404,7 @@ const SectionTitle = styled.h2`
   padding-left: 24px;
   ${orBelow(
     BreakPoint.LG,
-    css`
-      padding-left: 16px;
-    `,
+    'padding-left: 16px;',
   )};
 `;
 
@@ -424,7 +422,7 @@ const Keyword = styled.li`
   }
   ${orBelow(
     BreakPoint.LG,
-    css`
+    `
       :last-of-type {
         padding-right: 16px;
       }
