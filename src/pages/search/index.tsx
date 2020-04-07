@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 import styled from '@emotion/styled';
 import axios from 'src/utils/axios';
-import * as SearchTypes from './types';
+import * as SearchTypes from 'src/types/searchResults';
 
 interface SearchProps {
   q?: string;
