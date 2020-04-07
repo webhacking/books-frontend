@@ -23,7 +23,7 @@ const TurnOffSearchHistory = styled.div`
 `;
 
 const RecentHistoryLabel = styled.p`
-  padding: 13px 0 13px 16px;
+  padding: 12px 0 12px 16px;
   font-size: 14px;
   font-weight: normal;
   color: ${colors.slateGray50};
@@ -55,8 +55,8 @@ const HistoryList = styled.ul`
 const SearchHistoryItem = styled.li`
   cursor: pointer;
   box-sizing: border-box;
-  padding: 13px 16px;
-  font-size: 15px;
+  padding: 12px 16px;
+  font-size: 14px;
   line-height: 1;
   display: flex;
   justify-content: space-between;
@@ -89,7 +89,7 @@ const SearchHistoryItem = styled.li`
 `;
 
 const HistoryOptionPanel = styled.div`
-  padding: 13px 16px;
+  padding: 12px 16px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;

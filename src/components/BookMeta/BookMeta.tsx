@@ -8,7 +8,7 @@ import { orBelow } from 'src/utils/mediaQuery';
 import { slateGray60 } from '@ridi/colors';
 
 const BookTitle = styled.div`
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.33em;
   color: #000000;
