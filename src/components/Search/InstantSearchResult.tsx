@@ -99,25 +99,25 @@ const AuthorListItem = styled.li`
   }
 `;
 
-const AuthorListItemButton = styled.button`
-  width: 100%;
+const searchResultItemButton = css`
   height: 100%;
-  padding: 13px 16px;
+  width: 100%;
+  padding: 12px 16px;
   text-align: left;
   flex-wrap: wrap;
 `;
 
+const AuthorListItemButton = styled.button`
+  ${searchResultItemButton}
+`;
+
 const BookListItemButton = styled.button`
-  height: 100%;
-  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  text-align: left;
-  padding: 12px 16px;
   align-items: center;
+  ${searchResultItemButton}
 `;
 const BookTitle = styled.span`
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.4em;
   word-break: keep-all;
   margin-right: 6px;
@@ -142,7 +142,7 @@ const AuthorInfoWrapper = styled.div`
 `;
 
 const AuthorName = styled.span`
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.4em;
   flex-shrink: 0;
   margin-right: 8px;
@@ -154,7 +154,7 @@ const AuthorName = styled.span`
 `;
 
 const AuthorBooksInfo = styled.span`
-  font-size: 15px;
+  font-size: 14px;
   word-break: keep-all;
   color: ${slateGray50};
   ${lineClamp(1)};
@@ -162,7 +162,7 @@ const AuthorBooksInfo = styled.span`
 
 const Author = styled.span`
   ${authorPublisherCSS};
-  font-size: 15px;
+  font-size: 14px;
   margin-right: 5px;
 `;
 
@@ -181,7 +181,7 @@ const InstantSearchDivider = styled.hr`
   height: 1px;
   border: 0;
   border-top: 1px solid #e6e8e0;
-  margin: 8px 16px;
+  margin: 4px 16px;
   display: block;
 `;
 
