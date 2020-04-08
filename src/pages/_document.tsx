@@ -62,6 +62,7 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
         </PartialSeparator>
         <body>
           <PartialSeparator name="CONTENT" wrapped={isPartials}>
+            {isPartials && <div data-partials />}
             <Main />
           </PartialSeparator>
           <PartialSeparator name="BOTTOM_SCRIPT" wrapped={isPartials}>

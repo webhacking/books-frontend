@@ -62,6 +62,18 @@ const sentryOptions = {
   ],
 };
 
+let suppressSentry = false;
+try {
+  // 클라이언트에서 partials인 경우 초기화하지 않음
+  if (window?.document.querySelector('div[data-partials]') != null) {
+    suppressSentry = true;
+  }
+} catch (_) {
+  // 에러가 났다면 window가 없는 경우, 서버임
+}
+if (!suppressSentry) {
+  init(sentryOptions);
+}
 
 const Sentry = {
   captureException(error, ctx = null) {
@@ -94,5 +106,4 @@ const Sentry = {
     return eventId;
   },
 };
-init(sentryOptions);
 export default Sentry;
