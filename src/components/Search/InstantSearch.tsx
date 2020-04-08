@@ -119,12 +119,14 @@ const focused = (theme: RIDITheme) => css`
       width: 100%;
       padding: 6px;
       box-sizing: border-box;
-      animation: ${fadeIn} 0.2s ease-in-out;
       display: flex;
       align-items: center;
       order: 3;
     `,
   )};
+  @media (max-width: ${BreakPoint.LG}px) {
+    animation: ${fadeIn} 0.2s ease-in-out;
+  }
 `;
 
 const initial = () => css`
