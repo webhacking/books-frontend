@@ -8,13 +8,7 @@ import {
   slateGray50, slateGray5, lightSteelBlue5, gray100,
 } from '@ridi/colors';
 import { ADULT_BADGE_URL, AUTHOR_ICON_URL } from 'src/constants/icons';
-
-import {
-  AuthorInfo as AuthorInfoScheme,
-  InstantSearchAuthorResultScheme,
-  InstantSearchBookResultScheme,
-  InstantSearchResultScheme,
-} from './InstantSearch';
+import * as SearchResult from 'src/types/searchResults';
 
 const listItemCSS = css`
   ${orBelow(
@@ -212,7 +206,7 @@ const Divider = styled.div`
 `;
 
 interface InstantSearchResultProps {
-  result: InstantSearchResultScheme;
+  result: SearchResult.InstantSearchResult;
   handleKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
   handleClickAuthorItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleClickBookItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -220,12 +214,12 @@ interface InstantSearchResultProps {
 }
 
 interface InstantSearchResultBookListProps {
-  result: InstantSearchResultScheme;
+  result: SearchResult.SearchBookDetail[];
   handleKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
   handleClickBookItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = (props) => {
+export const AuthorInfo: React.FC<{ author: SearchResult.Author }> = (props) => {
   const { author } = props;
 
   return (
@@ -245,7 +239,7 @@ const AuthorInfo: React.FC<{ author: InstantSearchAuthorResultScheme }> = (props
 };
 
 // Todo 사용 컴포넌트마다 다른 options 사용해서 보여주기
-const AuthorLabel: React.FC<{ author: string; authors: AuthorInfoScheme[] }> = (props) => {
+const AuthorLabel: React.FC<{ author: string; authors: SearchResult.AuthorsInfo[] }> = (props) => {
   const viewedAuthors = props.authors
     && props.authors
       .filter((author) => author.role === 'author' || author.role === 'illustrator')
@@ -267,7 +261,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) 
   const { result, handleKeyDown, handleClickBookItem } = props;
   return (
     <ul>
-      {result.books.map((book: InstantSearchBookResultScheme, index) => (
+      {result.map((book: SearchResult.SearchBookDetail, index) => (
         <BookListItem data-book-id={book.b_id} key={index}>
           <BookListItemButton
             type="button"
@@ -300,7 +294,7 @@ const ResultWrapper = styled.div`
   padding: 4px 0;
 `;
 
-const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo((props) => {
+function InstantSearchResult(props: InstantSearchResultProps) {
   const {
     focusedPosition,
     handleClickAuthorItem,
@@ -323,10 +317,10 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo((prop
 
   return (
     <ResultWrapper ref={wrapperRef}>
-      {result.authors.length > 0 && (
+      {result.author.authors.length > 0 && (
         <>
           <ul>
-            {result.authors.map((author, index) => (
+            {result.author.authors.map((author, index) => (
               <AuthorListItem key={index}>
                 <AuthorListItemButton
                   type="button"
@@ -342,15 +336,17 @@ const InstantSearchResult: React.FC<InstantSearchResultProps> = React.memo((prop
           <InstantSearchDivider />
         </>
       )}
-      {result.books.length > 0 && (
+      {result.book.books.length > 0 && (
         <BookList
           handleClickBookItem={handleClickBookItem}
           handleKeyDown={handleKeyDown}
-          result={result}
+          result={result.book.books}
         />
       )}
     </ResultWrapper>
   );
-});
+}
 
-export default InstantSearchResult;
+const MemoizedInstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(InstantSearchResult);
+
+export default MemoizedInstantSearchResult;
