@@ -56,7 +56,8 @@ function Authors(props: { author: SearchTypes.AuthorResult }) {
           <AuthorInfo author={author} />
         </AuthorItem>
       ))}
-      {isCollapsed && <span>ho</span>}
+      {/* Todo 더 보기 */}
+      {isCollapsed && <span>더 보기</span>}
     </AuthorList>
   );
 }
