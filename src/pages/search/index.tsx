@@ -4,6 +4,7 @@ import { ConnectedInitializeProps } from 'src/types/common';
 import styled from '@emotion/styled';
 import axios from 'src/utils/axios';
 import * as SearchTypes from 'src/types/searchResults';
+import { AuthorInfo } from 'src/components/Search/InstantSearchResult';
 
 interface SearchProps {
   q?: string;
@@ -17,7 +18,20 @@ const SearchResultSection = styled.section`
   margin: 0 auto;
 `;
 
+function AuthorList(props: { author: SearchTypes.AuthorResult }) {
+  return (
+    <ul>
+      {props.author.authors.map((author) => (
+        <AuthorInfo author={author} />
+      ))}
+    </ul>
+  );
+}
+
 function SearchPage(props: SearchProps) {
+  const {
+    author, book, categories, q,
+  } = props;
   return (
     <SearchResultSection>
       <Head>
@@ -27,12 +41,11 @@ function SearchPage(props: SearchProps) {
           검색 결과 - 리디북스
         </title>
       </Head>
-      <div>
-        <h3>검색 결과</h3>
-        {props.book?.books.map((book) => (
-          <span key={book.b_id}>{book.title}</span>
-        ))}
-      </div>
+      {props.author.total > 0 && <AuthorList author={author} />}
+      <h3>검색 결과</h3>
+      {props.book?.books.map((item) => (
+        <span key={item.b_id}>{item.title}</span>
+      ))}
     </SearchResultSection>
   );
 }
