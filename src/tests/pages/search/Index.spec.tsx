@@ -25,8 +25,28 @@ describe('Search Page Test', () => {
       query: { q: '유유' },
     });
 
-
-    const { getByText, container } = render(<Index {...props} />);
+    const { getByText } = render(<Index {...props} />);
     expect(getByText(/^유유상종$/)).toHaveTextContent('유유상');
+  });
+
+  it('should be render authors`s popular book', async () => {
+    (axios as any).__setHandler((method: string, url: string) => {
+      return {
+        data: fixture,
+      };
+    });
+
+    const props = await Index.getInitialProps({
+      pathname: 'search',
+      isServer: true,
+      asPath: '',
+      store,
+      query: { q: '유유' },
+    });
+
+    const { getByText } = render(<Index {...props} />);
+    expect(getByText(/미남들과 함께 가는 성교육 1화*/)).toHaveTextContent(
+      '<[미즈] 미남들과 함께 가는 성교육 1화> 외 11권',
+    );
   });
 });
