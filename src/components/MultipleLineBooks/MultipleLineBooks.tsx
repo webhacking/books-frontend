@@ -229,38 +229,8 @@ const List = styled.ul`
   display: flex;
   flex-wrap: wrap;
   flex: none;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: -24px;
-  ${orBelow(
-    432,
-    `
-      justify-content: space-between;
-      margin-left: -10px;
-    `,
-  )};
-  ${between(
-    BreakPoint.M + 1,
-    BreakPoint.MD,
-    `
-      justify-content: space-between;
-      margin-left: -10px;
-    `,
-  )};
-  ${between(
-    BreakPoint.MD + 1,
-    BreakPoint.LG,
-    `
-      justify-content: space-between;
-      margin-left: -6px;
-    `,
-  )}
-  ${greaterThanOrEqualTo(
-    BreakPoint.LG + 1,
-    `
-      left: -19px;
-      position: relative;
-    `,
-  )}
 `;
 
 const ItemList: React.FC<{ slug: string; genre: string; books: MdBook[] }> = (props) => {
