@@ -18,6 +18,7 @@
 
 [![codecov](https://codecov.io/gh/ridi/books-frontend/branch/master/graph/badge.svg)](https://codecov.io/gh/ridi/books-frontend)
 [![CircleCI](https://circleci.com/gh/ridi/books-frontend/tree/master.svg?style=svg)](https://circleci.com/gh/ridi/books-frontend/tree/master)
+![Google Lighthouse](https://github.com/ridi/books-frontend/workflows/Google%20Lighthouse/badge.svg)
 ![Cypress E2E](https://github.com/ridi/books-frontend/workflows/Cypress%20E2E/badge.svg?branch=master)
 ## Infrastructure
 
