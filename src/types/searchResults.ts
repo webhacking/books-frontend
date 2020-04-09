@@ -106,6 +106,6 @@ export type InstantSearchBookResult = Omit<BookResult, 'total' | 'aggregations'>
 export type InstantSearchAuthorResult = Omit<AuthorResult, 'total'>;
 
 export interface InstantSearchResult {
-  book: InstantSearchBookResult;
-  author: InstantSearchAuthorResult;
+  books: InstantSearchBookResult['books'];
+  authors: InstantSearchAuthorResult['authors'];
 }

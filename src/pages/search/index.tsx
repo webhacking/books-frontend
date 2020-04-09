@@ -8,12 +8,13 @@ import { AuthorInfo } from 'src/components/Search/InstantSearchResult';
 import { slateGray40, slateGray60, slateGray90 } from '@ridi/colors';
 import ArrowBoldH from 'src/svgs/ArrowBoldH.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import isPropValid from '@emotion/is-prop-valid';
 
 interface SearchProps {
   q?: string;
   book?: SearchTypes.BookResult;
   author?: SearchTypes.AuthorResult;
-  categories?: SearchTypes.Aggregation;
+  categories?: SearchTypes.Aggregation[];
 }
 
 const SearchResultSection = styled.section`
@@ -29,12 +30,7 @@ const SearchTitle = styled.h3`
   display: flex;
   align-items: center;
   padding: 10px 0;
-  ${orBelow(
-    BreakPoint.LG,
-    `
-    padding: 10px 16px;
-  `,
-  )}
+  ${orBelow(BreakPoint.LG, 'padding: 10px 16px;')}
 `;
 
 const TotalAuthor = styled.span`
@@ -52,12 +48,7 @@ const AuthorItem = styled.li<{ show: boolean }>`
 
 const AuthorList = styled.ul`
   margin-bottom: 16px;
-  ${orBelow(
-    BreakPoint.LG,
-    `
-    padding: 0 16px;
-  `,
-  )}
+  ${orBelow(BreakPoint.LG, 'padding: 10px 16px;')}
 `;
 
 const ShowMoreAuthor = styled.li`
@@ -72,11 +63,13 @@ const ShowMoreAuthor = styled.li`
 const MAXIMUM_AUTHOR = 30;
 const DEFAULT_SHOW_AUTHOR_COUNT = 3;
 
-const Arrow = styled(ArrowBoldH)<{ isRotate: boolean }>`
+const Arrow = styled(ArrowBoldH, {
+  shouldForwardProp: (prop) => isPropValid(prop) && prop !== 'isRotate',
+})<{ isRotate: boolean }>`
   width: 11px;
   fill: ${slateGray40};
   margin-left: 5px;
-  transform: rotate(${(props) => (props.isRotate ? '180deg' : '')});
+  transform: rotate(${(props) => (props.isRotate ? '180deg' : '0deg')});
 `;
 
 function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
@@ -92,25 +85,25 @@ function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
     <AuthorList>
       {authorsPreview.map((author) => (
         <AuthorItem key={author.id} show>
-          <a href={`/author/${author.id}?_s=search&_q=${q}`}>
+          <a href={`/author/${author.id}?_s=search&_q=${encodeURIComponent(q)}`}>
             <AuthorInfo author={author} />
           </a>
         </AuthorItem>
       ))}
       {restAuthors.map((author) => (
         <AuthorItem key={author.id} show={isShowMore}>
-          <a href={`/author/${author.id}?_s=search&_q=${q}`}>
+          <a href={`/author/${author.id}?_s=search&_q=${encodeURIComponent(q)}`}>
             <AuthorInfo author={author} />
           </a>
         </AuthorItem>
       ))}
       {authors.length > DEFAULT_SHOW_AUTHOR_COUNT && (
-        <ShowMoreAuthor onClick={() => setShowMore(!isShowMore)}>
+        <ShowMoreAuthor onClick={() => setShowMore((current) => !current)}>
           {isShowMore ? (
             <span>접기</span>
           ) : (
             <span>
-              {total > MAXIMUM_AUTHOR ? MAXIMUM_AUTHOR - DEFAULT_SHOW_AUTHOR_COUNT : total - DEFAULT_SHOW_AUTHOR_COUNT}
+              {Math.min(total, MAXIMUM_AUTHOR) - DEFAULT_SHOW_AUTHOR_COUNT}
               명 더 보기
             </span>
           )}

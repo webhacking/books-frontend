@@ -11,10 +11,7 @@ import { ADULT_BADGE_URL, AUTHOR_ICON_URL } from 'src/constants/icons';
 import * as SearchResult from 'src/types/searchResults';
 
 const listItemCSS = css`
-  ${orBelow(
-    BreakPoint.LG,
-    'min-height: 40px;',
-  )};
+  ${orBelow(BreakPoint.LG, 'min-height: 40px;')};
   cursor: pointer;
 `;
 
@@ -116,10 +113,7 @@ const BookTitle = styled.span`
   word-break: keep-all;
   margin-right: 6px;
   color: ${gray100};
-  ${greaterThanOrEqualTo(
-    BreakPoint.LG + 1,
-    'max-width: 298px;',
-  )};
+  ${greaterThanOrEqualTo(BreakPoint.LG + 1, 'max-width: 298px;')};
 `;
 
 const authorPublisherCSS = css`
@@ -140,10 +134,7 @@ const AuthorName = styled.span`
   line-height: 1.4em;
   flex-shrink: 0;
   margin-right: 8px;
-  ${orBelow(
-    BreakPoint.LG,
-    'margin-right: 6px;',
-  )};
+  ${orBelow(BreakPoint.LG, 'margin-right: 6px;')};
   color: ${gray100};
 `;
 
@@ -165,10 +156,7 @@ const AuthorPublisher = styled.span`
   font-size: 13px;
   padding-left: 5px;
   margin-right: 5px;
-  ${greaterThanOrEqualTo(
-    BreakPoint.LG + 1,
-    'max-width: 298px;',
-  )}
+  ${greaterThanOrEqualTo(BreakPoint.LG + 1, 'max-width: 298px;')}
 `;
 
 const InstantSearchDivider = styled.hr`
@@ -299,7 +287,7 @@ function InstantSearchResult(props: InstantSearchResultProps) {
     focusedPosition,
     handleClickAuthorItem,
     handleClickBookItem,
-    result,
+    result: { authors, books },
     handleKeyDown,
   } = props;
   const wrapperRef = React.useRef<HTMLDivElement>();
@@ -313,14 +301,13 @@ function InstantSearchResult(props: InstantSearchResultProps) {
         }
       }
     }
-  }, [focusedPosition, result]);
-
+  }, [focusedPosition, authors, books]);
   return (
     <ResultWrapper ref={wrapperRef}>
-      {result.author.authors.length > 0 && (
+      {authors.length > 0 && (
         <>
           <ul>
-            {result.author.authors.map((author, index) => (
+            {authors.map((author, index) => (
               <AuthorListItem key={index}>
                 <AuthorListItemButton
                   type="button"
@@ -336,17 +323,15 @@ function InstantSearchResult(props: InstantSearchResultProps) {
           <InstantSearchDivider />
         </>
       )}
-      {result.book.books.length > 0 && (
+      {books.length > 0 && (
         <BookList
           handleClickBookItem={handleClickBookItem}
           handleKeyDown={handleKeyDown}
-          result={result.book.books}
+          result={books}
         />
       )}
     </ResultWrapper>
   );
 }
 
-const MemoizedInstantSearchResult: React.FC<InstantSearchResultProps> = React.memo(InstantSearchResult);
-
-export default MemoizedInstantSearchResult;
+export default React.memo(InstantSearchResult);

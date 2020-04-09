@@ -215,8 +215,8 @@ interface InstantSearchProps {
 }
 
 const initialSearchResult = {
-  book: { books: [] },
-  author: { authors: [] },
+  books: [],
+  authors: [],
 };
 
 export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
@@ -254,8 +254,8 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
         const result = await pRetry(() => axios.get(url.toString()), { retries: 2 });
         setSearchResult({
-          book: result?.data?.book ?? {},
-          author: result?.data?.author ?? {},
+          books: result.data.book.books ?? [],
+          authors: result.data.author.authors ?? [],
         });
       } catch (error) {
         setSearchResult(initialSearchResult);
@@ -460,7 +460,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           ).slice(0, 5);
           const total = inputRef.current.value.length < 1
             ? history.length
-            : searchResult.book.books.length + searchResult.author.authors.length;
+            : searchResult.authors.length + searchResult.books.length;
           if (e.which === 40) {
             // keyDown
             const nextPos = focusedPosition + 1;
@@ -476,8 +476,8 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       [
         handleSetCurrentPosition,
         focusedPosition,
-        searchResult.author.authors.length,
-        searchResult.book.books.length,
+        searchResult.authors.length,
+        searchResult.books.length,
       ],
     );
     useEffect(() => {
@@ -513,15 +513,15 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       () =>
         // eslint-disable-next-line
         ((keyword.length < 1 && searchHistory.length > 0) ||
-          searchResult.book.books.length > 0
-          || searchResult.author.authors.length > 0)
+          searchResult.books.length > 0
+          || searchResult.authors.length > 0)
         && isFocused,
       [
         isFocused,
         keyword.length,
         searchHistory.length,
-        searchResult.author.authors.length,
-        searchResult.book.books.length,
+        searchResult.authors.length,
+        searchResult.books.length,
       ],
     );
 
