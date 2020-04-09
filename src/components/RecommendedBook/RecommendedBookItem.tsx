@@ -89,7 +89,6 @@ function RecommendedBookItem(props: Props) {
           >
             <BadgeContainer>
               <BookBadgeRenderer
-                type={type}
                 isRentable={
                   (!!singlePriceInfo?.rent
                     || !!seriesPriceInfo?.rent)

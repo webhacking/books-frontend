@@ -9,7 +9,6 @@ import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery'
 import { createTimeLabel } from 'src/utils/dateTime';
 import {
   BookItem,
-  DisplayType,
   MdBook,
   ReadingRanking,
   SectionExtra,
@@ -212,7 +211,6 @@ const ItemList: React.FC<ItemListProps> = (props) => {
                   {type === 'big' && (
                     <BadgeContainer>
                       <BookBadgeRenderer
-                        type={DisplayType.BestSeller}
                         isRentable={
                           (!!book.detail?.price_info?.rent
                             || !!book.detail?.series?.price_info?.rent)

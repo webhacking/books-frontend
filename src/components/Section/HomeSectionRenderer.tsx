@@ -108,7 +108,6 @@ function HomeSectionRenderer(props) {
                 key={item.id}
                 selectionId={item.id}
                 type={type}
-                option={{ isAIRecommendation: false }}
               />
             );
           })}
@@ -128,7 +127,6 @@ function HomeSectionRenderer(props) {
             title={title}
             genre={genre}
             type={type}
-            option={{ isAIRecommendation: false }}
             extra={extra}
           />
         );
@@ -164,7 +162,7 @@ function HomeSectionRenderer(props) {
       return (
         <AiRecommendationSection
           slug={slug}
-          items={items as MdBook[]}
+          items={items}
           genre={genre}
           type={type}
           extra={extra}

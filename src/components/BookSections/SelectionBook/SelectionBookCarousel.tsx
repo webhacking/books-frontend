@@ -2,14 +2,12 @@ import React from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Arrow from 'src/components/Carousel/Arrow';
-import {
-  SelectionBookCarouselProps,
-  SelectionBookItem,
-} from 'src/components/BookSections/SelectionBook/SelectionBook';
 import { getArrowVerticalCenterPosition } from 'src/components/Carousel';
 import BooksCarousel from 'src/components/Carousel/BooksCarousel';
 import { BreakPoint, greaterThanOrEqualTo } from 'src/utils/mediaQuery';
-import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
+
+import SelectionBookItem from './SelectionBookItem';
+import { SelectionBookListProps } from './types';
 
 const arrowWrapperCSS = css`
   position: absolute;
@@ -30,16 +28,12 @@ const BookItemWrapper = styled.li`
   outline: none;
 `;
 
-const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((props) => {
-  const {
-    genre, type, isAIRecommendation, slug,
-  } = props;
-
-  const [requestExclude, requestCancel] = useExcludeRecommendation();
+const SelectionBookCarousel: React.FC<SelectionBookListProps> = (props) => {
+  const { genre, type, slug } = props;
 
   const { items } = props;
   const books = React.useMemo(
-    () => items.filter((book) => book.detail),
+    () => (items as any[]).filter((book: any) => book.detail),
     [items],
   );
   const totalItems = books.length;
@@ -81,11 +75,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
               order={index}
               genre={genre}
               slug={slug}
-              isAIRecommendation={isAIRecommendation}
-              aiRecommendationCallback={{
-                exclude: requestExclude,
-                excludeCancel: requestCancel,
-              }}
               excluded={books[index]?.excluded ?? false}
               book={books[index]}
               type={type}
@@ -129,6 +118,6 @@ const SelectionBookCarousel: React.FC<SelectionBookCarouselProps> = React.memo((
       )}
     </CarouselWrapper>
   );
-});
+};
 
-export default SelectionBookCarousel;
+export default React.memo(SelectionBookCarousel);

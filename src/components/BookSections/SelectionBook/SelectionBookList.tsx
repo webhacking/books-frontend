@@ -4,10 +4,9 @@ import { css } from '@emotion/core';
 import ScrollContainer from 'src/components/ScrollContainer';
 import { flexRowStart } from 'src/styles';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import { DisplayType, MdBook } from 'src/types/sections';
-import { useExcludeRecommendation } from 'src/hooks/useExcludeRecommedation';
 
-import { SelectionBookItem } from './SelectionBook';
+import SelectionBookItem from './SelectionBookItem';
+import { SelectionBookListProps } from './types';
 
 export const listCSS = css`
   padding-top: 7px;
@@ -91,17 +90,8 @@ const arrowVerticalStyle = css`
   }
 `;
 
-interface SelectionBookListProps {
-  items: MdBook[];
-  isAIRecommendation: boolean;
-  type: DisplayType;
-  genre: string;
-  slug: string;
-}
-
 const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) => {
   const { genre, type, slug } = props;
-  const [requestExclude, requestCancel] = useExcludeRecommendation();
   const [isMounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -120,7 +110,7 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
       arrowStyle={arrowVerticalStyle}
     >
       <ul css={[flexRowStart, listCSS]}>
-        {props.items
+        {(props.items as any[])
           .filter((item) => item.detail)
           .map((item, index) => (
             <li key={index} css={itemCSS}>
@@ -129,11 +119,6 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
                 slug={slug}
                 genre={genre}
                 type={type}
-                isAIRecommendation={props.isAIRecommendation}
-                aiRecommendationCallback={{
-                  exclude: requestExclude,
-                  excludeCancel: requestCancel,
-                }}
                 excluded={item.excluded ?? false}
                 book={item}
                 width={100}

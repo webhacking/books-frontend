@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 interface UserPreferredSectionProps {
   items: MdSelection[];
   genre: string;
-  type: DisplayType;
+  type: Exclude<DisplayType, DisplayType.AiRecommendation>;
   slug: string;
 }
 
@@ -91,7 +91,6 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = (props) => {
             }}
             key={index}
             type={type}
-            option={{ isAIRecommendation: false }}
           />
         );
       })}
