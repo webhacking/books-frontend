@@ -42,6 +42,16 @@ export const clearOutline = css`
 export const fontFamily = [
   'ridi-roboto',
   'Apple SD Gothic Neo',
+  '"돋움"',
+  'Dotum',
+  'Helvetica Neue',
+  'arial',
+  'sans-serif',
+].join(', ');
+
+export const fontFamilyWithNanum = [
+  'ridi-roboto',
+  'Apple SD Gothic Neo',
   '"나눔고딕"',
   'Nanum Gothic',
   '"돋움"',
@@ -67,6 +77,10 @@ export const resetStyles = css`
     -moz-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     font-size: 14px;
+
+    &.wf-nanumgothic-n4-active.wf-nanumgothic-n7-active {
+      font-family: ${fontFamilyWithNanum};
+    }
   }
   body {
     ${css([resetSpacing])};
