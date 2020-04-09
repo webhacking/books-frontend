@@ -40,10 +40,11 @@ export interface SeriesPriceInfo {
 }
 
 export interface AuthorsInfo {
-  role: AuthorRole;
+  role: AuthorRole | string;
   name: string;
   author_id: number;
-  native_name: string;
+  native_name?: string;
+  alias_name?: string;
   order: number;
 }
 
@@ -76,7 +77,7 @@ export interface SearchBookDetail {
   is_rental: boolean;
   author2: string;
   book_count: number;
-  web_title: number;
+  web_title: string;
   b_id: string;
   price: number;
   _score?: number;
