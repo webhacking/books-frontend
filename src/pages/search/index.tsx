@@ -5,7 +5,9 @@ import styled from '@emotion/styled';
 import axios from 'src/utils/axios';
 import * as SearchTypes from 'src/types/searchResults';
 import { AuthorInfo } from 'src/components/Search/InstantSearchResult';
-import { slateGray40, slateGray90 } from '@ridi/colors';
+import { slateGray40, slateGray60, slateGray90 } from '@ridi/colors';
+import ArrowBoldH from 'src/svgs/ArrowBoldH.svg';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 interface SearchProps {
   q?: string;
@@ -27,6 +29,12 @@ const SearchTitle = styled.h3`
   display: flex;
   align-items: center;
   padding: 10px 0;
+  ${orBelow(
+    BreakPoint.LG,
+    `
+    padding: 10px 16px;
+  `,
+  )}
 `;
 
 const TotalAuthor = styled.span`
@@ -36,28 +44,79 @@ const TotalAuthor = styled.span`
   color: ${slateGray40};
 `;
 
-const AuthorItem = styled.li`
+const AuthorItem = styled.li<{ show: boolean }>`
   padding: 12px 0;
-  display: flex;
+  display: ${(props) => (props.show ? 'flex' : 'none')};
   align-items: center;
 `;
 
 const AuthorList = styled.ul`
   margin-bottom: 16px;
+  ${orBelow(
+    BreakPoint.LG,
+    `
+    padding: 0 16px;
+  `,
+  )}
 `;
 
-function Authors(props: { author: SearchTypes.AuthorResult }) {
-  const [isCollapsed, setCollapse] = React.useState(props.author.total > 30);
+const ShowMoreAuthor = styled.li`
+  padding: 12px 0;
+  color: ${slateGray60};
+  font-size: 13px;
+  font-weight: bold;
+  display: flex;
+  cursor: pointer;
+`;
+
+const MAXIMUM_AUTHOR = 30;
+const DEFAULT_SHOW_AUTHOR_COUNT = 3;
+
+const Arrow = styled(ArrowBoldH)<{ isRotate: boolean }>`
+  width: 11px;
+  fill: ${slateGray40};
+  margin-left: 5px;
+  transform: rotate(${(props) => (props.isRotate ? '180deg' : '')});
+`;
+
+function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
+  const {
+    author: { authors, total },
+    q,
+  } = props;
+  const [isShowMore, setShowMore] = React.useState(false);
+  const authorsPreview = authors.slice(0, DEFAULT_SHOW_AUTHOR_COUNT);
+  const restAuthors = authors.slice(DEFAULT_SHOW_AUTHOR_COUNT, authors.length);
 
   return (
     <AuthorList>
-      {props.author.authors.map((author) => (
-        <AuthorItem key={author.id}>
-          <AuthorInfo author={author} />
+      {authorsPreview.map((author) => (
+        <AuthorItem key={author.id} show>
+          <a href={`/author/${author.id}?_s=search&_q=${q}`}>
+            <AuthorInfo author={author} />
+          </a>
         </AuthorItem>
       ))}
-      {/* Todo 더 보기 */}
-      {isCollapsed && <span>더 보기</span>}
+      {restAuthors.map((author) => (
+        <AuthorItem key={author.id} show={isShowMore}>
+          <a href={`/author/${author.id}?_s=search&_q=${q}`}>
+            <AuthorInfo author={author} />
+          </a>
+        </AuthorItem>
+      ))}
+      {authors.length > DEFAULT_SHOW_AUTHOR_COUNT && (
+        <ShowMoreAuthor onClick={() => setShowMore(!isShowMore)}>
+          {isShowMore ? (
+            <span>접기</span>
+          ) : (
+            <span>
+              {total > MAXIMUM_AUTHOR ? MAXIMUM_AUTHOR - DEFAULT_SHOW_AUTHOR_COUNT : total - DEFAULT_SHOW_AUTHOR_COUNT}
+              명 더 보기
+            </span>
+          )}
+          <Arrow isRotate={isShowMore} />
+        </ShowMoreAuthor>
+      )}
     </AuthorList>
   );
 }
@@ -80,10 +139,10 @@ function SearchPage(props: SearchProps) {
           <SearchTitle>
             {`‘${q}’ 저자 검색 결과`}
             <TotalAuthor>
-              {author.total > 30 ? '총 30명+' : `총 ${author.total}명`}
+              {author.total > MAXIMUM_AUTHOR ? '총 30명+' : `총 ${author.total}명`}
             </TotalAuthor>
           </SearchTitle>
-          <Authors author={author} />
+          <Authors author={author} q={q} />
         </>
       )}
       {props.book.total > 0 && (
