@@ -1,22 +1,23 @@
+import { CacheProvider, Global } from '@emotion/core';
+import createCache from '@emotion/cache';
+import styled from '@emotion/styled';
+import { ConnectedRouter } from 'connected-next-router';
+import { ThemeProvider } from 'emotion-theming';
+import { cache } from 'emotion';
 import App, { AppContext } from 'next/app';
 import Head from 'next/head';
+import withRedux from 'next-redux-wrapper';
+import withReduxSaga from 'next-redux-saga';
 import { Provider } from 'react-redux';
 import { Store } from 'redux';
-import withRedux from 'next-redux-wrapper';
-import makeStore, { RootState } from 'src/store/config';
-import withReduxSaga from 'next-redux-saga';
-import { ConnectedRouter } from 'connected-next-router';
-import { CacheProvider, Global } from '@emotion/core';
-import { defaultTheme, partialResetStyles, resetStyles } from 'src/styles';
-import GNB from 'src/components/GNB';
-import { ThemeProvider } from 'emotion-theming';
-import Footer from 'src/components/Footer';
-import styled from '@emotion/styled';
 import React, { ErrorInfo } from 'react';
-import { PartialSeparator } from 'src/components/Misc';
-import { cache } from 'emotion';
-import createCache from '@emotion/cache';
+import { UAParser } from 'ua-parser-js';
 
+import GNB from 'src/components/GNB';
+import { defaultTheme, partialResetStyles, resetStyles } from 'src/styles';
+import Footer from 'src/components/Footer';
+import { PartialSeparator } from 'src/components/Misc';
+import makeStore, { RootState } from 'src/store/config';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
 import Meta from 'src/components/Meta';
 import DisallowedHostsFilter from 'src/components/Misc/DisallowedHostsFilter';
@@ -86,9 +87,18 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     }
   }
 
-  public componentDidMount() {
+  public async componentDidMount() {
     if (!this.props.isPartials) {
       this.serviceWorkerInit();
+    }
+    // Windows에서만 웹폰트 로드
+    if (new UAParser().getOS().name.toLowerCase().includes('windows')) {
+      const WebFont = await import('webfontloader');
+      WebFont.load({
+        google: {
+          families: ['Nanum Gothic:400,700:korean'],
+        },
+      });
     }
   }
 

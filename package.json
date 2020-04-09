@@ -55,6 +55,7 @@
     "universal-cookie": "^4.0.3",
     "url": "^0.11.0",
     "use-debounce": "^3.1.0",
+    "webfontloader": "^1.6.28",
     "workbox-webpack-plugin": "^4.3.1",
     "workbox-window": "^4.3.1"
   },
@@ -85,6 +86,7 @@
     "@types/react-redux": "^7.1.5",
     "@types/react-responsive": "^8.0.2",
     "@types/ua-parser-js": "^0.7.33",
+    "@types/webfontloader": "^1.6.29",
     "@types/webpack-env": "^1.15.1",
     "@types/workbox-window": "^4.3.3",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
