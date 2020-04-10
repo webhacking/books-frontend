@@ -13,7 +13,7 @@
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
-        "uses-passive-event-listeners ": [
+        "uses-passive-event-listeners": [
           "warn", {}
         ],
         "color-contrast": [
