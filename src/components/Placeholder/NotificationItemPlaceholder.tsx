@@ -19,7 +19,7 @@ const NotificationPlaceholderWrap = styled.div<{ opacity: number }, RIDITheme>`
     width: 100%;
     position: absolute;
     height: 1px;
-    background: ${(props) => props.theme.dividerColor};
+    background: ${(props) => props.theme.placeholderColor};
     opacity: ${(props) => props.theme.dividerOpacity};
     bottom: 0;
     left: 0;
