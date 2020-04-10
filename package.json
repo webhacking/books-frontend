@@ -50,7 +50,6 @@
     "reselect": "^4.0.0",
     "sentry-testkit": "^3.2.0",
     "serverless-http": "^2.3.0",
-    "ts-get": "^1.0.5",
     "ua-parser-js": "^0.7.20",
     "universal-cookie": "^4.0.3",
     "url": "^0.11.0",

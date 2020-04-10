@@ -1,3 +1,5 @@
+import { AuthorRole } from 'src/types/book';
+
 export interface Author {
   popular_book_title: string;
   book_count: number;
@@ -38,10 +40,11 @@ export interface SeriesPriceInfo {
 }
 
 export interface AuthorsInfo {
-  role: string;
+  role: AuthorRole | string;
   name: string;
   author_id: number;
-  native_name: string;
+  native_name?: string;
+  alias_name?: string;
   order: number;
 }
 
@@ -74,7 +77,7 @@ export interface SearchBookDetail {
   is_rental: boolean;
   author2: string;
   book_count: number;
-  web_title: number;
+  web_title: string;
   b_id: string;
   price: number;
   _score?: number;
@@ -97,4 +100,12 @@ export interface BookResult {
 export interface SearchResult {
   author: AuthorResult;
   book: BookResult;
+}
+
+export type InstantSearchBookResult = Omit<BookResult, 'total' | 'aggregations'>;
+export type InstantSearchAuthorResult = Omit<AuthorResult, 'total'>;
+
+export interface InstantSearchResult {
+  books: InstantSearchBookResult['books'];
+  authors: InstantSearchAuthorResult['authors'];
 }

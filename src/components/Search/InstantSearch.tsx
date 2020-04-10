@@ -14,13 +14,13 @@ import { safeJSONParse } from 'src/utils/common';
 import axios from 'axios';
 import InstantSearchResult from 'src/components/Search/InstantSearchResult';
 import InstantSearchHistory from 'src/components/Search/InstantSearchHistory';
-import { get } from 'ts-get';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import pRetry from 'p-retry';
 import sentry from 'src/utils/sentry';
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
 import { GNBContext } from 'src/components/GNB';
+import * as SearchResult from 'src/types/searchResults';
 
 const fadeIn = keyframes`
   0% {
@@ -210,44 +210,6 @@ const ArrowWrapperButton = styled.button`
   )};
 `;
 
-export interface AuthorInfo {
-  author_id: number;
-  b_id: string;
-  name: string;
-  order: number;
-  role: 'author' | 'translator' | 'illustrator';
-}
-
-export interface InstantSearchBookResultScheme {
-  b_id: string;
-  highlight: {
-    web_title_title?: string;
-    author_title_title?: string;
-  };
-  web_title_title?: string;
-  author_title_title?: string;
-  author: string;
-  author2: string;
-  authors_info: AuthorInfo[];
-  publisher: string;
-  age_limit: number;
-}
-
-export interface InstantSearchAuthorResultScheme {
-  popular_book_title: string;
-  book_count: number;
-  name: string;
-  id: number;
-  highlight: {
-    name: string;
-  };
-}
-
-export interface InstantSearchResultScheme {
-  books: InstantSearchBookResultScheme[];
-  authors: InstantSearchAuthorResultScheme[];
-}
-
 interface InstantSearchProps {
   searchKeyword: string;
 }
@@ -270,7 +232,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const [focusedPosition, setFocusedPosition] = useState(0);
     const [, setFetching] = useState(false);
 
-    const [searchResult, setSearchResult] = useState<InstantSearchResultScheme>(
+    const [searchResult, setSearchResult] = useState<SearchResult.InstantSearchResult>(
       initialSearchResult,
     );
 
@@ -292,8 +254,8 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
         const result = await pRetry(() => axios.get(url.toString()), { retries: 2 });
         setSearchResult({
-          books: get(result.data, (data) => data.book.books, []),
-          authors: get(result.data, (data) => data.author.authors, []),
+          books: result.data.book.books ?? [],
+          authors: result.data.author.authors ?? [],
         });
       } catch (error) {
         setSearchResult(initialSearchResult);
