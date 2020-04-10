@@ -9,6 +9,9 @@ import { slateGray40, slateGray60, slateGray90 } from '@ridi/colors';
 import ArrowBoldH from 'src/svgs/ArrowBoldH.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import isPropValid from '@emotion/is-prop-valid';
+import { SearchCategoryTab } from 'src/components/Tabs';
+import { css } from '@emotion/core';
+import { SearchResult } from 'src/types/searchResults';
 import { useCallback, useEffect } from 'react';
 import sentry from 'src/utils/sentry';
 import { useEventTracker } from 'src/hooks/useEventTracker';
@@ -22,6 +25,7 @@ interface SearchProps {
   book: SearchTypes.BookResult;
   author: SearchTypes.AuthorResult;
   categories: SearchTypes.Aggregation[];
+  currentCategory?: string;
 }
 
 const SearchResultSection = styled.section`
@@ -121,11 +125,24 @@ function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
   );
 }
 
+function SearchBooks(props: { books: SearchTypes.SearchBookDetail[] }) {
+  const { books } = props;
+
+  return (
+    <>
+      {books.map((book) => (
+        <span key={book.b_id}>{book.title}</span>
+      ))}
+    </>
+  );
+}
+
 function SearchPage(props: SearchProps) {
   const {
     author,
     book,
     categories,
+    currentCategory,
     q,
   } = props;
   const [tracker] = useEventTracker();
@@ -147,7 +164,7 @@ function SearchPage(props: SearchProps) {
     <SearchResultSection>
       <Head>
         <title>
-          {props.q}
+          {q}
           {' '}
           검색 결과 - 리디북스
         </title>
@@ -170,6 +187,17 @@ function SearchPage(props: SearchProps) {
       {book.total > 0 && (
         <>
           <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
+          {categories.length > 0 && (
+            <SearchCategoryTab categories={categories} currentCategory={currentCategory} />
+          )}
+          {/* FIXME 임시 마진 영역 */}
+          <div
+            css={css`
+            margin-top: 12px;
+          `}
+          >
+            some filters
+          </div>
           {/* Todo 스타일링 및 메타정보 표시 */}
           {props.book.books.map((item) => (
             <span key={item.b_id}>
@@ -193,6 +221,9 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   searchUrl.searchParams.append('where', 'book');
   searchUrl.searchParams.append('what', 'base');
   searchUrl.searchParams.append('keyword', searchKeyword as string);
+  if (query.category && query.category !== '전체') {
+    searchUrl.searchParams.append('category', query.category.toString());
+  }
   if (isServer) {
     const { data } = await axios.get<SearchTypes.SearchResult>(searchUrl.toString());
     // const result = await pRetry(() => axios.get(process.env.NEXT_STATIC_SEARCH_API), {
@@ -204,9 +235,17 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
       book: data.book,
       author: data.author,
       categories: data.book.aggregations,
+      currentCategory: props.query.category,
     };
   }
-  return { q: props.query.q };
+  const { data } = await axios.get<SearchTypes.SearchResult>(searchUrl.toString());
+  return {
+    q: props.query.q,
+    book: data.book,
+    author: data.author,
+    categories: data.book.aggregations,
+    currentCategory: props.query.category,
+  };
 };
 
 export default SearchPage;
