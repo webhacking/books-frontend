@@ -92,7 +92,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
       this.serviceWorkerInit();
     }
     // Windows에서만 웹폰트 로드
-    if (new UAParser().getOS().name.toLowerCase().includes('windows')) {
+    if (new UAParser().getOS().name?.toLowerCase().includes('windows')) {
       const WebFont = await import('webfontloader');
       WebFont.load({
         google: {
