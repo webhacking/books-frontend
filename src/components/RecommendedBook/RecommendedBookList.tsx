@@ -76,10 +76,10 @@ function RecommendedBookList(props: Omit<RecommendedBookProps, 'title'>) {
           slug={slug}
           genre={genre}
           css={
-              props.type === DisplayType.HotRelease
-                ? hotReleaseMargin
-                : todayRecommendationMargin
-            }
+            props.type === DisplayType.HotRelease
+              ? hotReleaseMargin
+              : todayRecommendationMargin
+          }
         />
       )),
     [items, type, theme, slug],
