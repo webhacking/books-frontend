@@ -43,7 +43,7 @@ describe('Search Page Test', () => {
         query: { q: '유유' },
       });
       // FIXME client side fetch 아직 없음
-      expect(props.book?.total).toBeUndefined();
+      expect(props.book.total).toEqual(147);
     });
   });
 
