@@ -2,9 +2,12 @@ import React, { useEffect, useMemo } from 'react';
 import * as SearchTypes from 'src/types/searchResults';
 import styled from '@emotion/styled';
 import {
-  slateGray20, slateGray40, slateGray60, slateGray90,
+  slateGray20,
+  slateGray40,
+  slateGray50,
+  slateGray60,
+  slateGray90,
 } from '@ridi/colors';
-import ScrollContainer from 'src/components/ScrollContainer';
 import { scrollBarHidden } from 'src/styles';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -70,6 +73,11 @@ const CategoryName = styled.span<{ active: boolean }>`
   font-weight: ${(props) => (props.active ? 'bold' : 500)};
 `;
 
+const CategoryCount = styled(CategoryName)`
+  opacity: 0.7;
+  color: ${(props) => (props.active ? slateGray90 : slateGray50)};
+`;
+
 function Category(props: {
   currentCategory: string;
   category: SearchTypes.Aggregation;
@@ -90,11 +98,11 @@ function Category(props: {
         <CategoryAnchor id={category.category_id.toString()}>
           <CategoryName active={active}>{category.category_name}</CategoryName>
           {' '}
-          <span>
+          <CategoryCount active={active}>
             (
             {category.doc_count}
             )
-          </span>
+          </CategoryCount>
         </CategoryAnchor>
       </Link>
     </CategoryItem>
