@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import { getEscapedNode } from 'src/utils/highlight';
 import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
+import ScrollContainer from 'src/components/ScrollContainer';
 
 interface SearchProps {
   q?: string;
@@ -31,6 +32,13 @@ interface SearchProps {
 const SearchResultSection = styled.section`
   max-width: 952px;
   margin: 0 auto;
+
+  ${orBelow(
+    999,
+    `
+    max-width: 100%;
+  `,
+  )};
 `;
 
 const SearchTitle = styled.h3`
@@ -83,6 +91,19 @@ const Arrow = styled(ArrowBoldH, {
   transform: rotate(${(props) => (props.isRotate ? '180deg' : '0deg')});
 `;
 
+function Author(props: { author: SearchTypes.Author; q: string; show: boolean }) {
+  const { author, q, show } = props;
+  return (
+    <AuthorItem show={show}>
+      <a href={`/author/${author.id}?_s=search&_q=${encodeURIComponent(q)}`}>
+        <AuthorInfo author={author} />
+      </a>
+    </AuthorItem>
+  );
+}
+
+const MemoizedAuthor = React.memo(Author);
+
 function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
   const {
     author: { authors, total },
@@ -95,18 +116,10 @@ function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
   return (
     <AuthorList>
       {authorsPreview.map((author) => (
-        <AuthorItem key={author.id} show>
-          <a href={`/author/${author.id}?_s=search&_q=${encodeURIComponent(q)}`}>
-            <AuthorInfo author={author} />
-          </a>
-        </AuthorItem>
+        <MemoizedAuthor show key={author.id} author={author} q={q} />
       ))}
       {restAuthors.map((author) => (
-        <AuthorItem key={author.id} show={isShowMore}>
-          <a href={`/author/${author.id}?_s=search&_q=${encodeURIComponent(q)}`}>
-            <AuthorInfo author={author} />
-          </a>
-        </AuthorItem>
+        <MemoizedAuthor show={isShowMore} key={author.id} author={author} q={q} />
       ))}
       {authors.length > DEFAULT_SHOW_AUTHOR_COUNT && (
         <ShowMoreAuthor onClick={() => setShowMore((current) => !current)}>
@@ -124,6 +137,8 @@ function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
     </AuthorList>
   );
 }
+
+const MemoizedAuthors = React.memo(Authors);
 
 function SearchBooks(props: { books: SearchTypes.SearchBookDetail[] }) {
   const { books } = props;
@@ -180,7 +195,7 @@ function SearchPage(props: SearchProps) {
                 }
               </TotalAuthor>
             </SearchTitle>
-            <Authors author={author} q={q || ''} />
+            <MemoizedAuthors author={author} q={q || ''} />
           </>
         )
 }
