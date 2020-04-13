@@ -5,7 +5,7 @@ import { RootState } from 'src/store/config';
 import styled from '@emotion/styled';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { sendDisplayEvent } from 'src/hooks/useEventTracker';
-import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 
 
 import coverAdult from 'src/assets/image/cover_adult.png';
@@ -142,7 +142,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
     setImageLoaded(true);
   };
 
-  const title = bookTitleGenerator(book.detail);
+  const title = computeBookTitle(book.detail);
 
   return (
     <ThumbnailWrapper ref={ref}>

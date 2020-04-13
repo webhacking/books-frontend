@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { lineClamp } from 'src/styles';
-import { getEscapedString } from 'src/utils/highlight';
+import { getEscapedNode } from 'src/utils/highlight';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import {
   slateGray50, slateGray5, lightSteelBlue5, gray100,
@@ -213,11 +213,9 @@ export const AuthorInfo: React.FC<{ author: SearchResult.Author }> = (props) => 
   return (
     <AuthorInfoWrapper>
       <AuthorSymbol />
-      <AuthorName
-        dangerouslySetInnerHTML={{
-          __html: getEscapedString(author.highlight.name || author.name),
-        }}
-      />
+      <AuthorName>
+        {getEscapedNode(author.highlight.name || author.name)}
+      </AuthorName>
       <AuthorBooksInfo>
         {`<${author.popular_book_title}>`}
         {author.book_count > 1 ? ` 외 ${author.book_count - 1}권` : ''}
@@ -257,13 +255,11 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) 
             onKeyDown={handleKeyDown}
             onClick={handleClickBookItem}
           >
-            <BookTitle
-              dangerouslySetInnerHTML={{
-                __html: getEscapedString(
-                  book.highlight.web_title_title || book.web_title_title,
-                ),
-              }}
-            />
+            <BookTitle>
+              {getEscapedNode(
+                book.highlight.web_title_title || book.web_title_title,
+              )}
+            </BookTitle>
             <AuthorLabel author={book.author} authors={book.authors_info} />
             <Divider />
             <AuthorPublisher>{book.publisher}</AuthorPublisher>
