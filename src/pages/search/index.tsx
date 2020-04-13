@@ -11,7 +11,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import isPropValid from '@emotion/is-prop-valid';
 import { SearchCategoryTab } from 'src/components/Tabs';
 import { css } from '@emotion/core';
-import { SearchResult } from 'src/types/searchResults';
+import { Aggregation, SearchResult } from 'src/types/searchResults';
 import { useCallback, useEffect } from 'react';
 import sentry from 'src/utils/sentry';
 import { useEventTracker } from 'src/hooks/useEventTracker';
