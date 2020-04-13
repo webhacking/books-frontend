@@ -8,9 +8,7 @@ import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
 import { getDeviceType } from 'src/hooks/useDeviceType';
 
-const deviceType = getDeviceType() === 'mobile'
-  ? DeviceType.Mobile
-  : DeviceType.PC;
+const deviceType = getDeviceType() === 'mobile' ? DeviceType.Mobile : DeviceType.PC;
 
 export const createTracker = (userId: string | null) => {
   if (typeof window !== 'undefined') {
@@ -24,7 +22,9 @@ export const createTracker = (userId: string | null) => {
         beaconSrc: process.env.NEXT_STATIC_BEACON_URL,
       },
       // eslint-disable-next-line no-process-env
-      debug: !process.env.IS_PRODUCTION && JSON.parse(localStorage.getItem('event-tracker/debug') || 'true'),
+      debug:
+        !process.env.IS_PRODUCTION
+        && JSON.parse(localStorage.getItem('event-tracker/debug') || 'true'),
       gaOptions: {
         trackingId: GA_KEY,
         fields: {
@@ -68,7 +68,12 @@ export const useEventTracker = () => {
 };
 
 // Todo refactor
-export const sendClickEvent = (eventTracker, item, section, order) => {
+export const sendClickEvent = (
+  eventTracker: Tracker,
+  item: any,
+  section: any,
+  order?: number,
+) => {
   eventTracker.sendEvent(SendEventType.Click, {
     section: `${deviceType}.${section}`,
     items: [{ id: item.b_id || item.id, idx: order, ts: new Date().getTime() }],

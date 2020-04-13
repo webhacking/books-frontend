@@ -21,7 +21,7 @@ function* isAvailableAtSelect(bIds: string[]) {
   try {
     const books: BooksState = yield select((state: RootState) => state.books);
     const availableBIds = bIds.filter(
-      (bId) => books.items[bId] && !books.items[bId].clientBookFields?.isAlreadyCheckedAtSelect,
+      (bId) => books.items[bId] && !books?.items[bId]?.clientBookFields?.isAlreadyCheckedAtSelect,
     );
     if (availableBIds.length > 0) {
       const data = yield call(pRetry, () => checkAvailableAtRidiSelect(bIds), {

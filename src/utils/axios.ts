@@ -25,6 +25,7 @@ globalAxiosConfig();
 export function wrapCatchCancel<F extends Function>(f: F): F {
   return (function (...args: any[]) {
     try {
+      // @ts-ignore
       return f.apply(this, args);
     } catch (err) {
       if (axios.isCancel(err)) {

@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { MutableRefObject } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 import Arrow from 'src/components/Carousel/Arrow';
@@ -10,7 +10,6 @@ import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { TopBanner } from 'src/types/sections';
 import { useDeviceType } from 'src/hooks/useDeviceType';
 import { SendEventType } from 'src/constants/eventTracking';
-
 
 const DESKTOP_INACTIVE_SCALE = 0.965;
 const ITEM_MARGIN = 10;
@@ -28,11 +27,13 @@ const CarouselWrapper = styled.div`
   overflow: hidden;
 
   @media (min-width: 375px) {
-    max-width: ${MD_IMAGE_WIDTH + (MD_IMAGE_WIDTH + ITEM_MARGIN) * (SLIDE_RADIUS + 1) * 2}px;
+    max-width: ${MD_IMAGE_WIDTH
+      + (MD_IMAGE_WIDTH + ITEM_MARGIN) * (SLIDE_RADIUS + 1) * 2}px;
   }
 
   @media (min-width: 1000px) {
-    max-width: ${IMAGE_WIDTH + (IMAGE_WIDTH * DESKTOP_INACTIVE_SCALE + ITEM_MARGIN) * (SLIDE_RADIUS + 1) * 2}px;
+    max-width: ${IMAGE_WIDTH
+      + (IMAGE_WIDTH * DESKTOP_INACTIVE_SCALE + ITEM_MARGIN) * (SLIDE_RADIUS + 1) * 2}px;
   }
 `;
 
@@ -89,7 +90,8 @@ const arrowStyle = css`
   transition: opacity 0.1s;
   cursor: pointer;
 
-  :hover, :focus {
+  :hover,
+  :focus {
     opacity: 1;
   }
   @media (hover: none) {
@@ -251,21 +253,14 @@ function CarouselItem(props: CarouselItemProps) {
   }, [banner, slug, tracker, deviceType]);
 
   return (
-    <CarouselItemContainer
-      ref={ref}
-      active={active}
-      invisible={invisible}
-    >
+    <CarouselItemContainer ref={ref} active={active} invisible={invisible}>
       <BannerImageLink
         onClick={handleBannerClick}
         href={banner.landing_url}
         tabIndex={active ? 0 : -1}
       >
         {(!invisible || intersecting) && (
-          <BannerImage
-            alt={banner.title}
-            src={banner.main_image_url}
-          />
+          <BannerImage alt={banner.title} src={banner.main_image_url} />
         )}
         {banner.is_badge_available && banner.badge != null && (
           <BannerBadge>
@@ -322,8 +317,12 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
 
   const { deviceType, isMobile } = useDeviceType();
   // 터치 핸들링
-  const wrapperRef = React.useRef<HTMLDivElement>();
-  const touchRef = React.useRef(null);
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+  const touchRef = React.useRef<{
+    id: Touch['identifier'];
+    startX: number;
+    at: number;
+  }>();
 
   const handleTouchStart = React.useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     if (touchRef.current != null) {
@@ -345,17 +344,20 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
       if (touchRef.current == null) {
         return;
       }
+
       const touches = e.changedTouches;
       for (let i = 0; i < touches.length; i += 1) {
         const touch = touches[i];
-        if (touch.identifier === touchRef.current.id) {
-          const diff = touch.clientX - touchRef.current.startX;
+        if (touch.identifier === touchRef?.current?.id) {
+          const diff = touch.clientX - touchRef?.current?.startX;
           setTouchDiff(diff);
           break;
         }
       }
     }
-    wrapperRef.current?.addEventListener('touchmove', handleTouchMove, { passive: false });
+    wrapperRef.current?.addEventListener('touchmove', handleTouchMove, {
+      passive: false,
+    });
     return () => wrapperRef.current?.removeEventListener('touchmove', handleTouchMove);
   }, []);
 
@@ -375,7 +377,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
         const diff = touch.clientX - touchRef.current.startX;
         const dTime = window.performance.now() - touchRef.current.at;
         const velocity = diff / dTime; // px/ms
-        const vThreshold = ((width + ITEM_MARGIN) / 200) / 3;
+        const vThreshold = (width + ITEM_MARGIN) / 200 / 3;
         // threshold 처리
         if (diff > width / 3 || velocity > vThreshold) {
           setCurrentIdx((idx) => (idx - 1 + len) % len);
@@ -384,7 +386,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
           setCurrentIdx((idx) => (idx + 1) % len);
         }
         setTouchDiff(undefined);
-        touchRef.current = null;
+        touchRef.current = undefined;
         break;
       }
     }
@@ -398,7 +400,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
     for (let i = 0; i < touches.length; i += 1) {
       if (touches[i].identifier === touchRef.current.id) {
         setTouchDiff(undefined);
-        touchRef.current = null;
+        touchRef.current = undefined;
         break;
       }
     }
@@ -458,11 +460,13 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
             key={index}
             banner={banners[index]}
             active={active}
-            invisible={!checkWithinRingRange(
-              (activeIndex - SLIDE_RADIUS + len) % len,
-              (activeIndex + SLIDE_RADIUS) % len,
-              index,
-            )}
+            invisible={
+              !checkWithinRingRange(
+                (activeIndex - SLIDE_RADIUS + len) % len,
+                (activeIndex + SLIDE_RADIUS) % len,
+                index,
+              )
+            }
           />
         )}
       </BigBannerCarousel>

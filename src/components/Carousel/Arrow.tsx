@@ -43,9 +43,13 @@ const Arrow: React.FC<ArrowProps> = (props) => {
   const {
     color, side, wrapperStyle, onClickHandler,
   } = props;
-  const handleClick = (e) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     e.preventDefault();
-    onClickHandler(e);
+    if (onClickHandler) {
+      onClickHandler(e);
+    }
   };
   const mergedStyle = [
     side === 'left' ? leftRotate : null,

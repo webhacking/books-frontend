@@ -3,7 +3,7 @@ import { OAuthRequestType } from 'src/utils/axios';
 
 export const redirectOAuthLoginPage = () => {
   const loginURL = new URL('/ridi/authorize/', process.env.NEXT_STATIC_ACCOUNT_API);
-  loginURL.searchParams.append('client_id', process.env.NEXT_STATIC_RIDI_OAUTH2_CLIENT_ID);
+  loginURL.searchParams.append('client_id', process.env.NEXT_STATIC_RIDI_OAUTH2_CLIENT_ID || '');
   loginURL.searchParams.append('response_type', 'code');
   loginURL.searchParams.append('redirect_uri', location.href);
 

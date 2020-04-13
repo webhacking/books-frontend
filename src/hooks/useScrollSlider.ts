@@ -5,7 +5,7 @@ import { useScrollPosition } from './useScrollPosition';
 export const useScrollSlider = (): [React.RefCallback<HTMLElement>, () => void, () => void, boolean, boolean, React.Ref<Element>, React.Ref<Element>] => {
   const [ref, isOnStart, isOnEnd, startMarkerRef, endMarkerRef, scrollBy] = useScrollPosition();
 
-  const nodeRef = React.useRef<HTMLElement>();
+  const nodeRef = React.useRef<HTMLElement | null>(null);
   const callbackRef = React.useCallback((node: HTMLElement | null) => {
     nodeRef.current = node;
     ref(node);

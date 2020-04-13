@@ -1,4 +1,7 @@
 import { captureException, withScope, init } from '@sentry/node';
+import { AxiosError } from 'axios';
+import { ConnectedInitializeProps } from 'src/types/common';
+import { NextPageContext } from 'next';
 
 const sentryOptions = {
   dsn: process.env.SENTRY_DSN,
@@ -68,24 +71,32 @@ if (process.env.IS_SERVER || !window.isPartials) {
 }
 
 const Sentry = {
-  captureException(error, ctx = null) {
+  captureException(error: AxiosError | Error, ctx: ConnectedInitializeProps | null = null) {
     let eventId;
+
     withScope((scope) => {
       // isAxiosError
-      if (error.config) {
-        if (error.response) {
-          scope.setExtra('Axios Response Url', error.config.url);
-          scope.setTag('AXIOS_RESPONSE_CODE', error.response.status);
-          scope.setTag('API_URL', error.config.url);
-          scope.setFingerprint([error.config.url, error.response.status, error.message]);
+      if ((error as AxiosError).config) {
+        if ((error as AxiosError).response) {
+          scope.setExtra('Axios Response Url', (error as AxiosError).config.url);
+          scope.setTag(
+            'AXIOS_RESPONSE_CODE',
+            (error as AxiosError).response?.status.toString() ?? 'UNKNOWN',
+          );
+          scope.setTag('API_URL', (error as AxiosError).config?.url ?? 'UNKNOWN');
+          scope.setFingerprint([
+            (error as AxiosError).config.url ?? '',
+            (error as AxiosError).response?.status.toString() ?? '',
+            error.message,
+          ]);
         }
       }
       if (ctx) {
         const {
           isServer, req, res, err, asPath, query,
         } = ctx;
-        scope.setTag('isServer', isServer);
-        scope.setTag('path', asPath);
+        scope.setTag('isServer', isServer.toString());
+        scope.setTag('path', asPath ?? 'undefined');
         scope.setExtra('NEXT_JS_ERROR', String(err));
         scope.setExtra('query', query);
 

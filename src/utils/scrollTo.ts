@@ -1,6 +1,6 @@
 // easing functions
 // https://gist.github.com/gre/1650294
-const easings = {
+const easings: {[index: string]: Function} = {
   linear(t: number) {
     return t;
   },
@@ -43,10 +43,10 @@ const easings = {
 };
 
 const horizontalAnimateScroll = (
-  element: React.RefObject<HTMLElement>,
+  element: React.MutableRefObject<HTMLElement | null>,
   moveTo: number,
   duration: number,
-  refRafId: React.MutableRefObject<null | number>,
+  refRafId: React.MutableRefObject<number | undefined>,
   easing = 'easeInOutQuad',
 ) => {
   if (!element.current) {

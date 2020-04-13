@@ -16,7 +16,7 @@ export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
 interface ThumbnailRendererProps {
   book: {
     b_id: string;
-    detail?: BookApi.Book;
+    detail: BookApi.ClientBook | null;
   };
   imgSize: 'xxlarge' | 'xlarge' | 'large' | 'small' | 'medium';
   isIntersecting?: boolean;
@@ -49,7 +49,7 @@ const computeThumbnailUrl = (
   isVerifiedAdult: boolean | null,
   bId: string,
   imageSize?: string,
-  book?: BookApi.Book,
+  book?: BookApi.ClientBook,
 ) => {
   if (!isIntersection) {
     return { src: undefined, srcset: undefined };
@@ -124,7 +124,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
   const handleVisible = React.useCallback((visible) => {
     if (!isVisible && visible) {
       setVisible(visible);
-      sendDisplayEvent({ slug, id: bId, order });
+      sendDisplayEvent({ slug: slug || 'UNKNOWN_SLUG', id: bId, order: order || 0 });
     }
   }, [slug, bId, order, isVisible]);
   const ref = useViewportIntersection<HTMLDivElement>(handleVisible);
@@ -133,10 +133,10 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
   const { src: imageUrl, srcset: imageUrlSet } = computeThumbnailUrl(
     is_adult_only,
     isVisible,
-    loggedUser?.is_verified_adult,
+    Boolean(loggedUser?.is_verified_adult),
     book?.detail?.thumbnailId ?? book.b_id,
     imgSize,
-    book.detail,
+    book.detail || undefined,
   );
   const imageOnLoad = () => {
     setImageLoaded(true);

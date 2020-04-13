@@ -33,7 +33,6 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
 
   useEffect(() => {
     const source = CancelToken.source();
-    // @ts-ignore
     const requestAiRecommendationItems = async () => {
       try {
         const requestUrl = `/sections/home-${genre}-ai-recommendation/`;
@@ -45,7 +44,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
           cancelToken: source.token,
         });
         if (result.status < 400 && result.status >= 200) {
-          setSections(result.data.items.map((item) => ({ ...item, excluded: false })));
+          setSections(result.data.items.map((item: AIRecommendationBook) => ({ ...item, excluded: false })));
           const bIds = keyToArray(result.data.items, 'b_id');
           dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
           const categoryIds = keyToArray(result.data.items, 'category_id');

@@ -281,8 +281,9 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
     if (!isLoaded) {
       dispatch(notificationActions.loadNotifications({ limit: 100 }));
     }
-
-    return () => dispatch(notificationActions.setLoaded(false));
+    return () => {
+      dispatch(notificationActions.setLoaded(false));
+    };
   }, [dispatch]);
 
   return (

@@ -57,7 +57,7 @@ export interface Page extends BaseResult {
 }
 
 export interface BestSeller {
-  detail: BookApi.Book | null;
+  detail: BookApi.ClientBook | null;
   b_id: string;
   period: string;
   options: [];
@@ -72,14 +72,14 @@ export interface StarRating {
 }
 
 export interface ReadingRanking {
-  detail: BookApi.Book | null;
+  detail: BookApi.ClientBook | null;
   b_id: string;
   type: string;
   rating: StarRating;
 }
 
 export interface HotRelease {
-  detail: BookApi.Book | null;
+  detail: BookApi.ClientBook | null;
   b_id: string;
   type: string;
   order: number;
@@ -120,7 +120,7 @@ export interface EventBanner {
 
 export interface MdBook {
   excluded?: boolean;
-  detail: BookApi.Book | null;
+  detail: BookApi.ClientBook | null;
   b_id: string;
   type: string;
   rating: StarRating;
@@ -137,7 +137,7 @@ export interface AIRecommendationBook {
   b_id: string;
   rcmd_id: string;
   score: number;
-  detail: BookApi.Book | null;
+  detail: BookApi.ClientBook | null;
   excluded?: boolean;
 }
 

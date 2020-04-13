@@ -9,7 +9,7 @@ interface Props {
   passHref?: boolean;
 }
 
-export const legacyCookieMap = {
+export const legacyCookieMap: {[index: string]: string} = {
   comic: 'comics',
   romance_serial: 'romance-serial',
   fantasy_serial: 'fantasy-serial',

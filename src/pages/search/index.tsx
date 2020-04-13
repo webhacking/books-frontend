@@ -12,9 +12,9 @@ import isPropValid from '@emotion/is-prop-valid';
 
 interface SearchProps {
   q?: string;
-  book?: SearchTypes.BookResult;
-  author?: SearchTypes.AuthorResult;
-  categories?: SearchTypes.Aggregation[];
+  book: SearchTypes.BookResult;
+  author: SearchTypes.AuthorResult;
+  categories: SearchTypes.Aggregation[];
 }
 
 const SearchResultSection = styled.section`
@@ -116,7 +116,10 @@ function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
 
 function SearchPage(props: SearchProps) {
   const {
-    author, book, categories, q,
+    author,
+    book,
+    categories,
+    q,
   } = props;
   return (
     <SearchResultSection>
@@ -127,21 +130,25 @@ function SearchPage(props: SearchProps) {
           검색 결과 - 리디북스
         </title>
       </Head>
-      {props.author.total > 0 && (
-        <>
-          <SearchTitle>
-            {`‘${q}’ 저자 검색 결과`}
-            <TotalAuthor>
-              {author.total > MAXIMUM_AUTHOR ? '총 30명+' : `총 ${author.total}명`}
-            </TotalAuthor>
-          </SearchTitle>
-          <Authors author={author} q={q} />
-        </>
-      )}
-      {props.book.total > 0 && (
+      {
+        author.total > 0 && (
+          <>
+            <SearchTitle>
+              {`‘${q}’ 저자 검색 결과`}
+              <TotalAuthor>
+                {
+                author.total > MAXIMUM_AUTHOR ? '총 30명+' : `총 ${author.total}명`
+}
+              </TotalAuthor>
+            </SearchTitle>
+            <Authors author={author} q={q || ''} />
+          </>
+        )
+}
+      {book.total > 0 && (
         <>
           <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
-          {props.book?.books.map((item) => (
+          {book.books.map((item) => (
             <span key={item.b_id}>{item.title}</span>
           ))}
         </>

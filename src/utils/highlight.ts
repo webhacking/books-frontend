@@ -52,5 +52,6 @@ export function newlineToReactNode(value: string): React.ReactNode {
     .map((line, idx) => (
       [idx !== 0 && React.createElement('br', { key: String(idx) }), line]
     ));
+  // @ts-ignore
   return [].concat(...nodes);
 }

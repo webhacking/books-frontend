@@ -62,7 +62,7 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
             <GenreTab isPartials currentGenre="category" />
           )}
 
-          {['/v2/Detail'].includes(this.props.pathname) && (
+          {['/v2/Detail'].includes(this.props.pathname ?? '') && (
             <GenreTab isPartials currentGenre="" />
           )}
 

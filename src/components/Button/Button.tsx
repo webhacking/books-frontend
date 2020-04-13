@@ -1,30 +1,27 @@
-import { css, SerializedStyles } from '@emotion/core';
 import * as React from 'react';
 import { RIDITheme } from 'src/styles';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import styled, { Interpolation } from '@emotion/styled';
 
 interface ButtonProps {
   label: string | React.ReactNode;
   type: 'primary' | 'secondary';
-  wrapperCSS?: SerializedStyles;
+  wrapperCSS?: Interpolation;
 }
 
-const createCSS = (theme: RIDITheme, type: 'primary' | 'secondary') => css`
+const StyledButton = styled.button<{ buttonStyle: 'primary' | 'secondary' }, RIDITheme>`
   box-sizing: border-box;
-  background-color: ${theme.button[`${type}Background`]};
-  border: 1px solid ${theme.button[`${type}BorderColor`]};
+  background-color: ${(props) => props.theme.button[`${props.buttonStyle}Background`]};
+  border: 1px solid ${(props) => props.theme.button[`${props.buttonStyle}BorderColor`]};
   border-radius: 3px;
   padding: 0 16px;
   font-weight: bold;
-  color: ${theme.button[`${type}FontColor`]};
+  color: ${(props) => props.theme.button[`${props.buttonStyle}FontColor`]};
   word-break: keep-all;
   font-size: 13px;
   height: 30px;
 
-  ${orBelow(
-    BreakPoint.LG,
-    'padding: 0 8px;',
-  )};
+  ${orBelow(BreakPoint.LG, 'padding: 0 8px;')};
   :hover {
     opacity: 0.7;
   }
@@ -37,7 +34,5 @@ const createCSS = (theme: RIDITheme, type: 'primary' | 'secondary') => css`
 `;
 
 export const Button: React.FC<ButtonProps> = (props) => (
-  <button css={(theme) => [createCSS(theme, props.type), props.wrapperCSS]}>
-    {props.label}
-  </button>
+  <StyledButton buttonStyle={props.type} css={props.wrapperCSS}>{props.label}</StyledButton>
 );

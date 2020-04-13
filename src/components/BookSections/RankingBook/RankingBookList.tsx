@@ -165,7 +165,7 @@ interface ItemListProps {
   slug: string;
   genre: string;
   type: 'small' | 'big';
-  showSomeDeal: boolean;
+  showSomeDeal?: boolean;
 }
 
 const ItemList: React.FC<ItemListProps> = (props) => {
@@ -248,7 +248,7 @@ const ItemList: React.FC<ItemListProps> = (props) => {
                     isAIRecommendation={false}
                     showSomeDeal={showSomeDeal}
                     showTag={false}
-                    width={props.type === 'big' ? '177px' : null}
+                    width={props.type === 'big' ? '177px' : undefined}
                     ratingInfo={props.type === 'big' ? (book as MdBook).rating : undefined}
                   />
                 )}

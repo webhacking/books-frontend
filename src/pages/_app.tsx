@@ -106,10 +106,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    sentry.captureException(error, {
-      ...this.props,
-      err: error,
-    });
+    sentry.captureException(error);
     super.componentDidCatch(error, errorInfo);
   }
 
@@ -165,7 +162,7 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
             <Global styles={resetStyles} />
             <Provider store={store}>
               <ConnectedRouter>
-                <InAppThemeProvider theme={theme}>
+                <InAppThemeProvider theme={theme ?? ''}>
                   <ViewportIntersectionProvider>
                     <Contents>
                       <Component {...pageProps} />

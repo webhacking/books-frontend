@@ -21,7 +21,7 @@ import pRetry from 'p-retry';
 import axios, { CancelToken, OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 
-const GNBWrapper = styled.div`
+const GNBWrapper = styled.div<{}, RIDITheme>`
   width: 100%;
   background-color: ${(props: { theme: RIDITheme }) => props.theme.primaryColor};
 `;
@@ -342,7 +342,6 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
   }, []);
 
   return (
-    // @ts-ignore
     <GNBWrapper className="new_gnb" id={props.id}>
       <GNBContext.Provider value={{ origin }}>
         <Header>

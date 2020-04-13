@@ -44,23 +44,18 @@ const TotalReviewer = styled.span`
 export default function StarRating(props: StarRatingProps) {
   const { rating, totalReviewer } = props;
   let label = '별점 정보 없음';
-  if (totalReviewer > 0) {
-    label = `총 리뷰어 ${totalReviewer}명, `
-      + `구매자 평균 별점 ${rating}점`;
+  if (totalReviewer && totalReviewer > 0) {
+    label = `총 리뷰어 ${totalReviewer}명, 구매자 평균 별점 ${rating}점`;
   }
   return (
     <Wrapper role="img" aria-label={label}>
       <StarContainer>
         <StarImage src={NO_STAR_RATING_URL} alt="별점 회색 배경" />
-        <StarMask
-          style={{ width: `${Math.floor(rating * 10)}px` }}
-        >
+        <StarMask style={{ width: `${Math.floor(rating * 10)}px` }}>
           <StarImage src={STAR_RATING_URL} alt="별점 표시" />
         </StarMask>
       </StarContainer>
-      {totalReviewer && (
-        <TotalReviewer>{totalReviewer}</TotalReviewer>
-      )}
+      {totalReviewer && <TotalReviewer>{totalReviewer}</TotalReviewer>}
     </Wrapper>
   );
 }

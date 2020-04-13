@@ -14,12 +14,12 @@ function useRefWithPrevious<T>(
 }
 
 // [ref, isOnStart, isOnEnd, startMarkerRef, endMarkerRef, scrollBy]
-export const useScrollPosition = (): [React.RefCallback<HTMLElement>, boolean, boolean, React.Ref<Element>, React.Ref<Element>, (leftValue: number) => void] => {
+export const useScrollPosition = (): [React.RefCallback<HTMLElement | null>, boolean, boolean, React.Ref<Element>, React.Ref<Element>, (leftValue: number) => void] => {
   // 둘 다 보인다고 가정
   const [isOnStart, setOnStart] = React.useState(true);
   const [isOnEnd, setOnEnd] = React.useState(true);
 
-  const nodeRef = React.useRef<HTMLElement>();
+  const nodeRef = React.useRef<HTMLElement | null>(null);
 
   const rafId = React.useRef<number>();
   const scrollBy = React.useCallback(
@@ -43,7 +43,7 @@ export const useScrollPosition = (): [React.RefCallback<HTMLElement>, boolean, b
     (event) => {
       if (Math.abs(event.deltaX) > 10 && rafId.current) {
         cancelAnimationFrame(rafId.current);
-        rafId.current = null;
+        rafId.current = undefined;
       }
     },
     [],

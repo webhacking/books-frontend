@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { UAParser } from 'ua-parser-js';
 
 export const getDeviceType = () => {
-  const { type } = new UAParser().getDevice();
+  const { type = 'pc' } = new UAParser().getDevice();
   return ['mobile', 'tablet'].includes(type) ? 'mobile' : 'pc';
 };
 
