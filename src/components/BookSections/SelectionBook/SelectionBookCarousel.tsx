@@ -22,12 +22,6 @@ const CarouselWrapper = styled.div`
   height: 100%;
 `;
 
-const BookItemWrapper = styled.li`
-  display: flex;
-  flex-direction: column;
-  outline: none;
-`;
-
 const SelectionBookCarousel: React.FC<SelectionBookListProps> = (props) => {
   const { genre, type, slug } = props;
 
@@ -70,17 +64,16 @@ const SelectionBookCarousel: React.FC<SelectionBookListProps> = (props) => {
         itemMargin={22}
       >
         {({ index }) => (
-          <BookItemWrapper key={index}>
-            <SelectionBookItem
-              order={index}
-              genre={genre}
-              slug={slug}
-              excluded={books[index]?.excluded ?? false}
-              book={books[index]}
-              type={type}
-              width={140}
-            />
-          </BookItemWrapper>
+          <SelectionBookItem
+            key={index}
+            order={index}
+            genre={genre}
+            slug={slug}
+            excluded={books[index]?.excluded ?? false}
+            book={books[index]}
+            type={type}
+            width={140}
+          />
         )}
       </BooksCarousel>
       {props.items.length > 6 && (
