@@ -21,11 +21,11 @@ const SlidingContainer = styled.div`
 
 const Marker = styled.div`
   flex: none;
-  width: 0;
+  width: 1px;
 `;
 
 const Content = styled.div`
-  flex: 1;
+  flex: 1 0 auto;
 `;
 
 const SliderControllerContainer = styled.div`

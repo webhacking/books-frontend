@@ -11,7 +11,6 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import isPropValid from '@emotion/is-prop-valid';
 import { SearchCategoryTab } from 'src/components/Tabs';
 import { css } from '@emotion/core';
-import { Aggregation, SearchResult } from 'src/types/searchResults';
 import { useCallback, useEffect } from 'react';
 import sentry from 'src/utils/sentry';
 import { useEventTracker } from 'src/hooks/useEventTracker';
@@ -20,25 +19,22 @@ import { RootState } from 'src/store/config';
 import { getEscapedNode } from 'src/utils/highlight';
 import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
 import ScrollContainer from 'src/components/ScrollContainer';
+import pRetry from 'p-retry';
+import { AxiosResponse } from 'axios';
 
 interface SearchProps {
   q?: string;
   book: SearchTypes.BookResult;
   author: SearchTypes.AuthorResult;
   categories: SearchTypes.Aggregation[];
-  currentCategory?: string;
+  currentCategoryId: string;
 }
 
 const SearchResultSection = styled.section`
   max-width: 952px;
   margin: 0 auto;
 
-  ${orBelow(
-    999,
-    `
-    max-width: 100%;
-  `,
-  )};
+  ${orBelow(BreakPoint.MD, 'max-width: 100%;')}
 `;
 
 const SearchTitle = styled.h3`
@@ -157,7 +153,7 @@ function SearchPage(props: SearchProps) {
     author,
     book,
     categories,
-    currentCategory,
+    currentCategoryId,
     q,
   } = props;
   const [tracker] = useEventTracker();
@@ -198,27 +194,51 @@ function SearchPage(props: SearchProps) {
             <MemoizedAuthors author={author} q={q || ''} />
           </>
         )
-}
+      }
       {book.total > 0 && (
         <>
           <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
-          {categories.length > 0 && (
-            <SearchCategoryTab categories={categories} currentCategory={currentCategory} />
-          )}
+            {categories.length > 0 && (
+              <ScrollContainer
+                arrowStyle={css`
+                  button {
+                    border-radius: 0;
+                    box-shadow: none;
+                    position: relative;
+                    top: 3px;
+                    width: 20px;
+                    background: linear-gradient(
+                      90deg,
+                      rgba(255, 255, 255, 0.1) 0%,
+                      rgba(255, 255, 255, 0.3) 27.6%,
+                      rgba(255, 255, 255, 0.3) 47.6%,
+                      #ffffff 53.65%
+                    );
+                  }
+                `}
+              >
+                <SearchCategoryTab
+                  categories={categories}
+                  currentCategoryId={
+                    parseInt(currentCategoryId, 10)
+                  }
+                />
+              </ScrollContainer>
+            )}
           {/* FIXME 임시 마진 영역 */}
           <div
             css={css`
-            margin-top: 12px;
-          `}
+              margin-top: 12px;
+            `}
           >
             some filters
           </div>
           {/* Todo 스타일링 및 메타정보 표시 */}
-          {props.book.books.map((item) => (
-            <span key={item.b_id}>
-              {getEscapedNode(computeSearchBookTitle(item))}
-            </span>
-          ))}
+            {props.book.books.map((item) => (
+              <span key={item.b_id}>
+                {getEscapedNode(computeSearchBookTitle(item))}
+              </span>
+            ))}
         </>
       )}
     </SearchResultSection>
@@ -236,30 +256,39 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   searchUrl.searchParams.append('where', 'book');
   searchUrl.searchParams.append('what', 'base');
   searchUrl.searchParams.append('keyword', searchKeyword as string);
-  if (query.category && query.category !== '전체') {
-    searchUrl.searchParams.append('category', query.category.toString());
+  if (query.category_id && !isNaN(parseInt(query.category_id as string, 10))) {
+    searchUrl.searchParams.delete('category_id');
+    searchUrl.searchParams.append('category_id', query.category_id.toString());
   }
   if (isServer) {
-    const { data } = await axios.get<SearchTypes.SearchResult>(searchUrl.toString());
-    // const result = await pRetry(() => axios.get(process.env.NEXT_STATIC_SEARCH_API), {
-    //   retries: 3,
-    // });
-    // console.log(result, q);
+    const { data } = await pRetry<AxiosResponse<SearchTypes.SearchResult>>(
+      () => axios.get(searchUrl.toString()),
+      {
+        retries: 3,
+      },
+    );
+
     return {
       q: props.query.q,
       book: data.book,
       author: data.author,
       categories: data.book.aggregations,
-      currentCategory: props.query.category,
+      currentCategoryId: props.query.category_id,
     };
   }
-  const { data } = await axios.get<SearchTypes.SearchResult>(searchUrl.toString());
+  const { data } = await pRetry<AxiosResponse<SearchTypes.SearchResult>>(
+    () => axios.get(searchUrl.toString()),
+    {
+      retries: 3,
+    },
+  );
+
   return {
     q: props.query.q,
     book: data.book,
     author: data.author,
     categories: data.book.aggregations,
-    currentCategory: props.query.category,
+    currentCategoryId: props.query.category_id,
   };
 };
 

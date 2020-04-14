@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
 import * as SearchTypes from 'src/types/searchResults';
 import styled from '@emotion/styled';
 import {
@@ -11,29 +11,19 @@ import {
 import { scrollBarHidden } from 'src/styles';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { orBelow } from 'src/utils/mediaQuery';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 interface SearchCategoryProps {
   categories: SearchTypes.Aggregation[];
-  currentCategory: string;
+  currentCategoryId: number;
 }
 
 const CategoryList = styled.ul`
   display: flex;
-  max-width: 952px;
   box-shadow: inset 0px -1px 0px ${slateGray20};
-  overflow-x: auto;
   height: 45px;
 
-  ${orBelow(
-    999,
-    `
-    max-width: 100%;
-    padding-left: 16px;
-  `,
-  )};
-
-  ${scrollBarHidden}
+  ${orBelow(BreakPoint.MD, 'padding-left: 16px; padding-right: 16px;')};
 `;
 
 const CategoryItem = styled.li<{ active: boolean }>`
@@ -43,24 +33,10 @@ const CategoryItem = styled.li<{ active: boolean }>`
   :not(:first-of-type) {
     margin-left: 10px;
   }
-  box-shadow: ${(props) => (props.active ? `inset 0px -3px 0px ${slateGray40}` : 'none')};
+  ${(props) => (props.active && `box-shadow: inset 0px -3px 0px ${slateGray40};`)}
 
   cursor: pointer;
 
-  ${orBelow(
-    999,
-    `
-    position: relative;
-    :last-of-type:after {
-      content: '';
-      display: block;
-      position: absolute;
-      right: -16px;
-      height: 100%;
-      width: 16px;
-    }
-  `,
-  )}
 `;
 
 const CategoryAnchor = styled.a`
@@ -70,7 +46,7 @@ const CategoryAnchor = styled.a`
 const CategoryName = styled.span<{ active: boolean }>`
   color: ${(props) => (props.active ? slateGray90 : slateGray60)};
   font-size: 14px;
-  font-weight: ${(props) => (props.active ? 'bold' : 500)};
+  font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
 `;
 
 const CategoryCount = styled(CategoryName)`
@@ -79,21 +55,18 @@ const CategoryCount = styled(CategoryName)`
 `;
 
 function Category(props: {
-  currentCategory: string;
+  currentCategoryId: number;
   category: SearchTypes.Aggregation;
   searchParam: URLSearchParams;
 }) {
-  const { currentCategory, category, searchParam } = props;
-  const active = useMemo(() => currentCategory === category.category_name, [
-    currentCategory,
-    category.category_name,
-  ]);
+  const { currentCategoryId, category, searchParam } = props;
+  const active = currentCategoryId === category.category_id;
+  searchParam.delete('category_id');
+  searchParam.append('category_id', category.category_id.toString());
   return (
-    <CategoryItem key={category.category_id} active={active}>
+    <CategoryItem active={active}>
       <Link
-        href={`/search?${searchParam.toString()}&category=${encodeURIComponent(
-          category.category_name,
-        )}#${category.category_id}`}
+        href={`/search?${searchParam.toString()}#${category.category_id}`}
       >
         <CategoryAnchor id={category.category_id.toString()}>
           <CategoryName active={active}>{category.category_name}</CategoryName>
@@ -109,10 +82,8 @@ function Category(props: {
   );
 }
 
-const MemoizedCategoryItem = React.memo(Category);
-
 function SearchCategoryTab(props: SearchCategoryProps) {
-  const { currentCategory = '전체', categories } = props;
+  const { currentCategoryId = 0, categories } = props;
   const router = useRouter();
   const searchParam = new URLSearchParams(router?.query as Record<string, any>);
   searchParam.delete('category');
@@ -120,9 +91,9 @@ function SearchCategoryTab(props: SearchCategoryProps) {
   return (
     <CategoryList>
       {categories.map((category) => (
-        <MemoizedCategoryItem
+        <Category
           key={category.category_id}
-          currentCategory={currentCategory}
+          currentCategoryId={currentCategoryId}
           category={category}
           searchParam={searchParam}
         />
@@ -131,4 +102,4 @@ function SearchCategoryTab(props: SearchCategoryProps) {
   );
 }
 
-export default React.memo(SearchCategoryTab);
+export default SearchCategoryTab;

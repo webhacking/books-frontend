@@ -90,12 +90,14 @@ describe('Search Page Test', () => {
 
   it('should be render category tab', () => {
     const { getByText } = render(
-      <Index
-        q={'유유'}
-        book={fixture.book}
-        author={fixture.author}
-        categories={fixture.book.aggregations}
-      />,
+      <Provider store={store}>
+        <Index
+          q={'유유'}
+          book={fixture.book}
+          author={fixture.author}
+          categories={fixture.book.aggregations}
+        />
+      </Provider>,
     );
     const container = getByText(/성공\/삶의자세/);
 
