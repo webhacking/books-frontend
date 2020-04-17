@@ -29,3 +29,13 @@ exports[`getEscapedNode should escape correctly 3`] = `
   ts
 </div>
 `;
+
+exports[`getEscapedNode should escape correctly 4`] = `
+<div>
+  tag 
+  <strong>
+    with class
+  </strong>
+  
+</div>
+`;

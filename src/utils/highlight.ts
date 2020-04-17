@@ -8,7 +8,7 @@ export function getEscapedNode(source: string): React.ReactNode {
   let stackPointer = 0;
   let starts = 0;
   let key = 0;
-  const regex = /<(\/?)strong>/gi;
+  const regex = /<(\/?)strong([^>]*)>/gi;
 
   // 왜 린터가 while (true)도 막고 while (match = regex.exec(source))도 막고 그럴까요?
   let match: RegExpExecArray | null = regex.exec(source);

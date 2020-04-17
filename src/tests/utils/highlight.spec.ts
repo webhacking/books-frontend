@@ -9,6 +9,7 @@ describe('getEscapedNode', () => {
     ['normal text with <angular brackets>', 'normal text with <angular brackets>'],
     ['some <strong>bold</strong> texts', 'some bold texts'],
     ['nes<strong>ted<strong> bold</strong> tex</strong>ts', 'nested bold texts'],
+    ['tag <strong class="foo">with class</strong>', 'tag with class'],
   ])('should escape correctly', (source, plainText) => {
     const renderResult = render(getEscapedNode(source));
     expect(renderResult.container).toMatchSnapshot();
