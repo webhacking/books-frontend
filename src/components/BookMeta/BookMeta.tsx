@@ -3,7 +3,8 @@ import { css, Interpolation } from '@emotion/core';
 import styled from '@emotion/styled';
 import { lineClamp } from 'src/styles';
 import * as BookApi from 'src/types/book';
-import { bookTitleGenerator } from 'src/utils/bookTitleGenerator';
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
+import { getEscapedNode } from 'src/utils/highlight';
 import { orBelow } from 'src/utils/mediaQuery';
 import { slateGray60 } from '@ridi/colors';
 
@@ -119,8 +120,9 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
         <BookTitle
           css={[bookTitleStyle, lineClamp(titleLineClamp || 2)]}
           aria-label={props.book.title.main}
-          dangerouslySetInnerHTML={{ __html: bookTitleGenerator(props.book) }}
-        />
+        >
+          {getEscapedNode(computeBookTitle(props.book))}
+        </BookTitle>
       </a>
       <AuthorsWrapper>
         <Authors authors={mergedAuthors} />

@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getEscapedNode should escape correctly 1`] = `
+<div>
+  normal text with &lt;angular brackets&gt;
+</div>
+`;
+
+exports[`getEscapedNode should escape correctly 2`] = `
+<div>
+  some 
+  <strong>
+    bold
+  </strong>
+   texts
+</div>
+`;
+
+exports[`getEscapedNode should escape correctly 3`] = `
+<div>
+  nes
+  <strong>
+    ted
+    <strong>
+       bold
+    </strong>
+     tex
+  </strong>
+  ts
+</div>
+`;
