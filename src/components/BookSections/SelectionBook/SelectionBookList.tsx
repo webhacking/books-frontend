@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 
 import ScrollContainer from 'src/components/ScrollContainer';
 import { flexRowStart } from 'src/styles';
@@ -8,7 +9,13 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import SelectionBookItem from './SelectionBookItem';
 import { SelectionBookListProps } from './types';
 
-const listCSS = css`
+const StyledScrollContainer = styled(ScrollContainer)`
+  margin-top: 6px;
+`;
+
+const List = styled.ul`
+  ${flexRowStart}
+
   margin-left: 13px; // 20px - 7px
   padding-top: 7px;
   padding-left: 7px;
@@ -19,62 +26,42 @@ const listCSS = css`
   ${orBelow(BreakPoint.MD, 'margin-left: 9px;')} // 16px - 7px
 `;
 
-const itemCSS = css`
+const StyledBookItem = styled(SelectionBookItem)`
   display: flex;
-  flex: none;
   flex-direction: column;
+  align-items: flex-start;
+
+  flex: none;
   margin-right: 20px;
   box-sizing: content-box;
 
-  ${orBelow(
-    BreakPoint.MD,
-    'margin-right: 12px;',
-  )};
-  align-items: flex-start;
+  ${orBelow(BreakPoint.MD, 'margin-right: 12px;')};
 `;
 
 const arrowVerticalStyle = css`
   padding-top: 98px;
-  @media (max-width: ${BreakPoint.LG}px) {
-    padding-top: 69px;
-  }
+  ${orBelow(BreakPoint.LG, 'padding-top: 69px;')}
 `;
 
 const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) => {
   const { genre, type, slug } = props;
-  const [isMounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    window.setImmediate(() => setMounted(true));
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
   return (
-    <ScrollContainer
-      css={css`
-        margin-top: 6px;
-        position: relative;
-      `}
-      arrowStyle={arrowVerticalStyle}
-    >
-      <ul css={[flexRowStart, listCSS]}>
+    <StyledScrollContainer arrowStyle={arrowVerticalStyle}>
+      <List>
         {(props.items as any[])
           .filter((item) => item.detail)
           .map((item, index) => (
-            <SelectionBookItem
+            <StyledBookItem
               key={index}
               order={index}
               slug={slug}
               genre={genre}
               type={type}
               book={item}
-              css={itemCSS}
             />
           ))}
-      </ul>
-    </ScrollContainer>
+      </List>
+    </StyledScrollContainer>
   );
 });
 
