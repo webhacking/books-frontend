@@ -251,10 +251,14 @@ workflows:
           name: deploy-prod/s3
           requires:
             - build-prod
+      - slack/approval-notification:
+          channel: deploy-store
+          requires:
+            - deploy-prod/s3
       - deploy-approval:
           type: approval
           requires:
-            - build-prod
+            - deploy-prod/s3
       - deploy:
           name: deploy-prod
           requires:
