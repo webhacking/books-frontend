@@ -69,10 +69,8 @@ const SelectionBookCarousel: React.FC<SelectionBookListProps> = (props) => {
             order={index}
             genre={genre}
             slug={slug}
-            excluded={books[index]?.excluded ?? false}
             book={books[index]}
             type={type}
-            width={140}
           />
         )}
       </BooksCarousel>
