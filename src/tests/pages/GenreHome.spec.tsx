@@ -35,6 +35,7 @@ const store = makeStore(
       isFetching: false,
       items: {
         '102087083': {
+          from: 'book-api',
           id: '102087083',
           property: {
             is_somedeal: false,
@@ -46,6 +47,7 @@ const store = makeStore(
           title: { main: '판타지 도서 타이틀' },
         },
         '111020494': {
+          from: 'book-api',
           id: '102087083',
           property: {
             is_somedeal: false,
@@ -57,6 +59,7 @@ const store = makeStore(
           title: { main: 'Bl 도서 Title1' },
         },
         '777035894': {
+          from: 'book-api',
           id: '777035894',
           property: {
             is_somedeal: false,

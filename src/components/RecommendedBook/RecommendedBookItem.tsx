@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import PortraitBook from 'src/components/Book/PortraitBook';
 import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
 import { newlineToReactNode } from 'src/utils/highlight';
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { BreakPoint } from 'src/utils/mediaQuery';
 
 import BookMeta from './BookMeta';
@@ -65,6 +66,7 @@ function RecommendedBookItem(props: Props) {
       genre={genre}
       slug={slug}
       className={className}
+      title={computeBookTitle(detail)}
     >
       {/* Todo show sentence */}
       {detail && type === DisplayType.HotRelease && <BookMeta book={detail} />}

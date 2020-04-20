@@ -9,6 +9,15 @@ import { slateGray40, slateGray60, slateGray90 } from '@ridi/colors';
 import ArrowBoldH from 'src/svgs/ArrowBoldH.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import isPropValid from '@emotion/is-prop-valid';
+import { useCallback, useEffect } from 'react';
+import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
+import sentry from 'src/utils/sentry';
+import { useEventTracker } from 'src/hooks/useEventTracker';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/store/config';
+import { css } from '@emotion/core';
+import { getEscapedNode } from 'src/utils/highlight';
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 
 interface SearchProps {
   q?: string;
@@ -113,6 +122,18 @@ function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
     </AuthorList>
   );
 }
+const thumbnailOverrideStyle = css`
+  width: 100px;
+  height: calc(100px * 1.618 - 10px);
+
+  ${orBelow(
+    BreakPoint.MD,
+    `
+      width: 80px;
+      height: calc(80px * 1.618 - 10px);
+    `,
+  )};
+`;
 
 function SearchPage(props: SearchProps) {
   const {
@@ -121,6 +142,21 @@ function SearchPage(props: SearchProps) {
     categories,
     q,
   } = props;
+  const [tracker] = useEventTracker();
+  const { loggedUser } = useSelector((state: RootState) => state.account);
+
+  const setPageView = useCallback(() => {
+    if (tracker) {
+      try {
+        tracker.sendPageView(window.location.href, document.referrer);
+      } catch (error) {
+        sentry.captureException(error);
+      }
+    }
+  }, [tracker]);
+  useEffect(() => {
+    setPageView();
+  }, [loggedUser]);
   return (
     <SearchResultSection>
       <Head>
@@ -148,9 +184,22 @@ function SearchPage(props: SearchProps) {
       {book.total > 0 && (
         <>
           <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
-          {book.books.map((item) => (
-            <span key={item.b_id}>{item.title}</span>
-          ))}
+          {/* Todo 스타일링 및 메타정보 표시 */}
+          <ul css={css`display: flex; flex-direction: column;`}>
+            {props.book.books.map((item) => (
+              <li css={css`display: flex;`} key={item.b_id}>
+                <ThumbnailRenderer
+                  css={thumbnailOverrideStyle}
+                  thumbnailId={item.b_id}
+                  isAdultOnly={item.age_limit > 18}
+                  imgSize="large"
+                  sizes="(min-width: 999px) 100px, 80px"
+                  title={item.title}
+                />
+                <div key={item.b_id}>{getEscapedNode(computeBookTitle(item))}</div>
+              </li>
+            ))}
+          </ul>
         </>
       )}
     </SearchResultSection>
@@ -174,9 +223,10 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
     //   retries: 3,
     // });
     // console.log(result, q);
+    const bookItems = data.book.books.map((book) => ({ ...book, from: 'search-api' }));
     return {
       q: props.query.q,
-      book: data.book,
+      book: { ...data.book, books: bookItems },
       author: data.author,
       categories: data.book.aggregations,
     };

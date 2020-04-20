@@ -36,6 +36,7 @@ const store = makeStore(
     books: {
       items: {
         '2414000748': {
+          from: 'book-api',
           id: '2414000748',
           title: { main: '조선비즈k 기자일일보고(18.12.31)' },
           thumbnail: {
@@ -139,6 +140,7 @@ const renderMultipleLineBookList = () =>
             items={[
               {
                 b_id: '2414000748',
+                from: 'book-api',
                 detail: null,
                 type: 'book',
                 rating: {
@@ -149,6 +151,7 @@ const renderMultipleLineBookList = () =>
               },
               {
                 b_id: '2414000749',
+                from: 'book-api',
                 detail: null,
                 type: 'book',
                 rating: {

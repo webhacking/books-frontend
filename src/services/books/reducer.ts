@@ -38,6 +38,7 @@ export class BooksReducer extends ImmerReducer<BooksState> {
             isAlreadyCheckedAtSelect: false,
             isAvailableSelect: false,
           };
+          books[book.id].from = 'book-api';
           books[book.id] = book;
         }
       });

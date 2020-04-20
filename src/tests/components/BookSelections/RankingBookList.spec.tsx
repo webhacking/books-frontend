@@ -16,6 +16,7 @@ const store = makeStore(
     books: {
       items: {
         '3306000063': {
+          from: 'book-api',
           id: '3306000063',
           title: {
             main: '도서 표지',
@@ -50,6 +51,7 @@ const renderRankingBookList = () =>
                 b_id: '3306000063',
                 type: 'test',
                 detail: {
+                  from: 'book-api',
                   title: { main: '도서 표지' },
                   authors: [{ name: 'hi' }],
                   property: { is_adult_only: false },

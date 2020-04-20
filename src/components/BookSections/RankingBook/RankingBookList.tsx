@@ -23,6 +23,9 @@ import ScrollContainer from 'src/components/ScrollContainer';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { CLOCK_ICON_URL } from 'src/constants/icons';
 
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
+import { getThumbnailBidFromBookApi } from 'src/utils/books';
+
 import { SectionTitle, SectionTitleLink } from '../SectionTitle';
 
 const SectionWrapper = styled.section`
@@ -203,8 +206,10 @@ const ItemList: React.FC<ItemListProps> = (props) => {
                     width: ${type === 'big' ? 80 : 50}px;
                   `}
                   sizes={type === 'big' ? '80px' : '50px'}
-                  book={{ b_id: book.b_id, detail: book.detail }}
+                  thumbnailId={getThumbnailBidFromBookApi(book.detail)}
+                  isAdultOnly={book.detail.property.is_adult_only}
                   imgSize="large"
+                  title={computeBookTitle(book.detail)}
                 >
                   {type === 'big' && (
                     <BadgeContainer>

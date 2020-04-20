@@ -65,6 +65,7 @@ export interface EventInfo {
 }
 
 export interface SearchBookDetail {
+  from: 'search-api';
   buyer_rating_score: number;
   is_series_complete: boolean;
   sub_title: string;
