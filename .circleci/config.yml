@@ -41,7 +41,7 @@ commands:
         default: good
       channel:
         type: string
-        default: deploy-store
+        default: deploy-books
       rollback:
         type: boolean
         default: false
@@ -223,7 +223,7 @@ workflows:
           assetPrefix: https://books-static.ridi.io
           post-steps:
             - notify:
-                channel: deploy-store-dev
+                channel: deploy-books-dev
       - rollback-approval:
           type: approval
           requires:
@@ -237,7 +237,7 @@ workflows:
           post-steps:
             - notify:
                 color: '#805b24'
-                channel: deploy-store-dev
+                channel: deploy-books-dev
                 rollback: true
   deploy-prod:
     jobs:
@@ -252,7 +252,7 @@ workflows:
           requires:
             - build-prod
       - slack/approval-notification:
-          channel: deploy-store
+          channel: deploy-books
           requires:
             - deploy-prod/s3
       - deploy-approval:
