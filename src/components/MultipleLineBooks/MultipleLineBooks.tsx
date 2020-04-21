@@ -188,7 +188,6 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
           book={item.detail}
           showTag={['bl', 'bl-serial'].includes(genre)}
           css={bookMetaWrapperStyle}
-          showRating
           isAIRecommendation={false}
         />
       )}
