@@ -32,12 +32,14 @@ const SelectionBookItem: React.FC<Props> = (props) => {
   const {
     book,
     genre,
-    type,
     slug,
     order,
     className,
   } = props;
   const { b_id: bId, detail } = book;
+  const ratingInfo = props.type === DisplayType.HomeMdSelection
+    ? props.book.rating
+    : undefined;
 
   const [tracker] = useEventTracker();
 
@@ -59,8 +61,7 @@ const SelectionBookItem: React.FC<Props> = (props) => {
         <BookMeta
           showTag={['bl', 'bl-serial'].includes(genre)}
           book={detail}
-          showRating={type === DisplayType.HomeMdSelection}
-          ratingInfo={(book as MdBook).rating}
+          ratingInfo={ratingInfo}
         />
       )}
     </PortraitBook>

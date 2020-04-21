@@ -246,13 +246,12 @@ const ItemList: React.FC<ItemListProps> = (props) => {
                 {book.detail && (
                   <BookMeta
                     book={book.detail}
-                    showRating={props.type === 'big' || !!(book as MdBook).rating}
                     titleLineClamp={props.type === 'small' ? 1 : 2}
                     isAIRecommendation={false}
                     showSomeDeal={showSomeDeal}
                     showTag={false}
                     width={props.type === 'big' ? '177px' : null}
-                    ratingInfo={(book as MdBook).rating}
+                    ratingInfo={props.type === 'big' ? (book as MdBook).rating : undefined}
                   />
                 )}
               </div>

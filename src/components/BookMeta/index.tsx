@@ -16,7 +16,6 @@ const TagWrapper = styled.div`
 interface BookMetaProps {
   book: BookApi.Book;
   titleLineClamp?: number;
-  showRating: boolean;
   showSomeDeal?: boolean;
   isAIRecommendation?: boolean;
   showTag: boolean;
@@ -37,7 +36,6 @@ export default function BookMeta(props: BookMetaProps) {
     },
     showTag,
     showSomeDeal,
-    showRating,
     ratingInfo,
     titleLineClamp,
     className,
@@ -50,7 +48,7 @@ export default function BookMeta(props: BookMetaProps) {
       width={width}
       className={className}
     >
-      {showRating && ratingInfo && (
+      {ratingInfo && (
         <span>
           <StarRating
             totalReviewer={ratingInfo.buyer_rating_count}
