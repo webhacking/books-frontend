@@ -1,5 +1,5 @@
 import { DisplayType, AIRecommendationBook, SectionExtra } from 'src/types/sections';
-import SelectionBook from 'src/components/BookSections/SelectionBook/SelectionBook';
+import SelectionBook from 'src/components/BookSections/SelectionBook';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
