@@ -5,7 +5,12 @@ import styled from '@emotion/styled';
 import axios from 'src/utils/axios';
 import * as SearchTypes from 'src/types/searchResults';
 import { AuthorInfo } from 'src/components/Search/InstantSearchResult';
-import { slateGray40, slateGray60, slateGray90 } from '@ridi/colors';
+import {
+  slateGray20,
+  slateGray40,
+  slateGray60,
+  slateGray90,
+} from '@ridi/colors';
 import ArrowBoldH from 'src/svgs/ArrowBoldH.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import isPropValid from '@emotion/is-prop-valid';
@@ -16,11 +21,11 @@ import sentry from 'src/utils/sentry';
 import { useEventTracker } from 'src/hooks/useEventTracker';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
-import { getEscapedNode } from 'src/utils/highlight';
-import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
+import { booksActions } from 'src/services/books';
 import ScrollContainer from 'src/components/ScrollContainer';
 import pRetry from 'p-retry';
-import { AxiosResponse } from 'axios';
+import { keyToArray } from 'src/utils/common';
+import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
 
 interface SearchProps {
   q?: string;
@@ -73,10 +78,13 @@ const ShowMoreAuthor = styled.li`
   font-weight: bold;
   display: flex;
   cursor: pointer;
+  align-items: center;
 `;
 
 const MAXIMUM_AUTHOR = 30;
 const DEFAULT_SHOW_AUTHOR_COUNT = 3;
+
+const PAGE_PER_ITEM = 24;
 
 const Arrow = styled(ArrowBoldH, {
   shouldForwardProp: (prop) => isPropValid(prop) && prop !== 'isRotate',
@@ -134,19 +142,21 @@ function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
   );
 }
 
+const SearchBookList = styled.ul`
+  display: flex;
+  flex-direction: column;
+`;
+
+const SearchBookItem = styled.li`
+  display: flex;
+  margin: 0 4px;
+  padding: 20px 0;
+  border-bottom: 1px solid ${slateGray20};
+
+  ${orBelow(BreakPoint.LG, 'margin: 0 20px;')};
+`;
+
 const MemoizedAuthors = React.memo(Authors);
-
-function SearchBooks(props: { books: SearchTypes.SearchBookDetail[] }) {
-  const { books } = props;
-
-  return (
-    <>
-      {books.map((book) => (
-        <span key={book.b_id}>{book.title}</span>
-      ))}
-    </>
-  );
-}
 
 function SearchPage(props: SearchProps) {
   const {
@@ -168,6 +178,7 @@ function SearchPage(props: SearchProps) {
       }
     }
   }, [tracker]);
+  const hasPagination = book.total > PAGE_PER_ITEM;
   useEffect(() => {
     setPageView();
   }, [loggedUser]);
@@ -234,13 +245,20 @@ function SearchPage(props: SearchProps) {
             some filters
           </div>
           {/* Todo 스타일링 및 메타정보 표시 */}
+          <SearchBookList>
             {props.book.books.map((item) => (
-              <span key={item.b_id}>
-                {getEscapedNode(computeSearchBookTitle(item))}
-              </span>
+              <SearchBookItem key={item.b_id}>
+                <SearchLandscapeBook
+                  item={item}
+                  title={item.title}
+                  isAdultOnly={item.age_limit > 18}
+                />
+              </SearchBookItem>
             ))}
+          </SearchBookList>
         </>
       )}
+      {hasPagination && 'pagenation'}
     </SearchResultSection>
   );
 }
@@ -252,42 +270,41 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   const searchKeyword = query.q ?? '';
   const searchUrl = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
   searchUrl.searchParams.append('site', 'ridi-store');
-  searchUrl.searchParams.append('where', 'author');
   searchUrl.searchParams.append('where', 'book');
-  searchUrl.searchParams.append('what', 'base');
-  searchUrl.searchParams.append('keyword', searchKeyword as string);
+  const isPublisherSearch = (searchKeyword as string).startsWith('출판사:');
   if (/^\d+$/.test(String(query.category_id))) {
     searchUrl.searchParams.delete('category_id');
     searchUrl.searchParams.append('category_id', query.category_id.toString());
   }
-  if (isServer) {
-    const { data } = await pRetry<AxiosResponse<SearchTypes.SearchResult>>(
-      () => axios.get(searchUrl.toString()),
-      {
-        retries: 3,
-      },
+  if (isPublisherSearch) {
+    searchUrl.searchParams.append('what', 'publisher');
+    searchUrl.searchParams.append(
+      'keyword',
+      (searchKeyword as string).replace('출판사:', ''),
     );
-
-    return {
-      q: props.query.q,
-      book: data.book,
-      author: data.author,
-      categories: data.book.aggregations,
-      currentCategoryId: props.query.category_id,
-    };
+  } else {
+    searchUrl.searchParams.append('what', 'base');
+    searchUrl.searchParams.append('where', 'author');
+    searchUrl.searchParams.append('keyword', searchKeyword as string);
   }
-  const { data } = await pRetry<AxiosResponse<SearchTypes.SearchResult>>(
+  const { data } = await pRetry(
     () => axios.get(searchUrl.toString()),
     {
       retries: 3,
     },
   );
-
+  const searchResult: SearchTypes.SearchResult = isPublisherSearch ? {
+    book: data,
+    author: { total: 0, authors: [] },
+    categories: (data as SearchTypes.BookResult).aggregations,
+  } : data;
+  const bIds = keyToArray(searchResult.book, 'b_id');
+  store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
   return {
     q: props.query.q,
-    book: data.book,
-    author: data.author,
-    categories: data.book.aggregations,
+    book: searchResult.book,
+    author: searchResult.author,
+    categories: searchResult.book.aggregations,
     currentCategoryId: props.query.category_id,
   };
 };

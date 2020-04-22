@@ -47,6 +47,15 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     }
   }
 
+  public setDesc(payload: BookApi.BookDescResponse[]) {
+    payload.forEach((desc) => {
+      const book = this.draftState.items[desc.b_id];
+      if (book) {
+        book.clientBookFields.desc = desc.descriptions;
+      }
+    });
+  }
+
   // 시리즈 도서 썸네일 확인 및 지정
   // https://rididev.slack.com/archives/CE55MTQH2/p1574134223004000
   // is_serial_complete 는 바라보지 않아도 됨
