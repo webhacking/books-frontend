@@ -305,7 +305,7 @@ const sectionCSS = css`
     'padding: 0;',
   )}
 `;
-const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = (props) => {
+function CategoryListPage(props: CategoryListPageProps) {
   const [isMounted, setMounted] = useState(false);
 
   const [categoryList] = useState(
@@ -337,7 +337,7 @@ const CategoryListPage: React.FC<CategoryListPageProps> & NextComponentType = (p
       </section>
     </>
   );
-};
+}
 
 // Todo Initial Fetch
 CategoryListPage.getInitialProps = async (props: ConnectedInitializeProps) => ({

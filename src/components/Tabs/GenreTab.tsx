@@ -188,7 +188,7 @@ const GenreTabDivider = styled.hr`
   background: #e6e8eb;
 `;
 
-const legacyCookieMap = {
+const legacyCookieMap: {[index: string]: string} = {
   general: '',
   comics: 'comic',
   'romance-serial': 'romance_serial',
@@ -197,18 +197,20 @@ const legacyCookieMap = {
 };
 
 const routeChangeCompleteHandler = () => {
-  const { pathname, query } = Router.router;
-  if (pathname === '/[genre]') {
-    const genre = query.genre?.toString();
-    const cookies = new Cookies();
-    cookies.set(
-      cookieKeys.main_genre,
-      legacyCookieMap[genre] ?? genre,
-      {
-        path: '/',
-        sameSite: 'lax',
-      },
-    );
+  if (Router.router) {
+    const { pathname, query } = Router.router;
+    if (pathname === '/[genre]') {
+      const genre = query.genre?.toString();
+      const cookies = new Cookies();
+      cookies.set(
+        cookieKeys.main_genre,
+        legacyCookieMap[genre] ?? genre,
+        {
+          path: '/',
+          sameSite: 'lax',
+        },
+      );
+    }
   }
 };
 

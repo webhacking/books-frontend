@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useCallback, useContext,
+  useState, useEffect, useCallback, useContext, EventHandler, ChangeEvent, ChangeEventHandler,
 } from 'react';
 import { css, keyframes } from '@emotion/core';
 import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
@@ -221,8 +221,8 @@ const initialSearchResult = {
 
 export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
   (props: InstantSearchProps) => {
-    const inputRef = React.useRef<HTMLInputElement>();
-    const listWrapperRef = React.useRef<HTMLDivElement>();
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    const listWrapperRef = React.useRef<HTMLDivElement>(null);
     const theme = useTheme<RIDITheme>();
     const [isLoaded, setLoaded] = useState(false);
     const [isFocused, setFocus] = useState(false);
@@ -285,7 +285,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       [debouncedHandleSearch],
     );
     const [debouncedOnChange] = useDebouncedCallback(handleOnChange, 100, {});
-    const passEventTarget = (e) => {
+    const passEventTarget = (e: React.ChangeEvent<HTMLInputElement>) => {
       const copiedValue = e.target.value;
       setKeyword(copiedValue);
       debouncedOnChange(copiedValue);
@@ -335,9 +335,11 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const handleClearInput = useCallback(
       (e) => {
         e.preventDefault();
-        inputRef.current.value = '';
-        setKeyword('');
-        inputRef.current.focus();
+        if (inputRef.current) {
+          inputRef.current.value = '';
+          setKeyword('');
+          inputRef.current.focus();
+        }
       },
       [inputRef],
     );

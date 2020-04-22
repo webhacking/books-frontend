@@ -27,7 +27,7 @@ const selectIconStyle = css`
 `;
 
 interface BookMetaProps {
-  book: BookApi.Book;
+  book: BookApi.ClientBook;
   showSelect?: boolean;
 }
 

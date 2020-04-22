@@ -33,7 +33,6 @@ const QuickMenuLabel = styled.span`
 `;
 
 const MenuList = styled.ul`
-  ${centered}
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -41,6 +40,7 @@ const MenuList = styled.ul`
   padding-bottom: 24px;
   padding-left: 13px;
   padding-right: 13px;
+  ${centered}
 
   ${orBelow(
     BreakPoint.LG,
@@ -71,10 +71,7 @@ const MenuItem = styled.li`
 `;
 
 const MenuAnchor = styled.a`
-  ${orBelow(
-    BreakPoint.LG,
-    'max-width: 50px;',
-  )};
+  ${orBelow(BreakPoint.LG, 'max-width: 50px;')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -102,7 +99,7 @@ const quickMenuShape = css`
   width: 44px;
 `;
 
-function Item({ menu }) {
+function Item({ menu }: { menu: QuickMenu }) {
   const [tracker] = useEventTracker();
   const sendQuickMenuClickEvent = useCallback(() => {
     tracker.sendEvent(SendEventType.QuickMenu, {
@@ -119,10 +116,7 @@ function Item({ menu }) {
         href={menu.url}
         aria-label={menu.name}
       >
-        <QuickMenuShape
-          css={quickMenuShape}
-          style={{ fill: menu.bg_color }}
-        />
+        <QuickMenuShape css={quickMenuShape} style={{ fill: menu.bg_color }} />
         <QuickMenuImage alt={menu.name} src={menu.icon} />
         <QuickMenuLabel>{menu.name}</QuickMenuLabel>
       </MenuAnchor>

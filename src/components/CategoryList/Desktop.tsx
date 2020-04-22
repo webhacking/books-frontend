@@ -123,7 +123,7 @@ const CuratedCategoryList: React.FC<{ category: ParentCategory }> = React.memo((
       />
     </button>
     <ul>
-      {props.category.subCategory.map((category, index) => (
+      {props.category?.subCategory?.map((category, index) => (
         <li
           css={(theme: RIDITheme) => css`
             ${subCategoryItemCSS(theme)};
@@ -206,7 +206,7 @@ const Desktop: React.FC<CategoryListProps> = (props) => {
                 <li css={subCategoryItemCSS}>
                   <span>{`${selectedCategory.name} 전체`}</span>
                 </li>
-                {selectedCategory.subCategory.map((subItem, subIndex) => (
+                {selectedCategory?.subCategory?.map((subItem, subIndex) => (
                   <li css={subCategoryItemCSS} key={subIndex}>
                     <span>{subItem.name}</span>
                   </li>

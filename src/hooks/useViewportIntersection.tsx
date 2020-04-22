@@ -17,7 +17,7 @@ export function ViewportIntersectionProvider(props: Props) {
   let observerRef: React.MutableRefObject<Context>;
   const getRegisterRef = React.useCallback(
     (callback: Callback) => {
-      let previousNode = null;
+      let previousNode: Element | null = null;
       const ref: <T extends Element>(node: T | null) => void = (node) => {
         if (node === previousNode) {
           return;

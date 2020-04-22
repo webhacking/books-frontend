@@ -4,7 +4,7 @@ import axios, { CancelToken, OAuthRequestType } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 import { LoggedUser } from 'src/types/account';
 
-export const useCartCount = (loggedUserInfo: LoggedUser) => {
+export const useCartCount = (loggedUserInfo: LoggedUser | null) => {
   const [cartCount, setCartCount] = useState<number>(0);
 
   useEffect(() => {

@@ -150,7 +150,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
     throw new NotFoundError(genre);
   }
 
-  if (isServer) {
+  if (isServer && res) {
     if (res.statusCode !== 302) {
       // store.dispatch({ type: booksActions.setFetching.type, payload: true });
       const result = await fetchHomeSections(genre.toString());

@@ -57,7 +57,7 @@ export const keyToArray = (target: any[] | Record<string, any>, key: string): an
     return [];
   }
 
-  const arr = [];
+  const arr: any = [];
   if (Array.isArray(target)) {
     target.forEach((item) => arr.push(...keyToArray(item, key)));
   } else if (typeof target === 'object' && target) {
@@ -82,7 +82,7 @@ export const splitArrayToChunk = (array: any[], size: number) => {
   return chunked_arr;
 };
 
-export const getMaxDiscountPercentage = (book?: BookApi.Book) => {
+export const getMaxDiscountPercentage = (book: BookApi.Book | null) => {
   if (!book) {
     return 0;
   }

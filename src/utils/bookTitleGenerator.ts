@@ -2,7 +2,7 @@ import * as BookApi from 'src/types/book';
 
 import sentry from 'src/utils/sentry';
 
-export function computeBookTitle(book: BookApi.Book): string {
+export function computeBookTitle(book: BookApi.Book | null): string {
   if (!book) {
     return '';
   }

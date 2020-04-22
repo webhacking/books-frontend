@@ -286,7 +286,7 @@ function InstantSearchResult(props: InstantSearchResultProps) {
     result: { authors, books },
     handleKeyDown,
   } = props;
-  const wrapperRef = React.useRef<HTMLDivElement>();
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (wrapperRef.current && !!focusedPosition) {
       const items = wrapperRef.current.querySelectorAll('li button');

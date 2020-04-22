@@ -1,7 +1,6 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { dodgerBlue50 } from '@ridi/colors';
-import { NextPageContext } from 'next';
 import { ErrorProps } from 'next/error';
 import React from 'react';
 
@@ -10,6 +9,7 @@ import { NotFoundError } from 'src/utils/error';
 import sentry from 'src/utils/sentry';
 import NotFoundIcon from 'src/svgs/NotFound.svg';
 import RidiLogo from 'src/svgs/RidiLogo_1.svg';
+import { ConnectedInitializeProps } from 'src/types/common';
 
 const Button = styled.button`
   display: inline-block;
@@ -120,7 +120,7 @@ export default function ErrorPage(props: ErrorProps) {
   );
 }
 
-ErrorPage.getInitialProps = (context: NextPageContext) => {
+ErrorPage.getInitialProps = (context: ConnectedInitializeProps) => {
   const { res, err } = context;
 
   if (err && !(err instanceof NotFoundError)) {

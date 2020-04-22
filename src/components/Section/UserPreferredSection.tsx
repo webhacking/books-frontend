@@ -26,7 +26,6 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = (props) => {
   const router = useRouter();
   const { items, type, slug } = props;
   const [sections, setSections] = useState(items || []);
-  // @ts-ignore
   const genre = (router.query.genre as string) || ('general' as string);
   useEffect(() => {
     const requestUserPreferredBestSeller = async () => {
@@ -76,8 +75,8 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = (props) => {
           return null;
         }
 
-        const categoryName = categoryState.items[item.category_id]?.name
-          ? `${categoryState.items[item.category_id]?.name} 베스트셀러`
+        const categoryName = categoryState.items[item.category_id ?? 0]?.name
+          ? `${categoryState.items[item.category_id ?? 0]?.name} 베스트셀러`
           : '베스트셀러';
         return (
           <SelectionBook

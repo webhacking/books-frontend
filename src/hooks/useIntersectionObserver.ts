@@ -19,14 +19,13 @@ export const useIntersectionObserver = (
         root: null,
       },
     );
-    let copied = null;
+    let copied: HTMLElement | null = null;
     if (target?.current) {
       observer.observe(target.current);
       copied = target.current;
     }
 
     return () => {
-      // @ts-ignore
       if (copied) {
         observer.unobserve(copied);
       }

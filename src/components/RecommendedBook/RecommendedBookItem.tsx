@@ -11,7 +11,7 @@ import BookMeta from './BookMeta';
 interface CommonProps {
   index: number;
   theme: 'white' | 'dark';
-  slug?: string;
+  slug: string;
   genre: string;
   className?: string;
 }

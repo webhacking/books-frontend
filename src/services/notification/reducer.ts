@@ -17,9 +17,6 @@ export const notificationInitialState: NotificationState = {
 };
 
 export class NotificationReducer extends ImmerReducer<NotificationState> {
-  // eslint-disable-next-line
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public loadNotifications(payload: { limit: number }) {}
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

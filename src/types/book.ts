@@ -205,10 +205,7 @@ export interface Book {
   is_deleted?: boolean;
 
   // client field
-  isAvailableSelect?: boolean;
   thumbnailId?: string; // 시리즈 여부, 완결 여부 판단해서 최종적으로 보여 줄 thumbnail Id
-
-  clientBookFields: ClientBookFields | null;
 }
 
 export interface Author {
@@ -216,3 +213,5 @@ export interface Author {
   id: number;
   role: AuthorRole;
 }
+
+export type ClientBook = Book & { clientBookFields: ClientBookFields };

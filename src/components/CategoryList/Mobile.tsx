@@ -138,7 +138,7 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = (props) => {
                   >
                     {`${item.name} 전체`}
                   </li>
-                  {item.subCategory.map((subItem, subIndex) => (
+                  {item.subCategory?.map((subItem, subIndex) => (
                     <li
                       css={[
                         categoryItemCSS,
@@ -176,7 +176,7 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = (props) => {
                   >
                     {`${categories[index - 1].name} 전체`}
                   </li>
-                  {categories[index - 1].subCategory.map((subItem, subIndex) => (
+                  {categories[index - 1].subCategory?.map((subItem, subIndex) => (
                     <li
                       css={[
                         categoryItemCSS,
@@ -199,10 +199,14 @@ const CategoryCollapse: React.FC<CategoryCollapseProps> = (props) => {
 };
 
 const Mobile: React.FC<CategoryListProps> = (props) => {
-  const [selectedCategory, setCategory] = useState<ParentCategory>(null);
+  const [selectedCategory, setCategory] = useState<ParentCategory| null>({
+    id: 1,
+    name: '전체',
+    subCategory: [],
+  });
   const handleSelectCategory = (category: ParentCategory) => {
     setCategory(
-      selectedCategory && selectedCategory.name === category.name ? null : category,
+      selectedCategory?.name === category.name ? null : category,
     );
   };
   return (

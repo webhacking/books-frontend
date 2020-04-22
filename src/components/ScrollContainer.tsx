@@ -59,8 +59,8 @@ const arrowCenterStyle = css`
 
 interface SliderControllerProps {
   theme?: 'white' | 'dark';
-  leftArrowLabel?: string;
-  rightArrowLabel?: string;
+  leftArrowLabel: string;
+  rightArrowLabel: string;
   showLeftArrow?: boolean;
   showRightArrow?: boolean;
   onLeftClick?(): void;

@@ -79,7 +79,7 @@ export interface ReadingRanking {
 }
 
 export interface HotRelease {
-  detail: BookApi.Book | null;
+  detail: BookApi.ClientBook | null;
   b_id: string;
   type: string;
   order: number;

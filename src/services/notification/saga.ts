@@ -24,14 +24,14 @@ const RIDI_NOTIFICATION_TOKEN = 'ridi_notification_token';
 const cookies = new Cookies();
 
 function* notificationAuth() {
-  let tokenResult = null;
-  let expired = null;
+  let tokenResult: string | null = null;
+  let expired: string | null = null;
 
   // 기존 Cookies의 Token 만료 확인
-  const savedTokenValue = cookies.get(RIDI_NOTIFICATION_TOKEN) || '';
+  const savedTokenValue: string = cookies.get(RIDI_NOTIFICATION_TOKEN) || '';
   if (savedTokenValue.length > 0) {
     try {
-      expired = jwt_decode(savedTokenValue).exp;
+      expired = jwt_decode<{ exp: string }>(savedTokenValue).exp;
     } catch (error) {
       expired = null;
     }

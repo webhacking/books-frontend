@@ -1,6 +1,6 @@
 // temporary use
 
-const genres = {
+const genres: {[index: string]: string} = {
   fantasy: '판타지 단행본',
   'fantasy-serial': '판타지 연재',
   bl: 'BL 단행본',

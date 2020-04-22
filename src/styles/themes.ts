@@ -23,6 +23,7 @@ export interface RIDITheme {
     primaryBorderColor: string;
     secondaryBorderColor: string;
     secondaryFontColor: string;
+    [type: string]: string;
   };
   input: {
     placeholder: string;

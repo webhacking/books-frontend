@@ -11,9 +11,6 @@ export const accountInitialState: AccountState = {
 };
 
 export class AccountReducer extends ImmerReducer<AccountState> {
-  // eslint-disable-next-line
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public checkLogged(cancelToken: CancelTokenSource) {}
 
   public setLogged(payload: LoggedUser | null) {

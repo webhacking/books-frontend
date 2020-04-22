@@ -1,4 +1,5 @@
 import {
+  AIRecommendationBook,
   DisplayType,
   EventBanner as EventBannerItem,
   HotRelease,
@@ -28,7 +29,7 @@ interface HomeSectionRendererProps {
   order: number;
 }
 
-function HomeSectionRenderer(props) {
+function HomeSectionRenderer(props: HomeSectionRendererProps) {
   const {
     section: {
       items, item_metadata, type, title, extra, slug,
@@ -162,7 +163,7 @@ function HomeSectionRenderer(props) {
       return (
         <AiRecommendationSection
           slug={slug}
-          items={items}
+          items={items as unknown as AIRecommendationBook[]}
           genre={genre}
           type={type}
           extra={extra}
