@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import React, { MutableRefObject } from 'react';
+import React from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 import Arrow from 'src/components/Carousel/Arrow';
