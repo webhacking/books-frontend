@@ -119,7 +119,6 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
       <a href={`/books/${props.book.id}`}>
         <BookTitle
           css={[bookTitleStyle, lineClamp(titleLineClamp || 2)]}
-          aria-label={title}
         >
           {title}
         </BookTitle>

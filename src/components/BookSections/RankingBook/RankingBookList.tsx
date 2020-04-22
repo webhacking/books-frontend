@@ -206,8 +206,8 @@ const ItemList: React.FC<ItemListProps> = (props) => {
                     width: ${type === 'big' ? 80 : 50}px;
                   `}
                   sizes={type === 'big' ? '80px' : '50px'}
-                  thumbnailId={getThumbnailBidFromBookApi(book.detail)}
-                  isAdultOnly={book.detail.property.is_adult_only}
+                  thumbnailId={getThumbnailBidFromBookApi(book.b_id, book.detail)}
+                  isAdultOnly={book.detail?.property.is_adult_only || false}
                   imgSize="large"
                   title={computeBookTitle(book.detail)}
                 >

@@ -88,8 +88,8 @@ export default function PortraitBook(props: Props) {
             css={bookWidthStyle}
             sizes="(min-width: 999px) 140px, 100px"
             slug={slug}
-            thumbnailId={getThumbnailBidFromBookApi(bookDetail)}
-            isAdultOnly={bookDetail.property.is_adult_only}
+            thumbnailId={getThumbnailBidFromBookApi(bId, bookDetail)}
+            isAdultOnly={bookDetail?.property.is_adult_only || false}
             imgSize="large"
           >
             <BadgeContainer>

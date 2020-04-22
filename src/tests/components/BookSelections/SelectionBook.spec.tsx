@@ -23,7 +23,6 @@ const store = makeStore(
     books: {
       itmes: {
         '12345666': {
-          from: 'book-api',
           b_id: '12345666',
         },
       },
@@ -44,7 +43,6 @@ const renderSelectionBookList = (aiRecommendation: boolean) =>
                 b_id: '12345666',
                 type: 'test',
                 detail: {
-                  from: 'book-api',
                   title: { main: '도서 표지' },
                   authors: [{ name: 'hi' }],
                   property: { is_adult_only: false },

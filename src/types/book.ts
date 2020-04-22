@@ -188,7 +188,6 @@ export interface ClientBookFields {
 }
 
 export interface Book {
-  from: 'book-api';
   id: string;
   authors: Author[];
   categories: Category[];
@@ -218,5 +217,3 @@ export interface Author {
 }
 
 export type ClientBook = Book & { clientBookFields: ClientBookFields };
-
-export type BookType = ClientBook | SearchBookDetail;

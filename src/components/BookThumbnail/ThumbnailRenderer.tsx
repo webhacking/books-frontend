@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import * as BookApi from 'src/types/book';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import styled from '@emotion/styled';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { sendDisplayEvent } from 'src/hooks/useEventTracker';
-import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 
 
 import coverAdult from 'src/assets/image/cover_adult.png';
@@ -107,7 +105,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
   const handleVisible = React.useCallback((visible) => {
     if (!isVisible && visible) {
       setVisible(visible);
-      sendDisplayEvent({ slug, id: thumbnailId, order });
+      sendDisplayEvent({ slug: slug || 'UNKOWN_SLUG', id: thumbnailId, order: order || 0 });
     }
   }, [slug, thumbnailId, order, isVisible]);
 

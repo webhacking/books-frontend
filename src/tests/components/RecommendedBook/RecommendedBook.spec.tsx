@@ -25,7 +25,6 @@ const store = makeStore(
     books: {
       items: {
         '100000000': {
-          from: 'book-api',
           id: '100000000',
           title: { main: '멋진 책'}
         },
@@ -41,7 +40,6 @@ const books: HotRelease[] = [
     b_id: '12345',
     sentence: "오늘은 자고 가련\\r\\n'동양풍 + 외전 출간",
     detail: {
-      from: 'book-api',
       title: { main: '도서 표지' },
       property: {},
       authors: [],
@@ -54,7 +52,6 @@ const books: HotRelease[] = [
     b_id: '12345',
     sentence: "오늘은 자고 가련\\r\\n'동양풍 + 외전 출간",
     detail: {
-      from: 'book-api',
       title: { main: '도서 표지' },
       property: {},
       authors: [{ id: 1, role: AuthorRole.AUTHOR, name: '작가' }],

@@ -165,8 +165,8 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
             slug={slug}
             css={bookWidthStyles}
             sizes="(max-width: 999px) 120px, 140px"
-            thumbnailId={getThumbnailBidFromBookApi(item.detail)}
-            isAdultOnly={item.detail.property.is_adult_only}
+            thumbnailId={getThumbnailBidFromBookApi(item.b_id, item.detail)}
+            isAdultOnly={item.detail?.property.is_adult_only || false}
             imgSize="large"
             title={title}
           >
