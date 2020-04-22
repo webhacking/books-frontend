@@ -19,7 +19,7 @@ import { AdultBadge } from 'src/components/Badge/AdultBadge';
 import styled from '@emotion/styled';
 import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 import { computeBookTitle } from 'src/utils/bookTitleGenerator';
-import { getThumbnailBidFromBookApi } from 'src/utils/books';
+import { getThumbnailIdFromBookDetail } from 'src/utils/books';
 
 interface MultipleLineBooks {
   items: MdBook[];
@@ -165,7 +165,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
             slug={slug}
             css={bookWidthStyles}
             sizes="(max-width: 999px) 120px, 140px"
-            thumbnailId={getThumbnailBidFromBookApi(item.b_id, item.detail)}
+            thumbnailId={getThumbnailIdFromBookDetail(item.detail) || item.b_id}
             isAdultOnly={item.detail?.property.is_adult_only || false}
             imgSize="large"
             title={title}

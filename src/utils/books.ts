@@ -1,9 +1,9 @@
 import * as BookApi from 'src/types/book';
 
-/* 미완결 된 Series 도서중 공개(opened) 된 마지막 회차의 표지 ID를 위한 함수 */
-export function getThumbnailBidFromBookApi(bookId: string, book: BookApi.Book | null) {
+/* 미완결 된 Series 도서중 공개(opened) 된 마지막 회차의 표지 ID를 구함 */
+export function getThumbnailIdFromBookDetail(book: BookApi.Book | null) {
   if (!book) {
-    return bookId;
+    return null;
   }
   if (book.series) {
     if (

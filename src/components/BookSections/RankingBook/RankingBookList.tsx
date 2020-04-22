@@ -24,7 +24,7 @@ import { getMaxDiscountPercentage } from 'src/utils/common';
 import { CLOCK_ICON_URL } from 'src/constants/icons';
 
 import { computeBookTitle } from 'src/utils/bookTitleGenerator';
-import { getThumbnailBidFromBookApi } from 'src/utils/books';
+import { getThumbnailIdFromBookDetail } from 'src/utils/books';
 
 import { SectionTitle, SectionTitleLink } from '../SectionTitle';
 
@@ -206,7 +206,7 @@ const ItemList: React.FC<ItemListProps> = (props) => {
                     width: ${type === 'big' ? 80 : 50}px;
                   `}
                   sizes={type === 'big' ? '80px' : '50px'}
-                  thumbnailId={getThumbnailBidFromBookApi(book.b_id, book.detail)}
+                  thumbnailId={getThumbnailIdFromBookDetail(book.detail) || book.b_id}
                   isAdultOnly={book.detail?.property.is_adult_only || false}
                   imgSize="large"
                   title={computeBookTitle(book.detail)}

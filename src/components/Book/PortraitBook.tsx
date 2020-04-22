@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import * as BookApi from 'src/types/book';
-import { getThumbnailBidFromBookApi } from 'src/utils/books';
+import { getThumbnailIdFromBookDetail } from 'src/utils/books';
 
 import { ThumbnailWrapper } from '../BookThumbnail/ThumbnailWrapper';
 import BookBadgeRenderer from '../Badge/BookBadgeRenderer';
@@ -88,7 +88,7 @@ export default function PortraitBook(props: Props) {
             css={bookWidthStyle}
             sizes="(min-width: 999px) 140px, 100px"
             slug={slug}
-            thumbnailId={getThumbnailBidFromBookApi(bId, bookDetail)}
+            thumbnailId={getThumbnailIdFromBookDetail(bookDetail) || bId}
             isAdultOnly={bookDetail?.property.is_adult_only || false}
             imgSize="large"
           >
