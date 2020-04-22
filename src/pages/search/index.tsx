@@ -171,11 +171,11 @@ function SearchPage(props: SearchProps) {
         <>
           <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
           {/* Todo 스타일링 및 메타정보 표시 */}
-            {props.book.books.map((item) => (
-              <span key={item.b_id}>
-                {getEscapedNode(computeSearchBookTitle(item))}
-              </span>
-            ))}
+          {props.book.books.map((item) => (
+            <span key={item.b_id}>
+              {getEscapedNode(computeSearchBookTitle(item))}
+            </span>
+          ))}
         </>
       )}
     </SearchResultSection>
