@@ -45,7 +45,7 @@ const StyledThumbnailWrapper = styled(ThumbnailWrapper)<{ disabled?: boolean }>`
 
 interface Props {
   bId: string;
-  bookDetail: BookApi.ClientBook | null;
+  bookDetail: BookApi.Book | null;
   index?: number;
   genre: string;
   slug: string;

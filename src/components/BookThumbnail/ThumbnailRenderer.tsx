@@ -16,7 +16,7 @@ export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
 interface ThumbnailRendererProps {
   book: {
     b_id: string;
-    detail: BookApi.ClientBook | null;
+    detail: BookApi.Book | null;
   };
   imgSize: 'xxlarge' | 'xlarge' | 'large' | 'small' | 'medium';
   isIntersecting?: boolean;
@@ -49,7 +49,7 @@ const computeThumbnailUrl = (
   isVerifiedAdult: boolean | null,
   bId: string,
   imageSize?: string,
-  book?: BookApi.ClientBook,
+  book?: BookApi.Book,
 ) => {
   if (!isIntersection) {
     return { src: undefined, srcset: undefined };

@@ -14,7 +14,7 @@ const TagWrapper = styled.div`
 `;
 
 interface BookMetaProps {
-  book: BookApi.ClientBook;
+  book: BookApi.Book;
   titleLineClamp?: number;
   showSomeDeal?: boolean;
   isAIRecommendation?: boolean;

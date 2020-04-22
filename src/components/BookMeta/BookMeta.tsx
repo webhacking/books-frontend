@@ -84,7 +84,7 @@ function Authors(props: { authors: BookApi.Author[] }) {
 }
 
 interface BookMetaBaseProps {
-  book: BookApi.ClientBook;
+  book: BookApi.Book;
   titleLineClamp?: number;
   width?: string;
   bookTitleStyle?: Interpolation;

@@ -137,8 +137,8 @@ function SearchPage(props: SearchProps) {
               {`‘${q}’ 저자 검색 결과`}
               <TotalAuthor>
                 {
-                author.total > MAXIMUM_AUTHOR ? '총 30명+' : `총 ${author.total}명`
-}
+                  author.total > MAXIMUM_AUTHOR ? '총 30명+' : `총 ${author.total}명`
+                }
               </TotalAuthor>
             </SearchTitle>
             <Authors author={author} q={q || ''} />

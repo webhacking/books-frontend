@@ -29,16 +29,16 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     }
   }
 
-  public setBooks(payload: (BookApi.ClientBook)[]) {
+  public setBooks(payload: BookApi.ClientBook[]) {
     try {
-      const books: { [bid: string]: BookApi.ClientBook } = {};
+      const books: BooksState['items'] = {};
       payload.forEach((book) => {
         if (this.draftState.items[book.id] === null) {
-          books[book.id] = book;
-          books[book.id].clientBookFields = {
+          book.clientBookFields = {
             isAlreadyCheckedAtSelect: false,
             isAvailableSelect: false,
           };
+          books[book.id] = book;
         }
       });
       this.draftState.items = { ...this.draftState.items, ...books };
@@ -74,11 +74,11 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     // brute force
     // Todo 개선 필요
     try {
-      payload.isSelectedId.forEach((bId) => {
+      payload.checkedIds.forEach((bId) => {
         const book: BookApi.ClientBook | null = this.draftState.items[bId];
         if (book) {
           book.clientBookFields = {
-            isAvailableSelect: true,
+            isAvailableSelect: payload.isSelectedId.includes(bId),
             isAlreadyCheckedAtSelect: true,
           };
         }
