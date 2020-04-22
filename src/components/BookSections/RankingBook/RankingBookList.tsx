@@ -1,6 +1,4 @@
-import React, {
-  useEffect, useRef, useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 
@@ -23,9 +21,9 @@ import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import ScrollContainer from 'src/components/ScrollContainer';
 import { getMaxDiscountPercentage } from 'src/utils/common';
-import { CLOCK_ICON_URL, VERTICAL_RIGHT_ARROW_ICON_URL } from 'src/constants/icons';
+import { CLOCK_ICON_URL } from 'src/constants/icons';
 
-import { RankingBookTitle } from '../BookSectionContainer';
+import { SectionTitle, SectionTitleLink } from '../SectionTitle';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
@@ -263,31 +261,21 @@ const ItemList: React.FC<ItemListProps> = (props) => {
 };
 
 const RankingBookList: React.FC<RankingBookListProps> = (props) => {
-  const targetRef = useRef(null);
   const [books] = useBookDetailSelector(props.items);
   const {
     genre, type, showSomeDeal, slug,
   } = props;
 
   return (
-    <SectionWrapper ref={targetRef}>
+    <SectionWrapper>
       {props.title && (
-        <RankingBookTitle>
+        <SectionTitle>
           {props.showTimer && <Timer />}
-          {props.extra?.detail_link ? (
-            <a href={props.extra.detail_link}>
-              {props.title}
-              <img
-                width={11}
-                height={14}
-                src={VERTICAL_RIGHT_ARROW_ICON_URL}
-                alt="페이지 이동"
-              />
-            </a>
-          ) : (
-            props.title
-          )}
-        </RankingBookTitle>
+          <SectionTitleLink
+            title={props.title}
+            href={props.extra?.detail_link}
+          />
+        </SectionTitle>
       )}
       <ItemList
         books={books}

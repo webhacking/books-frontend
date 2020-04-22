@@ -1,11 +1,9 @@
-import React, { useRef } from 'react';
-import { css } from '@emotion/core';
+import React from 'react';
 import styled from '@emotion/styled';
 
-import { SectionTitle } from 'src/components/BookSections/BookSectionContainer';
+import { SectionTitle, SectionTitleLink } from 'src/components/BookSections/SectionTitle';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import useIsTablet from 'src/hooks/useIsTablet';
-import ArrowV from 'src/svgs/ArrowV.svg';
 import {
   DisplayType, MdBook, SectionExtra, AIRecommendationBook,
 } from 'src/types/sections';
@@ -18,16 +16,10 @@ import { SelectionBookListProps } from './types';
 const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;
-  padding-top: 24px;
-  padding-bottom: 24px;
-  ${orBelow(
-    999,
-    `
-      padding-top: 16px;
-      padding-bottom: 16px;
-    `,
-  )};
+  padding: 24px 0;
   -webkit-overflow-scrolling: touch;
+
+  ${orBelow(999, 'padding: 16px 0;')}
 `;
 
 interface SelectionBookOwnProps {
@@ -54,34 +46,15 @@ const SelectionBook: React.FC<SelectionBookProps> = (props) => {
     items: books as any,
   };
 
-  // Todo
-  // const handleExceptAIRecommendation = (bId: string) => {
-  //
-  // }
-  const targetRef = useRef(null);
+  let sectionHref = extra?.detail_link;
+  if (!sectionHref && type === DisplayType.HomeMdSelection) {
+    sectionHref = `/selection/${selectionId}`;
+  }
+
   return (
-    <SectionWrapper ref={targetRef}>
-      <SectionTitle aria-label={title}>
-        {extra?.detail_link || (type === DisplayType.HomeMdSelection && selectionId) ? (
-          // Todo Refactor
-          <a
-            css={css`
-              display: flex;
-            `}
-            href={extra?.detail_link ?? `/selection/${selectionId}`}
-          >
-            <span>{title}</span>
-            <span
-              css={css`
-                margin-left: 7.8px;
-              `}
-            >
-              <ArrowV />
-            </span>
-          </a>
-        ) : (
-          <span>{title}</span>
-        )}
+    <SectionWrapper>
+      <SectionTitle>
+        <SectionTitleLink title={title} href={sectionHref} />
       </SectionTitle>
       <div>
         {isTablet ? (
