@@ -105,7 +105,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
   const handleVisible = React.useCallback((visible) => {
     if (!isVisible && visible) {
       setVisible(visible);
-      sendDisplayEvent({ slug: slug || 'UNKOWN_SLUG', id: thumbnailId, order: order || 0 });
+      sendDisplayEvent({ slug: slug || 'UNKNOWN_SLUG', id: thumbnailId, order: order || 0 });
     }
   }, [slug, thumbnailId, order, isVisible]);
 
