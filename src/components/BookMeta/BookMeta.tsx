@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { lineClamp } from 'src/styles';
 import * as BookApi from 'src/types/book';
 import { computeBookTitle } from 'src/utils/bookTitleGenerator';
-import { getEscapedNode } from 'src/utils/highlight';
 import { orBelow } from 'src/utils/mediaQuery';
 import { slateGray60 } from '@ridi/colors';
 

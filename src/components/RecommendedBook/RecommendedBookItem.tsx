@@ -58,6 +58,7 @@ function RecommendedBookItem(props: Props) {
     genre,
     className,
   } = props;
+  const title = computeBookTitle(detail);
   return (
     <PortraitBook
       bId={bId}
@@ -66,7 +67,7 @@ function RecommendedBookItem(props: Props) {
       genre={genre}
       slug={slug}
       className={className}
-      title={computeBookTitle(detail)}
+      title={title}
     >
       {/* Todo show sentence */}
       {detail && type === DisplayType.HotRelease && <BookMeta book={detail} />}

@@ -175,6 +175,7 @@ const ItemList: React.FC<ItemListProps> = (props) => {
   const {
     books, slug, type, genre, showSomeDeal,
   } = props;
+  const title = computeBookTitle(book.detail);
   return (
     <ScrollContainer>
       <List type={type}>
@@ -209,7 +210,7 @@ const ItemList: React.FC<ItemListProps> = (props) => {
                   thumbnailId={getThumbnailIdFromBookDetail(book.detail) || book.b_id}
                   isAdultOnly={book.detail?.property.is_adult_only || false}
                   imgSize="large"
-                  title={computeBookTitle(book.detail)}
+                  title={title}
                 >
                   {type === 'big' && (
                     <BadgeContainer>
