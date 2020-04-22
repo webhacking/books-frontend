@@ -109,7 +109,7 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
   const { authors } = book;
 
   const mergedAuthors = authors.filter(
-    (author) => ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author'].includes(author.role),
+    (author) => ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author', 'editor'].includes(author.role),
   );
   const title = computeBookTitle(book);
   return (

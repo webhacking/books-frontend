@@ -147,7 +147,6 @@ function HomeSectionRenderer(props: HomeSectionRendererProps) {
           genre={genre}
           type={section.type}
           extra={extra}
-          title={title}
         />
       );
     }

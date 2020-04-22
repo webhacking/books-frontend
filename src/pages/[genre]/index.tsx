@@ -8,7 +8,7 @@ import titleGenerator from 'src/utils/titleGenerator';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { checkPage, Section } from 'src/types/sections';
+import { checkPage, DisplayType, Section } from 'src/types/sections';
 import HomeSectionRenderer from 'src/components/Section/HomeSectionRenderer';
 import pRetry from 'p-retry';
 import { keyToArray } from 'src/utils/common';
@@ -175,6 +175,20 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
         type: categoryActions.insertCategoryIds.type,
         payload: categoryIds,
       });
+
+      // Todo AI 추천 API 변경 테스트 코드 PR Merge 전 지우기
+      // // @ts-ignore
+      // result.branches.push({
+      //   slug: 'home-general-ai-recommendation',
+      //   title: '님을 위한 AI 추천',
+      //   type: 'AiRecommendation',
+      //   extra: {
+      //     detail_link: 'https://ridibooks.com/personalized-recommendation/general',
+      //     // genre: 'general',
+      //     is_placeholder: true,
+      //   },
+      //   items: [],
+      // });
       return {
         genre: genre.toString(),
         store,

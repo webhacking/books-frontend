@@ -45,7 +45,6 @@ const SelectionBook: React.FC<SelectionBookProps> = (props) => {
   if (!sectionHref && type === 'HomeMdSelection') {
     sectionHref = `/selection/${selectionId}`;
   }
-
   return (
     <SectionWrapper>
       <SectionTitle>
