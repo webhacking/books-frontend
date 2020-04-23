@@ -57,7 +57,9 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
               slug={slug}
               genre={genre}
               type={type}
+              excluded={item.excluded ?? false}
               book={item}
+              width={100}
             />
           ))}
       </List>
