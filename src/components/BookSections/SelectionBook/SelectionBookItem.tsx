@@ -95,7 +95,7 @@ const SelectionBookItem: React.FC<Props> = (props) => {
   const handleClick = useCallback(() => {
     sendClickEvent(tracker, book, slug, order);
   }, [tracker, book, slug, order]);
-  const title = computeBookTitle(detail);
+  const title = computeBookTitle(book.detail);
   return (
     <PortraitBook
       bId={book.b_id}
