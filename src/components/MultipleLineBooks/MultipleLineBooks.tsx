@@ -18,6 +18,8 @@ import { getMaxDiscountPercentage } from 'src/utils/common';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
 import styled from '@emotion/styled';
 import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
+import { getThumbnailIdFromBookDetail } from 'src/utils/books';
 
 interface MultipleLineBooks {
   items: MdBook[];
@@ -152,6 +154,7 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
   const trackerEvent = useCallback(() => {
     sendClickEvent(tracker, item, slug, order);
   }, []);
+  const title = computeBookTitle(item.detail);
   return (
     <Item>
       <ThumbnailWrapper lgWidth={120} css={thumbnailOverrideStyle}>
@@ -162,8 +165,10 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
             slug={slug}
             css={bookWidthStyles}
             sizes="(max-width: 999px) 120px, 140px"
-            book={{ b_id: item.b_id, detail: item.detail }}
+            thumbnailId={getThumbnailIdFromBookDetail(item.detail) || item.b_id}
+            isAdultOnly={item.detail?.property.is_adult_only || false}
             imgSize="large"
+            title={title}
           >
             <BadgeContainer>
               <BookBadgeRenderer

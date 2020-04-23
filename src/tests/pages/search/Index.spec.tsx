@@ -5,6 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import makeStore from 'src/store/config';
 import axios from 'axios';
 import fixture from './searchResult.fixture.json';
+import { Provider } from 'react-redux';
 
 const store = makeStore({}, { asPath: 'test', isServer: true });
 
@@ -49,12 +50,14 @@ describe('Search Page Test', () => {
   describe('render test', () => {
     it('should be render authors`s popular book', async () => {
       const { getByText } = render(
-        <Index
-          q={'유유'}
-          book={fixture.book}
-          author={fixture.author}
-          categories={fixture.book.aggregations}
-        />,
+        <Provider store={store}>
+          <Index
+            q={'유유'}
+            book={fixture.book}
+            author={fixture.author}
+            categories={fixture.book.aggregations}
+          />
+        </Provider>,
       );
       expect(getByText(/미남들과 함께 가는 성교육 1화/)).toHaveTextContent(
         '<[미즈] 미남들과 함께 가는 성교육 1화> 외 11권',
@@ -64,12 +67,14 @@ describe('Search Page Test', () => {
 
   it('should be clickable show more authors button', async () => {
     const { getByText } = render(
-      <Index
-        q={'유유'}
-        book={fixture.book}
-        author={fixture.author}
-        categories={fixture.book.aggregations}
-      />,
+      <Provider store={store}>
+        <Index
+          q={'유유'}
+          book={fixture.book}
+          author={fixture.author}
+          categories={fixture.book.aggregations}
+        />
+      </Provider>,
     );
     const container = getByText(/명 더 보기/);
     expect(container).toHaveTextContent('명 더 보기');

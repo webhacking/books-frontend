@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { lineClamp } from 'src/styles';
 import * as BookApi from 'src/types/book';
 import { computeBookTitle } from 'src/utils/bookTitleGenerator';
-import { getEscapedNode } from 'src/utils/highlight';
 import { orBelow } from 'src/utils/mediaQuery';
 import { slateGray60 } from '@ridi/colors';
 
@@ -110,7 +109,7 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
   const mergedAuthors = authors.filter(
     (author) => ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author'].includes(author.role),
   );
-
+  const title = computeBookTitle(props.book);
   return (
     <Container
       className={className}
@@ -119,9 +118,8 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
       <a href={`/books/${props.book.id}`}>
         <BookTitle
           css={[bookTitleStyle, lineClamp(titleLineClamp || 2)]}
-          aria-label={props.book.title.main}
         >
-          {getEscapedNode(computeBookTitle(props.book))}
+          {title}
         </BookTitle>
       </a>
       <AuthorsWrapper>

@@ -10,7 +10,9 @@ import {
   MdBook,
   ReadingRanking,
   SectionExtra,
+  StarRating,
 } from 'src/types/sections';
+import * as BookApi from 'src/types/book';
 import BookMeta from 'src/components/BookMeta';
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import { AdultBadge } from 'src/components/Badge/AdultBadge';
@@ -22,6 +24,9 @@ import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import ScrollContainer from 'src/components/ScrollContainer';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { CLOCK_ICON_URL } from 'src/constants/icons';
+
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
+import { getThumbnailIdFromBookDetail } from 'src/utils/books';
 
 import { SectionTitle, SectionTitleLink } from '../SectionTitle';
 
@@ -167,6 +172,89 @@ interface ItemListProps {
   type: 'small' | 'big';
   showSomeDeal?: boolean;
 }
+function RankingBook({
+  book,
+  order: index,
+  slug,
+  genre,
+  type,
+  showSomeDeal,
+  rating,
+}: Omit<ItemListProps, 'books'> & {book: BookApi.Book; order: number; rating?: StarRating}) {
+  const title = computeBookTitle(book);
+  return (
+    // auto-flow 안 되는 IE11을 위한 땜빵
+    <RankingBookItem
+      type={type}
+      key={index}
+      style={{
+        msGridColumn: Math.floor(index / 3) * 2 + 1,
+        msGridRow: (index % 3) + 1,
+      }}
+    >
+      <ThumbnailAnchor
+        data-book-id={book.id}
+        data-order={index}
+        data-slug={slug}
+        marginRight={type === 'big' ? 18 : 24}
+        href={`/books/${book.id}`}
+      >
+        <ThumbnailRenderer
+          slug={slug}
+          className={slug}
+          order={index}
+          css={css`
+            width: ${type === 'big' ? 80 : 50}px;
+          `}
+          sizes={type === 'big' ? '80px' : '50px'}
+          thumbnailId={getThumbnailIdFromBookDetail(book) || book.id}
+          isAdultOnly={book.property.is_adult_only || false}
+          imgSize="large"
+          title={title}
+        >
+          {type === 'big' && (
+            <BadgeContainer>
+              <BookBadgeRenderer
+                isRentable={
+                  (!!book.price_info?.rent || !!book.series?.price_info?.rent)
+                  && ['general', 'romance', 'bl'].includes(genre)
+                }
+                isWaitFree={book.series?.property.is_wait_free}
+                discountPercentage={getMaxDiscountPercentage(book)}
+              />
+            </BadgeContainer>
+          )}
+          {type === 'big' && (
+            <>
+              <FreeBookRenderer
+                freeBookCount={
+                  book.series?.price_info?.rent?.free_book_count
+                  || book.series?.price_info?.buy?.free_book_count
+                  || 0
+                }
+                unit={book.series?.property.unit || '권'}
+              />
+              <SetBookRenderer setBookCount={book.setbook?.member_books_count} />
+            </>
+          )}
+          {book.property?.is_adult_only && <AdultBadge />}
+        </ThumbnailRenderer>
+      </ThumbnailAnchor>
+      <div className="book-meta-box">
+        <RankPosition aria-label={`랭킹 순위 ${index + 1}위`}>{index + 1}</RankPosition>
+        <BookMeta
+          book={book}
+          titleLineClamp={type === 'small' ? 1 : 2}
+          isAIRecommendation={false}
+          showSomeDeal={showSomeDeal}
+          showTag={false}
+          width={type === 'big' ? '177px' : undefined}
+          ratingInfo={type === 'big' ? rating : undefined}
+        />
+      </div>
+    </RankingBookItem>
+  );
+}
 
 const ItemList: React.FC<ItemListProps> = (props) => {
   const {
@@ -179,81 +267,16 @@ const ItemList: React.FC<ItemListProps> = (props) => {
           .filter((book) => book.detail)
           .slice(0, 9)
           .map((book, index) => (
-            // auto-flow 안 되는 IE11을 위한 땜빵
-            <RankingBookItem
+            <RankingBook
+              key={book.detail?.id}
+              slug={slug}
               type={type}
-              key={index}
-              style={{
-                msGridColumn: (Math.floor(index / 3) * 2) + 1,
-                msGridRow: (index % 3) + 1,
-              }}
-            >
-              <ThumbnailAnchor
-                data-book-id={book.b_id}
-                data-order={index}
-                data-slug={slug}
-                marginRight={props.type === 'big' ? 18 : 24}
-                href={`/books/${book.b_id}`}
-              >
-                <ThumbnailRenderer
-                  slug={slug}
-                  className={slug}
-                  order={index}
-                  css={css`
-                    width: ${type === 'big' ? 80 : 50}px;
-                  `}
-                  sizes={type === 'big' ? '80px' : '50px'}
-                  book={{ b_id: book.b_id, detail: book.detail }}
-                  imgSize="large"
-                >
-                  {type === 'big' && (
-                    <BadgeContainer>
-                      <BookBadgeRenderer
-                        isRentable={
-                          (!!book.detail?.price_info?.rent
-                            || !!book.detail?.series?.price_info?.rent)
-                          && ['general', 'romance', 'bl'].includes(genre)
-                        }
-                        isWaitFree={book.detail?.series?.property.is_wait_free}
-                        discountPercentage={getMaxDiscountPercentage(book.detail)}
-                      />
-                    </BadgeContainer>
-                  )}
-                  {type === 'big' && (
-                    <>
-                      <FreeBookRenderer
-                        freeBookCount={
-                          book.detail?.series?.price_info?.rent?.free_book_count
-                          || book.detail?.series?.price_info?.buy?.free_book_count
-                          || 0
-                        }
-                        unit={book.detail?.series?.property.unit || '권'}
-                      />
-                      <SetBookRenderer
-                        setBookCount={book.detail?.setbook?.member_books_count}
-                      />
-                    </>
-                  )}
-                  {book.detail?.property?.is_adult_only && <AdultBadge />}
-                </ThumbnailRenderer>
-              </ThumbnailAnchor>
-              <div className="book-meta-box">
-                <RankPosition aria-label={`랭킹 순위 ${index + 1}위`}>
-                  {index + 1}
-                </RankPosition>
-                {book.detail && (
-                  <BookMeta
-                    book={book.detail}
-                    titleLineClamp={props.type === 'small' ? 1 : 2}
-                    isAIRecommendation={false}
-                    showSomeDeal={showSomeDeal}
-                    showTag={false}
-                    width={props.type === 'big' ? '177px' : undefined}
-                    ratingInfo={props.type === 'big' ? (book as MdBook).rating : undefined}
-                  />
-                )}
-              </div>
-            </RankingBookItem>
+              order={index}
+              showSomeDeal={showSomeDeal}
+              genre={genre}
+              rating={(book as MdBook).rating}
+              book={book.detail as BookApi.Book}
+            />
           ))}
       </List>
     </ScrollContainer>

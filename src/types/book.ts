@@ -1,3 +1,5 @@
+import { SearchBookDetail } from 'src/types/searchResults';
+
 export enum AuthorRole {
   AUTHOR = 'author',
   COMIC_AUTHOR = 'comic_author',

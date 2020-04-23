@@ -12,6 +12,7 @@ import {
   MdBook,
 } from 'src/types/sections';
 import PortraitBook from 'src/components/Book/PortraitBook';
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 
 const RecommendButton = styled.button<{ fetching?: boolean }>`
   width: 55px;
@@ -94,7 +95,7 @@ const SelectionBookItem: React.FC<Props> = (props) => {
   const handleClick = useCallback(() => {
     sendClickEvent(tracker, book, slug, order);
   }, [tracker, book, slug, order]);
-
+  const title = computeBookTitle(detail);
   return (
     <PortraitBook
       bId={book.b_id}
@@ -105,6 +106,7 @@ const SelectionBookItem: React.FC<Props> = (props) => {
       disabled={localExcluded}
       onClick={handleClick}
       className={className}
+      title={title}
     >
       {book.detail && (
         <BookMeta

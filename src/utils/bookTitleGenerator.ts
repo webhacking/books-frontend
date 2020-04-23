@@ -1,4 +1,5 @@
 import * as BookApi from 'src/types/book';
+import * as SearchApi from 'src/types/searchResults';
 
 import sentry from 'src/utils/sentry';
 
@@ -26,4 +27,8 @@ export function computeBookTitle(book: BookApi.Book | null): string {
     sentry.captureException(error);
     return book.title.main;
   }
+}
+
+export function computeSearchBookTitle(book: SearchApi.SearchBookDetail) {
+  return book.highlight.web_title_title ? book.highlight.web_title_title : book.title;
 }

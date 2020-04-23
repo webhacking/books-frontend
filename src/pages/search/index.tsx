@@ -9,6 +9,13 @@ import { slateGray40, slateGray60, slateGray90 } from '@ridi/colors';
 import ArrowBoldH from 'src/svgs/ArrowBoldH.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import isPropValid from '@emotion/is-prop-valid';
+import { useCallback, useEffect } from 'react';
+import sentry from 'src/utils/sentry';
+import { useEventTracker } from 'src/hooks/useEventTracker';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/store/config';
+import { getEscapedNode } from 'src/utils/highlight';
+import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
 
 interface SearchProps {
   q?: string;
@@ -121,6 +128,21 @@ function SearchPage(props: SearchProps) {
     categories,
     q,
   } = props;
+  const [tracker] = useEventTracker();
+  const { loggedUser } = useSelector((state: RootState) => state.account);
+
+  const setPageView = useCallback(() => {
+    if (tracker) {
+      try {
+        tracker.sendPageView(window.location.href, document.referrer);
+      } catch (error) {
+        sentry.captureException(error);
+      }
+    }
+  }, [tracker]);
+  useEffect(() => {
+    setPageView();
+  }, [loggedUser]);
   return (
     <SearchResultSection>
       <Head>
@@ -148,8 +170,11 @@ function SearchPage(props: SearchProps) {
       {book.total > 0 && (
         <>
           <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
-          {book.books.map((item) => (
-            <span key={item.b_id}>{item.title}</span>
+          {/* Todo 스타일링 및 메타정보 표시 */}
+          {props.book.books.map((item) => (
+            <span key={item.b_id}>
+              {getEscapedNode(computeSearchBookTitle(item))}
+            </span>
           ))}
         </>
       )}

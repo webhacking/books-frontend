@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import * as BookApi from 'src/types/book';
+import { getThumbnailIdFromBookDetail } from 'src/utils/books';
 
 import { ThumbnailWrapper } from '../BookThumbnail/ThumbnailWrapper';
 import BookBadgeRenderer from '../Badge/BookBadgeRenderer';
@@ -53,7 +54,12 @@ interface Props {
   onClick?(): void;
   className?: string;
   children?: React.ReactNode;
+  title: string;
 }
+
+const StyledAnchor = styled.a`
+  display: inline-block;
+`;
 
 export default function PortraitBook(props: Props) {
   const {
@@ -65,6 +71,7 @@ export default function PortraitBook(props: Props) {
     disabled,
     onClick,
     className,
+    title,
     children,
   } = props;
   const href = `/books/${bId}`;
@@ -72,15 +79,17 @@ export default function PortraitBook(props: Props) {
   const seriesPriceInfo = bookDetail?.series?.price_info;
   return (
     <PortraitBookWrapper className={className}>
-      <a css={css`display: inline-block;`} href={href} onClick={onClick}>
+      <StyledAnchor href={href} onClick={onClick}>
         <StyledThumbnailWrapper disabled={disabled}>
           <ThumbnailRenderer
             order={index}
+            title={title}
             className={slug}
             css={bookWidthStyle}
             sizes="(min-width: 999px) 140px, 100px"
             slug={slug}
-            book={{ b_id: bId, detail: bookDetail }}
+            thumbnailId={getThumbnailIdFromBookDetail(bookDetail) || bId}
+            isAdultOnly={bookDetail?.property.is_adult_only || false}
             imgSize="large"
           >
             <BadgeContainer>
@@ -106,7 +115,7 @@ export default function PortraitBook(props: Props) {
             {bookDetail?.property?.is_adult_only && <AdultBadge />}
           </ThumbnailRenderer>
         </StyledThumbnailWrapper>
-      </a>
+      </StyledAnchor>
       {children}
     </PortraitBookWrapper>
   );

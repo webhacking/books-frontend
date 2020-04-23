@@ -1,23 +1,17 @@
 import React, { useState } from 'react';
-import * as BookApi from 'src/types/book';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import styled from '@emotion/styled';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { sendDisplayEvent } from 'src/hooks/useEventTracker';
-import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 
 
 import coverAdult from 'src/assets/image/cover_adult.png';
-// import coverLazyload from 'src/assets/image/cover_lazyload.png';
 
 export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
 
 interface ThumbnailRendererProps {
-  book: {
-    b_id: string;
-    detail: BookApi.Book | null;
-  };
+  thumbnailId: string;
   imgSize: 'xxlarge' | 'xlarge' | 'large' | 'small' | 'medium';
   isIntersecting?: boolean;
   slug?: string;
@@ -25,6 +19,8 @@ interface ThumbnailRendererProps {
   className?: string;
   sizes: string;
   bookDecorators?: React.ReactNode;
+  isAdultOnly: boolean;
+  title: string;
 }
 
 const SIZE_PARAMS = [
@@ -49,7 +45,6 @@ const computeThumbnailUrl = (
   isVerifiedAdult: boolean | null,
   bId: string,
   imageSize?: string,
-  book?: BookApi.Book,
 ) => {
   if (!isIntersection) {
     return { src: undefined, srcset: undefined };
@@ -57,17 +52,7 @@ const computeThumbnailUrl = (
   if (isAdultOnly && !isVerifiedAdult) {
     return { src: coverAdult, srcset: undefined };
   }
-
-  let baseCoverUrl = new URL(`/cover/${bId}/`, IMG_RIDI_CDN_URL);
-  if (book?.series) {
-    if (!book.series.property.is_completed && book.series.property.opened_last_volume_id.length !== 0) {
-      baseCoverUrl = new URL(
-        `/cover/${book.series.property.opened_last_volume_id}/`,
-        IMG_RIDI_CDN_URL,
-      );
-    }
-  }
-
+  const baseCoverUrl = new URL(`/cover/${bId}/`, IMG_RIDI_CDN_URL);
   const src = new URL(
     imageSize ? `${imageSize}?dpi=xhdpi` : 'large?dpi=xhdpi',
     baseCoverUrl,
@@ -110,40 +95,31 @@ const Thumbnail = styled.img<{ active?: boolean }>`
 `;
 const ThumbnailNoImg = Thumbnail.withComponent('div');
 
-// 썸네일을 보여줄 수 있는 상태 ( intersecting 되거나 fetch 종료 ) 일 때도 체크
-// loggedUser 가 성인 인증 상태일 경우는 정상 렌더링
-// 아닌 경우는 성인 도서 Placeholder 표지
 const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) => {
   const {
-    book, imgSize, sizes, children, slug, order,
+    thumbnailId, imgSize, sizes, children, slug, order, isAdultOnly, title,
   } = props;
-  const bId = book.b_id;
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isVisible, setVisible] = useState(false);
   const handleVisible = React.useCallback((visible) => {
     if (!isVisible && visible) {
       setVisible(visible);
-      sendDisplayEvent({ slug: slug || 'UNKNOWN_SLUG', id: bId, order: order || 0 });
+      sendDisplayEvent({ slug: slug || 'UNKNOWN_SLUG', id: thumbnailId, order: order || 0 });
     }
-  }, [slug, bId, order, isVisible]);
-  const ref = useViewportIntersection<HTMLDivElement>(handleVisible);
-  const is_adult_only = book.detail?.property?.is_adult_only ?? false;
+  }, [slug, thumbnailId, order, isVisible]);
 
+  const ref = useViewportIntersection<HTMLDivElement>(handleVisible);
   const { src: imageUrl, srcset: imageUrlSet } = computeThumbnailUrl(
-    is_adult_only,
+    isAdultOnly,
     isVisible,
     Boolean(loggedUser?.is_verified_adult),
-    book?.detail?.thumbnailId ?? book.b_id,
+    thumbnailId,
     imgSize,
-    book.detail || undefined,
   );
   const imageOnLoad = () => {
     setImageLoaded(true);
   };
-
-  const title = computeBookTitle(book.detail);
-
   return (
     <ThumbnailWrapper ref={ref}>
       {isVisible ? (
