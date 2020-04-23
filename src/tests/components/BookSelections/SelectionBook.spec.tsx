@@ -4,6 +4,7 @@ import {
   render,
   cleanup,
   getAllByAltText,
+  getAllByText,
   RenderResult,
   waitForElement,
 } from '@testing-library/react';
@@ -79,6 +80,12 @@ describe('test SelectionBookContainer', () => {
   it('should be render SelectionBookList item', async () => {
     const { container } = actRender(() => renderSelectionBookList(false));
     const item = await waitForElement(() => getAllByAltText(container, '도서 표지'));
+    expect(item).not.toBe(null);
+  });
+
+  it('should be render 추천제외 버튼 for AI Recommendation', async () => {
+    const { container } = actRender(() => renderSelectionBookList(true));
+    const item = await waitForElement(() => getAllByText(container, '추천 제외'));
     expect(item).not.toBe(null);
   });
 });
