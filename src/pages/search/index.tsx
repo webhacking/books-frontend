@@ -256,7 +256,7 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   searchUrl.searchParams.append('where', 'book');
   searchUrl.searchParams.append('what', 'base');
   searchUrl.searchParams.append('keyword', searchKeyword as string);
-  if (query.category_id && !isNaN(parseInt(query.category_id as string, 10))) {
+  if (/^\d+$/.test(String(query.category_id))) {
     searchUrl.searchParams.delete('category_id');
     searchUrl.searchParams.append('category_id', query.category_id.toString());
   }
