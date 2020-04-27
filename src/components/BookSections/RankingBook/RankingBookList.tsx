@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
-import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { createTimeLabel } from 'src/utils/dateTime';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import * as BookApi from 'src/types/book';
 import {
   BookItem,
   MdBook,
@@ -11,21 +12,12 @@ import {
   SectionExtra,
   StarRating,
 } from 'src/types/sections';
-import * as BookApi from 'src/types/book';
 import BookMeta from 'src/components/BookMeta';
-import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
-import { AdultBadge } from 'src/components/Badge/AdultBadge';
-import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
-import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
-import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
-import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
-import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
+import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
+import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import ScrollContainer from 'src/components/ScrollContainer';
-import { getMaxDiscountPercentage } from 'src/utils/common';
 import { CLOCK_ICON_URL } from 'src/constants/icons';
-
-import { computeBookTitle } from 'src/utils/bookTitleGenerator';
-import { getThumbnailIdFromBookDetail } from 'src/utils/books';
+import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 
 import { SectionTitle, SectionTitleLink } from '../SectionTitle';
 
@@ -139,7 +131,7 @@ const ThumbnailAnchor = styled.a<{ type: 'big' | 'small' }>`
   margin-right: ${(props) => (props.type === 'big' ? 18 : 24)}px;
 `;
 
-const StyledThumbnailRenderer = styled(ThumbnailRenderer)<{ type: 'big' | 'small' }>`
+const StyledThumbnailWithBadge = styled(ThumbnailWithBadge)<{ type: 'big' | 'small' }>`
   width: ${(props) => (props.type === 'big' ? 80 : 50)}px;
 `;
 
@@ -171,44 +163,17 @@ function RankingBook({
       }}
     >
       <ThumbnailAnchor type={type} href={`/books/${book.id}`}>
-        <StyledThumbnailRenderer
-          slug={slug}
-          className={slug}
+        <StyledThumbnailWithBadge
+          bId={book.id}
+          bookDetail={book}
           order={index}
-          type={type}
+          genre={genre}
+          slug={slug}
           sizes={type === 'big' ? '80px' : '50px'}
-          thumbnailId={getThumbnailIdFromBookDetail(book) || book.id}
-          isAdultOnly={book.property.is_adult_only || false}
-          imgSize="large"
+          type={type}
           title={title}
-        >
-          {type === 'big' && (
-            <BadgeContainer>
-              <BookBadgeRenderer
-                isRentable={
-                  (!!book.price_info?.rent || !!book.series?.price_info?.rent)
-                  && ['general', 'romance', 'bl'].includes(genre)
-                }
-                isWaitFree={book.series?.property.is_wait_free}
-                discountPercentage={getMaxDiscountPercentage(book)}
-              />
-            </BadgeContainer>
-          )}
-          {type === 'big' && (
-            <>
-              <FreeBookRenderer
-                freeBookCount={
-                  book.series?.price_info?.rent?.free_book_count
-                  || book.series?.price_info?.buy?.free_book_count
-                  || 0
-                }
-                unit={book.series?.property.unit || '권'}
-              />
-              <SetBookRenderer setBookCount={book.setbook?.member_books_count} />
-            </>
-          )}
-          {book.property?.is_adult_only && <AdultBadge />}
-        </StyledThumbnailRenderer>
+          onlyAdultBadge={type !== 'big'}
+        />
       </ThumbnailAnchor>
       <BookMetaBox>
         <RankPosition aria-label={`랭킹 순위 ${index + 1}위`}>{index + 1}</RankPosition>
