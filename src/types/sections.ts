@@ -1,150 +1,273 @@
-import * as BookApi from 'src/types/book';
+import * as R from 'runtypes';
+import Sentry from 'src/utils/sentry';
 
-export enum DisplayType {
-  HomeQuickMenu = 'HomeQuickMenu',
-  Page = 'Page',
-  HomeCarouselBanner = 'HomeCarouselBanner',
-  HotRelease = 'HotRelease',
-  TodayRecommendation = 'TodayRecommendation', // 오늘 리디의 발견
-  BestSeller = 'BestSeller',
-  RecommendedBook = 'RecommendedBook', // 이 책 어때요
-  RecommendedNewBook = 'RecommendedNewBook', // 금주의 신간
-  HomeMdSelection = 'HomeMdSelection',
-  ReadingBooksRanking = 'ReadingBooksRanking', // 지금 사람들이 많이 읽는 책
-  HomeEventBanner = 'HomeEventBanner',
-  UserPreferredBestseller = 'UserPreferredBestseller',
-  TodayNewBook = 'TodayNewBook', // 최신 단행본
-  NewSerialBook = 'NewSerialBook', // 최신 연재
-  KeywordFinder = 'KeywordFinder',
-  WaitFree = 'WaitFree', // 리디 기다리면 무료
-  AiRecommendation = 'AiRecommendation', // AI 추천
-  FreeBook = 'FreeBook',
+import * as BookApi from './book';
+
+function makeSectionData<Type extends string, Item extends R.Runtype>(type: Type, rItem: Item) {
+  return R.Record({
+    type: R.Literal(type),
+    items: R.Array(rItem),
+  });
 }
 
-interface BaseResult {
-  slug: string;
-  type: DisplayType;
-  title: string;
-  total: number;
-}
+export const RBookRating = R.Record({
+  total_rating_count: R.Number,
+  buyer_rating_count: R.Number,
+  buyer_rating_score: R.Number,
+});
 
-export type SectionResult =
-  | QuickMenu
-  | TopBanner
-  | EventBanner
-  | BestSeller
-  | ReadingRanking
-  | MdSelection;
+export const RBookBase = R.Record({
+  type: R.Literal('book'),
+  b_id: R.String,
+  detail: R.Unknown as R.Runtype<BookApi.ClientBook | null>, // FIXME add proper typecheck
+}).And(
+  R.Partial({
+    order: R.Number,
+    rank: R.Number,
+    rating: RBookRating,
+  }),
+);
 
-export interface SectionExtra {
-  detail_link?: string;
-  genre?: string;
-  options?: string;
-  period?: string;
-  type?: string;
-  is_placeholder?: boolean;
-  use_select_api?: boolean;
-}
+export const RBookWithOrder = RBookBase.And(
+  R.Record({
+    order: R.Number,
+  }),
+);
 
-export interface Section extends BaseResult {
-  items?: SectionResult[];
-  item_metadata: {};
-  extra: SectionExtra;
-}
+export const RBookWithRank = RBookBase.And(
+  R.Record({
+    rank: R.Number,
+  }),
+);
 
-export interface Page extends BaseResult {
-  branches: Section[];
-}
+export const RBookWithRating = RBookBase.And(
+  R.Record({
+    rating: RBookRating,
+  }),
+);
 
-export interface BestSeller {
-  detail: BookApi.Book | null;
-  b_id: string;
-  period: string;
-  options: [];
-  rank: number;
-  rating: StarRating;
-}
+export const RBookWithRankAndRating = RBookBase.And(
+  R.Record({
+    rank: R.Number,
+    rating: RBookRating,
+  }),
+);
 
-export interface StarRating {
-  total_rating_count: number;
-  buyer_rating_count: number;
-  buyer_rating_score: number;
-}
+export const RBookItem = R.Union(
+  RBookBase,
+  RBookWithOrder,
+  RBookWithRank,
+  RBookWithRating,
+  RBookWithRankAndRating,
+);
 
-export interface ReadingRanking {
-  detail: BookApi.Book | null;
-  b_id: string;
-  type: string;
-  rating: StarRating;
-}
+export const RQuickMenuItem = R.Record({
+  id: R.Number,
+  name: R.String,
+  url: R.String,
+  icon: R.String,
+  bg_color: R.String,
+  order: R.Number,
+});
+export const RQuickMenu = makeSectionData('HomeQuickMenu', RQuickMenuItem);
 
-export interface HotRelease {
-  detail: BookApi.ClientBook | null;
-  b_id: string;
-  type: string;
-  order: number;
-  sentence: string;
-  rating: StarRating;
-}
-export type TodayRecommendation = HotRelease;
+export const RCarouselBannerItem = R.Record({
+  id: R.Number,
+  title: R.String,
+  main_image_url: R.String,
+  landing_url: R.String,
+  order: R.Number,
+  is_badge_available: R.Boolean,
+  badge: R.Union(R.Null, R.Literal('END_IN_3DAY'), R.Literal('END_TODAY')),
+});
+export const RCarouselBanner = makeSectionData('HomeCarouselBanner', RCarouselBannerItem);
 
-export interface TopBanner {
-  id: number;
-  title: string;
-  main_image_url: string;
-  landing_url: string;
-  bg_color: string;
-  order: number;
-  list_order: number;
-  is_badge_available: boolean;
-  badge: 'END_TODAY' | 'END_IN_3DAY' | null;
-}
+export const REventBannerItem = R.Record({
+  id: R.Number,
+  title: R.String,
+  order: R.Number,
+  image_url: R.String,
+  url: R.String,
+});
+export const REventBanner = makeSectionData('HomeEventBanner', REventBannerItem);
 
-export interface QuickMenu {
-  id: number;
-  name: string;
-  url: string;
-  icon: string;
-  bg_color: string;
-  order: number;
-}
+export const RMdSelectionItem = R.Record({
+  id: R.Number,
+  title: R.String,
+  order: R.Number,
+  books: R.Array(RBookWithRating),
+});
+export const RMdSelection = makeSectionData('HomeMdSelection', RMdSelectionItem);
 
-export interface EventBanner {
-  id: number;
-  title: string;
-  sort_order: number;
-  image_url: string;
-  url: string;
-  badge: string;
-}
+export const RRecommendedBook = makeSectionData('RecommendedBook', RBookWithOrder);
 
-export interface MdBook {
-  excluded?: boolean;
-  detail: BookApi.Book | null;
-  b_id: string;
-  type: string;
-  rating: StarRating;
-}
+export const RBestSeller = makeSectionData('BestSeller', RBookWithRankAndRating).And(
+  R.Record({
+    extra: R.Partial({
+      detail_link: R.String,
+    }),
+    item_metadata: R.Record({
+      period: R.String,
+    }),
+  }),
+);
 
-export interface MdSelection {
-  id: number;
-  title: string;
-  order: number;
-  category_id?: number;
-  books: MdBook[];
-}
-export interface AIRecommendationBook {
-  b_id: string;
-  rcmd_id: string;
-  score: number;
-  detail: BookApi.Book | null;
-  excluded?: boolean;
-}
+export const RReadingBooksRanking = makeSectionData('ReadingBooksRanking', RBookBase);
 
-export type BookItem =
-  | AIRecommendationBook
-  | MdBook
-  | TodayRecommendation
-  | HotRelease
-  | ReadingRanking
-  | BestSeller;
+export const RHotRelease = makeSectionData('HotRelease', RBookWithOrder).And(
+  R.Record({
+    extra: R.Partial({
+      use_select_api: R.Boolean,
+    }),
+  }),
+);
+
+export const RNewSerialBook = makeSectionData('NewSerialBook', RBookBase).And(
+  R.Record({
+    extra: R.Partial({
+      detail_link: R.String,
+    }),
+  }),
+);
+
+export const RTodayNewBook = makeSectionData('TodayNewBook', RBookBase).And(
+  R.Record({
+    extra: R.Partial({
+      detail_link: R.String,
+    }),
+  }),
+);
+
+export const RTodayRecommendationItem = RBookWithOrder.And(
+  R.Record({
+    sentence: R.String,
+  }),
+);
+export const RTodayRecommendation = makeSectionData('TodayRecommendation', RTodayRecommendationItem);
+
+export const RUserPreferredBestsellerItem = R.Record({
+  category_id: R.Number,
+  books: R.Array(RBookWithRank),
+});
+export const RUserPreferredBestseller = makeSectionData('UserPreferredBestseller', RUserPreferredBestsellerItem).And(
+  R.Record({
+    extra: R.Partial({
+      is_placeholder: R.Literal(true),
+    }),
+  }),
+);
+
+export const RWaitFree = makeSectionData('WaitFree', RBookWithOrder).And(
+  R.Record({
+    extra: R.Partial({
+      detail_link: R.String,
+    }),
+  }),
+);
+
+export const RAiRecommendationItem = RBookBase.And(
+  R.Record({
+    rcmd_id: R.String,
+  }),
+);
+export const RAiRecommendation = makeSectionData('AiRecommendation', RAiRecommendationItem).And(
+  R.Record({
+    extra: R.Partial({
+      detail_link: R.String,
+      is_placeholder: R.Literal(true),
+    }),
+  }),
+);
+
+export const RKeywordFinder = makeSectionData('KeywordFinder', R.Never).And(
+  R.Record({
+    extra: R.Partial({
+      is_placeholder: R.Literal(true),
+    }),
+  }),
+);
+
+export const RRecommendedNewBook = makeSectionData('RecommendedNewBook', RBookWithOrder);
+
+export const RSectionData = R.Union(
+  RQuickMenu,
+  RCarouselBanner,
+  REventBanner,
+  RMdSelection,
+  RRecommendedBook,
+  RBestSeller,
+  RReadingBooksRanking,
+  RHotRelease,
+  RNewSerialBook,
+  RTodayNewBook,
+  RTodayRecommendation,
+  RUserPreferredBestseller,
+  RWaitFree,
+  RAiRecommendation,
+  RKeywordFinder,
+  RRecommendedNewBook,
+);
+
+export const RSection = R.Record({
+  slug: R.String,
+  title: R.String,
+}).And(
+  R.Partial({
+    total: R.Number,
+    next: R.String.Or(R.Null),
+    previous: R.String.Or(R.Null),
+    extra: R.Partial({
+      use_select_api: R.Boolean,
+      is_placeholder: R.Boolean,
+      detail_link: R.String,
+    }),
+  }),
+).And(RSectionData);
+
+export const RPage = R.Record({
+  slug: R.String,
+  type: R.Union(R.Literal('Page')),
+  title: R.String,
+  branches: R.Array(RSection),
+});
+
+type BookBase = R.Static<typeof RBookBase>;
+type BookWithOrder = R.Static<typeof RBookWithOrder>;
+
+export type BookItem = R.Static<typeof RBookItem>;
+export type BookWithRank = R.Static<typeof RBookWithRank>;
+export type BookWithRating = R.Static<typeof RBookWithRating>;
+export type BookWithRankAndRating = R.Static<typeof RBookWithRankAndRating>;
+export type StarRating = R.Static<typeof RBookRating>;
+export type QuickMenu = R.Static<typeof RQuickMenuItem>;
+export type CarouselBanner = R.Static<typeof RCarouselBannerItem>;
+export type TopBanner = CarouselBanner;
+export type EventBanner = R.Static<typeof REventBannerItem>;
+export type MdSelection = R.Static<typeof RMdSelectionItem>;
+export type RecommendedBook = BookWithOrder;
+export type BestSeller = BookWithRankAndRating;
+export type ReadingBooksRanking = BookBase;
+export type ReadingRanking = ReadingBooksRanking;
+export type HotRelease = BookWithOrder;
+export type NewSerialBook = BookBase;
+export type TodayNewBook = BookBase;
+export type TodayRecommendation = R.Static<typeof RTodayRecommendationItem>;
+export type UserPreferredBestseller = R.Static<typeof RUserPreferredBestsellerItem>;
+export type WaitFree = BookWithOrder;
+export type AiRecommendation = R.Static<typeof RAiRecommendationItem>;
+export type AIRecommendationBook = AiRecommendation;
+export type RecommendedNewBook = BookWithOrder;
+export type Section = R.Static<typeof RSection>;
+export type SectionExtra = Section['extra'];
+export type Page = R.Static<typeof RPage>;
+export type DisplayType = Section['type'];
+
+export function checkPage(data: any): Page {
+  try {
+    return RPage.check(data);
+  } catch (e) {
+    // FIXME add additional info
+    Sentry.captureException(e);
+    return data as Page;
+  }
+}

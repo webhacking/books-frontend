@@ -2,7 +2,7 @@ import { css } from '@emotion/core';
 import {
   between, BreakPoint, greaterThanOrEqualTo, orBelow,
 } from 'src/utils/mediaQuery';
-import { MdBook } from 'src/types/sections';
+import { BookItem } from 'src/types/sections';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import BookMeta from 'src/components/BookMeta';
 import React, {
@@ -22,7 +22,7 @@ import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { getThumbnailIdFromBookDetail } from 'src/utils/books';
 
 interface MultipleLineBooks {
-  items: MdBook[];
+  items: BookItem[];
   title: string;
   genre: string;
   slug: string;
@@ -30,7 +30,7 @@ interface MultipleLineBooks {
 
 interface MultipleLineBookItemProps {
   genre: string;
-  item: MdBook;
+  item: BookItem;
   slug: string;
   order: number;
   tracker: Tracker;
@@ -236,7 +236,7 @@ const List = styled.ul`
   margin-bottom: -24px;
 `;
 
-const ItemList: React.FC<{ slug: string; genre: string; books: MdBook[] }> = (props) => {
+const ItemList: React.FC<{ slug: string; genre: string; books: BookItem[] }> = (props) => {
   const { slug, genre, books } = props;
   const [, setMounted] = useState(false);
   const [tracker] = useEventTracker();

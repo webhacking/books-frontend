@@ -5,7 +5,7 @@ import { SectionTitle, SectionTitleLink } from 'src/components/BookSections/Sect
 import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import useIsTablet from 'src/hooks/useIsTablet';
 import {
-  DisplayType, MdBook, SectionExtra, AIRecommendationBook,
+  SectionExtra, AIRecommendationBook, BookItem,
 } from 'src/types/sections';
 import { orBelow } from 'src/utils/mediaQuery';
 
@@ -36,7 +36,7 @@ const SelectionBook: React.FC<SelectionBookProps> = (props) => {
     genre, type, slug, title, extra, selectionId,
   } = props;
 
-  let _typecheckHack: typeof props.type extends DisplayType.AiRecommendation ? AIRecommendationBook : MdBook;
+  let _typecheckHack: typeof props.type extends 'AiRecommendation' ? AIRecommendationBook : BookItem;
   const [books] = useBookDetailSelector(props.items as (typeof _typecheckHack)[]);
   const isTablet = useIsTablet();
   const listProps = {
@@ -47,7 +47,7 @@ const SelectionBook: React.FC<SelectionBookProps> = (props) => {
   };
 
   let sectionHref = extra?.detail_link;
-  if (!sectionHref && type === DisplayType.HomeMdSelection) {
+  if (!sectionHref && type === 'HomeMdSelection') {
     sectionHref = `/selection/${selectionId}`;
   }
 

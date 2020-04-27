@@ -248,7 +248,7 @@ function CarouselItem(props: CarouselItemProps) {
   const handleBannerClick = React.useCallback(() => {
     tracker.sendEvent(SendEventType.Click, {
       section: `${deviceType}.${slug}`,
-      items: [{ id: banner.id, idx: banner.list_order, ts: Date.now() }],
+      items: [{ id: banner.id, ts: Date.now() }],
     });
   }, [banner, slug, tracker, deviceType]);
 

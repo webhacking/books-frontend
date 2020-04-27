@@ -6,11 +6,7 @@ import { createTimeLabel } from 'src/utils/dateTime';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import * as BookApi from 'src/types/book';
 import {
-  BookItem,
-  MdBook,
-  ReadingRanking,
-  SectionExtra,
-  StarRating,
+  Section, BookItem, StarRating,
 } from 'src/types/sections';
 import BookMeta from 'src/components/BookMeta';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
@@ -67,12 +63,12 @@ const TimerWrapper = styled.div`
 
 interface RankingBookListProps {
   slug: string;
-  items: ReadingRanking[];
+  items: BookItem[];
   type: 'small' | 'big';
   title?: string;
   showTimer: boolean;
   genre: string;
-  extra?: SectionExtra;
+  extra?: Section['extra'];
   showSomeDeal?: boolean;
 }
 
@@ -209,7 +205,7 @@ const ItemList: React.FC<ItemListProps> = (props) => {
               order={index}
               showSomeDeal={showSomeDeal}
               genre={genre}
-              rating={(book as MdBook).rating}
+              rating={book.rating}
               book={book.detail as BookApi.Book}
             />
           ))}

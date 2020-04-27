@@ -1,4 +1,4 @@
-import { DisplayType, AIRecommendationBook, SectionExtra } from 'src/types/sections';
+import { AIRecommendationBook, SectionExtra } from 'src/types/sections';
 import SelectionBook from 'src/components/BookSections/SelectionBook';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 interface AiRecommendationSectionProps {
   items?: AIRecommendationBook[];
   genre: string;
-  type: DisplayType.AiRecommendation;
+  type: 'AiRecommendation';
   extra: SectionExtra;
   title: string;
   slug: string;
