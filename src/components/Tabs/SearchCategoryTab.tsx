@@ -61,12 +61,12 @@ function Category(props: {
 }) {
   const { currentCategoryId, category, searchParam } = props;
   const active = currentCategoryId === category.category_id;
-  searchParam.delete('category_id');
-  searchParam.append('category_id', category.category_id.toString());
+  const copiedSearchParam = new URLSearchParams(searchParam);
+  copiedSearchParam.append('category_id', category.category_id.toString());
   return (
     <CategoryItem active={active}>
       <Link
-        href={`/search?${searchParam.toString()}#${category.category_id}`}
+        href={`/search?${copiedSearchParam.toString()}#${category.category_id}`}
       >
         <CategoryAnchor id={category.category_id.toString()}>
           <CategoryName active={active}>{category.category_name}</CategoryName>
@@ -86,7 +86,6 @@ function SearchCategoryTab(props: SearchCategoryProps) {
   const { currentCategoryId = 0, categories } = props;
   const router = useRouter();
   const searchParam = new URLSearchParams(router?.query as Record<string, any>);
-  searchParam.delete('category');
 
   return (
     <CategoryList>
