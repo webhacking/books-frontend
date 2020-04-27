@@ -4,7 +4,6 @@ import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import { css } from '@emotion/core';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import React from 'react';
-import { DisplayType } from 'src/types/sections';
 // @ts-ignore
 
 const books = [
@@ -180,7 +179,7 @@ const books = [
 const renderBadge = book =>
   render(
     <BookBadgeRenderer
-      type={DisplayType.AiRecommendation}
+      type="AiRecommendation"
       isWaitFree={book.series?.property.is_wait_free}
       // @ts-ignore
       discountPercentage={getMaxDiscountPercentage(book)}

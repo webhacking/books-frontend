@@ -16,7 +16,7 @@ import RecommendedBook from 'src/components/RecommendedBook';
 import { defaultTheme } from 'src/styles';
 import makeStore from 'src/store/config';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
-import { DisplayType, HotRelease, TodayRecommendation } from '../../../types/sections';
+import { HotRelease, TodayRecommendation } from '../../../types/sections';
 import { AuthorRole } from 'src/types/book';
 
 afterEach(cleanup);
@@ -80,7 +80,7 @@ const renderList = () =>
             slug={'home-general-hotrelease'}
             theme={'dark'}
             genre="general"
-            type={DisplayType.HotRelease}
+            type="HotRelease"
             items={books as HotRelease[]}
           />
         </ViewportIntersectionProvider>
@@ -97,7 +97,7 @@ const renderCarousel = () =>
             theme={'dark'}
             genre={'general'}
             slug={'home-general-hotrelease'}
-            type={DisplayType.HotRelease}
+            type="HotRelease"
             items={books as HotRelease[]}
           />
         </ViewportIntersectionProvider>
@@ -114,7 +114,7 @@ const renderTodayRecommendation = () =>
             genre={'romance'}
             theme={'white'}
             slug={'home-romance-today-recommendation'}
-            type={DisplayType.TodayRecommendation}
+            type="TodayRecommendation"
             items={books as TodayRecommendation[]}
           />
         </ViewportIntersectionProvider>
@@ -132,7 +132,7 @@ const renderContainer = () =>
             genre={'romance'}
             theme={'white'}
             slug={'home-romance-today-recommendation'}
-            type={DisplayType.TodayRecommendation}
+            type="TodayRecommendation"
             items={books as TodayRecommendation[]}
           />
         </ViewportIntersectionProvider>

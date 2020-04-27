@@ -15,7 +15,6 @@ import SelectionBookList from 'src/components/BookSections/SelectionBook/Selecti
 import { defaultTheme } from 'src/styles';
 import makeStore from 'src/store/config';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
-import { DisplayType } from 'src/types/sections';
 
 afterEach(cleanup);
 const store = makeStore(
@@ -37,7 +36,7 @@ const renderSelectionBookList = (aiRecommendation: boolean) =>
       <Provider store={store}>
         <ViewportIntersectionProvider>
           <SelectionBookList
-            type={aiRecommendation ? DisplayType.AiRecommendation : DisplayType.HomeMdSelection}
+            type={aiRecommendation ? 'AiRecommendation' : 'HomeMdSelection'}
             items={[
               {
                 b_id: '12345666',
