@@ -1,21 +1,13 @@
 import React from 'react';
-import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
-import { getMaxDiscountPercentage } from 'src/utils/common';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import * as BookApi from 'src/types/book';
-import { getThumbnailIdFromBookDetail } from 'src/utils/books';
 
 import { ThumbnailWrapper } from '../BookThumbnail/ThumbnailWrapper';
-import BookBadgeRenderer from '../Badge/BookBadgeRenderer';
-import FreeBookRenderer from '../Badge/FreeBookRenderer';
-import SetBookRenderer from '../Badge/SetBookRenderer';
-import ThumbnailRenderer from '../BookThumbnail/ThumbnailRenderer';
-import { AdultBadge } from '../Badge/AdultBadge';
-import { BadgeContainer } from '../Badge/BadgeContainer';
+import ThumbnailWithBadge from './ThumbnailWithBadge';
 
-const bookWidthStyle = css`
+const StyledThumbnailWithBadge = styled(ThumbnailWithBadge)`
   width: 100px;
 
   @media (min-width: 1000px) {
@@ -75,45 +67,19 @@ export default function PortraitBook(props: Props) {
     children,
   } = props;
   const href = `/books/${bId}`;
-  const singlePriceInfo = bookDetail?.price_info;
-  const seriesPriceInfo = bookDetail?.series?.price_info;
   return (
     <PortraitBookWrapper className={className}>
       <StyledAnchor href={href} onClick={onClick}>
         <StyledThumbnailWrapper disabled={disabled}>
-          <ThumbnailRenderer
+          <StyledThumbnailWithBadge
+            bId={bId}
+            bookDetail={bookDetail}
             order={index}
-            title={title}
-            className={slug}
-            css={bookWidthStyle}
-            sizes="(min-width: 999px) 140px, 100px"
+            genre={genre}
             slug={slug}
-            thumbnailId={getThumbnailIdFromBookDetail(bookDetail) || bId}
-            isAdultOnly={bookDetail?.property.is_adult_only || false}
-            imgSize="large"
-          >
-            <BadgeContainer>
-              <BookBadgeRenderer
-                isRentable={
-                  (!!singlePriceInfo?.rent
-                    || !!seriesPriceInfo?.rent)
-                  && ['general', 'romance', 'bl'].includes(genre)
-                }
-                isWaitFree={bookDetail?.series?.property.is_wait_free}
-                discountPercentage={getMaxDiscountPercentage(bookDetail)}
-              />
-            </BadgeContainer>
-            <FreeBookRenderer
-              freeBookCount={
-                seriesPriceInfo?.rent?.free_book_count
-                || seriesPriceInfo?.buy?.free_book_count
-                || 0
-              }
-              unit={bookDetail?.series?.property.unit || '권'}
-            />
-            <SetBookRenderer setBookCount={bookDetail?.setbook?.member_books_count} />
-            {bookDetail?.property?.is_adult_only && <AdultBadge />}
-          </ThumbnailRenderer>
+            title={title}
+            sizes="(max-width: 999px) 100px, 140px"
+          />
         </StyledThumbnailWrapper>
       </StyledAnchor>
       {children}

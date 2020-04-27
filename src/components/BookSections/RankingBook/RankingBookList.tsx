@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
 
-import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
-
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { createTimeLabel } from 'src/utils/dateTime';
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import * as BookApi from 'src/types/book';
 import {
   BookItem,
   MdBook,
@@ -12,38 +12,22 @@ import {
   SectionExtra,
   StarRating,
 } from 'src/types/sections';
-import * as BookApi from 'src/types/book';
 import BookMeta from 'src/components/BookMeta';
-import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
-import { AdultBadge } from 'src/components/Badge/AdultBadge';
-import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
-import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
-import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
-import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
-import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
+import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
+import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import ScrollContainer from 'src/components/ScrollContainer';
-import { getMaxDiscountPercentage } from 'src/utils/common';
 import { CLOCK_ICON_URL } from 'src/constants/icons';
-
-import { computeBookTitle } from 'src/utils/bookTitleGenerator';
-import { getThumbnailIdFromBookDetail } from 'src/utils/books';
+import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 
 import { SectionTitle, SectionTitleLink } from '../SectionTitle';
 
 const SectionWrapper = styled.section`
   max-width: 1000px;
   margin: 0 auto;
-  padding-top: 24px;
-  padding-bottom: 24px;
-
-  ${orBelow(
-    999,
-    `
-      padding-top: 16px;
-      padding-bottom: 16px;
-    `,
-  )};
+  padding: 24px 0;
   position: relative;
+
+  ${orBelow(999, 'padding: 16px 0;')};
 `;
 
 const BIG_ITEM_HEIGHT = 138;
@@ -51,30 +35,32 @@ const SMALL_ITEM_HEIGHT = 94;
 
 const RankPosition = styled.h3`
   height: 22px;
+  margin-right: 21px;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: bold;
   text-align: center;
   color: #000000;
-  margin-right: 21px;
 `;
 
-const TimerWrapper = styled.div<{ opacity: number }>`
-  border-radius: 14px;
+const TimerWrapper = styled.div`
   width: 96px;
   height: 30px;
-  background-image: linear-gradient(255deg, #0077d9 4%, #72d2e0);
-  font-size: 13px;
-  color: white;
-  font-weight: bold;
+  padding: 9px;
+  padding-right: 13px;
+  margin-bottom: 16px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 9px 13px 9px 9px;
-  margin-bottom: 16px;
-  transition: opacity 0.3s;
-  opacity: ${(props) => props.opacity};
-  > span,
-  svg {
+
+  background-image: linear-gradient(255deg, #0077d9 4%, #72d2e0);
+  border-radius: 14px;
+
+  font-size: 13px;
+  font-weight: bold;
+  color: white;
+
+  > * {
     flex: none;
   }
 `;
@@ -90,24 +76,24 @@ interface RankingBookListProps {
   showSomeDeal?: boolean;
 }
 
-const Timer: React.FC = () => {
+function Timer() {
   const [label, setLabel] = useState(createTimeLabel);
   useEffect(() => {
-    const timer = setInterval(() => {
+    const timer = window.setInterval(() => {
       setLabel(createTimeLabel());
     }, 10000);
 
     return () => {
-      clearInterval(timer);
+      window.clearInterval(timer);
     };
-  }, [label, setLabel]);
+  }, []);
   return (
-    <TimerWrapper opacity={!label ? 0 : 1}>
-      <img src={CLOCK_ICON_URL} height={12} width={12} alt="현재 시각" />
+    <TimerWrapper>
+      <img src={CLOCK_ICON_URL} height={12} width={12} alt="시계 아이콘" />
       <span>{label}</span>
     </TimerWrapper>
   );
-};
+}
 
 const List = styled.ul<{ type: 'big' | 'small' }>`
   display: -ms-grid; // emotion이 쓰는 stylis.js가 grid를 지원하지 않음
@@ -117,52 +103,36 @@ const List = styled.ul<{ type: 'big' | 'small' }>`
   grid: repeat(3, ${({ type }) => (type === 'big' ? BIG_ITEM_HEIGHT : SMALL_ITEM_HEIGHT)}px) / auto-flow 308px;
   grid-column-gap: 13px;
 
-  padding-left: 16px;
-  padding-right: 16px;
+  padding: 0 24px;
+  ${orBelow(BreakPoint.LG, 'padding: 0 20px;')}
+  ${orBelow(BreakPoint.MD, 'padding: 0 16px;')}
+`;
 
-  ${greaterThanOrEqualTo(
-    BreakPoint.MD + 1,
-    `
-      padding-left: 20px;
-      padding-right: 20px;
-    `,
-  )};
-
-  ${greaterThanOrEqualTo(
-    BreakPoint.LG + 1,
-    `
-      padding-left: 24px;
-      padding-right: 24px;
-    `,
-  )};
+const BookMetaBox = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px #e6e8eb solid;
 `;
 
 const RankingBookItem = styled.li<{ type: 'big' | 'small' }>`
   display: flex;
   align-items: center;
   box-sizing: content-box;
-  .book-meta-box {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px #e6e8eb solid;
-    height: 100%;
-    width: 100%;
-  }
-  :nth-of-type(3n) {
-    .book-meta-box {
-      border-bottom: 0;
-    }
+
+  &:nth-of-type(3n) ${BookMetaBox} {
+    border-bottom: 0;
   }
 `;
 
-const ThumbnailAnchor = styled.a<{ marginRight: number }>`
+const ThumbnailAnchor = styled.a<{ type: 'big' | 'small' }>`
   flex: none;
-  margin-right: ${(props) => props.marginRight}px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
+  margin-right: ${(props) => (props.type === 'big' ? 18 : 24)}px;
+`;
+
+const StyledThumbnailWithBadge = styled(ThumbnailWithBadge)<{ type: 'big' | 'small' }>`
+  width: ${(props) => (props.type === 'big' ? 80 : 50)}px;
 `;
 
 interface ItemListProps {
@@ -192,55 +162,20 @@ function RankingBook({
         msGridRow: (index % 3) + 1,
       }}
     >
-      <ThumbnailAnchor
-        data-book-id={book.id}
-        data-order={index}
-        data-slug={slug}
-        marginRight={type === 'big' ? 18 : 24}
-        href={`/books/${book.id}`}
-      >
-        <ThumbnailRenderer
-          slug={slug}
-          className={slug}
+      <ThumbnailAnchor type={type} href={`/books/${book.id}`}>
+        <StyledThumbnailWithBadge
+          bId={book.id}
+          bookDetail={book}
           order={index}
-          css={css`
-            width: ${type === 'big' ? 80 : 50}px;
-          `}
+          genre={genre}
+          slug={slug}
           sizes={type === 'big' ? '80px' : '50px'}
-          thumbnailId={getThumbnailIdFromBookDetail(book) || book.id}
-          isAdultOnly={book.property.is_adult_only || false}
-          imgSize="large"
+          type={type}
           title={title}
-        >
-          {type === 'big' && (
-            <BadgeContainer>
-              <BookBadgeRenderer
-                isRentable={
-                  (!!book.price_info?.rent || !!book.series?.price_info?.rent)
-                  && ['general', 'romance', 'bl'].includes(genre)
-                }
-                isWaitFree={book.series?.property.is_wait_free}
-                discountPercentage={getMaxDiscountPercentage(book)}
-              />
-            </BadgeContainer>
-          )}
-          {type === 'big' && (
-            <>
-              <FreeBookRenderer
-                freeBookCount={
-                  book.series?.price_info?.rent?.free_book_count
-                  || book.series?.price_info?.buy?.free_book_count
-                  || 0
-                }
-                unit={book.series?.property.unit || '권'}
-              />
-              <SetBookRenderer setBookCount={book.setbook?.member_books_count} />
-            </>
-          )}
-          {book.property?.is_adult_only && <AdultBadge />}
-        </ThumbnailRenderer>
+          onlyAdultBadge={type !== 'big'}
+        />
       </ThumbnailAnchor>
-      <div className="book-meta-box">
+      <BookMetaBox>
         <RankPosition aria-label={`랭킹 순위 ${index + 1}위`}>{index + 1}</RankPosition>
         <BookMeta
           book={book}
@@ -251,7 +186,7 @@ function RankingBook({
           width={type === 'big' ? '177px' : undefined}
           ratingInfo={type === 'big' ? rating : undefined}
         />
-      </div>
+      </BookMetaBox>
     </RankingBookItem>
   );
 }
