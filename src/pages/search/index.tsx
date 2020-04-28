@@ -152,7 +152,7 @@ const SearchBookItem = styled.li`
   margin: 0 4px;
   padding: 20px 0;
   border-bottom: 1px solid ${slateGray20};
-
+  align-items: flex-start;
   ${orBelow(BreakPoint.LG, 'margin: 0 20px;')};
 `;
 
@@ -244,14 +244,12 @@ function SearchPage(props: SearchProps) {
           >
             some filters
           </div>
-          {/* Todo 스타일링 및 메타정보 표시 */}
           <SearchBookList>
             {props.book.books.map((item) => (
               <SearchBookItem key={item.b_id}>
                 <SearchLandscapeBook
                   item={item}
                   title={item.title}
-                  isAdultOnly={item.age_limit > 18}
                 />
               </SearchBookItem>
             ))}

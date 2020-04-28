@@ -1,19 +1,15 @@
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import { getEscapedNode } from 'src/utils/highlight';
-import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { css } from '@emotion/core';
-import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
-import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
-import { getMaxDiscountPercentage } from 'src/utils/common';
-import SetBookRenderer from 'src/components/Badge/SetBookRenderer';
-import { AdultBadge } from 'src/components/Badge/AdultBadge';
-import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
 import {
-  orange40,
+  dodgerBlue50,
+  orange40, red40,
   slateGray20,
-  slateGray40, slateGray50, slateGray60,
+  slateGray40,
+  slateGray50,
+  slateGray60,
 } from '@ridi/colors';
 import Link from 'next/link';
 import * as React from 'react';
@@ -23,19 +19,12 @@ import * as BookApi from 'src/types/book';
 import styled from '@emotion/styled';
 import Star from 'src/svgs/Star.svg';
 import isPropValid from '@emotion/is-prop-valid';
+import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
 
-const thumbnailOverrideStyle = css`
+const StyledThumbnailWithBadge = styled(ThumbnailWithBadge)`
   width: 100px;
-  max-height: calc(100px * 1.618 - 10px);
-  ${orBelow(
-    BreakPoint.LG,
-    `
-      width: 80px;
-      max-height: calc(80px * 1.618 - 10px);
-    `,
-  )};
+  ${orBelow(BreakPoint.LG, 'width: 80px;')}
 `;
-
 
 const SearchBookTitle = styled.h4`
   margin-bottom: 4px;
@@ -104,7 +93,6 @@ const BookDesc = styled.p`
   ${orBelow(BreakPoint.LG, 'display: none;')}
 `;
 
-
 function StarCount(props: { count: number }) {
   return (
     <SearchBookMetaField color={slateGray40} fontSize="12px">
@@ -115,7 +103,68 @@ function StarCount(props: { count: number }) {
   );
 }
 
-function PriceInfo(props: { seriesPriceInfo: SearchTypes.SeriesPriceInfo[]; book: BookApi.ClientBook | null }) {
+const PriceItem = styled.dl`
+  display: flex;
+  align-items: center;
+  height: 18px;
+`;
+const priceBase = css`
+  font-size: 13px;
+  line-height: 18px;;
+`;
+const PriceTitle = styled.dt`
+  margin-right: 2px;
+  color: ${slateGray60};
+  ${priceBase}
+`;
+
+const Price = styled.span`
+  color: ${dodgerBlue50};
+  font-weight: bold;
+  ${priceBase}
+`;
+
+const Discount = styled.span`
+  color: ${red40};
+  font-weight: bold;
+  ${priceBase}
+`;
+
+const OriginalPrice = styled.span`
+  text-decoration: line-through;
+  color: ${slateGray50};
+  ${priceBase}
+`;
+
+function PriceLabel(props: { title: string; price: number; discount?: number }) {
+  const { title, price, discount = 0 } = props;
+  return (
+    <PriceItem>
+      <PriceTitle>{title}</PriceTitle>
+      <dd>
+        <Price>
+          { Math.min(price, price - price * (discount / 100))}
+          원
+        </Price>
+        {' '}
+        {discount > 0 && (
+        <Discount>
+          (
+          {discount}
+          %↓)
+        </Discount>
+        )}
+        {' '}
+        {discount > 0 && <OriginalPrice>{price}</OriginalPrice>}
+      </dd>
+    </PriceItem>
+  );
+}
+
+function PriceInfo(props: {
+  seriesPriceInfo: SearchTypes.SeriesPriceInfo[];
+  book: BookApi.ClientBook | null;
+}) {
   if (!props.book) {
     return null;
   }
@@ -126,20 +175,25 @@ function PriceInfo(props: { seriesPriceInfo: SearchTypes.SeriesPriceInfo[]; book
   if (seriesPriceInfo.rent || seriesPriceInfo.normal) {
     return (
       <>
-        { seriesPriceInfo.rent
-        && (
-          <dl>
-            <dt>대여</dt>
-            <dd>{ seriesPriceInfo.rent.min_price !== 0 ? seriesPriceInfo.rent.min_price : seriesPriceInfo.rent.max_price }</dd>
-            {' '}
-          </dl>
+        {seriesPriceInfo.rent && (
+          <PriceLabel
+            title="대여"
+            price={
+              seriesPriceInfo.rent.min_price !== 0
+                ? seriesPriceInfo.rent.min_price
+                : seriesPriceInfo.rent.max_price
+            }
+          />
         )}
-        { seriesPriceInfo.normal && (
-          <dl>
-            <dt>구매</dt>
-            <dd>{seriesPriceInfo.normal.min_price !== 0 ? seriesPriceInfo.normal.min_price : seriesPriceInfo.normal.max_price }</dd>
-            {' '}
-          </dl>
+        {seriesPriceInfo.normal && (
+          <PriceLabel
+            title="구매"
+            price={
+              seriesPriceInfo.normal.min_price !== 0
+                ? seriesPriceInfo.normal.min_price
+                : seriesPriceInfo.normal.max_price
+            }
+          />
         )}
       </>
     );
@@ -148,21 +202,13 @@ function PriceInfo(props: { seriesPriceInfo: SearchTypes.SeriesPriceInfo[]; book
     const { buy = null, rent = null } = props.book.price_info;
     return (
       <>
-        { rent && (
-          <dl>
-            <dt>대여</dt>
-            <dd>{rent.regular_price}</dd>
-          </dl>
-        )}
-        { buy && (
-          <dl>
-            <dt>구매</dt>
-            <dd>
-              {buy.regular_price}
-              {' '}
-              {buy.discount_percentage}
-            </dd>
-          </dl>
+        {rent && <PriceLabel title="대여" price={rent.regular_price} discount={rent.discount_percentage} />}
+        {buy && (
+          <PriceLabel
+            title="구매"
+            price={buy.regular_price}
+            discount={buy.discount_percentage}
+          />
         )}
       </>
     );
@@ -173,7 +219,6 @@ function PriceInfo(props: { seriesPriceInfo: SearchTypes.SeriesPriceInfo[]; book
 interface SearchLandscapeBookProps {
   item: SearchTypes.SearchBookDetail;
   title: string;
-  isAdultOnly: boolean;
 }
 
 function getLastVolumeId(item: SearchTypes.SearchBookDetail) {
@@ -186,9 +231,8 @@ function getLastVolumeId(item: SearchTypes.SearchBookDetail) {
   return item.b_id;
 }
 
-
 export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
-  const { item, title, isAdultOnly } = props;
+  const { item, title } = props;
   const thumbnailId = getLastVolumeId(item);
   const { books } = useSelector((state: RootState) => state);
   const {
@@ -202,34 +246,14 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   const escapedDesc = getEscapedNode(desc);
   return (
     <>
-      <ThumbnailRenderer
-        wrapperStyle={css`height: 100%;`}
-        css={thumbnailOverrideStyle}
-        thumbnailId={thumbnailId}
-        isAdultOnly={isAdultOnly}
-        imgSize="large"
+      <StyledThumbnailWithBadge
+        bId={thumbnailId}
+        bookDetail={book}
+        genre="general"
+        slug="search-result"
         sizes="(min-width: 999px) 100px, 80px"
         title={title}
-      >
-        {/* Todo 기다무, 할인율 배지 */}
-        <BadgeContainer>
-          <BookBadgeRenderer
-            isRentable={item.is_rental}
-            discountPercentage={getMaxDiscountPercentage(book)}
-            isWaitFree={item.is_wait_free}
-          />
-        </BadgeContainer>
-        {item.is_setbook && <SetBookRenderer setBookCount={item.setbook_count} />}
-        {isAdultOnly && <AdultBadge />}
-        <FreeBookRenderer
-          freeBookCount={
-            book?.series?.price_info?.rent?.free_book_count
-            || book?.series?.price_info?.buy?.free_book_count
-            || 0
-          }
-          unit={book?.series?.property.unit || '권'}
-        />
-      </ThumbnailRenderer>
+      />
       <div
         css={css`
           flex: none;
@@ -287,9 +311,10 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           </SearchBookMetaItem>
           <SearchBookMetaItem>
             <SearchBookMetaField color={slateGray50} fontSize="13px">
-              {parent_category_name && <a href={`/category/${parent_category}`}>{parent_category_name}</a>}
-              {parent_category_name2 && parent_category_name2 !== parent_category_name
-              && (
+              {parent_category_name && (
+                <a href={`/category/${parent_category}`}>{parent_category_name}</a>
+              )}
+              {parent_category_name2 && parent_category_name2 !== parent_category_name && (
                 <>
                   <span>, </span>
                   <a href={`category/${parent_category2}`}>{parent_category_name2}</a>
@@ -302,9 +327,9 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
               <SearchBookMetaField color={slateGray50} fontSize="13px">
                 {`총 ${item.book_count}권`}
               </SearchBookMetaField>
-              {
-                item.series_prices_info.length > 0 && item.is_series_complete && <SeriesCompleted>완결</SeriesCompleted>
-              }
+              {item.series_prices_info.length > 0 && item.is_series_complete && (
+                <SeriesCompleted>완결</SeriesCompleted>
+              )}
             </SearchBookMetaItem>
           )}
         </SearchBookMetaList>
