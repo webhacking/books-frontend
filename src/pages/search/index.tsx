@@ -9,6 +9,8 @@ import { slateGray40, slateGray60, slateGray90 } from '@ridi/colors';
 import ArrowBoldH from 'src/svgs/ArrowBoldH.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import isPropValid from '@emotion/is-prop-valid';
+import { SearchCategoryTab } from 'src/components/Tabs';
+import { css } from '@emotion/core';
 import { useCallback, useEffect } from 'react';
 import sentry from 'src/utils/sentry';
 import { useEventTracker } from 'src/hooks/useEventTracker';
@@ -16,17 +18,23 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import { getEscapedNode } from 'src/utils/highlight';
 import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
+import ScrollContainer from 'src/components/ScrollContainer';
+import pRetry from 'p-retry';
+import { AxiosResponse } from 'axios';
 
 interface SearchProps {
   q?: string;
   book: SearchTypes.BookResult;
   author: SearchTypes.AuthorResult;
   categories: SearchTypes.Aggregation[];
+  currentCategoryId: string;
 }
 
 const SearchResultSection = styled.section`
   max-width: 952px;
   margin: 0 auto;
+
+  ${orBelow(BreakPoint.MD, 'max-width: 100%;')}
 `;
 
 const SearchTitle = styled.h3`
@@ -79,6 +87,19 @@ const Arrow = styled(ArrowBoldH, {
   transform: rotate(${(props) => (props.isRotate ? '180deg' : '0deg')});
 `;
 
+function Author(props: { author: SearchTypes.Author; q: string; show: boolean }) {
+  const { author, q, show } = props;
+  return (
+    <AuthorItem show={show}>
+      <a href={`/author/${author.id}?_s=search&_q=${encodeURIComponent(q)}`}>
+        <AuthorInfo author={author} />
+      </a>
+    </AuthorItem>
+  );
+}
+
+const MemoizedAuthor = React.memo(Author);
+
 function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
   const {
     author: { authors, total },
@@ -91,18 +112,10 @@ function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
   return (
     <AuthorList>
       {authorsPreview.map((author) => (
-        <AuthorItem key={author.id} show>
-          <a href={`/author/${author.id}?_s=search&_q=${encodeURIComponent(q)}`}>
-            <AuthorInfo author={author} />
-          </a>
-        </AuthorItem>
+        <MemoizedAuthor show key={author.id} author={author} q={q} />
       ))}
       {restAuthors.map((author) => (
-        <AuthorItem key={author.id} show={isShowMore}>
-          <a href={`/author/${author.id}?_s=search&_q=${encodeURIComponent(q)}`}>
-            <AuthorInfo author={author} />
-          </a>
-        </AuthorItem>
+        <MemoizedAuthor show={isShowMore} key={author.id} author={author} q={q} />
       ))}
       {authors.length > DEFAULT_SHOW_AUTHOR_COUNT && (
         <ShowMoreAuthor onClick={() => setShowMore((current) => !current)}>
@@ -121,11 +134,26 @@ function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
   );
 }
 
+const MemoizedAuthors = React.memo(Authors);
+
+function SearchBooks(props: { books: SearchTypes.SearchBookDetail[] }) {
+  const { books } = props;
+
+  return (
+    <>
+      {books.map((book) => (
+        <span key={book.b_id}>{book.title}</span>
+      ))}
+    </>
+  );
+}
+
 function SearchPage(props: SearchProps) {
   const {
     author,
     book,
     categories,
+    currentCategoryId,
     q,
   } = props;
   const [tracker] = useEventTracker();
@@ -147,7 +175,7 @@ function SearchPage(props: SearchProps) {
     <SearchResultSection>
       <Head>
         <title>
-          {props.q}
+          {q}
           {' '}
           검색 결과 - 리디북스
         </title>
@@ -163,19 +191,54 @@ function SearchPage(props: SearchProps) {
                 }
               </TotalAuthor>
             </SearchTitle>
-            <Authors author={author} q={q || ''} />
+            <MemoizedAuthors author={author} q={q || ''} />
           </>
         )
-}
+      }
       {book.total > 0 && (
         <>
           <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
+            {categories.length > 0 && (
+              <ScrollContainer
+                arrowStyle={css`
+                  button {
+                    border-radius: 0;
+                    box-shadow: none;
+                    position: relative;
+                    top: 3px;
+                    width: 20px;
+                    background: linear-gradient(
+                      90deg,
+                      rgba(255, 255, 255, 0.1) 0%,
+                      rgba(255, 255, 255, 0.3) 27.6%,
+                      rgba(255, 255, 255, 0.3) 47.6%,
+                      #ffffff 53.65%
+                    );
+                  }
+                `}
+              >
+                <SearchCategoryTab
+                  categories={categories}
+                  currentCategoryId={
+                    parseInt(currentCategoryId, 10)
+                  }
+                />
+              </ScrollContainer>
+            )}
+          {/* FIXME 임시 마진 영역 */}
+          <div
+            css={css`
+              margin-top: 12px;
+            `}
+          >
+            some filters
+          </div>
           {/* Todo 스타일링 및 메타정보 표시 */}
-          {props.book.books.map((item) => (
-            <span key={item.b_id}>
-              {getEscapedNode(computeSearchBookTitle(item))}
-            </span>
-          ))}
+            {props.book.books.map((item) => (
+              <span key={item.b_id}>
+                {getEscapedNode(computeSearchBookTitle(item))}
+              </span>
+            ))}
         </>
       )}
     </SearchResultSection>
@@ -193,20 +256,40 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   searchUrl.searchParams.append('where', 'book');
   searchUrl.searchParams.append('what', 'base');
   searchUrl.searchParams.append('keyword', searchKeyword as string);
+  if (/^\d+$/.test(String(query.category_id))) {
+    searchUrl.searchParams.delete('category_id');
+    searchUrl.searchParams.append('category_id', query.category_id.toString());
+  }
   if (isServer) {
-    const { data } = await axios.get<SearchTypes.SearchResult>(searchUrl.toString());
-    // const result = await pRetry(() => axios.get(process.env.NEXT_STATIC_SEARCH_API), {
-    //   retries: 3,
-    // });
-    // console.log(result, q);
+    const { data } = await pRetry<AxiosResponse<SearchTypes.SearchResult>>(
+      () => axios.get(searchUrl.toString()),
+      {
+        retries: 3,
+      },
+    );
+
     return {
       q: props.query.q,
       book: data.book,
       author: data.author,
       categories: data.book.aggregations,
+      currentCategoryId: props.query.category_id,
     };
   }
-  return { q: props.query.q };
+  const { data } = await pRetry<AxiosResponse<SearchTypes.SearchResult>>(
+    () => axios.get(searchUrl.toString()),
+    {
+      retries: 3,
+    },
+  );
+
+  return {
+    q: props.query.q,
+    book: data.book,
+    author: data.author,
+    categories: data.book.aggregations,
+    currentCategoryId: props.query.category_id,
+  };
 };
 
 export default SearchPage;

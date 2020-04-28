@@ -43,7 +43,7 @@ describe('Search Page Test', () => {
         query: { q: '유유' },
       });
       // FIXME client side fetch 아직 없음
-      expect(props.book?.total).toBeUndefined();
+      expect(props.book.total).toEqual(147);
     });
   });
 
@@ -87,4 +87,20 @@ describe('Search Page Test', () => {
 
   // Todo 저자가 없을 경우, 도서가 없을 경우
   it.todo('should be render empty state');
+
+  it('should be render category tab', () => {
+    const { getByText } = render(
+      <Provider store={store}>
+        <Index
+          q={'유유'}
+          book={fixture.book}
+          author={fixture.author}
+          categories={fixture.book.aggregations}
+        />
+      </Provider>,
+    );
+    const container = getByText(/성공\/삶의자세/);
+
+    expect(container).toHaveTextContent('성공/삶의자세');
+  })
 });
