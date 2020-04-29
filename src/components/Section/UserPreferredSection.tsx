@@ -1,4 +1,4 @@
-import { DisplayType, MdSelection } from 'src/types/sections';
+import { DisplayType, UserPreferredBestseller } from 'src/types/sections';
 import SelectionBook from 'src/components/BookSections/SelectionBook';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,9 +11,9 @@ import { categoryActions } from 'src/services/category';
 import { useRouter } from 'next/router';
 
 interface UserPreferredSectionProps {
-  items: MdSelection[];
+  items: UserPreferredBestseller[];
   genre: string;
-  type: Exclude<DisplayType, DisplayType.AiRecommendation>;
+  type: Exclude<DisplayType, 'AiRecommendation'>;
   slug: string;
 }
 

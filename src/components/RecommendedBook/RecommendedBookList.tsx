@@ -3,7 +3,6 @@ import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
 import ScrollContainer from 'src/components/ScrollContainer';
-import { DisplayType } from 'src/types/sections';
 import { BreakPoint } from 'src/utils/mediaQuery';
 
 import ListItem from './RecommendedBookItem';
@@ -71,12 +70,12 @@ function RecommendedBookList(props: Omit<RecommendedBookProps, 'title'>) {
           key={index}
           book={book}
           index={index}
-          type={type}
+          type={type as any /* FIXME do some type circus */}
           theme={theme}
           slug={slug}
           genre={genre}
           css={
-            props.type === DisplayType.HotRelease
+            props.type === 'HotRelease'
               ? hotReleaseMargin
               : todayRecommendationMargin
           }

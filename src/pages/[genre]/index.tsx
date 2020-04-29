@@ -8,7 +8,7 @@ import titleGenerator from 'src/utils/titleGenerator';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { Page, Section } from 'src/types/sections';
+import { checkPage, Section } from 'src/types/sections';
 import HomeSectionRenderer from 'src/components/Section/HomeSectionRenderer';
 import pRetry from 'p-retry';
 import { keyToArray } from 'src/utils/common';
@@ -33,7 +33,7 @@ export interface HomeProps {
 
 const fetchHomeSections = async (genre = 'general', params = {}, options = {}) => {
   const result = await pRetry(
-    () => axios.get<Page>(`/pages/home-${genre}/`, {
+    () => axios.get(`/pages/home-${genre}/`, {
       baseURL: process.env.NEXT_STATIC_STORE_API,
       withCredentials: true,
       params,
@@ -44,7 +44,7 @@ const fetchHomeSections = async (genre = 'general', params = {}, options = {}) =
       minTimeout: 2000,
     },
   );
-  return result.data;
+  return checkPage(result.data);
 };
 
 const usePrevious = <T extends {}>(value: T) => {

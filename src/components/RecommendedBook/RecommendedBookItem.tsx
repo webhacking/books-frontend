@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import PortraitBook from 'src/components/Book/PortraitBook';
-import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
+import { HotRelease, TodayRecommendation } from 'src/types/sections';
 import { newlineToReactNode } from 'src/utils/highlight';
 import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { BreakPoint } from 'src/utils/mediaQuery';
@@ -18,12 +18,12 @@ interface CommonProps {
 }
 
 interface TodayRecommendationProps {
-  type: DisplayType.TodayRecommendation;
+  type: 'TodayRecommendation';
   book: TodayRecommendation;
 }
 
 interface HotReleaseProps {
-  type: DisplayType.HotRelease;
+  type: 'HotRelease';
   book: HotRelease;
 }
 
@@ -50,19 +50,17 @@ const RecommendationText = styled.p<{ bg?: 'white' | 'dark' }>`
 
 function RecommendedBookItem(props: Props) {
   const {
-    book: { b_id: bId, detail, sentence },
     index,
-    type,
     theme,
     slug,
     genre,
     className,
   } = props;
-  const title = computeBookTitle(detail);
+  const title = computeBookTitle(props.book.detail);
   return (
     <PortraitBook
-      bId={bId}
-      bookDetail={detail}
+      bId={props.book.b_id}
+      bookDetail={props.book.detail}
       index={index}
       genre={genre}
       slug={slug}
@@ -70,10 +68,10 @@ function RecommendedBookItem(props: Props) {
       title={title}
     >
       {/* Todo show sentence */}
-      {detail && type === DisplayType.HotRelease && <BookMeta book={detail} />}
-      {detail && type === DisplayType.TodayRecommendation && (
+      {props.book.detail && props.type === 'HotRelease' && <BookMeta book={props.book.detail} />}
+      {props.book.detail && props.type === 'TodayRecommendation' && (
         <RecommendationText bg={theme}>
-          {newlineToReactNode(sentence)}
+          {newlineToReactNode(props.book.sentence)}
         </RecommendationText>
       )}
     </PortraitBook>

@@ -1,16 +1,4 @@
-import {
-  AIRecommendationBook,
-  DisplayType,
-  EventBanner as EventBannerItem,
-  HotRelease,
-  MdBook,
-  MdSelection,
-  QuickMenu,
-  ReadingRanking,
-  Section,
-  TodayRecommendation,
-  TopBanner,
-} from 'src/types/sections';
+import { Section } from 'src/types/sections';
 import { EventBanner } from 'src/components/EventBanner';
 import { QuickMenuList } from 'src/components/QuickMenu';
 import React from 'react';
@@ -31,13 +19,16 @@ interface HomeSectionRendererProps {
 
 function HomeSectionRenderer(props: HomeSectionRendererProps) {
   const {
+    section,
     section: {
-      items, item_metadata, type, title, extra, slug,
+      slug,
+      title,
+      extra,
     },
     genre,
   } = props;
 
-  if (!items) {
+  if (!section.items) {
     // 사파리 disk cache 된 섹션 정보가 호출 될 때
     // 특정섹션에 items 필드가 자체가 존재하지 않는 경우를 방어합니다.
     // ex) AI 추천, KeywordFinder 등
@@ -46,21 +37,19 @@ function HomeSectionRenderer(props: HomeSectionRendererProps) {
   }
 
   // placeholder가 아닌데 아이템이 0개면 잘못된 섹션이므로 표시하지 않는다.
-  if (items.length === 0 && !extra.is_placeholder) {
+  if (section.items.length === 0 && extra && !extra.is_placeholder) {
     return null;
   }
-  switch (type) {
-    case DisplayType.Page:
-      return null;
-    case DisplayType.HomeCarouselBanner:
-      return <TopBannerCarousel banners={items as TopBanner[]} slug={slug} />;
-    case DisplayType.HomeEventBanner:
-      return <EventBanner items={items as EventBannerItem[]} genre={genre} slug={slug} />;
-    case DisplayType.ReadingBooksRanking:
+  switch (section.type) {
+    case 'HomeCarouselBanner':
+      return <TopBannerCarousel banners={section.items} slug={slug} />;
+    case 'HomeEventBanner':
+      return <EventBanner items={section.items} genre={genre} slug={slug} />;
+    case 'ReadingBooksRanking':
       return (
         <RankingBookList
           slug={slug}
-          items={items as ReadingRanking[]}
+          items={section.items}
           type="small"
           genre={genre}
           title={title}
@@ -69,76 +58,67 @@ function HomeSectionRenderer(props: HomeSectionRendererProps) {
           extra={extra}
         />
       );
-    case DisplayType.HotRelease: {
+    case 'HotRelease': {
       return (
         <RecommendedBook
           slug={slug}
           title={title}
-          items={items as HotRelease[]}
-          type={type}
+          items={section.items}
+          type={section.type}
           genre={genre}
           theme="dark"
         />
       );
     }
-    case DisplayType.TodayRecommendation: {
+    case 'TodayRecommendation': {
       return (
         <RecommendedBook
           slug={slug}
           title={title}
-          items={items as TodayRecommendation[]}
-          type={type}
+          items={section.items}
+          type={section.type}
           genre={genre}
           theme={['bl', 'romance', 'fantasy'].includes(genre) ? 'dark' : 'white'}
         />
       );
     }
-    case DisplayType.HomeMdSelection: {
+    case 'HomeMdSelection': {
       return (
         <>
-          {(items as MdSelection[]).map((item) => {
-            if (!item.books) {
-              return null;
-            }
-            return (
-              <SelectionBook
-                slug={`${slug}-${item.id}`}
-                items={item.books}
-                title={item.title}
-                genre={genre}
-                key={item.id}
-                selectionId={item.id}
-                type={type}
-              />
-            );
-          })}
+          {section.items.map((item) => (
+            <SelectionBook
+              slug={`${slug}-${item.id}`}
+              items={item.books}
+              title={item.title}
+              genre={genre}
+              key={item.id}
+              selectionId={item.id}
+              type={section.type}
+            />
+          ))}
         </>
       );
     }
-    case DisplayType.RecommendedNewBook:
-    case DisplayType.WaitFree:
-    case DisplayType.FreeBook:
-    case DisplayType.TodayNewBook:
-    case DisplayType.NewSerialBook: {
-      if (items) {
-        return (
-          <SelectionBook
-            slug={slug}
-            items={items as MdBook[]}
-            title={title}
-            genre={genre}
-            type={type}
-            extra={extra}
-          />
-        );
-      }
-      return null;
+    case 'RecommendedNewBook':
+    case 'WaitFree':
+    case 'TodayNewBook':
+    case 'NewSerialBook': {
+      return (
+        <SelectionBook
+          slug={slug}
+          items={section.items}
+          title={title}
+          genre={genre}
+          type={section.type}
+          extra={extra}
+        />
+      );
     }
-    case DisplayType.BestSeller:
+    case 'BestSeller':
       return (
         <RankingBookList
           slug={slug}
-          items={items as ReadingRanking[]}
+          items={section.items}
           title={title}
           genre={genre}
           type="big"
@@ -146,41 +126,41 @@ function HomeSectionRenderer(props: HomeSectionRendererProps) {
           extra={extra}
         />
       );
-    case DisplayType.HomeQuickMenu: {
-      return <QuickMenuList items={items as QuickMenu[]} />;
+    case 'HomeQuickMenu': {
+      return <QuickMenuList items={section.items} />;
     }
-    case DisplayType.UserPreferredBestseller: {
+    case 'UserPreferredBestseller': {
       return (
         <UserPreferredSection
           slug={slug}
-          items={items as MdSelection[]}
+          items={section.items}
           genre={genre}
-          type={type}
+          type={section.type}
         />
       );
     }
-    case DisplayType.AiRecommendation: {
+    case 'AiRecommendation': {
       return (
         <AiRecommendationSection
           slug={slug}
-          items={items as unknown as AIRecommendationBook[]}
+          items={section.items}
           genre={genre}
-          type={type}
+          type={section.type}
           extra={extra}
           title={title}
         />
       );
     }
-    case DisplayType.KeywordFinder: {
+    case 'KeywordFinder': {
       return <HomeKeywordFinderSection genre={genre} />;
     }
-    case DisplayType.RecommendedBook: {
+    case 'RecommendedBook': {
       return (
         <MultipleLineBooks
           slug={slug}
           genre={genre}
           title={title}
-          items={items as MdBook[]}
+          items={section.items}
         />
       );
     }

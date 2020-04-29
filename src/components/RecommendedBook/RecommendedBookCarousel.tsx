@@ -70,7 +70,7 @@ function RecommendedBookCarousel(props: Omit<RecommendedBookProps, 'title'>) {
             key={index}
             book={books[index]}
             index={index}
-            type={type}
+            type={type as any /* FIXME do some type circus */}
             genre={genre}
             theme={theme}
             slug={slug}

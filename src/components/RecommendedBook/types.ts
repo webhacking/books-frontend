@@ -1,4 +1,4 @@
-import { DisplayType, HotRelease, TodayRecommendation } from 'src/types/sections';
+import { HotRelease, TodayRecommendation } from 'src/types/sections';
 
 interface CommonProps {
   theme: 'dark' | 'white';
@@ -8,12 +8,12 @@ interface CommonProps {
 }
 
 interface TodayRecommendationProps {
-  type: DisplayType.TodayRecommendation;
+  type: 'TodayRecommendation';
   items: TodayRecommendation[];
 }
 
 interface HotReleaseProps {
-  type: DisplayType.HotRelease;
+  type: 'HotRelease';
   items: HotRelease[];
 }
 

@@ -9,7 +9,7 @@ import { requestExcludeBook, requestCancelExcludeBook } from 'src/utils/recommen
 import {
   AIRecommendationBook,
   DisplayType,
-  MdBook,
+  BookItem,
 } from 'src/types/sections';
 import PortraitBook from 'src/components/Book/PortraitBook';
 import { computeBookTitle } from 'src/utils/bookTitleGenerator';
@@ -42,12 +42,12 @@ interface CommonProps {
 }
 
 interface MdBookProps {
-  type: Exclude<DisplayType, DisplayType.AiRecommendation>;
-  book: MdBook;
+  type: Exclude<DisplayType, 'AiRecommendation'>;
+  book: BookItem;
 }
 
 interface AIRecommendationBookProps {
-  type: DisplayType.AiRecommendation;
+  type: 'AiRecommendation';
   book: AIRecommendationBook;
 }
 
@@ -62,7 +62,7 @@ const SelectionBookItem: React.FC<Props> = (props) => {
     excluded,
     className,
   } = props;
-  const ratingInfo = props.type === DisplayType.HomeMdSelection
+  const ratingInfo = props.type === 'HomeMdSelection'
     ? props.book.rating
     : undefined;
 
@@ -124,7 +124,7 @@ const SelectionBookItem: React.FC<Props> = (props) => {
         />
       )}
 
-      {props.type === DisplayType.AiRecommendation && (
+      {props.type === 'AiRecommendation' && (
         <RecommendButton
           fetching={isFetching}
           onClick={requestToggleExclude}
