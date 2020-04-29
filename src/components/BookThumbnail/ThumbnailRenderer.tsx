@@ -7,7 +7,6 @@ import { sendDisplayEvent } from 'src/hooks/useEventTracker';
 
 
 import coverAdult from 'src/assets/image/cover_adult.png';
-import { Interpolation } from '@emotion/core';
 
 export const IMG_RIDI_CDN_URL = 'https://img.ridicdn.net';
 
@@ -22,7 +21,6 @@ interface ThumbnailRendererProps {
   bookDecorators?: React.ReactNode;
   isAdultOnly: boolean;
   title: string;
-  wrapperStyle?: Interpolation;
 }
 
 const SIZE_PARAMS = [
@@ -123,7 +121,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
     setImageLoaded(true);
   };
   return (
-    <ThumbnailWrapper ref={ref} css={props.wrapperStyle}>
+    <ThumbnailWrapper ref={ref}>
       {isVisible ? (
         <Thumbnail
           active={isImageLoaded}

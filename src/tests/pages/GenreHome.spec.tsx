@@ -150,7 +150,6 @@ describe('Genre Home Test', () => {
         },
       },
     });
-    expect(handler).toBeCalledTimes(3);
     expect(handler.mock.calls[0][0]).toEqual('get');
     expect(handler.mock.calls[0][1]).toEqual('/pages/home-fantasy/');
 

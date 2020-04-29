@@ -23,14 +23,13 @@ import styled from '@emotion/styled';
 import Star from 'src/svgs/Star.svg';
 import isPropValid from '@emotion/is-prop-valid';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
-import { formatNumber } from 'src/utils/common';
 
 const StyledThumbnailWithBadge = styled(ThumbnailWithBadge)`
   width: 100px;
   ${orBelow(BreakPoint.LG, 'width: 80px;')}
 `;
 
-const SearchBookTitle = styled.h4`
+const SearchBookTitle = styled.h3`
   margin-bottom: 4px;
   font-size: 14px;
   font-weight: normal;
@@ -47,15 +46,13 @@ const SearchBookMetaItem = styled.li`
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
     `
-    margin-bottom: 0;
-    :not(:last-of-type) {
-      ::after {
+      margin-bottom: 0;
+      :not(:last-of-type)::after {
         content: '|';
         color: ${slateGray20};
         margin: 0 8px;
       }
-    }
-  `,
+    `,
   )};
 `;
 
@@ -72,21 +69,47 @@ const SeriesCompleted = styled.span`
   top: -1px;
 `;
 
+const starColors = {
+  orange: orange40,
+  gray: slateGray20,
+};
+
 const StyledStar = styled(Star, {
   shouldForwardProp: (prop) => isPropValid(prop) && prop !== 'fill',
-})<{ fill: string }>`
+})<{ color: 'orange' | 'gray' }>`
   margin-right: 2px;
-  fill: ${(props) => props.fill};
+  fill: ${(props) => starColors[props.color]};
+`;
+const authorStyle = css`
+  color: ${slateGray60};
+  font-size: 14px;
+`;
+const normalFieldStyle = css`
+  color: ${slateGray50};
+  font-size: 13px;
+`;
+const ratingStyle = css`
+  color: ${orange40};
+  font-size: 13px;
+  font-weight: bold;
 `;
 
+const ratingCountStyle = css`
+  color: ${slateGray40};
+  font-size: 12px;
+`;
+
+const fieldStyles = {
+  author: authorStyle,
+  normal: normalFieldStyle,
+  rating: ratingStyle,
+  rating_count: ratingCountStyle,
+};
+
 const SearchBookMetaField = styled.span<{
-  color: string;
-  fontSize: string;
-  weight?: string;
+  type: 'author' | 'normal' | 'rating' | 'rating_count';
 }>`
-  color: ${(props) => props.color};
-  font-size: ${(props) => props.fontSize};
-  font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+  ${(props) => fieldStyles[props.type]}
 `;
 
 const BookDesc = styled.p`
@@ -99,9 +122,9 @@ const BookDesc = styled.p`
 
 function StarCount(props: { count: number }) {
   return (
-    <SearchBookMetaField color={slateGray40} fontSize="12px">
+    <SearchBookMetaField type="rating_count">
       (
-      {formatNumber(props.count)}
+      {props.count.toLocaleString('ko-KR')}
       )
     </SearchBookMetaField>
   );
@@ -142,9 +165,7 @@ const OriginalPrice = styled.span`
 
 function PriceLabel(props: { title: string; price: number; discount?: number }) {
   const { title, price, discount = 0 } = props;
-  const realPrice = formatNumber(
-    Math.ceil(Math.min(price, price - price * (discount / 100))),
-  );
+  const realPrice = Math.ceil(price - price * (discount / 100)).toLocaleString('ko-KR');
   return (
     <PriceItem>
       <PriceTitle>{title}</PriceTitle>
@@ -152,18 +173,18 @@ function PriceLabel(props: { title: string; price: number; discount?: number }) 
         <Price>{price === 0 ? '무료' : `${realPrice}원`}</Price>
         {' '}
         {discount > 0 && (
-          <Discount>
-            (
-            {Math.ceil(discount)}
-            %↓)
-          </Discount>
-        )}
-        {' '}
-        {discount > 0 && (
-        <OriginalPrice>
-          {formatNumber(price)}
-          원
-        </OriginalPrice>
+          <>
+            <Discount>
+              (
+              {Math.ceil(discount)}
+              %↓)
+            </Discount>
+            {' '}
+            <OriginalPrice>
+              {price.toLocaleString('ko-KR')}
+              원
+            </OriginalPrice>
+          </>
         )}
       </dd>
     </PriceItem>
@@ -186,7 +207,7 @@ function PriceInfo(props: {
   if (seriesPriceInfo.rent || seriesPriceInfo.normal) {
     return (
       <>
-        {seriesPriceInfo.rent && (
+        {seriesPriceInfo.rent && !book?.property.is_trial && (
           <PriceLabel
             title="대여"
             price={
@@ -204,6 +225,11 @@ function PriceInfo(props: {
         )}
       </>
     );
+  }
+
+  // 체험판
+  if (!book?.price_info && book?.property.is_trial) {
+    return <PriceLabel title="구매" price={0} discount={0} />;
   }
   if (book?.price_info) {
     const { buy = null, rent = null } = book.price_info;
@@ -247,24 +273,26 @@ function getLastVolumeId(item: SearchTypes.SearchBookDetail) {
 export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   const { item, title } = props;
   const thumbnailId = getLastVolumeId(item);
-  const { books } = useSelector((state: RootState) => state);
+  const book = useSelector((state: RootState) => state.books.items[item.b_id]);
+  if (book?.is_deleted) {
+    return null;
+  }
   const {
     parent_category,
     parent_category2,
     parent_category_name,
     parent_category_name2,
   } = item;
-  const book = books.items[item.b_id];
   // Fixme desc.intro === '책 정보가 없습니다' 일 경우 처리 확인
-  const clearDesc = book?.clientBookFields?.desc?.intro
-      ?.replace(/[\r\n]/g, ' ')
-      .replace(/&#10;/g, ' ')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/(<([^>]+)>)/gi, '') ?? '';
+  const clearDesc = (book?.clientBookFields?.desc?.intro ?? '')
+    .replace(/[\r\n]/g, ' ')
+    .replace(/&#10;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/(<([^>]+)>)/gi, '');
   // 대여 배지 표기 여부가 장르에 따라 바뀌기 때문에 장르를 모아둠
   const genres = book?.categories.map((category) => category.sub_genre) ?? ['general'];
-  let translator: AuthorsInfo | null = null;
+  let translator: AuthorsInfo | undefined;
   item.authors_info.forEach((author) => {
     if (author.role === AuthorRole.TRANSLATOR) {
       translator = author;
@@ -297,7 +325,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
         </SearchBookTitle>
         <SearchBookMetaList>
           <SearchBookMetaItem>
-            <SearchBookMetaField color={slateGray60} fontSize="14px">
+            <SearchBookMetaField type="author">
               {/* Todo 저자 Anchor */}
               {item.highlight.author
                 ? getEscapedNode(item.highlight.author)
@@ -306,11 +334,9 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           </SearchBookMetaItem>
           {translator && (
             <SearchBookMetaItem>
-              <SearchBookMetaField color={slateGray50} fontSize="13px">
-                <a href={`/author/${(translator as AuthorsInfo).author_id}`}>
-                  {item.highlight.translator
-                    ? getEscapedNode(item.highlight.translator)
-                    : item.translator}
+              <SearchBookMetaField type="normal">
+                <a href={`/author/${translator.author_id}`}>
+                  {translator.name}
                   {' '}
                   역
                 </a>
@@ -320,21 +346,21 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           <SearchBookMetaItem>
             {item.buyer_rating_score > 0 ? (
               <>
-                <StyledStar fill={orange40} />
-                <SearchBookMetaField color={orange40} fontSize="13px" weight="bold">
+                <StyledStar color="orange" />
+                <SearchBookMetaField type="rating">
                   {item.buyer_rating_score}
                   점
                   {' '}
                 </SearchBookMetaField>
               </>
             ) : (
-              <StyledStar fill={slateGray20} />
+              <StyledStar color="gray" />
             )}
             <StarCount count={item.buyer_rating_count} />
           </SearchBookMetaItem>
           <SearchBookMetaItem>
-            <SearchBookMetaField color={slateGray50} fontSize="13px">
-              <Link href={`/search?q=출판사%3A${item.publisher}`}>
+            <SearchBookMetaField type="normal">
+              <Link href={`/search?q=${encodeURIComponent(`출판사:${item.publisher}`)}`}>
                 <a>
                   {item.highlight.publisher
                     ? getEscapedNode(item.highlight.publisher)
@@ -344,13 +370,13 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
             </SearchBookMetaField>
           </SearchBookMetaItem>
           <SearchBookMetaItem>
-            <SearchBookMetaField color={slateGray50} fontSize="13px">
+            <SearchBookMetaField type="normal">
               {parent_category_name && (
                 <a href={`/category/${parent_category}`}>{parent_category_name}</a>
               )}
               {parent_category_name2 && parent_category_name2 !== parent_category_name && (
                 <>
-                  <span>, </span>
+                  {', '}
                   <a href={`/category/${parent_category2}`}>{parent_category_name2}</a>
                 </>
               )}
@@ -358,7 +384,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           </SearchBookMetaItem>
           {item.book_count > 1 && (
             <SearchBookMetaItem>
-              <SearchBookMetaField color={slateGray50} fontSize="13px">
+              <SearchBookMetaField type="normal">
                 {`총 ${item.book_count}권`}
               </SearchBookMetaField>
               {item.series_prices_info.length > 0 && item.is_series_complete && (

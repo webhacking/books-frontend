@@ -8,17 +8,21 @@ import { Actions } from 'immer-reducer';
 import { splitArrayToChunk } from 'src/utils/common';
 import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
+import * as BookApi from 'src/types/book';
 
 // 임시 청크
 const DEFAULT_BOOKS_ID_CHUNK_SIZE = 60;
 
 function* fetchBooks(bIds: string[]) {
-  const data = yield call(pRetry, () => requestBooks(bIds), { retries: 2 });
-  const descData = yield call(pRetry, () => requestBooksDesc(bIds), { retries: 2 });
+  const [bookResult, descResult]: [BookApi.Book[], BookApi.BookDescResponse[]] = yield all([
+    call(pRetry, () => requestBooks(bIds), { retries: 2 }),
+    call(pRetry, () => requestBooksDesc(bIds), { retries: 2 }),
+  ]);
 
-  yield put({ type: booksActions.setBooks.type, payload: data });
-  yield put({ type: booksActions.setDesc.type, payload: descData });
+  yield put({ type: booksActions.setBooks.type, payload: bookResult });
+  yield put({ type: booksActions.setDesc.type, payload: descResult });
 }
+
 
 function* isAvailableAtSelect(bIds: string[]) {
   try {

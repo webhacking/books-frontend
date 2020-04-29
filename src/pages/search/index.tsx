@@ -42,7 +42,7 @@ const SearchResultSection = styled.section`
   ${orBelow(BreakPoint.MD, 'max-width: 100%;')}
 `;
 
-const SearchTitle = styled.h3`
+const SearchTitle = styled.h2`
   font-weight: bold;
   font-size: 18px;
   line-height: 21px;
@@ -265,11 +265,11 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   const {
     req, isServer, res, store, query,
   } = props;
-  const searchKeyword = query.q ?? '';
+  const searchKeyword = String(query.q) ?? '';
   const searchUrl = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
   searchUrl.searchParams.append('site', 'ridi-store');
   searchUrl.searchParams.append('where', 'book');
-  const isPublisherSearch = (searchKeyword as string).startsWith('출판사:');
+  const isPublisherSearch = searchKeyword.startsWith('출판사:');
   if (/^\d+$/.test(String(query.category_id))) {
     searchUrl.searchParams.delete('category_id');
     searchUrl.searchParams.append('category_id', query.category_id.toString());
@@ -278,12 +278,12 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
     searchUrl.searchParams.append('what', 'publisher');
     searchUrl.searchParams.append(
       'keyword',
-      (searchKeyword as string).replace('출판사:', ''),
+      searchKeyword.replace('출판사:', ''),
     );
   } else {
     searchUrl.searchParams.append('what', 'base');
     searchUrl.searchParams.append('where', 'author');
-    searchUrl.searchParams.append('keyword', searchKeyword as string);
+    searchUrl.searchParams.append('keyword', searchKeyword);
   }
   const { data } = await pRetry(
     () => axios.get(searchUrl.toString()),
