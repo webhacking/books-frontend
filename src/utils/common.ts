@@ -104,3 +104,7 @@ export const getMaxDiscountPercentage = (book: BookApi.Book | null) => {
   }
   return 0;
 };
+
+export function formatNumber(num: number) {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+}

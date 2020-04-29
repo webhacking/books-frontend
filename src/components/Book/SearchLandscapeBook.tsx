@@ -5,7 +5,8 @@ import { css } from '@emotion/core';
 import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
 import {
   dodgerBlue50,
-  orange40, red40,
+  orange40,
+  red40,
   slateGray20,
   slateGray40,
   slateGray50,
@@ -15,11 +16,14 @@ import Link from 'next/link';
 import * as React from 'react';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import * as SearchTypes from 'src/types/searchResults';
+import { AuthorsInfo } from 'src/types/searchResults';
 import * as BookApi from 'src/types/book';
+import { AuthorRole } from 'src/types/book';
 import styled from '@emotion/styled';
 import Star from 'src/svgs/Star.svg';
 import isPropValid from '@emotion/is-prop-valid';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
+import { formatNumber } from 'src/utils/common';
 
 const StyledThumbnailWithBadge = styled(ThumbnailWithBadge)`
   width: 100px;
@@ -97,7 +101,7 @@ function StarCount(props: { count: number }) {
   return (
     <SearchBookMetaField color={slateGray40} fontSize="12px">
       (
-      {props.count}
+      {formatNumber(props.count)}
       )
     </SearchBookMetaField>
   );
@@ -110,7 +114,7 @@ const PriceItem = styled.dl`
 `;
 const priceBase = css`
   font-size: 13px;
-  line-height: 18px;;
+  line-height: 18px;
 `;
 const PriceTitle = styled.dt`
   margin-right: 2px;
@@ -138,24 +142,29 @@ const OriginalPrice = styled.span`
 
 function PriceLabel(props: { title: string; price: number; discount?: number }) {
   const { title, price, discount = 0 } = props;
+  const realPrice = formatNumber(
+    Math.ceil(Math.min(price, price - price * (discount / 100))),
+  );
   return (
     <PriceItem>
       <PriceTitle>{title}</PriceTitle>
       <dd>
-        <Price>
-          { Math.min(price, price - price * (discount / 100))}
-          원
-        </Price>
+        <Price>{price === 0 ? '무료' : `${realPrice}원`}</Price>
         {' '}
         {discount > 0 && (
-        <Discount>
-          (
-          {discount}
-          %↓)
-        </Discount>
+          <Discount>
+            (
+            {Math.ceil(discount)}
+            %↓)
+          </Discount>
         )}
         {' '}
-        {discount > 0 && <OriginalPrice>{price}</OriginalPrice>}
+        {discount > 0 && (
+        <OriginalPrice>
+          {formatNumber(price)}
+          원
+        </OriginalPrice>
+        )}
       </dd>
     </PriceItem>
   );
@@ -164,10 +173,12 @@ function PriceLabel(props: { title: string; price: number; discount?: number }) 
 function PriceInfo(props: {
   seriesPriceInfo: SearchTypes.SeriesPriceInfo[];
   book: BookApi.ClientBook | null;
+  isTrial: boolean;
 }) {
   if (!props.book) {
     return null;
   }
+  const { book, isTrial } = props;
   const seriesPriceInfo: Record<string, SearchTypes.SeriesPriceInfo> = {};
   props.seriesPriceInfo.forEach((info) => {
     seriesPriceInfo[info.type] = info;
@@ -188,25 +199,27 @@ function PriceInfo(props: {
         {seriesPriceInfo.normal && (
           <PriceLabel
             title="구매"
-            price={
-              seriesPriceInfo.normal.min_price !== 0
-                ? seriesPriceInfo.normal.min_price
-                : seriesPriceInfo.normal.max_price
-            }
+            price={isTrial ? 0 : seriesPriceInfo.normal.min_nonzero_price}
           />
         )}
       </>
     );
   }
-  if (props.book?.price_info) {
-    const { buy = null, rent = null } = props.book.price_info;
+  if (book?.price_info) {
+    const { buy = null, rent = null } = book.price_info;
     return (
       <>
-        {rent && <PriceLabel title="대여" price={rent.regular_price} discount={rent.discount_percentage} />}
+        {rent && (
+          <PriceLabel
+            title="대여"
+            price={rent.regular_price}
+            discount={rent.discount_percentage}
+          />
+        )}
         {buy && (
           <PriceLabel
             title="구매"
-            price={buy.regular_price}
+            price={isTrial ? 0 : buy.regular_price}
             discount={buy.discount_percentage}
           />
         )}
@@ -242,18 +255,33 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
     parent_category_name2,
   } = item;
   const book = books.items[item.b_id];
-  const desc = book?.clientBookFields?.desc?.intro?.replace(/[\r\n]/g, ' ') ?? '';
-  const escapedDesc = getEscapedNode(desc);
+  // Fixme desc.intro === '책 정보가 없습니다' 일 경우 처리 확인
+  const clearDesc = book?.clientBookFields?.desc?.intro
+      ?.replace(/[\r\n]/g, ' ')
+      .replace(/&#10;/g, ' ')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/(<([^>]+)>)/gi, '') ?? '';
+  // 대여 배지 표기 여부가 장르에 따라 바뀌기 때문에 장르를 모아둠
+  const genres = book?.categories.map((category) => category.sub_genre) ?? ['general'];
+  let translator: AuthorsInfo | null = null;
+  item.authors_info.forEach((author) => {
+    if (author.role === AuthorRole.TRANSLATOR) {
+      translator = author;
+    }
+  });
   return (
     <>
-      <StyledThumbnailWithBadge
-        bId={thumbnailId}
-        bookDetail={book}
-        genre="general"
-        slug="search-result"
-        sizes="(min-width: 999px) 100px, 80px"
-        title={title}
-      />
+      <a href={`/books/${item.b_id}`}>
+        <StyledThumbnailWithBadge
+          bId={thumbnailId}
+          bookDetail={book}
+          genre={genres[0] ?? ''}
+          slug="search-result"
+          sizes="(min-width: 999px) 100px, 80px"
+          title={title}
+        />
+      </a>
       <div
         css={css`
           flex: none;
@@ -262,27 +290,33 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           margin-left: 16px;
         `}
       >
-        <SearchBookTitle>{getEscapedNode(computeSearchBookTitle(item))}</SearchBookTitle>
+        <SearchBookTitle>
+          <a href={`/books/${item.b_id}`}>
+            {getEscapedNode(computeSearchBookTitle(item))}
+          </a>
+        </SearchBookTitle>
         <SearchBookMetaList>
           <SearchBookMetaItem>
             <SearchBookMetaField color={slateGray60} fontSize="14px">
+              {/* Todo 저자 Anchor */}
               {item.highlight.author
                 ? getEscapedNode(item.highlight.author)
                 : item.author}
             </SearchBookMetaField>
           </SearchBookMetaItem>
-          {item.translator.length > 0 && (
+          {translator && (
             <SearchBookMetaItem>
               <SearchBookMetaField color={slateGray50} fontSize="13px">
-                {item.highlight.translator
-                  ? getEscapedNode(item.highlight.translator)
-                  : item.translator}
-                {' '}
-                역
+                <a href={`/author/${(translator as AuthorsInfo).author_id}`}>
+                  {item.highlight.translator
+                    ? getEscapedNode(item.highlight.translator)
+                    : item.translator}
+                  {' '}
+                  역
+                </a>
               </SearchBookMetaField>
             </SearchBookMetaItem>
           )}
-          {/* Todo Star Rating */}
           <SearchBookMetaItem>
             {item.buyer_rating_score > 0 ? (
               <>
@@ -317,7 +351,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
               {parent_category_name2 && parent_category_name2 !== parent_category_name && (
                 <>
                   <span>, </span>
-                  <a href={`category/${parent_category2}`}>{parent_category_name2}</a>
+                  <a href={`/category/${parent_category2}`}>{parent_category_name2}</a>
                 </>
               )}
             </SearchBookMetaField>
@@ -333,11 +367,16 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
             </SearchBookMetaItem>
           )}
         </SearchBookMetaList>
-        <BookDesc>
-          {/* Todo 170 글자 제한 후 말줄임표 추가 */}
-          {escapedDesc}
-        </BookDesc>
-        <PriceInfo seriesPriceInfo={item.series_prices_info} book={book} />
+        <a href={`/books/${item.b_id}`}>
+          <BookDesc>
+            {clearDesc.length > 170 ? `${clearDesc.slice(0, 170)}...` : clearDesc}
+          </BookDesc>
+        </a>
+        <PriceInfo
+          seriesPriceInfo={item.series_prices_info}
+          book={book}
+          isTrial={book?.property.is_trial || false}
+        />
       </div>
     </>
   );
