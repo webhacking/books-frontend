@@ -26,6 +26,8 @@ import ScrollContainer from 'src/components/ScrollContainer';
 import pRetry from 'p-retry';
 import { keyToArray } from 'src/utils/common';
 import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
+import { Pagination } from 'src/components/Pagination/Pagination';
+import useIsTablet from 'src/hooks/useIsTablet';
 
 interface SearchProps {
   q?: string;
@@ -33,6 +35,7 @@ interface SearchProps {
   author: SearchTypes.AuthorResult;
   categories: SearchTypes.Aggregation[];
   currentCategoryId: string;
+  currentPage?: string;
 }
 
 const SearchResultSection = styled.section`
@@ -158,6 +161,10 @@ const SearchBookItem = styled.li`
 
 const MemoizedAuthors = React.memo(Authors);
 
+const EmptyBlock = styled.div`
+  margin-top: 108px;
+`;
+
 function SearchPage(props: SearchProps) {
   const {
     author,
@@ -168,7 +175,7 @@ function SearchPage(props: SearchProps) {
   } = props;
   const [tracker] = useEventTracker();
   const { loggedUser } = useSelector((state: RootState) => state.account);
-
+  const isTablet = useIsTablet();
   const setPageView = useCallback(() => {
     if (tracker) {
       try {
@@ -178,7 +185,7 @@ function SearchPage(props: SearchProps) {
       }
     }
   }, [tracker]);
-  const hasPagination = book.total > PAGE_PER_ITEM;
+  const hasPagination = book.total > PAGE_PER_ITEM && book.books.length > 0;
   useEffect(() => {
     setPageView();
   }, [loggedUser]);
@@ -191,51 +198,45 @@ function SearchPage(props: SearchProps) {
           검색 결과 - 리디북스
         </title>
       </Head>
-      {
-        author.total > 0 && (
-          <>
-            <SearchTitle>
-              {`‘${q}’ 저자 검색 결과`}
-              <TotalAuthor>
-                {
-                  author.total > MAXIMUM_AUTHOR ? '총 30명+' : `총 ${author.total}명`
-                }
-              </TotalAuthor>
-            </SearchTitle>
-            <MemoizedAuthors author={author} q={q || ''} />
-          </>
-        )
-      }
+      {author.total > 0 && (
+        <>
+          <SearchTitle>
+            {`‘${q}’ 저자 검색 결과`}
+            <TotalAuthor>
+              {author.total > MAXIMUM_AUTHOR ? '총 30명+' : `총 ${author.total}명`}
+            </TotalAuthor>
+          </SearchTitle>
+          <MemoizedAuthors author={author} q={q || ''} />
+        </>
+      )}
       {book.total > 0 && (
         <>
           <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
-            {categories.length > 0 && (
-              <ScrollContainer
-                arrowStyle={css`
-                  button {
-                    border-radius: 0;
-                    box-shadow: none;
-                    position: relative;
-                    top: 3px;
-                    width: 20px;
-                    background: linear-gradient(
-                      90deg,
-                      rgba(255, 255, 255, 0.1) 0%,
-                      rgba(255, 255, 255, 0.3) 27.6%,
-                      rgba(255, 255, 255, 0.3) 47.6%,
-                      #ffffff 53.65%
-                    );
-                  }
-                `}
-              >
-                <SearchCategoryTab
-                  categories={categories}
-                  currentCategoryId={
-                    parseInt(currentCategoryId, 10)
-                  }
-                />
-              </ScrollContainer>
-            )}
+          {categories.length > 0 && (
+            <ScrollContainer
+              arrowStyle={css`
+                button {
+                  border-radius: 0;
+                  box-shadow: none;
+                  position: relative;
+                  top: 3px;
+                  width: 20px;
+                  background: linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    rgba(255, 255, 255, 0.3) 27.6%,
+                    rgba(255, 255, 255, 0.3) 47.6%,
+                    #ffffff 53.65%
+                  );
+                }
+              `}
+            >
+              <SearchCategoryTab
+                categories={categories}
+                currentCategoryId={parseInt(currentCategoryId, 10)}
+              />
+            </ScrollContainer>
+          )}
           {/* FIXME 임시 마진 영역 */}
           <div
             css={css`
@@ -247,16 +248,14 @@ function SearchPage(props: SearchProps) {
           <SearchBookList>
             {props.book.books.map((item) => (
               <SearchBookItem key={item.b_id}>
-                <SearchLandscapeBook
-                  item={item}
-                  title={item.title}
-                />
+                <SearchLandscapeBook item={item} title={item.title} />
               </SearchBookItem>
             ))}
           </SearchBookList>
+          {hasPagination ? <Pagination pagePerItem={PAGE_PER_ITEM} currentPage={parseInt(props.currentPage || '1', 10)} totalItem={props.book.total} showPageCount={isTablet ? 5 : 10} /> : <EmptyBlock />}
         </>
       )}
-      {hasPagination && 'pagenation'}
+
     </SearchResultSection>
   );
 }
@@ -266,6 +265,7 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
     req, isServer, res, store, query,
   } = props;
   const searchKeyword = String(query.q) ?? '';
+  const page = query.page ?? '1';
   const searchUrl = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
   searchUrl.searchParams.append('site', 'ridi-store');
   searchUrl.searchParams.append('where', 'book');
@@ -273,6 +273,11 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   if (/^\d+$/.test(String(query.category_id))) {
     searchUrl.searchParams.delete('category_id');
     searchUrl.searchParams.append('category_id', query.category_id.toString());
+  }
+  if (/^\d+$/.test(String(page))) {
+    searchUrl.searchParams.delete('page');
+    const startPosition = PAGE_PER_ITEM * (parseInt(page.toString(), 10) - 1);
+    searchUrl.searchParams.append('start', startPosition.toString());
   }
   if (isPublisherSearch) {
     searchUrl.searchParams.append('what', 'publisher');
@@ -304,6 +309,7 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
     author: searchResult.author,
     categories: searchResult.book.aggregations,
     currentCategoryId: props.query.category_id,
+    currentPage: props.query.page ?? '1',
   };
 };
 
