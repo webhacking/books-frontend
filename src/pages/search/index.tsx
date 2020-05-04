@@ -198,42 +198,48 @@ function SearchPage(props: SearchProps) {
           검색 결과 - 리디북스
         </title>
       </Head>
-      {author.total > 0 && (
-        <>
-          <SearchTitle>
-            {`‘${q}’ 저자 검색 결과`}
-            <TotalAuthor>
-              {author.total > MAXIMUM_AUTHOR ? '총 30명+' : `총 ${author.total}명`}
-            </TotalAuthor>
-          </SearchTitle>
-          <MemoizedAuthors author={author} q={q || ''} />
-        </>
-      )}
+      {
+        author.total > 0 && (
+          <>
+            <SearchTitle>
+              {`‘${q}’ 저자 검색 결과`}
+              <TotalAuthor>
+                {
+                  author.total > MAXIMUM_AUTHOR ? '총 30명+' : `총 ${author.total}명`
+                }
+              </TotalAuthor>
+            </SearchTitle>
+            <MemoizedAuthors author={author} q={q || ''} />
+          </>
+        )
+      }
       {book.total > 0 && (
         <>
           <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
           {categories.length > 0 && (
             <ScrollContainer
               arrowStyle={css`
-                button {
-                  border-radius: 0;
-                  box-shadow: none;
-                  position: relative;
-                  top: 3px;
-                  width: 20px;
-                  background: linear-gradient(
-                    90deg,
-                    rgba(255, 255, 255, 0.1) 0%,
-                    rgba(255, 255, 255, 0.3) 27.6%,
-                    rgba(255, 255, 255, 0.3) 47.6%,
-                    #ffffff 53.65%
-                  );
-                }
-              `}
+                  button {
+                    border-radius: 0;
+                    box-shadow: none;
+                    position: relative;
+                    top: 3px;
+                    width: 20px;
+                    background: linear-gradient(
+                      90deg,
+                      rgba(255, 255, 255, 0.1) 0%,
+                      rgba(255, 255, 255, 0.3) 27.6%,
+                      rgba(255, 255, 255, 0.3) 47.6%,
+                      #ffffff 53.65%
+                    );
+                  }
+                `}
             >
               <SearchCategoryTab
                 categories={categories}
-                currentCategoryId={parseInt(currentCategoryId, 10)}
+                currentCategoryId={
+                  parseInt(currentCategoryId, 10)
+                }
               />
             </ScrollContainer>
           )}
@@ -248,7 +254,10 @@ function SearchPage(props: SearchProps) {
           <SearchBookList>
             {props.book.books.map((item) => (
               <SearchBookItem key={item.b_id}>
-                <SearchLandscapeBook item={item} title={item.title} />
+                <SearchLandscapeBook
+                  item={item}
+                  title={item.title}
+                />
               </SearchBookItem>
             ))}
           </SearchBookList>

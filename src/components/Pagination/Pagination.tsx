@@ -119,7 +119,7 @@ export function Pagination(props: PaginationProps) {
   const showNextButton = currentPaginationPosition < totalPagination;
 
   const router = useRouter();
-  const searchParam = new URLSearchParams(router.query as Record<string, string>);
+  const searchParam = new URLSearchParams(router.query as Record<string, string> || {});
   searchParam.delete('page');
   const categoryId = searchParam.get('category_id') ?? '';
   return (
