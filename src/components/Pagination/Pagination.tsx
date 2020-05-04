@@ -4,15 +4,15 @@ import styled from '@emotion/styled';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { useRouter } from 'next/router';
 import {
-  dodgerBlue50, dodgerBlue60, slateGray20, slateGray50,
+  dodgerBlue50,
+  dodgerBlue60,
+  slateGray20,
+  slateGray30,
+  slateGray50,
 } from '@ridi/colors';
 import ArrowBoldV from 'src/svgs/ArrowBoldV.svg';
+import More from 'src/svgs/More.svg';
 import { css } from '@emotion/core';
-
-interface Props {
-  type: 'page' | 'last' | 'first' | 'next' | 'previous';
-  page: number;
-}
 
 const PaginationWrapper = styled.div`
   display: flex;
@@ -65,6 +65,7 @@ const Pages = styled.ul`
   li {
     ${buttonGroup}
   }
+  margin: 0 4px;
 `;
 
 const PageButton = Page.withComponent('button');
@@ -75,27 +76,41 @@ const StyledPageButton = styled(PageButton)`
   font-weight: bold;
 `;
 
-// function Page(props) {
-//   return (
-//     <Link href={'/search/'}>
-//       <button>{pr}</button>
-//     </Link>
-//   );
-// }
+const Arrow = styled(ArrowBoldV)<{ rotate: boolean }>`
+  ${(props) => props.rotate && 'transform: rotate(180deg);'}
+`;
+
+const Ellipsis = styled(More)`
+  transform: rotate(90deg);
+  fill: ${slateGray30};
+  width: 14px;
+  height: 12px;
+  margin: 0 4px;
+`;
 
 interface PaginationProps {
   totalItem: number;
   pagePerItem: number;
   showPageCount: number;
   currentPage: number;
+  showStartAndLastButton: boolean;
 }
 
-const MAX_ITEM = 9600; // search api result window 10000. 24 * 400 = 9600
+// const MAX_ITEM = 9600; // search api result window 10000. 24 * 400 = 9600
 const MAX_PAGE = 400;
+
+function getQueryParamsToString(searchParam: URLSearchParams, page: string, categoryId: string) {
+  const params = new URLSearchParams(searchParam).toString();
+  return `${params}&page=${page}#${categoryId}`;
+}
 
 export function Pagination(props: PaginationProps) {
   const {
-    totalItem, currentPage, pagePerItem, showPageCount = 5,
+    totalItem,
+    currentPage,
+    pagePerItem,
+    showStartAndLastButton = false,
+    showPageCount = 5,
   } = props;
   const totalPage = Math.min(MAX_PAGE, Math.ceil(totalItem / pagePerItem));
   const totalPagination = Math.ceil(totalPage / showPageCount);
@@ -106,14 +121,34 @@ export function Pagination(props: PaginationProps) {
   const router = useRouter();
   const searchParam = new URLSearchParams(router.query as Record<string, string>);
   searchParam.delete('page');
+  const categoryId = searchParam.get('category_id') ?? '';
   return (
     <PaginationWrapper>
       {showPreviousButton && (
-        <StyledPageButton>
-          <Link href={`/search?${new URLSearchParams(searchParam).toString()}&page=1`}>
-            <a>처음</a>
-          </Link>
-        </StyledPageButton>
+        <>
+          {showStartAndLastButton && (
+            <>
+              <StyledPageButton>
+                <Link
+                  href={`/search?${getQueryParamsToString(searchParam, '1', categoryId)}`}
+                >
+                  <a>처음</a>
+                </Link>
+              </StyledPageButton>
+              <Ellipsis />
+            </>
+          )}
+
+          <StyledPageButton>
+            <Link
+              href={`/search?${getQueryParamsToString(searchParam, ((currentPaginationPosition - 2) * showPageCount + 1).toString(), categoryId)}`}
+            >
+              <a>
+                <Arrow rotate />
+              </a>
+            </Link>
+          </StyledPageButton>
+        </>
       )}
       <Pages>
         {Array.from({ length: showPageCount }, (v, i) => i).map((page, index) => {
@@ -123,7 +158,7 @@ export function Pagination(props: PaginationProps) {
           }
           return (
             <Page isActive={currentPage === moveToPage} key={index}>
-              <Link href={`/search?${searchParam.toString()}&page=${moveToPage}`}>
+              <Link href={`/search?${getQueryParamsToString(searchParam, moveToPage.toString(), categoryId)}`}>
                 <a>{moveToPage}</a>
               </Link>
             </Page>
@@ -133,18 +168,24 @@ export function Pagination(props: PaginationProps) {
       {showNextButton && (
         <>
           <StyledPageButton>
-            <Link href={`/search?${searchParam.toString()}&page=${totalPage}`}>
+            <Link
+              href={`/search?${getQueryParamsToString(searchParam, (currentPaginationPosition * showPageCount + 1).toString(), categoryId)}`}
+            >
               <a>
-                <ArrowBoldV />
+                <Arrow rotate={false} />
               </a>
             </Link>
           </StyledPageButton>
-          <span>...</span>
-          <StyledPageButton>
-            <Link href={`/search?${searchParam.toString()}&page=${totalPage}`}>
-              <a>마지막</a>
-            </Link>
-          </StyledPageButton>
+          {showStartAndLastButton && (
+            <>
+              <Ellipsis />
+              <StyledPageButton>
+                <Link href={`/search?${getQueryParamsToString(searchParam, totalPage.toString(), categoryId)}`}>
+                  <a>마지막</a>
+                </Link>
+              </StyledPageButton>
+            </>
+          )}
         </>
       )}
     </PaginationWrapper>

@@ -252,10 +252,19 @@ function SearchPage(props: SearchProps) {
               </SearchBookItem>
             ))}
           </SearchBookList>
-          {hasPagination ? <Pagination pagePerItem={PAGE_PER_ITEM} currentPage={parseInt(props.currentPage || '1', 10)} totalItem={props.book.total} showPageCount={isTablet ? 5 : 10} /> : <EmptyBlock />}
+          {hasPagination ? (
+            <Pagination
+              pagePerItem={PAGE_PER_ITEM}
+              currentPage={parseInt(props.currentPage || '1', 10)}
+              totalItem={props.book.total}
+              showStartAndLastButton={!isTablet}
+              showPageCount={isTablet ? 5 : 10}
+            />
+          ) : (
+            <EmptyBlock />
+          )}
         </>
       )}
-
     </SearchResultSection>
   );
 }
