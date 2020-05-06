@@ -28,6 +28,7 @@ import { keyToArray } from 'src/utils/common';
 import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
 import { Pagination } from 'src/components/Pagination/Pagination';
 import useIsTablet from 'src/hooks/useIsTablet';
+import { FilterSelector } from 'src/pages/search/FilterSelector';
 
 interface SearchProps {
   q?: string;
@@ -161,6 +162,7 @@ const SearchBookItem = styled.li`
 
 const MemoizedAuthors = React.memo(Authors);
 
+
 const EmptyBlock = styled.div`
   margin-top: 108px;
 `;
@@ -244,13 +246,7 @@ function SearchPage(props: SearchProps) {
             </ScrollContainer>
           )}
           {/* FIXME 임시 마진 영역 */}
-          <div
-            css={css`
-              margin-top: 12px;
-            `}
-          >
-            some filters
-          </div>
+          <FilterSelector />
           <SearchBookList>
             {props.book.books.map((item) => (
               <SearchBookItem key={item.b_id}>
@@ -284,8 +280,12 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   const page = String(query.page || '1');
   const categoryId = String(query.category_id || '0');
   const searchUrl = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
+  const order = String(query.order || 'score');
+
   searchUrl.searchParams.set('site', 'ridi-store');
   searchUrl.searchParams.append('where', 'book');
+  searchUrl.searchParams.set('order', order);
+
   const isPublisherSearch = searchKeyword.startsWith('출판사:');
   if (/^\d+$/.test(categoryId)) {
     searchUrl.searchParams.set('category_id', categoryId);
