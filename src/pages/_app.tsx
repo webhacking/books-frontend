@@ -1,7 +1,6 @@
 import { CacheProvider, Global } from '@emotion/core';
 import createCache from '@emotion/cache';
 import styled from '@emotion/styled';
-import { ConnectedRouter } from 'connected-next-router';
 import { ThemeProvider } from 'emotion-theming';
 import { cache } from 'emotion';
 import App, { AppContext } from 'next/app';
@@ -113,7 +112,6 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   public render() {
     const {
       Component,
-      ctxPathname,
       query,
       pageProps,
       isPartials,
@@ -161,15 +159,13 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
           <CacheProvider value={createCache({ ...cache, nonce })}>
             <Global styles={resetStyles} />
             <Provider store={store}>
-              <ConnectedRouter>
-                <InAppThemeProvider theme={theme ?? ''}>
-                  <ViewportIntersectionProvider>
-                    <Contents>
-                      <Component {...pageProps} />
-                    </Contents>
-                  </ViewportIntersectionProvider>
-                </InAppThemeProvider>
-              </ConnectedRouter>
+              <InAppThemeProvider theme={theme ?? ''}>
+                <ViewportIntersectionProvider>
+                  <Contents>
+                    <Component {...pageProps} />
+                  </Contents>
+                </ViewportIntersectionProvider>
+              </InAppThemeProvider>
             </Provider>
           </CacheProvider>
         </>
@@ -184,22 +180,20 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         <CacheProvider value={createCache({ ...cache, nonce })}>
           <Global styles={resetStyles} />
           <Provider store={store}>
-            <ConnectedRouter>
-              {/* Todo Apply Layout */}
-              <ThemeProvider theme={defaultTheme}>
-                <ViewportIntersectionProvider rootMargin="100px">
-                  <GNB
-                    searchKeyword={query.search || query.q}
-                    isPartials={false}
-                    isLoginForPartials={query.is_login}
-                  />
-                  <Contents>
-                    <Component {...pageProps} />
-                  </Contents>
-                  <Footer />
-                </ViewportIntersectionProvider>
-              </ThemeProvider>
-            </ConnectedRouter>
+            {/* Todo Apply Layout */}
+            <ThemeProvider theme={defaultTheme}>
+              <ViewportIntersectionProvider rootMargin="100px">
+                <GNB
+                  searchKeyword={query.search || query.q}
+                  isPartials={false}
+                  isLoginForPartials={query.is_login}
+                />
+                <Contents>
+                  <Component {...pageProps} />
+                </Contents>
+                <Footer />
+              </ViewportIntersectionProvider>
+            </ThemeProvider>
           </Provider>
         </CacheProvider>
       </>
