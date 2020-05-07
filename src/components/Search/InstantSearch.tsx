@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useCallback, useContext, EventHandler, ChangeEvent, ChangeEventHandler,
+  useState, useEffect, useCallback, useContext,
 } from 'react';
 import { css, keyframes } from '@emotion/core';
 import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
@@ -20,7 +20,9 @@ import sentry from 'src/utils/sentry';
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
 import { GNBContext } from 'src/components/GNB';
-import * as SearchResult from 'src/types/searchResults';
+import * as SearchTypes from 'src/types/searchResults';
+
+import { SearchResult } from './types';
 
 const fadeIn = keyframes`
   0% {
@@ -232,7 +234,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const [focusedPosition, setFocusedPosition] = useState(0);
     const [, setFetching] = useState(false);
 
-    const [searchResult, setSearchResult] = useState<SearchResult.InstantSearchResult>(
+    const [searchResult, setSearchResult] = useState<SearchResult>(
       initialSearchResult,
     );
 
@@ -253,9 +255,10 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         url.searchParams.append('keyword', value);
 
         const result = await pRetry(() => axios.get(url.toString()), { retries: 2 });
+        const data = SearchTypes.checkInstantSearchResult(result.data);
         setSearchResult({
-          books: result.data.book.books ?? [],
-          authors: result.data.author.authors ?? [],
+          books: data.book.books ?? [],
+          authors: data.author.authors ?? [],
         });
       } catch (error) {
         setSearchResult(initialSearchResult);

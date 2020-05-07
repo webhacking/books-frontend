@@ -279,9 +279,7 @@ function SearchPage(props: SearchProps) {
 }
 
 SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
-  const {
-    req, isServer, res, store, query,
-  } = props;
+  const { store, query } = props;
   const searchKeyword = String(query.q || '');
   const page = String(query.page || '1');
   const categoryId = String(query.category_id || '0');
@@ -313,11 +311,10 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
       retries: 3,
     },
   );
-  const searchResult: SearchTypes.SearchResult = isPublisherSearch ? {
+  const searchResult = SearchTypes.checkSearchResult(isPublisherSearch ? {
     book: data,
     author: { total: 0, authors: [] },
-    categories: (data as SearchTypes.BookResult).aggregations,
-  } : data;
+  } : data);
   const bIds = keyToArray(searchResult.book, 'b_id');
   store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
   return {

@@ -2,6 +2,7 @@ import { captureException, withScope, init } from '@sentry/node';
 import { AxiosError } from 'axios';
 import { ConnectedInitializeProps } from 'src/types/common';
 import { NextPageContext } from 'next';
+import { ValidationError } from 'runtypes';
 
 const sentryOptions = {
   dsn: process.env.SENTRY_DSN,
@@ -89,6 +90,12 @@ const Sentry = {
             (error as AxiosError).response?.status.toString() ?? '',
             error.message,
           ]);
+        }
+      }
+      if (error instanceof ValidationError) {
+        scope.setExtra('name', error.name);
+        if (error.key) {
+          scope.setExtra('key', error.key);
         }
       }
       if (ctx) {
