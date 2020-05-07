@@ -26,6 +26,8 @@ import ScrollContainer from 'src/components/ScrollContainer';
 import pRetry from 'p-retry';
 import { keyToArray } from 'src/utils/common';
 import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
+import { Pagination } from 'src/components/Pagination/Pagination';
+import useIsTablet from 'src/hooks/useIsTablet';
 
 interface SearchProps {
   q?: string;
@@ -33,6 +35,7 @@ interface SearchProps {
   author: SearchTypes.AuthorResult;
   categories: SearchTypes.Aggregation[];
   currentCategoryId: string;
+  currentPage?: string;
 }
 
 const SearchResultSection = styled.section`
@@ -84,7 +87,7 @@ const ShowMoreAuthor = styled.li`
 const MAXIMUM_AUTHOR = 30;
 const DEFAULT_SHOW_AUTHOR_COUNT = 3;
 
-const PAGE_PER_ITEM = 24;
+const ITEM_PER_PAGE = 24;
 
 const Arrow = styled(ArrowBoldH, {
   shouldForwardProp: (prop) => isPropValid(prop) && prop !== 'isRotate',
@@ -158,6 +161,10 @@ const SearchBookItem = styled.li`
 
 const MemoizedAuthors = React.memo(Authors);
 
+const EmptyBlock = styled.div`
+  margin-top: 108px;
+`;
+
 function SearchPage(props: SearchProps) {
   const {
     author,
@@ -168,7 +175,7 @@ function SearchPage(props: SearchProps) {
   } = props;
   const [tracker] = useEventTracker();
   const { loggedUser } = useSelector((state: RootState) => state.account);
-
+  const isTablet = useIsTablet();
   const setPageView = useCallback(() => {
     if (tracker) {
       try {
@@ -178,7 +185,7 @@ function SearchPage(props: SearchProps) {
       }
     }
   }, [tracker]);
-  const hasPagination = book.total > PAGE_PER_ITEM;
+  const hasPagination = book.total > ITEM_PER_PAGE && book.books.length > 0;
   useEffect(() => {
     setPageView();
   }, [loggedUser]);
@@ -209,33 +216,33 @@ function SearchPage(props: SearchProps) {
       {book.total > 0 && (
         <>
           <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
-            {categories.length > 0 && (
-              <ScrollContainer
-                arrowStyle={css`
-                  button {
-                    border-radius: 0;
-                    box-shadow: none;
-                    position: relative;
-                    top: 3px;
-                    width: 20px;
-                    background: linear-gradient(
-                      90deg,
-                      rgba(255, 255, 255, 0.1) 0%,
-                      rgba(255, 255, 255, 0.3) 27.6%,
-                      rgba(255, 255, 255, 0.3) 47.6%,
-                      #ffffff 53.65%
-                    );
-                  }
-                `}
-              >
-                <SearchCategoryTab
-                  categories={categories}
-                  currentCategoryId={
-                    parseInt(currentCategoryId, 10)
-                  }
-                />
-              </ScrollContainer>
-            )}
+          {categories.length > 0 && (
+            <ScrollContainer
+              arrowStyle={css`
+                button {
+                  border-radius: 0;
+                  box-shadow: none;
+                  position: relative;
+                  top: 3px;
+                  width: 20px;
+                  background: linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    rgba(255, 255, 255, 0.3) 27.6%,
+                    rgba(255, 255, 255, 0.3) 47.6%,
+                    #ffffff 53.65%
+                  );
+                }
+              `}
+            >
+              <SearchCategoryTab
+                categories={categories}
+                currentCategoryId={
+                  parseInt(currentCategoryId, 10)
+                }
+              />
+            </ScrollContainer>
+          )}
           {/* FIXME 임시 마진 영역 */}
           <div
             css={css`
@@ -254,9 +261,19 @@ function SearchPage(props: SearchProps) {
               </SearchBookItem>
             ))}
           </SearchBookList>
+          {hasPagination ? (
+            <Pagination
+              itemPerPage={ITEM_PER_PAGE}
+              currentPage={parseInt(props.currentPage || '1', 10)}
+              totalItem={props.book.total}
+              showStartAndLastButton={!isTablet}
+              showPageCount={isTablet ? 5 : 10}
+            />
+          ) : (
+            <EmptyBlock />
+          )}
         </>
       )}
-      {hasPagination && 'pagenation'}
     </SearchResultSection>
   );
 }
@@ -265,25 +282,30 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   const {
     req, isServer, res, store, query,
   } = props;
-  const searchKeyword = String(query.q) ?? '';
+  const searchKeyword = String(query.q || '');
+  const page = String(query.page || '1');
+  const categoryId = String(query.category_id || '0');
   const searchUrl = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
-  searchUrl.searchParams.append('site', 'ridi-store');
+  searchUrl.searchParams.set('site', 'ridi-store');
   searchUrl.searchParams.append('where', 'book');
   const isPublisherSearch = searchKeyword.startsWith('출판사:');
-  if (/^\d+$/.test(String(query.category_id))) {
-    searchUrl.searchParams.delete('category_id');
-    searchUrl.searchParams.append('category_id', query.category_id.toString());
+  if (/^\d+$/.test(categoryId)) {
+    searchUrl.searchParams.set('category_id', categoryId);
+  }
+  if (/^\d+$/.test(page)) {
+    const startPosition = ITEM_PER_PAGE * (parseInt(page, 10) - 1);
+    searchUrl.searchParams.set('start', startPosition.toString());
   }
   if (isPublisherSearch) {
-    searchUrl.searchParams.append('what', 'publisher');
-    searchUrl.searchParams.append(
+    searchUrl.searchParams.set('what', 'publisher');
+    searchUrl.searchParams.set(
       'keyword',
       searchKeyword.replace('출판사:', ''),
     );
   } else {
-    searchUrl.searchParams.append('what', 'base');
+    searchUrl.searchParams.set('what', 'base');
     searchUrl.searchParams.append('where', 'author');
-    searchUrl.searchParams.append('keyword', searchKeyword);
+    searchUrl.searchParams.set('keyword', searchKeyword);
   }
   const { data } = await pRetry(
     () => axios.get(searchUrl.toString()),
@@ -299,11 +321,12 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   const bIds = keyToArray(searchResult.book, 'b_id');
   store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
   return {
-    q: props.query.q,
+    q: searchKeyword,
     book: searchResult.book,
     author: searchResult.author,
     categories: searchResult.book.aggregations,
-    currentCategoryId: props.query.category_id,
+    currentCategoryId: categoryId,
+    currentPage: page,
   };
 };
 

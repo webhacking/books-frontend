@@ -63,6 +63,7 @@ function Category(props: {
   const active = currentCategoryId === category.category_id;
   const copiedSearchParam = new URLSearchParams(searchParam);
   copiedSearchParam.append('category_id', category.category_id.toString());
+  copiedSearchParam.delete('page');
   return (
     <CategoryItem active={active}>
       <Link
