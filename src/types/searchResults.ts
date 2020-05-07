@@ -65,6 +65,14 @@ export interface EventInfo {
 }
 
 export interface SearchBookDetail {
+  category: number;
+  category2: number;
+  category_name: string | null;
+  category2_name: string | null;
+  opened_last_volume_id: string;
+  is_setbook: boolean;
+  setbook_count: number;
+  is_wait_free: boolean;
   buyer_rating_score: number;
   is_series_complete: boolean;
   sub_title: string;
@@ -89,6 +97,10 @@ export interface SearchBookDetail {
   desc: string; // include tags... ex) <b>&lt;책소개&gt;</b>\n\n<strong>“사람들이 나보고 맘충이래.” \r\n\r\n한국에서 여자로 살아가는 일 \r\n그 공포, 피로, 당황, 놀람, 혼란, 좌절의 \r\n연속에 대한 인생 현장 보고서</strong>  \r\n\r\n조남주 장편소설 『82년생 김지영』이 민음사 ‘오늘의 젊은 작가’ 시리즈로 출간되었다. 조남주 작가는 2011년, 지적 장애가 있는 한 소년의 재능이 발견되면서 벌어지는 사건을 통해 삶의 부조리를 현실적이면서도 따뜻하게 그려낸 작품 『귀를 귀울이면』으로 ‘문학동네소설상’을 받으며 데뷔했다. 시사 교양 프로그램에서 10년 동안 일한 방송 작가답게 ';
   series_prices_info: SeriesPriceInfo[];
   highlight: HighlightInfo;
+  parent_category: number;
+  parent_category2: number;
+  parent_category_name: string | null;
+  parent_category_name2: string | null;
 }
 
 export interface BookResult {

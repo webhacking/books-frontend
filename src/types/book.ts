@@ -185,6 +185,7 @@ export interface SetBook {
 export interface ClientBookFields {
   isAvailableSelect: boolean;
   isAlreadyCheckedAtSelect: boolean;
+  desc?: BookDesc;
 }
 
 export interface Book {
@@ -214,6 +215,20 @@ export interface Author {
   name: string;
   id: number;
   role: AuthorRole;
+}
+
+export interface BookDescResponse {
+  descriptions: BookDesc;
+  b_id: string;
+  last_modified: string;
+}
+export interface BookDesc {
+  author?: string;
+  intro?: string;
+  toc?: string;
+  publisher_review?: string;
+  intro_video_url?: string;
+  intro_image_url?: string;
 }
 
 export type ClientBook = Book & { clientBookFields: ClientBookFields };
