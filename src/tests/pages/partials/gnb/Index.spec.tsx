@@ -31,7 +31,7 @@ test('should be render Index Component', async () => {
     query: { type: '1', theme: 'dark', pathname: '/' },
   });
 
-  const { queryByAltText} = render(
+  const { queryByAltText } = render(
     <Provider store={store}>
       <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
         <Index {...props} />

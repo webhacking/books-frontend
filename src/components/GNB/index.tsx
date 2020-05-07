@@ -334,13 +334,13 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
             <LogoSearchBoxArea>
               <LogoWrapper>
                 <li>
-                  <HomeLink passHref>
-                    <h1>
+                  <h1>
+                    <HomeLink passHref>
                       <a aria-label="리디북스 홈으로 이동">
                         <RidibooksLogo src={RIDIBOOKS_LOGO_URL} alt="리디북스" />
                       </a>
-                    </h1>
-                  </HomeLink>
+                    </HomeLink>
+                  </h1>
                 </li>
                 <li>
                   <a
