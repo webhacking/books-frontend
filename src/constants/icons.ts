@@ -5,6 +5,8 @@ import RidiWaitFree from 'src/assets/svg/RidiWaitFree.svg';
 import VerticalArrow from 'src/assets/svg/VerticalArrow.svg';
 import Clock from 'src/assets/svg/Clock.svg';
 import Author from 'src/assets/svg/Author.svg';
+import RidiBooksLogo from 'src/assets/svg/RidiLogo.svg';
+import RidiSelectLogo from 'src/assets/svg/RidiSelectLogo.svg';
 
 export const ADULT_BADGE_URL = AdultBadge;
 export const STAR_RATING_URL = StarRating;
@@ -13,3 +15,5 @@ export const RIDI_WAIT_FREE_ICON_URL = RidiWaitFree;
 export const VERTICAL_RIGHT_ARROW_ICON_URL = VerticalArrow;
 export const CLOCK_ICON_URL = Clock;
 export const AUTHOR_ICON_URL = Author;
+export const RIDIBOOKS_LOGO_URL = RidiBooksLogo;
+export const RIDISELECT_LOGO_URL = RidiSelectLogo;
