@@ -5,8 +5,6 @@ import { RIDITheme } from 'src/styles/themes';
 import { Button } from 'src/components/Button';
 import { InstantSearch } from 'src/components/Search';
 import { MainTab } from 'src/components/Tabs';
-import RidiLogo from 'src/svgs/RidiLogo_1.svg';
-import RidiSelectLogo from 'src/svgs/RidiSelectLogo_1.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
 import { accountActions } from 'src/services/accounts';
@@ -20,6 +18,7 @@ import CashIcon from 'src/svgs/Cash.svg';
 import pRetry from 'p-retry';
 import axios, { CancelToken, OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
+import { RIDIBOOKS_LOGO_URL, RIDISELECT_LOGO_URL } from 'src/constants/icons';
 
 const GNBWrapper = styled.div<{}, RIDITheme>`
   width: 100%;
@@ -58,28 +57,17 @@ const LogoWrapper = styled.ul`
   display: inline-flex;
   li {
     display: inline-flex;
-    a {
-      display: inline-flex;
-      align-items: center;
-    }
+    align-items: center;
 
     ::after {
       position: relative;
-      top: 7px;
       font-size: 14px;
       content: '|';
       color: white;
       opacity: 0.4;
       margin: 0 8.5px 0 10px;
 
-      ${orBelow(
-    BreakPoint.LG,
-    `
-          margin: 0 6px 0 5px;
-          top: 7px;
-          font-size: 12px;
-        `,
-  )};
+      ${orBelow(BreakPoint.LG, 'margin: 0 6px 0 5px; font-size: 12px;')}
     }
     :last-of-type {
       ::after {
@@ -89,8 +77,8 @@ const LogoWrapper = styled.ul`
   }
 `;
 
-const ridiLogo = (theme: RIDITheme) => css`
-  filter: ${theme.logoFilter};
+const RidibooksLogo = styled.img<{}, RIDITheme>`
+  filter: ${(props) => props.theme.logoFilter};
   width: 103px;
   height: 16px;
   fill: white;
@@ -112,8 +100,8 @@ const ridiLogo = (theme: RIDITheme) => css`
   )};
 `;
 
-const ridiSelectLogo = (theme: RIDITheme) => css`
-  filter: ${theme.logoFilter};
+const RidiSelectLogo = styled.img<{}, RIDITheme>`
+  filter: ${(props) => props.theme.logoFilter};
   fill: white;
   opacity: 0.6;
   width: 87.5px;
@@ -157,13 +145,10 @@ const ButtonWrapper = styled.ul`
   }
 `;
 
-const logoAndSearchBox = css`
+const LogoSearchBoxArea = styled.div`
   display: flex;
   flex-direction: row;
-  ${orBelow(
-    BreakPoint.LG,
-    'flex-wrap: wrap;',
-  )};
+  ${orBelow(BreakPoint.LG, 'flex-wrap: wrap;')}
 `;
 
 interface GNBButtonsProps {
@@ -346,29 +331,23 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
       <GNBContext.Provider value={{ origin }}>
         <Header>
           <Navigation>
-            <div css={logoAndSearchBox}>
+            <LogoSearchBoxArea>
               <LogoWrapper>
                 <li>
-                  <HomeLink passHref>
-                    <a
-                      aria-label="리디북스 홈으로 이동"
-                      css={css`
-                        display: flex;
-                        align-items: center;
-                      `}
-                    >
-                      <RidiLogo css={ridiLogo} />
-                      <span className="a11y">RIDIBOOKS</span>
-                    </a>
-                  </HomeLink>
+                  <h1>
+                    <HomeLink passHref>
+                      <a aria-label="리디북스 홈으로 이동">
+                        <RidibooksLogo src={RIDIBOOKS_LOGO_URL} alt="리디북스" />
+                      </a>
+                    </HomeLink>
+                  </h1>
                 </li>
                 <li>
                   <a
                     href="https://select.ridibooks.com"
                     aria-label="리디셀렉트 홈으로 이동"
                   >
-                    <RidiSelectLogo css={ridiSelectLogo} />
-                    <span className="a11y">리디셀렉트</span>
+                    <RidiSelectLogo src={RIDISELECT_LOGO_URL} alt="리디셀렉트" />
                   </a>
                 </li>
               </LogoWrapper>
@@ -384,7 +363,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
               <InstantSearch
                 searchKeyword={props.searchKeyword || ''}
               />
-            </div>
+            </LogoSearchBoxArea>
           </Navigation>
           <MainTab loggedUserInfo={loggedUser} />
         </Header>
