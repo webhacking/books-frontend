@@ -8,7 +8,9 @@ import {
   slateGray50, slateGray5, lightSteelBlue5, gray100,
 } from '@ridi/colors';
 import { ADULT_BADGE_URL, AUTHOR_ICON_URL } from 'src/constants/icons';
-import * as SearchResult from 'src/types/searchResults';
+import * as SearchTypes from 'src/types/searchResults';
+
+import { SearchResult } from './types';
 
 const listItemCSS = css`
   ${orBelow(BreakPoint.LG, 'min-height: 40px;')};
@@ -194,7 +196,7 @@ const Divider = styled.div`
 `;
 
 interface InstantSearchResultProps {
-  result: SearchResult.InstantSearchResult;
+  result: SearchResult;
   handleKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
   handleClickAuthorItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleClickBookItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -202,12 +204,12 @@ interface InstantSearchResultProps {
 }
 
 interface InstantSearchResultBookListProps {
-  result: SearchResult.SearchBookDetail[];
+  result: SearchTypes.SearchBookDetail[];
   handleKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
   handleClickBookItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const AuthorInfo: React.FC<{ author: SearchResult.Author }> = (props) => {
+export const AuthorInfo: React.FC<{ author: SearchTypes.Author }> = (props) => {
   const { author } = props;
 
   return (
@@ -225,7 +227,7 @@ export const AuthorInfo: React.FC<{ author: SearchResult.Author }> = (props) => 
 };
 
 // Todo 사용 컴포넌트마다 다른 options 사용해서 보여주기
-const AuthorLabel: React.FC<{ author: string; authors: SearchResult.AuthorsInfo[] }> = (props) => {
+const AuthorLabel: React.FC<{ author: string; authors: SearchTypes.AuthorsInfo[] }> = (props) => {
   const viewedAuthors = props.authors
     && props.authors
       .filter((author) => author.role === 'author' || author.role === 'illustrator')
@@ -247,7 +249,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) 
   const { result, handleKeyDown, handleClickBookItem } = props;
   return (
     <ul>
-      {result.map((book: SearchResult.SearchBookDetail, index) => (
+      {result.map((book: SearchTypes.SearchBookDetail, index) => (
         <BookListItem data-book-id={book.b_id} key={index}>
           <BookListItemButton
             type="button"
