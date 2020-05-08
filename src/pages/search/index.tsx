@@ -28,7 +28,7 @@ import { keyToArray } from 'src/utils/common';
 import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
 import { Pagination } from 'src/components/Pagination/Pagination';
 import useIsTablet from 'src/hooks/useIsTablet';
-import { FilterSelector } from 'src/pages/search/FilterSelector';
+import { FilterSelector } from 'src/components/Search/FilterSelector';
 
 interface SearchProps {
   q?: string;
