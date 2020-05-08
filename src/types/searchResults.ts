@@ -85,6 +85,13 @@ const REventInfo = R.Record({
 });
 export type EventInfo = R.Static<typeof REventInfo>;
 
+const RPriceInfo = R.Record({
+  price: R.Number,
+  arg: R.Number,
+  type: R.String,
+});
+export type PriceInfo = R.Static<typeof RPriceInfo>;
+
 const RSearchBookDetail = R.Record({
   category: R.Number,
   category2: R.Number,
@@ -94,6 +101,7 @@ const RSearchBookDetail = R.Record({
   is_wait_free: R.Boolean,
   buyer_rating_score: R.Number,
   is_series_complete: R.Boolean,
+  is_serial: R.Number,
   sub_title: R.String,
   author: R.String,
   translator: R.String,
@@ -106,6 +114,7 @@ const RSearchBookDetail = R.Record({
   web_title: R.String,
   b_id: R.String,
   price: R.Number,
+  prices_info: R.Array(RPriceInfo),
   buyer_review_count: R.Number,
   publisher: R.String,
   buyer_rating_count: R.Number,
