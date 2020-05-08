@@ -285,6 +285,47 @@ function getLastVolumeId(item: SearchTypes.SearchBookDetail) {
   return item.b_id;
 }
 
+type RenderCategoryNameProps = Pick<
+  SearchTypes.SearchBookDetail,
+  | 'category_name'
+  | 'category2_name'
+  | 'parent_category'
+  | 'parent_category2'
+  | 'parent_category_name'
+  | 'parent_category_name2'
+  | 'category'
+  | 'category2'
+>;
+
+function RenderCategoryName(props: RenderCategoryNameProps) {
+  const {
+    category,
+    category_name,
+    parent_category,
+    parent_category2,
+    parent_category_name,
+    parent_category_name2,
+  } = props;
+
+  if (!parent_category_name && !parent_category_name2) {
+    return <a href={`/category/${category}`}>{category_name}</a>;
+  }
+  if (parent_category_name && !parent_category_name2) {
+    return <a href={`/category/${parent_category}`}>{parent_category_name}</a>;
+  }
+  if (parent_category_name && parent_category_name === parent_category_name2) {
+    return <a href={`/category/${parent_category}`}>{parent_category_name}</a>;
+  }
+
+  return (
+    <>
+      <a href={`/category/${parent_category}`}>{parent_category_name}</a>
+      {', '}
+      <a href={`/category/${parent_category2}`}>{parent_category_name2}</a>
+    </>
+  );
+}
+
 export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   const { item, title } = props;
   const thumbnailId = getLastVolumeId(item);
@@ -292,12 +333,16 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   if (book == null || book.is_deleted) {
     return null;
   }
-  const {
-    parent_category,
-    parent_category2,
-    parent_category_name,
-    parent_category_name2,
-  } = item;
+  const categoryInfo = {
+    parent_category: item.parent_category,
+    parent_category2: item.parent_category2,
+    parent_category_name: item.parent_category_name,
+    parent_category_name2: item.parent_category_name2,
+    category: item.category,
+    category_name: item.category_name,
+    category2: item.category2,
+    category2_name: item.category_name,
+  };
   // Fixme desc.intro === '책 정보가 없습니다' 일 경우 처리 확인
   const clearDesc = (book?.clientBookFields?.desc?.intro ?? '')
     .replace(/[\r\n]/g, ' ')
@@ -378,15 +423,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           </SearchBookMetaItem>
           <SearchBookMetaItem>
             <SearchBookMetaField type="normal">
-              {parent_category_name && (
-                <a href={`/category/${parent_category}`}>{parent_category_name}</a>
-              )}
-              {parent_category_name2 && parent_category_name2 !== parent_category_name && (
-                <>
-                  {', '}
-                  <a href={`/category/${parent_category2}`}>{parent_category_name2}</a>
-                </>
-              )}
+              <RenderCategoryName {...categoryInfo} />
             </SearchBookMetaField>
           </SearchBookMetaItem>
           {item.book_count > 1 && (
