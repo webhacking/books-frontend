@@ -160,8 +160,18 @@ const SearchBookItem = styled.li`
   ${orBelow(BreakPoint.LG, 'margin: 0 20px;')};
 `;
 
-const MemoizedAuthors = React.memo(Authors);
 
+const Filters = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  margin-right: 4px;
+  ${orBelow(BreakPoint.LG, 'margin-left: 16px; margin-right: 20px;')}
+`;
+
+
+const MemoizedAuthors = React.memo(Authors);
 
 const EmptyBlock = styled.div`
   margin-top: 108px;
@@ -246,7 +256,12 @@ function SearchPage(props: SearchProps) {
             </ScrollContainer>
           )}
           {/* FIXME 임시 마진 영역 */}
-          <FilterSelector />
+          <Filters>
+            <FilterSelector />
+            <div>
+              Todo Adult Exclude Toggle
+            </div>
+          </Filters>
           <SearchBookList>
             {props.book.books.map((item) => (
               <SearchBookItem key={item.b_id}>
@@ -274,6 +289,8 @@ function SearchPage(props: SearchProps) {
   );
 }
 
+const orderType = ['score', 'recent', 'review_cnt', 'price', 'similarity'];
+
 SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   const { store, query } = props;
   const searchKeyword = String(query.q || '');
@@ -284,8 +301,9 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
 
   searchUrl.searchParams.set('site', 'ridi-store');
   searchUrl.searchParams.append('where', 'book');
-  searchUrl.searchParams.set('order', order);
-
+  if (orderType.includes(order)) {
+    searchUrl.searchParams.set('order', order);
+  }
   const isPublisherSearch = searchKeyword.startsWith('출판사:');
   if (/^\d+$/.test(categoryId)) {
     searchUrl.searchParams.set('category_id', categoryId);
