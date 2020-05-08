@@ -42,7 +42,7 @@ interface SearchProps {
 const SearchResultSection = styled.section`
   max-width: 952px;
   margin: 0 auto;
-
+  margin-top: 8px;
   ${orBelow(BreakPoint.MD, 'max-width: 100%;')}
 `;
 
@@ -72,7 +72,7 @@ const AuthorItem = styled.li<{ show: boolean }>`
 
 const AuthorList = styled.ul`
   margin-bottom: 16px;
-  ${orBelow(BreakPoint.LG, 'padding: 10px 16px;')}
+  ${orBelow(BreakPoint.LG, 'padding: 0 16px;')}
 `;
 
 const ShowMoreAuthor = styled.li`

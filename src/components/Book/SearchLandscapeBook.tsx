@@ -21,6 +21,7 @@ import styled from '@emotion/styled';
 import Star from 'src/svgs/Star.svg';
 import isPropValid from '@emotion/is-prop-valid';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
+import { lineClamp } from 'src/styles';
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 
 const StyledThumbnailWithBadge = styled(ThumbnailWithBadge)`
@@ -32,6 +33,8 @@ const SearchBookTitle = styled.h3`
   margin-bottom: 4px;
   font-size: 14px;
   font-weight: normal;
+  ${lineClamp(2)}
+  ${orBelow(BreakPoint.LG, 'line-height: 1.36em;')}
 `;
 
 const SearchBookMetaList = styled.ul`
@@ -82,10 +85,12 @@ const StyledStar = styled(Star, {
 const authorStyle = css`
   color: ${slateGray60};
   font-size: 14px;
+  ${orBelow(BreakPoint.LG, 'line-height: 1.36em;')}
 `;
 const normalFieldStyle = css`
   color: ${slateGray50};
   font-size: 13px;
+  ${orBelow(BreakPoint.LG, 'line-height: 1.36em;')}
 `;
 const ratingStyle = css`
   color: ${orange40};
@@ -111,12 +116,18 @@ const SearchBookMetaField = styled.span<{
   ${(props) => fieldStyles[props.type]}
 `;
 
+const ThumbnailAnchor = styled.a`
+  flex: none;
+`;
+
 const BookDesc = styled.p`
   max-width: 836px;
   font-size: 13px;
   margin-bottom: 8px;
   color: ${slateGray60};
-  ${orBelow(BreakPoint.LG, 'display: none;')}
+  line-height: 1.4em;
+  word-break: keep-all;
+  ${orBelow(BreakPoint.LG, 'display: none; line-height: 1;')}
 `;
 
 function StarCount(props: { count: number }) {
@@ -160,6 +171,12 @@ const OriginalPrice = styled.span`
   text-decoration: line-through;
   color: ${slateGray50};
   ${priceBase}
+`;
+
+const SearchBookMetaWrapper = styled.div`
+   display: flex;
+   flex-direction: column;
+   margin-left: 16px;
 `;
 
 function PriceLabel(props: { title: string; price: number; discount?: number }) {
@@ -299,7 +316,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   });
   return (
     <>
-      <a href={`/books/${item.b_id}`}>
+      <ThumbnailAnchor href={`/books/${item.b_id}`}>
         <StyledThumbnailWithBadge
           bId={thumbnailId}
           genre={genres[0] ?? ''}
@@ -307,15 +324,8 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           sizes="(min-width: 999px) 100px, 80px"
           title={title}
         />
-      </a>
-      <div
-        css={css`
-          flex: none;
-          display: flex;
-          flex-direction: column;
-          margin-left: 16px;
-        `}
-      >
+      </ThumbnailAnchor>
+      <SearchBookMetaWrapper>
         <SearchBookTitle>
           <a href={`/books/${item.b_id}`}>
             {getEscapedNode(computeSearchBookTitle(item))}
@@ -401,7 +411,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           book={book}
           isTrial={book?.property.is_trial || false}
         />
-      </div>
+      </SearchBookMetaWrapper>
     </>
   );
 }

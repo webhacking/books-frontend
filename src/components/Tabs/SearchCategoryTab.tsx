@@ -8,7 +8,6 @@ import {
   slateGray60,
   slateGray90,
 } from '@ridi/colors';
-import { scrollBarHidden } from 'src/styles';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
@@ -44,14 +43,15 @@ const CategoryAnchor = styled.a`
 `;
 
 const CategoryName = styled.span<{ active: boolean }>`
-  color: ${(props) => (props.active ? slateGray90 : slateGray60)};
+  color: ${slateGray60};
   font-size: 14px;
   font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
+  ${(props) => (!props.active && 'opacity: 0.7;')}
 `;
 
 const CategoryCount = styled(CategoryName)`
-  opacity: 0.7;
-  color: ${(props) => (props.active ? slateGray90 : slateGray50)};
+  color: ${slateGray60};
+  font-size: 13px;
 `;
 
 function Category(props: {
