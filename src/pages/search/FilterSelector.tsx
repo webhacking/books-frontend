@@ -14,7 +14,7 @@ const Select = styled.select`
   transform: scale(.75); // safari zoom 방지
   font-size: 16px; // 16 * 0.75 = 12px
   font-weight: bold;
-  background: url("${CARET_DOWN_ICON_URL}") no-repeat white ;
+  background: url("${CARET_DOWN_ICON_URL.toString()}") no-repeat white; // testing 시 에러가 TypeError: Cannot convert a Symbol value to a string 터져서 toString() 해줌
   background-size: 14px 9px;
   background-position: 93% 50%;
   color: ${slateGray60};

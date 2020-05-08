@@ -185,6 +185,7 @@ function SearchPage(props: SearchProps) {
     currentCategoryId,
     q,
   } = props;
+
   const [tracker] = useEventTracker();
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const isTablet = useIsTablet();
