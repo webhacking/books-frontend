@@ -28,6 +28,7 @@ import { keyToArray } from 'src/utils/common';
 import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
 import { Pagination } from 'src/components/Pagination/Pagination';
 import useIsTablet from 'src/hooks/useIsTablet';
+import { FilterSelector } from 'src/pages/search/FilterSelector';
 
 interface SearchProps {
   q?: string;
@@ -159,6 +160,16 @@ const SearchBookItem = styled.li`
   ${orBelow(BreakPoint.LG, 'margin: 0 20px;')};
 `;
 
+
+const Filters = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  ${orBelow(BreakPoint.LG, 'margin-left: 16px; margin-right: 16px;')}
+`;
+
+
 const MemoizedAuthors = React.memo(Authors);
 
 const EmptyBlock = styled.div`
@@ -173,6 +184,7 @@ function SearchPage(props: SearchProps) {
     currentCategoryId,
     q,
   } = props;
+
   const [tracker] = useEventTracker();
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const isTablet = useIsTablet();
@@ -243,14 +255,12 @@ function SearchPage(props: SearchProps) {
               />
             </ScrollContainer>
           )}
-          {/* FIXME 임시 마진 영역 */}
-          <div
-            css={css`
-              margin-top: 12px;
-            `}
-          >
-            some filters
-          </div>
+          <Filters>
+            <FilterSelector />
+            <div>
+              Todo Adult Exclude Toggle
+            </div>
+          </Filters>
           <SearchBookList>
             {props.book.books.map((item) => (
               <SearchBookItem key={item.b_id}>
@@ -278,14 +288,21 @@ function SearchPage(props: SearchProps) {
   );
 }
 
+const orderType = ['score', 'recent', 'review_cnt', 'price', 'similarity'];
+
 SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   const { store, query } = props;
   const searchKeyword = String(query.q || '');
   const page = String(query.page || '1');
   const categoryId = String(query.category_id || '0');
   const searchUrl = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
+  const order = String(query.order || 'score');
+
   searchUrl.searchParams.set('site', 'ridi-store');
   searchUrl.searchParams.append('where', 'book');
+  if (orderType.includes(order)) {
+    searchUrl.searchParams.set('order', order);
+  }
   const isPublisherSearch = searchKeyword.startsWith('출판사:');
   if (/^\d+$/.test(categoryId)) {
     searchUrl.searchParams.set('category_id', categoryId);
