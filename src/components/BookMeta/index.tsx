@@ -3,9 +3,9 @@ import styled from '@emotion/styled';
 
 import StarRating from 'src/components/StarRating/StarRating';
 import Tag from 'src/components/Tag/Tag';
-import * as BookApi from 'src/types/book';
 import { StarRating as StarRatingType } from 'src/types/sections';
 
+import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 import BookMetaBase from './BookMeta';
 
 const TagWrapper = styled.div`
@@ -14,7 +14,7 @@ const TagWrapper = styled.div`
 `;
 
 interface BookMetaProps {
-  book: BookApi.Book;
+  bId: string;
   titleLineClamp?: number;
   showSomeDeal?: boolean;
   isAIRecommendation?: boolean;
@@ -25,15 +25,8 @@ interface BookMetaProps {
 }
 
 export default function BookMeta(props: BookMetaProps) {
-  if (props.book.is_deleted) {
-    return null;
-  }
-
   const {
-    book: {
-      property: { is_somedeal, is_novel },
-      file: { is_comic, is_comic_hd },
-    },
+    bId,
     showTag,
     showSomeDeal,
     ratingInfo,
@@ -41,9 +34,19 @@ export default function BookMeta(props: BookMetaProps) {
     className,
     width,
   } = props;
+
+  const book = useBookSelector(bId);
+  if (book == null || book.is_deleted) {
+    return null;
+  }
+
+  const {
+    property: { is_somedeal, is_novel },
+    file: { is_comic, is_comic_hd },
+  } = book;
   return (
     <BookMetaBase
-      book={props.book}
+      bId={bId}
       titleLineClamp={titleLineClamp}
       width={width}
       className={className}

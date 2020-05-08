@@ -2,11 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { SectionTitle, SectionTitleLink } from 'src/components/BookSections/SectionTitle';
-import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import useIsTablet from 'src/hooks/useIsTablet';
-import {
-  SectionExtra, AIRecommendationBook, BookItem,
-} from 'src/types/sections';
+import { SectionExtra } from 'src/types/sections';
 import { orBelow } from 'src/utils/mediaQuery';
 
 import SelectionBookCarousel from './SelectionBookCarousel';
@@ -33,17 +30,15 @@ type SelectionBookProps = SelectionBookOwnProps & SelectionBookListProps;
 
 const SelectionBook: React.FC<SelectionBookProps> = (props) => {
   const {
-    genre, type, slug, title, extra, selectionId,
+    genre, type, items, slug, title, extra, selectionId,
   } = props;
 
-  let _typecheckHack: typeof props.type extends 'AiRecommendation' ? AIRecommendationBook : BookItem;
-  const [books] = useBookDetailSelector(props.items as (typeof _typecheckHack)[]);
   const isTablet = useIsTablet();
   const listProps = {
     genre,
     slug,
     type,
-    items: books as any,
+    items: items as any,
   };
 
   let sectionHref = extra?.detail_link;

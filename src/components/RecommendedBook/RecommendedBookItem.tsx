@@ -7,6 +7,7 @@ import { newlineToReactNode } from 'src/utils/highlight';
 import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { BreakPoint } from 'src/utils/mediaQuery';
 
+import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 import BookMeta from './BookMeta';
 
 interface CommonProps {
@@ -55,12 +56,13 @@ function RecommendedBookItem(props: Props) {
     slug,
     genre,
     className,
+    book,
   } = props;
-  const title = computeBookTitle(props.book.detail);
+  const bookDetail = useBookSelector(book.b_id);
+  const title = computeBookTitle(bookDetail);
   return (
     <PortraitBook
       bId={props.book.b_id}
-      bookDetail={props.book.detail}
       index={index}
       genre={genre}
       slug={slug}
@@ -68,8 +70,8 @@ function RecommendedBookItem(props: Props) {
       title={title}
     >
       {/* Todo show sentence */}
-      {props.book.detail && props.type === 'HotRelease' && <BookMeta book={props.book.detail} />}
-      {props.book.detail && props.type === 'TodayRecommendation' && (
+      {bookDetail && props.type === 'HotRelease' && <BookMeta bId={book.b_id} />}
+      {bookDetail && props.type === 'TodayRecommendation' && (
         <RecommendationText bg={theme}>
           {newlineToReactNode(props.book.sentence)}
         </RecommendationText>

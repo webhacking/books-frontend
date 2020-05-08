@@ -2,7 +2,6 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import * as BookApi from 'src/types/book';
 
 import { ThumbnailWrapper } from '../BookThumbnail/ThumbnailWrapper';
 import ThumbnailWithBadge from './ThumbnailWithBadge';
@@ -38,7 +37,6 @@ const StyledThumbnailWrapper = styled(ThumbnailWrapper)<{ disabled?: boolean }>`
 
 interface Props {
   bId: string;
-  bookDetail: BookApi.Book | null;
   index?: number;
   genre: string;
   slug: string;
@@ -56,7 +54,6 @@ const StyledAnchor = styled.a`
 export default function PortraitBook(props: Props) {
   const {
     bId,
-    bookDetail,
     index,
     genre,
     slug,
@@ -73,7 +70,6 @@ export default function PortraitBook(props: Props) {
         <StyledThumbnailWrapper disabled={disabled}>
           <StyledThumbnailWithBadge
             bId={bId}
-            bookDetail={bookDetail}
             order={index}
             genre={genre}
             slug={slug}

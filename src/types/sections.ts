@@ -1,8 +1,6 @@
 import * as R from 'runtypes';
 import Sentry from 'src/utils/sentry';
 
-import * as BookApi from './book';
-
 function makeSectionData<Type extends string, Item extends R.Runtype>(type: Type, rItem: Item) {
   return R.Record({
     type: R.Literal(type),
@@ -19,7 +17,6 @@ export const RBookRating = R.Record({
 export const RBookBase = R.Record({
   type: R.Literal('book'),
   b_id: R.String,
-  detail: R.Unknown as R.Runtype<BookApi.ClientBook | null>, // FIXME add proper typecheck
 }).And(
   R.Partial({
     order: R.Number,

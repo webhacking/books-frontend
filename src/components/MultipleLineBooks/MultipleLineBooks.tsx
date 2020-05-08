@@ -5,10 +5,8 @@ import {
 import { BookItem } from 'src/types/sections';
 import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import BookMeta from 'src/components/BookMeta';
-import React, {
-  useCallback, useEffect, useRef, useState,
-} from 'react';
-import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
 import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
 import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
@@ -150,11 +148,17 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
   const {
     item, genre, slug, order, tracker,
   } = props;
+  const book = useBookSelector(item.b_id);
 
   const trackerEvent = useCallback(() => {
     sendClickEvent(tracker, item, slug, order);
-  }, []);
-  const title = computeBookTitle(item.detail);
+  }, [tracker, item, slug, order]);
+
+  if (book == null || book.is_deleted) {
+    return null;
+  }
+
+  const title = computeBookTitle(book);
   return (
     <Item>
       <ThumbnailWrapper lgWidth={120} css={thumbnailOverrideStyle}>
@@ -165,32 +169,32 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
             slug={slug}
             css={bookWidthStyles}
             sizes="(max-width: 999px) 120px, 140px"
-            thumbnailId={getThumbnailIdFromBookDetail(item.detail) || item.b_id}
-            isAdultOnly={item.detail?.property.is_adult_only || false}
+            thumbnailId={getThumbnailIdFromBookDetail(book) || item.b_id}
+            isAdultOnly={book?.property.is_adult_only || false}
             imgSize="large"
             title={title}
           >
             <BadgeContainer>
               <BookBadgeRenderer
-                isWaitFree={item.detail?.series?.property.is_wait_free}
-                discountPercentage={getMaxDiscountPercentage(item.detail)}
+                isWaitFree={book?.series?.property.is_wait_free}
+                discountPercentage={getMaxDiscountPercentage(book)}
               />
             </BadgeContainer>
             <FreeBookRenderer
               freeBookCount={
-                item.detail?.series?.price_info?.rent?.free_book_count
-                || item.detail?.series?.price_info?.buy?.free_book_count
+                book?.series?.price_info?.rent?.free_book_count
+                || book?.series?.price_info?.buy?.free_book_count
                 || 0
               }
-              unit={item.detail?.series?.property.unit || '권'}
+              unit={book?.series?.property.unit || '권'}
             />
-            {item.detail?.property?.is_adult_only && <AdultBadge />}
+            {book?.property?.is_adult_only && <AdultBadge />}
           </ThumbnailRenderer>
         </ItemAnchor>
       </ThumbnailWrapper>
-      {item.detail && (
+      {book && (
         <BookMeta
-          book={item.detail}
+          bId={item.b_id}
           showTag={['bl', 'bl-serial'].includes(genre)}
           css={bookMetaWrapperStyle}
           isAIRecommendation={false}
@@ -247,7 +251,6 @@ const ItemList: React.FC<{ slug: string; genre: string; books: BookItem[] }> = (
   return (
     <List>
       {books
-        .filter((book) => book.detail)
         .slice(0, 18)
         .map((item, index) => (
           <MultipleLineBookItem
@@ -280,12 +283,10 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = (props) => {
   const {
     title, items, genre, slug,
   } = props;
-  const [books] = useBookDetailSelector(items);
-  const targetRef = useRef(null);
   return (
-    <Section ref={targetRef}>
+    <Section>
       <Title aria-label={title}>{title}</Title>
-      <ItemList genre={genre} slug={slug} books={books} />
+      <ItemList genre={genre} slug={slug} books={items} />
     </Section>
   );
 };

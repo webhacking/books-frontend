@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/store/config';
 import { getEscapedNode } from 'src/utils/highlight';
 import { css } from '@emotion/core';
 import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
@@ -23,6 +21,7 @@ import styled from '@emotion/styled';
 import Star from 'src/svgs/Star.svg';
 import isPropValid from '@emotion/is-prop-valid';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
+import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 
 const StyledThumbnailWithBadge = styled(ThumbnailWithBadge)`
   width: 100px;
@@ -273,8 +272,8 @@ function getLastVolumeId(item: SearchTypes.SearchBookDetail) {
 export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   const { item, title } = props;
   const thumbnailId = getLastVolumeId(item);
-  const book = useSelector((state: RootState) => state.books.items[item.b_id]);
-  if (book?.is_deleted) {
+  const book = useBookSelector(item.b_id);
+  if (book == null || book.is_deleted) {
     return null;
   }
   const {
@@ -303,7 +302,6 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
       <a href={`/books/${item.b_id}`}>
         <StyledThumbnailWithBadge
           bId={thumbnailId}
-          bookDetail={book}
           genre={genres[0] ?? ''}
           slug="search-result"
           sizes="(min-width: 999px) 100px, 80px"

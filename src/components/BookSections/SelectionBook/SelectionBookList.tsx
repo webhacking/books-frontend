@@ -49,7 +49,6 @@ const SelectionBookList: React.FC<SelectionBookListProps> = React.memo((props) =
     <StyledScrollContainer arrowStyle={arrowVerticalStyle}>
       <List>
         {(props.items as any[])
-          .filter((item) => item.detail)
           .map((item, index) => (
             <StyledBookItem
               key={index}

@@ -4,16 +4,14 @@ import styled from '@emotion/styled';
 import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { createTimeLabel } from 'src/utils/dateTime';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import * as BookApi from 'src/types/book';
 import {
   Section, BookItem, StarRating,
 } from 'src/types/sections';
 import BookMeta from 'src/components/BookMeta';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
-import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper';
 import ScrollContainer from 'src/components/ScrollContainer';
 import { CLOCK_ICON_URL } from 'src/constants/icons';
-import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
+import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 
 import { SectionTitle, SectionTitleLink } from '../SectionTitle';
 
@@ -139,14 +137,19 @@ interface ItemListProps {
   showSomeDeal?: boolean;
 }
 function RankingBook({
-  book,
+  bId,
   order: index,
   slug,
   genre,
   type,
   showSomeDeal,
   rating,
-}: Omit<ItemListProps, 'books'> & {book: BookApi.Book; order: number; rating?: StarRating}) {
+}: Omit<ItemListProps, 'books'> & {bId: string; order: number; rating?: StarRating}) {
+  const book = useBookSelector(bId);
+  if (book == null || book.is_deleted) {
+    return null;
+  }
+
   const title = computeBookTitle(book);
   return (
     // auto-flow 안 되는 IE11을 위한 땜빵
@@ -158,10 +161,9 @@ function RankingBook({
         msGridRow: (index % 3) + 1,
       }}
     >
-      <ThumbnailAnchor type={type} href={`/books/${book.id}`}>
+      <ThumbnailAnchor type={type} href={`/books/${bId}`}>
         <StyledThumbnailWithBadge
-          bId={book.id}
-          bookDetail={book}
+          bId={bId}
           order={index}
           genre={genre}
           slug={slug}
@@ -174,7 +176,7 @@ function RankingBook({
       <BookMetaBox>
         <RankPosition aria-label={`랭킹 순위 ${index + 1}위`}>{index + 1}</RankPosition>
         <BookMeta
-          book={book}
+          bId={bId}
           titleLineClamp={type === 'small' ? 1 : 2}
           isAIRecommendation={false}
           showSomeDeal={showSomeDeal}
@@ -195,18 +197,17 @@ const ItemList: React.FC<ItemListProps> = (props) => {
     <ScrollContainer>
       <List type={type}>
         {books
-          .filter((book) => book.detail)
           .slice(0, 9)
           .map((book, index) => (
             <RankingBook
-              key={book.detail?.id}
+              key={book.b_id}
+              bId={book.b_id}
               slug={slug}
               type={type}
               order={index}
               showSomeDeal={showSomeDeal}
               genre={genre}
               rating={book.rating}
-              book={book.detail as BookApi.Book}
             />
           ))}
       </List>
@@ -215,7 +216,7 @@ const ItemList: React.FC<ItemListProps> = (props) => {
 };
 
 const RankingBookList: React.FC<RankingBookListProps> = (props) => {
-  const [books] = useBookDetailSelector(props.items);
+  const books = props.items;
   const {
     genre, type, showSomeDeal, slug,
   } = props;
