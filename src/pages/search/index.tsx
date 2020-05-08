@@ -166,8 +166,7 @@ const Filters = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 12px;
-  margin-right: 4px;
-  ${orBelow(BreakPoint.LG, 'margin-left: 16px; margin-right: 20px;')}
+  ${orBelow(BreakPoint.LG, 'margin-left: 16px; margin-right: 16px;')}
 `;
 
 
@@ -256,7 +255,6 @@ function SearchPage(props: SearchProps) {
               />
             </ScrollContainer>
           )}
-          {/* FIXME 임시 마진 영역 */}
           <Filters>
             <FilterSelector />
             <div>
