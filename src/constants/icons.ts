@@ -8,6 +8,7 @@ import Author from 'src/assets/svg/Author.svg';
 import RidiBooksLogo from 'src/assets/svg/RidiLogo.svg';
 import RidiSelectLogo from 'src/assets/svg/RidiSelectLogo.svg';
 import CaretDown from 'src/assets/svg/CaretDown.svg';
+import Check from 'src/assets/svg/Check.svg';
 
 export const ADULT_BADGE_URL = AdultBadge;
 export const STAR_RATING_URL = StarRating;
@@ -19,3 +20,4 @@ export const AUTHOR_ICON_URL = Author;
 export const RIDIBOOKS_LOGO_URL = RidiBooksLogo;
 export const RIDISELECT_LOGO_URL = RidiSelectLogo;
 export const CARET_DOWN_ICON_URL = CaretDown;
+export const CHECK_ICON_URL = Check;

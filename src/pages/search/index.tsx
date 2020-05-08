@@ -4,6 +4,7 @@ import { ConnectedInitializeProps } from 'src/types/common';
 import styled from '@emotion/styled';
 import axios from 'src/utils/axios';
 import * as SearchTypes from 'src/types/searchResults';
+import Cookies from 'universal-cookie';
 import { AuthorInfo } from 'src/components/Search/InstantSearchResult';
 import {
   slateGray20,
@@ -28,7 +29,8 @@ import { keyToArray } from 'src/utils/common';
 import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
 import { Pagination } from 'src/components/Pagination/Pagination';
 import useIsTablet from 'src/hooks/useIsTablet';
-import { FilterSelector } from 'src/components/Search/FilterSelector';
+import { AdultExcludeToggle, FilterSelector } from 'src/components/Search';
+import { useRouter } from 'next/router';
 
 interface SearchProps {
   q?: string;
@@ -176,6 +178,17 @@ const EmptyBlock = styled.div`
   margin-top: 108px;
 `;
 
+function computeAdultExclude(query: Record<string, string>, cookie: Cookies) {
+  if (query.adult_exclude === 'y' || query.adult_exclude === 'n') {
+    return query.adult_exclude === 'y';
+  }
+  const fromCookieAdultExclude = cookie.get('adult_exclude');
+  if (fromCookieAdultExclude === 'y' || fromCookieAdultExclude === 'n') {
+    return fromCookieAdultExclude === 'y';
+  }
+  return false;
+}
+
 function SearchPage(props: SearchProps) {
   const {
     author,
@@ -197,7 +210,10 @@ function SearchPage(props: SearchProps) {
       }
     }
   }, [tracker]);
+  const router = useRouter();
+  const cookies = new Cookies();
   const hasPagination = book.total > ITEM_PER_PAGE && book.books.length > 0;
+  const isAdultExclude = computeAdultExclude(router.query as Record<string, string>, cookies);
   useEffect(() => {
     setPageView();
   }, [loggedUser]);
@@ -257,9 +273,7 @@ function SearchPage(props: SearchProps) {
           )}
           <Filters>
             <FilterSelector />
-            <div>
-              Todo Adult Exclude Toggle
-            </div>
+            <AdultExcludeToggle adultExclude={isAdultExclude} />
           </Filters>
           <SearchBookList>
             {props.book.books.map((item) => (
@@ -291,13 +305,16 @@ function SearchPage(props: SearchProps) {
 const orderType = ['score', 'recent', 'review_cnt', 'price', 'similarity'];
 
 SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
-  const { store, query } = props;
+  const { store, query, req } = props;
   const searchKeyword = String(query.q || '');
   const page = String(query.page || '1');
   const categoryId = String(query.category_id || '0');
   const searchUrl = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
   const order = String(query.order || 'score');
+  const cookie = new Cookies(req?.headers.cookie);
+  const adult_exclude = query.adult_exclude || cookie.get('adult_exclude') || 'n';
 
+  searchUrl.searchParams.set('adult_exclude', adult_exclude);
   searchUrl.searchParams.set('site', 'ridi-store');
   searchUrl.searchParams.append('where', 'book');
   if (orderType.includes(order)) {
