@@ -85,12 +85,10 @@ const StyledStar = styled(Star, {
 const authorStyle = css`
   color: ${slateGray60};
   font-size: 14px;
-  ${orBelow(BreakPoint.LG, 'line-height: 1.36em;')}
 `;
 const normalFieldStyle = css`
   color: ${slateGray50};
   font-size: 13px;
-  ${orBelow(BreakPoint.LG, 'line-height: 1.36em;')}
 `;
 const ratingStyle = css`
   color: ${orange40};
@@ -114,6 +112,7 @@ const SearchBookMetaField = styled.span<{
   type: 'author' | 'normal' | 'rating' | 'rating_count';
 }>`
   ${(props) => fieldStyles[props.type]}
+  ${orBelow(BreakPoint.LG, 'line-height: 1.36em;')}
 `;
 
 const ThumbnailAnchor = styled.a`
@@ -127,7 +126,7 @@ const BookDesc = styled.p`
   color: ${slateGray60};
   line-height: 1.4em;
   word-break: keep-all;
-  ${orBelow(BreakPoint.LG, 'display: none; line-height: 1;')}
+  ${orBelow(BreakPoint.LG, 'display: none;')}
 `;
 
 function StarCount(props: { count: number }) {

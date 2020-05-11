@@ -50,7 +50,6 @@ const CategoryName = styled.span<{ active: boolean }>`
 `;
 
 const CategoryCount = styled(CategoryName)`
-  color: ${slateGray60};
   font-size: 13px;
 `;
 
