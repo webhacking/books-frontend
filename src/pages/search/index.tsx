@@ -4,6 +4,7 @@ import { ConnectedInitializeProps } from 'src/types/common';
 import styled from '@emotion/styled';
 import axios from 'src/utils/axios';
 import * as SearchTypes from 'src/types/searchResults';
+import Cookies from 'universal-cookie';
 import { AuthorInfo } from 'src/components/Search/InstantSearchResult';
 import {
   slateGray20,
@@ -28,7 +29,7 @@ import { keyToArray } from 'src/utils/common';
 import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
 import { Pagination } from 'src/components/Pagination/Pagination';
 import useIsTablet from 'src/hooks/useIsTablet';
-import { FilterSelector } from 'src/components/Search/FilterSelector';
+import { AdultExcludeToggle, FilterSelector } from 'src/components/Search';
 
 interface SearchProps {
   q?: string;
@@ -37,6 +38,7 @@ interface SearchProps {
   categories: SearchTypes.Aggregation[];
   currentCategoryId: string;
   currentPage?: string;
+  isAdultExclude: boolean;
 }
 
 const SearchResultSection = styled.section`
@@ -183,8 +185,8 @@ function SearchPage(props: SearchProps) {
     categories,
     currentCategoryId,
     q,
+    isAdultExclude,
   } = props;
-
   const [tracker] = useEventTracker();
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const isTablet = useIsTablet();
@@ -257,9 +259,7 @@ function SearchPage(props: SearchProps) {
           )}
           <Filters>
             <FilterSelector />
-            <div>
-              Todo Adult Exclude Toggle
-            </div>
+            <AdultExcludeToggle adultExclude={isAdultExclude} />
           </Filters>
           <SearchBookList>
             {props.book.books.map((item) => (
@@ -291,13 +291,17 @@ function SearchPage(props: SearchProps) {
 const orderType = ['score', 'recent', 'review_cnt', 'price', 'similarity'];
 
 SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
-  const { store, query } = props;
+  const { store, query, req } = props;
   const searchKeyword = String(query.q || '');
   const page = String(query.page || '1');
   const categoryId = String(query.category_id || '0');
   const searchUrl = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
   const order = String(query.order || 'score');
+  const cookie = new Cookies(req?.headers.cookie);
+  const adult_exclude = String(query.adult_exclude || cookie.get('adult_exclude') || 'n');
+  const isAdultExclude = adult_exclude === 'y';
 
+  searchUrl.searchParams.set('adult_exclude', isAdultExclude ? 'y' : 'n');
   searchUrl.searchParams.set('site', 'ridi-store');
   searchUrl.searchParams.append('where', 'book');
   if (orderType.includes(order)) {
@@ -341,6 +345,7 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
     categories: searchResult.book.aggregations,
     currentCategoryId: categoryId,
     currentPage: page,
+    isAdultExclude,
   };
 };
 
