@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import Cookies from 'universal-cookie';
 
@@ -13,6 +13,7 @@ const Input = styled.input`
   box-sizing: border-box;
   border-radius: 2px;
   background: white;
+  margin-right: 6px;
   :checked {
     border: 0;
     background: ${dodgerBlue40} no-repeat;
@@ -21,50 +22,44 @@ const Input = styled.input`
   }
 `;
 
-const ToggleWrapper = styled.div`
+const Label = styled.label`
   display: flex;
   align-items: center;
   padding: 6px 4px 6px 6px;
   border-radius: 4px;
-  * {
+  &, * {
     cursor: pointer;
   }
-  cursor: pointer;
   :active {
     background: rgba(0, 0, 0, 0.05);
   }
-`;
 
-const Label = styled.label`
-  margin-left: 6px;
   font-weight: bold;
   font-size: 13px;
   color: ${slateGray60};
 `;
 
 function Toggle(props: {
-  initialValue: boolean;
+  isChecked: boolean;
   name: string;
   label: string;
-  toggleHandler: (...args: any) => void | null;
+  toggleHandler: (isChecked: boolean) => void;
 }) {
   const {
-    initialValue, name, label, toggleHandler,
+    isChecked, name, label, toggleHandler,
   } = props;
-  const [isChecked, setChecked] = useState(initialValue);
 
-  const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+  const clickHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setChecked(!isChecked);
     if (toggleHandler) {
-      toggleHandler(!isChecked);
+      toggleHandler(e.target.checked);
     }
   };
   return (
-    <ToggleWrapper onClick={clickHandler}>
-      <Input id={name} type="checkbox" name={name} checked={isChecked} />
-      <Label htmlFor={name}>{label}</Label>
-    </ToggleWrapper>
+    <Label>
+      <Input onChange={clickHandler} id={name} type="checkbox" name={name} checked={isChecked} />
+      {label}
+    </Label>
   );
 }
 
@@ -88,7 +83,7 @@ export function AdultExcludeToggle(props: { adultExclude: boolean }) {
       name="adult_exclude"
       label="성인 제외"
       toggleHandler={toggle}
-      initialValue={adultExclude}
+      isChecked={adultExclude}
     />
   );
 }

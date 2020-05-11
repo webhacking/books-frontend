@@ -30,7 +30,6 @@ import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
 import { Pagination } from 'src/components/Pagination/Pagination';
 import useIsTablet from 'src/hooks/useIsTablet';
 import { AdultExcludeToggle, FilterSelector } from 'src/components/Search';
-import { useRouter } from 'next/router';
 
 interface SearchProps {
   q?: string;
@@ -39,6 +38,7 @@ interface SearchProps {
   categories: SearchTypes.Aggregation[];
   currentCategoryId: string;
   currentPage?: string;
+  isAdultExclude: boolean;
 }
 
 const SearchResultSection = styled.section`
@@ -178,17 +178,6 @@ const EmptyBlock = styled.div`
   margin-top: 108px;
 `;
 
-function computeAdultExclude(query: Record<string, string>, cookie: Cookies) {
-  if (query.adult_exclude === 'y' || query.adult_exclude === 'n') {
-    return query.adult_exclude === 'y';
-  }
-  const fromCookieAdultExclude = cookie.get('adult_exclude');
-  if (fromCookieAdultExclude === 'y' || fromCookieAdultExclude === 'n') {
-    return fromCookieAdultExclude === 'y';
-  }
-  return false;
-}
-
 function SearchPage(props: SearchProps) {
   const {
     author,
@@ -196,8 +185,8 @@ function SearchPage(props: SearchProps) {
     categories,
     currentCategoryId,
     q,
+    isAdultExclude,
   } = props;
-
   const [tracker] = useEventTracker();
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const isTablet = useIsTablet();
@@ -210,10 +199,7 @@ function SearchPage(props: SearchProps) {
       }
     }
   }, [tracker]);
-  const router = useRouter();
-  const cookies = new Cookies();
   const hasPagination = book.total > ITEM_PER_PAGE && book.books.length > 0;
-  const isAdultExclude = computeAdultExclude(router.query as Record<string, string>, cookies);
   useEffect(() => {
     setPageView();
   }, [loggedUser]);
@@ -312,9 +298,10 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
   const searchUrl = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
   const order = String(query.order || 'score');
   const cookie = new Cookies(req?.headers.cookie);
-  const adult_exclude = query.adult_exclude || cookie.get('adult_exclude') || 'n';
+  const adult_exclude = String(query.adult_exclude || cookie.get('adult_exclude') || 'n');
+  const isAdultExclude = adult_exclude === 'y';
 
-  searchUrl.searchParams.set('adult_exclude', adult_exclude);
+  searchUrl.searchParams.set('adult_exclude', isAdultExclude ? 'y' : 'n');
   searchUrl.searchParams.set('site', 'ridi-store');
   searchUrl.searchParams.append('where', 'book');
   if (orderType.includes(order)) {
@@ -358,6 +345,7 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
     categories: searchResult.book.aggregations,
     currentCategoryId: categoryId,
     currentPage: page,
+    isAdultExclude,
   };
 };
 
