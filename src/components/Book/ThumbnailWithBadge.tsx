@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 import { getMaxDiscountPercentage } from 'src/utils/common';
-import * as BookApi from 'src/types/book';
 import { getThumbnailIdFromBookDetail } from 'src/utils/books';
 
 import BookBadgeRenderer from '../Badge/BookBadgeRenderer';
@@ -13,7 +13,6 @@ import { BadgeContainer } from '../Badge/BadgeContainer';
 
 interface Props {
   bId: string;
-  bookDetail: BookApi.Book | null;
   order?: number;
   genre: string;
   slug: string;
@@ -26,7 +25,6 @@ interface Props {
 export default function ThumbnailWithBadge(props: Props) {
   const {
     bId,
-    bookDetail,
     order,
     genre,
     slug,
@@ -35,6 +33,7 @@ export default function ThumbnailWithBadge(props: Props) {
     title,
     onlyAdultBadge,
   } = props;
+  const bookDetail = useBookSelector(bId);
   const singlePriceInfo = bookDetail?.price_info;
   const seriesPriceInfo = bookDetail?.series?.price_info;
   return (

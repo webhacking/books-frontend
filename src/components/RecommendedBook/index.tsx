@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { useBookDetailSelector } from 'src/hooks/useBookDetailSelector';
 import useIsTablet from 'src/hooks/useIsTablet';
 import { BreakPoint } from 'src/utils/mediaQuery';
 
@@ -56,7 +55,6 @@ const RecommendedBookWrapper = styled.section<{ bg: 'white' | 'dark' }>`
 
 export default function RecommendedBook(props: RecommendedBookProps) {
   const { theme, slug, genre } = props;
-  const [books] = useBookDetailSelector(props.items);
   const isTablet = useIsTablet();
   return (
     <RecommendedBookWrapper bg={theme}>
@@ -66,7 +64,7 @@ export default function RecommendedBook(props: RecommendedBookProps) {
           <RecommendedBookList
             type={props.type}
             slug={slug}
-            items={books}
+            items={props.items}
             theme={theme}
             genre={genre}
           />
@@ -75,7 +73,7 @@ export default function RecommendedBook(props: RecommendedBookProps) {
             type={props.type}
             slug={slug}
             genre={genre}
-            items={books}
+            items={props.items}
             theme={theme}
           />
         )}

@@ -24,9 +24,24 @@ const store = makeStore(
   {
     books: {
       items: {
-        '100000000': {
-          id: '100000000',
-          title: { main: '멋진 책'}
+        '12345': {
+          b_id: '12345',
+          title: { main: '도서 표지' },
+          property: {},
+          authors: [],
+          clientBookFields: {
+            isAvailableSelect: true,
+          },
+        },
+        '12346': {
+          b_id: '12346',
+          title: {main: '도서 표지'},
+          property: {},
+          authors: [{id: 1, role: AuthorRole.AUTHOR, name: '작가'}],
+          clientBookFields: {
+            isAvailableSelect: true,
+            isAlreadyCheckedAtSelect: true,
+          },
         },
       },
       isFetching: false,
@@ -39,27 +54,10 @@ const books: HotRelease[] = [
   {
     b_id: '12345',
     sentence: "오늘은 자고 가련\\r\\n'동양풍 + 외전 출간",
-    detail: {
-      title: { main: '도서 표지' },
-      property: {},
-      authors: [],
-      clientBookFields: {
-        isAvailableSelect: true,
-      },
-    },
   },
   {
-    b_id: '12345',
+    b_id: '12346',
     sentence: "오늘은 자고 가련\\r\\n'동양풍 + 외전 출간",
-    detail: {
-      title: { main: '도서 표지' },
-      property: {},
-      authors: [{ id: 1, role: AuthorRole.AUTHOR, name: '작가' }],
-      clientBookFields: {
-        isAvailableSelect: true,
-        isAlreadyCheckedAtSelect: true,
-      },
-    },
   },
 ];
 

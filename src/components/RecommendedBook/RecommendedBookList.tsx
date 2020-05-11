@@ -63,14 +63,13 @@ function RecommendedBookList(props: Omit<RecommendedBookProps, 'title'>) {
 
   const { items } = props;
   const carouselItems = React.useMemo(
-    () => items
-      .filter((book) => book.detail)
+    () => (items as any[]) // FIXME do some type circus
       .map((book, index) => (
         <ListItem
           key={index}
           book={book}
           index={index}
-          type={type as any /* FIXME do some type circus */}
+          type={type}
           theme={theme}
           slug={slug}
           genre={genre}

@@ -139,7 +139,6 @@ const renderMultipleLineBookList = () =>
             items={[
               {
                 b_id: '2414000748',
-                detail: null,
                 type: 'book',
                 rating: {
                   total_rating_count: 0,
@@ -149,7 +148,6 @@ const renderMultipleLineBookList = () =>
               },
               {
                 b_id: '2414000749',
-                detail: null,
                 type: 'book',
                 rating: {
                   total_rating_count: 0,

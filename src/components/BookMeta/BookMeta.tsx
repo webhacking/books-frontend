@@ -6,6 +6,7 @@ import * as BookApi from 'src/types/book';
 import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { orBelow } from 'src/utils/mediaQuery';
 import { slateGray60 } from '@ridi/colors';
+import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 
 const BookTitle = styled.div`
   font-size: 14px;
@@ -83,7 +84,7 @@ function Authors(props: { authors: BookApi.Author[] }) {
 }
 
 interface BookMetaBaseProps {
-  book: BookApi.Book;
+  bId: string;
   titleLineClamp?: number;
   width?: string;
   bookTitleStyle?: Interpolation;
@@ -92,13 +93,8 @@ interface BookMetaBaseProps {
 }
 
 const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
-  if (props.book.is_deleted) {
-    return null;
-  }
   const {
-    book: {
-      authors,
-    },
+    bId,
     titleLineClamp,
     width,
     bookTitleStyle,
@@ -106,16 +102,22 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
     children,
   } = props;
 
+  const book = useBookSelector(bId);
+  if (book == null || book.is_deleted) {
+    return null;
+  }
+  const { authors } = book;
+
   const mergedAuthors = authors.filter(
     (author) => ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author'].includes(author.role),
   );
-  const title = computeBookTitle(props.book);
+  const title = computeBookTitle(book);
   return (
     <Container
       className={className}
       css={width && css`width: ${width};`}
     >
-      <a href={`/books/${props.book.id}`}>
+      <a href={`/books/${bId}`}>
         <BookTitle
           css={[bookTitleStyle, lineClamp(titleLineClamp || 2)]}
         >

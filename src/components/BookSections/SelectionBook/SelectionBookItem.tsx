@@ -13,6 +13,7 @@ import {
 } from 'src/types/sections';
 import PortraitBook from 'src/components/Book/PortraitBook';
 import { computeBookTitle } from 'src/utils/bookTitleGenerator';
+import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 
 const RecommendButton = styled.button<{ fetching?: boolean }>`
   width: 55px;
@@ -95,11 +96,14 @@ const SelectionBookItem: React.FC<Props> = (props) => {
   const handleClick = useCallback(() => {
     sendClickEvent(tracker, book, slug, order);
   }, [tracker, book, slug, order]);
-  const title = computeBookTitle(book.detail);
+  const bookDetail = useBookSelector(book.b_id);
+  if (bookDetail == null || bookDetail.is_deleted) {
+    return null;
+  }
+  const title = computeBookTitle(bookDetail);
   return (
     <PortraitBook
       bId={book.b_id}
-      bookDetail={book.detail}
       index={order}
       genre={genre}
       slug={slug}
@@ -108,21 +112,19 @@ const SelectionBookItem: React.FC<Props> = (props) => {
       className={className}
       title={title}
     >
-      {book.detail && (
-        <BookMeta
-          showTag={['bl', 'bl-serial'].includes(genre)}
-          book={book.detail}
-          width={`${props.width || 140}px`}
-          ratingInfo={ratingInfo}
-          css={
-            localExcluded
-            && css`
-              opacity: 0.2;
-              pointer-events: none;
-            `
-          }
-        />
-      )}
+      <BookMeta
+        showTag={['bl', 'bl-serial'].includes(genre)}
+        bId={book.b_id}
+        width={`${props.width || 140}px`}
+        ratingInfo={ratingInfo}
+        css={
+          localExcluded
+          && css`
+            opacity: 0.2;
+            pointer-events: none;
+          `
+        }
+      />
 
       {props.type === 'AiRecommendation' && (
         <RecommendButton

@@ -28,11 +28,7 @@ function RecommendedBookCarousel(props: Omit<RecommendedBookProps, 'title'>) {
   } = props;
 
   const { items } = props;
-  const books = React.useMemo(
-    () => items.filter((book) => book.detail),
-    [items],
-  );
-  const totalItems = books.length;
+  const totalItems = items.length;
 
   const [currentIdx, setCurrentIdx] = React.useState(0);
   const handleLeftArrow = React.useCallback(() => {
@@ -59,7 +55,7 @@ function RecommendedBookCarousel(props: Omit<RecommendedBookProps, 'title'>) {
   return (
     <CarouselWrapper>
       <BooksCarousel
-        totalItems={books.length}
+        totalItems={items.length}
         itemsInPage={6}
         currentIdx={currentIdx}
         itemWidth={140}
@@ -68,7 +64,7 @@ function RecommendedBookCarousel(props: Omit<RecommendedBookProps, 'title'>) {
         {({ index }) => (
           <ListItem
             key={index}
-            book={books[index]}
+            book={items[index]}
             index={index}
             type={type as any /* FIXME do some type circus */}
             genre={genre}

@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import BookMetaBase from 'src/components/BookMeta/BookMeta';
 import AtSelectIcon from 'src/svgs/Book1.svg';
-import * as BookApi from 'src/types/book';
+import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 
 const AvailableOnSelectContainer = styled.div`
   display: flex;
@@ -27,18 +27,15 @@ const selectIconStyle = css`
 `;
 
 interface BookMetaProps {
-  book: BookApi.ClientBook;
+  bId: string;
   showSelect?: boolean;
 }
 
 function BookMeta(props: BookMetaProps) {
-  if (props.book.is_deleted) {
-    return null;
-  }
-
+  const book = useBookSelector(props.bId);
   return (
-    <BookMetaBase book={props.book} bookTitleStyle={bookTitleStyle}>
-      {props.book.clientBookFields?.isAvailableSelect && (
+    <BookMetaBase bId={props.bId} bookTitleStyle={bookTitleStyle}>
+      {book?.clientBookFields?.isAvailableSelect && (
         <AvailableOnSelectContainer
           role="img"
           aria-label="리디셀렉트 이용 가능 도서"

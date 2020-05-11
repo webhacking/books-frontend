@@ -20,9 +20,13 @@ afterEach(cleanup);
 const store = makeStore(
   {
     books: {
-      itmes: {
+      items: {
         '12345666': {
           b_id: '12345666',
+          title: { main: '도서 표지' },
+          authors: [{ name: 'hi' }],
+          property: { is_adult_only: false },
+          file: { is_comic: false },
         },
       },
       isFetching: false,
@@ -38,16 +42,7 @@ const renderSelectionBookList = (aiRecommendation: boolean) =>
           <SelectionBookList
             type={aiRecommendation ? 'AiRecommendation' : 'HomeMdSelection'}
             items={[
-              {
-                b_id: '12345666',
-                type: 'test',
-                detail: {
-                  title: { main: '도서 표지' },
-                  authors: [{ name: 'hi' }],
-                  property: { is_adult_only: false },
-                  file: { is_comic: false },
-                },
-              },
+              { b_id: '12345666', type: 'test' },
             ]}
           />
         </ViewportIntersectionProvider>

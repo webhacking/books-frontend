@@ -26,11 +26,7 @@ const SelectionBookCarousel: React.FC<SelectionBookListProps> = (props) => {
   const { genre, type, slug } = props;
 
   const { items } = props;
-  const books = React.useMemo(
-    () => (items as any[]).filter((book: any) => book.detail),
-    [items],
-  );
-  const totalItems = books.length;
+  const totalItems = items.length;
 
   const [currentIdx, setCurrentIdx] = React.useState(0);
   const handleLeftArrow = React.useCallback(() => {
@@ -57,7 +53,7 @@ const SelectionBookCarousel: React.FC<SelectionBookListProps> = (props) => {
   return (
     <CarouselWrapper>
       <BooksCarousel
-        totalItems={books.length}
+        totalItems={items.length}
         itemsInPage={6}
         currentIdx={currentIdx}
         itemWidth={140}
@@ -69,8 +65,7 @@ const SelectionBookCarousel: React.FC<SelectionBookListProps> = (props) => {
             order={index}
             genre={genre}
             slug={slug}
-            excluded={books[index]?.excluded ?? false}
-            book={books[index]}
+            book={items[index] as any /* TODO do type circus */}
             type={type}
             width={140}
           />
