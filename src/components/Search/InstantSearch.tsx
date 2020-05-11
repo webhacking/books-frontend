@@ -22,6 +22,10 @@ import { useTheme } from 'emotion-theming';
 import { GNBContext } from 'src/components/GNB';
 import * as SearchTypes from 'src/types/searchResults';
 
+import { slateGray60 } from '@ridi/colors';
+import { Switch } from 'src/components/Switch/Switch';
+import Cookies from 'universal-cookie';
+import { useRouter } from 'next/router';
 import { SearchResult } from './types';
 
 const fadeIn = keyframes`
@@ -172,7 +176,7 @@ const SearchFooter = styled.div`
   }
 `;
 
-const dimmer = css`
+const Dimmer = styled.div`
   display: none;
   ${orBelow(
     BreakPoint.LG,
@@ -189,7 +193,7 @@ const dimmer = css`
   )};
 `;
 
-const arrow = css`
+const ArrowLeftIcon = styled(ArrowLeft)`
   display: none;
   cursor: pointer;
   fill: white;
@@ -212,6 +216,26 @@ const ArrowWrapperButton = styled.button`
   )};
 `;
 
+const AdultExcludeButton = styled.button`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 16px;
+  margin-bottom: 4px;
+  width: 100%;
+  height: 44px;
+  outline: none;
+  :active {
+    background: rgba(0, 0, 0, 0.05);
+  }
+`;
+
+const AdultExcludeLabel = styled.span`
+  font-weight: bold;
+  font-size: 13px;
+  color: ${slateGray60};
+`;
+
 interface InstantSearchProps {
   searchKeyword: string;
 }
@@ -226,6 +250,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const inputRef = React.useRef<HTMLInputElement>(null);
     const listWrapperRef = React.useRef<HTMLDivElement>(null);
     const theme = useTheme<RIDITheme>();
+    const router = useRouter();
     const [isLoaded, setLoaded] = useState(false);
     const [isFocused, setFocus] = useState(false);
     const [keyword, setKeyword] = useState<string>(props.searchKeyword);
@@ -233,6 +258,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const [enableSearchHistoryRecord, toggleSearchHistoryRecord] = useState(true);
     const [focusedPosition, setFocusedPosition] = useState(0);
     const [, setFetching] = useState(false);
+    const [isAdultExclude, setAdultExclude] = useState(router.query.adult_exclude === 'y' ?? false);
 
     const [searchResult, setSearchResult] = useState<SearchResult>(
       initialSearchResult,
@@ -240,12 +266,14 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
     const { origin } = useContext(GNBContext);
 
-    const handleSearch = useCallback(async (value: string) => {
+    const handleSearch = useCallback(async (value: string, option?: { adultExclude: boolean }) => {
       setFetching(true);
       if (value.trim().length < 1) {
         setFetching(false);
         return;
       }
+      const cookie = new Cookies();
+      const adultExclude = cookie.get('adult_exclude');
       try {
         const url = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
         url.searchParams.append('site', 'ridi-store');
@@ -253,6 +281,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         url.searchParams.append('where', 'author');
         url.searchParams.append('what', 'instant');
         url.searchParams.append('keyword', value);
+        if (option?.adultExclude || adultExclude === 'y') {
+          url.searchParams.set('adult_exclude', 'y');
+        }
 
         const result = await pRetry(() => axios.get(url.toString()), { retries: 2 });
         const data = SearchTypes.checkInstantSearchResult(result.data);
@@ -267,7 +298,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       } finally {
         setFetching(false);
       }
-    }, []);
+    }, [isAdultExclude]);
     const [debouncedHandleSearch] = useDebouncedCallback(handleSearch, 300);
 
     const handleOnChange = useCallback(
@@ -407,7 +438,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
     const focusedWithSearch = () => {
       setFocus(true);
-      debouncedHandleSearch(keyword);
+      const cookie = new Cookies();
+      setAdultExclude(() => cookie.get('adult_exclude') === 'y');
+      debouncedHandleSearch(keyword, { adultExclude: cookie.get('adult_exclude') === 'y' });
     };
 
     const handleSubmit = useCallback(
@@ -485,6 +518,19 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         searchResult.books.length,
       ],
     );
+
+    const toggleAdultExclude = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      setAdultExclude((value) => !value);
+      const cookie = new Cookies();
+      const value = !isAdultExclude ? 'y' : 'n';
+      cookie.set('adult_exclude', value, {
+        path: '/',
+        sameSite: 'lax',
+      });
+      handleSearch(keyword, { adultExclude: !isAdultExclude });
+    };
+
     useEffect(() => {
       toggleSearchHistoryRecord(
         safeJSONParse(
@@ -547,7 +593,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           {isFocused && (
             // eslint-disable-next-line react/jsx-no-bind
             <ArrowWrapperButton onClick={setFocus.bind(null, false)}>
-              <ArrowLeft css={arrow} />
+              <ArrowLeftIcon />
               <span className="a11y">{labels.goBack}</span>
             </ArrowWrapperButton>
           )}
@@ -606,20 +652,26 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                     focusedPosition={focusedPosition}
                   />
                 ) : (
-                  <InstantSearchResult
-                    handleKeyDown={handleKeyDown}
-                    handleClickBookItem={handleClickBookItem}
-                    handleClickAuthorItem={handleClickAuthorItem}
-                    focusedPosition={focusedPosition}
-                    result={searchResult}
-                  />
+                  <>
+                    <InstantSearchResult
+                      handleKeyDown={handleKeyDown}
+                      handleClickBookItem={handleClickBookItem}
+                      handleClickAuthorItem={handleClickAuthorItem}
+                      focusedPosition={focusedPosition}
+                      result={searchResult}
+                    />
+                    <AdultExcludeButton onClick={toggleAdultExclude}>
+                      <AdultExcludeLabel>성인 제외</AdultExcludeLabel>
+                      <Switch checked={isAdultExclude} />
+                    </AdultExcludeButton>
+                  </>
                 )}
               </form>
             </SearchFooter>
           )}
         </div>
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
-        {isFocused && <div onClick={setFocus.bind(null, false)} css={dimmer} />}
+        {isFocused && <Dimmer onClick={() => setFocus(false)} />}
       </>
     );
   },

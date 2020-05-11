@@ -265,8 +265,7 @@ const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) 
             <AuthorLabel author={book.author} authors={book.authors_info} />
             <Divider />
             <AuthorPublisher>{book.publisher}</AuthorPublisher>
-            {/* 성인 배지는 검색 반응형 완전 적용 이후에 표시하기로 결정  */}
-            {false && book.age_limit > 18 && (
+            {book.age_limit > 18 && (
               <img width={19} src={ADULT_BADGE_URL} alt="성인 전용 도서" />
             )}
           </BookListItemButton>
