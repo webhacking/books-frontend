@@ -287,14 +287,12 @@ function getLastVolumeId(item: SearchTypes.SearchBookDetail) {
 
 type RenderCategoryNameProps = Pick<
   SearchTypes.SearchBookDetail,
+  | 'category'
   | 'category_name'
-  | 'category2_name'
   | 'parent_category'
   | 'parent_category2'
   | 'parent_category_name'
   | 'parent_category_name2'
-  | 'category'
-  | 'category2'
 >;
 
 function RenderCategoryName(props: RenderCategoryNameProps) {
@@ -312,6 +310,9 @@ function RenderCategoryName(props: RenderCategoryNameProps) {
   }
   if (parent_category_name && !parent_category_name2) {
     return <a href={`/category/${parent_category}`}>{parent_category_name}</a>;
+  }
+  if (!parent_category_name && parent_category_name2) {
+    return <a href={`/category/${parent_category2}`}>{parent_category_name2}</a>;
   }
   if (parent_category_name && parent_category_name === parent_category_name2) {
     return <a href={`/category/${parent_category}`}>{parent_category_name}</a>;
@@ -334,14 +335,12 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
     return null;
   }
   const categoryInfo = {
+    category: item.category,
+    category_name: item.category_name,
     parent_category: item.parent_category,
     parent_category2: item.parent_category2,
     parent_category_name: item.parent_category_name,
     parent_category_name2: item.parent_category_name2,
-    category: item.category,
-    category_name: item.category_name,
-    category2: item.category2,
-    category2_name: item.category_name,
   };
   // Fixme desc.intro === '책 정보가 없습니다' 일 경우 처리 확인
   const clearDesc = (book?.clientBookFields?.desc?.intro ?? '')
