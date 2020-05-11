@@ -184,13 +184,13 @@ const NoResult = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  * {
+  > * {
     flex: none;
     margin-bottom: 16px;
   }
-  margin-top: 102px;
-  margin-bottom: 360px;
-  ${orBelow(BreakPoint.LG, 'margin-top: 2px; margin-bottom: 240px')}
+  margin-top: 202px;
+  margin-bottom: 232px;
+  ${orBelow(BreakPoint.LG, 'margin-top: 102px; margin-bottom: 132px')}
 `;
 
 const NoResultLens = styled(Lens)`
@@ -220,6 +220,7 @@ function SearchPage(props: SearchProps) {
     book,
     categories,
     currentCategoryId,
+    currentPage,
     q,
     isAdultExclude,
   } = props;
@@ -253,7 +254,7 @@ function SearchPage(props: SearchProps) {
           <SearchTitle>
             {`‘${q}’ 저자 검색 결과`}
             <TotalAuthor>
-              {author.total > MAXIMUM_AUTHOR ? '총 30명+' : `총 ${author.total}명`}
+              {author.total > MAXIMUM_AUTHOR ? `총 ${MAXIMUM_AUTHOR}명+` : `총 ${author.total}명`}
             </TotalAuthor>
           </SearchTitle>
           <MemoizedAuthors author={author} q={q || ''} />
@@ -291,32 +292,32 @@ function SearchPage(props: SearchProps) {
           <FilterSelector />
           <AdultExcludeToggle adultExclude={isAdultExclude} />
         </Filters>
-        <SearchBookList>
-          {props.book.books.map((item) => (
-            <SearchBookItem key={item.b_id}>
-              <SearchLandscapeBook item={item} title={item.title} />
-            </SearchBookItem>
-          ))}
-        </SearchBookList>
+        { book.total > 0 ? (
+          <SearchBookList>
+            {book.books.map((item) => (
+              <SearchBookItem key={item.b_id}>
+                <SearchLandscapeBook item={item} title={item.title} />
+              </SearchBookItem>
+            ))}
+          </SearchBookList>
+        ) : (
+          <NoResult>
+            <NoResultLens />
+            <NoResultText>{`‘${q}’에 대한 검색 결과가 없습니다.`}</NoResultText>
+            <SuggestButton href="https://help.ridibooks.com/hc/ko/requests/new?ticket_form_id=664028" rel="noreferrer nooppener" target="_blank">도서 제안하기</SuggestButton>
+          </NoResult>
+        )}
         {hasPagination ? (
           <Pagination
             itemPerPage={ITEM_PER_PAGE}
-            currentPage={parseInt(props.currentPage || '1', 10)}
-            totalItem={props.book.total}
+            currentPage={parseInt(currentPage || '1', 10)}
+            totalItem={book.total}
             showStartAndLastButton={!isTablet}
             showPageCount={isTablet ? 5 : 10}
           />
         ) : (
           <EmptyBlock />
         )}
-        { book.total === 0
-          && (
-            <NoResult>
-              <NoResultLens />
-              <NoResultText>{`‘${q}’에 대한 검색 결과가 없습니다.`}</NoResultText>
-              <SuggestButton href="https://help.ridibooks.com/hc/ko/requests/new?ticket_form_id=664028" target="_blank">도서 제안하기</SuggestButton>
-            </NoResult>
-          )}
       </>
     </SearchResultSection>
   );
