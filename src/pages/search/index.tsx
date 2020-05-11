@@ -49,7 +49,7 @@ const SearchResultSection = styled.section`
   min-height: 620px;
   margin: 0 auto;
   padding-top: 8px;
-  ${orBelow(BreakPoint.MD, 'max-width: 100%;')}
+  ${orBelow(BreakPoint.LG, 'max-width: 100%;')}
 `;
 
 const SearchTitle = styled.h2`
@@ -74,11 +74,13 @@ const AuthorItem = styled.li<{ show: boolean }>`
   padding: 12px 0;
   display: ${(props) => (props.show ? 'flex' : 'none')};
   align-items: center;
+  :active {
+    background: rgba(0, 0, 0, 0.05);
+  }
 `;
 
 const AuthorList = styled.ul`
   margin-bottom: 16px;
-  ${orBelow(BreakPoint.LG, 'padding: 0 16px;')}
 `;
 
 const ShowMoreAuthor = styled.li`
@@ -89,6 +91,15 @@ const ShowMoreAuthor = styled.li`
   display: flex;
   cursor: pointer;
   align-items: center;
+  :active {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  ${orBelow(BreakPoint.LG, 'padding: 12px 16px;')}
+`;
+
+const AuthorAnchor = styled.a`
+  width: 100%;
+  ${orBelow(BreakPoint.LG, 'padding: 0px 16px;')}
 `;
 
 const MAXIMUM_AUTHOR = 30;
@@ -109,9 +120,9 @@ function Author(props: { author: SearchTypes.Author; q: string; show: boolean })
   const { author, q, show } = props;
   return (
     <AuthorItem show={show}>
-      <a href={`/author/${author.id}?_s=search&_q=${encodeURIComponent(q)}`}>
+      <AuthorAnchor href={`/author/${author.id}?_s=search&_q=${encodeURIComponent(q)}`}>
         <AuthorInfo author={author} />
-      </a>
+      </AuthorAnchor>
     </AuthorItem>
   );
 }
@@ -159,11 +170,10 @@ const SearchBookList = styled.ul`
 
 const SearchBookItem = styled.li`
   display: flex;
-  margin: 0 4px;
   padding: 20px 0;
   border-bottom: 1px solid ${slateGray20};
   align-items: flex-start;
-  ${orBelow(BreakPoint.LG, 'margin: 0 20px;')};
+  ${orBelow(BreakPoint.LG, 'margin: 0 16px;')};
 `;
 
 const Filters = styled.div`
@@ -188,9 +198,8 @@ const NoResult = styled.div`
     flex: none;
     margin-bottom: 16px;
   }
-  margin-top: 202px;
-  margin-bottom: 232px;
-  ${orBelow(BreakPoint.LG, 'margin-top: 102px; margin-bottom: 132px')}
+  padding: 200px 0 360px 0;
+  ${orBelow(BreakPoint.MD, 'padding: 80px 0 240px 0;')}
 `;
 
 const NoResultLens = styled(Lens)`
@@ -298,7 +307,7 @@ function SearchPage(props: SearchProps) {
         ) : (
           <NoResult>
             <NoResultLens />
-            <NoResultText>{`‘${q}’에 대한 검색 결과가 없습니다.`}</NoResultText>
+            <NoResultText>{`‘${q}’에 대한 도서 검색 결과가 없습니다.`}</NoResultText>
             <SuggestButton href="https://help.ridibooks.com/hc/ko/requests/new?ticket_form_id=664028" rel="noreferrer nooppener" target="_blank">도서 제안하기</SuggestButton>
           </NoResult>
         )}

@@ -22,7 +22,7 @@ const CategoryList = styled.ul`
   display: flex;
   box-shadow: inset 0px -1px 0px ${slateGray20};
   height: 45px;
-  ${orBelow(BreakPoint.MD, 'padding-left: 16px; padding-right: 16px;')};
+  ${orBelow(BreakPoint.LG, 'padding-left: 16px; padding-right: 16px;')};
 `;
 
 const CategoryItem = styled.li<{ active: boolean }>`
