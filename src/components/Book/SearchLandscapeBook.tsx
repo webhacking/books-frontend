@@ -192,7 +192,7 @@ const SearchBookMetaWrapper = styled.div`
 
 function PriceLabel(props: { title: string; price: number; discount?: number }) {
   const { title, price, discount = 0 } = props;
-  const realPrice = Math.ceil(price - price * (discount / 100)).toLocaleString('ko-KR');
+  const realPrice = (price - Math.ceil(price * (discount / 100))).toLocaleString('ko-KR');
   return (
     <PriceItem>
       <PriceTitle>{title}</PriceTitle>
@@ -231,7 +231,7 @@ function PriceInfo(props: {
   props.seriesPriceInfo.forEach((info) => {
     seriesPriceInfo[info.type] = info;
   });
-  if (seriesPriceInfo.rent || seriesPriceInfo.normal) {
+  if (book?.series?.property.is_serial && (seriesPriceInfo.rent || seriesPriceInfo.normal)) {
     return (
       <>
         {seriesPriceInfo.rent && !book?.property.is_trial && (
@@ -459,12 +459,12 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
               <RenderCategoryName {...categoryInfo} />
             </SearchBookMetaField>
           </SearchBookMetaItem>
-          {item.book_count > 1 && (
+          {item.book_count > 1 && book?.categories[0].is_series_category && (
             <SearchBookMetaItem>
               <SearchBookMetaField type="normal">
                 {`총 ${item.book_count}권`}
               </SearchBookMetaField>
-              {item.series_prices_info.length > 0 && item.is_series_complete && (
+              {item.series_prices_info.length > 0 && book.series?.property.is_serial_complete && (
                 <SeriesCompleted>완결</SeriesCompleted>
               )}
             </SearchBookMetaItem>
