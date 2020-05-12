@@ -249,8 +249,8 @@ function SearchPage(props: SearchProps) {
     setPageView();
   }, [loggedUser]);
   useEffect(() => {
-    const availableMaxPage = Math.ceil(book.total / ITEM_PER_PAGE);
-    if (page > MAX_PAGE) {
+    const availableMaxPage = Math.min(Math.ceil(book.total / ITEM_PER_PAGE), MAX_PAGE);
+    if (page > availableMaxPage) {
       const searchParams = new URLSearchParams(router.query as Record<string, string> || {});
       searchParams.set('page', availableMaxPage.toString());
       router.replace(`/search?${searchParams.toString()}`);
@@ -364,7 +364,7 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
     searchUrl.searchParams.set('category_id', categoryId);
   }
   if (/^\d+$/.test(page)) {
-    const startPosition = Math.min(ITEM_PER_PAGE * (parseInt(page, 10) - 1), ITEM_PER_PAGE * 399);
+    const startPosition = Math.min(ITEM_PER_PAGE * (parseInt(page, 10) - 1), ITEM_PER_PAGE * (MAX_PAGE - 1));
     if (startPosition >= 0) {
       searchUrl.searchParams.set('start', startPosition.toString());
     }
@@ -398,7 +398,7 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
     author: searchResult.author,
     categories: searchResult.book.aggregations,
     currentCategoryId: categoryId,
-    currentPage: /^\d+$/.test(page) ? page : 1,
+    currentPage: /^\d+$/.test(page) ? page : '1',
     isAdultExclude,
   };
 };
