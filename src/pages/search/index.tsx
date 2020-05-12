@@ -292,7 +292,7 @@ function SearchPage(props: SearchProps) {
           <FilterSelector />
           <AdultExcludeToggle adultExclude={isAdultExclude} />
         </Filters>
-        { book.total > 0 ? (
+        {book.total > 0 ? (
           <SearchBookList>
             {book.books.map((item) => (
               <SearchBookItem key={item.b_id}>
