@@ -569,6 +569,10 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       debouncedHandleSearch(keyword);
     }, [isAdultExclude, keyword]);
 
+    useEffect(() => {
+      setAdultExclude(initializeAdultExclude(router));
+    }, [isFocused]);
+
     const showFooter = React.useMemo(
       () =>
         // eslint-disable-next-line
