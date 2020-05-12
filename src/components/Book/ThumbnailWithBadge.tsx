@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { getMaxDiscountPercentage } from 'src/utils/common';
 import { getThumbnailIdFromBookDetail } from 'src/utils/books';
 
@@ -18,8 +19,8 @@ interface Props {
   slug: string;
   sizes: string;
   className?: string;
-  title: string;
   onlyAdultBadge?: boolean;
+  title?: string;
 }
 
 export default function ThumbnailWithBadge(props: Props) {
@@ -30,10 +31,10 @@ export default function ThumbnailWithBadge(props: Props) {
     slug,
     sizes,
     className,
-    title,
     onlyAdultBadge,
   } = props;
   const bookDetail = useBookSelector(bId);
+  const title = props.title || computeBookTitle(bookDetail);
   const singlePriceInfo = bookDetail?.price_info;
   const seriesPriceInfo = bookDetail?.series?.price_info;
   return (
