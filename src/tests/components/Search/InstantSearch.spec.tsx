@@ -28,7 +28,7 @@ const renderComponent = async () => {
   await act(async () => {
     result = render(
       <ThemeProvider theme={defaultTheme}>
-        <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
+        <RouterContext.Provider value={{ asPath: '', query: { adult_exclude: 'y'} }}>
           <InstantSearch searchKeyword={''} />
         </RouterContext.Provider>
       </ThemeProvider>,

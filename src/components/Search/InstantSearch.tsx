@@ -26,6 +26,7 @@ import { slateGray60 } from '@ridi/colors';
 import { Switch } from 'src/components/Switch/Switch';
 import Cookies from 'universal-cookie';
 import { useRouter } from 'next/router';
+import { NextRouter } from 'next/dist/next-server/lib/router/router';
 import { SearchResult } from './types';
 
 const fadeIn = keyframes`
@@ -245,6 +246,15 @@ const initialSearchResult = {
   authors: [],
 };
 
+function initializeAdultExclude(router: NextRouter) {
+  if (router.query.adult_exclude) {
+    return router.query.adult_exclude === 'y';
+  }
+  const cookie = new Cookies();
+  const cookieValue = cookie.get('adult_exclude');
+  return cookieValue === 'y';
+}
+
 export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
   (props: InstantSearchProps) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -258,7 +268,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const [enableSearchHistoryRecord, toggleSearchHistoryRecord] = useState(true);
     const [focusedPosition, setFocusedPosition] = useState(0);
     const [, setFetching] = useState(false);
-    const [isAdultExclude, setAdultExclude] = useState(router.query.adult_exclude === 'y' ?? false);
+    const [isAdultExclude, setAdultExclude] = useState(initializeAdultExclude(router));
 
     const [searchResult, setSearchResult] = useState<SearchResult>(
       initialSearchResult,
@@ -266,14 +276,12 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
     const { origin } = useContext(GNBContext);
 
-    const handleSearch = useCallback(async (value: string, option?: { adultExclude: boolean }) => {
+    const handleSearch = useCallback(async (value: string) => {
       setFetching(true);
       if (value.trim().length < 1) {
         setFetching(false);
         return;
       }
-      const cookie = new Cookies();
-      const adultExclude = cookie.get('adult_exclude');
       try {
         const url = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
         url.searchParams.append('site', 'ridi-store');
@@ -281,9 +289,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         url.searchParams.append('where', 'author');
         url.searchParams.append('what', 'instant');
         url.searchParams.append('keyword', value);
-        if (option?.adultExclude || adultExclude === 'y') {
-          url.searchParams.set('adult_exclude', 'y');
-        }
+        url.searchParams.set('adult_exclude', isAdultExclude ? 'y' : 'n');
 
         const result = await pRetry(() => axios.get(url.toString()), { retries: 2 });
         const data = SearchTypes.checkInstantSearchResult(result.data);
@@ -438,9 +444,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
     const focusedWithSearch = () => {
       setFocus(true);
-      const cookie = new Cookies();
-      setAdultExclude(() => cookie.get('adult_exclude') === 'y');
-      debouncedHandleSearch(keyword, { adultExclude: cookie.get('adult_exclude') === 'y' });
+      debouncedHandleSearch(keyword);
     };
 
     const handleSubmit = useCallback(
@@ -528,7 +532,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         path: '/',
         sameSite: 'lax',
       });
-      handleSearch(keyword, { adultExclude: !isAdultExclude });
+      debouncedHandleSearch(keyword);
     };
 
     useEffect(() => {
