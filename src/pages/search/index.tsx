@@ -47,8 +47,9 @@ interface SearchProps {
 
 const SearchResultSection = styled.section`
   max-width: 952px;
+  min-height: 620px;
   margin: 0 auto;
-  margin-top: 8px;
+  padding-top: 8px;
   ${orBelow(BreakPoint.MD, 'max-width: 100%;')}
 `;
 
@@ -177,7 +178,7 @@ const Filters = styled.div`
 const MemoizedAuthors = React.memo(Authors);
 
 const EmptyBlock = styled.div`
-  margin-top: 108px;
+  margin-top: 40px;
 `;
 
 const NoResult = styled.div`
