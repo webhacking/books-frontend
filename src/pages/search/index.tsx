@@ -7,12 +7,16 @@ import * as SearchTypes from 'src/types/searchResults';
 import Cookies from 'universal-cookie';
 import { AuthorInfo } from 'src/components/Search/InstantSearchResult';
 import {
+  dodgerBlue50,
+  slateGray10,
   slateGray20,
   slateGray40,
+  slateGray50,
   slateGray60,
   slateGray90,
 } from '@ridi/colors';
 import ArrowBoldH from 'src/svgs/ArrowBoldH.svg';
+import Lens from 'src/svgs/Lens.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import isPropValid from '@emotion/is-prop-valid';
 import { SearchCategoryTab } from 'src/components/Tabs';
@@ -162,7 +166,6 @@ const SearchBookItem = styled.li`
   ${orBelow(BreakPoint.LG, 'margin: 0 20px;')};
 `;
 
-
 const Filters = styled.div`
   display: flex;
   justify-content: space-between;
@@ -171,11 +174,44 @@ const Filters = styled.div`
   ${orBelow(BreakPoint.LG, 'margin-left: 16px; margin-right: 16px;')}
 `;
 
-
 const MemoizedAuthors = React.memo(Authors);
 
 const EmptyBlock = styled.div`
   margin-top: 108px;
+`;
+
+const NoResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  > * {
+    flex: none;
+    margin-bottom: 16px;
+  }
+  margin-top: 202px;
+  margin-bottom: 232px;
+  ${orBelow(BreakPoint.LG, 'margin-top: 102px; margin-bottom: 132px')}
+`;
+
+const NoResultLens = styled(Lens)`
+  width: 83.5px;
+  height: 83.5px;
+  fill: ${slateGray10};
+`;
+
+const NoResultText = styled.p`
+  font-size: 14px;
+  color: ${slateGray50};
+`;
+
+const SuggestButton = styled.a`
+  height: 40px;
+  padding: 12px 48px;
+  font-weight: bold;
+  font-size: 14px;
+  border: 1px solid ${dodgerBlue50};
+  color: ${dodgerBlue50};
+  border-radius: 3px;
 `;
 
 function SearchPage(props: SearchProps) {
@@ -184,6 +220,7 @@ function SearchPage(props: SearchProps) {
     book,
     categories,
     currentCategoryId,
+    currentPage,
     q,
     isAdultExclude,
   } = props;
@@ -212,78 +249,76 @@ function SearchPage(props: SearchProps) {
           검색 결과 - 리디북스
         </title>
       </Head>
-      {
-        author.total > 0 && (
-          <>
-            <SearchTitle>
-              {`‘${q}’ 저자 검색 결과`}
-              <TotalAuthor>
-                {
-                  author.total > MAXIMUM_AUTHOR ? '총 30명+' : `총 ${author.total}명`
-                }
-              </TotalAuthor>
-            </SearchTitle>
-            <MemoizedAuthors author={author} q={q || ''} />
-          </>
-        )
-      }
-      {book.total > 0 && (
+      {author.total > 0 && (
         <>
-          <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
-          {categories.length > 0 && (
-            <ScrollContainer
-              arrowStyle={css`
-                button {
-                  border-radius: 0;
-                  box-shadow: none;
-                  position: relative;
-                  top: 3px;
-                  width: 20px;
-                  background: linear-gradient(
-                    90deg,
-                    rgba(255, 255, 255, 0.1) 0%,
-                    rgba(255, 255, 255, 0.3) 27.6%,
-                    rgba(255, 255, 255, 0.3) 47.6%,
-                    #ffffff 53.65%
-                  );
-                }
-              `}
-            >
-              <SearchCategoryTab
-                categories={categories}
-                currentCategoryId={
-                  parseInt(currentCategoryId, 10)
-                }
-              />
-            </ScrollContainer>
-          )}
-          <Filters>
-            <FilterSelector />
-            <AdultExcludeToggle adultExclude={isAdultExclude} />
-          </Filters>
+          <SearchTitle>
+            {`‘${q}’ 저자 검색 결과`}
+            <TotalAuthor>
+              {author.total > MAXIMUM_AUTHOR ? `총 ${MAXIMUM_AUTHOR}명+` : `총 ${author.total}명`}
+            </TotalAuthor>
+          </SearchTitle>
+          <MemoizedAuthors author={author} q={q || ''} />
+        </>
+      )}
+
+      <>
+        <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
+        {categories.length > 0 && (
+          <ScrollContainer
+            arrowStyle={css`
+              button {
+                border-radius: 0;
+                box-shadow: none;
+                position: relative;
+                top: 3px;
+                width: 20px;
+                background: linear-gradient(
+                  90deg,
+                  rgba(255, 255, 255, 0.1) 0%,
+                  rgba(255, 255, 255, 0.3) 27.6%,
+                  rgba(255, 255, 255, 0.3) 47.6%,
+                  #ffffff 53.65%
+                );
+              }
+            `}
+          >
+            <SearchCategoryTab
+              categories={categories}
+              currentCategoryId={parseInt(currentCategoryId, 10)}
+            />
+          </ScrollContainer>
+        )}
+        <Filters>
+          <FilterSelector />
+          <AdultExcludeToggle adultExclude={isAdultExclude} />
+        </Filters>
+        {book.total > 0 ? (
           <SearchBookList>
-            {props.book.books.map((item) => (
+            {book.books.map((item) => (
               <SearchBookItem key={item.b_id}>
-                <SearchLandscapeBook
-                  item={item}
-                  title={item.title}
-                />
+                <SearchLandscapeBook item={item} title={item.title} />
               </SearchBookItem>
             ))}
           </SearchBookList>
-          {hasPagination ? (
-            <Pagination
-              itemPerPage={ITEM_PER_PAGE}
-              currentPage={parseInt(props.currentPage || '1', 10)}
-              totalItem={props.book.total}
-              showStartAndLastButton={!isTablet}
-              showPageCount={isTablet ? 5 : 10}
-            />
-          ) : (
-            <EmptyBlock />
-          )}
-        </>
-      )}
+        ) : (
+          <NoResult>
+            <NoResultLens />
+            <NoResultText>{`‘${q}’에 대한 검색 결과가 없습니다.`}</NoResultText>
+            <SuggestButton href="https://help.ridibooks.com/hc/ko/requests/new?ticket_form_id=664028" rel="noreferrer nooppener" target="_blank">도서 제안하기</SuggestButton>
+          </NoResult>
+        )}
+        {hasPagination ? (
+          <Pagination
+            itemPerPage={ITEM_PER_PAGE}
+            currentPage={parseInt(currentPage || '1', 10)}
+            totalItem={book.total}
+            showStartAndLastButton={!isTablet}
+            showPageCount={isTablet ? 5 : 10}
+          />
+        ) : (
+          <EmptyBlock />
+        )}
+      </>
     </SearchResultSection>
   );
 }
