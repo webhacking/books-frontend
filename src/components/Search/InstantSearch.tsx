@@ -526,13 +526,6 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const toggleAdultExclude = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       setAdultExclude((value) => !value);
-      const cookie = new Cookies();
-      const value = !isAdultExclude ? 'y' : 'n';
-      cookie.set('adult_exclude', value, {
-        path: '/',
-        sameSite: 'lax',
-      });
-      debouncedHandleSearch(keyword);
     };
 
     useEffect(() => {
@@ -563,6 +556,18 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
         // Unmount
       };
     }, []);
+
+    useEffect(() => {
+      const cookie = new Cookies();
+      cookie.set('adult_exclude', isAdultExclude ? 'y' : 'n', {
+        path: '/',
+        sameSite: 'lax',
+      });
+    }, [isAdultExclude]);
+
+    useEffect(() => {
+      debouncedHandleSearch(keyword);
+    }, [isAdultExclude, keyword]);
 
     const showFooter = React.useMemo(
       () =>
