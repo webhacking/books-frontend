@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
-import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { createTimeLabel } from 'src/utils/dateTime';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import {
@@ -11,7 +10,6 @@ import BookMeta from 'src/components/BookMeta';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
 import ScrollContainer from 'src/components/ScrollContainer';
 import { CLOCK_ICON_URL } from 'src/constants/icons';
-import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 
 import { SectionTitle, SectionTitleLink } from '../SectionTitle';
 
@@ -145,12 +143,6 @@ function RankingBook({
   showSomeDeal,
   rating,
 }: Omit<ItemListProps, 'books'> & {bId: string; order: number; rating?: StarRating}) {
-  const book = useBookSelector(bId);
-  if (book == null || book.is_deleted) {
-    return null;
-  }
-
-  const title = computeBookTitle(book);
   return (
     // auto-flow 안 되는 IE11을 위한 땜빵
     <RankingBookItem
@@ -169,7 +161,6 @@ function RankingBook({
           slug={slug}
           sizes={type === 'big' ? '80px' : '50px'}
           type={type}
-          title={title}
           onlyAdultBadge={type !== 'big'}
         />
       </ThumbnailAnchor>

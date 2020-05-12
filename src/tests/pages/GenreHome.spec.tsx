@@ -1,15 +1,15 @@
 import axios from 'axios';
 import * as React from 'react';
 import Index from 'src/pages/[genre]';
-import { act, render, RenderResult, waitForElement } from '@testing-library/react';
+import { act, cleanup, render, RenderResult, waitForElement } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../store/config';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from '../../styles';
 import { Provider } from 'react-redux';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
-import fantasyFixture from './home-fantasy-fixture.json';
 import blFixture from './home-bl-fixture.json';
+import fantasyFixture from './home-fantasy-fixture.json';
 import { ViewportIntersectionProvider } from '../../hooks/useViewportIntersection';
 import { createRouter } from 'next/router';
 
@@ -30,7 +30,6 @@ const router = createRouter('/', { genre: 'general' }, '', {
 
 const store = makeStore(
   {
-    router: {},
     books: {
       isFetching: false,
       items: {
@@ -88,8 +87,7 @@ function actRender(renderFunction: () => RenderResult) {
 }
 
 const renderComponent = ({ props }): RenderResult => {
-  let component;
-  component = render(
+  return render(
     <ThemeProvider theme={defaultTheme}>
       <RouterContext.Provider value={router}>
         <Provider store={store}>
@@ -100,12 +98,16 @@ const renderComponent = ({ props }): RenderResult => {
       </RouterContext.Provider>
     </ThemeProvider>,
   );
-
-  return component;
 };
 
+afterEach(() => {
+  act(() => {
+    cleanup();
+  });
+});
+
 describe('Genre Home Test', () => {
-  it('should be render Home Component (Empty Branches)', async () => {
+  it('should fetch branches', async () => {
     const handler = jest.fn().mockReturnValue({
       data: {
         slug: 'home-fantasy',
@@ -130,57 +132,31 @@ describe('Genre Home Test', () => {
     expect(handler.mock.calls[0][1]).toEqual('/pages/home-fantasy/');
   });
 
-  it('should be render Home Component (Server Side Data)', async () => {
-    const handler = jest.fn().mockReturnValue({
-      data: {
-        slug: 'home-fantasy',
-        type: 'Page',
-        title: '판타지 홈',
-        branches: fantasyFixture.branches,
-      },
-    });
-    (axios as any).__setHandler(handler);
-
-    const props = await Index.getInitialProps({
-      ...mockSomeProps,
-      query: { genre: 'fantasy' },
-      req: {
-        cookies: {
-          main_genre: 'fantasy',
-        },
-      },
-    });
-    expect(handler.mock.calls[0][0]).toEqual('get');
-    expect(handler.mock.calls[0][1]).toEqual('/pages/home-fantasy/');
-
-    const { getAllByText } = actRender(() => renderComponent({ props }));
+  it('should render Home Component (fantasy)', async () => {
+    const props = {
+      genre: 'fantasy',
+      slug: 'home-fantasy',
+      type: 'Page',
+      title: '판타지 홈',
+      branches: fantasyFixture.branches,
+    };
+    const { getAllByText } = actRender(() => (
+      renderComponent({ props }))
+    );
     expect(getAllByText(/판타지 도서 타이/)[0]).not.toBeNull();
   });
 
-  it('should be render Home Component (Client Branches)', async () => {
-    const handler = jest.fn().mockReturnValue({
-      data: {
-        slug: 'home-bl',
-        type: 'Page',
-        title: 'BL 홈',
-        branches: blFixture.branches,
-      },
-    });
-    (axios as any).__setHandler(handler);
-
-    const props = await Index.getInitialProps({
-      ...mockSomeProps,
-      query: { genre: 'bl' },
+  it('should render Home Component (bl)', async () => {
+    const props = {
       genre: 'bl',
-      isServer: false,
-      req: {
-        cookies: {
-          main_genre: 'bl',
-        },
-      },
-    });
-    const { getAllByAltText, container } = renderComponent({ ...props, genre: 'bl' });
-    expect(handler).toBeCalledTimes(1);
+      slug: 'home-bl',
+      type: 'Page',
+      title: 'BL 홈',
+      branches: blFixture.branches,
+    };
+    const { getAllByAltText, container } = actRender(() => (
+      renderComponent({ props }))
+    );
 
     const renderer = await waitForElement(() => getAllByAltText(/\[소설\] 리뷰 전원/), {
       timeout: 2000,

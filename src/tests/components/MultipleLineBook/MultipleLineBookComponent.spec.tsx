@@ -22,7 +22,6 @@ const store = makeStore(
     account: {
       loggedUser: null,
     },
-    router: undefined,
     categories: {
       items: {},
       isFetching: false,

@@ -44,7 +44,6 @@ interface Props {
   onClick?(): void;
   className?: string;
   children?: React.ReactNode;
-  title: string;
 }
 
 const StyledAnchor = styled.a`
@@ -60,7 +59,6 @@ export default function PortraitBook(props: Props) {
     disabled,
     onClick,
     className,
-    title,
     children,
   } = props;
   const href = `/books/${bId}`;
@@ -73,7 +71,6 @@ export default function PortraitBook(props: Props) {
             order={index}
             genre={genre}
             slug={slug}
-            title={title}
             sizes="(max-width: 999px) 100px, 140px"
           />
         </StyledThumbnailWrapper>
