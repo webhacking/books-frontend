@@ -182,16 +182,6 @@ const EmptyBlock = styled.div`
   margin-top: 40px;
 `;
 
-function computePage(page: number) {
-  if (page < 1) {
-    return 1;
-  }
-  if (page > 400) {
-    return 400;
-  }
-  return page;
-}
-
 const NoResult = styled.div`
   display: flex;
   flex-direction: column;
@@ -225,6 +215,8 @@ const SuggestButton = styled.a`
   color: ${dodgerBlue50};
   border-radius: 3px;
 `;
+// const MAX_ITEM = 9600; // search api result window 10000. 24 * 400 = 9600
+const MAX_PAGE = 400;
 
 function SearchPage(props: SearchProps) {
   const {
@@ -252,17 +244,16 @@ function SearchPage(props: SearchProps) {
   }, [tracker]);
   const hasPagination = book.total > ITEM_PER_PAGE && book.books.length > 0;
   const page = parseInt(currentPage || '1', 10);
-  const computedCurrentPage = computePage(page);
+
   useEffect(() => {
     setPageView();
   }, [loggedUser]);
-
   useEffect(() => {
     const availableMaxPage = Math.ceil(book.total / ITEM_PER_PAGE);
-    if (availableMaxPage < page) {
+    if (page > MAX_PAGE) {
       const searchParams = new URLSearchParams(router.query as Record<string, string> || {});
       searchParams.set('page', availableMaxPage.toString());
-      router.push(`/search?${searchParams.toString()}`);
+      router.replace(`/search?${searchParams.toString()}`);
     }
   }, [currentPage]);
   return (
@@ -335,10 +326,11 @@ function SearchPage(props: SearchProps) {
         {hasPagination ? (
           <Pagination
             itemPerPage={ITEM_PER_PAGE}
-            currentPage={computedCurrentPage}
+            currentPage={Math.max(page, 1)} // 0 이하로 떨어지는 걸 방지
             totalItem={book.total}
             showStartAndLastButton={!isTablet}
             showPageCount={isTablet ? 5 : 10}
+            maxPage={MAX_PAGE}
           />
         ) : (
           <EmptyBlock />
