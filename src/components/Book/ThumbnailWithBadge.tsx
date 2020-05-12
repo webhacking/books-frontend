@@ -54,7 +54,7 @@ export default function ThumbnailWithBadge(props: Props) {
             <BookBadgeRenderer
               isRentable={
                 (!!singlePriceInfo?.rent
-                  || !!seriesPriceInfo?.rent)
+                  || (!!seriesPriceInfo?.rent && bookDetail?.series?.property.is_serial))
                 && ['general', 'romance', 'bl'].includes(genre)
               }
               isWaitFree={bookDetail?.series?.property.is_wait_free}

@@ -265,7 +265,7 @@ function PriceInfo(props: {
         {rent && (
           <PriceLabel
             title="대여"
-            price={rent.regular_price}
+            price={rent.price}
             discount={rent.discount_percentage}
           />
         )}
@@ -285,16 +285,6 @@ function PriceInfo(props: {
 interface SearchLandscapeBookProps {
   item: SearchTypes.SearchBookDetail;
   title: string;
-}
-
-function getLastVolumeId(item: SearchTypes.SearchBookDetail) {
-  if (item.is_series_complete || item.book_count === 1) {
-    return item.b_id;
-  }
-  if (item.opened_last_volume_id.length > 0) {
-    return item.opened_last_volume_id;
-  }
-  return item.b_id;
 }
 
 type RenderCategoryNameProps = Pick<
@@ -356,7 +346,6 @@ const SkeletonBar = styled.div<{width: string}>`
 
 export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   const { item, title } = props;
-  const thumbnailId = getLastVolumeId(item);
   const book = useBookSelector(item.b_id);
   if (book === null) {
     return (
@@ -372,7 +361,6 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   if (book.is_deleted) {
     return null;
   }
-
   const categoryInfo = {
     category: item.category,
     category_name: item.category_name,
@@ -395,7 +383,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
     <>
       <ThumbnailAnchor href={`/books/${item.b_id}`}>
         <StyledThumbnailWithBadge
-          bId={thumbnailId}
+          bId={item.b_id}
           genre={genres[0] ?? ''}
           slug="search-result"
           sizes="(min-width: 999px) 100px, 80px"
