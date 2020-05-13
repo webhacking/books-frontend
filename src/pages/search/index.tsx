@@ -34,6 +34,7 @@ import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
 import { Pagination } from 'src/components/Pagination/Pagination';
 import useIsTablet from 'src/hooks/useIsTablet';
 import { AdultExcludeToggle, FilterSelector } from 'src/components/Search';
+import { useRouter } from 'next/router';
 
 interface SearchProps {
   q?: string;
@@ -214,6 +215,8 @@ const SuggestButton = styled.a`
   color: ${dodgerBlue50};
   border-radius: 3px;
 `;
+// const MAX_ITEM = 9600; // search api result window 10000. 24 * 400 = 9600
+const MAX_PAGE = 400;
 
 function SearchPage(props: SearchProps) {
   const {
@@ -225,7 +228,9 @@ function SearchPage(props: SearchProps) {
     q,
     isAdultExclude,
   } = props;
+
   const [tracker] = useEventTracker();
+  const router = useRouter();
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const isTablet = useIsTablet();
   const setPageView = useCallback(() => {
@@ -238,9 +243,19 @@ function SearchPage(props: SearchProps) {
     }
   }, [tracker]);
   const hasPagination = book.total > ITEM_PER_PAGE && book.books.length > 0;
+  const page = parseInt(currentPage || '1', 10);
+
   useEffect(() => {
     setPageView();
   }, [loggedUser]);
+  useEffect(() => {
+    const availableMaxPage = Math.min(Math.ceil(book.total / ITEM_PER_PAGE), MAX_PAGE);
+    if (page > availableMaxPage) {
+      const searchParams = new URLSearchParams(router.query as Record<string, string> || {});
+      searchParams.set('page', availableMaxPage.toString());
+      router.replace(`/search?${searchParams.toString()}`);
+    }
+  }, [currentPage]);
   return (
     <SearchResultSection>
       <Head>
@@ -311,10 +326,11 @@ function SearchPage(props: SearchProps) {
         {hasPagination ? (
           <Pagination
             itemPerPage={ITEM_PER_PAGE}
-            currentPage={parseInt(currentPage || '1', 10)}
+            currentPage={Math.max(page, 1)} // 0 이하로 떨어지는 걸 방지
             totalItem={book.total}
             showStartAndLastButton={!isTablet}
             showPageCount={isTablet ? 5 : 10}
+            maxPage={MAX_PAGE}
           />
         ) : (
           <EmptyBlock />
@@ -348,8 +364,10 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
     searchUrl.searchParams.set('category_id', categoryId);
   }
   if (/^\d+$/.test(page)) {
-    const startPosition = ITEM_PER_PAGE * (parseInt(page, 10) - 1);
-    searchUrl.searchParams.set('start', startPosition.toString());
+    const startPosition = Math.min(ITEM_PER_PAGE * (parseInt(page, 10) - 1), ITEM_PER_PAGE * (MAX_PAGE - 1));
+    if (startPosition >= 0) {
+      searchUrl.searchParams.set('start', startPosition.toString());
+    }
   }
   if (isPublisherSearch) {
     searchUrl.searchParams.set('what', 'publisher');
@@ -380,7 +398,7 @@ SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
     author: searchResult.author,
     categories: searchResult.book.aggregations,
     currentCategoryId: categoryId,
-    currentPage: page,
+    currentPage: /^\d+$/.test(page) ? page : '1',
     isAdultExclude,
   };
 };

@@ -46,7 +46,7 @@ const PageButton = styled.button`
 
 const Pages = styled.ul`
   display: flex;
-  
+
   > * + * {
     margin-left: -1px;
   }
@@ -93,10 +93,8 @@ interface PaginationProps {
   showPageCount: number;
   currentPage: number;
   showStartAndLastButton?: boolean;
+  maxPage: number;
 }
-
-// const MAX_ITEM = 9600; // search api result window 10000. 24 * 400 = 9600
-const MAX_PAGE = 400;
 
 function getQueryParamsToString(searchParam: URLSearchParams, page: string) {
   const params = new URLSearchParams(searchParam);
@@ -110,9 +108,10 @@ export function Pagination(props: PaginationProps) {
     currentPage,
     itemPerPage,
     showStartAndLastButton,
+    maxPage,
     showPageCount = 5,
   } = props;
-  const totalPage = Math.min(MAX_PAGE, Math.ceil(totalItem / itemPerPage));
+  const totalPage = Math.min(maxPage, Math.ceil(totalItem / itemPerPage));
   const totalPagination = Math.ceil(totalPage / showPageCount);
   const currentPaginationPosition = Math.ceil(currentPage / showPageCount);
   const showPreviousButton = currentPaginationPosition > 1;
