@@ -13,8 +13,8 @@ function useRefWithPrevious<T>(
   return [callbackRef, innerRef];
 }
 
-// [ref, isOnStart, isOnEnd, startMarkerRef, endMarkerRef, scrollBy]
-export const useScrollPosition = (): [React.RefCallback<HTMLElement | null>, boolean, boolean, React.Ref<Element>, React.Ref<Element>, (leftValue: number) => void] => {
+// [ref, isOnStart, isOnEnd, startMarkerRef, endMarkerRef, scrollBy, focusElement]
+export const useScrollPosition = (): [React.RefCallback<HTMLElement | null>, boolean, boolean, React.Ref<Element>, React.Ref<Element>, (leftValue: number) => void, (element: HTMLElement) => void] => {
   // 둘 다 보인다고 가정
   const [isOnStart, setOnStart] = React.useState(true);
   const [isOnEnd, setOnEnd] = React.useState(true);
@@ -35,6 +35,17 @@ export const useScrollPosition = (): [React.RefCallback<HTMLElement | null>, boo
           // ref.current.scroll({ left: ref.current.scrollLeft + left, behavior: 'smooth' });
         }
       }
+    },
+    [],
+  );
+
+  const focusElement = React.useCallback(
+    (element: HTMLElement) => {
+      if (!nodeRef.current) {
+        return;
+      }
+      const { offsetLeft = 0, clientWidth = 0 } = element;
+      nodeRef.current.scrollLeft = offsetLeft - (nodeRef.current.clientWidth - clientWidth) / 2;
     },
     [],
   );
@@ -104,5 +115,5 @@ export const useScrollPosition = (): [React.RefCallback<HTMLElement | null>, boo
     }
   }, []);
 
-  return [callbackRef, isOnStart, isOnEnd, startMarkerRef, endMarkerRef, scrollBy];
+  return [callbackRef, isOnStart, isOnEnd, startMarkerRef, endMarkerRef, scrollBy, focusElement];
 };

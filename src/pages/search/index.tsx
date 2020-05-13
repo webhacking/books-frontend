@@ -20,14 +20,12 @@ import Lens from 'src/svgs/Lens.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import isPropValid from '@emotion/is-prop-valid';
 import { SearchCategoryTab } from 'src/components/Tabs';
-import { css } from '@emotion/core';
 import { useCallback, useEffect } from 'react';
 import sentry from 'src/utils/sentry';
 import { useEventTracker } from 'src/hooks/useEventTracker';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
 import { booksActions } from 'src/services/books';
-import ScrollContainer from 'src/components/ScrollContainer';
 import pRetry from 'p-retry';
 import { keyToArray } from 'src/utils/common';
 import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
@@ -280,29 +278,10 @@ function SearchPage(props: SearchProps) {
       <>
         <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
         {categories.length > 0 && (
-          <ScrollContainer
-            arrowStyle={css`
-              button {
-                border-radius: 0;
-                box-shadow: none;
-                position: relative;
-                top: 3px;
-                width: 20px;
-                background: linear-gradient(
-                  90deg,
-                  rgba(255, 255, 255, 0.1) 0%,
-                  rgba(255, 255, 255, 0.3) 27.6%,
-                  rgba(255, 255, 255, 0.3) 47.6%,
-                  #ffffff 53.65%
-                );
-              }
-            `}
-          >
-            <SearchCategoryTab
-              categories={categories}
-              currentCategoryId={parseInt(currentCategoryId, 10)}
-            />
-          </ScrollContainer>
+          <SearchCategoryTab
+            categories={categories}
+            currentCategoryId={parseInt(currentCategoryId, 10)}
+          />
         )}
         <Filters>
           <FilterSelector />

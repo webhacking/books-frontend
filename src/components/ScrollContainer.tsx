@@ -116,7 +116,7 @@ interface Props {
   rightArrowLabel: string;
   arrowStyle?: 'center' | Interpolation;
   className?: string;
-  children?: React.ReactNode;
+  children?: React.ReactNode | ((focusElementRef: React.Ref<HTMLElement>) => React.ReactNode);
 }
 
 export default function ScrollContainer(props: Props) {
@@ -128,13 +128,20 @@ export default function ScrollContainer(props: Props) {
     className,
     children,
   } = props;
-  const [ref, moveLeft, moveRight, isOnStart, isOnEnd, leftMarkerRef, rightMarkerRef] = useScrollSlider();
+  const [scrollRef, moveLeft, moveRight, focusElement, isOnStart, isOnEnd, leftMarkerRef, rightMarkerRef] = useScrollSlider();
+  const [focusedElement, setFocusedElement] = React.useState<HTMLElement | null>(null);
+  React.useEffect(() => {
+    if (focusedElement != null) {
+      focusElement(focusedElement);
+    }
+  }, [focusedElement]);
+  const content = typeof children === 'function' ? children(setFocusedElement) : children;
   return (
     <ControllerContainer className={className}>
-      <SlidingContainer ref={ref as React.Ref<HTMLDivElement>}>
+      <SlidingContainer ref={scrollRef as React.Ref<HTMLDivElement>}>
         <Marker ref={leftMarkerRef as React.Ref<HTMLDivElement>} />
         <Content>
-          {children}
+          {content}
         </Content>
         <Marker ref={rightMarkerRef as React.Ref<HTMLDivElement>} />
       </SlidingContainer>
