@@ -198,8 +198,8 @@ const NoResult = styled.div`
     flex: none;
     margin-bottom: 16px;
   }
-  padding: 200px 0 360px 0;
-  ${orBelow(BreakPoint.MD, 'padding: 80px 0 240px 0;')}
+  padding: 200px 0 360px;
+  ${orBelow(BreakPoint.MD, 'padding: 80px 0 240px;')}
 `;
 
 const NoResultLens = styled(Lens)`
