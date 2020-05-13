@@ -1,6 +1,6 @@
-import { getEscapedNode } from 'src/utils/highlight';
 import { css } from '@emotion/core';
-import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
+import isPropValid from '@emotion/is-prop-valid';
+import styled from '@emotion/styled';
 import {
   dodgerBlue50,
   orange40,
@@ -10,16 +10,18 @@ import {
   slateGray50,
   slateGray60,
 } from '@ridi/colors';
-import Link from 'next/link';
 import * as React from 'react';
+import Link from 'next/link';
+
+import { getEscapedNode } from 'src/utils/highlight';
+import { constructSearchDesc } from 'src/utils/books';
+import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import * as SearchTypes from 'src/types/searchResults';
 import { AuthorsInfo } from 'src/types/searchResults';
 import * as BookApi from 'src/types/book';
 import { AuthorRole } from 'src/types/book';
-import styled from '@emotion/styled';
 import Star from 'src/svgs/Star.svg';
-import isPropValid from '@emotion/is-prop-valid';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
 import { lineClamp } from 'src/styles';
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
@@ -342,13 +344,8 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
     parent_category_name: item.parent_category_name,
     parent_category_name2: item.parent_category_name2,
   };
-  // Fixme desc.intro === '책 정보가 없습니다' 일 경우 처리 확인
-  const clearDesc = (book?.clientBookFields?.desc?.intro ?? '')
-    .replace(/[\r\n]/g, ' ')
-    .replace(/&#10;/g, ' ')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/(<([^>]+)>)/gi, '');
+  const rawDesc = book?.clientBookFields?.desc;
+  const clearDesc = rawDesc ? constructSearchDesc(rawDesc) : '';
   // 대여 배지 표기 여부가 장르에 따라 바뀌기 때문에 장르를 모아둠
   const genres = book?.categories.map((category) => category.sub_genre) ?? ['general'];
   let translator: AuthorsInfo | undefined;
