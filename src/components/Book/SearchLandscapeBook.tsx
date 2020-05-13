@@ -265,7 +265,8 @@ function PriceInfo(props: {
         {rent && (
           <PriceLabel
             title="대여"
-            price={rent.price}
+            // https://rididev.slack.com/archives/CE55MTQH2/p1589365195037000
+            price={rent.price === 0 ? rent.regular_price : rent.price}
             discount={rent.discount_percentage}
           />
         )}
