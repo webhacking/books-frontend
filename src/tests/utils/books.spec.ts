@@ -21,9 +21,9 @@ describe('constructSearchDesc', () => {
       publisher_review: 'publisher',
     }, '<출판사 서평> publisher'],
     [{
-      intro: 'intro\r\nwith newline',
+      intro: 'intro\r\nwith newline and &lt;angular brackets&gt;',
       toc: 'toc\r\nwith <b>tags</b> &amp; entities',
-    }, 'intro with newline <목차> toc with tags & entities'],
+    }, 'intro with newline and <angular brackets> <목차> toc with tags & entities'],
   ])('should construct description correctly', (description, expected) => {
     expect(constructSearchDesc(description)).toBe(expected);
   });

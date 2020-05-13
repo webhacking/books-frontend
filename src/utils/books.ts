@@ -4,9 +4,10 @@ import * as BookApi from 'src/types/book';
 
 function decodeDescField(options: { value?: string; prefix?: string }): string {
   const { value = '', prefix } = options;
-  const decoded = decodeHTML(value)
+  const stripped = value
     .replace(/\r?\n/g, ' ')
     .replace(/(<([^>]+)>)/gi, '');
+  const decoded = decodeHTML(stripped);
   if (prefix != null && decoded !== '') {
     return `<${prefix}> ${decoded}`;
   }
