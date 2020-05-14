@@ -251,7 +251,7 @@ function PriceInfo(props: {
     return <PriceLabel title="구매" price={0} discount={0} regularPrice={0} />;
   }
   // 진정한 무료 책
-  if (seriesPriceInfo === {} && price === 0 && price_info?.buy?.price === 0) {
+  if (!seriesPriceInfo.normal && price === 0 && price_info?.buy?.price === 0) {
     return <PriceLabel title="구매" price={0} discount={0} regularPrice={0} />;
   }
   if (price_info && price !== 0) {
