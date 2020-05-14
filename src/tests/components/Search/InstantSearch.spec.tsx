@@ -19,6 +19,7 @@ import { safeJSONParse } from '../../../utils/common';
 
 import axios from 'axios';
 import fixtureABC from './abc.fixture.json';
+import { RouterContext } from 'next/dist/next-server/lib/router-context';
 afterEach(cleanup);
 
 // axiosMock.get.mockResolvedValue();
@@ -27,7 +28,9 @@ const renderComponent = async () => {
   await act(async () => {
     result = render(
       <ThemeProvider theme={defaultTheme}>
-        <InstantSearch searchKeyword={''} />
+        <RouterContext.Provider value={{ asPath: '', query: { adult_exclude: 'y'} }}>
+          <InstantSearch searchKeyword={''} />
+        </RouterContext.Provider>
       </ThemeProvider>,
     );
   });

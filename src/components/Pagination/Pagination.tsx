@@ -169,7 +169,7 @@ export function Pagination(props: PaginationProps) {
               href={`/search?${getQueryParamsToString(searchParam, (currentPaginationPosition * showPageCount + 1).toString())}`}
             >
               <a>
-                <Arrow rotate={false} />
+                <Arrow />
               </a>
             </Link>
           </StyledPageButton>
