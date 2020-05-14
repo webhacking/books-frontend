@@ -125,6 +125,7 @@ const ThumbnailAnchor = styled.a<{ type: 'big' | 'small' }>`
 
 const StyledThumbnailWithBadge = styled(ThumbnailWithBadge)<{ type: 'big' | 'small' }>`
   width: ${(props) => (props.type === 'big' ? 80 : 50)}px;
+  max-height: ${(props) => (props.type === 'big' ? 114 : 71)}px;
 `;
 
 interface ItemListProps {
