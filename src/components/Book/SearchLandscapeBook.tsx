@@ -457,7 +457,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
               <>
                 <StyledStar color="orange" />
                 <SearchBookMetaField type="rating">
-                  {item.buyer_rating_score}
+                  {item.buyer_rating_score.toFixed(1)}
                   점
                   {' '}
                 </SearchBookMetaField>
