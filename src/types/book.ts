@@ -144,8 +144,8 @@ export interface SeriesProperty {
   is_wait_free: boolean;
   opened_book_count: number;
   opened_last_volume_id: string;
-  prev_books: [] | LinkedSeriesBookInfo;
-  next_books: [] | LinkedSeriesBookInfo;
+  prev_books?: [] | LinkedSeriesBookInfo;
+  next_books?: [] | LinkedSeriesBookInfo;
   last_volume_id: string;
   title?: string;
   total_book_count: number;

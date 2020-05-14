@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PriceInfo test free book render 1`] = `
+<div>
+  <dl
+    class="css-13w561e-PriceItem e18h15o99"
+  >
+    <dt
+      class="css-qvy4wk-PriceTitle-priceBase e18h15o910"
+    >
+      구매
+    </dt>
+    <dd>
+      <span
+        class="css-1jt67wx-Price-priceBase e18h15o911"
+      >
+        무료
+      </span>
+       
+    </dd>
+  </dl>
+</div>
+`;
+
+exports[`PriceInfo test render correct rental & buy price 1`] = `
+<div>
+  <dl
+    class="css-13w561e-PriceItem e18h15o99"
+  >
+    <dt
+      class="css-qvy4wk-PriceTitle-priceBase e18h15o910"
+    >
+      구매
+    </dt>
+    <dd>
+      <span
+        class="css-1jt67wx-Price-priceBase e18h15o911"
+      >
+        100원
+      </span>
+       
+    </dd>
+  </dl>
+</div>
+`;
+
+exports[`PriceInfo test rental, buy price render 1`] = `
+<div>
+  <dl
+    class="css-13w561e-PriceItem e18h15o99"
+  >
+    <dt
+      class="css-qvy4wk-PriceTitle-priceBase e18h15o910"
+    >
+      대여
+    </dt>
+    <dd>
+      <span
+        class="css-1jt67wx-Price-priceBase e18h15o911"
+      >
+        1,900원
+      </span>
+       
+    </dd>
+  </dl>
+  <dl
+    class="css-13w561e-PriceItem e18h15o99"
+  >
+    <dt
+      class="css-qvy4wk-PriceTitle-priceBase e18h15o910"
+    >
+      구매
+    </dt>
+    <dd>
+      <span
+        class="css-1jt67wx-Price-priceBase e18h15o911"
+      >
+        12,800원
+      </span>
+       
+    </dd>
+  </dl>
+</div>
+`;
+
+exports[`PriceInfo test trial free book render 1`] = `
+<div>
+  <dl
+    class="css-13w561e-PriceItem e18h15o99"
+  >
+    <dt
+      class="css-qvy4wk-PriceTitle-priceBase e18h15o910"
+    >
+      구매
+    </dt>
+    <dd>
+      <span
+        class="css-1jt67wx-Price-priceBase e18h15o911"
+      >
+        무료
+      </span>
+       
+    </dd>
+  </dl>
+</div>
+`;
