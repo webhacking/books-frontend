@@ -277,18 +277,24 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const { origin } = useContext(GNBContext);
 
     const handleSearch = useCallback(async (value: string, adultExclude: boolean) => {
-      setFetching(true);
-      if (value.trim().length < 1) {
-        setFetching(false);
+      const trimmedValue = value.trim();
+      if (trimmedValue.length > 0) {
+        if (trimmedValue.length === 1 && isOnsetNucleusCoda(trimmedValue[0])) {
+          setSearchResult(initialSearchResult);
+          return;
+        }
+      } else {
+        setSearchResult(initialSearchResult);
         return;
       }
+      setFetching(true);
       try {
         const url = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
         url.searchParams.append('site', 'ridi-store');
         url.searchParams.append('where', 'book');
         url.searchParams.append('where', 'author');
         url.searchParams.append('what', 'instant');
-        url.searchParams.append('keyword', value);
+        url.searchParams.append('keyword', trimmedValue);
         url.searchParams.set('adult_exclude', adultExclude ? 'y' : 'n');
 
         const result = await pRetry(() => axios.get(url.toString()), { retries: 2 });
@@ -306,29 +312,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       }
     }, []);
     const [debouncedHandleSearch] = useDebouncedCallback(handleSearch, 300);
-
-    const handleOnChange = useCallback(
-      (value: string) => {
-        // 초-중-종성 체크
-        if (value.length > 0) {
-          if (value.length === 1 && isOnsetNucleusCoda(value[0])) {
-            setSearchResult(initialSearchResult);
-          } else {
-            debouncedHandleSearch(value, isAdultExclude);
-          }
-        } else {
-          setSearchResult(initialSearchResult);
-          debouncedHandleSearch(value, isAdultExclude);
-        }
-        setFocusedPosition(0);
-      },
-      [debouncedHandleSearch],
-    );
-    const [debouncedOnChange] = useDebouncedCallback(handleOnChange, 100, {});
     const passEventTarget = (e: React.ChangeEvent<HTMLInputElement>) => {
       const copiedValue = e.target.value;
       setKeyword(copiedValue);
-      debouncedOnChange(copiedValue);
     };
 
     const handleSearchWrapperBlur = useCallback((e: React.FocusEvent<HTMLDivElement>) => {
