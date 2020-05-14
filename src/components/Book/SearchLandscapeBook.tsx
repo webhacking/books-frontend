@@ -178,6 +178,7 @@ const SearchBookMetaWrapper = styled.div`
    display: flex;
    flex-direction: column;
    margin-left: 16px;
+   width: 100%;
 `;
 
 function PriceLabel(props: { title: string; price: number; discount?: number }) {
@@ -329,13 +330,40 @@ function RenderCategoryName(props: RenderCategoryNameProps) {
   );
 }
 
+const SkeletonBook = styled.div`
+  background: linear-gradient(327.23deg, #F8F9FB 1.42%, #F1F1F3 49.17%, #F8F9FB 100%);
+  flex: none;
+  width: 100px;
+  height: 140px;
+  ${orBelow(BreakPoint.LG, 'width: 80px; height: 110px')}
+`;
+
+const SkeletonBar = styled.div<{width: string}>`
+  background: linear-gradient(327.23deg, #F8F9FB 1.42%, #F1F1F3 49.17%, #F8F9FB 100%);
+  width: ${(props) => props.width};
+  height: 20px;
+  margin-bottom: 8px;
+`;
+
 export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   const { item, title } = props;
   const thumbnailId = getLastVolumeId(item);
   const book = useBookSelector(item.b_id);
-  if (book == null || book.is_deleted) {
+  if (book === null) {
+    return (
+      <>
+        <SkeletonBook />
+        <SearchBookMetaWrapper>
+          <SkeletonBar width="100%" />
+          <SkeletonBar width="130px" />
+        </SearchBookMetaWrapper>
+      </>
+    );
+  }
+  if (book.is_deleted) {
     return null;
   }
+
   const categoryInfo = {
     category: item.category,
     category_name: item.category_name,
