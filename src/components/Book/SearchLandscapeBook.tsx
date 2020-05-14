@@ -190,14 +190,23 @@ const SearchBookMetaWrapper = styled.div`
    width: 100%;
 `;
 
-function PriceLabel(props: { title: string; price: number; discount?: number }) {
-  const { title, price, discount = 0 } = props;
-  const realPrice = (price - Math.ceil(price * (discount / 100))).toLocaleString('ko-KR');
+function PriceLabel(props: {
+  title: string;
+  price: number;
+  discount?: number;
+  regularPrice: number;
+}) {
+  const {
+    title,
+    price,
+    discount = 0,
+    regularPrice,
+  } = props;
   return (
     <PriceItem>
       <PriceTitle>{title}</PriceTitle>
       <dd>
-        <Price>{price === 0 ? '무료' : `${realPrice}원`}</Price>
+        <Price>{price === 0 ? '무료' : `${price.toLocaleString('ko-KR')}원`}</Price>
         {' '}
         {discount > 0 && (
           <>
@@ -208,7 +217,7 @@ function PriceLabel(props: { title: string; price: number; discount?: number }) 
             </Discount>
             {' '}
             <OriginalPrice>
-              {price.toLocaleString('ko-KR')}
+              {regularPrice.toLocaleString('ko-KR')}
               원
             </OriginalPrice>
           </>
@@ -219,67 +228,93 @@ function PriceLabel(props: { title: string; price: number; discount?: number }) 
 }
 
 function PriceInfo(props: {
-  seriesPriceInfo: SearchTypes.SeriesPriceInfo[];
-  book: BookApi.ClientBook;
-  isTrial: boolean;
+  searchApiResult: SearchTypes.SearchBookDetail;
+  bookApiResult: BookApi.ClientBook;
+  genre: string;
 }) {
-  if (!props.book) {
+  const { searchApiResult, bookApiResult, genre } = props;
+  if (!props.bookApiResult) {
     return null;
   }
-  const { book, isTrial } = props;
+  const {
+    property: { is_trial },
+    price_info,
+  } = bookApiResult;
+  const { price, series_prices_info } = searchApiResult;
+
   const seriesPriceInfo: Record<string, SearchTypes.SeriesPriceInfo> = {};
-  props.seriesPriceInfo.forEach((info) => {
+  series_prices_info.forEach((info) => {
     seriesPriceInfo[info.type] = info;
   });
-  if (book.series?.property.is_serial && (seriesPriceInfo.rent || seriesPriceInfo.normal)) {
+  // 체험판 부터 거른다.
+  if (is_trial) {
+    return <PriceLabel title="구매" price={0} discount={0} regularPrice={0} />;
+  }
+  // 진정한 무료 책
+  if (!seriesPriceInfo.normal && price === 0 && price_info?.buy?.price === 0) {
+    return <PriceLabel title="구매" price={0} discount={0} regularPrice={0} />;
+  }
+  if (price_info && price !== 0) {
     return (
       <>
-        {seriesPriceInfo.rent && !book.property.is_trial && (
+        {price_info.rent && (
           <PriceLabel
             title="대여"
             price={
-              seriesPriceInfo.rent.min_price !== 0
-                ? seriesPriceInfo.rent.min_price
-                : seriesPriceInfo.rent.max_price
+              price_info.rent.price === 0 && seriesPriceInfo.rent
+                ? seriesPriceInfo.rent.min_nonzero_price
+                : price_info.rent.price
             }
+            discount={
+              price_info.rent.discount_percentage === 100
+                ? 0
+                : price_info.rent.discount_percentage
+            }
+            regularPrice={price_info.rent.regular_price}
+          />
+        )}
+        <PriceLabel
+          title="구매"
+          price={
+            seriesPriceInfo.normal && genre !== 'general'
+              ? Math.min(price, seriesPriceInfo.normal.min_nonzero_price)
+              : price
+          }
+          discount={price_info.buy ? price_info.buy.discount_percentage : 0}
+          regularPrice={price_info.buy?.regular_price ?? 0}
+        />
+      </>
+    );
+  }
+  if (seriesPriceInfo && price === 0) {
+    return (
+      <>
+        {seriesPriceInfo.rent && (
+          <PriceLabel
+            title="대여"
+            price={seriesPriceInfo.rent.min_nonzero_price}
+            discount={0}
+            regularPrice={price_info?.rent?.regular_price ?? 0}
           />
         )}
         {seriesPriceInfo.normal && (
           <PriceLabel
             title="구매"
-            price={isTrial ? 0 : seriesPriceInfo.normal.min_nonzero_price}
+            price={
+              seriesPriceInfo.normal.min_price !== 0
+                ? Math.min(
+                  seriesPriceInfo.normal.min_nonzero_price,
+                  seriesPriceInfo.normal.min_price,
+                )
+                : seriesPriceInfo.normal.min_nonzero_price
+            }
+            regularPrice={price_info?.buy?.regular_price ?? 0}
           />
         )}
       </>
     );
   }
 
-  // 체험판
-  if (!book.price_info && book.property.is_trial) {
-    return <PriceLabel title="구매" price={0} discount={0} />;
-  }
-  if (book.price_info) {
-    const { buy = null, rent = null } = book.price_info;
-    return (
-      <>
-        {rent && (
-          <PriceLabel
-            title="대여"
-            // https://rididev.slack.com/archives/CE55MTQH2/p1589365195037000
-            price={rent.price === 0 ? rent.regular_price : rent.price}
-            discount={rent.discount_percentage}
-          />
-        )}
-        {buy && (
-          <PriceLabel
-            title="구매"
-            price={isTrial ? 0 : buy.regular_price}
-            discount={buy.discount_percentage}
-          />
-        )}
-      </>
-    );
-  }
   return null;
 }
 
@@ -465,9 +500,9 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           </BookDesc>
         </a>
         <PriceInfo
-          seriesPriceInfo={item.series_prices_info}
-          book={book}
-          isTrial={book.property.is_trial || false}
+          searchApiResult={item}
+          bookApiResult={book}
+          genre={genres[0] ?? ''}
         />
       </SearchBookMetaWrapper>
     </>
