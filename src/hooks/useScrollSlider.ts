@@ -1,9 +1,9 @@
 import React from 'react';
 import { useScrollPosition } from './useScrollPosition';
 
-// [ref, moveLeft, moveRight, isOnStart, isOnEnd, startMarkerRef, endMarkerRef]
-export const useScrollSlider = (): [React.RefCallback<HTMLElement>, () => void, () => void, boolean, boolean, React.Ref<Element>, React.Ref<Element>] => {
-  const [ref, isOnStart, isOnEnd, startMarkerRef, endMarkerRef, scrollBy] = useScrollPosition();
+// [ref, moveLeft, moveRight, focusElement, isOnStart, isOnEnd, startMarkerRef, endMarkerRef]
+export const useScrollSlider = (): [React.RefCallback<HTMLElement>, () => void, () => void, (element: HTMLElement) => void, boolean, boolean, React.Ref<Element>, React.Ref<Element>] => {
+  const [ref, isOnStart, isOnEnd, startMarkerRef, endMarkerRef, scrollBy, focusElement] = useScrollPosition();
 
   const nodeRef = React.useRef<HTMLElement | null>(null);
   const callbackRef = React.useCallback((node: HTMLElement | null) => {
@@ -24,5 +24,5 @@ export const useScrollSlider = (): [React.RefCallback<HTMLElement>, () => void, 
     }
   }, [scrollBy]);
 
-  return [callbackRef, moveLeft, moveRight, isOnStart, isOnEnd, startMarkerRef, endMarkerRef];
+  return [callbackRef, moveLeft, moveRight, focusElement, isOnStart, isOnEnd, startMarkerRef, endMarkerRef];
 };

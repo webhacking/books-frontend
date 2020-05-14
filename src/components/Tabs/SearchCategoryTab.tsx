@@ -1,15 +1,16 @@
 import React from 'react';
-import * as SearchTypes from 'src/types/searchResults';
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import {
   slateGray20,
   slateGray40,
-  slateGray50,
   slateGray60,
-  slateGray90,
 } from '@ridi/colors';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+
+import ScrollContainer from 'src/components/ScrollContainer';
+import * as SearchTypes from 'src/types/searchResults';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
 interface SearchCategoryProps {
@@ -21,7 +22,6 @@ const CategoryList = styled.ul`
   display: flex;
   box-shadow: inset 0px -1px 0px ${slateGray20};
   height: 45px;
-
   ${orBelow(BreakPoint.MD, 'padding-left: 16px; padding-right: 16px;')};
 `;
 
@@ -32,14 +32,15 @@ const CategoryItem = styled.li<{ active: boolean }>`
   :not(:first-of-type) {
     margin-left: 10px;
   }
-  ${(props) => (props.active && `box-shadow: inset 0px -3px 0px ${slateGray40};`)}
-
   cursor: pointer;
-
+  ${(props) => (props.active && `box-shadow: inset 0px -3px 0px ${slateGray40};`)}
 `;
 
 const CategoryAnchor = styled.a`
   padding: 15px 4px;
+  :active {
+    background: rgba(0, 0, 0, 0.05);
+  }
 `;
 
 const CategoryName = styled.span<{ active: boolean }>`
@@ -57,23 +58,29 @@ function Category(props: {
   currentCategoryId: number;
   category: SearchTypes.Aggregation;
   searchParam: URLSearchParams;
+  focusElementRef: React.Ref<HTMLElement>;
 }) {
-  const { currentCategoryId, category, searchParam } = props;
+  const {
+    currentCategoryId, category, searchParam, focusElementRef,
+  } = props;
   const active = currentCategoryId === category.category_id;
   const copiedSearchParam = new URLSearchParams(searchParam);
-  copiedSearchParam.append('category_id', category.category_id.toString());
+  copiedSearchParam.set('category_id', category.category_id.toString());
   copiedSearchParam.delete('page');
   return (
-    <CategoryItem active={active}>
+    <CategoryItem
+      ref={active ? focusElementRef as React.Ref<HTMLLIElement> : undefined}
+      active={active}
+    >
       <Link
-        href={`/search?${copiedSearchParam.toString()}#${category.category_id}`}
+        href={`/search?${copiedSearchParam.toString()}`}
       >
-        <CategoryAnchor id={category.category_id.toString()}>
+        <CategoryAnchor>
           <CategoryName active={active}>{category.category_name}</CategoryName>
           {' '}
           <CategoryCount active={active}>
             (
-            {category.doc_count}
+            {category.doc_count.toLocaleString('ko-KR')}
             )
           </CategoryCount>
         </CategoryAnchor>
@@ -89,16 +96,38 @@ function SearchCategoryTab(props: SearchCategoryProps) {
   searchParam.delete('category_id');
 
   return (
-    <CategoryList>
-      {categories.map((category) => (
-        <Category
-          key={category.category_id}
-          currentCategoryId={currentCategoryId}
-          category={category}
-          searchParam={searchParam}
-        />
-      ))}
-    </CategoryList>
+    <ScrollContainer
+      arrowStyle={css`
+        button {
+          border-radius: 0;
+          box-shadow: none;
+          position: relative;
+          top: 3px;
+          width: 20px;
+          background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.3) 27.6%,
+            rgba(255, 255, 255, 0.3) 47.6%,
+            #ffffff 53.65%
+          );
+        }
+      `}
+    >
+      {(focusElementRef) => (
+        <CategoryList>
+          {categories.map((category) => (
+            <Category
+              key={category.category_id}
+              focusElementRef={focusElementRef}
+              currentCategoryId={currentCategoryId}
+              category={category}
+              searchParam={searchParam}
+            />
+          ))}
+        </CategoryList>
+      )}
+    </ScrollContainer>
   );
 }
 
