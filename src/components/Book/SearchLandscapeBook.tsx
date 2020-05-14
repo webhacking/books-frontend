@@ -35,13 +35,16 @@ const SearchBookTitle = styled.h3`
   margin-bottom: 4px;
   font-size: 14px;
   font-weight: normal;
+  line-height: 1.36em;
+  a:active {
+    text-decoration-line: underline;
+  }
   ${lineClamp(2)}
-  ${orBelow(BreakPoint.LG, 'line-height: 1.36em;')}
 `;
 
 const SearchBookMetaList = styled.ul`
   display: flex;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   ${orBelow(BreakPoint.LG, 'flex-direction: column; margin-bottom: 4px;')};
 `;
 
@@ -113,8 +116,11 @@ const fieldStyles = {
 const SearchBookMetaField = styled.span<{
   type: 'author' | 'normal' | 'rating' | 'rating_count';
 }>`
+  line-height: 1.36em;
+  a:active {
+    text-decoration-line: underline;
+  }
   ${(props) => fieldStyles[props.type]}
-  ${orBelow(BreakPoint.LG, 'line-height: 1.36em;')}
 `;
 
 const ThumbnailAnchor = styled.a`
@@ -124,7 +130,7 @@ const ThumbnailAnchor = styled.a`
 const BookDesc = styled.p`
   max-width: 836px;
   font-size: 13px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: ${slateGray60};
   line-height: 1.4em;
   word-break: keep-all;
@@ -151,7 +157,7 @@ const priceBase = css`
   line-height: 18px;
 `;
 const PriceTitle = styled.dt`
-  margin-right: 2px;
+  margin-right: 4px;
   color: ${slateGray60};
   ${priceBase}
 `;
@@ -178,6 +184,9 @@ const SearchBookMetaWrapper = styled.div`
    display: flex;
    flex-direction: column;
    margin-left: 16px;
+   > dl {
+    margin-bottom: 4px;
+  }
    width: 100%;
 `;
 
