@@ -5,11 +5,12 @@ import { lineClamp } from 'src/styles';
 import { getEscapedNode } from 'src/utils/highlight';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import {
-  slateGray50, slateGray5, lightSteelBlue5, gray100,
+  gray100, lightSteelBlue5, slateGray5, slateGray50,
 } from '@ridi/colors';
 import { ADULT_BADGE_URL, AUTHOR_ICON_URL } from 'src/constants/icons';
 import * as SearchTypes from 'src/types/searchResults';
 
+import { AuthorRole } from 'src/types/book';
 import { SearchResult } from './types';
 
 const listItemCSS = css`
@@ -230,7 +231,7 @@ export const AuthorInfo: React.FC<{ author: SearchTypes.Author }> = (props) => {
 const AuthorLabel: React.FC<{ author: string; authors: SearchTypes.AuthorsInfo[] }> = (props) => {
   const viewedAuthors = props.authors
     && props.authors
-      .filter((author) => author.role === 'author' || author.role === 'illustrator')
+      .filter((author) => author.role !== AuthorRole.TRANSLATOR)
       .map((author) => author.name);
   if (!viewedAuthors || viewedAuthors.length === 0) {
     return <Author>{props.author}</Author>;
