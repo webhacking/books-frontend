@@ -38,7 +38,7 @@ export function getThumbnailIdFromBookDetail(book: BookApi.Book | null) {
   if (!book) {
     return null;
   }
-  if (book.series) {
+  if (book.series && book.series.property.is_serial) {
     if (
       !book.series.property.is_completed && book.series.property.opened_last_volume_id.length !== 0
     ) {

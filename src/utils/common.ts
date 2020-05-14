@@ -88,8 +88,8 @@ export const getMaxDiscountPercentage = (book: BookApi.Book | null) => {
   }
   const singleBuyDiscountPercentage = book.price_info?.buy?.discount_percentage || 0;
   const singleRentDiscountPercentage = book.price_info?.rent?.discount_percentage || 0;
-  const seriesBuyDiscountPercentage = book.series?.price_info?.buy?.discount_percentage || 0;
-  const seriesRentDiscountPercentage = book.series?.price_info?.rent?.discount_percentage || 0;
+  const seriesBuyDiscountPercentage = book.series?.property.is_serial ? book.series?.price_info?.buy?.discount_percentage || 0 : 0;
+  const seriesRentDiscountPercentage = book.series?.property.is_serial ? book.series?.price_info?.rent?.discount_percentage || 0 : 0;
 
   const excludeMax = [
     singleBuyDiscountPercentage,

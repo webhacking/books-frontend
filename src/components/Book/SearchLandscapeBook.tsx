@@ -192,7 +192,7 @@ const SearchBookMetaWrapper = styled.div`
 
 function PriceLabel(props: { title: string; price: number; discount?: number }) {
   const { title, price, discount = 0 } = props;
-  const realPrice = Math.ceil(price - price * (discount / 100)).toLocaleString('ko-KR');
+  const realPrice = (price - Math.ceil(price * (discount / 100))).toLocaleString('ko-KR');
   return (
     <PriceItem>
       <PriceTitle>{title}</PriceTitle>
@@ -220,7 +220,7 @@ function PriceLabel(props: { title: string; price: number; discount?: number }) 
 
 function PriceInfo(props: {
   seriesPriceInfo: SearchTypes.SeriesPriceInfo[];
-  book: BookApi.ClientBook | null;
+  book: BookApi.ClientBook;
   isTrial: boolean;
 }) {
   if (!props.book) {
@@ -231,10 +231,10 @@ function PriceInfo(props: {
   props.seriesPriceInfo.forEach((info) => {
     seriesPriceInfo[info.type] = info;
   });
-  if (seriesPriceInfo.rent || seriesPriceInfo.normal) {
+  if (book.series?.property.is_serial && (seriesPriceInfo.rent || seriesPriceInfo.normal)) {
     return (
       <>
-        {seriesPriceInfo.rent && !book?.property.is_trial && (
+        {seriesPriceInfo.rent && !book.property.is_trial && (
           <PriceLabel
             title="대여"
             price={
@@ -255,17 +255,18 @@ function PriceInfo(props: {
   }
 
   // 체험판
-  if (!book?.price_info && book?.property.is_trial) {
+  if (!book.price_info && book.property.is_trial) {
     return <PriceLabel title="구매" price={0} discount={0} />;
   }
-  if (book?.price_info) {
+  if (book.price_info) {
     const { buy = null, rent = null } = book.price_info;
     return (
       <>
         {rent && (
           <PriceLabel
             title="대여"
-            price={rent.regular_price}
+            // https://rididev.slack.com/archives/CE55MTQH2/p1589365195037000
+            price={rent.price === 0 ? rent.regular_price : rent.price}
             discount={rent.discount_percentage}
           />
         )}
@@ -285,16 +286,6 @@ function PriceInfo(props: {
 interface SearchLandscapeBookProps {
   item: SearchTypes.SearchBookDetail;
   title: string;
-}
-
-function getLastVolumeId(item: SearchTypes.SearchBookDetail) {
-  if (item.is_series_complete || item.book_count === 1) {
-    return item.b_id;
-  }
-  if (item.opened_last_volume_id.length > 0) {
-    return item.opened_last_volume_id;
-  }
-  return item.b_id;
 }
 
 type RenderCategoryNameProps = Pick<
@@ -356,7 +347,6 @@ const SkeletonBar = styled.div<{width: string}>`
 
 export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   const { item, title } = props;
-  const thumbnailId = getLastVolumeId(item);
   const book = useBookSelector(item.b_id);
   if (book === null) {
     return (
@@ -372,7 +362,6 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   if (book.is_deleted) {
     return null;
   }
-
   const categoryInfo = {
     category: item.category,
     category_name: item.category_name,
@@ -381,10 +370,10 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
     parent_category_name: item.parent_category_name,
     parent_category_name2: item.parent_category_name2,
   };
-  const rawDesc = book?.clientBookFields?.desc;
+  const rawDesc = book.clientBookFields?.desc;
   const clearDesc = rawDesc ? constructSearchDesc(rawDesc) : '';
   // 대여 배지 표기 여부가 장르에 따라 바뀌기 때문에 장르를 모아둠
-  const genres = book?.categories.map((category) => category.sub_genre) ?? ['general'];
+  const genres = book.categories.map((category) => category.sub_genre) ?? ['general'];
   let translator: AuthorsInfo | undefined;
   item.authors_info.forEach((author) => {
     if (author.role === AuthorRole.TRANSLATOR) {
@@ -395,7 +384,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
     <>
       <ThumbnailAnchor href={`/books/${item.b_id}`}>
         <StyledThumbnailWithBadge
-          bId={thumbnailId}
+          bId={item.b_id}
           genre={genres[0] ?? ''}
           slug="search-result"
           sizes="(min-width: 999px) 100px, 80px"
@@ -459,12 +448,12 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
               <RenderCategoryName {...categoryInfo} />
             </SearchBookMetaField>
           </SearchBookMetaItem>
-          {item.book_count > 1 && (
+          {item.book_count > 1 && book.categories[0].is_series_category && (
             <SearchBookMetaItem>
               <SearchBookMetaField type="normal">
                 {`총 ${item.book_count}권`}
               </SearchBookMetaField>
-              {item.series_prices_info.length > 0 && item.is_series_complete && (
+              {item.series_prices_info.length > 0 && book.series?.property.is_serial_complete && (
                 <SeriesCompleted>완결</SeriesCompleted>
               )}
             </SearchBookMetaItem>
@@ -478,7 +467,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
         <PriceInfo
           seriesPriceInfo={item.series_prices_info}
           book={book}
-          isTrial={book?.property.is_trial || false}
+          isTrial={book.property.is_trial || false}
         />
       </SearchBookMetaWrapper>
     </>
