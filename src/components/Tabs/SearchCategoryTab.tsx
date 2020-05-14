@@ -89,6 +89,41 @@ function Category(props: {
   );
 }
 
+const arrowStyle = css`
+  button {
+    border-radius: 0;
+    box-shadow: none;
+    position: relative;
+    top: 3px;
+    width: 40px;
+    height: 41px;
+
+    :first-of-type {
+      background: linear-gradient(270deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.5) 27.6%, #FFFFFF 53.65%);
+      > svg {
+        fill: ${slateGray60};
+        position: relative;
+        left: -15px;
+        right: inherit;
+      }
+    }
+    :last-of-type {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.5) 27.6%, #FFFFFF 53.65%);
+      > svg {
+        fill: ${slateGray60};
+        position: relative;
+        left: inherit;
+        right: -15px;
+      }
+    }
+  }
+`;
+
+// ScrollContainer 기본 padding: 0 4px; 무시
+const containerStyle = css`
+  div + div { padding: 0; }
+`;
+
 function SearchCategoryTab(props: SearchCategoryProps) {
   const { currentCategoryId = 0, categories } = props;
   const router = useRouter();
@@ -97,22 +132,9 @@ function SearchCategoryTab(props: SearchCategoryProps) {
 
   return (
     <ScrollContainer
-      arrowStyle={css`
-        button {
-          border-radius: 0;
-          box-shadow: none;
-          position: relative;
-          top: 3px;
-          width: 20px;
-          background: linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.1) 0%,
-            rgba(255, 255, 255, 0.3) 27.6%,
-            rgba(255, 255, 255, 0.3) 47.6%,
-            #ffffff 53.65%
-          );
-        }
-      `}
+      css={containerStyle}
+      arrowType="bold"
+      arrowStyle={arrowStyle}
     >
       {(focusElementRef) => (
         <CategoryList>
