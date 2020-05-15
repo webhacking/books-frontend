@@ -1,55 +1,56 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { dodgerBlue40, slateGray30 } from '@ridi/colors';
+import React from 'react';
 
-const Label = styled.label<{isChecked?: boolean}>`
-  position: relative;
+const Container = styled.div<{ checked?: boolean }>`
   width: 46px;
   height: 26px;
+  padding: 2px;
+
   border-radius: 13px;
+  cursor: pointer;
+
   transition: 0.2s;
-  background: ${(props) => (props.isChecked ? dodgerBlue40 : slateGray30)};
+  background: ${slateGray30};
+  ${(props) => props.checked && `
+    background: ${dodgerBlue40};
+  `};
 `;
 
 const Input = styled.input`
-  width: 0;
-  height: 0;
-  appearance: none;
-`;
-
-const Dot = styled.span<{isChecked?: boolean}>`
-  position: absolute;
-  background: white;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+  display: block;
   width: 22px;
   height: 22px;
+
   border-radius: 13px;
+  background: white;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+
+  appearance: none;
+  &::-ms-check {
+    display: none;
+  }
+
   transition: 0.2s;
-
-  top: 2px;
-  left: 2px;
-
-  ${(props) => props.isChecked && 'transform: translate(20px, 0);'}
+  &:checked {
+    transform: translateX(20px);
+  }
 `;
 
-interface Props {
-  checked?: boolean;
-  callback?: (checked: boolean) => void;
+interface Props extends Omit<React.HTMLProps<HTMLInputElement>, 'type' | 'onChange'> {
+  onChange?(checked: boolean): void;
 }
 
 export function Switch(props: Props) {
-  const { checked, callback } = props;
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    if (callback) {
-      callback(e.target.checked);
-    }
-  };
+  const { onChange, ...restProps } = props;
+  const handleChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange?.(e.target.checked);
+  }, [onChange]);
 
   return (
-    <Label isChecked={checked}>
-      <Input checked={checked} onChange={handleChange} />
-      <Dot isChecked={checked} />
-    </Label>
+    <Container checked={props.checked}>
+      <Input {...restProps} type="checkbox" onChange={handleChange} />
+    </Container>
   );
 }

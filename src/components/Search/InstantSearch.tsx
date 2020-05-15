@@ -217,24 +217,23 @@ const ArrowWrapperButton = styled.button`
   )};
 `;
 
-const AdultExcludeButton = styled.button`
+const AdultExcludeButton = styled.label`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 9px 16px;
-  margin-bottom: 4px;
   width: 100%;
   height: 44px;
+  margin-bottom: 4px;
+  padding: 9px 16px;
+
   outline: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  color: ${slateGray60};
   :active {
     background: rgba(0, 0, 0, 0.05);
   }
-`;
-
-const AdultExcludeLabel = styled.span`
-  font-weight: bold;
-  font-size: 13px;
-  color: ${slateGray60};
 `;
 
 interface InstantSearchProps {
@@ -509,11 +508,6 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       ],
     );
 
-    const toggleAdultExclude = (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      setAdultExclude((value) => !value);
-    };
-
     useEffect(() => {
       toggleSearchHistoryRecord(
         safeJSONParse(
@@ -659,9 +653,9 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                       focusedPosition={focusedPosition}
                       result={searchResult}
                     />
-                    <AdultExcludeButton onClick={toggleAdultExclude}>
-                      <AdultExcludeLabel>성인 제외</AdultExcludeLabel>
-                      <Switch checked={isAdultExclude} />
+                    <AdultExcludeButton>
+                      성인 제외
+                      <Switch checked={isAdultExclude} onChange={setAdultExclude} />
                     </AdultExcludeButton>
                   </>
                 )}
