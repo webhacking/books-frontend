@@ -127,9 +127,8 @@ const containerStyle = css`
 function SearchCategoryTab(props: SearchCategoryProps) {
   const { currentCategoryId = 0, categories } = props;
   const router = useRouter();
-  const searchParam = new URLSearchParams(router?.query as Record<string, any>);
-  searchParam.delete('category_id');
-
+  const { q = '', order = 'score', adult_exclude = 'n' } = router.query as Record<string, string>;
+  const searchParam = new URLSearchParams({ q, order, adult_exclude });
   return (
     <ScrollContainer
       css={containerStyle}
