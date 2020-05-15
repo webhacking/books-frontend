@@ -323,40 +323,34 @@ interface SearchLandscapeBookProps {
   title: string;
 }
 
-type RenderCategoryNameProps = Pick<
+type CategoryNames = Pick<
   SearchTypes.SearchBookDetail,
   | 'category_name'
   | 'parent_category_name'
   | 'parent_category_name2'
 >;
 
-function RenderCategoryName(props: RenderCategoryNameProps) {
+function computeCategoryNames(categoryNames: CategoryNames) {
   const {
     category_name,
     parent_category_name,
     parent_category_name2,
-  } = props;
+  } = categoryNames;
 
   if (!parent_category_name && !parent_category_name2) {
-    return <span>{category_name}</span>;
+    return category_name;
   }
   if (parent_category_name && !parent_category_name2) {
-    return <span>{parent_category_name}</span>;
+    return parent_category_name;
   }
   if (!parent_category_name && parent_category_name2) {
-    return <span>{parent_category_name2}</span>;
+    return parent_category_name2;
   }
   if (parent_category_name && parent_category_name === parent_category_name2) {
-    return <span>{parent_category_name}</span>;
+    return parent_category_name;
   }
 
-  return (
-    <span>
-      {parent_category_name}
-      {', '}
-      {parent_category_name2}
-    </span>
-  );
+  return `${parent_category_name}, ${parent_category_name2}`;
 }
 
 const SkeletonBook = styled.div`
@@ -496,7 +490,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           </SearchBookMetaItem>
           <SearchBookMetaItem>
             <SearchBookMetaField type="normal">
-              <RenderCategoryName {...categoryInfo} />
+              {computeCategoryNames(categoryInfo)}
             </SearchBookMetaField>
           </SearchBookMetaItem>
           {item.book_count > 1 && book.categories[0].is_series_category && (
