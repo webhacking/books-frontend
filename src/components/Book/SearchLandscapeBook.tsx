@@ -39,6 +39,7 @@ const SearchBookTitle = styled.h3`
   a:active {
     text-decoration-line: underline;
   }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
   ${lineClamp(2)}
 `;
 
@@ -50,6 +51,7 @@ const SearchBookMetaList = styled.ul`
 
 const SearchBookMetaItem = styled.li`
   margin-bottom: 4px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
     `

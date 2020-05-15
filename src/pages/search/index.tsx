@@ -74,13 +74,21 @@ const AuthorItem = styled.li<{ show: boolean }>`
   padding: 12px 0;
   display: ${(props) => (props.show ? 'flex' : 'none')};
   align-items: center;
-  :active {
-    background: rgba(0, 0, 0, 0.05);
-  }
 `;
 
 const AuthorList = styled.ul`
   margin-bottom: 16px;
+  > li {
+    :active {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    @media(hover: hover) {
+      :hover {
+        background: rgba(0, 0, 0, 0.05);
+      }
+    }
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+  }
 `;
 
 const ShowMoreAuthor = styled.li`
@@ -91,14 +99,12 @@ const ShowMoreAuthor = styled.li`
   display: flex;
   cursor: pointer;
   align-items: center;
-  :active {
-    background: rgba(0, 0, 0, 0.05);
-  }
   ${orBelow(BreakPoint.LG, 'padding: 12px 16px;')}
 `;
 
 const AuthorAnchor = styled.a`
   width: 100%;
+  -webkit-tap-highlight-color: transparent;
   ${orBelow(BreakPoint.LG, 'padding: 0px 16px;')}
 `;
 
@@ -181,6 +187,15 @@ const Filters = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 12px;
+  > label {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+    @media(hover: hover) {
+      :hover {
+        background: rgba(0, 0, 0, 0.05);
+      }
+    }
+  }
+  
   ${orBelow(BreakPoint.LG, 'margin-left: 16px; margin-right: 16px;')}
 `;
 

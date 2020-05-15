@@ -20,7 +20,6 @@ interface SearchCategoryProps {
 
 const CategoryList = styled.ul`
   display: flex;
-  box-shadow: inset 0px -1px 0px ${slateGray20};
   height: 45px;
   ${orBelow(BreakPoint.LG, 'padding-left: 16px; padding-right: 16px;')};
 `;
@@ -33,6 +32,7 @@ const CategoryItem = styled.li<{ active: boolean }>`
     margin-left: 10px;
   }
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
   ${(props) => (props.active && `box-shadow: inset 0px -3px 0px ${slateGray40};`)}
 `;
 
@@ -40,6 +40,11 @@ const CategoryAnchor = styled.a`
   padding: 15px 4px;
   :active {
     background: rgba(0, 0, 0, 0.05);
+  }
+  @media(hover: hover) {
+    :hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
   }
 `;
 
@@ -119,6 +124,15 @@ const arrowStyle = css`
   }
 `;
 
+const Border = styled.div`
+  top: -1px;
+  position: relative;
+  height: 1px;
+  width: 100%;
+  background: ${slateGray20};
+  z-index: -1;
+`;
+
 // ScrollContainer 기본 padding: 0 4px; 무시
 const containerStyle = css`
   div + div { padding: 0; }
@@ -130,25 +144,28 @@ function SearchCategoryTab(props: SearchCategoryProps) {
   const { q = '', order = 'score', adult_exclude = 'n' } = router.query as Record<string, string>;
   const searchParam = new URLSearchParams({ q, order, adult_exclude });
   return (
-    <ScrollContainer
-      css={containerStyle}
-      arrowType="bold"
-      arrowStyle={arrowStyle}
-    >
-      {(focusElementRef) => (
-        <CategoryList>
-          {categories.map((category) => (
-            <Category
-              key={category.category_id}
-              focusElementRef={focusElementRef}
-              currentCategoryId={currentCategoryId}
-              category={category}
-              searchParam={searchParam}
-            />
-          ))}
-        </CategoryList>
-      )}
-    </ScrollContainer>
+    <>
+      <ScrollContainer
+        css={containerStyle}
+        arrowType="bold"
+        arrowStyle={arrowStyle}
+      >
+        {(focusElementRef) => (
+          <CategoryList>
+            {categories.map((category) => (
+              <Category
+                key={category.category_id}
+                focusElementRef={focusElementRef}
+                currentCategoryId={currentCategoryId}
+                category={category}
+                searchParam={searchParam}
+              />
+            ))}
+          </CategoryList>
+        )}
+      </ScrollContainer>
+      <Border />
+    </>
   );
 }
 

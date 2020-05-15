@@ -234,6 +234,12 @@ const AdultExcludeButton = styled.label`
   :active {
     background: rgba(0, 0, 0, 0.05);
   }
+  @media(hover: hover) {
+    :hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
 `;
 
 interface InstantSearchProps {
@@ -389,7 +395,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           setFocus(false);
           setSearchResult(initialSearchResult);
 
-          const url = new URL('/search/', origin || location.href);
+          const url = new URL('/search', origin || location.href);
           url.searchParams.append('q', label);
 
           window.location.href = url.toString();
@@ -448,7 +454,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           // Move search result page
           // Todo conditional check for partial component
 
-          const url = new URL('/search/', origin || location.href);
+          const url = new URL('/search', origin || location.href);
           url.searchParams.append('q', keyword);
 
           window.location.href = url.toString();
