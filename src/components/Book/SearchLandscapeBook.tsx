@@ -380,7 +380,7 @@ const SkeletonBar = styled.div<{width: string}>`
   margin-bottom: 8px;
 `;
 
-function RenderAuthors(props: { authors: AuthorsInfo[]; fallback: string}) {
+function RenderAuthors(props: { authors: AuthorsInfo[]; fallback: string }) {
   const { authors, fallback } = props;
   if (authors.length === 0) {
     return (
