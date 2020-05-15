@@ -66,6 +66,7 @@ interface SliderControllerProps {
   onLeftClick?(): void;
   onRightClick?(): void;
   className?: string;
+  arrowType?: 'normal' | 'bold';
 }
 
 function SliderController(props: SliderControllerProps) {
@@ -83,6 +84,7 @@ function SliderController(props: SliderControllerProps) {
     onLeftClick,
     onRightClick,
     className,
+    arrowType,
   } = props;
   return (
     <SliderControllerContainer className={className}>
@@ -95,6 +97,7 @@ function SliderController(props: SliderControllerProps) {
           baseArrowStyle,
           !showLeftArrow && arrowHiddenStyle,
         ]}
+        arrowType={arrowType}
       />
       <Arrow
         label={rightArrowLabel}
@@ -105,6 +108,7 @@ function SliderController(props: SliderControllerProps) {
           baseArrowStyle,
           !showRightArrow && arrowHiddenStyle,
         ]}
+        arrowType={arrowType}
       />
     </SliderControllerContainer>
   );
@@ -117,6 +121,7 @@ interface Props {
   arrowStyle?: 'center' | Interpolation;
   className?: string;
   children?: React.ReactNode | ((focusElementRef: React.Ref<HTMLElement>) => React.ReactNode);
+  arrowType?: 'normal' | 'bold';
 }
 
 export default function ScrollContainer(props: Props) {
@@ -127,6 +132,7 @@ export default function ScrollContainer(props: Props) {
     arrowStyle = 'center',
     className,
     children,
+    arrowType,
   } = props;
   const [scrollRef, moveLeft, moveRight, focusElement, isOnStart, isOnEnd, leftMarkerRef, rightMarkerRef] = useScrollSlider();
   const [focusedElement, setFocusedElement] = React.useState<HTMLElement | null>(null);
@@ -154,6 +160,7 @@ export default function ScrollContainer(props: Props) {
         onLeftClick={moveLeft}
         onRightClick={moveRight}
         css={arrowStyle === 'center' ? arrowCenterStyle : arrowStyle}
+        arrowType={arrowType}
       />
     </ControllerContainer>
   );

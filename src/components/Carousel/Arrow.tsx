@@ -2,6 +2,7 @@ import { css, Interpolation } from '@emotion/core';
 import React from 'react';
 import { clearOutline } from 'src/styles';
 import ArrowV from 'src/svgs/ArrowV.svg';
+import ArrowBoldV from 'src/svgs/ArrowBoldV.svg';
 
 interface ArrowProps {
   side?: 'left' | 'right';
@@ -13,6 +14,7 @@ interface ArrowProps {
   fill?: string;
   label: string;
   onClickHandler?: React.MouseEventHandler<HTMLButtonElement>;
+  arrowType?: 'normal' | 'bold';
 }
 
 const defaultOpacity = css`
@@ -41,7 +43,7 @@ export const arrowTransition = css`
 
 const Arrow: React.FC<ArrowProps> = (props) => {
   const {
-    color, side, wrapperStyle, onClickHandler,
+    color, side, wrapperStyle, onClickHandler, arrowType,
   } = props;
   const handleClick = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -76,8 +78,7 @@ const Arrow: React.FC<ArrowProps> = (props) => {
       ]}
       className={props.className}
     >
-      <ArrowV css={mergedStyle} />
-
+      { arrowType === 'bold' ? <ArrowBoldV css={mergedStyle} /> : <ArrowV css={mergedStyle} />}
       <span className="a11y" aria-label={props.label}>
         {props.label}
       </span>
