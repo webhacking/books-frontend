@@ -227,7 +227,7 @@ function PriceLabel(props: {
   );
 }
 
-function PriceInfo(props: {
+export function PriceInfo(props: {
   searchApiResult: SearchTypes.SearchBookDetail;
   bookApiResult: BookApi.ClientBook;
   genre: string;
