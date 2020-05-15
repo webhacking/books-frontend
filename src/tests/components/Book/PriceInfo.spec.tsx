@@ -701,30 +701,20 @@ function renderPriceInfo(fixture: Fixture, genre = '') {
 describe('PriceInfo test', () => {
   test('trial free book render', () => {
     const { container } = renderPriceInfo(trialBookFixture);
-    const element = getByText(container, '무료');
-    expect(container).toMatchSnapshot();
-    expect(element).toHaveTextContent('무료');
+    expect(container.textContent).toBe('구매무료 ');
   });
 
   test('free book render', () => {
     const { container } = renderPriceInfo(freeBookFixture);
-    expect(container).toMatchSnapshot();
-    expect(container).toHaveTextContent('구매');
-    expect(container).toHaveTextContent('무료');
+    expect(container.textContent).toBe('구매무료 ');
   });
 
   test('rental, buy price render', () => {
     const { container } = renderPriceInfo(searchApiPriceExistFixture);
-    expect(container).toMatchSnapshot();
-    expect(container).toHaveTextContent('대여');
-    expect(container).toHaveTextContent('1,900원');
-    expect(container).toHaveTextContent('구매');
-    expect(container).toHaveTextContent('12,800원');
+    expect(container.textContent).toBe('대여1,900원 구매12,800원 ');
   });
   test('render correct rental & buy price', () => {
     const { container } = renderPriceInfo(priceZeroFixture);
-    expect(container).toMatchSnapshot();
-    expect(container).toHaveTextContent('구매');
-    expect(container).toHaveTextContent('100원');
+    expect(container.textContent).toBe('구매100원 ');
   });
 });
