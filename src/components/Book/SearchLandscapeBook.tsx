@@ -380,6 +380,28 @@ const SkeletonBar = styled.div<{width: string}>`
   margin-bottom: 8px;
 `;
 
+function RenderAuthors(props: { authors: AuthorsInfo[]; fallback: string }) {
+  const { authors, fallback } = props;
+  if (authors.length === 0) {
+    return (
+      <a href={`/search?${fallback}`}>{fallback}</a>
+    );
+  }
+  if (authors.length === 1) {
+    return (
+      <a href={`/author/${authors[0].author_id}`}>{authors[0].name}</a>
+    );
+  }
+  return (
+    <>
+      <a href={`/author/${authors[0].author_id}`}>{authors[0].name}</a>
+      {', '}
+      <a href={`/author/${authors[1].author_id}`}>{authors[1].name}</a>
+      {authors.length > 2 && ` 외 ${authors.length - 2}명`}
+    </>
+  );
+}
+
 export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   const { item, title } = props;
   const book = useBookSelector(item.b_id);
@@ -410,9 +432,12 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   // 대여 배지 표기 여부가 장르에 따라 바뀌기 때문에 장르를 모아둠
   const genres = book.categories.map((category) => category.sub_genre) ?? ['general'];
   let translator: AuthorsInfo | undefined;
+  const authors: AuthorsInfo[] = [];
   item.authors_info.forEach((author) => {
     if (author.role === AuthorRole.TRANSLATOR) {
       translator = author;
+    } else {
+      authors.push(author);
     }
   });
   return (
@@ -435,10 +460,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
         <SearchBookMetaList>
           <SearchBookMetaItem>
             <SearchBookMetaField type="author">
-              {/* Todo 저자 Anchor */}
-              {item.highlight.author
-                ? getEscapedNode(item.highlight.author)
-                : item.author}
+              <RenderAuthors authors={authors} fallback={item.author} />
             </SearchBookMetaField>
           </SearchBookMetaItem>
           {translator && (
