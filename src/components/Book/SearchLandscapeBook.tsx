@@ -380,8 +380,13 @@ const SkeletonBar = styled.div<{width: string}>`
   margin-bottom: 8px;
 `;
 
-function RenderAuthors(props: { authors: AuthorsInfo[]}) {
-  const { authors } = props;
+function RenderAuthors(props: { authors: AuthorsInfo[]; fallback: string}) {
+  const { authors, fallback } = props;
+  if (authors.length === 0) {
+    return (
+      <a href={`/search?${fallback}`}>{fallback}</a>
+    );
+  }
   if (authors.length === 1) {
     return (
       <a href={`/author/${authors[0].author_id}`}>{authors[0].name}</a>
@@ -455,9 +460,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
         <SearchBookMetaList>
           <SearchBookMetaItem>
             <SearchBookMetaField type="author">
-              {
-                authors.length > 0 ? <RenderAuthors authors={authors} /> : <a href={`/search?q=${item.author}`}>{item.author}</a>
-              }
+              <RenderAuthors authors={authors} fallback={item.author} />
             </SearchBookMetaField>
           </SearchBookMetaItem>
           {translator && (
