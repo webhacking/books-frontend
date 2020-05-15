@@ -325,43 +325,37 @@ interface SearchLandscapeBookProps {
 
 type RenderCategoryNameProps = Pick<
   SearchTypes.SearchBookDetail,
-  | 'category'
   | 'category_name'
-  | 'parent_category'
-  | 'parent_category2'
   | 'parent_category_name'
   | 'parent_category_name2'
 >;
 
 function RenderCategoryName(props: RenderCategoryNameProps) {
   const {
-    category,
     category_name,
-    parent_category,
-    parent_category2,
     parent_category_name,
     parent_category_name2,
   } = props;
 
   if (!parent_category_name && !parent_category_name2) {
-    return <a href={`/category/${category}`}>{category_name}</a>;
+    return <span>{category_name}</span>;
   }
   if (parent_category_name && !parent_category_name2) {
-    return <a href={`/category/${parent_category}`}>{parent_category_name}</a>;
+    return <span>{parent_category_name}</span>;
   }
   if (!parent_category_name && parent_category_name2) {
-    return <a href={`/category/${parent_category2}`}>{parent_category_name2}</a>;
+    return <span>{parent_category_name2}</span>;
   }
   if (parent_category_name && parent_category_name === parent_category_name2) {
-    return <a href={`/category/${parent_category}`}>{parent_category_name}</a>;
+    return <span>{parent_category_name}</span>;
   }
 
   return (
-    <>
-      <a href={`/category/${parent_category}`}>{parent_category_name}</a>
+    <span>
+      {parent_category_name}
       {', '}
-      <a href={`/category/${parent_category2}`}>{parent_category_name2}</a>
-    </>
+      {parent_category_name2}
+    </span>
   );
 }
 
