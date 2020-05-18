@@ -262,7 +262,7 @@ function SearchPage(props: SearchProps) {
       searchParams.set('page', availableMaxPage.toString());
       router.replace(`/search?${searchParams.toString()}`);
     }
-  }, [currentPage, isAdultExclude]);
+  }, [currentPage, book.total]);
   return (
     <SearchResultSection>
       <Head>
