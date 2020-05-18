@@ -115,7 +115,6 @@ interface InstantSearchHistoryProps {
   handleRemoveHistory: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleClearHistory: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleToggleSearchHistoryRecord: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  handleKeyDown: (e: React.KeyboardEvent<HTMLLIElement>) => void;
   searchHistory: string[];
   focusedPosition: number;
 }
@@ -128,7 +127,6 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = (props) => {
     handleClickHistoryItem,
     handleToggleSearchHistoryRecord,
     searchHistory,
-    handleKeyDown,
     focusedPosition,
   } = props;
 
@@ -156,7 +154,6 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = (props) => {
                 tabIndex={0}
                 data-value={history}
                 onClick={handleClickHistoryItem}
-                onKeyDown={handleKeyDown}
                 key={index}
               >
                 {/* Fixme href */}
