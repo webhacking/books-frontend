@@ -33,6 +33,7 @@ import { Pagination } from 'src/components/Pagination/Pagination';
 import useIsTablet from 'src/hooks/useIsTablet';
 import { AdultExcludeToggle, FilterSelector } from 'src/components/Search';
 import { useRouter } from 'next/router';
+import { defaultHoverStyle } from 'src/styles';
 
 interface SearchProps {
   q?: string;
@@ -82,12 +83,8 @@ const AuthorList = styled.ul`
     :active {
       background: rgba(0, 0, 0, 0.05);
     }
-    @media(hover: hover) {
-      :hover {
-        background: rgba(0, 0, 0, 0.05);
-      }
-    }
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+    ${defaultHoverStyle}
   }
 `;
 
@@ -189,13 +186,9 @@ const Filters = styled.div`
   margin-top: 12px;
   > label {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
-    @media(hover: hover) {
-      :hover {
-        background: rgba(0, 0, 0, 0.05);
-      }
-    }
+    ${defaultHoverStyle}
   }
-  
+
   ${orBelow(BreakPoint.LG, 'margin-left: 16px; margin-right: 16px;')}
 `;
 

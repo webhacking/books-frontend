@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import ScrollContainer from 'src/components/ScrollContainer';
 import * as SearchTypes from 'src/types/searchResults';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import { defaultHoverStyle } from 'src/styles';
 
 interface SearchCategoryProps {
   categories: SearchTypes.Aggregation[];
@@ -41,11 +42,7 @@ const CategoryAnchor = styled.a`
   :active {
     background: rgba(0, 0, 0, 0.05);
   }
-  @media(hover: hover) {
-    :hover {
-      background: rgba(0, 0, 0, 0.05);
-    }
-  }
+  ${defaultHoverStyle}
 `;
 
 const CategoryName = styled.span<{ active: boolean }>`

@@ -5,7 +5,7 @@ import { css, keyframes } from '@emotion/core';
 import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
 import Lens from 'src/svgs/Lens.svg';
 import Clear from 'src/svgs/Clear.svg';
-import { RIDITheme, ZIndexLayer } from 'src/styles';
+import { defaultHoverStyle, RIDITheme, ZIndexLayer } from 'src/styles';
 import { useDebouncedCallback } from 'use-debounce';
 import localStorageKeys from 'src/constants/localStorage';
 import * as labels from 'src/labels/instantSearch.json';
@@ -234,12 +234,8 @@ const AdultExcludeButton = styled.label`
   :active {
     background: rgba(0, 0, 0, 0.05);
   }
-  @media(hover: hover) {
-    :hover {
-      background: rgba(0, 0, 0, 0.05);
-    }
-  }
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+  ${defaultHoverStyle}
 `;
 
 interface InstantSearchProps {
