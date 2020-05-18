@@ -174,11 +174,11 @@ const Discount = styled.span`
   ${priceBase}
 `;
 
-const OriginalPrice = styled.span`
-  text-decoration: line-through;
-  color: ${slateGray50};
-  ${priceBase}
-`;
+// const OriginalPrice = styled.span`
+//   text-decoration: line-through;
+//   color: ${slateGray50};
+//   ${priceBase}
+// `;
 
 const SearchBookMetaWrapper = styled.div`
    display: flex;
@@ -194,13 +194,13 @@ function PriceLabel(props: {
   title: string;
   price: number;
   discount?: number;
-  regularPrice: number;
+  // regularPrice: number;
 }) {
   const {
     title,
     price,
     discount = 0,
-    regularPrice,
+    // regularPrice,
   } = props;
   return (
     <PriceItem>
@@ -216,10 +216,12 @@ function PriceLabel(props: {
               %↓)
             </Discount>
             {' '}
-            <OriginalPrice>
-              {regularPrice.toLocaleString('ko-KR')}
-              원
-            </OriginalPrice>
+            {/* Fixme */}
+            {/* 가장 낮은 가격의 정가 문제가 해결이 필요하기 때문에 일단 주석 처리 합니다. */}
+            {/* <OriginalPrice> */}
+            {/*  {regularPrice.toLocaleString('ko-KR')} */}
+            {/*  원 */}
+            {/* </OriginalPrice> */}
           </>
         )}
       </dd>
@@ -248,11 +250,11 @@ export function PriceInfo(props: {
   });
   // 체험판 부터 거른다.
   if (is_trial) {
-    return <PriceLabel title="구매" price={0} discount={0} regularPrice={0} />;
+    return <PriceLabel title="구매" price={0} discount={0} />;
   }
   // 진정한 무료 책
   if (!seriesPriceInfo.normal && price === 0 && price_info?.buy?.price === 0) {
-    return <PriceLabel title="구매" price={0} discount={0} regularPrice={0} />;
+    return <PriceLabel title="구매" price={0} discount={0} />;
   }
   if (price_info && price !== 0) {
     return (
@@ -270,7 +272,6 @@ export function PriceInfo(props: {
                 ? 0
                 : price_info.rent.discount_percentage
             }
-            regularPrice={price_info.rent.regular_price}
           />
         )}
         <PriceLabel
@@ -281,7 +282,6 @@ export function PriceInfo(props: {
               : price
           }
           discount={price_info.buy ? price_info.buy.discount_percentage : 0}
-          regularPrice={price_info.buy?.regular_price ?? 0}
         />
       </>
     );
@@ -294,7 +294,6 @@ export function PriceInfo(props: {
             title="대여"
             price={seriesPriceInfo.rent.min_nonzero_price}
             discount={0}
-            regularPrice={price_info?.rent?.regular_price ?? 0}
           />
         )}
         {seriesPriceInfo.normal && (
@@ -308,7 +307,6 @@ export function PriceInfo(props: {
                 )
                 : seriesPriceInfo.normal.min_nonzero_price
             }
-            regularPrice={price_info?.buy?.regular_price ?? 0}
           />
         )}
       </>
