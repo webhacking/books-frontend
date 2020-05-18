@@ -407,11 +407,8 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   if (book.is_deleted) {
     return null;
   }
-  const categoryInfo = {
-    category: item.category,
+  const categoryInfo: CategoryNames = {
     category_name: item.category_name,
-    parent_category: item.parent_category,
-    parent_category2: item.parent_category2,
     parent_category_name: item.parent_category_name,
     parent_category_name2: item.parent_category_name2,
   };
