@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { lineClamp } from 'src/styles';
@@ -198,16 +198,9 @@ const Divider = styled.div`
 
 interface InstantSearchResultProps {
   result: SearchResult;
-  handleKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
   handleClickAuthorItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleClickBookItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
   focusedPosition: number;
-}
-
-interface InstantSearchResultBookListProps {
-  result: SearchTypes.SearchBookDetail[];
-  handleKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
-  handleClickBookItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const AuthorInfo: React.FC<{ author: SearchTypes.Author }> = (props) => {
@@ -246,36 +239,6 @@ const AuthorLabel: React.FC<{ author: string; authors: SearchTypes.AuthorsInfo[]
   );
 };
 
-const BookList: React.FC<InstantSearchResultBookListProps> = React.memo((props) => {
-  const { result, handleKeyDown, handleClickBookItem } = props;
-  return (
-    <ul>
-      {result.map((book: SearchTypes.SearchBookDetail, index) => (
-        <BookListItem data-book-id={book.b_id} key={index}>
-          <BookListItemButton
-            type="button"
-            data-book-id={book.b_id}
-            onKeyDown={handleKeyDown}
-            onClick={handleClickBookItem}
-          >
-            <BookTitle>
-              {getEscapedNode(
-                book.highlight.web_title_title || book.web_title_title,
-              )}
-            </BookTitle>
-            <AuthorLabel author={book.author} authors={book.authors_info} />
-            <Divider />
-            <AuthorPublisher>{book.publisher}</AuthorPublisher>
-            {book.age_limit > 18 && (
-              <img width={19} src={ADULT_BADGE_URL} alt="성인 전용 도서" />
-            )}
-          </BookListItemButton>
-        </BookListItem>
-      ))}
-    </ul>
-  );
-});
-
 const ResultWrapper = styled.div`
   padding: 4px 0;
 `;
@@ -286,31 +249,24 @@ function InstantSearchResult(props: InstantSearchResultProps) {
     handleClickAuthorItem,
     handleClickBookItem,
     result: { authors, books },
-    handleKeyDown,
   } = props;
-  const wrapperRef = React.useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (wrapperRef.current && !!focusedPosition) {
-      const items = wrapperRef.current.querySelectorAll('li button');
-      if (items.length > 0 && focusedPosition !== 0) {
-        const item = items[focusedPosition - 1] as HTMLLIElement;
-        if (item) {
-          item.focus();
-        }
-      }
+  const focusRef = React.useCallback((node: HTMLButtonElement | null) => {
+    if (node != null) {
+      node.focus();
     }
-  }, [focusedPosition, authors, books]);
+  }, []);
+  const authorCount = authors.length;
   return (
-    <ResultWrapper ref={wrapperRef}>
+    <ResultWrapper>
       {authors.length > 0 && (
         <>
           <ul>
             {authors.map((author, index) => (
               <AuthorListItem key={index}>
                 <AuthorListItemButton
+                  ref={index === focusedPosition - 1 ? focusRef : undefined}
                   type="button"
                   data-author-id={author.id}
-                  onKeyDown={handleKeyDown}
                   onClick={handleClickAuthorItem}
                 >
                   <AuthorInfo author={author} />
@@ -322,11 +278,30 @@ function InstantSearchResult(props: InstantSearchResultProps) {
         </>
       )}
       {books.length > 0 && (
-        <BookList
-          handleClickBookItem={handleClickBookItem}
-          handleKeyDown={handleKeyDown}
-          result={books}
-        />
+        <ul>
+          {books.map((book: SearchTypes.SearchBookDetail, index) => (
+            <BookListItem data-book-id={book.b_id} key={index}>
+              <BookListItemButton
+                ref={index + authorCount === focusedPosition - 1 ? focusRef : undefined}
+                type="button"
+                data-book-id={book.b_id}
+                onClick={handleClickBookItem}
+              >
+                <BookTitle>
+                  {getEscapedNode(
+                    book.highlight.web_title_title || book.web_title_title,
+                  )}
+                </BookTitle>
+                <AuthorLabel author={book.author} authors={book.authors_info} />
+                <Divider />
+                <AuthorPublisher>{book.publisher}</AuthorPublisher>
+                {book.age_limit > 18 && (
+                  <img width={19} src={ADULT_BADGE_URL} alt="성인 전용 도서" />
+                )}
+              </BookListItemButton>
+            </BookListItem>
+          ))}
+        </ul>
       )}
     </ResultWrapper>
   );

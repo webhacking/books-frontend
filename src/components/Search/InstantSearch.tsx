@@ -312,8 +312,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     }, []);
     const [debouncedHandleSearch] = useDebouncedCallback(handleSearch, 300);
     const passEventTarget = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const copiedValue = e.target.value;
-      setKeyword(copiedValue);
+      setKeyword(e.target.value);
     };
 
     const handleSearchWrapperBlur = useCallback((e: React.FocusEvent<HTMLDivElement>) => {
@@ -463,49 +462,39 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       [keyword, enableSearchHistoryRecord, searchHistory],
     );
 
-    const handleSetCurrentPosition = useCallback((pos: number) => {
-      setFocusedPosition(pos);
-      if (pos === 0 && inputRef.current) {
-        inputRef.current.focus();
+    React.useEffect(() => {
+      if (focusedPosition === 0) {
+        inputRef.current?.focus();
       }
-    }, []);
+    }, [focusedPosition]);
 
+    const itemCount = keyword === ''
+      ? Math.min(searchHistory.length, 5)
+      : searchResult.authors.length + searchResult.books.length;
     const handleKeyDown = useCallback(
-      (e: React.KeyboardEvent | KeyboardEvent) => {
+      (e: React.KeyboardEvent) => {
         if (!inputRef.current) {
           return;
         }
-        if (e.which === 13 && e.target) {
-          (e.target as HTMLLIElement).click();
+        if (e.key === 'Enter' && (e.target as HTMLElement).tagName === 'LI') {
+          (e.target as HTMLElement).click();
+          return;
         }
-        if (e.which === 40 || e.which === 38) {
+        if (e.key === 'ArrowDown' || e.key === 'Down') {
           e.preventDefault();
-
-          const history = safeJSONParse(
-            window.localStorage.getItem(localStorageKeys.instantSearchHistory),
-            [],
-          ).slice(0, 5);
-          const total = inputRef.current.value.length < 1
-            ? history.length
-            : searchResult.authors.length + searchResult.books.length;
-          if (e.which === 40) {
-            // keyDown
-            const nextPos = focusedPosition + 1;
-            const pos = nextPos > total ? 0 : nextPos;
-            handleSetCurrentPosition(pos);
-          } else {
-            const prevPos = focusedPosition - 1;
-            const pos = prevPos < 0 ? total : prevPos;
-            handleSetCurrentPosition(pos);
-          }
+          setFocusedPosition((value) => {
+            const pos = value + 1;
+            return pos > itemCount ? 0 : pos;
+          });
+        } else if (e.key === 'ArrowUp' || e.key === 'Up') {
+          e.preventDefault();
+          setFocusedPosition((value) => {
+            const pos = value - 1;
+            return pos < 0 ? itemCount : pos;
+          });
         }
       },
-      [
-        handleSetCurrentPosition,
-        focusedPosition,
-        searchResult.authors.length,
-        searchResult.books.length,
-      ],
+      [itemCount],
     );
 
     useEffect(() => {
@@ -522,19 +511,13 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
       setSearchHistory(Array<string>(...new Set<string>(history)));
 
-      if (inputRef.current) {
-        setLoaded(true);
-
-        // 검색어 query string 있을 경우 업데이트
-        if (location.pathname.startsWith('/search')) {
-          const searchParams = new URLSearchParams(window.location.search);
-          setKeyword(searchParams.get('q') ?? '');
-        }
+      // 검색어 query string 있을 경우 업데이트
+      if (location.pathname.startsWith('/search')) {
+        const searchParams = new URLSearchParams(window.location.search);
+        setKeyword(searchParams.get('q') ?? '');
       }
 
-      return () => {
-        // Unmount
-      };
+      setLoaded(true);
     }, []);
 
     useEffect(() => {
@@ -571,10 +554,13 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
     return (
       <>
+        {/* this element catches bubbling events */}
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
         <div
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
           tabIndex={0}
           onBlur={handleSearchWrapperBlur}
+          onKeyDown={handleKeyDown}
           css={[
             isFocused ? focused(theme) : initial(),
             css`
@@ -612,7 +598,6 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                 placeholder={labels.searchPlaceHolder}
                 onFocus={focusedWithSearch}
                 onClick={focusedWithSearch}
-                onKeyDown={handleKeyDown}
                 onChange={passEventTarget}
               />
             </form>
@@ -641,13 +626,11 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
                     handleClearHistory={handleClearHistory}
                     handleRemoveHistory={handleRemoveHistory}
                     handleToggleSearchHistoryRecord={handleToggleSearchHistoryRecord}
-                    handleKeyDown={handleKeyDown}
                     focusedPosition={focusedPosition}
                   />
                 ) : (
                   <>
                     <InstantSearchResult
-                      handleKeyDown={handleKeyDown}
                       handleClickBookItem={handleClickBookItem}
                       handleClickAuthorItem={handleClickAuthorItem}
                       focusedPosition={focusedPosition}
