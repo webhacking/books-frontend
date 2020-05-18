@@ -323,46 +323,34 @@ interface SearchLandscapeBookProps {
   title: string;
 }
 
-type RenderCategoryNameProps = Pick<
+type CategoryNames = Pick<
   SearchTypes.SearchBookDetail,
-  | 'category'
   | 'category_name'
-  | 'parent_category'
-  | 'parent_category2'
   | 'parent_category_name'
   | 'parent_category_name2'
 >;
 
-function RenderCategoryName(props: RenderCategoryNameProps) {
+function computeCategoryNames(categoryNames: CategoryNames) {
   const {
-    category,
     category_name,
-    parent_category,
-    parent_category2,
     parent_category_name,
     parent_category_name2,
-  } = props;
+  } = categoryNames;
 
   if (!parent_category_name && !parent_category_name2) {
-    return <a href={`/category/${category}`}>{category_name}</a>;
+    return category_name;
   }
   if (parent_category_name && !parent_category_name2) {
-    return <a href={`/category/${parent_category}`}>{parent_category_name}</a>;
+    return parent_category_name;
   }
   if (!parent_category_name && parent_category_name2) {
-    return <a href={`/category/${parent_category2}`}>{parent_category_name2}</a>;
+    return parent_category_name2;
   }
   if (parent_category_name && parent_category_name === parent_category_name2) {
-    return <a href={`/category/${parent_category}`}>{parent_category_name}</a>;
+    return parent_category_name;
   }
 
-  return (
-    <>
-      <a href={`/category/${parent_category}`}>{parent_category_name}</a>
-      {', '}
-      <a href={`/category/${parent_category2}`}>{parent_category_name2}</a>
-    </>
-  );
+  return `${parent_category_name}, ${parent_category_name2}`;
 }
 
 const SkeletonBook = styled.div`
@@ -419,11 +407,8 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   if (book.is_deleted) {
     return null;
   }
-  const categoryInfo = {
-    category: item.category,
+  const categoryInfo: CategoryNames = {
     category_name: item.category_name,
-    parent_category: item.parent_category,
-    parent_category2: item.parent_category2,
     parent_category_name: item.parent_category_name,
     parent_category_name2: item.parent_category_name2,
   };
@@ -502,7 +487,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           </SearchBookMetaItem>
           <SearchBookMetaItem>
             <SearchBookMetaField type="normal">
-              <RenderCategoryName {...categoryInfo} />
+              {computeCategoryNames(categoryInfo)}
             </SearchBookMetaField>
           </SearchBookMetaItem>
           {item.book_count > 1 && book.categories[0].is_series_category && (
