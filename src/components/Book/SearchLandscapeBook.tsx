@@ -431,7 +431,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
         <StyledThumbnailWithBadge
           bId={item.b_id}
           genre={genres[0] ?? ''}
-          slug={`search.result_book.${book.categories[0].genre ?? 'etc'}`}
+          slug={`search.result_book.${genres[0] ?? 'etc'}`}
           sizes="(min-width: 999px) 100px, 80px"
           title={title}
         />
