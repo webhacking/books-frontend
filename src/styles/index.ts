@@ -84,7 +84,7 @@ export const defaultHoverStyle = css`
   }
   @media(hover: none) {
     :hover {
-      background: transparent;
+      background: inherit;
     }
   }
 `;

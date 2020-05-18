@@ -101,7 +101,7 @@ const ShowMoreAuthor = styled.li`
 
 const AuthorAnchor = styled.a`
   width: 100%;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgb(0, 0, 0, 0);
   ${orBelow(BreakPoint.LG, 'padding: 0px 16px;')}
 `;
 
