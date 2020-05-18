@@ -7,7 +7,7 @@ import { CARET_DOWN_ICON_URL } from 'src/constants/icons';
 const Select = styled.select`
   flex: none;
   appearance: none;
-  height: 30px;
+  height: 2.8em;
   width: 93px;
   padding: 7px;
   font-size: 12px;
