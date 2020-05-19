@@ -77,8 +77,9 @@ function Category(props: {
     >
       <Link
         href={`/search?${copiedSearchParam.toString()}`}
+        passHref
       >
-        <CategoryAnchor href={`/search?${copiedSearchParam.toString()}`}>
+        <CategoryAnchor>
           <CategoryName active={active}>{category.category_name}</CategoryName>
           {' '}
           <CategoryCount active={active}>
