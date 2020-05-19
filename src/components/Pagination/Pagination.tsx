@@ -25,9 +25,29 @@ const PaginationWrapper = styled.div`
   }
 `;
 
-const PageButton = styled.button`
+const buttonStyle = css`
   min-width: 38px;
   height: 32px;
+  color: ${slateGray50};
+  box-shadow: 0 1px 1px 0 rgba(206, 210, 214, 0.3);
+  border: solid 1px ${slateGray20};
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+  ${defaultHoverStyle}
+  ${orBelow(BreakPoint.LG, 'min-width: 42px;')}
+`;
+
+const Anchor = styled.a`
+  padding: 7px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 13px;
+  border-radius: 3px;
+  ${buttonStyle}
+`;
+
+const PageButton = styled.button`
   > a {
     padding: 7px 8px;
     width: 100%;
@@ -38,11 +58,7 @@ const PageButton = styled.button`
     font-weight: bold;
     font-size: 13px;
   }
-  border: solid 1px ${slateGray20};
-  color: ${slateGray50};
-  box-shadow: 0 1px 1px 0 rgba(206, 210, 214, 0.3);
-  ${defaultHoverStyle}
-  ${orBelow(BreakPoint.LG, 'min-width: 42px;')}
+  ${buttonStyle}
 `;
 
 const Pages = styled.ul`
@@ -74,13 +90,6 @@ const Page = styled(PageButton)<{ isActive?: boolean }>`
     border-top-right-radius: 3px;
   }
 `.withComponent('li');
-
-const StyledPageButton = styled(PageButton)`
-  border-radius: 3px;
-  font-size: 13px;
-  font-weight: bold;
-  outline: none;
-`;
 
 const Arrow = styled(ArrowBoldV)<{ rotate: boolean }>`
   ${(props) => props.rotate && 'transform: rotate(180deg);'}
@@ -131,26 +140,21 @@ export function Pagination(props: PaginationProps) {
         <>
           {showStartAndLastButton && (
             <>
-              <StyledPageButton type="button">
-                <Link
-                  href={`/search?${getQueryParamsToString(searchParam, '1')}`}
-                >
-                  <a>처음</a>
-                </Link>
-              </StyledPageButton>
+              <Link
+                href={`/search?${getQueryParamsToString(searchParam, '1')}`}
+              >
+                <Anchor>처음</Anchor>
+              </Link>
               <Ellipsis />
             </>
           )}
-
-          <StyledPageButton type="button">
-            <Link
-              href={`/search?${getQueryParamsToString(searchParam, ((currentPaginationPosition - 2) * showPageCount + 1).toString())}`}
-            >
-              <a>
-                <Arrow rotate />
-              </a>
-            </Link>
-          </StyledPageButton>
+          <Link
+            href={`/search?${getQueryParamsToString(searchParam, ((currentPaginationPosition - 2) * showPageCount + 1).toString())}`}
+          >
+            <Anchor>
+              <Arrow rotate />
+            </Anchor>
+          </Link>
         </>
       )}
       <Pages>
@@ -170,23 +174,19 @@ export function Pagination(props: PaginationProps) {
       </Pages>
       {showNextButton && (
         <>
-          <StyledPageButton type="button">
-            <Link
-              href={`/search?${getQueryParamsToString(searchParam, (currentPaginationPosition * showPageCount + 1).toString())}`}
-            >
-              <a>
-                <Arrow />
-              </a>
-            </Link>
-          </StyledPageButton>
+          <Link
+            href={`/search?${getQueryParamsToString(searchParam, (currentPaginationPosition * showPageCount + 1).toString())}`}
+          >
+            <Anchor>
+              <Arrow />
+            </Anchor>
+          </Link>
           {showStartAndLastButton && (
             <>
               <Ellipsis />
-              <StyledPageButton type="button">
-                <Link href={`/search?${getQueryParamsToString(searchParam, totalPage.toString())}`}>
-                  <a>마지막</a>
-                </Link>
-              </StyledPageButton>
+              <Link href={`/search?${getQueryParamsToString(searchParam, totalPage.toString())}`}>
+                <Anchor>마지막</Anchor>
+              </Link>
             </>
           )}
         </>
