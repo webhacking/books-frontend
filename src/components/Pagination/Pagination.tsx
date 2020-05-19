@@ -79,6 +79,7 @@ const StyledPageButton = styled(PageButton)`
   border-radius: 3px;
   font-size: 13px;
   font-weight: bold;
+  outline: none;
 `;
 
 const Arrow = styled(ArrowBoldV)<{ rotate: boolean }>`
