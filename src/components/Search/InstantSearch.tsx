@@ -539,7 +539,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     }, [isFocused]);
 
     useEffect(() => {
-      if (router.query.q !== keyword) {
+      if (router.query.q && router.query.q !== keyword) {
         setKeyword(router.query.q as string);
       }
     }, [router.asPath]);
