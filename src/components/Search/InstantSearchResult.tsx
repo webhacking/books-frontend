@@ -240,7 +240,7 @@ const AuthorLabel: React.FC<{ author: string; authors: SearchTypes.AuthorsInfo[]
 };
 
 const ResultWrapper = styled.div`
-  padding: 4px 0;
+  padding: 4px 0 0;
 `;
 
 function InstantSearchResult(props: InstantSearchResultProps) {
