@@ -33,6 +33,7 @@ import { Pagination } from 'src/components/Pagination/Pagination';
 import useIsTablet from 'src/hooks/useIsTablet';
 import { AdultExcludeToggle, FilterSelector } from 'src/components/Search';
 import { useRouter } from 'next/router';
+import { defaultHoverStyle } from 'src/styles';
 
 interface SearchProps {
   q?: string;
@@ -71,19 +72,18 @@ const TotalAuthor = styled.span`
 `;
 
 const AuthorItem = styled.li<{ show: boolean }>`
-  padding: 12px 0;
   display: ${(props) => (props.show ? 'flex' : 'none')};
   align-items: center;
-  :active {
-    background: rgba(0, 0, 0, 0.05);
-  }
 `;
 
 const AuthorList = styled.ul`
   margin-bottom: 16px;
+  > li {
+    ${defaultHoverStyle}
+  }
 `;
 
-const ShowMoreAuthor = styled.li`
+const ShowMoreAuthor = styled.button`
   padding: 12px 0;
   color: ${slateGray60};
   font-size: 13px;
@@ -91,15 +91,20 @@ const ShowMoreAuthor = styled.li`
   display: flex;
   cursor: pointer;
   align-items: center;
-  :active {
-    background: rgba(0, 0, 0, 0.05);
-  }
+  width: 100%;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
   ${orBelow(BreakPoint.LG, 'padding: 12px 16px;')}
 `;
 
 const AuthorAnchor = styled.a`
   width: 100%;
-  ${orBelow(BreakPoint.LG, 'padding: 0px 16px;')}
+  padding: 12px 0;
+  :active {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  -webkit-tap-highlight-color: rgb(0, 0, 0, 0.05);
+  ${orBelow(BreakPoint.LG, 'padding: 12px 16px;')}
 `;
 
 const MAXIMUM_AUTHOR = 30;
@@ -147,17 +152,12 @@ function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
         <MemoizedAuthor show={isShowMore} key={author.id} author={author} q={q} />
       ))}
       {authors.length > DEFAULT_SHOW_AUTHOR_COUNT && (
-        <ShowMoreAuthor onClick={() => setShowMore((current) => !current)}>
-          {isShowMore ? (
-            <span>접기</span>
-          ) : (
-            <span>
-              {Math.min(total, MAXIMUM_AUTHOR) - DEFAULT_SHOW_AUTHOR_COUNT}
-              명 더 보기
-            </span>
-          )}
-          <Arrow isRotate={isShowMore} />
-        </ShowMoreAuthor>
+        <li>
+          <ShowMoreAuthor onClick={() => setShowMore((current) => !current)}>
+            {isShowMore ? '접기' : `${Math.min(total, MAXIMUM_AUTHOR) - DEFAULT_SHOW_AUTHOR_COUNT}명 더 보기`}
+            <Arrow isRotate={isShowMore} />
+          </ShowMoreAuthor>
+        </li>
       )}
     </AuthorList>
   );
@@ -181,6 +181,11 @@ const Filters = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 12px;
+  > label {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+    ${defaultHoverStyle}
+  }
+
   ${orBelow(BreakPoint.LG, 'margin-left: 16px; margin-right: 16px;')}
 `;
 

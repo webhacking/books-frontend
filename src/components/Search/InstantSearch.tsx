@@ -5,7 +5,7 @@ import { css, keyframes } from '@emotion/core';
 import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
 import Lens from 'src/svgs/Lens.svg';
 import Clear from 'src/svgs/Clear.svg';
-import { RIDITheme, ZIndexLayer } from 'src/styles';
+import { defaultHoverStyle, RIDITheme, ZIndexLayer } from 'src/styles';
 import { useDebouncedCallback } from 'use-debounce';
 import localStorageKeys from 'src/constants/localStorage';
 import * as labels from 'src/labels/instantSearch.json';
@@ -234,6 +234,8 @@ const AdultExcludeButton = styled.label`
   :active {
     background: rgba(0, 0, 0, 0.05);
   }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+  ${defaultHoverStyle}
 `;
 
 interface InstantSearchProps {
@@ -389,7 +391,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           setFocus(false);
           setSearchResult(initialSearchResult);
 
-          const url = new URL('/search/', origin || location.href);
+          const url = new URL('/search', origin || location.href);
           url.searchParams.append('q', label);
 
           window.location.href = url.toString();
@@ -448,7 +450,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           // Move search result page
           // Todo conditional check for partial component
 
-          const url = new URL('/search/', origin || location.href);
+          const url = new URL('/search', origin || location.href);
           url.searchParams.append('q', keyword);
 
           window.location.href = url.toString();

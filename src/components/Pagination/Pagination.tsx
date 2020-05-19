@@ -13,6 +13,7 @@ import {
 import ArrowBoldV from 'src/svgs/ArrowBoldV.svg';
 import More from 'src/svgs/More.svg';
 import { css } from '@emotion/core';
+import { defaultHoverStyle } from 'src/styles';
 
 const PaginationWrapper = styled.div`
   display: flex;
@@ -40,7 +41,7 @@ const PageButton = styled.button`
   border: solid 1px ${slateGray20};
   color: ${slateGray50};
   box-shadow: 0 1px 1px 0 rgba(206, 210, 214, 0.3);
-
+  ${defaultHoverStyle}
   ${orBelow(BreakPoint.LG, 'min-width: 42px;')}
 `;
 
@@ -58,6 +59,10 @@ const Page = styled(PageButton)<{ isActive?: boolean }>`
     border-color: ${dodgerBlue60};
     background: ${dodgerBlue50};
     color: white;
+    -webkit-tap-highlight-color: inherit;
+    :active, :hover {
+      background: ${dodgerBlue50};
+    }
   `}
 
   &:first-of-type {

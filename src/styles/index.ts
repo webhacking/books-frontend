@@ -77,3 +77,14 @@ export const displayNoneForTouchDevice = css`
     display: none;
   }
 `;
+
+export const defaultHoverStyle = css`
+  :hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  @media(hover: none) {
+    :hover {
+      background: inherit;
+    }
+  }
+`;

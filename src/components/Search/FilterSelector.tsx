@@ -7,14 +7,13 @@ import { CARET_DOWN_ICON_URL } from 'src/constants/icons';
 const Select = styled.select`
   flex: none;
   appearance: none;
-  height: 30px;
+  height: 2.8em;
   width: 93px;
   padding: 7px;
   font-size: 12px;
   font-weight: bold;
-  background: url("${CARET_DOWN_ICON_URL.toString()}") no-repeat white; // testing 시 에러가 TypeError: Cannot convert a Symbol value to a string 터져서 toString() 해줌
   background-size: 10px 6px;
-  background-position: 93% 50%;
+  background: white url("${CARET_DOWN_ICON_URL}") no-repeat 93% 50%;
   color: ${slateGray60};
   border: 1px solid ${slateGray20};
   border-radius: 3px;

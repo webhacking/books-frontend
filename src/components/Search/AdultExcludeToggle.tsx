@@ -16,9 +16,8 @@ const Input = styled.input`
   margin-right: 6px;
   :checked {
     border: 0;
-    background: ${dodgerBlue40} no-repeat;
-    background-image: url("${CHECK_ICON_URL.toString()}");
-    background-position: center;
+    background: ${dodgerBlue40} no-repeat center;
+    background-image: url("${CHECK_ICON_URL}");
   }
 `;
 
