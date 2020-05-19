@@ -7,7 +7,9 @@ import axios from 'axios';
 import fixture from './searchResult.fixture.json';
 import { Provider } from 'react-redux';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { Router } from 'next/router'
 
+const mockRouter = new Router('/search', {}, '/search', {});
 const store = makeStore({}, { asPath: 'test', isServer: true });
 
 describe('Search Page Test', () => {
@@ -52,7 +54,7 @@ describe('Search Page Test', () => {
     it('should be render authors`s popular book', async () => {
       const { getByText } = render(
         <Provider store={store}>
-          <RouterContext.Provider value={{ asPath: '', query: { pathname: '/cart'} }}>
+          <RouterContext.Provider value={mockRouter}>
             <Index
               q={'유유'}
               book={fixture.book}
@@ -71,7 +73,7 @@ describe('Search Page Test', () => {
   it('should be clickable show more authors button', async () => {
     const { getByText } = render(
       <Provider store={store}>
-        <RouterContext.Provider value={{ asPath: '', query: { pathname: '/cart'} }}>
+        <RouterContext.Provider value={mockRouter}>
           <Index
             q={'유유'}
             book={fixture.book}
@@ -99,7 +101,7 @@ describe('Search Page Test', () => {
   it('should be render category tab', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <RouterContext.Provider value={{ asPath: '', query: { pathname: '/cart'} }}>
+        <RouterContext.Provider value={mockRouter}>
           <Index
             q={'유유'}
             book={fixture.book}
