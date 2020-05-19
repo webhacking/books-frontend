@@ -271,7 +271,7 @@ function SearchPage(props: SearchProps) {
   }, [currentPage, book.total]);
   useEffect(() => {
     if (isAdultExclude) {
-      if (categories.findIndex((category) => String(category.category_id) === currentCategoryId) === -1) {
+      if (categories.every((category) => String(category.category_id) !== currentCategoryId)) {
         const searchParams = new URLSearchParams(router.query as Record<string, string> || {});
         searchParams.set('category_id', '0');
         router.replace(`/search?${searchParams.toString()}`);
