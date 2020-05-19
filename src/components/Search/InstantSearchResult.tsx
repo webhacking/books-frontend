@@ -240,7 +240,7 @@ const AuthorLabel: React.FC<{ author: string; authors: SearchTypes.AuthorsInfo[]
 };
 
 const ResultWrapper = styled.div`
-  padding: 4px 0;
+  padding: 4px 0 0;
 `;
 
 function InstantSearchResult(props: InstantSearchResultProps) {
@@ -278,30 +278,33 @@ function InstantSearchResult(props: InstantSearchResultProps) {
         </>
       )}
       {books.length > 0 && (
-        <ul>
-          {books.map((book: SearchTypes.SearchBookDetail, index) => (
-            <BookListItem data-book-id={book.b_id} key={index}>
-              <BookListItemButton
-                ref={index + authorCount === focusedPosition - 1 ? focusRef : undefined}
-                type="button"
-                data-book-id={book.b_id}
-                onClick={handleClickBookItem}
-              >
-                <BookTitle>
-                  {getEscapedNode(
-                    book.highlight.web_title_title || book.web_title_title,
+        <>
+          <ul>
+            {books.map((book: SearchTypes.SearchBookDetail, index) => (
+              <BookListItem data-book-id={book.b_id} key={index}>
+                <BookListItemButton
+                  ref={index + authorCount === focusedPosition - 1 ? focusRef : undefined}
+                  type="button"
+                  data-book-id={book.b_id}
+                  onClick={handleClickBookItem}
+                >
+                  <BookTitle>
+                    {getEscapedNode(
+                      book.highlight.web_title_title || book.web_title_title,
+                    )}
+                  </BookTitle>
+                  <AuthorLabel author={book.author} authors={book.authors_info} />
+                  <Divider />
+                  <AuthorPublisher>{book.publisher}</AuthorPublisher>
+                  {book.age_limit > 18 && (
+                    <img width={19} src={ADULT_BADGE_URL} alt="성인 전용 도서" />
                   )}
-                </BookTitle>
-                <AuthorLabel author={book.author} authors={book.authors_info} />
-                <Divider />
-                <AuthorPublisher>{book.publisher}</AuthorPublisher>
-                {book.age_limit > 18 && (
-                  <img width={19} src={ADULT_BADGE_URL} alt="성인 전용 도서" />
-                )}
-              </BookListItemButton>
-            </BookListItem>
-          ))}
-        </ul>
+                </BookListItemButton>
+              </BookListItem>
+            ))}
+          </ul>
+          <InstantSearchDivider />
+        </>
       )}
     </ResultWrapper>
   );

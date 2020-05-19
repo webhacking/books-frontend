@@ -225,7 +225,6 @@ const AdultExcludeButton = styled.label`
   height: 44px;
   margin-bottom: 4px;
   padding: 9px 16px;
-
   outline: none;
   cursor: pointer;
   font-size: 13px;
