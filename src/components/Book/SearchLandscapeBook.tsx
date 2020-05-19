@@ -375,7 +375,7 @@ function RenderAuthors(props: { authors: AuthorsInfo[]; fallback: string }) {
   const { authors, fallback } = props;
   if (authors.length === 0) {
     return (
-      <a href={`/search?${fallback}`}>{fallback}</a>
+      <a href={`/search?q=${fallback}`}>{fallback}</a>
     );
   }
   if (authors.length === 1) {
