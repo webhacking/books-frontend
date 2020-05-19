@@ -39,8 +39,9 @@ const CategoryItem = styled.li<{ active: boolean }>`
 
 const CategoryAnchor = styled.a`
   padding: 15px 4px;
-  :active {
+  :active, :focus {
     background: rgba(0, 0, 0, 0.05);
+    outline: none;
   }
   ${defaultHoverStyle}
 `;
@@ -76,6 +77,7 @@ function Category(props: {
     >
       <Link
         href={`/search?${copiedSearchParam.toString()}`}
+        passHref
       >
         <CategoryAnchor>
           <CategoryName active={active}>{category.category_name}</CategoryName>
