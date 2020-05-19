@@ -154,14 +154,7 @@ function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
       {authors.length > DEFAULT_SHOW_AUTHOR_COUNT && (
         <li>
           <ShowMoreAuthor onClick={() => setShowMore((current) => !current)}>
-            {isShowMore ? (
-              <span>접기</span>
-            ) : (
-              <span>
-                {Math.min(total, MAXIMUM_AUTHOR) - DEFAULT_SHOW_AUTHOR_COUNT}
-                명 더 보기
-              </span>
-            )}
+            {isShowMore ? '접기' : `${Math.min(total, MAXIMUM_AUTHOR) - DEFAULT_SHOW_AUTHOR_COUNT}명 더 보기`}
             <Arrow isRotate={isShowMore} />
           </ShowMoreAuthor>
         </li>
