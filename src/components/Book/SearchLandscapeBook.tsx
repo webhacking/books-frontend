@@ -194,13 +194,12 @@ function PriceLabel(props: {
   title: string;
   price: number;
   discount?: number;
-  // regularPrice: number;
+  regularPrice?: number; // 정가 구분 룰이 확실하게 정해지면 optional 제외
 }) {
   const {
     title,
     price,
     discount = 0,
-    // regularPrice,
   } = props;
   return (
     <PriceItem>
@@ -250,11 +249,11 @@ export function PriceInfo(props: {
   });
   // 체험판 부터 거른다.
   if (is_trial) {
-    return <PriceLabel title="구매" price={0} discount={0} />;
+    return <PriceLabel title="구매" price={0} discount={0} regularPrice={0} />;
   }
   // 진정한 무료 책
   if (!seriesPriceInfo.normal && price === 0 && price_info?.buy?.price === 0) {
-    return <PriceLabel title="구매" price={0} discount={0} />;
+    return <PriceLabel title="구매" price={0} discount={0} regularPrice={0} />;
   }
   if (price_info && price !== 0) {
     return (
@@ -272,6 +271,7 @@ export function PriceInfo(props: {
                 ? 0
                 : price_info.rent.discount_percentage
             }
+            regularPrice={price_info.rent.regular_price}
           />
         )}
         <PriceLabel
@@ -282,6 +282,7 @@ export function PriceInfo(props: {
               : price
           }
           discount={price_info.buy ? price_info.buy.discount_percentage : 0}
+          regularPrice={price_info.buy?.regular_price ?? 0}
         />
       </>
     );
@@ -294,6 +295,7 @@ export function PriceInfo(props: {
             title="대여"
             price={seriesPriceInfo.rent.min_nonzero_price}
             discount={0}
+            regularPrice={price_info?.rent?.regular_price ?? 0}
           />
         )}
         {seriesPriceInfo.normal && (
@@ -307,6 +309,7 @@ export function PriceInfo(props: {
                 )
                 : seriesPriceInfo.normal.min_nonzero_price
             }
+            regularPrice={price_info?.buy?.regular_price ?? 0}
           />
         )}
       </>
