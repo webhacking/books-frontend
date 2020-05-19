@@ -85,6 +85,7 @@ const AuthorList = styled.ul`
 
 const ShowMoreAuthor = styled.button`
   padding: 12px 0;
+  height: 46px;
   color: ${slateGray60};
   font-size: 13px;
   font-weight: bold;
