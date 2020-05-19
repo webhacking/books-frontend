@@ -142,6 +142,7 @@ export function Pagination(props: PaginationProps) {
             <>
               <Link
                 href={`/search?${getQueryParamsToString(searchParam, '1')}`}
+                passHref
               >
                 <Anchor>처음</Anchor>
               </Link>
@@ -150,6 +151,7 @@ export function Pagination(props: PaginationProps) {
           )}
           <Link
             href={`/search?${getQueryParamsToString(searchParam, ((currentPaginationPosition - 2) * showPageCount + 1).toString())}`}
+            passHref
           >
             <Anchor>
               <Arrow rotate />
@@ -165,7 +167,7 @@ export function Pagination(props: PaginationProps) {
           }
           return (
             <Page isActive={currentPage === moveToPage} key={index}>
-              <Link href={`/search?${getQueryParamsToString(searchParam, moveToPage.toString())}`}>
+              <Link href={`/search?${getQueryParamsToString(searchParam, moveToPage.toString())}`} passHref>
                 <a>{moveToPage}</a>
               </Link>
             </Page>
@@ -176,6 +178,7 @@ export function Pagination(props: PaginationProps) {
         <>
           <Link
             href={`/search?${getQueryParamsToString(searchParam, (currentPaginationPosition * showPageCount + 1).toString())}`}
+            passHref
           >
             <Anchor>
               <Arrow />
@@ -184,7 +187,7 @@ export function Pagination(props: PaginationProps) {
           {showStartAndLastButton && (
             <>
               <Ellipsis />
-              <Link href={`/search?${getQueryParamsToString(searchParam, totalPage.toString())}`}>
+              <Link href={`/search?${getQueryParamsToString(searchParam, totalPage.toString())}`} passHref>
                 <Anchor>마지막</Anchor>
               </Link>
             </>
