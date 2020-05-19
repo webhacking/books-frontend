@@ -223,6 +223,7 @@ const AdultExcludeButton = styled.label`
   align-items: center;
   width: 100%;
   height: 44px;
+  margin-top: -4px;
   margin-bottom: 4px;
   padding: 9px 16px;
 
