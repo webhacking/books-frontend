@@ -79,6 +79,7 @@ const StyledPageButton = styled(PageButton)`
   border-radius: 3px;
   font-size: 13px;
   font-weight: bold;
+  outline: none;
 `;
 
 const Arrow = styled(ArrowBoldV)<{ rotate: boolean }>`
@@ -130,7 +131,7 @@ export function Pagination(props: PaginationProps) {
         <>
           {showStartAndLastButton && (
             <>
-              <StyledPageButton>
+              <StyledPageButton type="button">
                 <Link
                   href={`/search?${getQueryParamsToString(searchParam, '1')}`}
                 >
@@ -141,7 +142,7 @@ export function Pagination(props: PaginationProps) {
             </>
           )}
 
-          <StyledPageButton>
+          <StyledPageButton type="button">
             <Link
               href={`/search?${getQueryParamsToString(searchParam, ((currentPaginationPosition - 2) * showPageCount + 1).toString())}`}
             >
@@ -169,7 +170,7 @@ export function Pagination(props: PaginationProps) {
       </Pages>
       {showNextButton && (
         <>
-          <StyledPageButton>
+          <StyledPageButton type="button">
             <Link
               href={`/search?${getQueryParamsToString(searchParam, (currentPaginationPosition * showPageCount + 1).toString())}`}
             >
@@ -181,7 +182,7 @@ export function Pagination(props: PaginationProps) {
           {showStartAndLastButton && (
             <>
               <Ellipsis />
-              <StyledPageButton>
+              <StyledPageButton type="button">
                 <Link href={`/search?${getQueryParamsToString(searchParam, totalPage.toString())}`}>
                   <a>마지막</a>
                 </Link>
