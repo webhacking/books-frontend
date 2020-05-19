@@ -25,7 +25,14 @@ const PaginationWrapper = styled.div`
   }
 `;
 
-const buttonStyle = css`
+const Anchor = styled.a<{isActive?: boolean}>`
+  padding: 7px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 13px;
+  border-radius: 3px;
   min-width: 38px;
   height: 32px;
   color: ${slateGray50};
@@ -34,42 +41,6 @@ const buttonStyle = css`
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
   ${defaultHoverStyle}
   ${orBelow(BreakPoint.LG, 'min-width: 42px;')}
-`;
-
-const Anchor = styled.a`
-  padding: 7px 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 13px;
-  border-radius: 3px;
-  ${buttonStyle}
-`;
-
-const PageButton = styled.button`
-  > a {
-    padding: 7px 8px;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 13px;
-  }
-  ${buttonStyle}
-`;
-
-const Pages = styled.ul`
-  display: flex;
-
-  > * + * {
-    margin-left: -1px;
-  }
-`;
-
-const Page = styled(PageButton)<{ isActive?: boolean }>`
   ${(props) => props.isActive && css`
     position: relative;
     border-color: ${dodgerBlue60};
@@ -80,16 +51,32 @@ const Page = styled(PageButton)<{ isActive?: boolean }>`
       background: ${dodgerBlue50};
     }
   `}
+`;
 
-  &:first-of-type {
-    border-bottom-left-radius: 3px;
-    border-top-left-radius: 3px;
+const Pages = styled.ul`
+  display: flex;
+
+  > * + * {
+    margin-left: -1px;
   }
-  &:last-of-type {
-    border-bottom-right-radius: 3px;
-    border-top-right-radius: 3px;
+  li {
+    :first-of-type {
+      border-bottom-left-radius: 3px;
+      border-top-left-radius: 3px;
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
+    :last-of-type {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+      border-bottom-right-radius: 3px;
+      border-top-right-radius: 3px;
+    }
   }
-`.withComponent('li');
+  a {
+    border-radius: inherit;
+  }
+`;
 
 const Arrow = styled(ArrowBoldV)<{ rotate: boolean }>`
   ${(props) => props.rotate && 'transform: rotate(180deg);'}
@@ -166,11 +153,11 @@ export function Pagination(props: PaginationProps) {
             return null;
           }
           return (
-            <Page isActive={currentPage === moveToPage} key={index}>
+            <li key={index}>
               <Link href={`/search?${getQueryParamsToString(searchParam, moveToPage.toString())}`} passHref>
-                <a>{moveToPage}</a>
+                <Anchor isActive={currentPage === moveToPage}>{moveToPage}</Anchor>
               </Link>
-            </Page>
+            </li>
           );
         })}
       </Pages>
