@@ -174,11 +174,11 @@ const Discount = styled.span`
   ${priceBase}
 `;
 
-const OriginalPrice = styled.span`
-  text-decoration: line-through;
-  color: ${slateGray50};
-  ${priceBase}
-`;
+// const OriginalPrice = styled.span`
+//   text-decoration: line-through;
+//   color: ${slateGray50};
+//   ${priceBase}
+// `;
 
 const SearchBookMetaWrapper = styled.div`
    display: flex;
@@ -194,13 +194,12 @@ function PriceLabel(props: {
   title: string;
   price: number;
   discount?: number;
-  regularPrice: number;
+  regularPrice?: number; // 정가 구분 룰이 확실하게 정해지면 optional 제외
 }) {
   const {
     title,
     price,
     discount = 0,
-    regularPrice,
   } = props;
   return (
     <PriceItem>
@@ -216,10 +215,12 @@ function PriceLabel(props: {
               %↓)
             </Discount>
             {' '}
-            <OriginalPrice>
-              {regularPrice.toLocaleString('ko-KR')}
-              원
-            </OriginalPrice>
+            {/* Fixme */}
+            {/* 가장 낮은 가격의 정가 문제가 해결이 필요하기 때문에 일단 주석 처리 합니다. */}
+            {/* <OriginalPrice> */}
+            {/*  {regularPrice.toLocaleString('ko-KR')} */}
+            {/*  원 */}
+            {/* </OriginalPrice> */}
           </>
         )}
       </dd>
