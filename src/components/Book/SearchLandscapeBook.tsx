@@ -324,6 +324,9 @@ export function PriceInfo(props: {
 }
 
 interface SearchLandscapeBookProps {
+  clickHandler: (genre: string, index: number, bId: string) => void;
+  index: number;
+  q: string;
   item: SearchTypes.SearchBookDetail;
   title: string;
 }
@@ -396,7 +399,9 @@ function RenderAuthors(props: { authors: AuthorsInfo[]; fallback: string }) {
 }
 
 export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
-  const { item, title } = props;
+  const {
+    item, title, clickHandler, index, q,
+  } = props;
   const book = useBookSelector(item.b_id);
   if (book === null) {
     return (
@@ -432,7 +437,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   });
   return (
     <>
-      <ThumbnailAnchor href={`/books/${item.b_id}`}>
+      <ThumbnailAnchor href={`/books/${item.b_id}?_s=search&_q=${q}`} onClick={() => clickHandler(genres[0], index, item.b_id)}>
         <StyledThumbnailWithBadge
           bId={item.b_id}
           genre={genres[0] ?? ''}
@@ -443,7 +448,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
       </ThumbnailAnchor>
       <SearchBookMetaWrapper>
         <SearchBookTitle>
-          <a href={`/books/${item.b_id}`}>
+          <a href={`/books/${item.b_id}?_s=search&_q=${q}`} onClick={clickHandler.bind(null, genres[0], index, item.b_id)}>
             {getEscapedNode(computeSearchBookTitle(item))}
           </a>
         </SearchBookTitle>
@@ -506,7 +511,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
             </SearchBookMetaItem>
           )}
         </SearchBookMetaList>
-        <a href={`/books/${item.b_id}`}>
+        <a href={`/books/${item.b_id}?_s=search&_q=${q}`} onClick={clickHandler.bind(null, genres[0], index, item.b_id)}>
           <BookDesc>
             {clearDesc.length > 170 ? `${clearDesc.slice(0, 170)}...` : clearDesc}
           </BookDesc>
