@@ -435,9 +435,13 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
       authors.push(author);
     }
   });
+  const searchParam = new URLSearchParams();
+  searchParam.set('_s', 'search');
+  searchParam.set('_q', q);
+
   return (
     <>
-      <ThumbnailAnchor href={`/books/${item.b_id}?_s=search&_q=${q}`} onClick={() => clickHandler(genres[0], index, item.b_id)}>
+      <ThumbnailAnchor href={`/books/${item.b_id}?${searchParam.toString()}`} onClick={() => clickHandler(genres[0], index, item.b_id)}>
         <StyledThumbnailWithBadge
           bId={item.b_id}
           genre={genres[0] ?? ''}
@@ -448,7 +452,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
       </ThumbnailAnchor>
       <SearchBookMetaWrapper>
         <SearchBookTitle>
-          <a href={`/books/${item.b_id}?_s=search&_q=${q}`} onClick={clickHandler.bind(null, genres[0], index, item.b_id)}>
+          <a href={`/books/${item.b_id}?${searchParam.toString()}`} onClick={clickHandler.bind(null, genres[0], index, item.b_id)}>
             {getEscapedNode(computeSearchBookTitle(item))}
           </a>
         </SearchBookTitle>
@@ -511,7 +515,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
             </SearchBookMetaItem>
           )}
         </SearchBookMetaList>
-        <a href={`/books/${item.b_id}?_s=search&_q=${q}`} onClick={clickHandler.bind(null, genres[0], index, item.b_id)}>
+        <a href={`/books/${item.b_id}?${searchParam.toString()}`} onClick={clickHandler.bind(null, genres[0], index, item.b_id)}>
           <BookDesc>
             {clearDesc.length > 170 ? `${clearDesc.slice(0, 170)}...` : clearDesc}
           </BookDesc>
