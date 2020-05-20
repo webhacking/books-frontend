@@ -18,7 +18,7 @@ const Container = styled.div<{ checked?: boolean }>`
 `;
 
 const Input = styled.input`
-  ${Container} > & { // Specificity hack
+  ${Container} > input& { // Specificity hack
     display: block;
     width: 22px;
     height: 22px;
