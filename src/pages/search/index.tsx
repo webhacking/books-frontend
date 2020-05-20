@@ -263,12 +263,19 @@ function SearchPage(props: SearchProps) {
   }, [loggedUser]);
   useEffect(() => {
     const availableMaxPage = Math.min(Math.ceil(book.total / ITEM_PER_PAGE), MAX_PAGE);
-    if (page > availableMaxPage) {
+    if (page > availableMaxPage && book.total > 0) {
       const searchParams = new URLSearchParams(router.query as Record<string, string> || {});
       searchParams.set('page', availableMaxPage.toString());
       router.replace(`/search?${searchParams.toString()}`);
     }
   }, [currentPage, book.total]);
+  useEffect(() => {
+    if (categories.every((category) => String(category.category_id) !== currentCategoryId)) {
+      const searchParams = new URLSearchParams(router.query as Record<string, string> || {});
+      searchParams.set('category_id', '0');
+      router.replace(`/search?${searchParams.toString()}`);
+    }
+  }, [categories, currentCategoryId]);
   return (
     <SearchResultSection>
       <Head>
