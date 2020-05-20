@@ -7,9 +7,9 @@ import {
   slateGray60,
 } from '@ridi/colors';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 import ScrollContainer from 'src/components/ScrollContainer';
+import { useSearchQueries } from 'src/hooks/useSearchQueries';
 import * as SearchTypes from 'src/types/searchResults';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { defaultHoverStyle } from 'src/styles';
@@ -60,25 +60,20 @@ const CategoryCount = styled(CategoryName)`
 function Category(props: {
   currentCategoryId: number;
   category: SearchTypes.Aggregation;
-  searchParam: URLSearchParams;
   focusElementRef: React.Ref<HTMLElement>;
 }) {
   const {
-    currentCategoryId, category, searchParam, focusElementRef,
+    currentCategoryId, category, focusElementRef,
   } = props;
   const active = currentCategoryId === category.category_id;
-  const copiedSearchParam = new URLSearchParams(searchParam);
-  copiedSearchParam.set('category_id', category.category_id.toString());
-  copiedSearchParam.delete('page');
+  const { calculateUpdateQuery } = useSearchQueries();
+  const href = `/search?${calculateUpdateQuery({ categoryId: String(category.category_id), page: 1 })}`;
   return (
     <CategoryItem
       ref={active ? focusElementRef as React.Ref<HTMLLIElement> : undefined}
       active={active}
     >
-      <Link
-        href={`/search?${copiedSearchParam.toString()}`}
-        passHref
-      >
+      <Link href={href} passHref>
         <CategoryAnchor>
           <CategoryName active={active}>{category.category_name}</CategoryName>
           {' '}
@@ -147,9 +142,6 @@ const containerStyle = css`
 
 function SearchCategoryTab(props: SearchCategoryProps) {
   const { currentCategoryId = 0, categories } = props;
-  const router = useRouter();
-  const { q = '', order = 'score', adult_exclude = 'n' } = router.query as Record<string, string>;
-  const searchParam = new URLSearchParams({ q, order, adult_exclude });
   return (
     <>
       <ScrollContainer
@@ -165,7 +157,6 @@ function SearchCategoryTab(props: SearchCategoryProps) {
                 focusElementRef={focusElementRef}
                 currentCategoryId={currentCategoryId}
                 category={category}
-                searchParam={searchParam}
               />
             ))}
           </CategoryList>

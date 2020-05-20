@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import { useRouter } from 'next/router';
 import {
   dodgerBlue50,
   dodgerBlue60,
@@ -14,6 +13,7 @@ import ArrowBoldV from 'src/svgs/ArrowBoldV.svg';
 import More from 'src/svgs/More.svg';
 import { css } from '@emotion/core';
 import { defaultHoverStyle } from 'src/styles';
+import { useSearchQueries } from 'src/hooks/useSearchQueries';
 
 const PaginationWrapper = styled.div`
   display: flex;
@@ -92,12 +92,6 @@ interface PaginationProps {
   maxPage: number;
 }
 
-function getQueryParamsToString(searchParam: URLSearchParams, page: string) {
-  const params = new URLSearchParams(searchParam);
-  params.set('page', page);
-  return params.toString();
-}
-
 export function Pagination(props: PaginationProps) {
   const {
     totalItem,
@@ -113,8 +107,8 @@ export function Pagination(props: PaginationProps) {
   const showPreviousButton = currentPaginationPosition > 1;
   const showNextButton = currentPaginationPosition < totalPagination;
 
-  const router = useRouter();
-  const searchParam = new URLSearchParams(router.query as Record<string, string> || {});
+  const { calculateUpdateQuery } = useSearchQueries();
+  const calculatePageUpdate = React.useCallback((page: number) => calculateUpdateQuery({ page }), [calculateUpdateQuery]);
   return (
     <PaginationWrapper>
       {showPreviousButton && (
@@ -122,7 +116,7 @@ export function Pagination(props: PaginationProps) {
           {showStartAndLastButton && (
             <>
               <Link
-                href={`/search?${getQueryParamsToString(searchParam, '1')}`}
+                href={`/search?${calculatePageUpdate(1)}`}
                 passHref
               >
                 <Anchor>처음</Anchor>
@@ -131,7 +125,7 @@ export function Pagination(props: PaginationProps) {
             </>
           )}
           <Link
-            href={`/search?${getQueryParamsToString(searchParam, ((currentPaginationPosition - 2) * showPageCount + 1).toString())}`}
+            href={`/search?${calculatePageUpdate((currentPaginationPosition - 2) * showPageCount + 1)}`}
             passHref
           >
             <Anchor>
@@ -141,14 +135,14 @@ export function Pagination(props: PaginationProps) {
         </>
       )}
       <Pages>
-        {Array.from({ length: showPageCount }, (v, i) => i).map((page, index) => {
+        {Array.from({ length: showPageCount }).map((_, index) => {
           const moveToPage = (currentPaginationPosition - 1) * showPageCount + (index + 1);
           if (totalPage < moveToPage) {
             return null;
           }
           return (
             <li key={index}>
-              <Link href={`/search?${getQueryParamsToString(searchParam, moveToPage.toString())}`} passHref>
+              <Link href={`/search?${calculatePageUpdate(moveToPage)}`} passHref>
                 <Anchor isActive={currentPage === moveToPage}>{moveToPage}</Anchor>
               </Link>
             </li>
@@ -158,7 +152,7 @@ export function Pagination(props: PaginationProps) {
       {showNextButton && (
         <>
           <Link
-            href={`/search?${getQueryParamsToString(searchParam, (currentPaginationPosition * showPageCount + 1).toString())}`}
+            href={`/search?${calculatePageUpdate(currentPaginationPosition * showPageCount + 1)}`}
             passHref
           >
             <Anchor>
@@ -168,7 +162,7 @@ export function Pagination(props: PaginationProps) {
           {showStartAndLastButton && (
             <>
               <Ellipsis />
-              <Link href={`/search?${getQueryParamsToString(searchParam, totalPage.toString())}`} passHref>
+              <Link href={`/search?${calculatePageUpdate(totalPage)}`} passHref>
                 <Anchor>마지막</Anchor>
               </Link>
             </>

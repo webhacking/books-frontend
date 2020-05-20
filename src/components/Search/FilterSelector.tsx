@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 import { slateGray20, slateGray60 } from '@ridi/colors';
 import { CARET_DOWN_ICON_URL } from 'src/constants/icons';
+import { useSearchQueries } from 'src/hooks/useSearchQueries';
 
 const Select = styled.select`
   flex: none;
@@ -34,27 +34,11 @@ const Select = styled.select`
 `;
 
 export function FilterSelector() {
-  const router = useRouter();
-  const [selectedFilter, setSelectedFilter] = useState<string>(String(router.query?.order ?? 'score'));
+  const { query, updateQuery } = useSearchQueries();
+  const selectedFilter = query.order;
   function applyFilter(e: React.ChangeEvent<HTMLSelectElement>) {
-    setSelectedFilter(e.target.value);
+    updateQuery({ order: e.target.value });
   }
-  useEffect(() => {
-    const {
-      q = '',
-      adult_exclude = 'n',
-      page = '1',
-      category_id = '0',
-    } = router.query as Record<string, string>;
-    const searchParams = new URLSearchParams({
-      q,
-      adult_exclude,
-      page,
-      category_id,
-      order: selectedFilter,
-    });
-    router.push(`/search?${searchParams.toString()}`);
-  }, [selectedFilter]);
   return (
     <label>
       <Select
