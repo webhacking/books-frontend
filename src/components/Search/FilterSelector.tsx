@@ -21,10 +21,16 @@ const Select = styled.select`
   ::-ms-expand {
     display: none;
   }
-  :active, :focus {
+  cursor: pointer;
+  :active, :focus, :hover {
     background: rgba(0, 0, 0, 0.05) url("${CARET_DOWN_ICON_URL}") no-repeat 93% 50%;
   }
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+  @media (hover: none) {
+    :hover {
+      background: white url("${CARET_DOWN_ICON_URL}") no-repeat 93% 50%;
+    }
+  }
 `;
 
 export function FilterSelector() {
