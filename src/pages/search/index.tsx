@@ -34,7 +34,6 @@ import useIsTablet from 'src/hooks/useIsTablet';
 import { AdultExcludeToggle, FilterSelector } from 'src/components/Search';
 import { useRouter } from 'next/router';
 import { defaultHoverStyle } from 'src/styles';
-import { useDeviceType } from 'src/hooks/useDeviceType';
 
 interface SearchProps {
   q?: string;
@@ -247,7 +246,6 @@ function SearchPage(props: SearchProps) {
   const router = useRouter();
   const { loggedUser } = useSelector((state: RootState) => state.account);
   const isTablet = useIsTablet();
-  const { deviceType } = useDeviceType();
   const setPageView = useCallback(() => {
     if (tracker) {
       try {
@@ -260,15 +258,6 @@ function SearchPage(props: SearchProps) {
   const hasPagination = book.total > ITEM_PER_PAGE && book.books.length > 0;
   const page = parseInt(currentPage || '1', 10);
 
-  const searchBookClickHandler = (genre: string, index: number, bId: string) => {
-    if (tracker) {
-      try {
-        tracker.sendEvent('click', { section: `${deviceType}.search.result_book.${genre}`, items: [{ id: bId, idx: index, ts: Date.now() }] });
-      } catch (error) {
-        sentry.captureException(error);
-      }
-    }
-  };
   useEffect(() => {
     setPageView();
   }, [loggedUser]);
@@ -324,7 +313,7 @@ function SearchPage(props: SearchProps) {
           <SearchBookList>
             {book.books.map((item, index) => (
               <SearchBookItem key={item.b_id}>
-                <SearchLandscapeBook item={item} title={item.title} index={index} clickHandler={searchBookClickHandler} q={q || ''} />
+                <SearchLandscapeBook item={item} title={item.title} q={q || ''} index={index} />
               </SearchBookItem>
             ))}
           </SearchBookList>
