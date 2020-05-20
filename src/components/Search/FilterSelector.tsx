@@ -31,7 +31,6 @@ const Select = styled.select`
       background: white url("${CARET_DOWN_ICON_URL}") no-repeat 93% 50%;
     }
   }
-  
 `;
 
 export function FilterSelector() {
