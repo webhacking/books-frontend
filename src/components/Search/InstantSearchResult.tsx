@@ -5,7 +5,7 @@ import { lineClamp } from 'src/styles';
 import { getEscapedNode } from 'src/utils/highlight';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import {
-  gray100, lightSteelBlue5, slateGray5, slateGray50,
+  gray100, slateGray5, slateGray50,
 } from '@ridi/colors';
 import { ADULT_BADGE_URL, AUTHOR_ICON_URL } from 'src/constants/icons';
 import * as SearchTypes from 'src/types/searchResults';
@@ -24,7 +24,7 @@ const BookListItem = styled.li`
     BreakPoint.LG,
     `
       :hover {
-        background-color: white !important;
+        background-color: rgba(0, 0, 0, 0.05) !important;
       }
       :focus {
         background-color: white !important;
@@ -57,7 +57,9 @@ const BookListItem = styled.li`
       outline: none !important;
     }
   }
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+  &, button {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+  }
 `;
 
 const AuthorListItem = styled.li`
@@ -67,7 +69,7 @@ const AuthorListItem = styled.li`
     BreakPoint.LG,
     `
       :hover {
-        background-color: white !important;
+        background-color: rgba(0, 0, 0, 0.05) !important;
       }
       :focus {
         background-color: white !important;
@@ -92,7 +94,9 @@ const AuthorListItem = styled.li`
       outline: none !important;
     }
   }
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+  &, button {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+  }
 `;
 
 const searchResultItemButton = css`
