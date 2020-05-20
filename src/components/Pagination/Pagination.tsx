@@ -25,35 +25,22 @@ const PaginationWrapper = styled.div`
   }
 `;
 
-const PageButton = styled.button`
+const Anchor = styled.a<{isActive?: boolean}>`
+  padding: 7px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 13px;
+  border-radius: 3px;
   min-width: 38px;
   height: 32px;
-  > a {
-    padding: 7px 8px;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 13px;
-  }
-  border: solid 1px ${slateGray20};
   color: ${slateGray50};
   box-shadow: 0 1px 1px 0 rgba(206, 210, 214, 0.3);
+  border: solid 1px ${slateGray20};
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
   ${defaultHoverStyle}
   ${orBelow(BreakPoint.LG, 'min-width: 42px;')}
-`;
-
-const Pages = styled.ul`
-  display: flex;
-
-  > * + * {
-    margin-left: -1px;
-  }
-`;
-
-const Page = styled(PageButton)<{ isActive?: boolean }>`
   ${(props) => props.isActive && css`
     position: relative;
     border-color: ${dodgerBlue60};
@@ -64,22 +51,25 @@ const Page = styled(PageButton)<{ isActive?: boolean }>`
       background: ${dodgerBlue50};
     }
   `}
+`;
 
-  &:first-of-type {
-    border-bottom-left-radius: 3px;
-    border-top-left-radius: 3px;
-  }
-  &:last-of-type {
-    border-bottom-right-radius: 3px;
-    border-top-right-radius: 3px;
-  }
-`.withComponent('li');
+const Pages = styled.ul`
+  display: flex;
 
-const StyledPageButton = styled(PageButton)`
-  border-radius: 3px;
-  font-size: 13px;
-  font-weight: bold;
-  outline: none;
+  > * + * {
+    margin-left: -1px;
+  }
+  li {
+    :first-of-type {
+      border-radius: 3px 0 0 3px;
+    }
+    :last-of-type {
+      border-radius: 0 3px 3px 0;
+    }
+  }
+  ${Anchor} {
+    border-radius: inherit;
+  }
 `;
 
 const Arrow = styled(ArrowBoldV)<{ rotate: boolean }>`
@@ -131,26 +121,23 @@ export function Pagination(props: PaginationProps) {
         <>
           {showStartAndLastButton && (
             <>
-              <StyledPageButton type="button">
-                <Link
-                  href={`/search?${getQueryParamsToString(searchParam, '1')}`}
-                >
-                  <a>처음</a>
-                </Link>
-              </StyledPageButton>
+              <Link
+                href={`/search?${getQueryParamsToString(searchParam, '1')}`}
+                passHref
+              >
+                <Anchor>처음</Anchor>
+              </Link>
               <Ellipsis />
             </>
           )}
-
-          <StyledPageButton type="button">
-            <Link
-              href={`/search?${getQueryParamsToString(searchParam, ((currentPaginationPosition - 2) * showPageCount + 1).toString())}`}
-            >
-              <a>
-                <Arrow rotate />
-              </a>
-            </Link>
-          </StyledPageButton>
+          <Link
+            href={`/search?${getQueryParamsToString(searchParam, ((currentPaginationPosition - 2) * showPageCount + 1).toString())}`}
+            passHref
+          >
+            <Anchor>
+              <Arrow rotate />
+            </Anchor>
+          </Link>
         </>
       )}
       <Pages>
@@ -160,33 +147,30 @@ export function Pagination(props: PaginationProps) {
             return null;
           }
           return (
-            <Page isActive={currentPage === moveToPage} key={index}>
-              <Link href={`/search?${getQueryParamsToString(searchParam, moveToPage.toString())}`}>
-                <a>{moveToPage}</a>
+            <li key={index}>
+              <Link href={`/search?${getQueryParamsToString(searchParam, moveToPage.toString())}`} passHref>
+                <Anchor isActive={currentPage === moveToPage}>{moveToPage}</Anchor>
               </Link>
-            </Page>
+            </li>
           );
         })}
       </Pages>
       {showNextButton && (
         <>
-          <StyledPageButton type="button">
-            <Link
-              href={`/search?${getQueryParamsToString(searchParam, (currentPaginationPosition * showPageCount + 1).toString())}`}
-            >
-              <a>
-                <Arrow />
-              </a>
-            </Link>
-          </StyledPageButton>
+          <Link
+            href={`/search?${getQueryParamsToString(searchParam, (currentPaginationPosition * showPageCount + 1).toString())}`}
+            passHref
+          >
+            <Anchor>
+              <Arrow />
+            </Anchor>
+          </Link>
           {showStartAndLastButton && (
             <>
               <Ellipsis />
-              <StyledPageButton type="button">
-                <Link href={`/search?${getQueryParamsToString(searchParam, totalPage.toString())}`}>
-                  <a>마지막</a>
-                </Link>
-              </StyledPageButton>
+              <Link href={`/search?${getQueryParamsToString(searchParam, totalPage.toString())}`} passHref>
+                <Anchor>마지막</Anchor>
+              </Link>
             </>
           )}
         </>
