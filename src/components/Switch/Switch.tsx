@@ -18,23 +18,26 @@ const Container = styled.div<{ checked?: boolean }>`
 `;
 
 const Input = styled.input`
-  display: block;
-  width: 22px;
-  height: 22px;
+  ${Container} > & { // Specificity hack
+    display: block;
+    width: 22px;
+    height: 22px;
 
-  border-radius: 13px;
-  background: white;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
+    border: none;
+    border-radius: 11px;
+    background: white;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
 
-  appearance: none;
-  &::-ms-check {
-    display: none;
-  }
+    appearance: none;
+    &::-ms-check {
+      display: none;
+    }
 
-  transition: 0.2s;
-  &:checked {
-    transform: translateX(20px);
+    transition: 0.2s;
+    &:checked {
+      transform: translateX(20px);
+    }
   }
 `;
 
