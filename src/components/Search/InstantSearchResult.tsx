@@ -44,19 +44,20 @@ const BookListItem = styled.li`
         }
 
         :hover {
-          background-color: ${lightSteelBlue5};
+          background-color: rgba(0, 0, 0, 0.05);
         }
       `,
   )}
-    :hover {
-    background-color: ${lightSteelBlue5};
+  :hover {
+    background-color: rgba(0, 0, 0, 0.05);
   }
   button {
     :focus {
-      background-color: ${lightSteelBlue5};
+      background-color: rgba(0, 0, 0, 0.05);
       outline: none !important;
     }
   }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
 `;
 
 const AuthorListItem = styled.li`
@@ -83,14 +84,15 @@ const AuthorListItem = styled.li`
     `,
   )};
   :hover {
-    background-color: ${lightSteelBlue5};
+    background-color: rgba(0, 0, 0, 0.05);
   }
   button {
     :focus {
-      background-color: ${lightSteelBlue5};
+      background-color: rgba(0, 0, 0, 0.05);
       outline: none !important;
     }
   }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
 `;
 
 const searchResultItemButton = css`

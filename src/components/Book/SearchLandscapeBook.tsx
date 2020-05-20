@@ -36,7 +36,7 @@ const SearchBookTitle = styled.h3`
   font-size: 14px;
   font-weight: normal;
   line-height: 1.36em;
-  a:active {
+  a:active, a:hover {
     text-decoration-line: underline;
   }
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
@@ -119,14 +119,16 @@ const SearchBookMetaField = styled.span<{
   type: 'author' | 'normal' | 'rating' | 'rating_count';
 }>`
   line-height: 1.36em;
-  a:active {
+  a:active, a:hover {
     text-decoration-line: underline;
   }
+  -webkit-tap-highlight-color: transparent;
   ${(props) => fieldStyles[props.type]}
 `;
 
 const ThumbnailAnchor = styled.a`
   flex: none;
+  -webkit-tap-highlight-color: transparent;
 `;
 
 const BookDesc = styled.p`
@@ -479,7 +481,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           </SearchBookMetaItem>
           <SearchBookMetaItem>
             <SearchBookMetaField type="normal">
-              <Link href={`/search?q=${encodeURIComponent(`출판사:${item.publisher}`)}`}>
+              <Link href={`/search?q=${encodeURIComponent(`출판사:${item.publisher}`)}`} passHref>
                 <a>
                   {item.highlight.publisher
                     ? getEscapedNode(item.highlight.publisher)
