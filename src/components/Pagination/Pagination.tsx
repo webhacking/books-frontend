@@ -61,19 +61,13 @@ const Pages = styled.ul`
   }
   li {
     :first-of-type {
-      border-bottom-left-radius: 3px;
-      border-top-left-radius: 3px;
-      border-bottom-right-radius: 0;
-      border-top-right-radius: 0;
+      border-radius: 3px 0 0 3px;
     }
     :last-of-type {
-      border-bottom-left-radius: 0;
-      border-top-left-radius: 0;
-      border-bottom-right-radius: 3px;
-      border-top-right-radius: 3px;
+      border-radius: 0 3px 3px 0;
     }
   }
-  a {
+  ${Anchor} {
     border-radius: inherit;
   }
 `;
