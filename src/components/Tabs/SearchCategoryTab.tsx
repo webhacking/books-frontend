@@ -2,8 +2,8 @@ import React from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import {
-  slateGray20,
-  slateGray40,
+  slateGray20, slateGray30,
+  slateGray40, slateGray50,
   slateGray60,
 } from '@ridi/colors';
 import Link from 'next/link';
@@ -102,10 +102,18 @@ const arrowStyle = css`
     width: 40px;
     height: 41px;
 
+    :hover {
+      opacity: .95;
+      :first-of-type, :last-of-type {
+        > svg {
+          fill: ${slateGray50};
+        }
+      }
+    }
     :first-of-type {
       background: linear-gradient(270deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.5) 27.6%, #FFFFFF 53.65%);
       > svg {
-        fill: ${slateGray60};
+        fill: ${slateGray30};
         position: relative;
         left: -15px;
         right: inherit;
@@ -114,7 +122,7 @@ const arrowStyle = css`
     :last-of-type {
       background: linear-gradient(90deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.5) 27.6%, #FFFFFF 53.65%);
       > svg {
-        fill: ${slateGray60};
+        fill: ${slateGray30};
         position: relative;
         left: inherit;
         right: -15px;

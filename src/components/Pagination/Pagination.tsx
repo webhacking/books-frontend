@@ -73,6 +73,7 @@ const Pages = styled.ul`
 `;
 
 const Arrow = styled(ArrowBoldV)<{ rotate: boolean }>`
+  fill: ${slateGray30};
   ${(props) => props.rotate && 'transform: rotate(180deg);'}
 `;
 
