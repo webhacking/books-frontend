@@ -311,9 +311,9 @@ function SearchPage(props: SearchProps) {
         </Filters>
         {book.total > 0 ? (
           <SearchBookList>
-            {book.books.map((item) => (
+            {book.books.map((item, index) => (
               <SearchBookItem key={item.b_id}>
-                <SearchLandscapeBook item={item} title={item.title} />
+                <SearchLandscapeBook item={item} title={item.title} q={q || ''} index={index} />
               </SearchBookItem>
             ))}
           </SearchBookList>

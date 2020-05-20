@@ -25,6 +25,9 @@ import Star from 'src/svgs/Star.svg';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
 import { lineClamp } from 'src/styles';
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
+import sentry from 'src/utils/sentry';
+import { useDeviceType } from 'src/hooks/useDeviceType';
+import { useEventTracker } from 'src/hooks/useEventTracker';
 
 const StyledThumbnailWithBadge = styled(ThumbnailWithBadge)`
   width: 100px;
@@ -324,6 +327,8 @@ export function PriceInfo(props: {
 }
 
 interface SearchLandscapeBookProps {
+  index: number;
+  q: string;
   item: SearchTypes.SearchBookDetail;
   title: string;
 }
@@ -396,7 +401,11 @@ function RenderAuthors(props: { authors: AuthorsInfo[]; fallback: string }) {
 }
 
 export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
-  const { item, title } = props;
+  const { deviceType } = useDeviceType();
+  const [tracker] = useEventTracker();
+  const {
+    item, title, q, index,
+  } = props;
   const book = useBookSelector(item.b_id);
   if (book === null) {
     return (
@@ -430,9 +439,21 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
       authors.push(author);
     }
   });
+  const searchParam = new URLSearchParams();
+  searchParam.set('_s', 'search');
+  searchParam.set('_q', q);
+  const searchBookClick = () => {
+    if (tracker) {
+      try {
+        tracker.sendEvent('click', { section: `${deviceType}.search.result_book.${genres[0]}`, items: [{ id: item.b_id, idx: index, ts: Date.now() }] });
+      } catch (error) {
+        sentry.captureException(error);
+      }
+    }
+  };
   return (
     <>
-      <ThumbnailAnchor href={`/books/${item.b_id}`}>
+      <ThumbnailAnchor href={`/books/${item.b_id}?${searchParam.toString()}`} onClick={searchBookClick}>
         <StyledThumbnailWithBadge
           bId={item.b_id}
           genre={genres[0] ?? ''}
@@ -443,7 +464,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
       </ThumbnailAnchor>
       <SearchBookMetaWrapper>
         <SearchBookTitle>
-          <a href={`/books/${item.b_id}`}>
+          <a href={`/books/${item.b_id}?${searchParam.toString()}`} onClick={searchBookClick}>
             {getEscapedNode(computeSearchBookTitle(item))}
           </a>
         </SearchBookTitle>
@@ -506,7 +527,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
             </SearchBookMetaItem>
           )}
         </SearchBookMetaList>
-        <a href={`/books/${item.b_id}`}>
+        <a href={`/books/${item.b_id}?${searchParam.toString()}`} onClick={searchBookClick}>
           <BookDesc>
             {clearDesc.length > 170 ? `${clearDesc.slice(0, 170)}...` : clearDesc}
           </BookDesc>
