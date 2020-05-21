@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import Cookies from 'universal-cookie';
 
-interface Query {
+export interface Query {
   q: string;
   isAdultExclude: boolean;
   page: number;
@@ -16,9 +17,11 @@ interface SearchQueriesHook {
 }
 
 function extractQuery(query: Record<string, string | string[]>): Query {
+  const cookies = new Cookies();
+  const cookieAdultExclude = cookies.get('adult_exclude');
   const {
     q = '',
-    adult_exclude = 'n',
+    adult_exclude = cookieAdultExclude,
     page = '1',
     category_id = '0',
     order = 'score',
