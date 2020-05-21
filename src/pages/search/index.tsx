@@ -291,6 +291,31 @@ function SearchPage() {
       router.replace(`/search?${search}`);
     }
   }, [categories, currentCategoryId]);
+
+  let booksNode;
+  if (books != null) {
+    if (books.total > 0) {
+      booksNode = (
+        <SearchBookList>
+          {books.books.map((item, index) => (
+            <SearchBookItem key={item.b_id}>
+              <SearchLandscapeBook item={item} title={item.title} q={q || ''} index={index} />
+            </SearchBookItem>
+          ))}
+        </SearchBookList>
+      );
+    } else {
+      booksNode = (
+        <NoResult>
+          <NoResultLens />
+          <NoResultText>{`‘${q}’에 대한 도서 검색 결과가 없습니다.`}</NoResultText>
+          <SuggestButton href="https://help.ridibooks.com/hc/ko/requests/new?ticket_form_id=664028" rel="noreferrer nooppener" target="_blank">도서 제안하기</SuggestButton>
+        </NoResult>
+      );
+    }
+  } else {
+    booksNode = null;
+  }
   return (
     <SearchResultSection>
       <Head>
@@ -324,21 +349,7 @@ function SearchPage() {
           <FilterSelector />
           <AdultExcludeToggle adultExclude={isAdultExclude} />
         </Filters>
-        {books != null && books.total > 0 ? (
-          <SearchBookList>
-            {books.books.map((item, index) => (
-              <SearchBookItem key={item.b_id}>
-                <SearchLandscapeBook item={item} title={item.title} q={q || ''} index={index} />
-              </SearchBookItem>
-            ))}
-          </SearchBookList>
-        ) : (
-          <NoResult>
-            <NoResultLens />
-            <NoResultText>{`‘${q}’에 대한 도서 검색 결과가 없습니다.`}</NoResultText>
-            <SuggestButton href="https://help.ridibooks.com/hc/ko/requests/new?ticket_form_id=664028" rel="noreferrer nooppener" target="_blank">도서 제안하기</SuggestButton>
-          </NoResult>
-        )}
+        {booksNode}
         {hasPagination ? (
           <Pagination
             itemPerPage={ITEM_PER_PAGE}
