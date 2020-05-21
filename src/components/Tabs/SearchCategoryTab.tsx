@@ -92,10 +92,8 @@ const arrowStyle = css`
   button {
     border-radius: 0;
     box-shadow: none;
-    position: relative;
-    top: 3px;
     width: 40px;
-    height: 41px;
+    height: 44px;
 
     :hover {
       opacity: .95;
