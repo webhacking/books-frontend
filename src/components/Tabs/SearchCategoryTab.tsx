@@ -93,9 +93,9 @@ const arrowStyle = css`
     border-radius: 0;
     box-shadow: none;
     position: relative;
-    top: 3px;
+    top: 0;
     width: 40px;
-    height: 41px;
+    height: 44px;
 
     :hover {
       opacity: .95;

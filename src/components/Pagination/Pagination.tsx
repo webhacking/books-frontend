@@ -19,7 +19,7 @@ const PaginationWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 60px 0;
+  padding: 60px 0;
   > * + * {
     margin-left: 4px;
   }

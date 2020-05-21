@@ -196,6 +196,8 @@ const SearchBookMetaWrapper = styled.div`
   }
    width: 100%;
 `;
+// https://rididev.slack.com/archives/CHSBJC7U1/p1590034684168300 여기서 논의 됨
+const NOT_FOR_SALE_PRICE = 999999999;
 
 function PriceLabel(props: {
   title: string;
@@ -208,6 +210,9 @@ function PriceLabel(props: {
     price,
     discount = 0,
   } = props;
+  if (price === NOT_FOR_SALE_PRICE) {
+    return null;
+  }
   return (
     <PriceItem>
       <PriceTitle>{title}</PriceTitle>
