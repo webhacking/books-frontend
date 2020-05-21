@@ -451,7 +451,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
 
           const url = new URL('/search', origin || location.href);
           url.searchParams.append('q', keyword);
-
+          url.searchParams.set('adult_exclude', isAdultExclude ? 'y' : 'n');
           window.location.href = url.toString();
 
           setFocus(false);
