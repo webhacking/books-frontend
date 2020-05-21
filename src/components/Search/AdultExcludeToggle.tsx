@@ -5,6 +5,7 @@ import Cookies from 'universal-cookie';
 import { dodgerBlue40, slateGray20, slateGray60 } from '@ridi/colors';
 import { CHECK_ICON_URL } from 'src/constants/icons';
 import { useSearchQueries } from 'src/hooks/useSearchQueries';
+import { defaultHoverStyle } from 'src/styles';
 
 const Input = styled.input`
   width: 20px;
@@ -36,6 +37,8 @@ const Label = styled.label`
   font-weight: bold;
   font-size: 13px;
   color: ${slateGray60};
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+  ${defaultHoverStyle}
 `;
 
 function Toggle(props: {

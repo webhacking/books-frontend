@@ -131,7 +131,7 @@ const SearchBookMetaField = styled.span<{
 
 const ThumbnailAnchor = styled.a`
   flex: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.15);
 `;
 
 const BookDesc = styled.p`

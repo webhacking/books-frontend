@@ -38,7 +38,10 @@ const Anchor = styled.a<{isActive?: boolean}>`
   color: ${slateGray50};
   box-shadow: 0 1px 1px 0 rgba(206, 210, 214, 0.3);
   border: solid 1px ${slateGray20};
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  :active, :hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
   ${defaultHoverStyle}
   ${orBelow(BreakPoint.LG, 'min-width: 42px;')}
   ${(props) => props.isActive && css`
