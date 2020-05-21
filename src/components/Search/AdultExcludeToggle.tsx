@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 import Cookies from 'universal-cookie';
 
 import { dodgerBlue40, slateGray20, slateGray60 } from '@ridi/colors';
-import { useRouter } from 'next/router';
 import { CHECK_ICON_URL } from 'src/constants/icons';
+import { useSearchQueries } from 'src/hooks/useSearchQueries';
 
 const Input = styled.input`
   width: 20px;
@@ -64,32 +64,20 @@ function Toggle(props: {
 
 export function AdultExcludeToggle(props: { adultExclude: boolean }) {
   const { adultExclude } = props;
-  const router = useRouter();
-  const {
-    q = '',
-    order = 'score',
-    adult_exclude = 'n',
-    page = '1',
-    category_id = '0',
-  } = router.query as Record<string, string>;
-  const searchParams = new URLSearchParams({
-    q,
-    order,
-    adult_exclude,
-    page,
-    category_id,
-  });
-
-  const toggle = (newValue: boolean) => {
-    const value = newValue ? 'y' : 'n';
-    searchParams.set('adult_exclude', value);
+  const { updateQuery } = useSearchQueries();
+  const toggle = React.useCallback((newValue: boolean) => {
+    const cookieValue = newValue ? 'y' : 'n';
     const cookie = new Cookies();
-    cookie.set('adult_exclude', value, {
-      path: '/',
-      sameSite: 'lax',
-    });
-    router.push(`/search?${searchParams.toString()}`);
-  };
+    cookie.set(
+      'adult_exclude',
+      cookieValue,
+      {
+        path: '/',
+        sameSite: 'lax',
+      },
+    );
+    updateQuery({ isAdultExclude: newValue });
+  }, [updateQuery]);
   return (
     <Toggle
       name="adult_exclude"
