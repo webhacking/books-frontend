@@ -92,8 +92,6 @@ const arrowStyle = css`
   button {
     border-radius: 0;
     box-shadow: none;
-    position: relative;
-    top: 0;
     width: 40px;
     height: 44px;
 
