@@ -1,10 +1,8 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head';
-import { ConnectedInitializeProps } from 'src/types/common';
 import styled from '@emotion/styled';
-import axios from 'src/utils/axios';
 import * as SearchTypes from 'src/types/searchResults';
-import Cookies from 'universal-cookie';
 import { AuthorInfo } from 'src/components/Search/InstantSearchResult';
 import {
   dodgerBlue50,
@@ -23,27 +21,17 @@ import { SearchCategoryTab } from 'src/components/Tabs';
 import { useCallback, useEffect } from 'react';
 import sentry from 'src/utils/sentry';
 import { useEventTracker } from 'src/hooks/useEventTracker';
-import { useSelector } from 'react-redux';
+
 import { RootState } from 'src/store/config';
-import { booksActions } from 'src/services/books';
-import pRetry from 'p-retry';
-import { keyToArray } from 'src/utils/common';
 import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
 import { Pagination } from 'src/components/Pagination/Pagination';
 import useIsTablet from 'src/hooks/useIsTablet';
 import { AdultExcludeToggle, FilterSelector } from 'src/components/Search';
 import { useRouter } from 'next/router';
 import { defaultHoverStyle } from 'src/styles';
-
-interface SearchProps {
-  q?: string;
-  book: SearchTypes.BookResult;
-  author: SearchTypes.AuthorResult;
-  categories: SearchTypes.Aggregation[];
-  currentCategoryId: string;
-  currentPage?: string;
-  isAdultExclude: boolean;
-}
+import { useSearchQueries } from 'src/hooks/useSearchQueries';
+import { booksActions } from 'src/services/books';
+import { ITEM_PER_PAGE, MAX_PAGE, runSearch } from 'src/utils/search';
 
 const SearchResultSection = styled.section`
   max-width: 952px;
@@ -110,8 +98,6 @@ const AuthorAnchor = styled.a`
 
 const MAXIMUM_AUTHOR = 30;
 const DEFAULT_SHOW_AUTHOR_COUNT = 3;
-
-const ITEM_PER_PAGE = 24;
 
 const Arrow = styled(ArrowBoldH, {
   shouldForwardProp: (prop) => isPropValid(prop) && prop !== 'isRotate',
@@ -228,19 +214,45 @@ const SuggestButton = styled.a`
   color: ${dodgerBlue50};
   border-radius: 3px;
 `;
-// const MAX_ITEM = 9600; // search api result window 10000. 24 * 400 = 9600
-const MAX_PAGE = 400;
 
-function SearchPage(props: SearchProps) {
+function SearchPage() {
+  const dispatch = useDispatch();
+  const { query, calculateUpdateQuery } = useSearchQueries();
   const {
-    author,
-    book,
-    categories,
-    currentCategoryId,
-    currentPage,
     q,
     isAdultExclude,
-  } = props;
+    page,
+    categoryId: currentCategoryId,
+    order,
+  } = query;
+  const [authors, setAuthors] = React.useState<SearchTypes.AuthorResult>();
+  const [books, setBooks] = React.useState<SearchTypes.BookResult>();
+  const [categories, setCategories] = React.useState<SearchTypes.Aggregation[]>();
+
+  React.useEffect(() => {
+    (async () => {
+      const result = await runSearch(query);
+      setAuthors((orig) => orig || result.author);
+      setBooks((orig) => orig || result.book);
+      setCategories((orig) => orig || result.book.aggregations);
+
+      const bIds = result.book.books.map((book) => book.b_id);
+      dispatch({
+        type: booksActions.insertBookIds.type,
+        payload: bIds,
+      });
+    })();
+  }, [query]);
+
+  React.useEffect(() => {
+    setAuthors(undefined);
+  }, [q]);
+  React.useEffect(() => {
+    setBooks(undefined);
+  }, [q, isAdultExclude, page, currentCategoryId, order]);
+  React.useEffect(() => {
+    setCategories(undefined);
+  }, [q, isAdultExclude]);
 
   const [tracker] = useEventTracker();
   const router = useRouter();
@@ -255,27 +267,55 @@ function SearchPage(props: SearchProps) {
       }
     }
   }, [tracker]);
-  const hasPagination = book.total > ITEM_PER_PAGE && book.books.length > 0;
-  const page = parseInt(currentPage || '1', 10);
+  const hasPagination = books != null && books.total > ITEM_PER_PAGE && books.books.length > 0;
 
   useEffect(() => {
     setPageView();
   }, [loggedUser]);
   useEffect(() => {
-    const availableMaxPage = Math.min(Math.ceil(book.total / ITEM_PER_PAGE), MAX_PAGE);
-    if (page > availableMaxPage && book.total > 0) {
-      const searchParams = new URLSearchParams(router.query as Record<string, string> || {});
-      searchParams.set('page', availableMaxPage.toString());
-      router.replace(`/search?${searchParams.toString()}`);
+    if (books == null) {
+      return;
     }
-  }, [currentPage, book.total]);
+    const availableMaxPage = Math.min(Math.ceil(books.total / ITEM_PER_PAGE), MAX_PAGE);
+    if (page > availableMaxPage && books.total > 0) {
+      const search = calculateUpdateQuery({ page: availableMaxPage });
+      router.replace(`/search?${search}`);
+    }
+  }, [page, books?.total, calculateUpdateQuery]);
   useEffect(() => {
+    if (categories == null) {
+      return;
+    }
     if (categories.every((category) => String(category.category_id) !== currentCategoryId)) {
-      const searchParams = new URLSearchParams(router.query as Record<string, string> || {});
-      searchParams.set('category_id', '0');
-      router.replace(`/search?${searchParams.toString()}`);
+      const search = calculateUpdateQuery({ categoryId: '0' });
+      router.replace(`/search?${search}`);
     }
   }, [categories, currentCategoryId]);
+
+  let booksNode;
+  if (books != null) {
+    if (books.total > 0) {
+      booksNode = (
+        <SearchBookList>
+          {books.books.map((item, index) => (
+            <SearchBookItem key={item.b_id}>
+              <SearchLandscapeBook item={item} title={item.title} q={q || ''} index={index} />
+            </SearchBookItem>
+          ))}
+        </SearchBookList>
+      );
+    } else {
+      booksNode = (
+        <NoResult>
+          <NoResultLens />
+          <NoResultText>{`‘${q}’에 대한 도서 검색 결과가 없습니다.`}</NoResultText>
+          <SuggestButton href="https://help.ridibooks.com/hc/ko/requests/new?ticket_form_id=664028" rel="noreferrer nooppener" target="_blank">도서 제안하기</SuggestButton>
+        </NoResult>
+      );
+    }
+  } else {
+    booksNode = null;
+  }
   return (
     <SearchResultSection>
       <Head>
@@ -285,21 +325,21 @@ function SearchPage(props: SearchProps) {
           검색 결과 - 리디북스
         </title>
       </Head>
-      {author.total > 0 && (
+      {authors != null && authors.total > 0 && (
         <>
           <SearchTitle>
             {`‘${q}’ 저자 검색 결과`}
             <TotalAuthor>
-              {author.total > MAXIMUM_AUTHOR ? `총 ${MAXIMUM_AUTHOR}명+` : `총 ${author.total}명`}
+              {authors.total > MAXIMUM_AUTHOR ? `총 ${MAXIMUM_AUTHOR}명+` : `총 ${authors.total}명`}
             </TotalAuthor>
           </SearchTitle>
-          <MemoizedAuthors author={author} q={q || ''} />
+          <MemoizedAuthors author={authors} q={q || ''} />
         </>
       )}
 
       <>
         <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
-        {categories.length > 0 && (
+        {categories != null && categories.length > 0 && (
           <SearchCategoryTab
             categories={categories}
             currentCategoryId={parseInt(currentCategoryId, 10)}
@@ -309,26 +349,12 @@ function SearchPage(props: SearchProps) {
           <FilterSelector />
           <AdultExcludeToggle adultExclude={isAdultExclude} />
         </Filters>
-        {book.total > 0 ? (
-          <SearchBookList>
-            {book.books.map((item, index) => (
-              <SearchBookItem key={item.b_id}>
-                <SearchLandscapeBook item={item} title={item.title} q={q || ''} index={index} />
-              </SearchBookItem>
-            ))}
-          </SearchBookList>
-        ) : (
-          <NoResult>
-            <NoResultLens />
-            <NoResultText>{`‘${q}’에 대한 도서 검색 결과가 없습니다.`}</NoResultText>
-            <SuggestButton href="https://help.ridibooks.com/hc/ko/requests/new?ticket_form_id=664028" rel="noreferrer nooppener" target="_blank">도서 제안하기</SuggestButton>
-          </NoResult>
-        )}
+        {booksNode}
         {hasPagination ? (
           <Pagination
             itemPerPage={ITEM_PER_PAGE}
             currentPage={Math.max(page, 1)} // 0 이하로 떨어지는 걸 방지
-            totalItem={book.total}
+            totalItem={books?.total || 0}
             showStartAndLastButton={!isTablet}
             showPageCount={isTablet ? 5 : 10}
             maxPage={MAX_PAGE}
@@ -340,68 +366,5 @@ function SearchPage(props: SearchProps) {
     </SearchResultSection>
   );
 }
-
-const orderType = ['score', 'recent', 'review_cnt', 'price', 'similarity'];
-
-SearchPage.getInitialProps = async (props: ConnectedInitializeProps) => {
-  const { store, query, req } = props;
-  const searchKeyword = String(query.q || '');
-  const page = String(query.page || '1');
-  const categoryId = String(query.category_id || '0');
-  const searchUrl = new URL('/search', process.env.NEXT_STATIC_SEARCH_API);
-  const order = String(query.order || 'score');
-  const cookie = new Cookies(req?.headers.cookie);
-  const adult_exclude = String(query.adult_exclude || cookie.get('adult_exclude') || 'n');
-  const isAdultExclude = adult_exclude === 'y';
-
-  searchUrl.searchParams.set('adult_exclude', isAdultExclude ? 'y' : 'n');
-  searchUrl.searchParams.set('site', 'ridi-store');
-  searchUrl.searchParams.append('where', 'book');
-  if (orderType.includes(order)) {
-    searchUrl.searchParams.set('order', order);
-  }
-  const isPublisherSearch = searchKeyword.startsWith('출판사:');
-  if (/^\d+$/.test(categoryId)) {
-    searchUrl.searchParams.set('category_id', categoryId);
-  }
-  if (/^\d+$/.test(page)) {
-    const startPosition = Math.min(ITEM_PER_PAGE * (parseInt(page, 10) - 1), ITEM_PER_PAGE * (MAX_PAGE - 1));
-    if (startPosition >= 0) {
-      searchUrl.searchParams.set('start', startPosition.toString());
-    }
-  }
-  if (isPublisherSearch) {
-    searchUrl.searchParams.set('what', 'publisher');
-    searchUrl.searchParams.set(
-      'keyword',
-      searchKeyword.replace('출판사:', ''),
-    );
-  } else {
-    searchUrl.searchParams.set('what', 'base');
-    searchUrl.searchParams.append('where', 'author');
-    searchUrl.searchParams.set('keyword', searchKeyword);
-  }
-  const { data } = await pRetry(
-    () => axios.get(searchUrl.toString()),
-    {
-      retries: 3,
-    },
-  );
-  const searchResult = SearchTypes.checkSearchResult(isPublisherSearch ? {
-    book: data,
-    author: { total: 0, authors: [] },
-  } : data);
-  const bIds = keyToArray(searchResult.book, 'b_id');
-  store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
-  return {
-    q: searchKeyword,
-    book: searchResult.book,
-    author: searchResult.author,
-    categories: searchResult.book.aggregations,
-    currentCategoryId: categoryId,
-    currentPage: /^\d+$/.test(page) ? page : '1',
-    isAdultExclude,
-  };
-};
 
 export default SearchPage;
