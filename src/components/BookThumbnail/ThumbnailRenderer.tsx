@@ -76,11 +76,11 @@ const ThumbnailWrapper = styled.div`
     width: 100%;
     height: 100%;
     background:
-    linear-gradient(to right,rgba(0, 0, 0, .2) 0,
-      rgba(0, 0, 0, 0) 5%,
-      rgba(0, 0, 0, 0) 95%,
-      rgba(0, 0, 0, .2) 100%
-    );
+      linear-gradient(to right,rgba(0, 0, 0, .2) 0,
+        rgba(0, 0, 0, 0) 5%,
+        rgba(0, 0, 0, 0) 95%,
+        rgba(0, 0, 0, .2) 100%
+      );
     border: solid 1px rgba(0, 0, 0, .1);
     content: '';
   },
@@ -89,13 +89,7 @@ const ThumbnailWrapper = styled.div`
   :hover::after, :active::after {
     background:
       linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.15) -0.6%, rgba(0, 0, 0, 0) 5.5%, rgba(0, 0, 0, 0) 94%, rgba(0, 0, 0, 0.15) 100%);
-  }
-  @media (hover: none) {
-    :hover::after {
-      background:
-        linear-gradient(90deg, rgba(0, 0, 0, 0.15) -0.6%, rgba(0, 0, 0, 0) 5.5%, rgba(0, 0, 0, 0) 94%, rgba(0, 0, 0, 0.15) 100%);
-    }
+      linear-gradient(90deg, rgba(0, 0, 0, 0.15) 0, rgba(0, 0, 0, 0) 5%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0.15) 100%);
   }
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.15);
 `;
