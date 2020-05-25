@@ -1,16 +1,14 @@
 import React from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import { lineClamp } from 'src/styles';
 import { getEscapedNode } from 'src/utils/highlight';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
-import {
-  gray100, slateGray5, slateGray50,
-} from '@ridi/colors';
-import { ADULT_BADGE_URL, AUTHOR_ICON_URL } from 'src/constants/icons';
+import { gray100, slateGray50 } from '@ridi/colors';
+import { ADULT_BADGE_URL } from 'src/constants/icons';
 import * as SearchTypes from 'src/types/searchResults';
 
 import { AuthorRole } from 'src/types/book';
+import AuthorInfo from './Authors/AuthorInfo';
 import { SearchResult } from './types';
 
 const listItemCSS = css`
@@ -132,28 +130,6 @@ const authorPublisherCSS = css`
   max-width: 298px;
 `;
 
-const AuthorInfoWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-
-const AuthorName = styled.span`
-  font-size: 14px;
-  line-height: 1.4em;
-  flex-shrink: 0;
-  margin-right: 8px;
-  ${orBelow(BreakPoint.LG, 'margin-right: 6px;')};
-  color: ${gray100};
-`;
-
-const AuthorBooksInfo = styled.span`
-  font-size: 14px;
-  word-break: keep-all;
-  color: ${slateGray50};
-  ${lineClamp(1)};
-`;
-
 const Author = styled.span`
   ${authorPublisherCSS};
   font-size: 14px;
@@ -176,26 +152,6 @@ const InstantSearchDivider = styled.hr`
   display: block;
 `;
 
-const AuthorIconWrapper = styled.span`
-  width: 22px;
-  height: 22px;
-  margin-right: 6px;
-  background: ${slateGray5};
-  border-radius: 22px;
-`;
-
-const AuthorIcon = styled.img`
-  padding: 5px;
-`;
-
-function AuthorSymbol() {
-  return (
-    <AuthorIconWrapper>
-      <AuthorIcon src={AUTHOR_ICON_URL} alt="작가" />
-    </AuthorIconWrapper>
-  );
-}
-
 const Divider = styled.div`
   height: 12px;
   width: 1px;
@@ -208,23 +164,6 @@ interface InstantSearchResultProps {
   handleClickBookItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
   focusedPosition: number;
 }
-
-export const AuthorInfo: React.FC<{ author: SearchTypes.Author }> = (props) => {
-  const { author } = props;
-
-  return (
-    <AuthorInfoWrapper>
-      <AuthorSymbol />
-      <AuthorName>
-        {getEscapedNode(author.highlight.name || author.name)}
-      </AuthorName>
-      <AuthorBooksInfo>
-        {`<${author.popular_book_title}>`}
-        {author.book_count > 1 ? ` 외 ${author.book_count - 1}권` : ''}
-      </AuthorBooksInfo>
-    </AuthorInfoWrapper>
-  );
-};
 
 // Todo 사용 컴포넌트마다 다른 options 사용해서 보여주기
 const AuthorLabel: React.FC<{ author: string; authors: SearchTypes.AuthorsInfo[] }> = (props) => {
