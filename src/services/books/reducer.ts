@@ -13,9 +13,9 @@ export const booksInitialState: BooksState = {
 };
 
 export class BooksReducer extends ImmerReducer<BooksState> {
-  public insertBookIds(payload: string[]) {
+  public insertBookIds(payload: { bIds: string[]; options?: { withDesc?: boolean }}) {
     try {
-      const uniqIds = [...new Set(payload)];
+      const uniqIds = [...new Set(payload.bIds)];
       const books: BooksState['items'] = {};
       uniqIds.forEach((item: string) => {
         if (!this.draftState.items[item]) {

@@ -234,7 +234,7 @@ function SearchPage() {
       const bIds = result.book.books.map((book) => book.b_id);
       dispatch({
         type: booksActions.insertBookIds.type,
-        payload: bIds,
+        payload: { bIds, withDesc: true },
       });
     })();
   }, [query]);
