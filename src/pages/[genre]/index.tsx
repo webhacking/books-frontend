@@ -83,7 +83,7 @@ export const Home: NextPage<HomeProps> = (props) => {
         const { branches: data = [] } = result;
         setBranches(data);
         const bIds = keyToArray(data, 'b_id');
-        dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+        dispatch({ type: booksActions.insertBookIds.type, payload: { bIds } });
         const categoryIds = keyToArray(data, 'category_id');
         dispatch({
           type: categoryActions.insertCategoryIds.type,
@@ -155,7 +155,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
       // store.dispatch({ type: booksActions.setFetching.type, payload: true });
       const result = await fetchHomeSections(genre.toString());
       const bIds = keyToArray(result.branches, 'b_id');
-      store.dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+      store.dispatch({ type: booksActions.insertBookIds.type, payload: { bIds } });
       const categoryIds = keyToArray(result.branches, 'category_id');
       store.dispatch({
         type: categoryActions.insertCategoryIds.type,

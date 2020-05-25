@@ -13,14 +13,16 @@ import * as BookApi from 'src/types/book';
 // 임시 청크
 const DEFAULT_BOOKS_ID_CHUNK_SIZE = 60;
 
-function* fetchBooks(bIds: string[]) {
+// 장르 홈 redux 제거 전 일단 withDesc 옵션 처리로 땜빵
+function* fetchBooks(bIds: string[], withDesc?: boolean) {
   const [bookResult, descResult]: [BookApi.Book[], BookApi.BookDescResponse[]] = yield all([
     call(pRetry, () => requestBooks(bIds), { retries: 2 }),
-    call(pRetry, () => requestBooksDesc(bIds), { retries: 2 }),
+    withDesc ? call(pRetry, () => requestBooksDesc(bIds), { retries: 2 }) : null,
   ]);
-
   yield put({ type: booksActions.setBooks.type, payload: bookResult });
-  yield put({ type: booksActions.setDesc.type, payload: descResult });
+  if (withDesc) {
+    yield put({ type: booksActions.setDesc.type, payload: descResult });
+  }
 }
 
 
@@ -70,14 +72,14 @@ function* watchCheckSelectBookIds(action: Actions<typeof BooksReducer>) {
 
 function* watchInsertBookIds(action: Actions<typeof BooksReducer>) {
   try {
-    if (action.type === booksActions.insertBookIds.type && action.payload.length > 0) {
-      const uniqIds = [...new Set(action.payload)];
+    if (action.type === booksActions.insertBookIds.type && action.payload.bIds.length > 0) {
+      const uniqIds = [...new Set(action.payload.bIds)];
 
       const books: BooksState = yield select((state: RootState) => state.books);
       const excludedIds = uniqIds.filter((id) => !books.items[id]);
       const arrays = splitArrayToChunk(excludedIds, DEFAULT_BOOKS_ID_CHUNK_SIZE);
 
-      yield all(arrays.map((array) => fetchBooks(array)));
+      yield all(arrays.map((array) => fetchBooks(array, action.payload.withDesc)));
       yield put({ type: booksActions.setThumbnailId.type });
       yield put({ type: booksActions.setFetching.type, payload: false });
     }

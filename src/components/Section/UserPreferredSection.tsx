@@ -39,7 +39,7 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = (props) => {
         if (result.status === 200) {
           setSections(result.data.items);
           const bIds = keyToArray(result.data.items, 'b_id');
-          dispatch({ type: booksActions.insertBookIds.type, payload: bIds });
+          dispatch({ type: booksActions.insertBookIds.type, payload: { bIds } });
           const categoryIds = keyToArray(result.data.items, 'category_id');
           dispatch({
             type: categoryActions.insertCategoryIds.type,
