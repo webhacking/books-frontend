@@ -123,6 +123,11 @@ const SkeletonH2Bar = styled(SkeletonBar)`
   margin: 10px 0;
 `;
 
+const SkeletonFilterBar = styled(SkeletonBar)<{ type: 'short' | 'long' }>`
+  width: ${(props) => ({ short: 70, long: 92 }[props.type])}px;
+  margin: 5px 0 17px;
+`;
+
 function SearchPage() {
   const dispatch = useDispatch();
   const { query, calculateUpdateQuery } = useSearchQueries();
@@ -136,6 +141,7 @@ function SearchPage() {
   const [authors, setAuthors] = React.useState<SearchTypes.AuthorResult>();
   const [books, setBooks] = React.useState<SearchTypes.BookResult>();
   const [categories, setCategories] = React.useState<SearchTypes.Aggregation[]>();
+  const [keywordPending, setKeywordPending] = React.useState(true);
 
   React.useEffect(() => {
     (async () => {
@@ -143,6 +149,7 @@ function SearchPage() {
       setAuthors((orig) => orig || result.author);
       setBooks((orig) => orig || result.book);
       setCategories((orig) => orig || result.book.aggregations);
+      setKeywordPending(false);
 
       const bIds = result.book.books.map((book) => book.b_id);
       dispatch({
@@ -154,6 +161,7 @@ function SearchPage() {
 
   React.useEffect(() => {
     setAuthors(undefined);
+    setKeywordPending(true);
   }, [q]);
   React.useEffect(() => {
     setBooks(undefined);
@@ -287,16 +295,23 @@ function SearchPage() {
       </Head>
       {authorsNode}
 
-      {books == null ? (
+      {keywordPending ? (
         <SkeletonH2Bar />
       ) : (
         <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
       )}
       {categoriesNode}
-      <Filters>
-        <FilterSelector />
-        <AdultExcludeToggle adultExclude={isAdultExclude} />
-      </Filters>
+      {keywordPending ? (
+        <Filters>
+          <SkeletonFilterBar type="long" />
+          <SkeletonFilterBar type="short" />
+        </Filters>
+      ) : (
+        <Filters>
+          <FilterSelector />
+          <AdultExcludeToggle adultExclude={isAdultExclude} />
+        </Filters>
+      )}
       {booksNode}
       {hasPagination ? (
         <Pagination
