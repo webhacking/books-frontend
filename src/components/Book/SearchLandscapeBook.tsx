@@ -376,7 +376,7 @@ const SkeletonBook = styled.div`
   ${orBelow(BreakPoint.LG, 'width: 80px; height: 110px')}
 `;
 
-const SkeletonBar = styled.div<{width: string}>`
+export const SkeletonBar = styled.div<{width: string}>`
   background: linear-gradient(327.23deg, #F8F9FB 1.42%, #F1F1F3 49.17%, #F8F9FB 100%);
   width: ${(props) => props.width};
   height: 20px;

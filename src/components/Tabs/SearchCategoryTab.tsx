@@ -123,12 +123,12 @@ const arrowStyle = css`
   }
 `;
 
-const Border = styled.div`
+export const Border = styled.div<{color: string}>`
   top: -1px;
   position: relative;
   height: 1px;
   width: 100%;
-  background: ${slateGray20};
+  background: ${(props) => props.color};
   z-index: -1;
 `;
 
@@ -159,7 +159,7 @@ function SearchCategoryTab(props: SearchCategoryProps) {
           </CategoryList>
         )}
       </ScrollContainer>
-      <Border />
+      <Border color={slateGray20} />
     </>
   );
 }
