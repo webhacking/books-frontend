@@ -3,39 +3,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head';
 import styled from '@emotion/styled';
 import * as SearchTypes from 'src/types/searchResults';
-import { AuthorInfo } from 'src/components/Search/InstantSearchResult';
 import {
   dodgerBlue50,
   slateGray10,
   slateGray20,
   slateGray40,
   slateGray50,
-  slateGray60,
   slateGray90,
 } from '@ridi/colors';
-import ArrowBoldH from 'src/svgs/ArrowBoldH.svg';
 import Lens from 'src/svgs/Lens.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import isPropValid from '@emotion/is-prop-valid';
 import { SearchCategoryTab } from 'src/components/Tabs';
 import { useCallback, useEffect } from 'react';
 import sentry from 'src/utils/sentry';
 import { useEventTracker } from 'src/hooks/useEventTracker';
 
 import { RootState } from 'src/store/config';
-import {
-  SearchLandscapeBook,
-  SkeletonBar,
-} from 'src/components/Book/SearchLandscapeBook';
 import { Pagination } from 'src/components/Pagination/Pagination';
+import SearchLandscapeBook from 'src/components/Search/SearchLandscapeBook';
 import useIsTablet from 'src/hooks/useIsTablet';
 import { AdultExcludeToggle, FilterSelector } from 'src/components/Search';
 import { useRouter } from 'next/router';
-import { defaultHoverStyle } from 'src/styles';
 import { useSearchQueries } from 'src/hooks/useSearchQueries';
 import { booksActions } from 'src/services/books';
 import { ITEM_PER_PAGE, MAX_PAGE, runSearch } from 'src/utils/search';
 import { Border } from 'src/components/Tabs/SearchCategoryTab';
+import SkeletonCategoryTab from 'src/components/Skeleton/CategoryTab';
+import Skeleton from 'src/components/Skeleton/SearchLandscapeBook';
+import Authors, { MAXIMUM_AUTHOR } from 'src/components/Search/Authors';
 
 const SearchResultSection = styled.section`
   max-width: 952px;
@@ -63,97 +58,6 @@ const TotalAuthor = styled.span`
   color: ${slateGray40};
 `;
 
-const AuthorItem = styled.li<{ show: boolean }>`
-  display: ${(props) => (props.show ? 'flex' : 'none')};
-  align-items: center;
-`;
-
-const AuthorList = styled.ul`
-  margin-bottom: 16px;
-  > li {
-    ${defaultHoverStyle}
-  }
-`;
-
-const ShowMoreAuthor = styled.button`
-  padding: 12px 0;
-  height: 46px;
-  color: ${slateGray60};
-  font-size: 13px;
-  font-weight: bold;
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  width: 100%;
-  outline: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
-  ${orBelow(BreakPoint.LG, 'padding: 12px 16px;')}
-`;
-
-const AuthorAnchor = styled.a`
-  width: 100%;
-  padding: 12px 0;
-  :active {
-    background: rgba(0, 0, 0, 0.05);
-  }
-  -webkit-tap-highlight-color: rgb(0, 0, 0, 0.05);
-  ${orBelow(BreakPoint.LG, 'padding: 12px 16px;')}
-`;
-
-const MAXIMUM_AUTHOR = 30;
-const DEFAULT_SHOW_AUTHOR_COUNT = 3;
-
-const Arrow = styled(ArrowBoldH, {
-  shouldForwardProp: (prop) => isPropValid(prop) && prop !== 'isRotate',
-})<{ isRotate: boolean }>`
-  width: 11px;
-  fill: ${slateGray40};
-  margin-left: 5px;
-  transform: rotate(${(props) => (props.isRotate ? '180deg' : '0deg')});
-`;
-
-function Author(props: { author: SearchTypes.Author; q: string; show: boolean }) {
-  const { author, q, show } = props;
-  return (
-    <AuthorItem show={show}>
-      <AuthorAnchor href={`/author/${author.id}?_s=search&_q=${encodeURIComponent(q)}`}>
-        <AuthorInfo author={author} />
-      </AuthorAnchor>
-    </AuthorItem>
-  );
-}
-
-const MemoizedAuthor = React.memo(Author);
-
-function Authors(props: { author: SearchTypes.AuthorResult; q: string }) {
-  const {
-    author: { authors, total },
-    q,
-  } = props;
-  const [isShowMore, setShowMore] = React.useState(false);
-  const authorsPreview = authors.slice(0, DEFAULT_SHOW_AUTHOR_COUNT);
-  const restAuthors = authors.slice(DEFAULT_SHOW_AUTHOR_COUNT, authors.length);
-
-  return (
-    <AuthorList>
-      {authorsPreview.map((author) => (
-        <MemoizedAuthor show key={author.id} author={author} q={q} />
-      ))}
-      {restAuthors.map((author) => (
-        <MemoizedAuthor show={isShowMore} key={author.id} author={author} q={q} />
-      ))}
-      {authors.length > DEFAULT_SHOW_AUTHOR_COUNT && (
-        <li>
-          <ShowMoreAuthor onClick={() => setShowMore((current) => !current)}>
-            {isShowMore ? '접기' : `${Math.min(total, MAXIMUM_AUTHOR) - DEFAULT_SHOW_AUTHOR_COUNT}명 더 보기`}
-            <Arrow isRotate={isShowMore} />
-          </ShowMoreAuthor>
-        </li>
-      )}
-    </AuthorList>
-  );
-}
-
 const SearchBookList = styled.ul`
   display: flex;
   flex-direction: column;
@@ -174,8 +78,6 @@ const Filters = styled.div`
   margin-top: 12px;
   ${orBelow(BreakPoint.LG, 'margin-left: 16px; margin-right: 16px;')}
 `;
-
-const MemoizedAuthors = React.memo(Authors);
 
 const EmptyBlock = styled.div`
   margin-top: 40px;
@@ -212,19 +114,6 @@ const SuggestButton = styled.a`
   border: 1px solid ${dodgerBlue50};
   color: ${dodgerBlue50};
   border-radius: 3px;
-`;
-
-const CategorySkeleton = styled.ul`
-  padding: 8px 0 9px 0;
-  display: flex;
-  align-items: center;
-  > * {
-    flex: none;
-    + * {
-      margin-left: 10px;
-    }
-  }
-  ${orBelow(BreakPoint.LG, 'margin-left: 16px;')}
 `;
 
 function SearchPage() {
@@ -304,6 +193,25 @@ function SearchPage() {
     }
   }, [categories, currentCategoryId]);
 
+  let categoriesNode = null;
+  if (categories != null) {
+    if (categories.length > 0) {
+      categoriesNode = (
+        <SearchCategoryTab
+          categories={categories}
+          currentCategoryId={parseInt(currentCategoryId, 10)}
+        />
+      );
+    }
+  } else {
+    categoriesNode = (
+      <>
+        <SkeletonCategoryTab />
+        <Border color={slateGray10} />
+      </>
+    );
+  }
+
   let booksNode;
   if (books != null) {
     if (books.total > 0) {
@@ -326,7 +234,15 @@ function SearchPage() {
       );
     }
   } else {
-    booksNode = null;
+    booksNode = (
+      <SearchBookList>
+        {[0.8, 0.5, 0.3].map((opacity) => (
+          <SearchBookItem key={opacity}>
+            <Skeleton />
+          </SearchBookItem>
+        ))}
+      </SearchBookList>
+    );
   }
   return (
     <SearchResultSection>
@@ -345,45 +261,29 @@ function SearchPage() {
               {authors.total > MAXIMUM_AUTHOR ? `총 ${MAXIMUM_AUTHOR}명+` : `총 ${authors.total}명`}
             </TotalAuthor>
           </SearchTitle>
-          <MemoizedAuthors author={authors} q={q || ''} />
+          <Authors author={authors} q={q || ''} />
         </>
       )}
 
-      <>
-        <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
-        {categories != null && categories.length > 0 ? (
-          <SearchCategoryTab
-            categories={categories}
-            currentCategoryId={parseInt(currentCategoryId, 10)}
-          />
-        ) : (
-          <>
-            <CategorySkeleton>
-              {
-                [...Array(8)].map((i, index) => (<SkeletonBar width="68px" key={index} />))
-              }
-            </CategorySkeleton>
-            <Border color={slateGray10} />
-          </>
-        )}
-        <Filters>
-          <FilterSelector />
-          <AdultExcludeToggle adultExclude={isAdultExclude} />
-        </Filters>
-        {booksNode}
-        {hasPagination ? (
-          <Pagination
-            itemPerPage={ITEM_PER_PAGE}
-            currentPage={Math.max(page, 1)} // 0 이하로 떨어지는 걸 방지
-            totalItem={books?.total || 0}
-            showStartAndLastButton={!isTablet}
-            showPageCount={isTablet ? 5 : 10}
-            maxPage={MAX_PAGE}
-          />
-        ) : (
-          <EmptyBlock />
-        )}
-      </>
+      <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
+      {categoriesNode}
+      <Filters>
+        <FilterSelector />
+        <AdultExcludeToggle adultExclude={isAdultExclude} />
+      </Filters>
+      {booksNode}
+      {hasPagination ? (
+        <Pagination
+          itemPerPage={ITEM_PER_PAGE}
+          currentPage={Math.max(page, 1)} // 0 이하로 떨어지는 걸 방지
+          totalItem={books?.total || 0}
+          showStartAndLastButton={!isTablet}
+          showPageCount={isTablet ? 5 : 10}
+          maxPage={MAX_PAGE}
+        />
+      ) : (
+        <EmptyBlock />
+      )}
     </SearchResultSection>
   );
 }

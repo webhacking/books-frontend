@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { getByText, render } from '@testing-library/react';
-import { PriceInfo } from 'src/components/Book/SearchLandscapeBook';
+import PriceInfo from 'src/components/Search/SearchLandscapeBook/PriceInfo';
 import * as SearchTypes from 'src/types/searchResults';
 import * as BookApi from 'src/types/book';
 import { AuthorRole } from 'src/types/book';

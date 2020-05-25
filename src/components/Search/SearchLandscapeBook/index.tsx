@@ -2,9 +2,7 @@ import { css } from '@emotion/core';
 import isPropValid from '@emotion/is-prop-valid';
 import styled from '@emotion/styled';
 import {
-  dodgerBlue50,
   orange40,
-  red40,
   slateGray20,
   slateGray40,
   slateGray50,
@@ -19,7 +17,6 @@ import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import * as SearchTypes from 'src/types/searchResults';
 import { AuthorsInfo } from 'src/types/searchResults';
-import * as BookApi from 'src/types/book';
 import { AuthorRole } from 'src/types/book';
 import Star from 'src/svgs/Star.svg';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
@@ -28,6 +25,10 @@ import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 import sentry from 'src/utils/sentry';
 import { useDeviceType } from 'src/hooks/useDeviceType';
 import { useEventTracker } from 'src/hooks/useEventTracker';
+
+import Skeleton from '../../Skeleton/SearchLandscapeBook';
+import MetaWrapper from './MetaWrapper';
+import PriceInfo from './PriceInfo';
 
 const StyledThumbnailWithBadge = styled(ThumbnailWithBadge)`
   width: 100px;
@@ -154,183 +155,6 @@ function StarCount(props: { count: number }) {
   );
 }
 
-const PriceItem = styled.dl`
-  display: flex;
-  align-items: center;
-  height: 18px;
-`;
-const priceBase = css`
-  font-size: 13px;
-  line-height: 18px;
-`;
-const PriceTitle = styled.dt`
-  margin-right: 4px;
-  color: ${slateGray60};
-  ${priceBase}
-`;
-
-const Price = styled.span`
-  color: ${dodgerBlue50};
-  font-weight: bold;
-  ${priceBase}
-`;
-
-const Discount = styled.span`
-  color: ${red40};
-  font-weight: bold;
-  ${priceBase}
-`;
-
-// const OriginalPrice = styled.span`
-//   text-decoration: line-through;
-//   color: ${slateGray50};
-//   ${priceBase}
-// `;
-
-const SearchBookMetaWrapper = styled.div`
-   display: flex;
-   flex-direction: column;
-   margin-left: 16px;
-   > dl {
-    margin-bottom: 4px;
-  }
-   width: 100%;
-`;
-// https://rididev.slack.com/archives/CHSBJC7U1/p1590034684168300 여기서 논의 됨
-const NOT_FOR_SALE_PRICE = 999999999;
-
-function PriceLabel(props: {
-  title: string;
-  price: number;
-  discount?: number;
-  regularPrice?: number; // 정가 구분 룰이 확실하게 정해지면 optional 제외
-}) {
-  const {
-    title,
-    price,
-    discount = 0,
-  } = props;
-  if (price === NOT_FOR_SALE_PRICE) {
-    return null;
-  }
-  return (
-    <PriceItem>
-      <PriceTitle>{title}</PriceTitle>
-      <dd>
-        <Price>{price === 0 ? '무료' : `${price.toLocaleString('ko-KR')}원`}</Price>
-        {' '}
-        {discount > 0 && (
-          <>
-            <Discount>
-              (
-              {Math.ceil(discount)}
-              %↓)
-            </Discount>
-            {' '}
-            {/* Fixme */}
-            {/* 가장 낮은 가격의 정가 문제가 해결이 필요하기 때문에 일단 주석 처리 합니다. */}
-            {/* <OriginalPrice> */}
-            {/*  {regularPrice.toLocaleString('ko-KR')} */}
-            {/*  원 */}
-            {/* </OriginalPrice> */}
-          </>
-        )}
-      </dd>
-    </PriceItem>
-  );
-}
-
-export function PriceInfo(props: {
-  searchApiResult: SearchTypes.SearchBookDetail;
-  bookApiResult: BookApi.ClientBook;
-  genre: string;
-}) {
-  const { searchApiResult, bookApiResult, genre } = props;
-  if (!props.bookApiResult) {
-    return null;
-  }
-  const {
-    property: { is_trial },
-    price_info,
-  } = bookApiResult;
-  const { price, series_prices_info } = searchApiResult;
-
-  const seriesPriceInfo: Record<string, SearchTypes.SeriesPriceInfo> = {};
-  series_prices_info.forEach((info) => {
-    seriesPriceInfo[info.type] = info;
-  });
-  // 체험판 부터 거른다.
-  if (is_trial) {
-    return <PriceLabel title="구매" price={0} discount={0} regularPrice={0} />;
-  }
-  // 진정한 무료 책
-  if (!seriesPriceInfo.normal && price === 0 && price_info?.buy?.price === 0) {
-    return <PriceLabel title="구매" price={0} discount={0} regularPrice={0} />;
-  }
-  if (price_info && price !== 0) {
-    return (
-      <>
-        {price_info.rent && (
-          <PriceLabel
-            title="대여"
-            price={
-              price_info.rent.price === 0 && seriesPriceInfo.rent
-                ? seriesPriceInfo.rent.min_nonzero_price
-                : price_info.rent.price
-            }
-            discount={
-              price_info.rent.discount_percentage === 100
-                ? 0
-                : price_info.rent.discount_percentage
-            }
-            regularPrice={price_info.rent.regular_price}
-          />
-        )}
-        <PriceLabel
-          title="구매"
-          price={
-            seriesPriceInfo.normal && genre !== 'general'
-              ? Math.min(price, seriesPriceInfo.normal.min_nonzero_price)
-              : price
-          }
-          discount={price_info.buy ? price_info.buy.discount_percentage : 0}
-          regularPrice={price_info.buy?.regular_price ?? 0}
-        />
-      </>
-    );
-  }
-  if (seriesPriceInfo && price === 0) {
-    return (
-      <>
-        {seriesPriceInfo.rent && (
-          <PriceLabel
-            title="대여"
-            price={seriesPriceInfo.rent.min_nonzero_price}
-            discount={0}
-            regularPrice={price_info?.rent?.regular_price ?? 0}
-          />
-        )}
-        {seriesPriceInfo.normal && (
-          <PriceLabel
-            title="구매"
-            price={
-              seriesPriceInfo.normal.min_price !== 0
-                ? Math.min(
-                  seriesPriceInfo.normal.min_nonzero_price,
-                  seriesPriceInfo.normal.min_price,
-                )
-                : seriesPriceInfo.normal.min_nonzero_price
-            }
-            regularPrice={price_info?.buy?.regular_price ?? 0}
-          />
-        )}
-      </>
-    );
-  }
-
-  return null;
-}
-
 interface SearchLandscapeBookProps {
   index: number;
   q: string;
@@ -368,21 +192,6 @@ function computeCategoryNames(categoryNames: CategoryNames) {
   return `${parent_category_name}, ${parent_category_name2}`;
 }
 
-const SkeletonBook = styled.div`
-  background: linear-gradient(327.23deg, #F8F9FB 1.42%, #F1F1F3 49.17%, #F8F9FB 100%);
-  flex: none;
-  width: 100px;
-  height: 140px;
-  ${orBelow(BreakPoint.LG, 'width: 80px; height: 110px')}
-`;
-
-export const SkeletonBar = styled.div<{width: string}>`
-  background: linear-gradient(327.23deg, #F8F9FB 1.42%, #F1F1F3 49.17%, #F8F9FB 100%);
-  width: ${(props) => props.width};
-  height: 20px;
-  margin-bottom: 8px;
-`;
-
 function RenderAuthors(props: { authors: AuthorsInfo[]; fallback: string }) {
   const { authors, fallback } = props;
   if (authors.length === 0) {
@@ -405,7 +214,7 @@ function RenderAuthors(props: { authors: AuthorsInfo[]; fallback: string }) {
   );
 }
 
-export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
+export default function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   const { deviceType } = useDeviceType();
   const [tracker] = useEventTracker();
   const {
@@ -413,15 +222,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   } = props;
   const book = useBookSelector(item.b_id);
   if (book === null) {
-    return (
-      <>
-        <SkeletonBook />
-        <SearchBookMetaWrapper>
-          <SkeletonBar width="100%" />
-          <SkeletonBar width="130px" />
-        </SearchBookMetaWrapper>
-      </>
-    );
+    return <Skeleton />;
   }
   if (book.is_deleted) {
     return null;
@@ -467,7 +268,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           title={title}
         />
       </ThumbnailAnchor>
-      <SearchBookMetaWrapper>
+      <MetaWrapper>
         <SearchBookTitle>
           <a href={`/books/${item.b_id}?${searchParam.toString()}`} onClick={searchBookClick}>
             {getEscapedNode(computeSearchBookTitle(item))}
@@ -542,7 +343,7 @@ export function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           bookApiResult={book}
           genre={genres[0] ?? ''}
         />
-      </SearchBookMetaWrapper>
+      </MetaWrapper>
     </>
   );
 }
