@@ -218,9 +218,11 @@ const CategorySkeleton = styled.ul`
   padding: 8px 0 9px 0;
   display: flex;
   align-items: center;
-  > * + * {
+  > * {
     flex: none;
-    margin-left: 10px;
+    + * {
+      margin-left: 10px;
+    }
   }
   ${orBelow(BreakPoint.LG, 'margin-left: 16px;')}
 `;
