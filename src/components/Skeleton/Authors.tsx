@@ -5,9 +5,6 @@ import SkeletonAuthorInfo from './AuthorInfo';
 
 const SkeletonAuthorsWrapper = styled.ul`
   margin-bottom: 16px;
-  > * + * {
-    margin-top: 22px;
-  }
 `;
 
 export default function SkeletonAuthors() {

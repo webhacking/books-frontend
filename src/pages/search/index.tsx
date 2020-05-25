@@ -29,6 +29,7 @@ import { booksActions } from 'src/services/books';
 import { ITEM_PER_PAGE, MAX_PAGE, runSearch } from 'src/utils/search';
 import { Border } from 'src/components/Tabs/SearchCategoryTab';
 import SkeletonAuthors from 'src/components/Skeleton/Authors';
+import SkeletonBar from 'src/components/Skeleton/Bar';
 import SkeletonCategoryTab from 'src/components/Skeleton/CategoryTab';
 import Skeleton from 'src/components/Skeleton/SearchLandscapeBook';
 import Authors, { MAXIMUM_AUTHOR } from 'src/components/Search/Authors';
@@ -115,6 +116,11 @@ const SuggestButton = styled.a`
   border: 1px solid ${dodgerBlue50};
   color: ${dodgerBlue50};
   border-radius: 3px;
+`;
+
+const SkeletonH2Bar = styled(SkeletonBar)`
+  width: 200px;
+  margin: 10px 0;
 `;
 
 function SearchPage() {
@@ -213,9 +219,7 @@ function SearchPage() {
   } else {
     authorsNode = (
       <>
-        <SearchTitle>
-          {`‘${q}’ 저자 검색 결과`}
-        </SearchTitle>
+        <SkeletonH2Bar />
         <SkeletonAuthors />
       </>
     );
@@ -283,7 +287,11 @@ function SearchPage() {
       </Head>
       {authorsNode}
 
-      <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
+      {books == null ? (
+        <SkeletonH2Bar />
+      ) : (
+        <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
+      )}
       {categoriesNode}
       <Filters>
         <FilterSelector />

@@ -8,6 +8,10 @@ import {
 
 import SkeletonBar from './Bar';
 
+const SkeletonAuthorInfoWrapper = styled(AuthorInfoWrapper)`
+  padding: 11px 0;
+`;
+
 const SkeletonAuthorIcon = styled(AuthorIconWrapper)`
   background: linear-gradient(334.91deg, #f8f9fb 1.42%, #f1f1f3 49.17%, #f8f9fb 100%);
 `;
@@ -25,9 +29,9 @@ interface Props {
 export default function SkeletonAuthorInfo(props: Props) {
   const { barType } = props;
   return (
-    <AuthorInfoWrapper>
+    <SkeletonAuthorInfoWrapper>
       <SkeletonAuthorIcon />
       <SkeletonAuthorBar barType={barType} />
-    </AuthorInfoWrapper>
+    </SkeletonAuthorInfoWrapper>
   );
 }
