@@ -39,9 +39,8 @@ const CategoryItem = styled.li<{ active: boolean }>`
 
 const CategoryAnchor = styled.a`
   padding: 15px 4px;
-  :active, :focus {
+  :active {
     background: rgba(0, 0, 0, 0.05);
-    outline: none;
   }
   ${defaultHoverStyle}
 `;

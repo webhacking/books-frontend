@@ -168,11 +168,6 @@ const Filters = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 12px;
-  > label {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
-    ${defaultHoverStyle}
-  }
-
   ${orBelow(BreakPoint.LG, 'margin-left: 16px; margin-right: 16px;')}
 `;
 
