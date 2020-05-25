@@ -13,7 +13,7 @@ export const booksInitialState: BooksState = {
 };
 
 export class BooksReducer extends ImmerReducer<BooksState> {
-  public insertBookIds(payload: { bIds: string[]; options?: { withDesc?: boolean }}) {
+  public insertBookIds(payload: { bIds: string[]; withDesc?: boolean }) {
     try {
       const uniqIds = [...new Set(payload.bIds)];
       const books: BooksState['items'] = {};
