@@ -23,7 +23,10 @@ import sentry from 'src/utils/sentry';
 import { useEventTracker } from 'src/hooks/useEventTracker';
 
 import { RootState } from 'src/store/config';
-import { SearchLandscapeBook } from 'src/components/Book/SearchLandscapeBook';
+import {
+  SearchLandscapeBook,
+  SkeletonBar,
+} from 'src/components/Book/SearchLandscapeBook';
 import { Pagination } from 'src/components/Pagination/Pagination';
 import useIsTablet from 'src/hooks/useIsTablet';
 import { AdultExcludeToggle, FilterSelector } from 'src/components/Search';
@@ -32,6 +35,7 @@ import { defaultHoverStyle } from 'src/styles';
 import { useSearchQueries } from 'src/hooks/useSearchQueries';
 import { booksActions } from 'src/services/books';
 import { ITEM_PER_PAGE, MAX_PAGE, runSearch } from 'src/utils/search';
+import { Border } from 'src/components/Tabs/SearchCategoryTab';
 
 const SearchResultSection = styled.section`
   max-width: 952px;
@@ -210,6 +214,19 @@ const SuggestButton = styled.a`
   border-radius: 3px;
 `;
 
+const CategorySkeleton = styled.ul`
+  padding: 8px 0 9px 0;
+  display: flex;
+  align-items: center;
+  > * {
+    flex: none;
+    + * {
+      margin-left: 10px;
+    }
+  }
+  ${orBelow(BreakPoint.LG, 'margin-left: 16px;')}
+`;
+
 function SearchPage() {
   const dispatch = useDispatch();
   const { query, calculateUpdateQuery } = useSearchQueries();
@@ -334,11 +351,20 @@ function SearchPage() {
 
       <>
         <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
-        {categories != null && categories.length > 0 && (
+        {categories != null && categories.length > 0 ? (
           <SearchCategoryTab
             categories={categories}
             currentCategoryId={parseInt(currentCategoryId, 10)}
           />
+        ) : (
+          <>
+            <CategorySkeleton>
+              {
+                [...Array(8)].map((i, index) => (<SkeletonBar width="68px" key={index} />))
+              }
+            </CategorySkeleton>
+            <Border color={slateGray10} />
+          </>
         )}
         <Filters>
           <FilterSelector />
