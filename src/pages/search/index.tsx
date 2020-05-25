@@ -28,6 +28,7 @@ import { useSearchQueries } from 'src/hooks/useSearchQueries';
 import { booksActions } from 'src/services/books';
 import { ITEM_PER_PAGE, MAX_PAGE, runSearch } from 'src/utils/search';
 import { Border } from 'src/components/Tabs/SearchCategoryTab';
+import SkeletonAuthors from 'src/components/Skeleton/Authors';
 import SkeletonCategoryTab from 'src/components/Skeleton/CategoryTab';
 import Skeleton from 'src/components/Skeleton/SearchLandscapeBook';
 import Authors, { MAXIMUM_AUTHOR } from 'src/components/Search/Authors';
@@ -193,6 +194,33 @@ function SearchPage() {
     }
   }, [categories, currentCategoryId]);
 
+  let authorsNode = null;
+  if (authors != null) {
+    const { total } = authors;
+    if (total > 0) {
+      authorsNode = (
+        <>
+          <SearchTitle>
+            {`‘${q}’ 저자 검색 결과`}
+            <TotalAuthor>
+              {total > MAXIMUM_AUTHOR ? `총 ${MAXIMUM_AUTHOR}명+` : `총 ${total}명`}
+            </TotalAuthor>
+          </SearchTitle>
+          <Authors author={authors} q={q || ''} />
+        </>
+      );
+    }
+  } else {
+    authorsNode = (
+      <>
+        <SearchTitle>
+          {`‘${q}’ 저자 검색 결과`}
+        </SearchTitle>
+        <SkeletonAuthors />
+      </>
+    );
+  }
+
   let categoriesNode = null;
   if (categories != null) {
     if (categories.length > 0) {
@@ -253,17 +281,7 @@ function SearchPage() {
           검색 결과 - 리디북스
         </title>
       </Head>
-      {authors != null && authors.total > 0 && (
-        <>
-          <SearchTitle>
-            {`‘${q}’ 저자 검색 결과`}
-            <TotalAuthor>
-              {authors.total > MAXIMUM_AUTHOR ? `총 ${MAXIMUM_AUTHOR}명+` : `총 ${authors.total}명`}
-            </TotalAuthor>
-          </SearchTitle>
-          <Authors author={authors} q={q || ''} />
-        </>
-      )}
+      {authorsNode}
 
       <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
       {categoriesNode}
