@@ -154,7 +154,10 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
     if (res.statusCode !== 302) {
       // store.dispatch({ type: booksActions.setFetching.type, payload: true });
       const result = await fetchHomeSections(genre.toString());
-      const bIds = keyToArray(result.branches, 'b_id');
+
+      // 상대적으로 뒤에 나오는 섹션은 걸러냄
+      const filteredBranches = result.branches.filter((b) => !/(md-selection|recommended-new-book|today-new-book|new-serial-book|wait-free|recommended-book)/g.test(b.slug));
+      const bIds = keyToArray(filteredBranches, 'b_id');
       store.dispatch({ type: booksActions.insertBookIds.type, payload: { bIds } });
       const categoryIds = keyToArray(result.branches, 'category_id');
       store.dispatch({

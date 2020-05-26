@@ -18,6 +18,8 @@ import styled from '@emotion/styled';
 import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
 import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { getThumbnailIdFromBookDetail } from 'src/utils/books';
+import { useDispatch } from 'react-redux';
+import { booksActions } from 'src/services/books';
 
 interface MultipleLineBooks {
   items: BookItem[];
@@ -283,6 +285,10 @@ export const MultipleLineBooks: React.FC<MultipleLineBooks> = (props) => {
   const {
     title, items, genre, slug,
   } = props;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: booksActions.insertBookIds.type, payload: { bIds: items.map((i) => i.b_id) } });
+  }, []);
   return (
     <Section>
       <Title aria-label={title}>{title}</Title>
