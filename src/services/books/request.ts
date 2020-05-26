@@ -1,16 +1,23 @@
+import * as R from 'runtypes';
+
 import * as BookApi from 'src/types/book';
 import axios from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 
-export const requestBooks = async (b_ids: string[]) => {
+export const requestBooks = async (b_ids: string[]): Promise<BookApi.Book[]> => {
   try {
-    const { data } = await axios.get<BookApi.Book[]>('/books', {
+    const { data } = await axios.get('/books', {
       baseURL: process.env.NEXT_STATIC_BOOK_API,
       params: {
         b_ids: b_ids.join(),
       },
     });
-    return data;
+    try {
+      return R.Array(BookApi.RBookData).check(data);
+    } catch (error) {
+      sentry.captureException(error);
+      return data as BookApi.Book[];
+    }
   } catch (error) {
     sentry.captureException(error);
     return [];

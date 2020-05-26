@@ -7,7 +7,6 @@ import { gray100, slateGray50 } from '@ridi/colors';
 import { ADULT_BADGE_URL } from 'src/constants/icons';
 import * as SearchTypes from 'src/types/searchResults';
 
-import { AuthorRole } from 'src/types/book';
 import AuthorInfo from './Authors/AuthorInfo';
 import { SearchResult } from './types';
 
@@ -169,7 +168,7 @@ interface InstantSearchResultProps {
 const AuthorLabel: React.FC<{ author: string; authors: SearchTypes.AuthorsInfo[] }> = (props) => {
   const viewedAuthors = props.authors
     && props.authors
-      .filter((author) => author.role !== AuthorRole.TRANSLATOR)
+      .filter((author) => author.role !== 'translator')
       .map((author) => author.name);
   if (!viewedAuthors || viewedAuthors.length === 0) {
     return <Author>{props.author}</Author>;

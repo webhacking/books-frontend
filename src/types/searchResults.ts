@@ -1,7 +1,6 @@
 import * as R from 'runtypes';
 
 import Sentry from 'src/utils/sentry';
-import { AuthorRole } from 'src/types/book';
 
 const RAuthor = R.Record({
   popular_book_title: R.String,
@@ -55,7 +54,7 @@ const RSeriesPriceInfo = R.Record({
 export type SeriesPriceInfo = R.Static<typeof RSeriesPriceInfo>;
 
 const RAuthorsInfo = R.Record({
-  role: R.Unknown as R.Runtype<AuthorRole>,
+  role: R.String,
   name: R.String,
   author_id: R.Number,
   order: R.Number,

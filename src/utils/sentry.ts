@@ -73,6 +73,9 @@ if (process.env.IS_SERVER || !window.isPartials) {
 
 const Sentry = {
   captureException(error: AxiosError | Error, ctx: ConnectedInitializeProps | null = null) {
+    if (!process.env.IS_PRODUCTION) {
+      console.error('Captured exception:', error);
+    }
     let eventId;
 
     withScope((scope) => {
