@@ -28,6 +28,8 @@ import { useSearchQueries } from 'src/hooks/useSearchQueries';
 import { booksActions } from 'src/services/books';
 import { ITEM_PER_PAGE, MAX_PAGE, runSearch } from 'src/utils/search';
 import { Border } from 'src/components/Tabs/SearchCategoryTab';
+import SkeletonAuthors from 'src/components/Skeleton/Authors';
+import SkeletonBar from 'src/components/Skeleton/Bar';
 import SkeletonCategoryTab from 'src/components/Skeleton/CategoryTab';
 import Skeleton from 'src/components/Skeleton/SearchLandscapeBook';
 import Authors, { MAXIMUM_AUTHOR } from 'src/components/Search/Authors';
@@ -116,6 +118,16 @@ const SuggestButton = styled.a`
   border-radius: 3px;
 `;
 
+const SkeletonH2Bar = styled(SkeletonBar)`
+  width: 200px;
+  margin: 10px 0;
+`;
+
+const SkeletonFilterBar = styled(SkeletonBar)<{ type: 'short' | 'long' }>`
+  width: ${(props) => ({ short: 70, long: 92 }[props.type])}px;
+  margin: 5px 0 17px;
+`;
+
 function SearchPage() {
   const dispatch = useDispatch();
   const { query, calculateUpdateQuery } = useSearchQueries();
@@ -129,6 +141,7 @@ function SearchPage() {
   const [authors, setAuthors] = React.useState<SearchTypes.AuthorResult>();
   const [books, setBooks] = React.useState<SearchTypes.BookResult>();
   const [categories, setCategories] = React.useState<SearchTypes.Aggregation[]>();
+  const [keywordPending, setKeywordPending] = React.useState(true);
 
   React.useEffect(() => {
     (async () => {
@@ -136,6 +149,7 @@ function SearchPage() {
       setAuthors((orig) => orig || result.author);
       setBooks((orig) => orig || result.book);
       setCategories((orig) => orig || result.book.aggregations);
+      setKeywordPending(false);
 
       const bIds = result.book.books.map((book) => book.b_id);
       dispatch({
@@ -147,6 +161,7 @@ function SearchPage() {
 
   React.useEffect(() => {
     setAuthors(undefined);
+    setKeywordPending(true);
   }, [q]);
   React.useEffect(() => {
     setBooks(undefined);
@@ -192,6 +207,31 @@ function SearchPage() {
       router.replace(`/search?${search}`);
     }
   }, [categories, currentCategoryId]);
+
+  let authorsNode = null;
+  if (authors != null) {
+    const { total } = authors;
+    if (total > 0) {
+      authorsNode = (
+        <>
+          <SearchTitle>
+            {`‘${q}’ 저자 검색 결과`}
+            <TotalAuthor>
+              {total > MAXIMUM_AUTHOR ? `총 ${MAXIMUM_AUTHOR}명+` : `총 ${total}명`}
+            </TotalAuthor>
+          </SearchTitle>
+          <Authors author={authors} q={q || ''} />
+        </>
+      );
+    }
+  } else {
+    authorsNode = (
+      <>
+        <SkeletonH2Bar />
+        <SkeletonAuthors />
+      </>
+    );
+  }
 
   let categoriesNode = null;
   if (categories != null) {
@@ -253,24 +293,25 @@ function SearchPage() {
           검색 결과 - 리디북스
         </title>
       </Head>
-      {authors != null && authors.total > 0 && (
-        <>
-          <SearchTitle>
-            {`‘${q}’ 저자 검색 결과`}
-            <TotalAuthor>
-              {authors.total > MAXIMUM_AUTHOR ? `총 ${MAXIMUM_AUTHOR}명+` : `총 ${authors.total}명`}
-            </TotalAuthor>
-          </SearchTitle>
-          <Authors author={authors} q={q || ''} />
-        </>
-      )}
+      {authorsNode}
 
-      <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
+      {keywordPending ? (
+        <SkeletonH2Bar />
+      ) : (
+        <SearchTitle>{`‘${q}’ 도서 검색 결과`}</SearchTitle>
+      )}
       {categoriesNode}
-      <Filters>
-        <FilterSelector />
-        <AdultExcludeToggle adultExclude={isAdultExclude} />
-      </Filters>
+      {keywordPending ? (
+        <Filters>
+          <SkeletonFilterBar type="long" />
+          <SkeletonFilterBar type="short" />
+        </Filters>
+      ) : (
+        <Filters>
+          <FilterSelector />
+          <AdultExcludeToggle adultExclude={isAdultExclude} />
+        </Filters>
+      )}
       {booksNode}
       {hasPagination ? (
         <Pagination

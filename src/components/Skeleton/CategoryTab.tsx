@@ -5,7 +5,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import SkeletonBar from './Bar';
 
 const Wrapper = styled.ul`
-  padding: 8px 0 9px 0;
+  margin: 22px 0 17px;
   display: flex;
   align-items: center;
   > * {
@@ -19,6 +19,7 @@ const Wrapper = styled.ul`
 
 const CategorySkeletonBar = styled(SkeletonBar)`
   width: 68px;
+  margin-bottom: 0;
 `;
 
 export default function CategorySkeleton() {

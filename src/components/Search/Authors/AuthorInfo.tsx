@@ -8,12 +8,6 @@ import * as SearchTypes from 'src/types/searchResults';
 import { getEscapedNode } from 'src/utils/highlight';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 
-const AuthorInfoWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-
 const AuthorName = styled.span`
   font-size: 14px;
   line-height: 1.4em;
@@ -30,16 +24,22 @@ const AuthorBooksInfo = styled.span`
   ${lineClamp(1)};
 `;
 
-const AuthorIconWrapper = styled.span`
+const AuthorIcon = styled.img`
+  padding: 5px;
+`;
+
+export const AuthorInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
+export const AuthorIconWrapper = styled.span`
   width: 22px;
   height: 22px;
   margin-right: 6px;
   background: ${slateGray5};
   border-radius: 22px;
-`;
-
-const AuthorIcon = styled.img`
-  padding: 5px;
 `;
 
 function AuthorSymbol() {
