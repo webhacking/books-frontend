@@ -5,7 +5,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import SkeletonBar from './Bar';
 
 const Wrapper = styled.ul`
-  margin: 22px 0 17px;
+  margin: 22px 0 12px;
   display: flex;
   align-items: center;
   > * {
