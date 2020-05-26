@@ -1,6 +1,7 @@
 import { createActionCreators, createReducerFunction, ImmerReducer } from 'immer-reducer';
 import * as BookApi from 'src/types/book';
 import sentry from 'src/utils/sentry';
+import { ClientBook } from 'src/types/book';
 
 export interface BooksState {
   items: { [key: string]: BookApi.ClientBook | null };
@@ -12,8 +13,39 @@ export const booksInitialState: BooksState = {
   isFetching: false,
 };
 
+const getSimpleBookData = (book: ClientBook): ClientBook => ({
+  ...book,
+  // @ts-ignore ts-ignore 해야할까요?
+  support: undefined,
+  publish: undefined,
+  thumbnail: undefined,
+  last_modified: undefined,
+  // @ts-ignore
+  file: {
+    is_comic: book.file.is_comic,
+    is_comic_hd: book.file.is_comic_hd,
+  },
+  // @ts-ignore
+  property: {
+    is_trial: book.property.is_trial,
+    is_adult_only: book.property.is_adult_only,
+    is_novel: book.property.is_novel,
+    is_somedeal: book.property.is_somedeal,
+  },
+  price_info: {
+    ...book.price_info,
+    // @ts-ignore
+    paper: undefined,
+  },
+  publisher: {
+    ...book.publisher,
+    // @ts-ignore
+    cp_name: undefined,
+  },
+});
+
 export class BooksReducer extends ImmerReducer<BooksState> {
-  public insertBookIds(payload: { bIds: string[]; withDesc?: boolean }) {
+  public insertBookIds(payload: { bIds: string[]; withDesc?: boolean; setSimple?: boolean }) {
     try {
       const uniqIds = [...new Set(payload.bIds)];
       const books: BooksState['items'] = {};
@@ -29,16 +61,16 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     }
   }
 
-  public setBooks(payload: BookApi.ClientBook[]) {
+  public setBooks(payload: { items: BookApi.ClientBook[]; setSimple?: boolean }) {
     try {
       const books: BooksState['items'] = {};
-      payload.forEach((book) => {
+      payload.items.forEach((book) => {
         if (this.draftState.items[book.id] === null) {
           book.clientBookFields = {
             isAlreadyCheckedAtSelect: false,
             isAvailableSelect: false,
           };
-          books[book.id] = book;
+          books[book.id] = payload.setSimple ? getSimpleBookData(book) : book;
         }
       });
       this.draftState.items = { ...this.draftState.items, ...books };
