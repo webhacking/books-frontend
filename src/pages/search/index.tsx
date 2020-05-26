@@ -49,8 +49,8 @@ const SearchTitle = styled.h2`
   color: ${slateGray90};
   display: flex;
   align-items: center;
-  padding: 10px 0;
-  ${orBelow(BreakPoint.LG, 'padding: 10px 16px;')}
+  margin: 10px 0;
+  ${orBelow(BreakPoint.LG, 'margin: 10px 16px;')}
 `;
 
 const TotalAuthor = styled.span`
