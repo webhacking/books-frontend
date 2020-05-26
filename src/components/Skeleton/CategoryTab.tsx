@@ -10,6 +10,7 @@ const Wrapper = styled.ul`
   align-items: center;
   > * {
     flex: none;
+    margin-left: 4px;
     + * {
       margin-left: 10px;
     }
