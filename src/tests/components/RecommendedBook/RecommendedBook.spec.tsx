@@ -17,7 +17,6 @@ import { defaultTheme } from 'src/styles';
 import makeStore from 'src/store/config';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
 import { HotRelease, TodayRecommendation } from '../../../types/sections';
-import { AuthorRole } from 'src/types/book';
 
 afterEach(cleanup);
 const store = makeStore(
@@ -39,7 +38,7 @@ const store = makeStore(
           title: {main: '도서 표지'},
           categories: [{genre: 'comic'}],
           property: {},
-          authors: [{id: 1, role: AuthorRole.AUTHOR, name: '작가'}],
+          authors: [{id: 1, role: 'author', name: '작가'}],
           clientBookFields: {
             isAvailableSelect: true,
             isAlreadyCheckedAtSelect: true,

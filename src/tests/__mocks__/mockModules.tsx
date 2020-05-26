@@ -86,7 +86,9 @@ export const initModules = () => {
       Tracker: class Tracker {
         constructor() {}
         initialize() {}
+        sendPageView() {}
         sendEvent() {}
+        set() {}
       },
     };
   });

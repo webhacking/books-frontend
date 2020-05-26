@@ -14,7 +14,6 @@ import { MultipleLineBooks } from 'src/components/MultipleLineBooks/MultipleLine
 import { defaultTheme } from 'src/styles';
 import makeStore from 'src/store/config';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
-import { AuthorRole } from 'src/types/book';
 
 afterEach(cleanup);
 const store = makeStore(
@@ -79,7 +78,7 @@ const store = makeStore(
               },
             },
           },
-          authors: [{ name: '조선비즈', role: AuthorRole.AUTHOR, id: 1 }],
+          authors: [{ name: '조선비즈', role: 'author', id: 1 }],
           file: {
             size: 232,
             format: 'epub',
