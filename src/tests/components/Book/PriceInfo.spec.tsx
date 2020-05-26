@@ -3,7 +3,6 @@ import { getByText, render } from '@testing-library/react';
 import PriceInfo from 'src/components/Search/SearchLandscapeBook/PriceInfo';
 import * as SearchTypes from 'src/types/searchResults';
 import * as BookApi from 'src/types/book';
-import { AuthorRole } from 'src/types/book';
 import '@testing-library/jest-dom/extend-expect';
 
 // rental 1,900
@@ -68,7 +67,7 @@ const searchApiPriceExistFixture = {
         },
       },
     },
-    authors: [{ name: '\uacbd\uc694', role: AuthorRole.AUTHOR, id: 1 }],
+    authors: [{ name: '\uacbd\uc694', role: 'author', id: 1 }],
     file: {
       size: 679,
       format: 'epub',
@@ -259,8 +258,8 @@ const trialBookFixture = {
       },
     },
     authors: [
-      { name: '\ub9c8\uc11c\ud718', id: 1741, role: AuthorRole.AUTHOR },
-      { name: '\uae40\ucc2c\uc5f0', id: 1733, role: AuthorRole.TRANSLATOR },
+      { name: '\ub9c8\uc11c\ud718', id: 1741, role: 'author' },
+      { name: '\uae40\ucc2c\uc5f0', id: 1733, role: 'translator' },
     ],
     file: {
       size: 502,
@@ -367,14 +366,14 @@ const trialBookFixture = {
     category: 117,
     authors_info: [
       {
-        role: AuthorRole.TRANSLATOR,
+        role: 'translator',
         name: '김찬연',
         author_id: 1733,
         native_name: '',
         order: 0,
       },
       {
-        role: AuthorRole.AUTHOR,
+        role: 'author',
         name: '마서휘',
         author_id: 1741,
         native_name: '馬書輝',
@@ -418,7 +417,7 @@ const freeBookFixture: Fixture = {
       paper: { price: 0 },
       buy: { regular_price: 0, price: 0, discount_percentage: 0 },
     },
-    authors: [{ name: '\ub8e8\uc774 \ubca1', id: 26030, role: AuthorRole.AUTHOR }],
+    authors: [{ name: '\ub8e8\uc774 \ubca1', id: 26030, role: 'author' }],
     file: {
       size: 784,
       format: 'epub',
@@ -500,7 +499,7 @@ const freeBookFixture: Fixture = {
     category: 1400,
     authors_info: [
       {
-        role: AuthorRole.AUTHOR,
+        role: 'author',
         name: '루이 벡',
         author_id: 26030,
         alias_name: 'Louis Becke',
@@ -573,7 +572,7 @@ const priceZeroFixture: Fixture = {
         },
       },
     },
-    authors: [{ name: '\uc2f1\uc211', id: 72276, role: AuthorRole.AUTHOR }],
+    authors: [{ name: '\uc2f1\uc211', id: 72276, role: 'author' }],
     file: {
       size: 1877,
       format: 'epub',
@@ -667,7 +666,7 @@ const priceZeroFixture: Fixture = {
     category: 1753,
     authors_info: [
       {
-        role: AuthorRole.AUTHOR,
+        role: 'author',
         name: '싱숑',
         author_id: 72276,
         native_name: '',

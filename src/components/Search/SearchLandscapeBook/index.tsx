@@ -17,7 +17,6 @@ import { computeSearchBookTitle } from 'src/utils/bookTitleGenerator';
 import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 import * as SearchTypes from 'src/types/searchResults';
 import { AuthorsInfo } from 'src/types/searchResults';
-import { AuthorRole } from 'src/types/book';
 import Star from 'src/svgs/Star.svg';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
 import { lineClamp } from 'src/styles';
@@ -239,7 +238,7 @@ export default function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   let translator: AuthorsInfo | undefined;
   const authors: AuthorsInfo[] = [];
   item.authors_info.forEach((author) => {
-    if (author.role === AuthorRole.TRANSLATOR) {
+    if (author.role === 'translator') {
       translator = author;
     } else {
       authors.push(author);

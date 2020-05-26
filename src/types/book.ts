@@ -1,220 +1,140 @@
-import { SearchBookDetail } from 'src/types/searchResults';
+import * as R from 'runtypes';
 
-export enum AuthorRole {
-  AUTHOR = 'author',
-  COMIC_AUTHOR = 'comic_author',
-  STORY_WRITER = 'story_writer',
-  TRANSLATOR = 'translator',
-  ILLUSTRATOR = 'illustrator',
-  ORIGINAL_AUTHOR = 'original_author',
-  AUTHOR_PHOTO = 'author_photo',
-  PLANNER = 'planner',
-  BIBLIOGRAPHICAL_INTRODUCTION = 'bibliographical_introduction',
-  COMPILER = 'compiler',
-  COMMENTATOR = 'commentator',
-  EDITOR = 'editor',
-  SUPERVISE = 'supervise',
-  PERFORMER = 'performer',
-  ORIGINAL_ILLUSTRATOR = 'original_illustrator',
-}
+const RCategory = R.Record({
+  id: R.Number,
+  name: R.String,
+  genre: R.String,
+  sub_genre: R.String,
+  is_series_category: R.Boolean,
+});
 
-export interface Title {
-  main: string;
-  prefix?: string;
-  sub?: string;
-}
-export interface Category {
-  id: number;
-  is_series_category: boolean;
-  name: string;
-  genre: string | '';
-  sub_genre: string;
-}
+const RPriceItem = R.Record({
+  regular_price: R.Number,
+  price: R.Number,
+  discount_percentage: R.Number,
+});
 
-export interface File {
-  character_count: number;
-  format: string;
-  is_comic: boolean;
-  is_comic_hd: boolean;
-  is_drm_free: boolean;
-  is_manga: boolean;
-  is_webtoon: boolean;
-  size: number;
-  page_count?: number;
-}
+const RRentPriceItem = RPriceItem.And(R.Record({
+  rent_days: R.Number,
+}));
 
-export interface BuyInfo {
-  discount_percentage: number;
-  price: number;
-  regular_price: number;
-}
+const RSeriesPriceItem = RPriceItem.And(R.Record({
+  total_book_count: R.Number,
+  free_book_count: R.Number,
+}));
 
-export interface SeriesBuyInfo {
-  free_book_count: number;
-  price: number;
-  regular_price: number;
-  total_book_count: number;
-  discount_percentage: number;
-}
+const RSeriesRentPriceItem = R.Record({
+  regular_price: R.Number,
+  rent_price: R.Number,
+  discount_percentage: R.Number,
+  rent_days: R.Number,
+  total_book_count: R.Number,
+  free_book_count: R.Number,
+});
 
-export interface SeriesRentBuyInfo {
-  total_book_count: number;
-  free_book_count: number;
-  regular_price: number;
-  rent_price: number;
-  rent_days: number;
-  discount_percentage: number;
-}
+const RPriceInfo = R.Partial({
+  buy: RPriceItem,
+  rent: RRentPriceItem,
+});
 
-export interface SeriesPriceInfo {
-  buy?: SeriesBuyInfo;
-  rent?: SeriesRentBuyInfo;
-}
+const RSeriesPriceInfo = R.Partial({
+  buy: RSeriesPriceItem,
+  rent: RSeriesRentPriceItem,
+});
 
-export interface PaperBuyInfo {
-  price: number;
-}
+const RSeries = R.Record({
+  id: R.String,
+  volume: R.Number,
+  property: R.Record({
+    last_volume_id: R.String,
+    opened_last_volume_id: R.String,
+    title: R.String.Or(R.Null),
+    unit: R.String.Or(R.Null),
+    opened_book_count: R.Number,
+    total_book_count: R.Number,
+    is_serial: R.Boolean,
+    is_completed: R.Boolean,
+    is_comic_hd: R.Boolean,
+    is_serial_complete: R.Boolean,
+    is_wait_free: R.Boolean,
+  }),
+}).And(
+  R.Partial({
+    price_info: RSeriesPriceInfo,
+  }),
+);
 
-export interface RentInfo {
-  regular_price: number;
-  price: number;
-  rent_days: number;
-  discount_percentage: number;
-}
+const RAuthor = R.Record({
+  name: R.String,
+  role: R.String,
+}).And(
+  R.Partial({
+    id: R.Number,
+  }),
+);
+export type Author = R.Static<typeof RAuthor>;
 
-export interface PointBackInfo {
-  pointback_amount: number;
-  point_duration: number;
-}
-
-interface PriceInfoCashBack {
-  cashback_period_start: string;
-  cashback_period_end: string;
-}
-
-interface PriceInfoPointBack {
-  pointback_amount?: number;
-  point_duration?: number;
-}
-
-export interface PriceInfo {
-  buy?: BuyInfo;
-  paper?: PaperBuyInfo;
-  rent?: RentInfo;
-  pointBackInfo?: PointBackInfo;
-  flatrate?: number;
-  cashback?: PriceInfoCashBack;
-  pointback?: PriceInfoPointBack;
-}
-
-export interface Property {
-  is_adult_only: boolean;
-  is_magazine: boolean;
-  is_new_book: boolean;
-  is_novel: boolean;
-  is_open: boolean;
-  is_somedeal: boolean;
-  is_trial: boolean;
-  preview_rate: number;
-  review_display_id?: string;
-  kpc_id?: string;
-  kd_stage?: number;
-  preview_max_characters?: number;
-  preview_max_pages?: number;
-}
-
-export interface LinkedSeriesBookInfo {
-  [b_id: string]: { b_id: string; is_opened: boolean };
-}
-
-export interface DeviceSupport {
-  android: boolean;
-  ios: boolean;
-  mac: boolean;
-  paper: boolean;
-  web_viewer: boolean;
-  windows: boolean;
-}
-
-export interface SeriesProperty {
-  is_comic_hd: boolean;
-  is_completed: boolean;
-  is_serial: boolean;
-  is_serial_complete: boolean;
-  is_wait_free: boolean;
-  opened_book_count: number;
-  opened_last_volume_id: string;
-  prev_books?: [] | LinkedSeriesBookInfo;
-  next_books?: [] | LinkedSeriesBookInfo;
-  last_volume_id: string;
-  title?: string;
-  total_book_count: number;
-  unit: string | null;
-}
-
-export interface Publish {
-  ebook_publish?: string;
-  ridibooks_publish?: string;
-  ridibooks_register?: string;
-  paper_book_publish?: Date | string;
-}
-
-export interface Publisher {
-  cp_name: string;
-  id: number;
-  name: string;
-}
-
-export interface Series {
-  id: string;
-  price_info: SeriesPriceInfo;
-  property: SeriesProperty;
-  volume: number;
-}
-
-export interface ThumbnailInfo {
-  large: string;
-  small: string;
-  xxlarge: string;
-}
-
-export interface SetBook {
-  member_books_count: number;
-}
+export const RBookData = R.Record({
+  id: R.String,
+  title: R.Record({
+    main: R.String,
+  }).And(R.Partial({
+    prefix: R.String,
+  })),
+  authors: R.Array(RAuthor),
+  categories: R.Array(RCategory).withConstraint((arr) => arr.length > 0),
+  price_info: RPriceInfo,
+  file: R.Record({
+    size: R.Number,
+    format: R.Union(R.String, R.Null),
+    is_drm_free: R.Boolean,
+    is_comic: R.Boolean,
+    is_webtoon: R.Boolean,
+    is_manga: R.Boolean,
+    is_comic_hd: R.Boolean,
+  }).And(
+    R.Partial({
+      character_count: R.Number,
+      page_count: R.Number,
+    }),
+  ),
+  property: R.Record({
+    is_novel: R.Boolean,
+    is_magazine: R.Boolean,
+    is_adult_only: R.Boolean,
+    is_new_book: R.Boolean,
+    is_open: R.Boolean,
+    is_somedeal: R.Boolean,
+    is_trial: R.Boolean,
+    preview_rate: R.Number,
+  }).And(
+    R.Partial({
+      review_display_id: R.String,
+    }),
+  ),
+  publisher: R.Record({
+    name: R.String,
+    cp_name: R.String,
+  }).And(
+    R.Partial({
+      id: R.Number,
+    }),
+  ),
+}).And(
+  R.Partial({
+    series: RSeries,
+    is_deleted: R.Boolean,
+    setbook: R.Record({
+      member_books_count: R.Number,
+    }),
+  }),
+);
+export type Book = R.Static<typeof RBookData>;
 
 export interface ClientBookFields {
   isAvailableSelect: boolean;
   isAlreadyCheckedAtSelect: boolean;
   desc?: BookDesc;
-}
-
-export interface Book {
-  id: string;
-  authors: Author[];
-  categories: Category[];
-  title: Title;
-  file: File;
-  last_modified: string;
-  price_info?: PriceInfo;
-  property: Property;
-  publish: Publish;
-  publisher?: Publisher;
-  series?: Series;
-  support: DeviceSupport;
-  thumbnail: ThumbnailInfo;
-  setbook?: SetBook;
-
-  //
-  is_deleted?: boolean;
-
-  // client field
-  thumbnailId?: string; // 시리즈 여부, 완결 여부 판단해서 최종적으로 보여 줄 thumbnail Id
-}
-
-export interface Author {
-  name: string;
-  id: number;
-  role: AuthorRole;
 }
 
 export interface BookDescResponse {
