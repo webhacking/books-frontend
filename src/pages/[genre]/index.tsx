@@ -28,6 +28,7 @@ import { legacyCookieMap } from 'src/components/GNB/HomeLink';
 
 export interface HomeProps {
   branches: Section[];
+  lazyLoadBIds?: string[];
   genre: string;
 }
 
@@ -76,7 +77,6 @@ export const Home: NextPage<HomeProps> = (props) => {
     const source = CancelToken.source();
     if (!branches.length || (previousGenre && previousGenre !== props.genre)) {
       setBranches([]);
-      // store.dispatch({ type: booksActions.setFetching.type, payload: true });
       fetchHomeSections(props.genre, {}, {
         cancelToken: source.token,
       }).then((result) => {
@@ -99,9 +99,9 @@ export const Home: NextPage<HomeProps> = (props) => {
       branches.filter((section) => section.extra?.use_select_api),
       'b_id',
     );
-    const restSections = branches.filter((b) => /(md-selection|recommended-new-book|today-new-book|new-serial-book|wait-free|recommended-book)/g.test(b.slug));
-    const lazyLoadBIds = keyToArray(restSections, 'b_id');
-    dispatch({ type: booksActions.insertBookIds.type, payload: { bIds: lazyLoadBIds } });
+    if (props.lazyLoadBIds) {
+      dispatch({ type: booksActions.insertBookIds.type, payload: { bIds: props.lazyLoadBIds } });
+    }
     dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
   }, [branches]);
 
@@ -155,13 +155,19 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
 
   if (isServer && res) {
     if (res.statusCode !== 302) {
-      // store.dispatch({ type: booksActions.setFetching.type, payload: true });
       const result = await fetchHomeSections(genre.toString());
 
-      // 상대적으로 뒤에 나오는 섹션은 걸러냄
-      const filteredBranches = result.branches.filter((b) => !/(md-selection|recommended-new-book|today-new-book|new-serial-book|wait-free|recommended-book)/g.test(b.slug));
-      const bIds = keyToArray(filteredBranches, 'b_id');
-      store.dispatch({ type: booksActions.insertBookIds.type, payload: { bIds } });
+      // 상대적으로 뒤에 나오는 섹션의 bId를 걸러냄
+      const lazyLoadBIds: string[] = [];
+      const preLoadBIds: string[] = [];
+      result.branches.forEach((branch) => {
+        if (/(md-selection|bestseller|recommended-new-book|today-new-book|new-serial-book|wait-free|recommended-book)/g.test(branch.slug)) {
+          lazyLoadBIds.push(...keyToArray(branch, 'b_id'));
+        } else {
+          preLoadBIds.push(...keyToArray(branch, 'b_id'));
+        }
+      });
+      store.dispatch({ type: booksActions.insertBookIds.type, payload: { bIds: preLoadBIds } });
       const categoryIds = keyToArray(result.branches, 'category_id');
       store.dispatch({
         type: categoryActions.insertCategoryIds.type,
@@ -170,6 +176,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
       return {
         genre: genre.toString(),
         store,
+        lazyLoadBIds,
         ...query,
         ...result,
       };
