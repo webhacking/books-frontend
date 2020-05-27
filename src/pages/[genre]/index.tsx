@@ -61,7 +61,7 @@ export const Home: NextPage<HomeProps> = (props) => {
   const dispatch = useDispatch();
   const route = useRouter();
 
-  const { lazyLoadBIds = [], genre = 'general' } = props;
+  const { lazyLoadBIds, genre = 'general' } = props;
   const previousGenre = usePrevious(genre);
   const [branches, setBranches] = useState(props.branches || []);
 
@@ -118,7 +118,9 @@ export const Home: NextPage<HomeProps> = (props) => {
   }, [genre, loggedUser, setPageView]);
 
   useEffect(() => {
-    dispatch({ type: booksActions.insertBookIds.type, payload: { bIds: lazyLoadBIds } });
+    if (lazyLoadBIds) {
+      dispatch({ type: booksActions.insertBookIds.type, payload: { bIds: lazyLoadBIds } });
+    }
   }, [lazyLoadBIds]);
   return (
     <>
