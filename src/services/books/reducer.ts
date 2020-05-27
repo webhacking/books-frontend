@@ -45,7 +45,7 @@ const createSimpleBookData = (book: BookApi.Book): BookApi.ClientSimpleBook => (
 });
 
 export class BooksReducer extends ImmerReducer<BooksState> {
-  public insertBookIds(payload: { bIds: string[]; withDesc?: boolean; setSimple?: boolean }) {
+  public insertBookIds(payload: { bIds: string[]; withDesc?: boolean }) {
     try {
       const uniqIds = [...new Set(payload.bIds)];
       const books: BooksState['items'] = {};
@@ -61,7 +61,7 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     }
   }
 
-  public setBooks(payload: { items: BookApi.Book[]; setSimple?: boolean }) {
+  public setBooks(payload: { items: BookApi.Book[] }) {
     try {
       const books: BooksState['items'] = {};
       payload.items.forEach((book) => {
