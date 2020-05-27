@@ -99,6 +99,9 @@ export const Home: NextPage<HomeProps> = (props) => {
       branches.filter((section) => section.extra?.use_select_api),
       'b_id',
     );
+    const restSections = branches.filter((b) => /(md-selection|recommended-new-book|today-new-book|new-serial-book|wait-free|recommended-book)/g.test(b.slug));
+    const lazyLoadBIds = keyToArray(restSections, 'b_id');
+    dispatch({ type: booksActions.insertBookIds.type, payload: { bIds: lazyLoadBIds } });
     dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
   }, [branches]);
 

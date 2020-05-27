@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 
 import { SectionTitle, SectionTitleLink } from 'src/components/BookSections/SectionTitle';
 import useIsTablet from 'src/hooks/useIsTablet';
-import { BookItem, SectionExtra } from 'src/types/sections';
+import { SectionExtra } from 'src/types/sections';
 import { orBelow } from 'src/utils/mediaQuery';
 
-import { useDispatch } from 'react-redux';
-import { booksActions } from 'src/services/books';
 import SelectionBookCarousel from './SelectionBookCarousel';
 import SelectionBookList from './SelectionBookList';
 import { SelectionBookListProps } from './types';
@@ -47,10 +45,6 @@ const SelectionBook: React.FC<SelectionBookProps> = (props) => {
   if (!sectionHref && type === 'HomeMdSelection') {
     sectionHref = `/selection/${selectionId}`;
   }
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch({ type: booksActions.insertBookIds.type, payload: { bIds: (items as BookItem[]).map((i: BookItem) => i.b_id) } });
-  }, []);
   return (
     <SectionWrapper>
       <SectionTitle>
