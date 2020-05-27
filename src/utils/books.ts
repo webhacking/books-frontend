@@ -34,7 +34,7 @@ export function constructSearchDesc(description: BookApi.BookDesc): string {
 }
 
 /* 미완결 된 Series 도서중 공개(opened) 된 마지막 회차의 표지 ID를 구함 */
-export function getThumbnailIdFromBookDetail(book: BookApi.Book | null) {
+export function getThumbnailIdFromBookDetail(book: BookApi.Book | BookApi.ClientSimpleBook | null) {
   if (!book) {
     return null;
   }

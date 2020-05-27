@@ -82,7 +82,7 @@ export const splitArrayToChunk = (array: any[], size: number) => {
   return chunked_arr;
 };
 
-export const getMaxDiscountPercentage = (book: BookApi.Book | null) => {
+export const getMaxDiscountPercentage = (book: BookApi.Book | BookApi.ClientSimpleBook | null) => {
   if (!book) {
     return 0;
   }
