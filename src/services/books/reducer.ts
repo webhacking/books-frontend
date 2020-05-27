@@ -3,7 +3,7 @@ import * as BookApi from 'src/types/book';
 import sentry from 'src/utils/sentry';
 
 export interface BooksState {
-  items: { [key: string]: BookApi.ClientBook | null };
+  items: { [key: string]: BookApi.ClientSimpleBook | null };
   isFetching: boolean;
 }
 
@@ -11,6 +11,38 @@ export const booksInitialState: BooksState = {
   items: {},
   isFetching: false,
 };
+
+const createSimpleBookData = (book: BookApi.Book): BookApi.ClientSimpleBook => ({
+  id: book.id,
+  is_deleted: book.is_deleted,
+  authors: book.authors,
+  categories: book.categories,
+  file: {
+    is_comic: book.file.is_comic,
+    is_comic_hd: book.file.is_comic_hd,
+  },
+  property: {
+    is_trial: book.property.is_trial,
+    is_adult_only: book.property.is_adult_only,
+    is_novel: book.property.is_novel,
+    is_somedeal: book.property.is_somedeal,
+  },
+  price_info: {
+    rent: book.price_info.rent,
+    buy: book.price_info.buy,
+  },
+  publisher: {
+    id: book.publisher.id,
+    name: book.publisher.name,
+  },
+  series: book.series,
+  setbook: book.setbook,
+  title: book.title,
+  clientBookFields: {
+    isAvailableSelect: false,
+    isAlreadyCheckedAtSelect: false,
+  },
+});
 
 export class BooksReducer extends ImmerReducer<BooksState> {
   public insertBookIds(payload: { bIds: string[]; withDesc?: boolean }) {
@@ -29,16 +61,12 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     }
   }
 
-  public setBooks(payload: BookApi.ClientBook[]) {
+  public setBooks(payload: { items: BookApi.Book[] }) {
     try {
       const books: BooksState['items'] = {};
-      payload.forEach((book) => {
+      payload.items.forEach((book) => {
         if (this.draftState.items[book.id] === null) {
-          book.clientBookFields = {
-            isAlreadyCheckedAtSelect: false,
-            isAvailableSelect: false,
-          };
-          books[book.id] = book;
+          books[book.id] = createSimpleBookData(book);
         }
       });
       this.draftState.items = { ...this.draftState.items, ...books };
@@ -84,7 +112,7 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     // Todo 개선 필요
     try {
       payload.checkedIds.forEach((bId) => {
-        const book: BookApi.ClientBook | null = this.draftState.items[bId];
+        const book: BookApi.ClientSimpleBook | null = this.draftState.items[bId];
         if (book) {
           book.clientBookFields = {
             isAvailableSelect: payload.isSelectedId.includes(bId),

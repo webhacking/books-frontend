@@ -28,6 +28,7 @@ import { legacyCookieMap } from 'src/components/GNB/HomeLink';
 
 export interface HomeProps {
   branches: Section[];
+  lazyLoadBIds?: string[];
   genre: string;
 }
 
@@ -60,7 +61,7 @@ export const Home: NextPage<HomeProps> = (props) => {
   const dispatch = useDispatch();
   const route = useRouter();
 
-  const { genre = 'general' } = props;
+  const { lazyLoadBIds, genre = 'general' } = props;
   const previousGenre = usePrevious(genre);
   const [branches, setBranches] = useState(props.branches || []);
 
@@ -76,7 +77,6 @@ export const Home: NextPage<HomeProps> = (props) => {
     const source = CancelToken.source();
     if (!branches.length || (previousGenre && previousGenre !== props.genre)) {
       setBranches([]);
-      // store.dispatch({ type: booksActions.setFetching.type, payload: true });
       fetchHomeSections(props.genre, {}, {
         cancelToken: source.token,
       }).then((result) => {
@@ -117,6 +117,11 @@ export const Home: NextPage<HomeProps> = (props) => {
     setPageView();
   }, [genre, loggedUser, setPageView]);
 
+  useEffect(() => {
+    if (lazyLoadBIds) {
+      dispatch({ type: booksActions.insertBookIds.type, payload: { bIds: lazyLoadBIds } });
+    }
+  }, [lazyLoadBIds]);
   return (
     <>
       <Head>
@@ -152,10 +157,19 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
 
   if (isServer && res) {
     if (res.statusCode !== 302) {
-      // store.dispatch({ type: booksActions.setFetching.type, payload: true });
       const result = await fetchHomeSections(genre.toString());
-      const bIds = keyToArray(result.branches, 'b_id');
-      store.dispatch({ type: booksActions.insertBookIds.type, payload: { bIds } });
+
+      // 상대적으로 뒤에 나오는 섹션의 bId를 걸러냄
+      const lazyLoadBIds: string[] = [];
+      const preLoadBIds: string[] = [];
+      result.branches.forEach((branch) => {
+        if (/(md-selection|bestseller|recommended-new-book|today-new-book|new-serial-book|wait-free|recommended-book)/g.test(branch.slug)) {
+          lazyLoadBIds.push(...keyToArray(branch, 'b_id'));
+        } else {
+          preLoadBIds.push(...keyToArray(branch, 'b_id'));
+        }
+      });
+      store.dispatch({ type: booksActions.insertBookIds.type, payload: { bIds: preLoadBIds } });
       const categoryIds = keyToArray(result.branches, 'category_id');
       store.dispatch({
         type: categoryActions.insertCategoryIds.type,
@@ -164,6 +178,7 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
       return {
         genre: genre.toString(),
         store,
+        lazyLoadBIds,
         ...query,
         ...result,
       };

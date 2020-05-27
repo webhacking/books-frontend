@@ -3,7 +3,7 @@ import * as SearchApi from 'src/types/searchResults';
 
 import sentry from 'src/utils/sentry';
 
-export function computeBookTitle(book: BookApi.Book | null): string {
+export function computeBookTitle(book: BookApi.ClientSimpleBook | null): string {
   if (!book) {
     return '';
   }

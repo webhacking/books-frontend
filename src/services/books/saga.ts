@@ -14,12 +14,12 @@ import * as BookApi from 'src/types/book';
 const DEFAULT_BOOKS_ID_CHUNK_SIZE = 60;
 
 // 장르 홈 redux 제거 전 일단 withDesc 옵션 처리로 땜빵
-function* fetchBooks(bIds: string[], withDesc?: boolean) {
+function* fetchBooks(bIds: string[], withDesc = false) {
   const [bookResult, descResult]: [BookApi.Book[], BookApi.BookDescResponse[]] = yield all([
     call(pRetry, () => requestBooks(bIds), { retries: 2 }),
     withDesc ? call(pRetry, () => requestBooksDesc(bIds), { retries: 2 }) : null,
   ]);
-  yield put({ type: booksActions.setBooks.type, payload: bookResult });
+  yield put({ type: booksActions.setBooks.type, payload: { items: bookResult } });
   if (withDesc) {
     yield put({ type: booksActions.setDesc.type, payload: descResult });
   }
