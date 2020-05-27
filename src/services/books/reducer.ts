@@ -4,7 +4,7 @@ import sentry from 'src/utils/sentry';
 import { ClientBook } from 'src/types/book';
 
 export interface BooksState {
-  items: { [key: string]: BookApi.ClientBook | null };
+  items: { [key: string]: BookApi.ClientBook | BookApi.ClientSimpleBook | null };
   isFetching: boolean;
 }
 
@@ -13,19 +13,16 @@ export const booksInitialState: BooksState = {
   isFetching: false,
 };
 
-const getSimpleBookData = (book: ClientBook): ClientBook => ({
+const getSimpleBookData = (book: ClientBook): BookApi.ClientSimpleBook => ({
   ...book,
-  // @ts-ignore ts-ignore 해야할까요?
   support: undefined,
   publish: undefined,
   thumbnail: undefined,
   last_modified: undefined,
-  // @ts-ignore
   file: {
     is_comic: book.file.is_comic,
     is_comic_hd: book.file.is_comic_hd,
   },
-  // @ts-ignore
   property: {
     is_trial: book.property.is_trial,
     is_adult_only: book.property.is_adult_only,
@@ -34,12 +31,10 @@ const getSimpleBookData = (book: ClientBook): ClientBook => ({
   },
   price_info: {
     ...book.price_info,
-    // @ts-ignore
     paper: undefined,
   },
   publisher: {
     ...book.publisher,
-    // @ts-ignore
     cp_name: undefined,
   },
 });
@@ -116,7 +111,7 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     // Todo 개선 필요
     try {
       payload.checkedIds.forEach((bId) => {
-        const book: BookApi.ClientBook | null = this.draftState.items[bId];
+        const book: BookApi.ClientBook | BookApi.ClientSimpleBook | null = this.draftState.items[bId];
         if (book) {
           book.clientBookFields = {
             isAvailableSelect: payload.isSelectedId.includes(bId),

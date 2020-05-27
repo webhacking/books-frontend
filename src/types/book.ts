@@ -35,6 +35,7 @@ const RSeriesRentPriceItem = R.Record({
 const RPriceInfo = R.Partial({
   buy: RPriceItem,
   rent: RRentPriceItem,
+  paper: RPriceItem,
 });
 
 const RSeriesPriceInfo = R.Partial({
@@ -152,3 +153,9 @@ export interface BookDesc {
 }
 
 export type ClientBook = Book & { clientBookFields: ClientBookFields };
+
+type SimpleFile = Pick<ClientBook['file'], 'is_comic' | 'is_comic_hd'>
+type SimpleProperty = Pick<ClientBook['property'], 'is_trial' | 'is_adult_only' | 'is_novel' | 'is_somedeal'>
+type SimplePublisher = Pick<ClientBook['publisher'], 'id' | 'name'> & { cp_name: undefined };
+export type SimpleBook = Pick<ClientBook, 'id' | 'title' | 'authors' | 'categories' | 'price_info' | 'series' | 'clientBookFields' | 'is_deleted' | 'setbook'>;
+export type ClientSimpleBook = SimpleBook & { file: SimpleFile; property: SimpleProperty; support: undefined; publish: undefined; thumbnail: undefined; last_modified: undefined; publisher: SimplePublisher };
