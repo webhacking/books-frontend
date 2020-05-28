@@ -1,5 +1,5 @@
 export class CancelledError extends Error {
-  constructor() {
+  constructor(public inner?: Error) {
     super('Retry cancelled');
 
     if (Error.captureStackTrace) {

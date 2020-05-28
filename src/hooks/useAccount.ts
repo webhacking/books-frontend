@@ -1,9 +1,10 @@
 import { configureScope } from '@sentry/browser';
-import libAxios, { CancelTokenSource } from 'axios';
+import libAxios, { CancelTokenSource, AxiosError } from 'axios';
 import React from 'react';
 
 import axios, { CancelToken, OAuthRequestType } from 'src/utils/axios';
 import { CancelledError, runWithExponentialBackoff } from 'src/utils/backoff';
+import Sentry from 'src/utils/sentry';
 import { LoggedUser } from 'src/types/account';
 
 const AccountContext = React.createContext<LoggedUser | null>(null);
@@ -23,6 +24,10 @@ async function checkLoggedIn(cancel: CancelTokenSource) {
     if (libAxios.isCancel(err)) {
       throw new CancelledError();
     }
+    if (err.response?.status === 401) {
+      // Not logged in
+      throw new CancelledError(err);
+    }
     throw err;
   }
 }
@@ -34,7 +39,19 @@ export function AccountProvider(props: { children?: React.ReactNode }) {
     const cancel = CancelToken.source();
     runWithExponentialBackoff(
       () => checkLoggedIn(cancel),
-    ).then(setAccount);
+      { maxRetries: 3 },
+    ).then(
+      setAccount,
+      (err) => {
+        if (err instanceof CancelledError) {
+          if ((err.inner as AxiosError)?.response?.status === 401) {
+            setAccount(null);
+          }
+          return;
+        }
+        Sentry.captureException(err);
+      },
+    );
     return () => cancel.cancel();
   }, []);
 
