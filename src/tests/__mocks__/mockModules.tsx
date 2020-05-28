@@ -43,6 +43,7 @@ export const initModules = () => {
           };
         },
       },
+      isCancel: () => false,
       create: (options: any) => {
         const ret: any = {
           _getHandler() {

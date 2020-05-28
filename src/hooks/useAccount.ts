@@ -7,9 +7,9 @@ import { CancelledError, runWithExponentialBackoff } from 'src/utils/backoff';
 import Sentry from 'src/utils/sentry';
 import { LoggedUser } from 'src/types/account';
 
-const AccountContext = React.createContext<LoggedUser | null>(null);
+export const AccountContext = React.createContext<LoggedUser | null>(null);
 
-async function checkLoggedIn(cancel: CancelTokenSource) {
+export async function checkLoggedIn(cancel: CancelTokenSource) {
   try {
     const { data } = await axios.get<LoggedUser>('/accounts/me', {
       baseURL: process.env.NEXT_STATIC_ACCOUNT_API,
