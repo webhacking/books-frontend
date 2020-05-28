@@ -3,10 +3,10 @@ import {
   FB_KEYS, GA_KEY, GTM_KEY, SendEventType,
 } from 'src/constants/eventTracking';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/store/config';
 import sentry from 'src/utils/sentry';
 import { getDeviceType } from 'src/hooks/useDeviceType';
+
+import useAccount from './useAccount';
 
 const deviceType = getDeviceType() === 'mobile' ? DeviceType.Mobile : DeviceType.PC;
 
@@ -53,7 +53,7 @@ export const useEventTracker = () => {
   if (tracker) {
     createTracker(null);
   }
-  const { loggedUser } = useSelector((state: RootState) => state.account);
+  const loggedUser = useAccount();
   useEffect(() => {
     try {
       tracker.set({

@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { ConnectedInitializeProps } from 'src/types/common';
 import { GenreTab } from 'src/components/Tabs';
 import titleGenerator from 'src/utils/titleGenerator';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import { checkPage, Section } from 'src/types/sections';
@@ -18,8 +18,8 @@ import { booksActions } from 'src/services/books';
 import sentry from 'src/utils/sentry';
 import { categoryActions } from 'src/services/category';
 import { NextPage } from 'next';
+import useAccount from 'src/hooks/useAccount';
 import { useEventTracker } from 'src/hooks/useEventTracker';
-import { RootState } from 'src/store/config';
 import { css } from '@emotion/core';
 
 import Cookies from 'universal-cookie';
@@ -57,7 +57,7 @@ const usePrevious = <T extends {}>(value: T) => {
 };
 
 export const Home: NextPage<HomeProps> = (props) => {
-  const { loggedUser } = useSelector((state: RootState) => state.account);
+  const loggedUser = useAccount();
   const dispatch = useDispatch();
   const route = useRouter();
 

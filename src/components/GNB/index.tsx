@@ -6,10 +6,6 @@ import { Button } from 'src/components/Button';
 import { InstantSearch } from 'src/components/Search';
 import { MainTab } from 'src/components/Tabs';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import { useDispatch, useSelector } from 'react-redux';
-import { accountActions } from 'src/services/accounts';
-import { RootState } from 'src/store/config';
-import { AccountState } from 'src/services/accounts/reducer';
 import { LoggedUser } from 'src/types/account';
 import { useRouter } from 'next/router';
 import HomeLink from 'src/components/GNB/HomeLink';
@@ -19,6 +15,7 @@ import pRetry from 'p-retry';
 import axios, { CancelToken, OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 import { RIDIBOOKS_LOGO_URL, RIDISELECT_LOGO_URL } from 'src/constants/icons';
+import useAccount from 'src/hooks/useAccount';
 
 const GNBWrapper = styled.div<{}, RIDITheme>`
   width: 100%;
@@ -293,8 +290,7 @@ export const GNBContext = React.createContext<{
 }>({});
 
 export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
-  const { loggedUser } = useSelector<RootState, AccountState>((state) => state.account);
-  const dispatch = useDispatch();
+  const loggedUser = useAccount();
   const route = useRouter();
   const { isPartials } = props;
 
@@ -319,12 +315,6 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
       setOrigin(Array.isArray(route.query.origin) ? route.query.origin[0] : route.query.origin || '');
     }
   }, [route.asPath, route.query.origin]);
-
-  useEffect(() => {
-    const source = CancelToken.source();
-    dispatch({ type: accountActions.checkLogged.type, payload: source });
-    return source.cancel;
-  }, []);
 
   return (
     <GNBWrapper className="new_gnb" id={props.id}>

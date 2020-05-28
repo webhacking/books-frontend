@@ -1,14 +1,14 @@
 import { AIRecommendationBook, SectionExtra } from 'src/types/sections';
 import SelectionBook from 'src/components/BookSections/SelectionBook';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'src/store/config';
+import { useDispatch } from 'react-redux';
 import axios, { CancelToken, OAuthRequestType } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 import { keyToArray } from 'src/utils/common';
 import { booksActions } from 'src/services/books';
 import { categoryActions } from 'src/services/category';
 import { useRouter } from 'next/router';
+import useAccount from 'src/hooks/useAccount';
 
 interface AiRecommendationSectionProps {
   items?: AIRecommendationBook[];
@@ -20,7 +20,7 @@ interface AiRecommendationSectionProps {
 }
 
 const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) => {
-  const { loggedUser } = useSelector((store: RootState) => store.account);
+  const loggedUser = useAccount();
   const dispatch = useDispatch();
   const {
     items, type, title, extra, slug,

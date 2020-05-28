@@ -7,13 +7,11 @@ import { rootReducers } from 'src/store/reducers';
 import rootSaga from 'src/store/sagas';
 
 import { initialState } from 'src/store/initialState';
-import { AccountState } from 'src/services/accounts/reducer';
 import { BooksState } from 'src/services/books/reducer';
 import { CategoryState } from 'src/services/category/reducer';
 import { NotificationState } from 'src/services/notification/reducer';
 
 export interface RootState {
-  account: AccountState;
   books: BooksState;
   categories: CategoryState;
   notifications: NotificationState;

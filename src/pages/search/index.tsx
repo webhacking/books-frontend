@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Head from 'next/head';
 import styled from '@emotion/styled';
 import * as SearchTypes from 'src/types/searchResults';
@@ -18,7 +18,6 @@ import { useCallback, useEffect } from 'react';
 import sentry from 'src/utils/sentry';
 import { useEventTracker } from 'src/hooks/useEventTracker';
 
-import { RootState } from 'src/store/config';
 import { Pagination } from 'src/components/Pagination/Pagination';
 import SearchLandscapeBook from 'src/components/Search/SearchLandscapeBook';
 import useIsTablet from 'src/hooks/useIsTablet';
@@ -33,6 +32,7 @@ import SkeletonBar from 'src/components/Skeleton/Bar';
 import SkeletonCategoryTab from 'src/components/Skeleton/CategoryTab';
 import Skeleton from 'src/components/Skeleton/SearchLandscapeBook';
 import Authors, { MAXIMUM_AUTHOR } from 'src/components/Search/Authors';
+import useAccount from 'src/hooks/useAccount';
 
 const SearchResultSection = styled.section`
   max-width: 952px;
@@ -172,7 +172,7 @@ function SearchPage() {
 
   const [tracker] = useEventTracker();
   const router = useRouter();
-  const { loggedUser } = useSelector((state: RootState) => state.account);
+  const loggedUser = useAccount();
   const isTablet = useIsTablet();
   const setPageView = useCallback(() => {
     if (tracker) {

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/store/config';
 import styled from '@emotion/styled';
+import useAccount from 'src/hooks/useAccount';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { sendDisplayEvent } from 'src/hooks/useEventTracker';
-
 
 import coverAdult from 'src/assets/image/cover_adult.png';
 
@@ -107,7 +105,7 @@ const ThumbnailRenderer: React.FC<ThumbnailRendererProps> = React.memo((props) =
   const {
     thumbnailId, imgSize, sizes, children, slug, order, isAdultOnly, title,
   } = props;
-  const { loggedUser } = useSelector((state: RootState) => state.account);
+  const loggedUser = useAccount();
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isVisible, setVisible] = useState(false);
   const handleVisible = React.useCallback((visible) => {

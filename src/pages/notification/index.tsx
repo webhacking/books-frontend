@@ -20,6 +20,7 @@ import {
 } from 'src/hooks/useEventTracker';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import sentry from 'src/utils/sentry';
+import useAccount from 'src/hooks/useAccount';
 
 const Section = styled.section<{}, RIDITheme>`
   background-color: ${(props) => props.theme.backgroundColor};
@@ -258,7 +259,7 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
   const { items, isLoaded, unreadCount } = useSelector(
     (store: RootState) => store.notifications,
   );
-  const { loggedUser } = useSelector((state: RootState) => state.account);
+  const loggedUser = useAccount();
   const slug = 'notification-item';
   const dispatch = useDispatch();
   const [tracker] = useEventTracker();
