@@ -8,9 +8,6 @@ import '@testing-library/jest-dom/extend-expect';
 
 const store = makeStore(
   {
-    account: {
-      loggedUser: null,
-    },
     books: {
       isFetching: false,
       items: {},
@@ -57,9 +54,6 @@ test('should be render placeholder', async () => {
 
 const notificationStore = makeStore(
   {
-    account: {
-      loggedUser: null,
-    },
     books: {
       isFetching: false,
       items: {},

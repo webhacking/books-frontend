@@ -2,7 +2,7 @@ import * as React from 'react';
 import App from 'src/pages/_app';
 import Index from 'src/components/Meta';
 import GNB from 'src/pages/partials/gnb';
-import { render, cleanup } from '@testing-library/react';
+import { act, render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import makeStore from '../../store/config';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
@@ -17,7 +17,11 @@ const router = createRouter('/', { genre: 'general' }, '', {
   wrapApp: jest.fn(),
 });
 
-afterEach(cleanup);
+afterEach(async () => {
+  await act(async () => {
+    cleanup();
+  });
+});
 
 const store = makeStore({}, { asPath: 'test', isServer: false });
 
@@ -47,11 +51,13 @@ test('should be render Index Component', async () => {
     Component: Index,
   });
 
-  render(
-    <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
-      <App Component={Index} router={{}} {...props} />
-    </RouterContext.Provider>,
-  );
+  await act(async () => {
+    render(
+      <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
+        <App Component={Index} router={{}} {...props} />
+      </RouterContext.Provider>,
+    );
+  });
   // expect(getByText(/general/)).toHaveTextContent('general');
 });
 test('should be render Partials Component', async () => {
