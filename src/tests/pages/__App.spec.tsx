@@ -1,21 +1,9 @@
-import * as React from 'react';
-import App from 'src/pages/_app';
-import Index from 'src/components/Meta';
-import GNB from 'src/pages/partials/gnb';
-import { act, render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import makeStore from '../../store/config';
-import { RouterContext } from 'next/dist/next-server/lib/router-context';
-import { createRouter } from 'next/router';
-const router = createRouter('/', { genre: 'general' }, '', {
-  subscription: jest.fn(),
-  initialProps: {},
-  pageLoader: jest.fn(),
-  App: jest.fn(),
-  Component: jest.fn(),
-  isFallback: false,
-  wrapApp: jest.fn(),
-});
+import { act, render, cleanup, RenderResult } from '@testing-library/react';
+import * as React from 'react';
+
+import App from 'src/pages/_app';
+import makeStore from 'src/store/config';
 
 afterEach(async () => {
   await act(async () => {
@@ -25,69 +13,108 @@ afterEach(async () => {
 
 const store = makeStore({}, { asPath: 'test', isServer: false });
 
-test('should be render Index Component', async () => {
-  const props = await App.getInitialProps({
-    // pathname: '/',
-    path: '/',
-    isServer: false,
-    asPath: '/',
-    store,
-    // router: {
-    //   location: { pathname: '/' },
-    // },
-    ctx: {
-      router: {
-        location: { pathname: '/' },
-      },
-      pathname: '/',
-      query: { genre: '1', search: 'testKeyword' },
-      req: {
-        headers: { cookie: ''},
-      }
-    },
-    req: {
-      path: '/',
-    },
-    Component: Index,
+jest.mock('src/components/GNB', () => ({
+  __esModule: true,
+  default: () => <nav>GNB</nav>,
+}));
+
+jest.mock('src/components/Footer', () => ({
+  __esModule: true,
+  default: () => <footer>Footer</footer>,
+}));
+
+jest.mock('next-redux-wrapper', () => ({
+  __esModule: true,
+  default: () => (value) => value,
+}));
+
+jest.mock('next-redux-saga', () => ({
+  __esModule: true,
+  default: (value) => value,
+}));
+
+describe('App', () => {
+  describe('getInitialProps', () => {
+    it('should detect partials', async () => {
+      const props = await App.getInitialProps({
+        ctx: {
+          pathname: '/partials/gnb',
+        },
+        Component: () => null,
+      });
+      expect(props.isPartials).toBe(true);
+    });
+
+    it('should detect inapp', async () => {
+      const props = await App.getInitialProps({
+        ctx: {
+          pathname: '/inapp/notification',
+        },
+        Component: () => null,
+      });
+      expect(props.isInApp).toBe(true);
+    });
   });
 
-  await act(async () => {
-    render(
-      <RouterContext.Provider value={{ asPath: '', query: { pathname: '/'} }}>
-        <App Component={Index} router={{}} {...props} />
-      </RouterContext.Provider>,
-    );
-  });
-  // expect(getByText(/general/)).toHaveTextContent('general');
-});
-test('should be render Partials Component', async () => {
-  const props = await App.getInitialProps({
-    pathname: '/partials/gnb',
-    isServer: false,
-    asPath: '/partials/gnb',
-    store,
-    ctx: {
-      router: {
-        location: { pathname: '/partials/gnb' },
-      },
-      pathname: '/partials/gnb',
-      query: { search: 'testKeyword', pathname: '/books' },
-      req: {
-        headers: { cookie: ''},
-      }
-    },
-    req: {
-      path: '/',
-    },
-    Component: GNB,
+  it('should render regular pages', async () => {
+    const mock = jest.fn().mockReturnValue(<div>mock</div>);
+    let renderResult: RenderResult;
+    await act(async () => {
+      renderResult = render(
+        <App
+          store={store}
+          pageProps={{}}
+          query={{}}
+          hasError={false}
+          Component={mock}
+        />
+      );
+    });
+    expect(renderResult.container.innerHTML).not.toMatch(/GLOBAL_STYLE_RESET/);
+    expect(renderResult.container).toHaveTextContent(/GNB/);
+    expect(renderResult.container).toHaveTextContent(/mock/);
+    expect(renderResult.container).toHaveTextContent(/Footer/);
   });
 
-  const { container } = render(
-    <RouterContext.Provider value={{ asPath: '', query: { pathname: '/cart'} }}>
-      <App Component={GNB} router={{}} {...props} />
-    </RouterContext.Provider>,
-  );
+  it('should render inapp', async () => {
+    const mock = jest.fn().mockReturnValue(<div>mock</div>);
+    let renderResult: RenderResult;
+    await act(async () => {
+      renderResult = render(
+        <App
+          store={store}
+          pageProps={{}}
+          query={{}}
+          isInApp
+          hasError={false}
+          Component={mock}
+        />
+      );
+    });
+    expect(renderResult.container.innerHTML).not.toMatch(/GLOBAL_STYLE_RESET/);
+    expect(renderResult.container).not.toHaveTextContent(/GNB/);
+    expect(renderResult.container).toHaveTextContent(/mock/);
+    expect(renderResult.container).not.toHaveTextContent(/Footer/);
+  });
 
-  const input = container.getElementsByTagName('input');
-  expect(input).not.toBe('null');
+  it('should render partials', async () => {
+    const mock = jest.fn().mockReturnValue(<div>mock</div>);
+    let renderResult: RenderResult;
+    await act(async () => {
+      renderResult = render(
+        <App
+          store={store}
+          pageProps={{}}
+          query={{}}
+          isPartials
+          hasError={false}
+          Component={mock}
+        />
+      );
+    });
+    expect(renderResult.container.innerHTML).toMatch(/GLOBAL_STYLE_RESET/);
+    expect(renderResult.container).not.toHaveTextContent(/GNB/);
+    expect(renderResult.container).toHaveTextContent(/mock/);
+    expect(renderResult.container).not.toHaveTextContent(/Footer/);
+  });
 });
