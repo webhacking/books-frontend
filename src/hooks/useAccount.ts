@@ -11,7 +11,7 @@ export const AccountContext = React.createContext<LoggedUser | null>(null);
 
 export async function checkLoggedIn(cancel: CancelTokenSource) {
   try {
-    const { data } = await axios.get<LoggedUser>('/accounts/me', {
+    const { data } = await axios.get<{ result: LoggedUser}>('/accounts/me', {
       baseURL: process.env.NEXT_STATIC_ACCOUNT_API,
       withCredentials: true,
       custom: {
@@ -19,7 +19,7 @@ export async function checkLoggedIn(cancel: CancelTokenSource) {
       },
       cancelToken: cancel.token,
     });
-    return data;
+    return data.result;
   } catch (err) {
     if (libAxios.isCancel(err)) {
       throw new CancelledError();
