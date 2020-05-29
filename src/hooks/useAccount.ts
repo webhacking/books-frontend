@@ -39,7 +39,7 @@ export function AccountProvider(props: { children?: React.ReactNode }) {
     const cancel = CancelToken.source();
     runWithExponentialBackoff(
       () => checkLoggedIn(cancel),
-      { maxTries: 3 },
+      { maxTries: 3, backoffTimeUnit: 500 },
     ).then(
       setAccount,
       (err) => {
