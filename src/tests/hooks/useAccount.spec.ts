@@ -26,7 +26,7 @@ describe('AccountProvider', () => {
   }
 
   it('should provide account data', async () => {
-    const handler = jest.fn().mockReturnValue({ data: 'account' });
+    const handler = jest.fn().mockReturnValue({ data: { result: 'account' } });
     (axios as any).__setHandler(handler);
     let renderResult: RenderResult;
     await act(async () => {
