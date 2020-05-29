@@ -9,7 +9,9 @@ interface Props {
   passHref?: boolean;
 }
 
+// Fixme
 export const legacyCookieMap: {[index: string]: string} = {
+  general: 'general',
   comic: 'comics',
   romance_serial: 'romance-serial',
   fantasy_serial: 'fantasy-serial',

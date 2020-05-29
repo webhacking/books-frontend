@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import useAccount from 'src/hooks/useAccount';
 
 import * as BookApi from 'src/types/book';
+import { newGenreNameToOldGenreName } from 'src/utils/common';
 
 interface AiRecommendationSectionProps {
   genre: string;
@@ -26,17 +27,17 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
   } = props;
   const [aiItems, setSections] = useState([]);
   const [isRequestError, setIsRequestError] = useState(false);
-  const [sectionTitle, setSectionTitle] = useState('');
 
   const router = useRouter();
   const genre = (router.query.genre as string) || 'general';
 
+  const convertedGenreName = newGenreNameToOldGenreName[genre];
   useEffect(() => {
     const source = CancelToken.source();
     const requestAiRecommendationItems = async () => {
       try {
         // Todo 현재는 single로 받아 1개의 섹션만 표시하는데 곧 3~4개 섹션이 표시될 수 있음
-        const requestUrl = `/store/personalized-sections/single?genre=${genre}`;
+        const requestUrl = `/store/personalized-sections/single?genre=${convertedGenreName}`;
         const result = await axios.get(requestUrl, {
           baseURL: process.env.NEXT_STATIC_AI_RECOMMENDATION_API,
           withCredentials: true,
@@ -48,7 +49,6 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
           setSections(result.data.books.map((item: BookApi.Book) => ({ b_id: item.id, detail: item })));
           const bIds = result.data.books.map((book: BookApi.Book) => book.id);
           dispatch({ type: booksActions.insertBookIds.type, payload: { bIds } });
-          setSectionTitle(result.data.title);
           setIsRequestError(false);
         } else {
           setIsRequestError(true);
@@ -93,7 +93,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
     <SelectionBook
       items={aiItems || []}
       slug={`${slug}-ai-rcmd`}
-      title={loggedUser && sectionTitle.length > 0 ? `${loggedUser.id}님이 ${sectionTitle}` : 'AI 추천'}
+      title={loggedUser ? `${loggedUser.id} 님을 위한 AI 추천` : 'AI 추천'}
       extra={extra}
       genre={genre}
       type={type}

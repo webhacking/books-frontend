@@ -104,3 +104,15 @@ export const getMaxDiscountPercentage = (book: BookApi.ClientSimpleBook | null) 
   }
   return 0;
 };
+
+// Fixme
+export const newGenreNameToOldGenreName: { [index: string]: string } = {
+  general: 'general',
+  comics: 'comic',
+  'bl-serial': 'bl_serial',
+  'fantasy-serial': 'fantasy_serial',
+  'romance-serial': 'romance_serial',
+  bl: 'bl',
+  romance: 'romance',
+  fantasy: 'fantasy',
+};
