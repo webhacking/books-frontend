@@ -22,7 +22,6 @@ describe('Search Page Test', () => {
     beforeEach(async () => {
       const mockRouter = makeRouter('유유');
       const reducerMock = jest.fn().mockReturnValue({
-        account: {},
         books: {},
         categories: {},
         notifications: {},

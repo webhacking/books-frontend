@@ -18,9 +18,6 @@ import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection'
 afterEach(cleanup);
 const store = makeStore(
   {
-    account: {
-      loggedUser: null,
-    },
     categories: {
       items: {},
       isFetching: false,

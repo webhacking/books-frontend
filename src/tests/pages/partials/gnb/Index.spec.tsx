@@ -18,7 +18,7 @@ const router = createRouter('/', { genre: 'general' }, '', {
 
 afterEach(cleanup);
 const store = makeStore(
-  { account: { loggedUser: null } },
+  {},
   { asPath: 'test', isServer: false },
 );
 

@@ -22,6 +22,7 @@ import Meta from 'src/components/Meta';
 import DisallowedHostsFilter from 'src/components/Misc/DisallowedHostsFilter';
 import sentry from 'src/utils/sentry';
 import InAppThemeProvider, { getAppTheme, Theme } from 'src/components/Misc/InAppThemeProvider';
+import { AccountProvider } from 'src/hooks/useAccount';
 
 interface StoreAppProps {
   store: Store<RootState>;
@@ -180,20 +181,22 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
         <CacheProvider value={createCache({ ...cache, nonce })}>
           <Global styles={resetStyles} />
           <Provider store={store}>
-            {/* Todo Apply Layout */}
-            <ThemeProvider theme={defaultTheme}>
-              <ViewportIntersectionProvider rootMargin="100px">
-                <GNB
-                  searchKeyword={query.search || query.q}
-                  isPartials={false}
-                  isLoginForPartials={query.is_login}
-                />
-                <Contents>
-                  <Component {...pageProps} />
-                </Contents>
-                <Footer />
-              </ViewportIntersectionProvider>
-            </ThemeProvider>
+            <AccountProvider>
+              {/* Todo Apply Layout */}
+              <ThemeProvider theme={defaultTheme}>
+                <ViewportIntersectionProvider rootMargin="100px">
+                  <GNB
+                    searchKeyword={query.search || query.q}
+                    isPartials={false}
+                    isLoginForPartials={query.is_login}
+                  />
+                  <Contents>
+                    <Component {...pageProps} />
+                  </Contents>
+                  <Footer />
+                </ViewportIntersectionProvider>
+              </ThemeProvider>
+            </AccountProvider>
           </Provider>
         </CacheProvider>
       </>
