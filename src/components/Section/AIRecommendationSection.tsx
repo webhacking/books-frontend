@@ -15,7 +15,6 @@ interface AiRecommendationSectionProps {
   genre: string;
   type: 'AiRecommendation';
   extra: SectionExtra;
-  items: AIRecommendationBook[];
   slug: string;
 }
 
@@ -25,7 +24,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
   const {
     type, extra, slug,
   } = props;
-  const [aiItems, setSections] = useState([]);
+  const [aiItems, setSections] = useState<AIRecommendationBook[] | null>(null);
   const [isRequestError, setIsRequestError] = useState(false);
 
   const router = useRouter();
@@ -46,7 +45,8 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
           cancelToken: source.token,
         });
         if (result.status < 400 && result.status >= 200) {
-          setSections(result.data.books.map((item: BookApi.Book) => ({ b_id: item.id, detail: item })));
+          // Todo 추천 API 결과에서 bId 만 올 예정 그 때 다시 변경 배포
+          setSections(result.data.books.map((item: BookApi.Book) => ({ b_id: item.id })));
           const bIds = result.data.books.map((book: BookApi.Book) => book.id);
           dispatch({ type: booksActions.insertBookIds.type, payload: { bIds } });
           setIsRequestError(false);
@@ -59,7 +59,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
       }
     };
 
-    if (aiItems.length < 1 && loggedUser && !isRequestError) {
+    if (!aiItems && loggedUser && !isRequestError) {
       if (
         [
           'bl',
@@ -77,7 +77,7 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
     }
 
     return source.cancel;
-  }, [dispatch, genre, router, aiItems.length, loggedUser, isRequestError]);
+  }, [dispatch, genre, router, aiItems, loggedUser, isRequestError]);
 
   if (!loggedUser || !aiItems || aiItems.length < 1) {
     return null;

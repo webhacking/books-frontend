@@ -143,7 +143,6 @@ function HomeSectionRenderer(props: HomeSectionRendererProps) {
       return (
         <AiRecommendationSection
           slug={slug}
-          items={section.items}
           genre={genre}
           type={section.type}
           extra={extra}
