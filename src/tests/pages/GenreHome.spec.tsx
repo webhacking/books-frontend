@@ -1,99 +1,84 @@
-import axios from 'axios';
-import * as React from 'react';
-import Index from 'src/pages/[genre]';
-import { act, cleanup, render, RenderResult, waitForElement } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import makeStore from '../../store/config';
+import { act, cleanup, render, RenderResult } from '@testing-library/react';
+import axios from 'axios';
 import { ThemeProvider } from 'emotion-theming';
-import { defaultTheme } from '../../styles';
-import { Provider } from 'react-redux';
-import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import * as React from 'react';
+import * as libReactRedux from 'react-redux';
+
+import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
+import Index from 'src/pages/[genre]';
+import { defaultTheme } from 'src/styles';
+import { Section } from 'src/types/sections';
+
 import blFixture from './home-bl-fixture.json';
 import fantasyFixture from './home-fantasy-fixture.json';
-import { ViewportIntersectionProvider } from '../../hooks/useViewportIntersection';
-import { createRouter } from 'next/router';
 
 const mockRes = {
   writeHead: () => null,
   end: () => null,
 };
 
-const router = createRouter('/', { genre: 'general' }, '', {
-  subscription: jest.fn(),
-  initialProps: {},
-  pageLoader: jest.fn(),
-  App: jest.fn(),
-  Component: jest.fn(),
-  isFallback: false,
-  wrapApp: jest.fn(),
+jest.mock('next/router', () => {
+  const router = {
+    asPath: '/',
+    pathname: '/[genre]',
+    query: { genre: 'general' },
+    events: {
+      on() {},
+      off() {},
+    },
+  };
+  return {
+    __esModule: true,
+    default: router,
+    useRouter: () => router,
+  };
 });
 
-const store = makeStore(
-  {
-    books: {
-      isFetching: false,
-      items: {
-        '102087083': {
-          id: '102087083',
-          property: {
-            is_somedeal: false,
-          },
-          file: {
-            is_comic: false,
-          },
-          authors: [],
-          categories: [{
-            genre:'fantasy'
-          }],
-          title: { main: '판타지 도서 타이틀' },
-        },
-        '111020494': {
-          id: '102087083',
-          property: {
-            is_somedeal: false,
-          },
-          file: {
-            is_comic: false,
-          },
-          authors: [],
-          categories: [],
-          title: { main: 'Bl 도서 Title1' },
-        },
-        '777035894': {
-          id: '777035894',
-          property: {
-            is_somedeal: false,
-          },
-          file: {
-            is_comic: false,
-          },
-          authors: [],
-          categories: [{
-            genre:'bl'
-          }],
-          series: {
-            property: {
-              last_volume_id: "999999",
-              is_completed: false,
-            }
-          },
-          title: { main: 'Bl 도서 Title2' },
-        },
-      },
+jest.mock('react-redux', () => {
+  let state = {};
+  let dispatch = (_: any) => null;
+  return {
+    __esModule: true,
+    _setState(newState: any) {
+      state = newState;
     },
-  },
-  { asPath: '/', isServer: false },
-);
+    _setDispatch(newDispatch: (action: any) => any) {
+      dispatch = newDispatch;
+    },
+    useSelector(selector: (state: any) => any) {
+      return selector(state);
+    },
+    useDispatch() {
+      return dispatch;
+    },
+  };
+});
+
+jest.mock('src/components/Section/HomeSectionRenderer', () => ({
+  __esModule: true,
+  default: (props: { section: Section }) => (
+    <section data-slug={props.section.slug}>
+      <h1>{props.section.title}</h1>
+      <p>{props.section.type}</p>
+    </section>
+  ),
+}));
+
 const mockSomeProps = {
   isServer: true,
   asPath: '',
-  store,
   res: mockRes,
+  store: {
+    dispatch(action: any) {
+      return libReactRedux.useDispatch()(action);
+    },
+  },
 };
 
-function actRender(renderFunction: () => RenderResult) {
+async function actRender(renderFunction: () => RenderResult) {
   let ret: RenderResult;
-  act(() => {
+  await act(async () => {
     ret = renderFunction();
   });
   return ret;
@@ -102,24 +87,20 @@ function actRender(renderFunction: () => RenderResult) {
 const renderComponent = ({ props }): RenderResult => {
   return render(
     <ThemeProvider theme={defaultTheme}>
-      <RouterContext.Provider value={router}>
-        <Provider store={store}>
-          <ViewportIntersectionProvider>
-            <Index {...props} />
-          </ViewportIntersectionProvider>
-        </Provider>
-      </RouterContext.Provider>
+      <ViewportIntersectionProvider>
+        <Index {...props} />
+      </ViewportIntersectionProvider>
     </ThemeProvider>,
   );
 };
 
-afterEach(() => {
-  act(() => {
-    cleanup();
-  });
-});
-
 describe('Genre Home Test', () => {
+  afterEach(async () => {
+    await act(async () => {
+      cleanup();
+    });
+  });
+
   it('should fetch branches', async () => {
     const handler = jest.fn().mockReturnValue({
       data: {
@@ -143,6 +124,7 @@ describe('Genre Home Test', () => {
     expect(handler).toBeCalledTimes(1);
     expect(handler.mock.calls[0][0]).toEqual('get');
     expect(handler.mock.calls[0][1]).toEqual('/pages/home-fantasy/');
+    expect(props.genre).toBe('fantasy');
   });
 
   it('should render Home Component (fantasy)', async () => {
@@ -153,10 +135,14 @@ describe('Genre Home Test', () => {
       title: '판타지 홈',
       branches: fantasyFixture.branches,
     };
-    const { getAllByText } = actRender(() => (
+    const { container } = await actRender(() => (
       renderComponent({ props }))
     );
-    expect(getAllByText(/판타지 도서 타이/)[0]).not.toBeNull();
+    const todayRec = container.querySelector(
+      'section[data-slug="home-fantasy-today-recommendation"]'
+    );
+    expect(todayRec.querySelector('h1')).toHaveTextContent('오늘, 리디의 발견');
+    expect(todayRec.querySelector('p')).toHaveTextContent('TodayRecommendation');
   });
 
   it('should render Home Component (bl)', async () => {
@@ -167,14 +153,14 @@ describe('Genre Home Test', () => {
       title: 'BL 홈',
       branches: blFixture.branches,
     };
-    const { getAllByAltText, container } = actRender(() => (
+    const { container } = await actRender(() => (
       renderComponent({ props }))
     );
 
-    const renderer = await waitForElement(() => getAllByAltText(/\[소설\] 리뷰 전원/), {
-      timeout: 2000,
-      container,
-    });
-    expect(renderer[0]).not.toBe(null);
+    const todayRec = container.querySelector(
+      'section[data-slug="home-bl-event-banner-top"]'
+    );
+    expect(todayRec.querySelector('h1')).toHaveTextContent('이벤트 배너');
+    expect(todayRec.querySelector('p')).toHaveTextContent('HomeEventBanner');
   });
 });
