@@ -143,7 +143,7 @@ const CarouselItemContainer = styled.li<{ active?: boolean; invisible?: boolean 
     box-shadow: 0 0.8px 3px rgba(0, 0, 0, 0.33);
   }
 
-  & ::before {
+  & ::after {
     display: block;
     content: '';
     position: absolute;
