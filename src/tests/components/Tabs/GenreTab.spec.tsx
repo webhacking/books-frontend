@@ -6,43 +6,51 @@ import {
   fireEvent,
   render,
   getByText,
+  RenderResult,
 } from '@testing-library/react';
+
 import { GenreTab } from 'src/components/Tabs';
-import { ThemeProvider } from 'emotion-theming';
-import { defaultTheme } from 'src/styles';
 import * as labels from 'src/labels/common.json';
-import { RouterContext } from 'next/dist/next-server/lib/router-context';
-import { createRouter } from 'next/router';
-const router = createRouter('/', { genre: 'general' }, '', {
-  subscription: jest.fn(),
-  initialProps: {},
-  pageLoader: jest.fn(),
-  App: jest.fn(),
-  Component: jest.fn(),
-  isFallback: false,
-  wrapApp: jest.fn(),
+
+jest.mock('next/router', () => {
+  const router = {
+    asPath: '/',
+    pathname: '/[genre]',
+    query: {
+      genre: 'general',
+    },
+    events: {
+      on() {},
+      off() {},
+    },
+    preload() {},
+  };
+  return {
+    __esModule: true,
+    default: router,
+    useRouter: () => router,
+  };
 });
 
-afterEach(cleanup);
-
-const renderComponent = () =>
-  render(
-    <ThemeProvider theme={defaultTheme}>
-      <RouterContext.Provider value={{ asPath: '/bl', query: { pathname: '/'}}}>
-        <GenreTab currentGenre={'fantasy'} />
-      </RouterContext.Provider>
-    </ThemeProvider>,
-  );
-
 describe('GenreTab test', () => {
-  it('should be render GenreTab component', () => {
-    const { container } = renderComponent();
-    expect(container).not.toBe(null);
+  let renderResult: RenderResult;
+
+  beforeEach(async () => {
+    await act(async () => {
+      renderResult = render(
+        <GenreTab currentGenre="fantasy" />
+      );
+    });
   });
-  it('should be render sub service', () => {
-    const { container } = renderComponent();
-    const categoryNode = getByText(container, labels.category);
-    expect(categoryNode).not.toBe(null);
+
+  afterEach(async () => {
+    await act(async () => {
+      cleanup();
+    });
+  });
+
+  it('should be render GenreTab component', () => {
+    expect(getByText(renderResult.container, labels.category)).not.toBeNull();
   });
 
   describe('cookie', () => {
@@ -63,8 +71,7 @@ describe('GenreTab test', () => {
         expect(cookie.split(';').map(x => x.trim().toLowerCase()))
           .toContain('path=/');
       });
-      const { container } = renderComponent();
-      const anchor = container.querySelector('a[href="/"]');
+      const anchor = renderResult.container.querySelector('a[href="/"]');
       const anchorClickEvent = createEvent.click(anchor);
       act(() => {
         fireEvent(anchor, anchorClickEvent);
