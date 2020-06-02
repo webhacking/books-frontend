@@ -188,6 +188,7 @@ const GenreTabDivider = styled.hr`
   background: #e6e8eb;
 `;
 
+// Fixme
 const legacyCookieMap: {[index: string]: string} = {
   general: '',
   comics: 'comic',

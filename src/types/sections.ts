@@ -162,11 +162,8 @@ export const RWaitFree = makeSectionData('WaitFree', RBookWithOrder).And(
   }),
 );
 
-export const RAiRecommendationItem = RBookBase.And(
-  R.Record({
-    rcmd_id: R.String,
-  }),
-);
+export const RAiRecommendationItem = RBookBase;
+
 export const RAiRecommendation = makeSectionData('AiRecommendation', RAiRecommendationItem).And(
   R.Record({
     extra: R.Partial({
