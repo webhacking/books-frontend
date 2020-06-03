@@ -65,7 +65,7 @@ const SelectionBookCarousel: React.FC<SelectionBookListProps> = (props) => {
             order={index}
             genre={genre}
             slug={slug}
-            book={items[index] as any /* TODO do type circus */}
+            book={items[index]}
             type={type}
           />
         )}

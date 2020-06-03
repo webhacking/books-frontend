@@ -2,31 +2,17 @@ import React, { useCallback } from 'react';
 
 import BookMeta from 'src/components/BookMeta';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
-import {
-  AIRecommendationBook,
-  DisplayType,
-  BookItem,
-} from 'src/types/sections';
+import { DisplayType, BookItem } from 'src/types/sections';
 import PortraitBook from 'src/components/Book/PortraitBook';
 
-interface CommonProps {
+interface Props {
+  type: DisplayType;
   order?: number;
   slug: string;
   genre: string;
   className?: string;
-}
-
-interface MdBookProps {
-  type: Exclude<DisplayType, 'AiRecommendation'>;
   book: BookItem;
 }
-
-interface AIRecommendationBookProps {
-  type: 'AiRecommendation';
-  book: AIRecommendationBook;
-}
-
-type Props = CommonProps & (MdBookProps | AIRecommendationBookProps);
 
 const SelectionBookItem: React.FC<Props> = (props) => {
   const {
