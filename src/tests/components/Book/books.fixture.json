@@ -1,0 +1,399 @@
+[
+  {
+    "id": "111021598",
+    "title": {
+      "main": "[완결 세트] 어떤 마술의 금서목록"
+    },
+    "categories": [
+      {
+        "id": 3001,
+        "name": "해외 라노벨",
+        "genre": "comic",
+        "sub_genre": "lightnovel",
+        "is_series_category": true
+      }
+    ],
+    "price_info": {
+      "paper": {
+        "price": 0
+      },
+      "buy": {
+        "regular_price": 53900,
+        "price": 53900,
+        "discount_percentage": 0
+      }
+    },
+    "setbook": {
+      "member_books_count": 22
+    },
+    "authors": [
+      {
+        "name": "카마치 카즈마",
+        "id": 24125,
+        "role": "story_writer"
+      },
+      {
+        "name": "김소연",
+        "id": 25475,
+        "role": "translator"
+      },
+      {
+        "name": "하이무라 키요타카",
+        "id": 44673,
+        "role": "illustrator"
+      }
+    ],
+    "file": {
+      "is_comic": false,
+      "is_comic_hd": false
+    },
+    "property": {
+      "is_novel": false,
+      "is_adult_only": false,
+      "is_somedeal": false,
+      "is_trial": false
+    },
+    "publisher": {
+      "id": 111,
+      "name": "대원씨아이",
+      "cp_name": "리디북스"
+    },
+    "clientBookFields": {
+      "isAvailableSelect": false,
+      "isAlreadyCheckedAtSelect": false
+    }
+  },
+  {
+    "id": "1561006302",
+    "title": {
+      "main": "책벌레의 하극상 4부 6권"
+    },
+    "categories": [
+      {
+        "id": 3001,
+        "name": "해외 라노벨",
+        "genre": "comic",
+        "sub_genre": "lightnovel",
+        "is_series_category": true
+      }
+    ],
+    "price_info": {
+      "buy": {
+        "regular_price": 5000,
+        "price": 4500,
+        "discount_percentage": 10
+      }
+    },
+    "series": {
+      "id": "1561001316",
+      "volume": 18,
+      "property": {
+        "last_volume_id": "1561006302",
+        "opened_last_volume_id": "1561006302",
+        "title": "책벌레의 하극상",
+        "unit": "권",
+        "opened_book_count": 18,
+        "total_book_count": 18,
+        "is_serial": false,
+        "is_completed": false,
+        "is_comic_hd": false,
+        "is_serial_complete": false,
+        "is_wait_free": false
+      },
+      "price_info": {
+        "buy": {
+          "total_book_count": 18,
+          "free_book_count": 0,
+          "regular_price": 90500,
+          "price": 81450,
+          "discount_percentage": 10
+        }
+      }
+    },
+    "authors": [
+      {
+        "name": "카즈키 미야",
+        "id": 87286,
+        "role": "story_writer"
+      },
+      {
+        "name": "김봄",
+        "id": 83169,
+        "role": "translator"
+      },
+      {
+        "name": "시이나 유",
+        "id": 62846,
+        "role": "illustrator"
+      }
+    ],
+    "file": {
+      "is_comic": false,
+      "is_comic_hd": false
+    },
+    "property": {
+      "is_novel": false,
+      "is_adult_only": false,
+      "is_somedeal": false,
+      "is_trial": false
+    },
+    "publisher": {
+      "id": 1561,
+      "name": "길찾기",
+      "cp_name": "(주)이미지프레임_E/P/J"
+    },
+    "clientBookFields": {
+      "isAvailableSelect": false,
+      "isAlreadyCheckedAtSelect": false
+    }
+  },
+  {
+    "id": "2945000001",
+    "title": {
+      "main": "황제의 약혼녀로 산다는 것은 1화",
+      "prefix": "[웹툰]"
+    },
+    "categories": [
+      {
+        "id": 1521,
+        "name": "국내 순정",
+        "genre": "comic",
+        "sub_genre": "comic",
+        "is_series_category": true
+      }
+    ],
+    "price_info": {
+      "buy": {
+        "regular_price": 0,
+        "price": 0,
+        "discount_percentage": 0
+      },
+      "rent": {
+        "regular_price": 0,
+        "price": 0,
+        "rent_days": 3,
+        "discount_percentage": 0
+      }
+    },
+    "series": {
+      "id": "2945000001",
+      "volume": 1,
+      "property": {
+        "last_volume_id": "2945000084",
+        "opened_last_volume_id": "2945000083",
+        "title": "황제의 약혼녀로 산다는 것은",
+        "unit": "화",
+        "opened_book_count": 83,
+        "total_book_count": 84,
+        "is_serial": true,
+        "is_completed": false,
+        "is_comic_hd": false,
+        "is_serial_complete": false,
+        "is_wait_free": true,
+        "prev_books": [],
+        "next_books": {
+          "2945000002": {
+            "b_id": "2945000002",
+            "is_opened": true
+          }
+        }
+      },
+      "price_info": {
+        "buy": {
+          "total_book_count": 83,
+          "free_book_count": 5,
+          "regular_price": 31200,
+          "price": 31200,
+          "discount_percentage": 0
+        },
+        "rent": {
+          "total_book_count": 83,
+          "free_book_count": 5,
+          "regular_price": 15600,
+          "rent_price": 15600,
+          "discount_percentage": 0,
+          "rent_days": 249
+        }
+      }
+    },
+    "authors": [
+      {
+        "name": "침파",
+        "id": 82899,
+        "role": "illustrator"
+      },
+      {
+        "name": "새벽유성",
+        "id": 80930,
+        "role": "original_author"
+      }
+    ],
+    "file": {
+      "is_comic": true,
+      "is_comic_hd": false
+    },
+    "property": {
+      "is_novel": false,
+      "is_adult_only": false,
+      "is_somedeal": false,
+      "is_trial": false
+    },
+    "publisher": {
+      "id": 2945,
+      "name": "레이코믹스",
+      "cp_name": "오렌지트랙_황제의 약혼녀로 산다는 것은_선인세_JPG"
+    },
+    "clientBookFields": {
+      "isAvailableSelect": false,
+      "isAlreadyCheckedAtSelect": false
+    }
+  },
+  {
+    "id": "806003892",
+    "title": {
+      "main": "데빌맨 1권"
+    },
+    "categories": [
+      {
+        "id": 1527,
+        "name": "판타지/SF",
+        "genre": "comic",
+        "sub_genre": "comic",
+        "is_series_category": true
+      }
+    ],
+    "price_info": {
+      "buy": {
+        "regular_price": 4500,
+        "price": 4500,
+        "discount_percentage": 0
+      },
+      "rent": {
+        "regular_price": 1500,
+        "price": 1500,
+        "rent_days": 3,
+        "discount_percentage": 0
+      }
+    },
+    "series": {
+      "id": "806003892",
+      "volume": 1,
+      "property": {
+        "last_volume_id": "806003896",
+        "opened_last_volume_id": "806003896",
+        "title": "데빌맨",
+        "unit": "권",
+        "opened_book_count": 5,
+        "total_book_count": 5,
+        "is_serial": false,
+        "is_completed": true,
+        "is_comic_hd": true,
+        "is_serial_complete": true,
+        "is_wait_free": false
+      },
+      "price_info": {
+        "buy": {
+          "total_book_count": 5,
+          "free_book_count": 0,
+          "regular_price": 22500,
+          "price": 22500,
+          "discount_percentage": 0
+        },
+        "rent": {
+          "total_book_count": 5,
+          "free_book_count": 0,
+          "regular_price": 7500,
+          "rent_price": 7500,
+          "discount_percentage": 0,
+          "rent_days": 7
+        }
+      }
+    },
+    "authors": [
+      {
+        "name": "나가이 고",
+        "id": 93377,
+        "role": "comic_author"
+      }
+    ],
+    "file": {
+      "is_comic": true,
+      "is_comic_hd": true
+    },
+    "property": {
+      "is_novel": false,
+      "is_adult_only": true,
+      "is_somedeal": false,
+      "is_trial": false
+    },
+    "publisher": {
+      "id": 806,
+      "name": "AK 커뮤니케이션즈",
+      "cp_name": "에이케이 커뮤니케이션즈_E/P/J"
+    },
+    "clientBookFields": {
+      "isAvailableSelect": false,
+      "isAlreadyCheckedAtSelect": false
+    }
+  },
+  {
+    "id": "2189000166",
+    "title": {
+      "main": "그녀는 증인의 얼굴을 하고 있었다"
+    },
+    "categories": [
+      {
+        "id": 102,
+        "name": "영미소설",
+        "genre": "general",
+        "sub_genre": "general",
+        "is_series_category": false
+      }
+    ],
+    "price_info": {
+      "paper": {
+        "price": 15000
+      },
+      "buy": {
+        "regular_price": 11250,
+        "price": 10130,
+        "discount_percentage": 9.9555555555556
+      },
+      "rent": {
+        "regular_price": 1900,
+        "price": 1900,
+        "rent_days": 90,
+        "discount_percentage": 0
+      }
+    },
+    "authors": [
+      {
+        "name": "피터 스완슨",
+        "role": "author"
+      },
+      {
+        "name": "노진선",
+        "role": "translator"
+      }
+    ],
+    "file": {
+      "is_comic": false,
+      "is_comic_hd": false
+    },
+    "property": {
+      "is_novel": true,
+      "is_adult_only": false,
+      "is_somedeal": false,
+      "is_trial": false
+    },
+    "publisher": {
+      "id": 2189,
+      "name": "푸른숲",
+      "cp_name": "푸른숲_E/P"
+    },
+    "clientBookFields": {
+      "isAvailableSelect": false,
+      "isAlreadyCheckedAtSelect": false
+    }
+  }
+]
