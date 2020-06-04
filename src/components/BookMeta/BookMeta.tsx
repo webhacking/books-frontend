@@ -3,7 +3,6 @@ import { css, Interpolation } from '@emotion/core';
 import styled from '@emotion/styled';
 import { lineClamp } from 'src/styles';
 import * as BookApi from 'src/types/book';
-import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { orBelow } from 'src/utils/mediaQuery';
 import { slateGray60 } from '@ridi/colors';
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
@@ -103,7 +102,7 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
   } = props;
 
   const book = useBookSelector(bId);
-  if (book == null || book.is_deleted) {
+  if (book == null || book.isDeleted) {
     return null;
   }
   const { authors } = book;
@@ -111,7 +110,6 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
   const mergedAuthors = authors.filter(
     (author) => ['author', 'comic_author', 'story_writer', 'illustrator', 'original_author', 'editor'].includes(author.role),
   );
-  const title = computeBookTitle(book);
   return (
     <Container
       className={className}
@@ -121,7 +119,7 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
         <BookTitle
           css={[bookTitleStyle, lineClamp(titleLineClamp || 2)]}
         >
-          {title}
+          {book.title}
         </BookTitle>
       </a>
       <AuthorsWrapper>

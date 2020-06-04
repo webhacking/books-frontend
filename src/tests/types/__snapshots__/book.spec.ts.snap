@@ -1,0 +1,334 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createSimpleBookData should convert books: bId 111021598 1`] = `
+Object {
+  "authors": Array [
+    Object {
+      "id": 24125,
+      "name": "카마치 카즈마",
+      "role": "story_writer",
+    },
+    Object {
+      "id": 25475,
+      "name": "김소연",
+      "role": "translator",
+    },
+    Object {
+      "id": 44673,
+      "name": "하이무라 키요타카",
+      "role": "illustrator",
+    },
+  ],
+  "categories": Array [
+    Object {
+      "genre": "comic",
+      "id": 3001,
+      "is_series_category": true,
+      "name": "해외 라노벨",
+      "sub_genre": "lightnovel",
+    },
+  ],
+  "id": "111021598",
+  "isAdultOnly": false,
+  "isComic": false,
+  "isDeleted": undefined,
+  "isNovel": false,
+  "isSomedeal": false,
+  "isTrial": false,
+  "price": Object {
+    "buy": Object {
+      "discount_percentage": 0,
+      "price": 53900,
+      "regular_price": 53900,
+    },
+    "paper": Object {
+      "price": 0,
+    },
+  },
+  "publisher": Object {
+    "id": 111,
+    "name": "대원씨아이",
+  },
+  "series": undefined,
+  "setBookCount": 22,
+  "thumbnailId": "111021598",
+  "title": "[완결 세트] 어떤 마술의 금서목록",
+  "unit": undefined,
+}
+`;
+
+exports[`createSimpleBookData should convert books: bId 806003892 1`] = `
+Object {
+  "authors": Array [
+    Object {
+      "id": 93377,
+      "name": "나가이 고",
+      "role": "comic_author",
+    },
+  ],
+  "categories": Array [
+    Object {
+      "genre": "comic",
+      "id": 1527,
+      "is_series_category": true,
+      "name": "판타지/SF",
+      "sub_genre": "comic",
+    },
+  ],
+  "id": "806003892",
+  "isAdultOnly": true,
+  "isComic": true,
+  "isDeleted": undefined,
+  "isNovel": false,
+  "isSomedeal": false,
+  "isTrial": false,
+  "price": Object {
+    "buy": Object {
+      "discount_percentage": 0,
+      "price": 4500,
+      "regular_price": 4500,
+    },
+    "rent": Object {
+      "discount_percentage": 0,
+      "price": 1500,
+      "regular_price": 1500,
+      "rent_days": 3,
+    },
+  },
+  "publisher": Object {
+    "id": 806,
+    "name": "AK 커뮤니케이션즈",
+  },
+  "series": Object {
+    "freeBookCount": 0,
+    "isComplete": true,
+    "isSerial": false,
+    "isWaitFree": false,
+    "price": Object {
+      "buy": Object {
+        "discount_percentage": 0,
+        "free_book_count": 0,
+        "price": 22500,
+        "regular_price": 22500,
+        "total_book_count": 5,
+      },
+      "rent": Object {
+        "discount_percentage": 0,
+        "free_book_count": 0,
+        "regular_price": 7500,
+        "rent_days": 7,
+        "rent_price": 7500,
+        "total_book_count": 5,
+      },
+    },
+    "totalBookCount": 5,
+  },
+  "setBookCount": undefined,
+  "thumbnailId": "806003892",
+  "title": "데빌맨",
+  "unit": "권",
+}
+`;
+
+exports[`createSimpleBookData should convert books: bId 1561006302 1`] = `
+Object {
+  "authors": Array [
+    Object {
+      "id": 87286,
+      "name": "카즈키 미야",
+      "role": "story_writer",
+    },
+    Object {
+      "id": 83169,
+      "name": "김봄",
+      "role": "translator",
+    },
+    Object {
+      "id": 62846,
+      "name": "시이나 유",
+      "role": "illustrator",
+    },
+  ],
+  "categories": Array [
+    Object {
+      "genre": "comic",
+      "id": 3001,
+      "is_series_category": true,
+      "name": "해외 라노벨",
+      "sub_genre": "lightnovel",
+    },
+  ],
+  "id": "1561006302",
+  "isAdultOnly": false,
+  "isComic": false,
+  "isDeleted": undefined,
+  "isNovel": false,
+  "isSomedeal": false,
+  "isTrial": false,
+  "price": Object {
+    "buy": Object {
+      "discount_percentage": 10,
+      "price": 4500,
+      "regular_price": 5000,
+    },
+  },
+  "publisher": Object {
+    "id": 1561,
+    "name": "길찾기",
+  },
+  "series": Object {
+    "freeBookCount": 0,
+    "isComplete": false,
+    "isSerial": false,
+    "isWaitFree": false,
+    "price": Object {
+      "buy": Object {
+        "discount_percentage": 10,
+        "free_book_count": 0,
+        "price": 81450,
+        "regular_price": 90500,
+        "total_book_count": 18,
+      },
+    },
+    "totalBookCount": 18,
+  },
+  "setBookCount": undefined,
+  "thumbnailId": "1561006302",
+  "title": "책벌레의 하극상",
+  "unit": "권",
+}
+`;
+
+exports[`createSimpleBookData should convert books: bId 2189000166 1`] = `
+Object {
+  "authors": Array [
+    Object {
+      "name": "피터 스완슨",
+      "role": "author",
+    },
+    Object {
+      "name": "노진선",
+      "role": "translator",
+    },
+  ],
+  "categories": Array [
+    Object {
+      "genre": "general",
+      "id": 102,
+      "is_series_category": false,
+      "name": "영미소설",
+      "sub_genre": "general",
+    },
+  ],
+  "id": "2189000166",
+  "isAdultOnly": false,
+  "isComic": false,
+  "isDeleted": undefined,
+  "isNovel": true,
+  "isSomedeal": false,
+  "isTrial": false,
+  "price": Object {
+    "buy": Object {
+      "discount_percentage": 9.9555555555556,
+      "price": 10130,
+      "regular_price": 11250,
+    },
+    "paper": Object {
+      "price": 15000,
+    },
+    "rent": Object {
+      "discount_percentage": 0,
+      "price": 1900,
+      "regular_price": 1900,
+      "rent_days": 90,
+    },
+  },
+  "publisher": Object {
+    "id": 2189,
+    "name": "푸른숲",
+  },
+  "series": undefined,
+  "setBookCount": undefined,
+  "thumbnailId": "2189000166",
+  "title": "그녀는 증인의 얼굴을 하고 있었다",
+  "unit": undefined,
+}
+`;
+
+exports[`createSimpleBookData should convert books: bId 2945000001 1`] = `
+Object {
+  "authors": Array [
+    Object {
+      "id": 82899,
+      "name": "침파",
+      "role": "illustrator",
+    },
+    Object {
+      "id": 80930,
+      "name": "새벽유성",
+      "role": "original_author",
+    },
+  ],
+  "categories": Array [
+    Object {
+      "genre": "comic",
+      "id": 1521,
+      "is_series_category": true,
+      "name": "국내 순정",
+      "sub_genre": "comic",
+    },
+  ],
+  "id": "2945000001",
+  "isAdultOnly": false,
+  "isComic": true,
+  "isDeleted": undefined,
+  "isNovel": false,
+  "isSomedeal": false,
+  "isTrial": false,
+  "price": Object {
+    "buy": Object {
+      "discount_percentage": 0,
+      "price": 0,
+      "regular_price": 0,
+    },
+    "rent": Object {
+      "discount_percentage": 0,
+      "price": 0,
+      "regular_price": 0,
+      "rent_days": 3,
+    },
+  },
+  "publisher": Object {
+    "id": 2945,
+    "name": "레이코믹스",
+  },
+  "series": Object {
+    "freeBookCount": 5,
+    "isComplete": false,
+    "isSerial": true,
+    "isWaitFree": true,
+    "price": Object {
+      "buy": Object {
+        "discount_percentage": 0,
+        "free_book_count": 5,
+        "price": 31200,
+        "regular_price": 31200,
+        "total_book_count": 83,
+      },
+      "rent": Object {
+        "discount_percentage": 0,
+        "free_book_count": 5,
+        "regular_price": 15600,
+        "rent_days": 249,
+        "rent_price": 15600,
+        "total_book_count": 83,
+      },
+    },
+    "totalBookCount": 83,
+  },
+  "setBookCount": undefined,
+  "thumbnailId": "2945000083",
+  "title": "[웹툰] 황제의 약혼녀로 산다는 것은",
+  "unit": "화",
+}
+`;

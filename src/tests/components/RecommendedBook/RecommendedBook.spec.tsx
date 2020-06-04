@@ -24,21 +24,19 @@ const store = makeStore(
     books: {
       items: {
         '12345': {
-          b_id: '12345',
-          title: { main: '도서 표지' },
+          id: '12345',
+          title: '도서 표지',
           categories: [],
-          property: {},
           authors: [],
           clientBookFields: {
             isAvailableSelect: true,
           },
         },
         '12346': {
-          b_id: '12346',
-          title: {main: '도서 표지'},
-          categories: [{genre: 'comic'}],
-          property: {},
-          authors: [{id: 1, role: 'author', name: '작가'}],
+          id: '12346',
+          title: '도서 표지',
+          categories: [{ genre: 'comic' }],
+          authors: [{ id: 1, role: 'author', name: '작가' }],
           clientBookFields: {
             isAvailableSelect: true,
             isAlreadyCheckedAtSelect: true,

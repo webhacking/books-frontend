@@ -1,0 +1,97 @@
+{
+  "bookApiResult": {
+    "id": "111011502",
+    "thumbnailId": "111011502",
+    "title": "Âmona; The Child; And The Beast; And Others",
+    "authors": [
+      {
+        "name": "루이 벡",
+        "id": 26030,
+        "role": "author"
+      }
+    ],
+    "publisher": {
+      "id": 111,
+      "name": "Public Domain Books"
+    },
+    "categories": [
+      {
+        "id": 1400,
+        "name": "해외도서",
+        "genre": "general",
+        "sub_genre": "general",
+        "is_series_category": false
+      }
+    ],
+    "isTrial": false,
+    "isAdultOnly": false,
+    "isSomedeal": false,
+    "isComic": false,
+    "isNovel": false,
+    "price": {
+      "paper": {
+        "price": 0
+      },
+      "buy": {
+        "regular_price": 0,
+        "price": 0,
+        "discount_percentage": 0
+      }
+    }
+  },
+  "searchApiResult": {
+    "parent_category_name2": null,
+    "buyer_rating_score": 0,
+    "category_name": "해외도서",
+    "is_series_complete": false,
+    "is_serial": 0,
+    "translator": "",
+    "tags_info": [],
+    "series_prices_info": [],
+    "title": "Âmona; The Child; And The Beast; And Others",
+    "book_count": 1,
+    "web_title": "",
+    "price": 0,
+    "parent_category": 0,
+    "buyer_rating_count": 0,
+    "web_title_title": " Âmona; The Child; And The Beast; And Others",
+    "category2": 0,
+    "sub_title": "",
+    "prices_info": [
+      {
+        "price": 0,
+        "arg": 0,
+        "type": "normal"
+      }
+    ],
+    "author": "루이 벡",
+    "setbook_count": 1,
+    "age_limit": 0,
+    "is_wait_free": false,
+    "parent_category2": 0,
+    "is_rental": false,
+    "author2": "",
+    "opened_last_volume_id": "",
+    "b_id": "111011502",
+    "is_setbook": false,
+    "buyer_review_count": 0,
+    "parent_category_name": null,
+    "publisher": "Public Domain Books",
+    "category": 1400,
+    "authors_info": [
+      {
+        "role": "author",
+        "name": "루이 벡",
+        "author_id": 26030,
+        "alias_name": "Louis Becke",
+        "native_name": "Louis Becke",
+        "order": 0
+      }
+    ],
+    "desc": "<b>&lt;책소개&gt;</b>\n\n* 이 책은 Public Domain Books 입니다. Public Domain Books란 저작자 사후 일정 기간이 경과하여 저작권이 만료된 책을 의미합니다. 회원님께서는 인터넷 상의 기타 사이트를 통해서 이 책을 찾아보실 수도 있습니다.",
+    "_score": 544.4475,
+    "highlight": {
+      "web_title_title": " Âmona; <strong class=\"title_point\">The</strong> <strong class=\"title_point\">Child</strong>; <strong class=\"title_point\">And</strong> <strong class=\"title_point\">The</strong> <strong class=\"title_point\">Beast</strong>; <strong class=\"title_point\">And</strong> <strong class=\"title_point\">Others</strong>"
+    }
+  }
+}

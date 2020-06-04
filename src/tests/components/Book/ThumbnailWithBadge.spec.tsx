@@ -3,7 +3,7 @@ import { cleanup, render } from '@testing-library/react';
 import React from 'react';
 
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
-import mockBooks from './books.fixture.json';
+import mockBooks from './fixtures/simple-books.fixture.json';
 
 jest.mock('src/components/BookThumbnail/ThumbnailRenderer', () => ({
   __esModule: true,

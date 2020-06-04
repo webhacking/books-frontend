@@ -1,9 +1,7 @@
 import React from 'react';
 
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
-import { computeBookTitle } from 'src/utils/bookTitleGenerator';
 import { getMaxDiscountPercentage } from 'src/utils/common';
-import { getThumbnailIdFromBookDetail } from 'src/utils/books';
 
 import BookBadgeRenderer from '../Badge/BookBadgeRenderer';
 import FreeBookRenderer from '../Badge/FreeBookRenderer';
@@ -34,9 +32,9 @@ export default function ThumbnailWithBadge(props: Props) {
     onlyAdultBadge,
   } = props;
   const bookDetail = useBookSelector(bId);
-  const title = props.title || computeBookTitle(bookDetail);
-  const singlePriceInfo = bookDetail?.price_info;
-  const seriesPriceInfo = bookDetail?.series?.price_info;
+  const title = props.title || bookDetail?.title || '';
+  const singlePriceInfo = bookDetail?.price;
+  const seriesPriceInfo = bookDetail?.series?.price;
   return (
     <ThumbnailRenderer
       order={order}
@@ -44,8 +42,8 @@ export default function ThumbnailWithBadge(props: Props) {
       className={className}
       sizes={sizes}
       slug={slug}
-      thumbnailId={getThumbnailIdFromBookDetail(bookDetail) || bId}
-      isAdultOnly={bookDetail?.property.is_adult_only || false}
+      thumbnailId={bookDetail?.thumbnailId || bId}
+      isAdultOnly={bookDetail?.isAdultOnly || false}
       imgSize="large"
     >
       {!onlyAdultBadge && (
@@ -54,10 +52,10 @@ export default function ThumbnailWithBadge(props: Props) {
             <BookBadgeRenderer
               isRentable={
                 (!!singlePriceInfo?.rent
-                  || (!!seriesPriceInfo?.rent && bookDetail?.series?.property.is_serial))
+                  || (!!seriesPriceInfo?.rent && bookDetail?.series?.isSerial))
                 && ['general', 'romance', 'bl'].includes(genre)
               }
-              isWaitFree={bookDetail?.series?.property.is_wait_free}
+              isWaitFree={bookDetail?.series?.isWaitFree}
               discountPercentage={getMaxDiscountPercentage(bookDetail)}
             />
           </BadgeContainer>
@@ -67,14 +65,14 @@ export default function ThumbnailWithBadge(props: Props) {
               || seriesPriceInfo?.buy?.free_book_count
               || 0
             }
-            unit={bookDetail?.series?.property.unit || '권'}
+            unit={bookDetail?.unit || '권'}
           />
           <SetBookRenderer
-            setBookCount={bookDetail?.setbook?.member_books_count}
+            setBookCount={bookDetail?.setBookCount}
           />
         </>
       )}
-      {bookDetail?.property?.is_adult_only && <AdultBadge />}
+      {bookDetail?.isAdultOnly && <AdultBadge />}
     </ThumbnailRenderer>
   );
 }

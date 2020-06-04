@@ -7,17 +7,10 @@ import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper'
 import BookMeta from 'src/components/BookMeta';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
-import BookBadgeRenderer from 'src/components/Badge/BookBadgeRenderer';
-import FreeBookRenderer from 'src/components/Badge/FreeBookRenderer';
-import ThumbnailRenderer from 'src/components/BookThumbnail/ThumbnailRenderer';
 import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
 import { Tracker } from '@ridi/event-tracker';
-import { getMaxDiscountPercentage } from 'src/utils/common';
-import { AdultBadge } from 'src/components/Badge/AdultBadge';
 import styled from '@emotion/styled';
-import { BadgeContainer } from 'src/components/Badge/BadgeContainer';
-import { computeBookTitle } from 'src/utils/bookTitleGenerator';
-import { getThumbnailIdFromBookDetail } from 'src/utils/books';
+import ThumbnailWithBadge from '../Book/ThumbnailWithBadge';
 
 interface MultipleLineBooks {
   items: BookItem[];
@@ -149,57 +142,34 @@ const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((pr
     item, genre, slug, order, tracker,
   } = props;
   const book = useBookSelector(item.b_id);
-
   const trackerEvent = useCallback(() => {
     sendClickEvent(tracker, item, slug, order);
   }, [tracker, item, slug, order]);
 
-  if (book == null || book.is_deleted) {
+  if (book == null || book.isDeleted) {
     return null;
   }
 
-  const title = computeBookTitle(book);
   return (
     <Item>
       <ThumbnailWrapper lgWidth={120} css={thumbnailOverrideStyle}>
         <ItemAnchor onClick={trackerEvent} href={`/books/${item.b_id}`}>
-          <ThumbnailRenderer
+          <ThumbnailWithBadge
+            bId={item.b_id}
             order={order}
-            className={slug}
             slug={slug}
             css={bookWidthStyles}
             sizes="(max-width: 999px) 120px, 140px"
-            thumbnailId={getThumbnailIdFromBookDetail(book) || item.b_id}
-            isAdultOnly={book?.property.is_adult_only || false}
-            imgSize="large"
-            title={title}
-          >
-            <BadgeContainer>
-              <BookBadgeRenderer
-                isWaitFree={book?.series?.property.is_wait_free}
-                discountPercentage={getMaxDiscountPercentage(book)}
-              />
-            </BadgeContainer>
-            <FreeBookRenderer
-              freeBookCount={
-                book?.series?.price_info?.rent?.free_book_count
-                || book?.series?.price_info?.buy?.free_book_count
-                || 0
-              }
-              unit={book?.series?.property.unit || '권'}
-            />
-            {book?.property?.is_adult_only && <AdultBadge />}
-          </ThumbnailRenderer>
+            genre=""
+          />
         </ItemAnchor>
       </ThumbnailWrapper>
-      {book && (
-        <BookMeta
-          bId={item.b_id}
-          showTag={['bl', 'bl-serial'].includes(genre)}
-          css={bookMetaWrapperStyle}
-          isAIRecommendation={false}
-        />
-      )}
+      <BookMeta
+        bId={item.b_id}
+        showTag={['bl', 'bl-serial'].includes(genre)}
+        css={bookMetaWrapperStyle}
+        isAIRecommendation={false}
+      />
     </Item>
   );
 });

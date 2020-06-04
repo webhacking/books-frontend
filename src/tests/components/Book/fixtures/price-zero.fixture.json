@@ -1,0 +1,126 @@
+{
+  "bookApiResult": {
+    "id": "425075229",
+    "thumbnailId": "425075229",
+    "title": "[연재] 전지적 독자 시점",
+    "unit": "화",
+    "authors": [
+      {
+        "name": "싱숑",
+        "id": 72276,
+        "role": "author"
+      }
+    ],
+    "publisher": {
+      "id": 425,
+      "name": "문피아"
+    },
+    "categories": [
+      {
+        "id": 1753,
+        "name": "현대 판타지",
+        "genre": "fantasy",
+        "sub_genre": "fantasy_serial",
+        "is_series_category": true
+      }
+    ],
+    "isTrial": false,
+    "isAdultOnly": false,
+    "isSomedeal": false,
+    "isComic": false,
+    "isNovel": false,
+    "price": {
+      "buy": {
+        "regular_price": 0,
+        "price": 0,
+        "discount_percentage": 0
+      }
+    },
+    "series": {
+      "isSerial": true,
+      "isComplete": true,
+      "isWaitFree": false,
+      "totalBookCount": 551,
+      "freeBookCount": 25,
+      "price": {
+        "buy": {
+          "total_book_count": 551,
+          "free_book_count": 25,
+          "regular_price": 52600,
+          "price": 52600,
+          "discount_percentage": 0
+        }
+      }
+    }
+  },
+  "searchApiResult": {
+    "parent_category_name2": null,
+    "buyer_rating_score": 4.8,
+    "category_name": "현대 판타지",
+    "is_series_complete": true,
+    "is_serial": 1,
+    "translator": "",
+    "tags_info": [],
+    "series_prices_info": [
+      {
+        "series_arg": 0,
+        "total_regular_price": 52600,
+        "total_price": 52600,
+        "type": "normal",
+        "free_book_count": 25,
+        "series_id": "425075229",
+        "regular_price": 0,
+        "max_price": 100,
+        "book_count": 551,
+        "min_price": 0,
+        "arg": 0,
+        "min_nonzero_price": 100,
+        "series_discount_rate": 0
+      }
+    ],
+    "title": "전지적 독자 시점",
+    "book_count": 551,
+    "web_title": "[연재]",
+    "price": 0,
+    "parent_category": 1750,
+    "buyer_rating_count": 11175,
+    "web_title_title": "[연재] 전지적 독자 시점",
+    "category2": 0,
+    "sub_title": "",
+    "prices_info": [
+      {
+        "price": 0,
+        "arg": 0,
+        "type": "normal"
+      }
+    ],
+    "author": "싱숑",
+    "setbook_count": 1,
+    "age_limit": 0,
+    "is_wait_free": false,
+    "parent_category2": 0,
+    "is_rental": false,
+    "author2": "",
+    "opened_last_volume_id": "425148663",
+    "b_id": "425075229",
+    "is_setbook": false,
+    "buyer_review_count": 2514,
+    "parent_category_name": "판타지 연재",
+    "publisher": "문피아",
+    "category": 1753,
+    "authors_info": [
+      {
+        "role": "author",
+        "name": "싱숑",
+        "author_id": 72276,
+        "native_name": "",
+        "order": 0
+      }
+    ],
+    "desc": "<b>&lt;책소개&gt;</b>\n\n오직 나만이, 이 세계의 결말을 알고 있다.",
+    "_score": 2177.294,
+    "highlight": {
+      "web_title_title": "[연재] <strong class=\"title_point\">전지</strong><strong class=\"title_point\">적</strong> 독자 시점"
+    }
+  }
+}

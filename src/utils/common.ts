@@ -86,10 +86,10 @@ export const getMaxDiscountPercentage = (book: BookApi.ClientSimpleBook | null) 
   if (!book) {
     return 0;
   }
-  const singleBuyDiscountPercentage = book.price_info?.buy?.discount_percentage || 0;
-  const singleRentDiscountPercentage = book.price_info?.rent?.discount_percentage || 0;
-  const seriesBuyDiscountPercentage = book.series?.property.is_serial ? book.series?.price_info?.buy?.discount_percentage || 0 : 0;
-  const seriesRentDiscountPercentage = book.series?.property.is_serial ? book.series?.price_info?.rent?.discount_percentage || 0 : 0;
+  const singleBuyDiscountPercentage = book.price?.buy?.discount_percentage || 0;
+  const singleRentDiscountPercentage = book.price?.rent?.discount_percentage || 0;
+  const seriesBuyDiscountPercentage = book.series?.isSerial ? book.series?.price?.buy?.discount_percentage || 0 : 0;
+  const seriesRentDiscountPercentage = book.series?.isSerial ? book.series?.price?.rent?.discount_percentage || 0 : 0;
 
   const excludeMax = [
     singleBuyDiscountPercentage,

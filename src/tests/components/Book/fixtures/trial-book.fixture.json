@@ -1,0 +1,150 @@
+{
+  "bookApiResult": {
+    "id": "1508001144",
+    "thumbnailId": "1508001144",
+    "title": "삼십육계",
+    "unit": "권",
+    "authors": [
+      {
+        "name": "마서휘",
+        "id": 1741,
+        "role": "author"
+      },
+      {
+        "name": "김찬연",
+        "id": 1733,
+        "role": "translator"
+      }
+    ],
+    "publisher": {
+      "id": 1508,
+      "name": "반디출판사"
+    },
+    "categories": [
+      {
+        "id": 117,
+        "name": "중국 소설",
+        "genre": "general",
+        "sub_genre": "general",
+        "is_series_category": false
+      },
+      {
+        "id": 119,
+        "name": "해외 역사소설",
+        "genre": "general",
+        "sub_genre": "general",
+        "is_series_category": false
+      }
+    ],
+    "isTrial": true,
+    "isAdultOnly": false,
+    "isSomedeal": false,
+    "isComic": false,
+    "isNovel": true,
+    "price": {
+      "paper": {
+        "price": 0
+      },
+      "buy": {
+        "regular_price": 0,
+        "price": 0,
+        "discount_percentage": 0
+      }
+    },
+    "series": {
+      "isSerial": false,
+      "isComplete": true,
+      "isWaitFree": false,
+      "totalBookCount": 36,
+      "freeBookCount": 0,
+      "price": {
+        "buy": {
+          "total_book_count": 36,
+          "free_book_count": 0,
+          "regular_price": 144000,
+          "price": 144000,
+          "discount_percentage": 0
+        }
+      }
+    }
+  },
+  "searchApiResult": {
+    "parent_category_name2": "소설",
+    "buyer_rating_score": 0,
+    "category_name": "중국 소설",
+    "is_series_complete": true,
+    "is_serial": 0,
+    "events_info": [],
+    "translator": "김찬연",
+    "category_name2": "해외 역사소설",
+    "tags_info": [],
+    "series_prices_info": [
+      {
+        "series_arg": 0,
+        "total_regular_price": 144000,
+        "total_price": 144000,
+        "type": "normal",
+        "free_book_count": 1,
+        "series_id": "1508004029",
+        "regular_price": 0,
+        "max_price": 4000,
+        "book_count": 37,
+        "min_price": 0,
+        "arg": 0,
+        "min_nonzero_price": 4000,
+        "series_discount_rate": 0
+      }
+    ],
+    "title": "[체험판] 삼십육계 1 만천과해",
+    "book_count": 37,
+    "web_title": "",
+    "price": 0,
+    "parent_category": 100,
+    "buyer_rating_count": 0,
+    "web_title_title": " [체험판] 삼십육계 1 만천과해",
+    "category2": 119,
+    "sub_title": "1부 승전계",
+    "prices_info": [
+      {
+        "price": 0,
+        "arg": 0,
+        "type": "normal"
+      }
+    ],
+    "author": "마서휘",
+    "setbook_count": 1,
+    "age_limit": 0,
+    "is_wait_free": false,
+    "parent_category2": 100,
+    "is_rental": false,
+    "author2": ", 마서휘",
+    "opened_last_volume_id": "1508001144",
+    "b_id": "1508001144",
+    "is_setbook": false,
+    "buyer_review_count": 0,
+    "parent_category_name": "소설",
+    "publisher": "반디출판사",
+    "category": 117,
+    "authors_info": [
+      {
+        "role": "translator",
+        "name": "김찬연",
+        "author_id": 1733,
+        "native_name": "",
+        "order": 0
+      },
+      {
+        "role": "author",
+        "name": "마서휘",
+        "author_id": 1741,
+        "native_name": "馬書輝",
+        "order": 1
+      }
+    ],
+    "desc": "<b>&lt;책소개&gt;</b>\n\n대표적인 중국 역사와 사건 속에서 뽑은 36가지 책략을, 역사소설의 형식으로 담아낸 소설 『삼십육계』제1부 승전계 \"만천과해\"편. 등장인물들은 때와 세를 살피고 지피지기하여 적합한 생존전략을 찾아낸 임기응변의 지략가들이며, 삼십육계를 이루는 일계 일계는 모두 하나의 방향을 제시하고 있는 일종의 전략지도이다.\r\n\r\n작가는 수많은 인물들의 서로 다른 마음의 소리와 가치관과 행위를 살피고, 각 인물들의 행위에 대한 진정한 주관적 원인과 객관적 의거가 무엇이었는가를 보여준다. 계모의 생성, 계를 꾸미는 자의 기도와 결단, 계에 빠지는 자의",
+    "_score": 2387.4387,
+    "highlight": {
+      "web_title_title": " [<strong class=\"title_point\">체험</strong><strong class=\"title_point\">판</strong>] 삼십육계 1 만천과해"
+    }
+  }
+}

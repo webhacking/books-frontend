@@ -97,8 +97,8 @@ export default function PriceInfo(props: {
     return null;
   }
   const {
-    property: { is_trial },
-    price_info,
+    isTrial,
+    price: price_info,
   } = bookApiResult;
   const { price, series_prices_info } = searchApiResult;
 
@@ -107,7 +107,7 @@ export default function PriceInfo(props: {
     seriesPriceInfo[info.type] = info;
   });
   // 체험판 부터 거른다.
-  if (is_trial) {
+  if (isTrial) {
     return <PriceLabel title="구매" price={0} discount={0} regularPrice={0} />;
   }
   // 진정한 무료 책

@@ -36,14 +36,11 @@ export default function BookMeta(props: BookMetaProps) {
   } = props;
 
   const book = useBookSelector(bId);
-  if (book == null || book.is_deleted) {
+  if (book == null || book.isDeleted) {
     return null;
   }
 
-  const {
-    property: { is_somedeal, is_novel },
-    file: { is_comic, is_comic_hd },
-  } = book;
+  const { isSomedeal, isComic, isNovel } = book;
   return (
     <BookMetaBase
       bId={bId}
@@ -59,11 +56,11 @@ export default function BookMeta(props: BookMetaProps) {
           />
         </span>
       )}
-      {(showTag || (showSomeDeal && is_somedeal)) && (
+      {(showTag || (showSomeDeal && isSomedeal)) && (
         <TagWrapper>
-          {showTag && (is_comic_hd || is_comic) && <Tag.Comic />}
-          {showTag && is_novel && <Tag.Novel />}
-          {showSomeDeal && is_somedeal && <Tag.SomeDeal />}
+          {showTag && isComic && <Tag.Comic />}
+          {showTag && isNovel && <Tag.Novel />}
+          {showSomeDeal && isSomedeal && <Tag.SomeDeal />}
         </TagWrapper>
       )}
     </BookMetaBase>

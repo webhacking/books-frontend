@@ -1,0 +1,154 @@
+{
+  "bookApiResult": {
+    "id": "1962071472",
+    "thumbnailId": "1962071472",
+    "title": "황제의 딸",
+    "unit": "권",
+    "authors": [
+      {
+        "name": "경요",
+        "role": "author",
+        "id": 1
+      }
+    ],
+    "publisher": {
+      "id": 1962,
+      "name": "도서출판 홍"
+    },
+    "categories": [
+      {
+        "id": 117,
+        "name": "중국 소설",
+        "genre": "general",
+        "sub_genre": "general",
+        "is_series_category": false
+      }
+    ],
+    "isTrial": false,
+    "isAdultOnly": false,
+    "isSomedeal": false,
+    "isComic": false,
+    "isNovel": true,
+    "price": {
+      "buy": {
+        "regular_price": 12800,
+        "price": 12800,
+        "discount_percentage": 0
+      },
+      "rent": {
+        "regular_price": 1900,
+        "price": 1900,
+        "rent_days": 90,
+        "discount_percentage": 0
+      }
+    },
+    "series": {
+      "isSerial": false,
+      "isComplete": false,
+      "isWaitFree": false,
+      "totalBookCount": 2,
+      "freeBookCount": 0,
+      "price": {
+        "buy": {
+          "total_book_count": 2,
+          "free_book_count": 0,
+          "regular_price": 25600,
+          "price": 25600,
+          "discount_percentage": 0
+        },
+        "rent": {
+          "total_book_count": 2,
+          "free_book_count": 0,
+          "regular_price": 3800,
+          "rent_price": 3800,
+          "discount_percentage": 0,
+          "rent_days": 180
+        }
+      }
+    }
+  },
+  "searchApiResult": {
+    "parent_category_name2": null,
+    "buyer_rating_score": 4.4,
+    "category_name": "중국 소설",
+    "is_series_complete": false,
+    "is_serial": 0,
+    "events_info": [],
+    "translator": "",
+    "category_name2": null,
+    "tags_info": [],
+    "series_prices_info": [
+      {
+        "series_arg": 0,
+        "total_regular_price": 25600,
+        "total_price": 25600,
+        "type": "normal",
+        "free_book_count": 0,
+        "series_id": "1962070867",
+        "regular_price": 0,
+        "max_price": 12800,
+        "book_count": 2,
+        "min_price": 12800,
+        "arg": 0,
+        "min_nonzero_price": 12800,
+        "series_discount_rate": 0
+      },
+      {
+        "series_arg": 90,
+        "total_regular_price": 25600,
+        "total_price": 3800,
+        "type": "rent",
+        "free_book_count": 0,
+        "series_id": "1962070867",
+        "regular_price": 0,
+        "max_price": 1900,
+        "book_count": 2,
+        "min_price": 1900,
+        "arg": 90,
+        "min_nonzero_price": 1900,
+        "series_discount_rate": 0
+      }
+    ],
+    "title": "황제의 딸 : 뒤바뀐 운명 2",
+    "book_count": 2,
+    "web_title": "",
+    "price": 12800,
+    "parent_category": 100,
+    "buyer_rating_count": 5,
+    "web_title_title": " 황제의 딸 : 뒤바뀐 운명 2",
+    "category2": 0,
+    "sub_title": "",
+    "prices_info": [
+      {
+        "price": 12800,
+        "arg": 0,
+        "type": "normal"
+      },
+      {
+        "price": 1900,
+        "arg": 90,
+        "type": "rent"
+      }
+    ],
+    "author": "경요",
+    "setbook_count": 1,
+    "age_limit": 0,
+    "is_wait_free": false,
+    "parent_category2": 0,
+    "is_rental": true,
+    "author2": "",
+    "opened_last_volume_id": "1962071472",
+    "b_id": "1962071472",
+    "is_setbook": false,
+    "buyer_review_count": 0,
+    "parent_category_name": "소설",
+    "publisher": "도서출판 홍",
+    "category": 117,
+    "authors_info": [],
+    "desc": "<b>&lt;책소개&gt;</b>\n\n전설의 중국드라마 &lt;환주격격&gt; 국내 최초 정식 한국어판 소설\r\n\r\n따뜻한 마음을 가지고 의리로 똘똘 뭉친 청나라 청춘 남녀\r\n그들의 사랑과 우정, 가족애를 그려낸 대서사!\r\n\r\n● 중국 방영 당시 최고 시청률 62.8% 돌파\r\n중국 드라마 역사상 전무후무한 기록\r\n\r\n● 방영 후 중화권을 넘어 전 세계를 휩쓸었던 드라마\r\n\r\n● 중국의 진정한 국민드라마\r\n중국에선 여름방학 때마다 재방송, 재방송 시청률도 1위\r\n\r\n● 한 시대를 대표하는 하나의 문화 콘텐츠.\r\n'환주격격' 방영 당시를 배경으로 하는\r\n중국드라마 &lt;치",
+    "_score": 1141.903,
+    "highlight": {
+      "web_title_title": " <strong class=\"title_point\">황제</strong><strong class=\"title_point\">의</strong> <strong class=\"title_point\">딸</strong> : 뒤바뀐 운명 2"
+    }
+  }
+}
