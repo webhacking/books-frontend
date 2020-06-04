@@ -7,12 +7,22 @@
         "https://ridibooks.com/comics",
         "https://ridibooks.com/romance",
         "https://ridibooks.com/bl",
-        "https://ridibooks.com/bl-serial"
+        "https://ridibooks.com/bl-serial",
+        "https://ridibooks.com/search?q=%EC%95%84"
       ]
     },
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
+        "image-size-responsive": [
+          "warn", {}
+        ],
+        "installable-manifest": [
+          "off", {}
+        ],
+        "unused-javascript": [
+          "warn", {}
+        ],
         "uses-passive-event-listeners": [
           "warn", {}
         ],
@@ -69,7 +79,7 @@
           {}
         ],
         "service-worker": [
-          "warn",{}
+          "off",{}
         ],
         "first-contentful-paint": [
           "warn",
