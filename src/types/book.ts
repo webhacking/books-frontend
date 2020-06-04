@@ -1,5 +1,8 @@
 import * as R from 'runtypes';
 
+import { getThumbnailIdFromBookDetail } from 'src/utils/books';
+import { computeBookTitle } from 'src/utils/bookTitleGenerator';
+
 const RCategory = R.Record({
   id: R.Number,
   name: R.String,
@@ -78,6 +81,15 @@ const RAuthor = R.Record({
 );
 export type Author = R.Static<typeof RAuthor>;
 
+export const RPublisher = R.Record({
+  name: R.String,
+  cp_name: R.String,
+}).And(
+  R.Partial({
+    id: R.Number,
+  }),
+);
+
 export const RBookData = R.Record({
   id: R.String,
   title: R.Record({
@@ -116,14 +128,7 @@ export const RBookData = R.Record({
       review_display_id: R.String,
     }),
   ),
-  publisher: R.Record({
-    name: R.String,
-    cp_name: R.String,
-  }).And(
-    R.Partial({
-      id: R.Number,
-    }),
-  ),
+  publisher: RPublisher,
 }).And(
   R.Partial({
     series: RSeries,
@@ -155,10 +160,68 @@ export interface BookDesc {
   intro_image_url?: string;
 }
 
-export type ClientBook = Book & { clientBookFields: ClientBookFields };
+export interface SimpleBook {
+  id: string;
+  isDeleted?: boolean;
+  thumbnailId: string;
+  title: string;
+  unit?: string;
+  authors: Author[];
+  categories: R.Static<typeof RCategory>[];
+  publisher: Pick<R.Static<typeof RPublisher>, 'id' | 'name'>;
+  isTrial: boolean;
+  isAdultOnly: boolean;
+  isSomedeal: boolean;
+  isComic: boolean;
+  isNovel: boolean;
+  price: R.Static<typeof RPriceInfo>;
+  series?: {
+    isSerial: boolean;
+    isComplete: boolean;
+    isWaitFree: boolean;
+    totalBookCount: number;
+    freeBookCount: number;
+    price?: R.Static<typeof RSeriesPriceInfo>;
+  };
+  setBookCount?: number;
+}
 
-type SimpleFile = Pick<ClientBook['file'], 'is_comic' | 'is_comic_hd'>
-type SimpleProperty = Pick<ClientBook['property'], 'is_trial' | 'is_adult_only' | 'is_novel' | 'is_somedeal'>
-type SimplePublisher = Pick<ClientBook['publisher'], 'id' | 'name'>;
-export type SimpleBook = Pick<ClientBook, 'id' | 'title' | 'authors' | 'categories' | 'price_info' | 'series' | 'clientBookFields' | 'is_deleted' | 'setbook'>;
-export type ClientSimpleBook = SimpleBook & { file: SimpleFile; property: SimpleProperty; publisher: SimplePublisher };
+export type ClientSimpleBook = SimpleBook & { clientBookFields: ClientBookFields };
+
+export function createSimpleBookData(book: Book): SimpleBook {
+  const thumbnailId = getThumbnailIdFromBookDetail(book);
+  const title = computeBookTitle(book);
+  const unit = book.series?.property.unit ?? undefined;
+  let series;
+  if (book.series) {
+    series = {
+      isSerial: book.series.property.is_serial,
+      isComplete: book.series.property.is_completed,
+      isWaitFree: book.series.property.is_wait_free,
+      totalBookCount: book.series.price_info?.buy?.total_book_count || 1,
+      freeBookCount: book.series.price_info?.buy?.free_book_count || 0,
+      price: book.series.price_info,
+    };
+  }
+  return {
+    id: book.id,
+    isDeleted: book.is_deleted,
+    thumbnailId,
+    title,
+    unit,
+    authors: book.authors,
+    publisher: {
+      id: book.publisher.id,
+      name: book.publisher.name,
+    },
+    categories: book.categories,
+    isTrial: book.property.is_trial,
+    isAdultOnly: book.property.is_adult_only,
+    isSomedeal: book.property.is_somedeal,
+    isComic: book.file.is_comic || book.file.is_comic_hd,
+    isNovel: book.property.is_novel,
+    price: book.price_info,
+    series,
+    setBookCount: book.setbook?.member_books_count,
+  };
+}

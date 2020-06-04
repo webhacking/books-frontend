@@ -223,7 +223,7 @@ export default function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   if (book === null) {
     return <Skeleton />;
   }
-  if (book.is_deleted) {
+  if (book.isDeleted) {
     return null;
   }
   const categoryInfo: CategoryNames = {
@@ -324,9 +324,9 @@ export default function SearchLandscapeBook(props: SearchLandscapeBookProps) {
           {item.book_count > 1 && book.categories[0].is_series_category && (
             <SearchBookMetaItem>
               <SearchBookMetaField type="normal">
-                {`총 ${book.series?.price_info?.buy?.total_book_count || item.book_count}${book.series?.property.unit || '권'}`}
+                {`총 ${book.series?.totalBookCount || item.book_count}${book.unit || '권'}`}
               </SearchBookMetaField>
-              {item.series_prices_info.length > 0 && book.series?.property.is_serial_complete && (
+              {item.series_prices_info.length > 0 && book.series?.isComplete && (
                 <SeriesCompleted>완결</SeriesCompleted>
               )}
             </SearchBookMetaItem>

@@ -34,10 +34,10 @@ export function constructSearchDesc(description: BookApi.BookDesc): string {
 }
 
 /* 미완결 된 Series 도서중 공개(opened) 된 마지막 회차의 표지 ID를 구함 */
-export function getThumbnailIdFromBookDetail(book: BookApi.ClientSimpleBook | null) {
-  if (!book) {
-    return null;
-  }
+// 시리즈 도서 썸네일 확인 및 지정
+// https://rididev.slack.com/archives/CE55MTQH2/p1574134223004000
+// is_serial_complete 는 바라보지 않아도 됨
+export function getThumbnailIdFromBookDetail(book: BookApi.Book) {
   // book.series.property.is_serial 이 아니라 장르를 체크해서 마지막 볼륨 bId 를 넘긴다.
   const categoryName = book.categories[0]?.genre || 'general';
   if (book.series) {

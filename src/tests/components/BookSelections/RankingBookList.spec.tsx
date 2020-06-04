@@ -17,19 +17,11 @@ const store = makeStore(
       items: {
         '3306000063': {
           id: '3306000063',
-          title: {
-            main: '도서 표지',
-          },
-          property: {
-            is_adult_only: true,
-            is_somedeal: true,
-            is_novel: false,
-
-          },
-          file: {
-            is_comic: true,
-            is_comic_hd: true,
-          },
+          title: '도서 표지',
+          isAdultOnly: true,
+          isSomedeal: true,
+          isNovel: false,
+          isComic: true,
           categories: [{genre: 'bl'}],
           authors: [{name: 'Ridi', id: '1', role: 'author'}]
         },
