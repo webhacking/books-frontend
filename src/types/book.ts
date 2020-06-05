@@ -181,7 +181,7 @@ export interface SimpleBook {
     isWaitFree: boolean;
     totalBookCount: number;
     freeBookCount: number;
-    price?: R.Static<typeof RSeriesPriceInfo>;
+    price?: Omit<R.Static<typeof RPriceInfo>, 'paper'>;
   };
   setBookCount?: number;
 }
@@ -194,13 +194,27 @@ export function createSimpleBookData(book: Book): SimpleBook {
   const unit = book.series?.property.unit ?? undefined;
   let series;
   if (book.series) {
+    const buy = book.series.price_info?.buy;
+    const rent = book.series.price_info?.rent;
     series = {
       isSerial: book.series.property.is_serial,
       isComplete: book.series.property.is_completed,
       isWaitFree: book.series.property.is_wait_free,
-      totalBookCount: book.series.price_info?.buy?.total_book_count || 1,
-      freeBookCount: book.series.price_info?.buy?.free_book_count || 0,
-      price: book.series.price_info,
+      totalBookCount: buy?.total_book_count || 1,
+      freeBookCount: rent?.free_book_count || buy?.free_book_count || 0,
+      price: (buy || rent) && {
+        buy: buy && {
+          regular_price: buy.regular_price,
+          price: buy.price,
+          discount_percentage: buy.discount_percentage,
+        },
+        rent: rent && {
+          regular_price: rent.regular_price,
+          price: rent.rent_price,
+          discount_percentage: rent.discount_percentage,
+          rent_days: rent.rent_days,
+        },
+      },
     };
   }
   return {
