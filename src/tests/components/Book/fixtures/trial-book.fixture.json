@@ -59,8 +59,6 @@
       "freeBookCount": 0,
       "price": {
         "buy": {
-          "total_book_count": 36,
-          "free_book_count": 0,
           "regular_price": 144000,
           "price": 144000,
           "discount_percentage": 0

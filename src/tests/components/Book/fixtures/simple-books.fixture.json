@@ -105,8 +105,6 @@
       "freeBookCount": 0,
       "price": {
         "buy": {
-          "total_book_count": 18,
-          "free_book_count": 0,
           "regular_price": 90500,
           "price": 81450,
           "discount_percentage": 10
@@ -170,17 +168,13 @@
       "freeBookCount": 5,
       "price": {
         "buy": {
-          "total_book_count": 83,
-          "free_book_count": 5,
           "regular_price": 31200,
           "price": 31200,
           "discount_percentage": 0
         },
         "rent": {
-          "total_book_count": 83,
-          "free_book_count": 5,
           "regular_price": 15600,
-          "rent_price": 15600,
+          "price": 15600,
           "discount_percentage": 0,
           "rent_days": 249
         }
@@ -238,17 +232,13 @@
       "freeBookCount": 0,
       "price": {
         "buy": {
-          "total_book_count": 5,
-          "free_book_count": 0,
           "regular_price": 22500,
           "price": 22500,
           "discount_percentage": 0
         },
         "rent": {
-          "total_book_count": 5,
-          "free_book_count": 0,
           "regular_price": 7500,
-          "rent_price": 7500,
+          "price": 7500,
           "discount_percentage": 0,
           "rent_days": 7
         }

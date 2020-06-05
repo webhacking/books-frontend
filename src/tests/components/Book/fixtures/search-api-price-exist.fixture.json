@@ -50,17 +50,13 @@
       "freeBookCount": 0,
       "price": {
         "buy": {
-          "total_book_count": 2,
-          "free_book_count": 0,
           "regular_price": 25600,
           "price": 25600,
           "discount_percentage": 0
         },
         "rent": {
-          "total_book_count": 2,
-          "free_book_count": 0,
           "regular_price": 3800,
-          "rent_price": 3800,
+          "price": 3800,
           "discount_percentage": 0,
           "rent_days": 180
         }

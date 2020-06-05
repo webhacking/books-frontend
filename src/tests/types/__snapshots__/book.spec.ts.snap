@@ -107,18 +107,14 @@ Object {
     "price": Object {
       "buy": Object {
         "discount_percentage": 0,
-        "free_book_count": 0,
         "price": 22500,
         "regular_price": 22500,
-        "total_book_count": 5,
       },
       "rent": Object {
         "discount_percentage": 0,
-        "free_book_count": 0,
+        "price": 7500,
         "regular_price": 7500,
         "rent_days": 7,
-        "rent_price": 7500,
-        "total_book_count": 5,
       },
     },
     "totalBookCount": 5,
@@ -184,11 +180,10 @@ Object {
     "price": Object {
       "buy": Object {
         "discount_percentage": 10,
-        "free_book_count": 0,
         "price": 81450,
         "regular_price": 90500,
-        "total_book_count": 18,
       },
+      "rent": undefined,
     },
     "totalBookCount": 18,
   },
@@ -310,18 +305,14 @@ Object {
     "price": Object {
       "buy": Object {
         "discount_percentage": 0,
-        "free_book_count": 5,
         "price": 31200,
         "regular_price": 31200,
-        "total_book_count": 83,
       },
       "rent": Object {
         "discount_percentage": 0,
-        "free_book_count": 5,
+        "price": 15600,
         "regular_price": 15600,
         "rent_days": 249,
-        "rent_price": 15600,
-        "total_book_count": 83,
       },
     },
     "totalBookCount": 83,
