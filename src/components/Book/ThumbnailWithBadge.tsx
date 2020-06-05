@@ -60,11 +60,7 @@ export default function ThumbnailWithBadge(props: Props) {
             />
           </BadgeContainer>
           <FreeBookRenderer
-            freeBookCount={
-              seriesPriceInfo?.rent?.free_book_count
-              || seriesPriceInfo?.buy?.free_book_count
-              || 0
-            }
+            freeBookCount={bookDetail?.series?.freeBookCount || 0}
             unit={bookDetail?.unit || '권'}
           />
           <SetBookRenderer
