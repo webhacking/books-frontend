@@ -23,10 +23,11 @@ const globalAxiosConfig = () => {
 globalAxiosConfig();
 
 export function wrapCatchCancel<F extends Function>(f: F): F {
-  return (function (...args: any[]) {
+  return (async function (...args: any[]) {
     try {
       // @ts-ignore
-      return f.apply(this, args);
+      const ret = await f.apply(this, args);
+      return ret;
     } catch (err) {
       if (axios.isCancel(err)) {
         // 취소되었다면 재시도하지 않음

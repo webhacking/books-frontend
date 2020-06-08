@@ -193,6 +193,9 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
           setEventStatus(result.data);
         }
       } catch (error) {
+        if (error.message === 'Cancel') {
+          return;
+        }
         sentry.captureException(error);
       }
     };
