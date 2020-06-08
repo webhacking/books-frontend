@@ -26,28 +26,24 @@ export default class StoreDocument extends Document<StoreDocumentProps> {
 
   public static async getInitialProps(context: DocumentContext) {
     const originalRenderPage = context.renderPage;
-
-    context.renderPage = (nonce) => originalRenderPage({
-      // useful for wrapping the whole react tree
-      // @ts-ignore
-      enhanceApp: (App) => (props) => <App {...props} nonce={nonce} />,
-      // useful for wrapping in a per-page basis
-      enhanceComponent: (Component) => (props) => <Component {...props} />,
-    });
     // @ts-ignore
     const { locals = { nonce: '' } } = context.res;
+    const { nonce } = locals;
 
-    const page = context.renderPage(locals.nonce);
-
-    // @ts-ignore
-    if (page.html) {
+    context.renderPage = () => originalRenderPage({
       // @ts-ignore
+      enhanceApp: (App) => (props) => <App {...props} nonce={nonce} />,
+      enhanceComponent: (Component) => (props) => <Component {...props} />,
+    });
+
+    const page = await Document.getInitialProps(context);
+
+    if (page.html) {
       const styles = extractCritical(page.html);
-      return { ...page, ...styles, nonce: locals.nonce };
+      return { ...page, ...styles, nonce };
     }
 
-    // @ts-ignore
-    return { ...page, nonce: locals.nonce };
+    return { ...page, nonce };
   }
 
   public render() {

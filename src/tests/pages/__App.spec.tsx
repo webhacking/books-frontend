@@ -35,24 +35,19 @@ jest.mock('next-redux-saga', () => ({
 
 describe('App', () => {
   describe('getInitialProps', () => {
-    it('should detect partials', async () => {
+    it('should extract theme', async () => {
+      jest.spyOn(document, 'cookie', 'get').mockReturnValue('ridi_app_theme=dark');
       const props = await App.getInitialProps({
         ctx: {
-          pathname: '/partials/gnb',
+          req: {
+            headers: {
+              cookie: 'ridi_app_theme=dark',
+            },
+          },
         },
         Component: () => null,
       });
-      expect(props.isPartials).toBe(true);
-    });
-
-    it('should detect inapp', async () => {
-      const props = await App.getInitialProps({
-        ctx: {
-          pathname: '/inapp/notification',
-        },
-        Component: () => null,
-      });
-      expect(props.isInApp).toBe(true);
+      expect(props.theme).toBe('dark');
     });
   });
 
@@ -62,6 +57,7 @@ describe('App', () => {
     await act(async () => {
       renderResult = render(
         <App
+          router={{ pathname: '/[genre]/' } as any}
           store={store}
           pageProps={{}}
           query={{}}
@@ -82,10 +78,10 @@ describe('App', () => {
     await act(async () => {
       renderResult = render(
         <App
+          router={{ pathname: '/inapp/notifications/' } as any}
           store={store}
           pageProps={{}}
           query={{}}
-          isInApp
           hasError={false}
           Component={mock}
         />
@@ -103,10 +99,10 @@ describe('App', () => {
     await act(async () => {
       renderResult = render(
         <App
+          router={{ pathname: '/partials/gnb/' } as any}
           store={store}
           pageProps={{}}
           query={{}}
-          isPartials
           hasError={false}
           Component={mock}
         />

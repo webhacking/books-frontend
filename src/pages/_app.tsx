@@ -28,18 +28,10 @@ interface StoreAppProps {
   store: Store<RootState>;
   // tslint:disable-next-line
   pageProps: any;
-  isPartials?: boolean;
-  isInApp?: boolean;
-  theme?: Theme;
   // tslint:disable-next-line
   query: any;
-  ctxPathname?: string;
-  hasError: boolean;
-  sentryErrorEventId?: string;
-  error?: ErrorInfo | Error;
-}
-
-interface StoreAppState {
+  theme?: Theme;
+  nonce?: string;
   hasError: boolean;
   sentryErrorEventId?: string;
   error?: ErrorInfo | Error;
@@ -49,21 +41,16 @@ const Contents = styled.main`
   margin: 0 auto;
 `;
 
-class StoreApp extends App<StoreAppProps, StoreAppState> {
-  public static async getInitialProps({ ctx, Component, ...rest }: AppContext) {
-    const isPartials = !!ctx.pathname.match(/^\/partials\//u);
-    const isInApp = !!ctx.pathname.match(/^\/inapp\//u);
+class StoreApp extends App<StoreAppProps> {
+  public static async getInitialProps({ ctx, Component }: AppContext) {
+    const theme = getAppTheme(ctx.req?.headers ?? {});
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
       : {};
-    const theme = getAppTheme(ctx.req?.headers ?? {});
 
     return {
       pageProps,
-      isPartials,
-      isInApp,
       theme,
-      ctxPathname: rest.router ? rest.router.asPath : '/',
       query: {
         ...ctx.query,
         is_login: ctx?.query?.is_login === 'true' ? 'true' : 'false',
@@ -88,12 +75,15 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
   }
 
   public async componentDidMount() {
-    if (!this.props.isPartials) {
+    const isPartials = this.props.router.pathname
+      .toLowerCase()
+      .startsWith('/partials/');
+    if (!isPartials) {
       this.serviceWorkerInit();
     }
     // Windows에서만 웹폰트 로드
     if (
-      !this.props.isPartials
+      !isPartials
       && new UAParser().getOS().name?.toLowerCase().includes('windows')
     ) {
       const WebFont = await import('webfontloader');
@@ -114,15 +104,14 @@ class StoreApp extends App<StoreAppProps, StoreAppState> {
     const {
       Component,
       query,
-      pageProps,
-      isPartials,
-      isInApp,
       theme,
+      pageProps,
       store,
-      // @ts-ignore
       nonce,
     } = this.props;
-
+    const pathname = this.props.router.pathname.toLowerCase();
+    const isPartials = pathname.startsWith('/partials/');
+    const isInApp = pathname.startsWith('/inapp/');
     if (!pageProps || (pageProps.statusCode && pageProps.statusCode >= 400)) {
       return (
         <>
