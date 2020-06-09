@@ -5,7 +5,7 @@ import { ErrorProps } from 'next/error';
 import React from 'react';
 
 import Meta from 'src/components/Meta';
-import { NotFoundError } from 'src/utils/error';
+// import { NotFoundError } from 'src/utils/error';
 import sentry from 'src/utils/sentry';
 import NotFoundIcon from 'src/svgs/NotFound.svg';
 import RidiLogo from 'src/svgs/RidiLogo_1.svg';
@@ -36,7 +36,6 @@ const logoStyle = css`
 export default function ErrorPage(props: ErrorProps) {
   const { statusCode } = props;
   const code = statusCode >= 400 ? String(statusCode) : '';
-
   return (
     <>
       <Meta />
@@ -122,8 +121,8 @@ export default function ErrorPage(props: ErrorProps) {
 
 ErrorPage.getInitialProps = (context: ConnectedInitializeProps) => {
   const { res, err } = context;
-
-  if (err && !(err instanceof NotFoundError)) {
+  // if (err && !(err instanceof NotFoundError)) {
+  if (err) {
     sentry.captureException(err, context);
     const statusCode = err.statusCode || res?.statusCode || 500;
     return { statusCode };
