@@ -36,6 +36,7 @@ const logoStyle = css`
 export default function ErrorPage(props: ErrorProps) {
   const { statusCode } = props;
   const code = statusCode >= 400 ? String(statusCode) : '';
+
   return (
     <>
       <Meta />
