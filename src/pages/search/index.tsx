@@ -16,7 +16,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { SearchCategoryTab } from 'src/components/Tabs';
 import { useCallback, useEffect } from 'react';
 import sentry from 'src/utils/sentry';
-import { useEventTracker } from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 
 import { Pagination } from 'src/components/Pagination/Pagination';
 import SearchLandscapeBook from 'src/components/Search/SearchLandscapeBook';
@@ -170,19 +170,16 @@ function SearchPage() {
     setCategories(undefined);
   }, [q, isAdultExclude]);
 
-  const [tracker] = useEventTracker();
   const router = useRouter();
   const loggedUser = useAccount();
   const isTablet = useIsTablet();
   const setPageView = useCallback(() => {
-    if (tracker) {
-      try {
-        tracker.sendPageView(window.location.href, document.referrer);
-      } catch (error) {
-        sentry.captureException(error);
-      }
+    try {
+      tracker.sendPageView(window.location.href, document.referrer);
+    } catch (error) {
+      sentry.captureException(error);
     }
-  }, [tracker]);
+  }, []);
   const hasPagination = books != null && books.total > ITEM_PER_PAGE && books.books.length > 0;
 
   useEffect(() => {

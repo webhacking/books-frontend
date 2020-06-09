@@ -4,6 +4,7 @@ import React from 'react';
 
 import axios, { CancelToken, OAuthRequestType } from 'src/utils/axios';
 import { CancelledError, runWithExponentialBackoff } from 'src/utils/backoff';
+import * as tracker from 'src/utils/event-tracker';
 import Sentry from 'src/utils/sentry';
 import { LoggedUser } from 'src/types/account';
 
@@ -59,6 +60,7 @@ export function AccountProvider(props: { children?: React.ReactNode }) {
     configureScope((scope) => {
       scope.setUser(account);
     });
+    tracker.setUserId(account?.id ?? null);
   }, [account]);
 
   return React.createElement(

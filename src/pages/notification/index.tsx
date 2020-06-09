@@ -12,12 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { notificationActions } from 'src/services/notification';
 import { RootState } from 'src/store/config';
 import NotificationPlaceholder from 'src/components/Placeholder/NotificationItemPlaceholder';
-import { Tracker } from '@ridi/event-tracker';
-import {
-  sendClickEvent,
-  sendDisplayEvent,
-  useEventTracker,
-} from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import sentry from 'src/utils/sentry';
 import useAccount from 'src/hooks/useAccount';
@@ -198,7 +193,6 @@ interface NotificationItemProps {
   item: NotificationItemScheme;
   createdAtTimeAgo: string;
   dot?: boolean;
-  tracker: Tracker;
   slug: string;
   order: number;
 }
@@ -209,13 +203,13 @@ interface NotificationPageProps {
 
 export const NotificationItem: React.FunctionComponent<NotificationItemProps> = (props) => {
   const {
-    item, createdAtTimeAgo, dot = false, tracker, slug, order,
+    item, createdAtTimeAgo, dot = false, slug, order,
   } = props;
 
   const handleVisibleRef = React.useRef<boolean>(false);
   const handleVisible = React.useCallback((visible) => {
     if (!handleVisibleRef.current && visible) {
-      sendDisplayEvent({ slug, id: item.id, order });
+      tracker.sendDisplayEvent({ slug, id: item.id, order });
       handleVisibleRef.current = true;
     }
   }, [slug, item.id, order]);
@@ -226,7 +220,7 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
     <NotiListItem ref={ref}>
       <NotiItemWrapper
         // eslint-disable-next-line react/jsx-no-bind
-        onClick={sendClickEvent.bind(null, tracker, item, slug, order)}
+        onClick={tracker.sendClickEvent.bind(null, item, slug, order)}
         href={item.landingUrl}
       >
         <ImageWrapper
@@ -262,17 +256,14 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
   const loggedUser = useAccount();
   const slug = 'notification-item';
   const dispatch = useDispatch();
-  const [tracker] = useEventTracker();
 
   const setPageView = useCallback(() => {
-    if (tracker) {
-      try {
-        tracker.sendPageView(window.location.href, document.referrer);
-      } catch (error) {
-        sentry.captureException(error);
-      }
+    try {
+      tracker.sendPageView(window.location.href, document.referrer);
+    } catch (error) {
+      sentry.captureException(error);
     }
-  }, [tracker]);
+  }, []);
 
   useEffect(() => {
     setPageView();
@@ -310,7 +301,6 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
                   createdAtTimeAgo={timeAgo(item.createdAt)}
                   item={item}
                   dot={index < unreadCount}
-                  tracker={tracker}
                   slug={slug}
                   order={index}
                 />

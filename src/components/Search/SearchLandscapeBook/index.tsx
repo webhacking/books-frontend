@@ -22,8 +22,7 @@ import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
 import { lineClamp } from 'src/styles';
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 import sentry from 'src/utils/sentry';
-import { useDeviceType } from 'src/hooks/useDeviceType';
-import { useEventTracker } from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 
 import Skeleton from '../../Skeleton/SearchLandscapeBook';
 import MetaWrapper from './MetaWrapper';
@@ -214,8 +213,6 @@ function RenderAuthors(props: { authors: AuthorsInfo[]; fallback: string }) {
 }
 
 export default function SearchLandscapeBook(props: SearchLandscapeBookProps) {
-  const { deviceType } = useDeviceType();
-  const [tracker] = useEventTracker();
   const {
     item, title, q, index,
   } = props;
@@ -248,12 +245,14 @@ export default function SearchLandscapeBook(props: SearchLandscapeBookProps) {
   searchParam.set('_s', 'search');
   searchParam.set('_q', q);
   const searchBookClick = () => {
-    if (tracker) {
-      try {
-        tracker.sendEvent('click', { section: `${deviceType}.search.result_book.${genres[0]}`, items: [{ id: item.b_id, idx: index, ts: Date.now() }] });
-      } catch (error) {
-        sentry.captureException(error);
-      }
+    try {
+      tracker.sendClickEvent(
+        item,
+        `search.result_book.${genres[0]}`,
+        index,
+      );
+    } catch (error) {
+      sentry.captureException(error);
     }
   };
   return (

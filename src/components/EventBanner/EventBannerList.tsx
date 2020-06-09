@@ -3,10 +3,8 @@ import { EventBannerItem } from 'src/components/EventBanner/index';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { EventBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
-import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 import styled from '@emotion/styled';
-import { SendEventType } from 'src/constants/eventTracking';
-import { useDeviceType } from 'src/hooks/useDeviceType';
 
 const List = styled.ul`
   display: flex;
@@ -37,27 +35,24 @@ interface EventBannerListProps {
 const EventBannerList: React.FC<EventBannerListProps> = (props) => {
   const targetRef = useRef(null);
   const isIntersecting = useIntersectionObserver(targetRef, '0px');
-  const { deviceType } = useDeviceType();
-  const [tracker] = useEventTracker();
   useEffect(() => {
     if (isIntersecting) {
-      tracker.sendEvent(SendEventType.Display, {
-        section: `${deviceType}.${props.slug}`,
-        items: props.items.map((item, index) => ({
-          id: item.id,
-          idx: index,
-          ts: new Date().getTime(),
-        })),
+      props.items.forEach((item, index) => {
+        tracker.sendDisplayEvent({
+          slug: props.slug,
+          id: String(item.id),
+          order: index,
+        });
       });
     }
-  }, [isIntersecting, props.items, props.slug, tracker]);
+  }, [isIntersecting, props.items, props.slug]);
   return (
     <List ref={targetRef}>
       {props.items.slice(0, 4).map((item, index) => (
         <EventBannerItem key={index}>
           <a
             href={item.url}
-            onClick={sendClickEvent.bind(null, tracker, item.id, props.slug, index)}
+            onClick={tracker.sendClickEvent.bind(null, item.id, props.slug, index)}
           >
             <img width="100%" height="100%" src={item.image_url} alt={item.title} />
           </a>

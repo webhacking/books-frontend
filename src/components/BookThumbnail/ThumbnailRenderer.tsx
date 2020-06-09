@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import useAccount from 'src/hooks/useAccount';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
-import { sendDisplayEvent } from 'src/hooks/useEventTracker';
+import { sendDisplayEvent } from 'src/utils/event-tracker';
 
 import coverAdult from 'src/assets/image/cover_adult.png';
 
