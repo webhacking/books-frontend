@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { notificationActions } from 'src/services/notification';
 import { RootState } from 'src/store/config';
 import NotificationPlaceholder from 'src/components/Placeholder/NotificationItemPlaceholder';
-import * as tracker from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import sentry from 'src/utils/sentry';
 import useAccount from 'src/hooks/useAccount';

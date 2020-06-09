@@ -7,7 +7,7 @@ import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper'
 import BookMeta from 'src/components/BookMeta';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
-import * as tracker from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 import styled from '@emotion/styled';
 import ThumbnailWithBadge from '../Book/ThumbnailWithBadge';
 

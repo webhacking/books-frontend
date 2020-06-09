@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 import BookMeta from 'src/components/BookMeta';
-import * as tracker from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 import { DisplayType, BookItem } from 'src/types/sections';
 import PortraitBook from 'src/components/Book/PortraitBook';
 

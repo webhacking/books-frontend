@@ -4,10 +4,9 @@ import React from 'react';
 
 import axios, { CancelToken, OAuthRequestType } from 'src/utils/axios';
 import { CancelledError, runWithExponentialBackoff } from 'src/utils/backoff';
+import * as tracker from 'src/utils/event-tracker';
 import Sentry from 'src/utils/sentry';
 import { LoggedUser } from 'src/types/account';
-
-import * as tracker from './useEventTracker';
 
 export const AccountContext = React.createContext<LoggedUser | null>(null);
 

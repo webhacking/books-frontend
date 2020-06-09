@@ -16,7 +16,7 @@ import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { SearchCategoryTab } from 'src/components/Tabs';
 import { useCallback, useEffect } from 'react';
 import sentry from 'src/utils/sentry';
-import * as tracker from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 
 import { Pagination } from 'src/components/Pagination/Pagination';
 import SearchLandscapeBook from 'src/components/Search/SearchLandscapeBook';

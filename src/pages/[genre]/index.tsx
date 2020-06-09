@@ -19,7 +19,7 @@ import sentry from 'src/utils/sentry';
 import { categoryActions } from 'src/services/category';
 import { NextPage } from 'next';
 import useAccount from 'src/hooks/useAccount';
-import * as tracker from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 import { css } from '@emotion/core';
 
 import Cookies from 'universal-cookie';

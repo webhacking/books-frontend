@@ -22,7 +22,7 @@ import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
 import { lineClamp } from 'src/styles';
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
 import sentry from 'src/utils/sentry';
-import * as tracker from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 
 import Skeleton from '../../Skeleton/SearchLandscapeBook';
 import MetaWrapper from './MetaWrapper';

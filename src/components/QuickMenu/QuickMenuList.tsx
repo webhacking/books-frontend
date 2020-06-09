@@ -7,7 +7,7 @@ import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
 import { scrollBarHidden } from 'src/styles';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { QuickMenu } from 'src/types/sections';
-import * as tracker from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 import { SendEventType } from 'src/constants/eventTracking';
 
 const centered = css`

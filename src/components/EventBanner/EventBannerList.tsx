@@ -3,7 +3,7 @@ import { EventBannerItem } from 'src/components/EventBanner/index';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { EventBanner } from 'src/types/sections';
 import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
-import * as tracker from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 import styled from '@emotion/styled';
 
 const List = styled.ul`

@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive';
 
 import Arrow from 'src/components/Carousel/Arrow';
 import BigBannerCarousel from 'src/components/Carousel/BigBannerCarousel';
-import * as tracker from 'src/hooks/useEventTracker';
+import * as tracker from 'src/utils/event-tracker';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { TopBanner } from 'src/types/sections';
 import { useDeviceType } from 'src/hooks/useDeviceType';
