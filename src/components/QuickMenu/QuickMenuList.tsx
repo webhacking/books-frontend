@@ -7,7 +7,7 @@ import QuickMenuShape from 'src/svgs/QuickMenuShape.svg';
 import { scrollBarHidden } from 'src/styles';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { QuickMenu } from 'src/types/sections';
-import { useEventTracker } from 'src/hooks/useEventTracker';
+import * as tracker from 'src/hooks/useEventTracker';
 import { SendEventType } from 'src/constants/eventTracking';
 
 const centered = css`
@@ -100,7 +100,6 @@ const quickMenuShape = css`
 `;
 
 function Item({ menu }: { menu: QuickMenu }) {
-  const [tracker] = useEventTracker();
   const sendQuickMenuClickEvent = useCallback(() => {
     tracker.sendEvent(SendEventType.QuickMenu, {
       // https://app.asana.com/0/1166576097448534/1162603665774601
@@ -108,7 +107,7 @@ function Item({ menu }: { menu: QuickMenu }) {
       action: window.location.href,
       label: menu.url,
     });
-  }, [tracker]);
+  }, []);
   return (
     <MenuItem>
       <MenuAnchor

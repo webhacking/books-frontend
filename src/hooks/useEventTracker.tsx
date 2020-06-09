@@ -2,11 +2,7 @@ import { DeviceType, Tracker } from '@ridi/event-tracker';
 import {
   FB_KEYS, GA_KEY, GTM_KEY, SendEventType,
 } from 'src/constants/eventTracking';
-import { useEffect } from 'react';
-import sentry from 'src/utils/sentry';
 import { getDeviceType } from 'src/hooks/useDeviceType';
-
-import useAccount from './useAccount';
 
 const deviceType = getDeviceType() === 'mobile' ? DeviceType.Mobile : DeviceType.PC;
 
@@ -49,32 +45,21 @@ if (tracker) {
   tracker.initialize();
 }
 
-export const useEventTracker = () => {
-  if (tracker) {
-    createTracker(null);
-  }
-  const loggedUser = useAccount();
-  useEffect(() => {
-    try {
-      tracker.set({
-        userId: loggedUser?.id || null,
-        deviceType,
-      });
-    } catch (error) {
-      sentry.captureException(error);
-    }
-  }, [loggedUser]);
-  return [tracker];
-};
+export function setUserId(userId: string | null) {
+  tracker?.set({ userId });
+}
+
+export function sendEvent(type: SendEventType, data?: any) {
+  tracker?.sendEvent(type, data);
+}
 
 // Todo refactor
 export const sendClickEvent = (
-  eventTracker: Tracker,
   item: any,
   section: any,
   order?: number,
 ) => {
-  eventTracker.sendEvent(SendEventType.Click, {
+  tracker?.sendEvent(SendEventType.Click, {
     section: `${deviceType}.${section}`,
     items: [{ id: item.b_id || item.id, idx: order, ts: new Date().getTime() }],
   });
@@ -86,7 +71,7 @@ export const sendDisplayEvent = (options: {
   order: number;
 }) => {
   const { slug, id, order } = options;
-  tracker.sendEvent(SendEventType.Display, {
+  tracker?.sendEvent(SendEventType.Display, {
     section: `${deviceType}.${slug}`,
     items: [
       {
@@ -97,3 +82,7 @@ export const sendDisplayEvent = (options: {
     ],
   });
 };
+
+export function sendPageView(href: string, referrer?: string) {
+  tracker?.sendPageView(href, referrer);
+}

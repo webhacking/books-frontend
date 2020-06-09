@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 import BookMeta from 'src/components/BookMeta';
-import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
+import * as tracker from 'src/hooks/useEventTracker';
 import { DisplayType, BookItem } from 'src/types/sections';
 import PortraitBook from 'src/components/Book/PortraitBook';
 
@@ -27,11 +27,9 @@ const SelectionBookItem: React.FC<Props> = (props) => {
     ? props.book.rating
     : undefined;
 
-  const [tracker] = useEventTracker();
-
   const handleClick = useCallback(() => {
-    sendClickEvent(tracker, book, slug, order);
-  }, [tracker, book, slug, order]);
+    tracker.sendClickEvent(book, slug, order);
+  }, [book, slug, order]);
   return (
     <PortraitBook
       bId={bId}

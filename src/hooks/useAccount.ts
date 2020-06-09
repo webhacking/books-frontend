@@ -7,6 +7,8 @@ import { CancelledError, runWithExponentialBackoff } from 'src/utils/backoff';
 import Sentry from 'src/utils/sentry';
 import { LoggedUser } from 'src/types/account';
 
+import * as tracker from './useEventTracker';
+
 export const AccountContext = React.createContext<LoggedUser | null>(null);
 
 export async function checkLoggedIn(cancel: CancelTokenSource) {
@@ -59,6 +61,7 @@ export function AccountProvider(props: { children?: React.ReactNode }) {
     configureScope((scope) => {
       scope.setUser(account);
     });
+    tracker.setUserId(account?.id ?? null);
   }, [account]);
 
   return React.createElement(

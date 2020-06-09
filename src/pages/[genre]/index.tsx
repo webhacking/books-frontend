@@ -19,7 +19,7 @@ import sentry from 'src/utils/sentry';
 import { categoryActions } from 'src/services/category';
 import { NextPage } from 'next';
 import useAccount from 'src/hooks/useAccount';
-import { useEventTracker } from 'src/hooks/useEventTracker';
+import * as tracker from 'src/hooks/useEventTracker';
 import { css } from '@emotion/core';
 
 import Cookies from 'universal-cookie';
@@ -102,16 +102,13 @@ export const Home: NextPage<HomeProps> = (props) => {
     dispatch({ type: booksActions.checkSelectBook.type, payload: selectBIds });
   }, [branches]);
 
-  const [tracker] = useEventTracker();
   const setPageView = useCallback(() => {
-    if (tracker) {
-      try {
-        tracker.sendPageView(window.location.href, document.referrer);
-      } catch (error) {
-        sentry.captureException(error);
-      }
+    try {
+      tracker.sendPageView(window.location.href, document.referrer);
+    } catch (error) {
+      sentry.captureException(error);
     }
-  }, [tracker]);
+  }, []);
 
   useEffect(() => {
     setPageView();

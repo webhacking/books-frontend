@@ -7,8 +7,7 @@ import { ThumbnailWrapper } from 'src/components/BookThumbnail/ThumbnailWrapper'
 import BookMeta from 'src/components/BookMeta';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
-import { sendClickEvent, useEventTracker } from 'src/hooks/useEventTracker';
-import { Tracker } from '@ridi/event-tracker';
+import * as tracker from 'src/hooks/useEventTracker';
 import styled from '@emotion/styled';
 import ThumbnailWithBadge from '../Book/ThumbnailWithBadge';
 
@@ -24,7 +23,6 @@ interface MultipleLineBookItemProps {
   item: BookItem;
   slug: string;
   order: number;
-  tracker: Tracker;
 }
 
 const bookWidthStyles = css`
@@ -139,12 +137,12 @@ const bookMetaWrapperStyle = css`
 
 const MultipleLineBookItem: React.FC<MultipleLineBookItemProps> = React.memo((props) => {
   const {
-    item, genre, slug, order, tracker,
+    item, genre, slug, order,
   } = props;
   const book = useBookSelector(item.b_id);
   const trackerEvent = useCallback(() => {
-    sendClickEvent(tracker, item, slug, order);
-  }, [tracker, item, slug, order]);
+    tracker.sendClickEvent(item, slug, order);
+  }, [item, slug, order]);
 
   if (book == null || book.isDeleted) {
     return null;
@@ -213,7 +211,6 @@ const List = styled.ul`
 const ItemList: React.FC<{ slug: string; genre: string; books: BookItem[] }> = (props) => {
   const { slug, genre, books } = props;
   const [, setMounted] = useState(false);
-  const [tracker] = useEventTracker();
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -229,7 +226,6 @@ const ItemList: React.FC<{ slug: string; genre: string; books: BookItem[] }> = (
             key={index}
             genre={genre}
             item={item}
-            tracker={tracker}
           />
         ))}
     </List>

@@ -5,11 +5,10 @@ import { useMediaQuery } from 'react-responsive';
 
 import Arrow from 'src/components/Carousel/Arrow';
 import BigBannerCarousel from 'src/components/Carousel/BigBannerCarousel';
-import { useEventTracker } from 'src/hooks/useEventTracker';
+import * as tracker from 'src/hooks/useEventTracker';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import { TopBanner } from 'src/types/sections';
 import { useDeviceType } from 'src/hooks/useDeviceType';
-import { SendEventType } from 'src/constants/eventTracking';
 
 const DESKTOP_INACTIVE_SCALE = 0.965;
 const ITEM_MARGIN = 10;
@@ -242,15 +241,10 @@ function CarouselItem(props: CarouselItemProps) {
   } = props;
   const [intersecting, setIntersecting] = React.useState(false);
   const ref = useViewportIntersection<HTMLLIElement>(setIntersecting);
-  const [tracker] = useEventTracker();
-  const { deviceType } = useDeviceType();
 
   const handleBannerClick = React.useCallback(() => {
-    tracker.sendEvent(SendEventType.Click, {
-      section: `${deviceType}.${slug}`,
-      items: [{ id: banner.id, ts: Date.now() }],
-    });
-  }, [banner, slug, tracker, deviceType]);
+    tracker.sendClickEvent(banner, slug);
+  }, [banner, slug]);
 
   return (
     <CarouselItemContainer ref={ref} active={active} invisible={invisible}>
@@ -315,7 +309,7 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
     setInactiveScale(isDesktop ? DESKTOP_INACTIVE_SCALE : 1);
   }, [isDesktop]);
 
-  const { deviceType, isMobile } = useDeviceType();
+  const { isMobile } = useDeviceType();
   // 터치 핸들링
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const touchRef = React.useRef<{
@@ -420,19 +414,13 @@ export default function TopBannerCarousel(props: TopBannerCarouselProps) {
   }, [handleRightClick, currentIdx, touchDiff, focused]);
 
   // 트래킹
-  const [tracker] = useEventTracker();
-
   React.useEffect(() => {
     // FIXME: 이게 최선입니까?
     window.setImmediate(() => {
-      const item = {
-        id: banners[currentIdx].id,
+      tracker.sendDisplayEvent({
+        slug,
+        id: String(banners[currentIdx].id),
         order: currentIdx,
-        ts: new Date().getTime(),
-      };
-      tracker.sendEvent(SendEventType.Display, {
-        section: `${deviceType}.${slug}`,
-        items: [item],
       });
     });
   }, [banners, currentIdx]);
