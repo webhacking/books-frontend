@@ -1,7 +1,6 @@
 import { captureException, withScope, init } from '@sentry/node';
 import { AxiosError } from 'axios';
 import { ConnectedInitializeProps } from 'src/types/common';
-import { NextPageContext } from 'next';
 import { ValidationError } from 'runtypes';
 
 const sentryOptions = {
@@ -32,6 +31,8 @@ const sentryOptions = {
     '특정 호스트 이름을 가진 서버를 찾을 수 없습니다',
     'TypeError: cancelled',
     'TypeError: 취소됨',
+    'TypeError: 서버에 연결할 수 없습니다.',
+    'TypeError: annulé',
     'The Internet connection appears to be offline.',
     '서버에 안전하게 연결할 수 없습니다',
     'SSL',
@@ -44,21 +45,33 @@ const sentryOptions = {
     '未能找到使用指定主机名的服务器。',
     '指定されたホスト名のサーバが見つかりませんでした。',
     '未能完成该操作。软件导致连接中止',
+    '找不到使用指定主机名的服务器。', // 지정된 호스트 이름으로 서버를 찾을 수 없습니다.
+    '似乎已断开与互联网的连接。', // 인터넷 연결이 끊어진 것 같습니다.
+    'TypeError: Es besteht anscheinend keine Verbindung zum Internet.',
     'Type error',
     'キャンセルしました',
+    'TypeError: ネットワーク接続が切れました。', // 네트워크 연결이 끊어졌습니다.
+    'TypeError: đã huỷ',
+    'TypeError: ถูกยกเลิก',
+    'TypeError: отменено',
     'supported-color-schemes',
     '请求超时。',
     'Abgebrochen',
     'Non-error was thrown: "Cancel". You should only throw errors.',
     'TypeError: Non-error was thrown: "Cancel". You should only throw errors.',
+    'TypeError: anulowane',
+    'Error: Request aborted',
     'cancelado',
     'AdBlock',
     'mttLongPressVar',
     'Blocked a frame with origin',
     "has no method 'checkDomStatus'",
     '이 서버에 대한 인증서가 유효하지 않습니다',
+    'TypeError: null is not an object (evaluating \'document.querySelector(\'meta[name="twitter:description"]\').content\')',
+    'TypeError: Object [object Object] has no method \'checkLanguage\'',
+    'ReferenceError: Can\'t find variable: _sess_',
   ],
-  sampleRate: 0.1,
+  sampleRate: 0.3,
   whitelistUrls: [
     /https?:\/\/(.+\.)?ridibooks\.com/,
     /https?:\/\/(.+\.)?ridi\.io/,
