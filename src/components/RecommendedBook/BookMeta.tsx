@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import BookMetaBase from 'src/components/BookMeta/BookMeta';
 import AtSelectIcon from 'src/svgs/Book1.svg';
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
+import { slateGray40 } from '@ridi/colors';
 
 const AvailableOnSelectContainer = styled.div`
   display: flex;
@@ -34,7 +35,7 @@ interface BookMetaProps {
 function BookMeta(props: BookMetaProps) {
   const book = useBookSelector(props.bId);
   return (
-    <BookMetaBase bId={props.bId} bookTitleStyle={bookTitleStyle}>
+    <BookMetaBase bId={props.bId} bookTitleStyle={bookTitleStyle} authorColor={slateGray40}>
       {book?.clientBookFields?.isAvailableSelect && (
         <AvailableOnSelectContainer
           role="img"
