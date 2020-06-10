@@ -32,6 +32,7 @@ const sentryOptions = {
     'TypeError: cancelled',
     'TypeError: 취소됨',
     'TypeError: 서버에 연결할 수 없습니다.',
+    'TypeError: undefined is not an object (evaluating \'whale.pip.setup\')',
     'TypeError: annulé',
     'The Internet connection appears to be offline.',
     '서버에 안전하게 연결할 수 없습니다',
@@ -46,11 +47,18 @@ const sentryOptions = {
     '指定されたホスト名のサーバが見つかりませんでした。',
     '未能完成该操作。软件导致连接中止',
     '找不到使用指定主机名的服务器。', // 지정된 호스트 이름으로 서버를 찾을 수 없습니다.
-    '似乎已断开与互联网的连接。', // 인터넷 연결이 끊어진 것 같습니다.
+    'TypeError: 似乎已断开与互联网的连接。', // 인터넷 연결이 끊어진 것 같습니다.
+    'TypeError: 无法连接到服务器。', // 서버에 연결할 수 없습니다.
+    'TypeError: 错误的URL', // 잘못된 URL
+    'TypeError: 操作を完了できませんでした。ソフトウェアにより接続が中止されました', // 소프트웨어에 의한 연결 중단
     'TypeError: Es besteht anscheinend keine Verbindung zum Internet.',
+    'TypeError: 中止', // 중
+    'TypeError: скасовано', // 취소
+    'TypeError: Der Vorgang konnte nicht abgeschlossen werden. Die Software hat einen Verbindungsabbruch verursacht', // 소프트웨어 연결이 끊어졌습니다.
     'Type error',
     'キャンセルしました',
     'TypeError: ネットワーク接続が切れました。', // 네트워크 연결이 끊어졌습니다.
+    'TypeError: サーバに接続できませんでした。', // 서버에 연결할 수 없습니다.
     'TypeError: đã huỷ',
     'TypeError: ถูกยกเลิก',
     'TypeError: отменено',
@@ -70,6 +78,7 @@ const sentryOptions = {
     'TypeError: null is not an object (evaluating \'document.querySelector(\'meta[name="twitter:description"]\').content\')',
     'TypeError: Object [object Object] has no method \'checkLanguage\'',
     'ReferenceError: Can\'t find variable: _sess_',
+    'TypeError: a[b].target.className.indexOf is not a function.',
   ],
   sampleRate: 0.3,
   whitelistUrls: [
