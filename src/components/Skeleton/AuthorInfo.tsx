@@ -11,7 +11,7 @@ import SkeletonBar from './Bar';
 
 const SkeletonAuthorInfoWrapper = styled(AuthorInfoWrapper)`
   padding: 11px 0;
-  ${orBelow(BreakPoint.LG, 'margin-left: 16px')}
+  ${orBelow(BreakPoint.LG, 'margin: 0 16px')}
 `;
 
 const SkeletonAuthorIcon = styled(AuthorIconWrapper)`
