@@ -37,7 +37,7 @@ function BookMeta(props: BookMetaProps) {
   const { theme, bId } = props;
   const book = useBookSelector(bId);
   return (
-    <BookMetaBase bId={bId} bookTitleStyle={bookTitleStyle} authorColor={theme === 'dark' ? slateGray60 : slateGray40}>
+    <BookMetaBase bId={bId} bookTitleStyle={bookTitleStyle} authorColor={theme === 'dark' ? slateGray40 : slateGray60}>
       {book?.clientBookFields?.isAvailableSelect && (
         <AvailableOnSelectContainer
           role="img"

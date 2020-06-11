@@ -28,11 +28,11 @@ const Container = styled.div`
   transition: opacity 0.2s ease-in-out;
 `;
 
-const AuthorsWrapper = styled.span<{color?: string}>`
+const AuthorsWrapper = styled.span<{color: string}>`
   height: 19px;
   font-size: 14px;
   line-height: 1.36;
-  color: ${(props) => (props.color ?? slateGray60)};
+  color: ${(props) => (props.color)};
   margin-bottom: 2px;
   ${lineClamp(1)};
 `;
@@ -98,7 +98,7 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
     titleLineClamp,
     width,
     bookTitleStyle,
-    authorColor,
+    authorColor = slateGray60,
     className,
     children,
   } = props;
