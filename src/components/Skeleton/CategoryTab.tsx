@@ -8,10 +8,9 @@ const Wrapper = styled.ul`
   margin: 22px 0 12px;
   display: flex;
   align-items: center;
-  > * {
+  > li {
     flex: none;
-    margin-left: 4px;
-    + * {
+    + li {
       margin-left: 10px;
     }
   }
@@ -21,7 +20,7 @@ const Wrapper = styled.ul`
 const CategorySkeletonBar = styled(SkeletonBar)`
   width: 68px;
   margin-bottom: 0;
-`;
+`.withComponent('li');
 
 export default function CategorySkeleton() {
   return (

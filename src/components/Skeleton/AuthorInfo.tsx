@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
 
+import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import {
   AuthorInfoWrapper,
   AuthorIconWrapper,
@@ -10,6 +11,7 @@ import SkeletonBar from './Bar';
 
 const SkeletonAuthorInfoWrapper = styled(AuthorInfoWrapper)`
   padding: 11px 0;
+  ${orBelow(BreakPoint.LG, 'margin-left: 16px')}
 `;
 
 const SkeletonAuthorIcon = styled(AuthorIconWrapper)`
