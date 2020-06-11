@@ -121,6 +121,7 @@ const SuggestButton = styled.a`
 const SkeletonH2Bar = styled(SkeletonBar)`
   width: 200px;
   margin: 10px 0;
+  ${orBelow(BreakPoint.LG, 'margin: 10px 16px')}
 `;
 
 const SkeletonFilterBar = styled(SkeletonBar)<{ type: 'short' | 'long' }>`
