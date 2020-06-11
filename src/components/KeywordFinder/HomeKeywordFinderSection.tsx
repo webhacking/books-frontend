@@ -381,15 +381,8 @@ const Section = styled.section`
   max-width: 1000px;
   margin: 0 auto;
   box-sizing: border-box;
-  padding-bottom: 24px;
-  padding-top: 24px;
-  ${orBelow(
-    999,
-    `
-      padding-bottom: 16px;
-      padding-top: 16px;
-    `,
-  )}
+  padding: 24px;
+  ${orBelow(BreakPoint.LG, 'padding: 16px;')}
 `;
 
 const SectionTitle = styled.h2`
@@ -401,36 +394,19 @@ const SectionTitle = styled.h2`
   a {
     color: black;
   }
-  padding-left: 24px;
-  ${orBelow(
-    BreakPoint.LG,
-    'padding-left: 16px;',
-  )};
+`;
+
+const List = styled.ul`
+  display: flex;
+
+  li + li {
+    margin-left: 6px;
+  }
 `;
 
 const Keyword = styled.li`
   height: 31px;
   flex: none;
-  :not(:last-of-type) {
-    margin-right: 6px;
-  }
-  :last-of-type {
-    padding-right: 24px;
-  }
-  :first-of-type {
-    padding-left: 24px;
-  }
-  ${orBelow(
-    BreakPoint.LG,
-    `
-      :last-of-type {
-        padding-right: 16px;
-      }
-      :first-of-type {
-        padding-left: 16px;
-      }
-    `,
-  )};
 `;
 
 const KeywordAnchor = styled.a`
@@ -443,10 +419,11 @@ const KeywordAnchor = styled.a`
   font-weight: bold;
   color: #525a61;
   padding: 0 10px;
-`;
 
-const List = styled.ul`
-  display: flex;
+  &::before {
+    display: inline;
+    content: '#';
+  }
 `;
 
 interface HomeKeywordFinderSectionProps {
@@ -470,11 +447,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = (props
           aria-label="키워드 파인더"
         >
           <span>키워드로 검색하기</span>
-          <ArrowV
-            css={css`
-              margin-left: 7.8px;
-            `}
-          />
+          <ArrowV css={css`margin-left: 7.8px;`} />
         </a>
       </SectionTitle>
       <ScrollContainer
@@ -490,9 +463,7 @@ const HomeKeywordFinderSection: React.FC<HomeKeywordFinderSectionProps> = (props
               <Keyword key={index}>
                 <KeywordAnchor
                   href={`/keyword-finder/${parentGenre}?${keywordSetAndTagSearchParam.toString()}`}
-                  aria-label={keyword.name}
                 >
-                  #
                   {keyword.name}
                 </KeywordAnchor>
               </Keyword>
