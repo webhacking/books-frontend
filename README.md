@@ -93,6 +93,11 @@ $ yarn test
 ```bash
 $ export CYPRESS_BASE_URL=[baseURL]
 ```
+**Run Cypress Local**
+```bash
+$ npx cypress cache clear
+$ npx cypress run
+```
 
 ### Branches
 
