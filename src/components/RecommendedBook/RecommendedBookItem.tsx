@@ -65,7 +65,7 @@ function RecommendedBookItem(props: Props) {
       className={className}
     >
       {/* Todo show sentence */}
-      {props.type === 'HotRelease' && <BookMeta bId={book.b_id} />}
+      {props.type === 'HotRelease' && <BookMeta bId={book.b_id} theme={theme} />}
       {props.type === 'TodayRecommendation' && (
         <RecommendationText bg={theme}>
           {newlineToReactNode(props.book.sentence)}
