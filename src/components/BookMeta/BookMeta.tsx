@@ -28,11 +28,11 @@ const Container = styled.div`
   transition: opacity 0.2s ease-in-out;
 `;
 
-const AuthorsWrapper = styled.span`
+const AuthorsWrapper = styled.span<{color: string}>`
   height: 19px;
   font-size: 14px;
   line-height: 1.36;
-  color: ${slateGray60};
+  color: ${(props) => (props.color)};
   margin-bottom: 2px;
   ${lineClamp(1)};
 `;
@@ -87,6 +87,7 @@ interface BookMetaBaseProps {
   titleLineClamp?: number;
   width?: string;
   bookTitleStyle?: Interpolation;
+  authorColor?: string;
   className?: string;
   children?: React.ReactNode;
 }
@@ -97,6 +98,7 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
     titleLineClamp,
     width,
     bookTitleStyle,
+    authorColor = slateGray60,
     className,
     children,
   } = props;
@@ -122,7 +124,7 @@ const BookMetaBase: React.FC<BookMetaBaseProps> = (props) => {
           {book.title}
         </BookTitle>
       </a>
-      <AuthorsWrapper>
+      <AuthorsWrapper color={authorColor}>
         <Authors authors={mergedAuthors} />
       </AuthorsWrapper>
       {children}
