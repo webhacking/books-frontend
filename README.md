@@ -66,10 +66,14 @@ $ yarn install --frozen-lockfile
 > First run [traefik](https://github.com/ridi/traefik/blob/master/README.md),
 
 ```bash
-$ docker-compose up -d
+$ docker-compose up -f docker-compose.yml -f docker-compose.traefik.yml -d
 ...
 $ open https://books.local.ridi.io
 
+```
+or
+```bash
+$ cp docker-compose.traefik.yml docker-compose.override.yml
 ```
 
 **Enjoying development!**
@@ -88,12 +92,6 @@ $ yarn test
 
 ```bash
 $ export CYPRESS_BASE_URL=[baseURL]
-```
-
-**Run by Docker**
-
-```bash
-$ docker-compose -f ./docker-compose.cypress.yml up --force-recreate --build
 ```
 
 ### Branches
