@@ -8,14 +8,12 @@ import { timeAgo } from 'src/utils/common';
 import ArrowLeft from 'src/svgs/ChevronRight.svg';
 import NotificationIcon from 'src/svgs/Notification_solid.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
-import { useDispatch, useSelector } from 'react-redux';
-import { notificationActions } from 'src/services/notification';
-import { RootState } from 'src/store/config';
 import NotificationPlaceholder from 'src/components/Placeholder/NotificationItemPlaceholder';
 import * as tracker from 'src/utils/event-tracker';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
 import sentry from 'src/utils/sentry';
 import useAccount from 'src/hooks/useAccount';
+import useNotification from 'src/hooks/useNotification';
 
 const Section = styled.section<{}, RIDITheme>`
   background-color: ${(props) => props.theme.backgroundColor};
@@ -250,12 +248,9 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
 
 const NotificationPage: React.FC<NotificationPageProps> = (props) => {
   const { isTitleHidden = false } = props;
-  const { items, isLoaded, unreadCount } = useSelector(
-    (store: RootState) => store.notifications,
-  );
+  const { unreadCount, items, requestFetchNotifications } = useNotification();
   const loggedUser = useAccount();
   const slug = 'notification-item';
-  const dispatch = useDispatch();
 
   const setPageView = useCallback(() => {
     try {
@@ -270,13 +265,8 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
   }, [loggedUser]);
 
   useEffect(() => {
-    if (!isLoaded) {
-      dispatch(notificationActions.loadNotifications({ limit: 100 }));
-    }
-    return () => {
-      dispatch(notificationActions.setLoaded(false));
-    };
-  }, [dispatch]);
+    requestFetchNotifications(100);
+  }, [requestFetchNotifications]);
 
   return (
     <>
@@ -287,7 +277,7 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
         {!isTitleHidden && (
           <PageTitle title="알림" mobileHidden />
         )}
-        {isLoaded ? (
+        {items != null && unreadCount != null ? (
           <NotiList>
             {items.length === 0 ? (
               <NoEmptyNotification>

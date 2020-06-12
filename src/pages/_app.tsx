@@ -23,6 +23,7 @@ import DisallowedHostsFilter from 'src/components/Misc/DisallowedHostsFilter';
 import sentry from 'src/utils/sentry';
 import InAppThemeProvider, { getAppTheme, Theme } from 'src/components/Misc/InAppThemeProvider';
 import { AccountProvider } from 'src/hooks/useAccount';
+import { NotificationProvider } from 'src/hooks/useNotification';
 
 interface StoreAppProps {
   store: Store<RootState>;
@@ -136,7 +137,9 @@ class StoreApp extends App<StoreAppProps> {
           {/* Todo Apply Layout */}
           <Provider store={store}>
             <AccountProvider>
-              <Component {...pageProps} />
+              <NotificationProvider>
+                <Component {...pageProps} />
+              </NotificationProvider>
             </AccountProvider>
           </Provider>
         </>
@@ -152,13 +155,15 @@ class StoreApp extends App<StoreAppProps> {
             <Global styles={resetStyles} />
             <Provider store={store}>
               <AccountProvider>
-                <InAppThemeProvider theme={theme ?? ''}>
-                  <ViewportIntersectionProvider>
-                    <Contents>
-                      <Component {...pageProps} />
-                    </Contents>
-                  </ViewportIntersectionProvider>
-                </InAppThemeProvider>
+                <NotificationProvider>
+                  <InAppThemeProvider theme={theme ?? ''}>
+                    <ViewportIntersectionProvider>
+                      <Contents>
+                        <Component {...pageProps} />
+                      </Contents>
+                    </ViewportIntersectionProvider>
+                  </InAppThemeProvider>
+                </NotificationProvider>
               </AccountProvider>
             </Provider>
           </CacheProvider>
@@ -175,20 +180,21 @@ class StoreApp extends App<StoreAppProps> {
           <Global styles={resetStyles} />
           <Provider store={store}>
             <AccountProvider>
-              {/* Todo Apply Layout */}
-              <ThemeProvider theme={defaultTheme}>
-                <ViewportIntersectionProvider rootMargin="100px">
-                  <GNB
-                    searchKeyword={query.search || query.q}
-                    isPartials={false}
-                    isLoginForPartials={query.is_login}
-                  />
-                  <Contents>
-                    <Component {...pageProps} />
-                  </Contents>
-                  <Footer />
-                </ViewportIntersectionProvider>
-              </ThemeProvider>
+              <NotificationProvider>
+                <ThemeProvider theme={defaultTheme}>
+                  <ViewportIntersectionProvider rootMargin="100px">
+                    <GNB
+                      searchKeyword={query.search || query.q}
+                      isPartials={false}
+                      isLoginForPartials={query.is_login}
+                    />
+                    <Contents>
+                      <Component {...pageProps} />
+                    </Contents>
+                    <Footer />
+                  </ViewportIntersectionProvider>
+                </ThemeProvider>
+              </NotificationProvider>
             </AccountProvider>
           </Provider>
         </CacheProvider>

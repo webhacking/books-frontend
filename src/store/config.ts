@@ -9,12 +9,10 @@ import rootSaga from 'src/store/sagas';
 import { initialState } from 'src/store/initialState';
 import { BooksState } from 'src/services/books/reducer';
 import { CategoryState } from 'src/services/category/reducer';
-import { NotificationState } from 'src/services/notification/reducer';
 
 export interface RootState {
   books: BooksState;
   categories: CategoryState;
-  notifications: NotificationState;
 }
 
 const makeStore = (
