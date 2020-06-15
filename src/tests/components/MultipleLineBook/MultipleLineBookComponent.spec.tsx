@@ -22,12 +22,6 @@ const store = makeStore(
       items: {},
       isFetching: false,
     },
-    notifications: {
-      items: [],
-      hasNotification: false,
-      unreadCount: 0,
-      isLoaded: true,
-    },
     books: {
       items: {
         '2414000748': {

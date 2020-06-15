@@ -19,10 +19,8 @@ import cookieKeys from 'src/constants/cookies';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { LoggedUser } from 'src/types/account';
 import { useCartCount } from 'src/hooks/useCartCount';
-import { useDispatch, useSelector } from 'react-redux';
-import { notificationActions } from 'src/services/notification';
-import { RootState } from 'src/store/config';
 import { GNBContext } from 'src/components/GNB';
+import useNotification from 'src/hooks/useNotification';
 
 const StyledAnchor = styled.a`
   height: 100%;
@@ -300,11 +298,10 @@ const genreValueReplace = (visitedGenre: string) => {
 
 export const MainTab: React.FC<MainTabProps> = (props) => {
   const { loggedUserInfo } = props;
-  const { hasNotification } = useSelector((store: RootState) => store.notifications);
+  const { unreadCount, requestFetchUnreadCount } = useNotification();
   const router = useRouter();
   const [, setHomeURL] = useState('/');
   const cartCount = useCartCount(loggedUserInfo);
-  const dispatch = useDispatch();
   useEffect(() => {
     const cookies = new Cookies();
     const visitedGenre = cookies.get(cookieKeys.main_genre);
@@ -316,9 +313,9 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
   useEffect(() => {
     // Notification Page에서는 호출 X
     if (loggedUserInfo && router.pathname !== '/notification') {
-      dispatch(notificationActions.loadNotificationUnreadCount());
+      requestFetchUnreadCount();
     }
-  }, [dispatch, loggedUserInfo, router.asPath]);
+  }, [requestFetchUnreadCount, loggedUserInfo, router.asPath]);
 
   return (
     <>
@@ -336,7 +333,7 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
           label={labels.mainTab.notification}
           path="/notification"
           pathRegexp={/^\/notification\/?$/g}
-          addOn={hasNotification && (
+          addOn={Boolean(unreadCount) && (
             <NotificationAddOn />
           )}
         />

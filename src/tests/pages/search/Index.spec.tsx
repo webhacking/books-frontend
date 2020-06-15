@@ -24,7 +24,6 @@ describe('Search Page Test', () => {
       const reducerMock = jest.fn().mockReturnValue({
         books: {},
         categories: {},
-        notifications: {},
       });
       const store = createStore(reducerMock);
       (axios as any).__setHandler(() => ({ data: fixture }));
