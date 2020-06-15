@@ -9,8 +9,8 @@ import {
   getByPlaceholderText,
   RenderResult,
 } from '@testing-library/react';
+import { localStorage } from '../../../utils/storages';
 import '@testing-library/jest-dom/extend-expect';
-// @ts-ignore
 import labels from 'src/labels/instantSearch.json';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
@@ -20,9 +20,11 @@ import { safeJSONParse } from '../../../utils/common';
 import axios from 'axios';
 import fixtureABC from './abc.fixture.json';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
-afterEach(cleanup);
 
-// axiosMock.get.mockResolvedValue();
+afterEach(cleanup);
+jest.useFakeTimers();
+const spyHref = jest.spyOn(window.location, 'href', 'set').mockReturnValue();
+
 const renderComponent = async () => {
   let result: RenderResult;
   await act(async () => {
@@ -38,6 +40,11 @@ const renderComponent = async () => {
 };
 
 describe('test instant search', () => {
+  afterEach(() => {
+    spyHref.mockClear();
+    localStorage.clear();
+  });
+
   it('should be render input', async () => {
     const { container } = await renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
@@ -121,7 +128,6 @@ describe('test instant search', () => {
   });
 
   it('should render search result', async () => {
-    jest.useFakeTimers();
     (axios as any).__setHandler((method: string, url: string) => {
       return {
         data: fixtureABC,
@@ -134,21 +140,18 @@ describe('test instant search', () => {
       fireEvent.change(inputNode, { target: { value: 'ABC' } });
       jest.runAllTimers();
     });
-    jest.useRealTimers();
     expect(
       container.querySelector('[data-author-id="90615"] span:nth-child(2)')?.textContent,
     ).toBe('ABC디이');
   });
 
   it('should not be render search result', async () => {
-    jest.useFakeTimers();
     const { container } = await renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
     await act(async () => {
       fireEvent.change(inputNode, { target: { value: '가나' } });
       jest.runAllTimers();
     });
-    jest.useRealTimers();
     expect(inputNode.value).toBe('가나');
   });
 
@@ -159,8 +162,27 @@ describe('test instant search', () => {
     expect(searchForm).not.toBe(null);
 
     await act(async () => {
-      fireEvent.submit(searchForm[0]);
+      fireEvent.click(inputNode);
       fireEvent.change(inputNode, { target: { value: 'ABC' } });
+      jest.runAllTimers();
+      fireEvent.submit(searchForm[0]);
+    });
+
+    const history =
+      safeJSONParse(localStorage.getItem(localStorageKeys.instantSearchHistory), []);
+    expect(spyHref).toHaveBeenCalledWith('https://books.local.ridi.io/search?q=ABC&adult_exclude=y');
+    expect(history.length).toBe(1);
+  });
+
+  it('can not be add search history(will be trimmed)', async () => {
+    const { container } = await renderComponent();
+    const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
+    const searchForm = container.getElementsByTagName('form');
+    expect(searchForm).not.toBe(null);
+
+    await act(async () => {
+      fireEvent.change(inputNode, { target: { value: '     ' } });
+      jest.runAllTimers();
       fireEvent.submit(searchForm[0]);
     });
 
@@ -168,7 +190,8 @@ describe('test instant search', () => {
       localStorage.getItem(localStorageKeys.instantSearchHistory),
       [],
     );
-    expect(history).not.toBe([]);
+    expect(spyHref).not.toHaveBeenCalled();
+    expect(history.length).toBe(0);
   });
 
   it('should be remove all search history.', async () => {
@@ -190,9 +213,9 @@ describe('test instant search', () => {
       localStorage.getItem(localStorageKeys.instantSearchHistory),
       '',
     );
-
     expect(history.length).toBe(0);
   });
+
   it('should be toggle search history', async () => {
     localStorage.setItem(
       localStorageKeys.instantSearchHistory,
@@ -236,6 +259,7 @@ describe('test instant search', () => {
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
     await act(async () => {
       fireEvent.focus(inputNode, {});
+      jest.runAllTimers()
     });
     const removeHistoryNode: HTMLElement[] = getAllByText(
       container,

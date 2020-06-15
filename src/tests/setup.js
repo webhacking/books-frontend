@@ -16,27 +16,10 @@ function initWindow() {
       setTimeout(callback, 0);
     };
 
-  const newLocation = new Proxy(window.location, {
-    href: '',
-    get(target, p) {
-      if (p === 'href') {
-        return this.href;
-      }
-      return target[p];
-    },
-    set(target, p, value) {
-      if (p === 'href') {
-        this.href = value;
-        return true;
-      }
-      target[p] = value;
-      return true;
-    },
-  });
   Object.defineProperty(window, 'location', {
-    value: newLocation,
+    value: new URL('https://books.local.ridi.io'),
+    configurable: true,
   });
-  location.href = 'https://books.local.ridi.io';
 }
 
 initModules();
