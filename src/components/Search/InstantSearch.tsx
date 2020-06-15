@@ -436,10 +436,11 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     const handleSubmit = useCallback(
       (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (keyword.length > 0) {
+        const trimmedKeyword = keyword.trim();
+        if (trimmedKeyword.length > 0) {
           if (enableSearchHistoryRecord) {
             const newHistory = Array<string>(
-              ...new Set<string>([keyword, ...searchHistory]),
+              ...new Set<string>([trimmedKeyword, ...searchHistory]),
             ).slice(0, 10);
             setSearchHistory(newHistory);
             localStorage.setItem(
@@ -451,7 +452,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           // Todo conditional check for partial component
 
           const url = new URL('/search', origin || location.href);
-          url.searchParams.append('q', keyword);
+          url.searchParams.append('q', trimmedKeyword);
           url.searchParams.set('adult_exclude', isAdultExclude ? 'y' : 'n');
           window.location.href = url.toString();
 
