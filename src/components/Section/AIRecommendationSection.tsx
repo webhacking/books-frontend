@@ -2,7 +2,7 @@ import { AIRecommendationBook, SectionExtra } from 'src/types/sections';
 import SelectionBook from 'src/components/BookSections/SelectionBook';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import axios, { CancelToken, OAuthRequestType } from 'src/utils/axios';
+import axios, { CancelToken } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 import { booksActions } from 'src/services/books';
 import { useRouter } from 'next/router';
@@ -40,7 +40,6 @@ const AiRecommendationSection: React.FC<AiRecommendationSectionProps> = (props) 
         const result = await axios.get(requestUrl, {
           baseURL: process.env.NEXT_STATIC_AI_RECOMMENDATION_API,
           withCredentials: true,
-          custom: { authorizationRequestType: OAuthRequestType.CHECK },
           timeout: 8000,
           cancelToken: source.token,
         });

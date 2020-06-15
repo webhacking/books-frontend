@@ -12,7 +12,7 @@ import HomeLink from 'src/components/GNB/HomeLink';
 import DoublePointIcon from 'src/svgs/DoublePoint.svg';
 import CashIcon from 'src/svgs/Cash.svg';
 import pRetry from 'p-retry';
-import axios, { CancelToken, OAuthRequestType, wrapCatchCancel } from 'src/utils/axios';
+import axios, { CancelToken, wrapCatchCancel } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 import { RIDIBOOKS_LOGO_URL, RIDISELECT_LOGO_URL } from 'src/constants/icons';
 import useAccount from 'src/hooks/useAccount';
@@ -182,7 +182,6 @@ const GNBButtons: React.FC<GNBButtonsProps> = (props) => {
         const result = await pRetry(
           () => wrapCatchCancel(axios.get)(cartUrl, {
             withCredentials: true,
-            custom: { authorizationRequestType: OAuthRequestType.CHECK },
             cancelToken: source.token,
           }),
           {
