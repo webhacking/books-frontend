@@ -6,7 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
 import { Provider } from 'react-redux';
-import makeStore from 'src/store/config';
+import makeStore from '../../utils/makeStore';
 
 afterEach(cleanup);
 const store = makeStore(
@@ -18,7 +18,6 @@ const store = makeStore(
       isFetching: false,
     },
   },
-  { asPath: 'test', isServer: false },
 );
 
 const renderEventBannerWrapper = () =>

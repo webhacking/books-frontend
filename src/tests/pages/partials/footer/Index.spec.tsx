@@ -2,8 +2,8 @@ import * as React from 'react';
 import Index from 'src/pages/partials/footer';
 import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import makeStore from '../../../../store/config';
-const store = makeStore({}, { asPath: 'test', isServer: false });
+import makeStore from '../../../utils/makeStore';
+const store = makeStore();
 
 afterEach(cleanup);
 

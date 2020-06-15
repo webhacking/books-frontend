@@ -1,12 +1,12 @@
 import { createStore, applyMiddleware, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { Context, createWrapper } from 'next-redux-wrapper';
 
 import createSagaMiddleware from 'redux-saga';
 import { rootReducers } from 'src/store/reducers';
 
 import rootSaga from 'src/store/sagas';
 
-import { initialState } from 'src/store/initialState';
 import { BooksState } from 'src/services/books/reducer';
 import { CategoryState } from 'src/services/category/reducer';
 
@@ -15,13 +15,10 @@ export interface RootState {
   categories: CategoryState;
 }
 
-const makeStore = (
-  preLoadedState: RootState = initialState,
-): Store => {
+const makeStore = (_context: Context): Store => {
   const sagaMiddleware = createSagaMiddleware();
   const store = createStore(
     rootReducers,
-    preLoadedState,
     process.env.IS_PRODUCTION
       ? applyMiddleware(sagaMiddleware)
       : composeWithDevTools(applyMiddleware(sagaMiddleware)),
@@ -31,4 +28,6 @@ const makeStore = (
   return store as unknown as Store;
 };
 
-export default makeStore;
+const wrapper = createWrapper(makeStore, { debug: false });
+
+export default wrapper;

@@ -14,7 +14,7 @@ import RecommendedBookCarousel from 'src/components/RecommendedBook/RecommendedB
 import RecommendedBookList from 'src/components/RecommendedBook/RecommendedBookList';
 import RecommendedBook from 'src/components/RecommendedBook';
 import { defaultTheme } from 'src/styles';
-import makeStore from 'src/store/config';
+import makeStore from '../../utils/makeStore';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
 import { HotRelease, TodayRecommendation } from '../../../types/sections';
 
@@ -46,7 +46,6 @@ const store = makeStore(
       isFetching: false,
     },
   },
-  { asPath: 'test', isServer: false },
 );
 
 const books: HotRelease[] = [

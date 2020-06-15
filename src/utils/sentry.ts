@@ -125,9 +125,9 @@ const Sentry = {
       }
       if (ctx) {
         const {
-          isServer, req, res, err, asPath, query,
+          req, res, err, asPath, query,
         } = ctx;
-        scope.setTag('isServer', isServer.toString());
+        scope.setTag('isServer', String(Boolean(req)));
         scope.setTag('path', asPath ?? 'undefined');
         scope.setExtra('NEXT_JS_ERROR', String(err));
         scope.setExtra('query', query);

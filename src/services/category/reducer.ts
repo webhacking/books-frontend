@@ -1,4 +1,6 @@
 import { createActionCreators, createReducerFunction, ImmerReducer } from 'immer-reducer';
+import { HYDRATE } from 'next-redux-wrapper';
+import { AnyAction } from 'redux';
 import * as CategoryApi from 'src/types/category';
 
 export interface CategoryState {
@@ -37,8 +39,20 @@ export class CategoryReducer extends ImmerReducer<CategoryState> {
   }
 }
 
-export const categoryReducer = createReducerFunction(
+const innerCategoryReducer = createReducerFunction(
   CategoryReducer,
   categoryInitialState,
 );
+export function categoryReducer(
+  state: CategoryState = categoryInitialState,
+  action: AnyAction,
+): CategoryState {
+  if (action.type === HYDRATE) {
+    return {
+      items: { ...state.items, ...action.payload.categories.items },
+      isFetching: state.isFetching,
+    };
+  }
+  return innerCategoryReducer(state, action as any);
+}
 export const categoryActions = createActionCreators(CategoryReducer);

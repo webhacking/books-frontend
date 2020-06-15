@@ -1,4 +1,6 @@
 import { createActionCreators, createReducerFunction, ImmerReducer } from 'immer-reducer';
+import { HYDRATE } from 'next-redux-wrapper';
+import { AnyAction } from 'redux';
 import * as BookApi from 'src/types/book';
 import sentry from 'src/utils/sentry';
 
@@ -82,5 +84,17 @@ export class BooksReducer extends ImmerReducer<BooksState> {
   }
 }
 
-export const booksReducer = createReducerFunction(BooksReducer, booksInitialState);
+const innerBooksReducer = createReducerFunction(BooksReducer, booksInitialState);
+export function booksReducer(
+  state: BooksState = booksInitialState,
+  action: AnyAction,
+): BooksState {
+  if (action.type === HYDRATE) {
+    return {
+      items: { ...state.items, ...action.payload.books.items },
+      isFetching: state.isFetching,
+    };
+  }
+  return innerBooksReducer(state, action as any);
+}
 export const booksActions = createActionCreators(BooksReducer);

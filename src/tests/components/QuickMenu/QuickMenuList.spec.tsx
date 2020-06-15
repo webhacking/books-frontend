@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import { ThemeProvider } from 'emotion-theming';
 import { defaultTheme } from 'src/styles';
-import makeStore from '../../../store/config';
+import makeStore from '../../utils/makeStore';
 import { Provider } from 'react-redux';
 
 afterEach(cleanup);
@@ -18,7 +18,6 @@ const store = makeStore(
       isFetching: false,
     },
   },
-  { asPath: 'test', isServer: false },
 );
 
 const renderComponent = () =>

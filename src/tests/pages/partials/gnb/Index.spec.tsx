@@ -2,7 +2,7 @@ import * as React from 'react';
 import Index from 'src/pages/partials/gnb';
 import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import makeStore from '../../../../store/config';
+import makeStore from '../../../utils/makeStore';
 import { Provider } from 'react-redux';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import { createRouter } from 'next/router';
@@ -17,10 +17,7 @@ const router = createRouter('/', { genre: 'general' }, '', {
 });
 
 afterEach(cleanup);
-const store = makeStore(
-  {},
-  { asPath: 'test', isServer: false },
-);
+const store = makeStore();
 
 test('should be render Index Component', async () => {
   const props = await Index.getInitialProps({

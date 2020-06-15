@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { ThemeProvider } from 'emotion-theming';
 import { Provider } from 'react-redux';
 import { defaultTheme } from 'src/styles';
-import makeStore from 'src/store/config';
+import makeStore from '../../utils/makeStore';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
 import RankingBookList from 'src/components/BookSections/RankingBook/RankingBookList';
 import fixture from './rankingbook.fixture.json';
@@ -29,7 +29,6 @@ const store = makeStore(
       isFetching: false,
     },
   },
-  { asPath: 'test', isServer: false },
 );
 const renderRankingBookList = () =>
   render(

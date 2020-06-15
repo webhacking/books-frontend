@@ -144,8 +144,8 @@ Home.getInitialProps = async (ctx: ConnectedInitializeProps) => {
     query,
     res,
     store,
-    isServer,
   } = ctx;
+  const isServer = Boolean(ctx.req);
 
   const genre = (query.genre || 'general').toString();
   if (!['general', 'romance', 'romance-serial', 'fantasy', 'fantasy-serial', 'comics', 'bl', 'bl-serial'].includes(genre)) {

@@ -3,7 +3,7 @@ import { cleanup, render } from '@testing-library/react';
 import { MainTab } from 'src/components/Tabs';
 import { ThemeProvider } from 'emotion-theming';
 import { Provider } from 'react-redux';
-import makeStore from 'src/store/config';
+import makeStore from '../../utils/makeStore';
 import { defaultTheme } from 'src/styles';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import { createRouter } from 'next/router';
@@ -17,7 +17,7 @@ const router = createRouter('/', { genre: 'general' }, '', {
   wrapApp: jest.fn(),
 });
 
-const store = makeStore({}, { asPath: 'test', isServer: false });
+const store = makeStore();
 afterEach(cleanup);
 
 const renderComponent = () =>
