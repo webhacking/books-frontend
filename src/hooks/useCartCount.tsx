@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import pRetry from 'p-retry';
-import axios, { CancelToken, OAuthRequestType } from 'src/utils/axios';
+import axios, { CancelToken } from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 import { LoggedUser } from 'src/types/account';
 
@@ -16,7 +16,6 @@ export const useCartCount = (loggedUserInfo: LoggedUser | null) => {
             baseURL: process.env.NEXT_STATIC_LEGACY_STORE_API_HOST,
             withCredentials: true,
             cancelToken: source.token,
-            custom: { authorizationRequestType: OAuthRequestType.CHECK },
           }),
           { retries: 2 },
         );

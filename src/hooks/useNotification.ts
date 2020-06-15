@@ -3,7 +3,7 @@ import React from 'react';
 import Cookies from 'universal-cookie';
 
 import { Notification } from 'src/types/notification';
-import axios, { OAuthRequestType } from 'src/utils/axios';
+import axios from 'src/utils/axios';
 import { runWithExponentialBackoff } from 'src/utils/backoff';
 import sentry from 'src/utils/sentry';
 
@@ -40,7 +40,6 @@ async function requestNotificationAuth() {
   const { data } = await axios.get<NotificationAuthResponse>(
     `${process.env.NEXT_STATIC_STORE_API}/users/me/notification-token/`,
     {
-      custom: { authorizationRequestType: OAuthRequestType.STRICT },
       withCredentials: true,
     },
   );
@@ -53,7 +52,6 @@ async function requestNotification(limit: number, token: string) {
     `${process.env.NEXT_STATIC_STORE_API}/notification`,
     {
       params: { limit },
-      custom: { authorizationRequestType: OAuthRequestType.STRICT },
       headers: {
         Authorization: `Bearer ${token}`,
       },

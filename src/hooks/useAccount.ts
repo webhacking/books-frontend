@@ -2,7 +2,7 @@ import { configureScope } from '@sentry/browser';
 import libAxios, { CancelTokenSource, AxiosError } from 'axios';
 import React from 'react';
 
-import axios, { CancelToken, OAuthRequestType } from 'src/utils/axios';
+import axios, { CancelToken } from 'src/utils/axios';
 import { CancelledError, runWithExponentialBackoff } from 'src/utils/backoff';
 import * as tracker from 'src/utils/event-tracker';
 import Sentry from 'src/utils/sentry';
@@ -15,9 +15,6 @@ export async function checkLoggedIn(cancel: CancelTokenSource) {
     const { data } = await axios.get<{ result: LoggedUser}>('/accounts/me', {
       baseURL: process.env.NEXT_STATIC_ACCOUNT_API,
       withCredentials: true,
-      custom: {
-        authorizationRequestType: OAuthRequestType.CHECK,
-      },
       cancelToken: cancel.token,
     });
     return data.result;

@@ -3,7 +3,7 @@ import SelectionBook from 'src/components/BookSections/SelectionBook';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/config';
-import axios, { OAuthRequestType } from 'src/utils/axios';
+import axios from 'src/utils/axios';
 import sentry from 'src/utils/sentry';
 import { keyToArray } from 'src/utils/common';
 import { booksActions } from 'src/services/books';
@@ -34,7 +34,6 @@ const UserPreferredSection: React.FC<UserPreferredSectionProps> = (props) => {
         const requestUrl = `${process.env.NEXT_STATIC_STORE_API}/sections/home-${genre}-user-preferred-bestseller/`;
         const result = await axios.get(requestUrl, {
           withCredentials: true,
-          custom: { authorizationRequestType: OAuthRequestType.CHECK },
           timeout: 8000,
         });
         if (result.status === 200) {
