@@ -9,6 +9,7 @@ import {
   getByPlaceholderText,
   RenderResult,
 } from '@testing-library/react';
+import { localStorage } from '../../../utils/storages';
 import '@testing-library/jest-dom/extend-expect';
 // @ts-ignore
 import labels from 'src/labels/instantSearch.json';
@@ -38,10 +39,15 @@ const renderComponent = async () => {
 };
 
 describe('test instant search', () => {
+  let spyHref: jest.SpyInstance;
   beforeEach(() => {
+    spyHref = jest.spyOn(window.location, 'href', 'set').mockReturnValue();
     localStorage.clear();
-    window.location.href = 'https://books.local.ridi.io';
-  })
+  });
+  afterEach(() => {
+    spyHref.mockRestore();
+    localStorage.clear();
+  });
   it('should be render input', async () => {
     const { container } = await renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
@@ -173,7 +179,7 @@ describe('test instant search', () => {
 
     const history =
       safeJSONParse(localStorage.getItem(localStorageKeys.instantSearchHistory), []);
-    expect(window.location.href).toBe('https://books.local.ridi.io/search?q=ABC&adult_exclude=y')
+    expect(spyHref).toHaveBeenCalledWith('https://books.local.ridi.io/search?q=ABC&adult_exclude=y');
     expect(history.length).toBe(1);
   });
 
@@ -186,7 +192,7 @@ describe('test instant search', () => {
 
     await act(async () => {
       fireEvent.change(inputNode, { target: { value: '     ' } });
-      jest.advanceTimersByTime(500);
+      jest.runAllTimers();
       fireEvent.submit(searchForm[0]);
     });
 
@@ -194,7 +200,7 @@ describe('test instant search', () => {
       localStorage.getItem(localStorageKeys.instantSearchHistory),
       [],
     );
-    expect(window.location.href).toBe('https://books.local.ridi.io')
+    expect(spyHref).not.toHaveBeenCalled();
     expect(history.length).toBe(0);
   });
   it('should be remove all search history.', async () => {
@@ -254,6 +260,7 @@ describe('test instant search', () => {
   });
 
   it('should be remove search history item', async () => {
+    jest.useFakeTimers();
     localStorage.setItem(
       localStorageKeys.instantSearchHistory,
       JSON.stringify(['history_1', 'history_2']),
@@ -262,6 +269,7 @@ describe('test instant search', () => {
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
     await act(async () => {
       fireEvent.focus(inputNode, {});
+      jest.runAllTimers()
     });
     const removeHistoryNode: HTMLElement[] = getAllByText(
       container,
