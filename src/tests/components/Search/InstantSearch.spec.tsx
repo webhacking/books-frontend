@@ -38,6 +38,10 @@ const renderComponent = async () => {
 };
 
 describe('test instant search', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    window.location.href = 'https://books.local.ridi.io';
+  })
   it('should be render input', async () => {
     const { container } = await renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
@@ -153,14 +157,36 @@ describe('test instant search', () => {
   });
 
   it('can be add search history', async () => {
+    jest.useFakeTimers();
     const { container } = await renderComponent();
     const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
     const searchForm = container.getElementsByTagName('form');
     expect(searchForm).not.toBe(null);
 
     await act(async () => {
-      fireEvent.submit(searchForm[0]);
+      fireEvent.click(inputNode);
       fireEvent.change(inputNode, { target: { value: 'ABC' } });
+      jest.advanceTimersByTime(500);
+      fireEvent.submit(searchForm[0]);
+    });
+
+
+    const history =
+      safeJSONParse(localStorage.getItem(localStorageKeys.instantSearchHistory), []);
+    expect(window.location.href).toBe('https://books.local.ridi.io/search?q=ABC&adult_exclude=y')
+    expect(history.length).toBe(1);
+  });
+
+  it('can not be add search history(will be trimmed)', async () => {
+    jest.useFakeTimers();
+    const { container } = await renderComponent();
+    const inputNode = getByPlaceholderText(container, labels.searchPlaceHolder);
+    const searchForm = container.getElementsByTagName('form');
+    expect(searchForm).not.toBe(null);
+
+    await act(async () => {
+      fireEvent.change(inputNode, { target: { value: '     ' } });
+      jest.advanceTimersByTime(500);
       fireEvent.submit(searchForm[0]);
     });
 
@@ -168,9 +194,9 @@ describe('test instant search', () => {
       localStorage.getItem(localStorageKeys.instantSearchHistory),
       [],
     );
-    expect(history).not.toBe([]);
+    expect(window.location.href).toBe('https://books.local.ridi.io')
+    expect(history.length).toBe(0);
   });
-
   it('should be remove all search history.', async () => {
     localStorage.setItem(
       localStorageKeys.instantSearchHistory,
