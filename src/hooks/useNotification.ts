@@ -40,7 +40,7 @@ async function requestNotificationAuth() {
   const { data } = await axios.get<NotificationAuthResponse>(
     `${process.env.NEXT_STATIC_STORE_API}/users/me/notification-token/`,
     {
-      custom: { authorizationRequestType: OAuthRequestType.STRICT },
+      custom: { authorizationRequestType: OAuthRequestType.CHECK },
       withCredentials: true,
     },
   );
@@ -53,7 +53,7 @@ async function requestNotification(limit: number, token: string) {
     `${process.env.NEXT_STATIC_STORE_API}/notification`,
     {
       params: { limit },
-      custom: { authorizationRequestType: OAuthRequestType.STRICT },
+      custom: { authorizationRequestType: OAuthRequestType.CHECK },
       headers: {
         Authorization: `Bearer ${token}`,
       },
