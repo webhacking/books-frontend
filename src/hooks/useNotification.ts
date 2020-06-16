@@ -124,6 +124,8 @@ export function NotificationProvider(props: { children?: React.ReactNode }) {
           sentry.captureException(err);
         },
       );
+    } else {
+      setToken(newToken);
     }
   }, []);
 
