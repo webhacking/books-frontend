@@ -3,7 +3,7 @@ import { act, render, cleanup, RenderResult } from '@testing-library/react';
 import * as React from 'react';
 
 import App from 'src/pages/_app';
-import makeStore from 'src/store/config';
+import makeStore from '../utils/makeStore';
 
 afterEach(async () => {
   await act(async () => {
@@ -11,7 +11,7 @@ afterEach(async () => {
   });
 });
 
-const store = makeStore({}, { asPath: 'test', isServer: false });
+const store = makeStore();
 
 jest.mock('src/components/GNB', () => ({
   __esModule: true,
@@ -23,14 +23,11 @@ jest.mock('src/components/Footer', () => ({
   default: () => <footer>Footer</footer>,
 }));
 
-jest.mock('next-redux-wrapper', () => ({
+jest.mock('src/store/config', () => ({
   __esModule: true,
-  default: () => (value) => value,
-}));
-
-jest.mock('next-redux-saga', () => ({
-  __esModule: true,
-  default: (value) => value,
+  default: {
+    withRedux: x => x,
+  },
 }));
 
 describe('App', () => {
@@ -44,6 +41,7 @@ describe('App', () => {
               cookie: 'ridi_app_theme=dark',
             },
           },
+          store,
         },
         Component: () => null,
       });
@@ -58,7 +56,6 @@ describe('App', () => {
       renderResult = render(
         <App
           router={{ pathname: '/[genre]/' } as any}
-          store={store}
           pageProps={{}}
           query={{}}
           hasError={false}
@@ -79,7 +76,6 @@ describe('App', () => {
       renderResult = render(
         <App
           router={{ pathname: '/inapp/notifications/' } as any}
-          store={store}
           pageProps={{}}
           query={{}}
           hasError={false}
@@ -100,7 +96,6 @@ describe('App', () => {
       renderResult = render(
         <App
           router={{ pathname: '/partials/gnb/' } as any}
-          store={store}
           pageProps={{}}
           query={{}}
           hasError={false}

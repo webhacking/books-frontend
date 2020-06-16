@@ -5,10 +5,7 @@ import { ThemeProvider } from 'emotion-theming';
 import { cache } from 'emotion';
 import App, { AppContext } from 'next/app';
 import Head from 'next/head';
-import withRedux from 'next-redux-wrapper';
-import withReduxSaga from 'next-redux-saga';
-import { Provider } from 'react-redux';
-import { Store } from 'redux';
+import { END } from 'redux-saga';
 import React, { ErrorInfo } from 'react';
 import { UAParser } from 'ua-parser-js';
 
@@ -16,7 +13,7 @@ import GNB from 'src/components/GNB';
 import { defaultTheme, partialResetStyles, resetStyles } from 'src/styles';
 import Footer from 'src/components/Footer';
 import { PartialSeparator } from 'src/components/Misc';
-import makeStore, { RootState } from 'src/store/config';
+import wrapper from 'src/store/config';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
 import Meta from 'src/components/Meta';
 import DisallowedHostsFilter from 'src/components/Misc/DisallowedHostsFilter';
@@ -26,7 +23,6 @@ import { AccountProvider } from 'src/hooks/useAccount';
 import { NotificationProvider } from 'src/hooks/useNotification';
 
 interface StoreAppProps {
-  store: Store<RootState>;
   // tslint:disable-next-line
   pageProps: any;
   // tslint:disable-next-line
@@ -48,6 +44,10 @@ class StoreApp extends App<StoreAppProps> {
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
       : {};
+    if (ctx.req) {
+      ctx.store.dispatch(END);
+      await (ctx.store as any).sagaTask.toPromise();
+    }
 
     return {
       pageProps,
@@ -107,7 +107,6 @@ class StoreApp extends App<StoreAppProps> {
       query,
       theme,
       pageProps,
-      store,
       nonce,
     } = this.props;
     const pathname = this.props.router.pathname.toLowerCase();
@@ -135,13 +134,11 @@ class StoreApp extends App<StoreAppProps> {
             <Global styles={partialResetStyles} />
           </PartialSeparator>
           {/* Todo Apply Layout */}
-          <Provider store={store}>
-            <AccountProvider>
-              <NotificationProvider>
-                <Component {...pageProps} />
-              </NotificationProvider>
-            </AccountProvider>
-          </Provider>
+          <AccountProvider>
+            <NotificationProvider>
+              <Component {...pageProps} />
+            </NotificationProvider>
+          </AccountProvider>
         </>
       );
     }
@@ -153,19 +150,17 @@ class StoreApp extends App<StoreAppProps> {
           <DisallowedHostsFilter />
           <CacheProvider value={createCache({ ...cache, nonce })}>
             <Global styles={resetStyles} />
-            <Provider store={store}>
-              <AccountProvider>
-                <NotificationProvider>
-                  <InAppThemeProvider theme={theme ?? ''}>
-                    <ViewportIntersectionProvider>
-                      <Contents>
-                        <Component {...pageProps} />
-                      </Contents>
-                    </ViewportIntersectionProvider>
-                  </InAppThemeProvider>
-                </NotificationProvider>
-              </AccountProvider>
-            </Provider>
+            <AccountProvider>
+              <NotificationProvider>
+                <InAppThemeProvider theme={theme ?? ''}>
+                  <ViewportIntersectionProvider>
+                    <Contents>
+                      <Component {...pageProps} />
+                    </Contents>
+                  </ViewportIntersectionProvider>
+                </InAppThemeProvider>
+              </NotificationProvider>
+            </AccountProvider>
           </CacheProvider>
         </>
       );
@@ -178,28 +173,26 @@ class StoreApp extends App<StoreAppProps> {
         <DisallowedHostsFilter />
         <CacheProvider value={createCache({ ...cache, nonce })}>
           <Global styles={resetStyles} />
-          <Provider store={store}>
-            <AccountProvider>
-              <NotificationProvider>
-                <ThemeProvider theme={defaultTheme}>
-                  <ViewportIntersectionProvider rootMargin="100px">
-                    <GNB
-                      searchKeyword={query.search || query.q}
-                      isPartials={false}
-                      isLoginForPartials={query.is_login}
-                    />
-                    <Contents>
-                      <Component {...pageProps} />
-                    </Contents>
-                    <Footer />
-                  </ViewportIntersectionProvider>
-                </ThemeProvider>
-              </NotificationProvider>
-            </AccountProvider>
-          </Provider>
+          <AccountProvider>
+            <NotificationProvider>
+              <ThemeProvider theme={defaultTheme}>
+                <ViewportIntersectionProvider rootMargin="100px">
+                  <GNB
+                    searchKeyword={query.search || query.q}
+                    isPartials={false}
+                    isLoginForPartials={query.is_login}
+                  />
+                  <Contents>
+                    <Component {...pageProps} />
+                  </Contents>
+                  <Footer />
+                </ViewportIntersectionProvider>
+              </ThemeProvider>
+            </NotificationProvider>
+          </AccountProvider>
         </CacheProvider>
       </>
     );
   }
 }
-export default withRedux(makeStore, { debug: false })(withReduxSaga(StoreApp));
+export default wrapper.withRedux(StoreApp);

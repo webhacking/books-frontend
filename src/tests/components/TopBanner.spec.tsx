@@ -5,12 +5,9 @@ import { Provider } from 'react-redux';
 import TopBanner from 'src/components/TopBanner';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
 
-import makeStore from 'src/store/config';
+import makeStore from '../utils/makeStore';
 
-const store = makeStore(
-  {},
-  { asPath: 'test', isServer: false },
-);
+const store = makeStore();
 
 const BANNERS = [
   {
