@@ -125,6 +125,9 @@ export function NotificationProvider(props: { children?: React.ReactNode }) {
         },
       );
     }
+    if (!token && !isExpired) {
+      setToken(newToken);
+    }
   }, []);
 
   React.useEffect(() => {
