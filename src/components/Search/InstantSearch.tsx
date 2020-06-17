@@ -548,16 +548,13 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
     }, [router.asPath]);
 
     const showFooter = React.useMemo(
-      () =>
-        // eslint-disable-next-line
-        ((keyword.length < 1 && searchHistory.length > 0) ||
-          searchResult.books.length > 0
+      () => (keyword.length < 1
+          || searchResult.books.length > 0
           || searchResult.authors.length > 0)
         && isFocused,
       [
         isFocused,
         keyword.length,
-        searchHistory.length,
         searchResult.authors.length,
         searchResult.books.length,
       ],
@@ -629,7 +626,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
           {showFooter && (
             <SearchFooter ref={listWrapperRef}>
               <form>
-                {keyword.length < 1 && searchHistory.length > 0 ? (
+                {keyword.length < 1 ? (
                   <InstantSearchHistory
                     searchHistory={searchHistory}
                     enableSearchHistoryRecord={enableSearchHistoryRecord}
