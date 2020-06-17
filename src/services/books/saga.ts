@@ -28,12 +28,9 @@ function* fetchBooks(bIds: string[], withDesc = false) {
 
 function* isAvailableAtSelect(bIds: string[]) {
   try {
-    const books: BooksState = yield select((state: RootState) => state.books);
+    const isAvailableSelect = yield select((state: RootState) => state.books.isAvailableSelect);
     const availableBIds = bIds.filter(
-      (bId) => {
-        const book = books.items[bId];
-        return book && !book.clientBookFields.isAlreadyCheckedAtSelect;
-      },
+      (bId) => !(bId in isAvailableSelect),
     );
     if (availableBIds.length > 0) {
       const data = yield call(pRetry, () => checkAvailableAtRidiSelect(bIds), {
@@ -55,9 +52,9 @@ function* watchCheckSelectBookIds(action: Actions<typeof BooksReducer>) {
     yield delay(1000);
     if (action.type === booksActions.checkSelectBook.type && action.payload.length > 0) {
       const uniqIds = [...new Set(action.payload)];
-      const { items }: BooksState = yield select((state: RootState) => state.books);
+      const isAvailableSelect = yield select((state: RootState) => state.books.isAvailableSelect);
       const excludedIds = uniqIds.filter(
-        (id) => items[id] && !items[id]?.clientBookFields?.isAvailableSelect,
+        (id) => !isAvailableSelect[id],
       );
       const arrays = splitArrayToChunk(excludedIds, DEFAULT_BOOKS_ID_CHUNK_SIZE);
 

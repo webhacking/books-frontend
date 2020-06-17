@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import BookMetaBase from 'src/components/BookMeta/BookMeta';
 import AtSelectIcon from 'src/svgs/Book1.svg';
-import { useBookSelector } from 'src/hooks/useBookDetailSelector';
+import { useIsAvailableSelect } from 'src/hooks/useBookDetailSelector';
 import { slateGray40, slateGray60 } from '@ridi/colors';
 
 const AvailableOnSelectContainer = styled.div`
@@ -35,10 +35,10 @@ interface BookMetaProps {
 
 function BookMeta(props: BookMetaProps) {
   const { theme, bId } = props;
-  const book = useBookSelector(bId);
+  const isAvailableSelect = useIsAvailableSelect(bId);
   return (
     <BookMetaBase bId={bId} bookTitleStyle={bookTitleStyle} authorColor={theme === 'dark' ? slateGray40 : slateGray60}>
-      {book?.clientBookFields?.isAvailableSelect && (
+      {isAvailableSelect && (
         <AvailableOnSelectContainer
           role="img"
           aria-label="리디셀렉트 이용 가능 도서"

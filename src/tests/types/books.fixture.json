@@ -57,10 +57,6 @@
       "id": 111,
       "name": "대원씨아이",
       "cp_name": "리디북스"
-    },
-    "clientBookFields": {
-      "isAvailableSelect": false,
-      "isAlreadyCheckedAtSelect": false
     }
   },
   {
@@ -141,10 +137,6 @@
       "id": 1561,
       "name": "길찾기",
       "cp_name": "(주)이미지프레임_E/P/J"
-    },
-    "clientBookFields": {
-      "isAvailableSelect": false,
-      "isAlreadyCheckedAtSelect": false
     }
   },
   {
@@ -242,10 +234,6 @@
       "id": 2945,
       "name": "레이코믹스",
       "cp_name": "오렌지트랙_황제의 약혼녀로 산다는 것은_선인세_JPG"
-    },
-    "clientBookFields": {
-      "isAvailableSelect": false,
-      "isAlreadyCheckedAtSelect": false
     }
   },
   {
@@ -330,10 +318,6 @@
       "id": 806,
       "name": "AK 커뮤니케이션즈",
       "cp_name": "에이케이 커뮤니케이션즈_E/P/J"
-    },
-    "clientBookFields": {
-      "isAvailableSelect": false,
-      "isAlreadyCheckedAtSelect": false
     }
   },
   {
@@ -390,10 +374,6 @@
       "id": 2189,
       "name": "푸른숲",
       "cp_name": "푸른숲_E/P"
-    },
-    "clientBookFields": {
-      "isAvailableSelect": false,
-      "isAlreadyCheckedAtSelect": false
     }
   }
 ]

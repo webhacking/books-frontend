@@ -12,7 +12,7 @@ import priceZeroFixture from './fixtures/price-zero.fixture.json';
 
 interface Fixture {
   searchApiResult: SearchTypes.SearchBookDetail;
-  bookApiResult: BookApi.ClientBook;
+  bookApiResult: BookApi.Book;
 }
 
 function renderPriceInfo(fixture: Fixture, genre = '') {

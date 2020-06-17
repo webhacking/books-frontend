@@ -59,7 +59,6 @@ const store = makeStore(
           isComic: false,
           isNovel: false,
           publisher: { id: 2414, name: '조선비즈' },
-          clientBookFields: null,
         },
         '2414000749': null,
       },

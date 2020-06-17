@@ -140,12 +140,6 @@ export const RBookData = R.Record({
 );
 export type Book = R.Static<typeof RBookData>;
 
-export interface ClientBookFields {
-  isAvailableSelect: boolean;
-  isAlreadyCheckedAtSelect: boolean;
-  desc?: BookDesc;
-}
-
 export interface BookDescResponse {
   descriptions: BookDesc;
   b_id: string;
@@ -185,8 +179,6 @@ export interface SimpleBook {
   };
   setBookCount?: number;
 }
-
-export type ClientSimpleBook = SimpleBook & { clientBookFields: ClientBookFields };
 
 export function createSimpleBookData(book: Book): SimpleBook {
   const thumbnailId = getThumbnailIdFromBookDetail(book);
