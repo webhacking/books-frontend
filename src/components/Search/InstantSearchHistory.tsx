@@ -143,11 +143,12 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = (props) => {
       }
     }
   }, [focusedPosition]);
+  const hasHistory = searchHistory.length > 0;
   return (
     <>
       <RecentHistoryLabel>{labels.recentKeywords}</RecentHistoryLabel>
       <HistoryList ref={wrapperRef}>
-        {enableSearchHistoryRecord ? (
+        {enableSearchHistoryRecord && hasHistory ? (
           <>
             {searchHistory.slice(0, 5).map((history: string, index: number) => (
               <SearchHistoryItem
@@ -173,13 +174,13 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = (props) => {
           </>
         ) : (
           <TurnOffSearchHistory>
-            <Exclamation css={exclamation} />
+            {!enableSearchHistoryRecord && <Exclamation css={exclamation} />}
             <span
               css={css`
                 color: #9ea7ad;
               `}
             >
-              {labels.turnOffStatus}
+              {!enableSearchHistoryRecord ? labels.turnOffStatus : labels.noSearchHistory}
             </span>
           </TurnOffSearchHistory>
         )}
@@ -193,12 +194,14 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = (props) => {
             ? labels.turnOffSearchHistory
             : labels.turnOnSearchHistory}
         </HistoryOptionButton>
-        <HistoryOptionButton
-          type="button"
-          onClick={handleClearHistory}
-        >
-          {enableSearchHistoryRecord && labels.clearSearchHistory}
-        </HistoryOptionButton>
+        {hasHistory && enableSearchHistoryRecord && (
+          <HistoryOptionButton
+            type="button"
+            onClick={handleClearHistory}
+          >
+            {labels.clearSearchHistory}
+          </HistoryOptionButton>
+        )}
       </HistoryOptionPanel>
     </>
   );
