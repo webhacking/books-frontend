@@ -35,10 +35,8 @@ function* watchInsertCategoryIds(action: Actions<typeof CategoryReducer>) {
       const arrays = splitArrayToChunk(excludedIds, DEFAULT_CHUNK_SIZE);
 
       yield all(arrays.map((array) => fetchCategories(array)));
-      yield put({ type: categoryActions.setFetching.type, payload: false });
     }
   } catch (error) {
-    yield put({ type: categoryActions.setFetching.type, payload: false });
     sentry.captureException(error);
   }
 }
