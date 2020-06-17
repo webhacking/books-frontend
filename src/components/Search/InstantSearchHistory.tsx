@@ -194,12 +194,12 @@ const InstantSearchHistory: React.FC<InstantSearchHistoryProps> = (props) => {
             ? labels.turnOffSearchHistory
             : labels.turnOnSearchHistory}
         </HistoryOptionButton>
-        {hasHistory && (
+        {hasHistory && enableSearchHistoryRecord && (
           <HistoryOptionButton
             type="button"
             onClick={handleClearHistory}
           >
-            {enableSearchHistoryRecord && labels.clearSearchHistory}
+            {labels.clearSearchHistory}
           </HistoryOptionButton>
         )}
       </HistoryOptionPanel>
