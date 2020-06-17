@@ -6,48 +6,34 @@ import sentry from 'src/utils/sentry';
 
 export interface BooksState {
   items: { [key: string]: BookApi.ClientSimpleBook | null };
-  isFetching: boolean;
 }
 
 export const booksInitialState: BooksState = {
   items: {},
-  isFetching: false,
 };
 
 export class BooksReducer extends ImmerReducer<BooksState> {
   public insertBookIds(payload: { bIds: string[]; withDesc?: boolean }) {
-    try {
-      const uniqIds = [...new Set(payload.bIds)];
-      const books: BooksState['items'] = {};
-      uniqIds.forEach((item: string) => {
-        if (!this.draftState.items[item]) {
-          books[item] = null;
-        }
-      });
-      this.draftState.isFetching = true;
-      this.draftState.items = { ...this.draftState.items, ...books };
-    } catch (error) {
-      sentry.captureException(error);
-    }
+    const uniqIds = [...new Set(payload.bIds)];
+    uniqIds.forEach((item) => {
+      if (!this.draftState.items[item]) {
+        this.draftState.items[item] = null;
+      }
+    });
   }
 
   public setBooks(payload: { items: BookApi.Book[] }) {
-    try {
-      const books: BooksState['items'] = {};
-      payload.items.forEach((book) => {
-        if (this.draftState.items[book.id] === null) {
-          const simpleBook: any = BookApi.createSimpleBookData(book);
-          simpleBook.clientBookFields = {
-            isAvailableSelect: false,
-            isAlreadyCheckedAtSelect: false,
-          };
-          books[book.id] = simpleBook;
-        }
-      });
-      this.draftState.items = { ...this.draftState.items, ...books };
-    } catch (error) {
-      sentry.captureException(error);
-    }
+    payload.items.forEach((book) => {
+      const { id } = book;
+      if (this.draftState.items[id] == null) {
+        const simpleBook: any = BookApi.createSimpleBookData(book);
+        simpleBook.clientBookFields = {
+          isAvailableSelect: false,
+          isAlreadyCheckedAtSelect: false,
+        };
+        this.draftState.items[id] = simpleBook;
+      }
+    });
   }
 
   public setDesc(payload: BookApi.BookDescResponse[]) {
@@ -78,10 +64,6 @@ export class BooksReducer extends ImmerReducer<BooksState> {
   }
 
   public checkSelectBook() {}
-
-  public setFetching(payload: boolean) {
-    this.draftState.isFetching = payload;
-  }
 }
 
 const innerBooksReducer = createReducerFunction(BooksReducer, booksInitialState);
@@ -92,7 +74,6 @@ export function booksReducer(
   if (action.type === HYDRATE) {
     return {
       items: { ...state.items, ...action.payload.books.items },
-      isFetching: state.isFetching,
     };
   }
   return innerBooksReducer(state, action as any);

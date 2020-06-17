@@ -5,12 +5,10 @@ import * as CategoryApi from 'src/types/category';
 
 export interface CategoryState {
   items: { [key: number]: CategoryApi.Category | null };
-  isFetching: boolean;
 }
 
 export const categoryInitialState: CategoryState = {
   items: {},
-  isFetching: false,
 };
 
 export class CategoryReducer extends ImmerReducer<CategoryState> {
@@ -22,7 +20,6 @@ export class CategoryReducer extends ImmerReducer<CategoryState> {
         categories[item] = null;
       }
     });
-    this.draftState.isFetching = true;
     this.draftState.items = { ...this.draftState.items, ...categories };
   }
 
@@ -32,10 +29,6 @@ export class CategoryReducer extends ImmerReducer<CategoryState> {
       categories[category.id] = category;
     });
     this.draftState.items = { ...this.draftState.items, ...categories };
-  }
-
-  public setFetching(payload: boolean) {
-    this.draftState.isFetching = payload;
   }
 }
 
@@ -50,7 +43,6 @@ export function categoryReducer(
   if (action.type === HYDRATE) {
     return {
       items: { ...state.items, ...action.payload.categories.items },
-      isFetching: state.isFetching,
     };
   }
   return innerCategoryReducer(state, action as any);

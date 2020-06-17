@@ -29,7 +29,6 @@ const store = makeStore(
           categories: [{ genre: 'general' }],
         },
       },
-      isFetching: false,
     },
   },
 );

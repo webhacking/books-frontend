@@ -15,7 +15,6 @@ const store = makeStore(
       itmes: {
         '12345': null,
       },
-      isFetching: false,
     },
   },
 );

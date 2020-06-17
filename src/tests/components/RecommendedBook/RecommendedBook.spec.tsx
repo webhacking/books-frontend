@@ -43,7 +43,6 @@ const store = makeStore(
           },
         },
       },
-      isFetching: false,
     },
   },
 );

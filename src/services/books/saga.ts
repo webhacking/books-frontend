@@ -62,10 +62,8 @@ function* watchCheckSelectBookIds(action: Actions<typeof BooksReducer>) {
       const arrays = splitArrayToChunk(excludedIds, DEFAULT_BOOKS_ID_CHUNK_SIZE);
 
       yield all(arrays.map((array) => isAvailableAtSelect(array)));
-      yield put({ type: booksActions.setFetching.type, payload: false });
     }
   } catch (error) {
-    yield put({ type: booksActions.setFetching.type, payload: false });
     sentry.captureException(error);
   }
 }
@@ -80,10 +78,8 @@ function* watchInsertBookIds(action: Actions<typeof BooksReducer>) {
       const arrays = splitArrayToChunk(excludedIds, DEFAULT_BOOKS_ID_CHUNK_SIZE);
 
       yield all(arrays.map((array) => fetchBooks(array, action.payload.withDesc)));
-      yield put({ type: booksActions.setFetching.type, payload: false });
     }
   } catch (error) {
-    yield put({ type: booksActions.setFetching.type, payload: false });
     sentry.captureException(error);
   }
 }

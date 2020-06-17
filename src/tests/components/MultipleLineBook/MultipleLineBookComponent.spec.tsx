@@ -20,7 +20,6 @@ const store = makeStore(
   {
     categories: {
       items: {},
-      isFetching: false,
     },
     books: {
       items: {
@@ -64,8 +63,6 @@ const store = makeStore(
         },
         '2414000749': null,
       },
-
-      isFetching: false,
     },
   },
 );

@@ -26,7 +26,6 @@ const store = makeStore(
           authors: [{name: 'Ridi', id: '1', role: 'author'}]
         },
       },
-      isFetching: false,
     },
   },
 );
