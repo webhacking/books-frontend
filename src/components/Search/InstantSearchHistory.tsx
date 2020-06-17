@@ -31,6 +31,10 @@ const RecentHistoryLabel = styled.p`
 
 const RemoveHistoryButton = styled.button`
   margin-left: 16px;
+  height: 42px;
+  width: 42px;
+  outline: none;
+  flex: none;
 `;
 
 const closeIcon = (theme: RIDITheme) => css`
@@ -55,7 +59,7 @@ const HistoryList = styled.ul`
 const SearchHistoryItem = styled.li`
   cursor: pointer;
   box-sizing: border-box;
-  padding: 12px 16px;
+  padding-left: 16px;
   font-size: 14px;
   line-height: 1;
   display: flex;
@@ -73,6 +77,7 @@ const SearchHistoryItem = styled.li`
     `,
   )};
   a {
+    padding: 14px 0;
     span {
       color: #303538;
       font-size: 15px;
@@ -107,6 +112,7 @@ const HistoryOptionPanel = styled.div`
 
 const HistoryOptionButton = styled.button`
   font-size: 14px;
+  outline: none;
 `;
 
 interface InstantSearchHistoryProps {
