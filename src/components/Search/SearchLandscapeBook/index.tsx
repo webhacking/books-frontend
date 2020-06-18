@@ -20,7 +20,7 @@ import { AuthorsInfo } from 'src/types/searchResults';
 import Star from 'src/svgs/Star.svg';
 import ThumbnailWithBadge from 'src/components/Book/ThumbnailWithBadge';
 import { lineClamp } from 'src/styles';
-import { useBookSelector } from 'src/hooks/useBookDetailSelector';
+import { useBookSelector, useBookDescription } from 'src/hooks/useBookDetailSelector';
 import sentry from 'src/utils/sentry';
 import * as tracker from 'src/utils/event-tracker';
 
@@ -217,6 +217,7 @@ export default function SearchLandscapeBook(props: SearchLandscapeBookProps) {
     item, title, q, index,
   } = props;
   const book = useBookSelector(item.b_id);
+  const rawDesc = useBookDescription(item.b_id);
   if (book === null) {
     return <Skeleton />;
   }
@@ -228,7 +229,6 @@ export default function SearchLandscapeBook(props: SearchLandscapeBookProps) {
     parent_category_name: item.parent_category_name,
     parent_category_name2: item.parent_category_name2,
   };
-  const rawDesc = book.clientBookFields?.desc;
   const clearDesc = rawDesc ? constructSearchDesc(rawDesc) : '';
   // 대여 배지 표기 여부가 장르에 따라 바뀌기 때문에 장르를 모아둠
   const genres = book.categories.map((category) => category.sub_genre) ?? ['general'];

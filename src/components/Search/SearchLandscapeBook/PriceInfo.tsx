@@ -89,7 +89,7 @@ function PriceLabel(props: {
 
 export default function PriceInfo(props: {
   searchApiResult: SearchTypes.SearchBookDetail;
-  bookApiResult: BookApi.ClientSimpleBook;
+  bookApiResult: BookApi.SimpleBook;
   genre: string;
 }) {
   const { searchApiResult, bookApiResult, genre } = props;

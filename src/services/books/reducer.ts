@@ -2,14 +2,17 @@ import { createActionCreators, createReducerFunction, ImmerReducer } from 'immer
 import { HYDRATE } from 'next-redux-wrapper';
 import { AnyAction } from 'redux';
 import * as BookApi from 'src/types/book';
-import sentry from 'src/utils/sentry';
 
 export interface BooksState {
-  items: { [key: string]: BookApi.ClientSimpleBook | null };
+  items: { [key: string]: BookApi.SimpleBook | null };
+  isAvailableSelect: { [key: string]: boolean };
+  desc: { [key: string]: BookApi.BookDesc };
 }
 
 export const booksInitialState: BooksState = {
   items: {},
+  isAvailableSelect: {},
+  desc: {},
 };
 
 export class BooksReducer extends ImmerReducer<BooksState> {
@@ -26,11 +29,7 @@ export class BooksReducer extends ImmerReducer<BooksState> {
     payload.items.forEach((book) => {
       const { id } = book;
       if (this.draftState.items[id] == null) {
-        const simpleBook: any = BookApi.createSimpleBookData(book);
-        simpleBook.clientBookFields = {
-          isAvailableSelect: false,
-          isAlreadyCheckedAtSelect: false,
-        };
+        const simpleBook = BookApi.createSimpleBookData(book);
         this.draftState.items[id] = simpleBook;
       }
     });
@@ -38,29 +37,14 @@ export class BooksReducer extends ImmerReducer<BooksState> {
 
   public setDesc(payload: BookApi.BookDescResponse[]) {
     payload.forEach((desc) => {
-      const book = this.draftState.items[desc.b_id];
-      if (book) {
-        book.clientBookFields.desc = desc.descriptions;
-      }
+      this.draftState.desc[desc.b_id] = desc.descriptions;
     });
   }
 
   public setSelectBook(payload: { checkedIds: string[]; isSelectedId: string[] }) {
-    // brute force
-    // Todo 개선 필요
-    try {
-      payload.checkedIds.forEach((bId) => {
-        const book: BookApi.ClientSimpleBook | null = this.draftState.items[bId];
-        if (book) {
-          book.clientBookFields = {
-            isAvailableSelect: payload.isSelectedId.includes(bId),
-            isAlreadyCheckedAtSelect: true,
-          };
-        }
-      });
-    } catch (error) {
-      sentry.captureException(error);
-    }
+    payload.checkedIds.forEach((bId) => {
+      this.draftState.isAvailableSelect[bId] = payload.isSelectedId.includes(bId);
+    });
   }
 
   public checkSelectBook() {}
@@ -74,6 +58,8 @@ export function booksReducer(
   if (action.type === HYDRATE) {
     return {
       items: { ...state.items, ...action.payload.books.items },
+      isAvailableSelect: { ...state.isAvailableSelect, ...action.payload.books.isAvailableSelect },
+      desc: { ...state.desc, ...action.payload.books.desc },
     };
   }
   return innerBooksReducer(state, action as any);

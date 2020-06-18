@@ -28,20 +28,17 @@ const store = makeStore(
           title: '도서 표지',
           categories: [],
           authors: [],
-          clientBookFields: {
-            isAvailableSelect: true,
-          },
         },
         '12346': {
           id: '12346',
           title: '도서 표지',
           categories: [{ genre: 'comic' }],
           authors: [{ id: 1, role: 'author', name: '작가' }],
-          clientBookFields: {
-            isAvailableSelect: true,
-            isAlreadyCheckedAtSelect: true,
-          },
         },
+      },
+      isAvailableSelect: {
+        '12345': true,
+        '12346': true,
       },
     },
   },
