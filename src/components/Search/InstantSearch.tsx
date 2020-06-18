@@ -113,42 +113,39 @@ const RemoveSearchButton = styled.button`
   align-items: center;
 `;
 
-const focused = (theme: RIDITheme) => css`
-  order: 2;
-  ${orBelow(
-    BreakPoint.LG,
-    `
-      margin-top: 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: ${ZIndexLayer.LEVEL_9};
-      background: ${theme.primaryColor};
-      width: 100%;
-      padding: 6px;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      order: 3;
-    `,
-  )};
-  @media (max-width: ${BreakPoint.LG}px) {
-    animation: ${fadeIn} 0.2s ease-in-out;
-  }
-`;
-
-const initial = () => css`
+const Wrapper = styled.div<{ focused?: boolean }, RIDITheme>`
   position: relative;
   margin-top: unset;
-  outline: unset;
+  outline: none;
   order: 2;
   ${orBelow(
     BreakPoint.LG,
     `
+      width: 100%;
       margin-top: 10px;
       order: 3;
     `,
-  )};
+  )}
+  ${(props) => props.focused && orBelow(
+    BreakPoint.LG,
+    `
+      position: absolute;
+      box-sizing: border-box;
+      top: 0;
+      left: 0;
+      margin-top: 0;
+      padding: 6px;
+
+      display: flex;
+      align-items: center;
+
+      background: ${props.theme.primaryColor};
+      z-index: ${ZIndexLayer.LEVEL_9};
+    `,
+  )}
+  @media (max-width: ${BreakPoint.LG}px) {
+    animation: ${fadeIn} 0.2s ease-in-out;
+  }
 `;
 
 const SearchFooter = styled.div`
@@ -564,18 +561,12 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
       <>
         {/* this element catches bubbling events */}
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-        <div
+        <Wrapper
+          focused={isFocused}
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
           tabIndex={0}
           onBlur={handleSearchWrapperBlur}
           onKeyDown={handleKeyDown}
-          css={[
-            isFocused ? focused(theme) : initial(),
-            css`
-              outline: none;
-              ${orBelow(BreakPoint.LG, 'width: 100%;')}
-            `,
-          ]}
         >
           {isFocused && (
             // eslint-disable-next-line react/jsx-no-bind
@@ -653,7 +644,7 @@ export const InstantSearch: React.FC<InstantSearchProps> = React.memo(
               </form>
             </SearchFooter>
           )}
-        </div>
+        </Wrapper>
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
         {isFocused && <Dimmer onClick={() => setFocus(false)} />}
       </>

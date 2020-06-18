@@ -17,37 +17,30 @@ const listItemCSS = css`
 
 const BookListItem = styled.li`
   ${listItemCSS}
+  ${greaterThanOrEqualTo(
+    BreakPoint.LG + 1,
+    `
+      :first-of-type {
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+      }
+      :last-of-type {
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+      }
+    `,
+  )}
+  :hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
   ${orBelow(
     BreakPoint.LG,
     `
-      :hover {
-        background-color: rgba(0, 0, 0, 0.05) !important;
-      }
       :focus {
         background-color: white !important;
       }
     `,
   )}
-  ${greaterThanOrEqualTo(
-    BreakPoint.LG + 1,
-    `
-        :first-of-type {
-          border-top-left-radius: 3px;
-          border-top-right-radius: 3px;
-        }
-        :last-of-type {
-          border-bottom-left-radius: 3px;
-          border-bottom-right-radius: 3px;
-        }
-
-        :hover {
-          background-color: rgba(0, 0, 0, 0.05);
-        }
-      `,
-  )}
-  :hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
   button {
     :focus {
       background-color: rgba(0, 0, 0, 0.05);
@@ -62,17 +55,6 @@ const BookListItem = styled.li`
 const AuthorListItem = styled.li`
   ${listItemCSS};
   display: flex;
-  ${orBelow(
-    BreakPoint.LG,
-    `
-      :hover {
-        background-color: rgba(0, 0, 0, 0.05) !important;
-      }
-      :focus {
-        background-color: white !important;
-      }
-    `,
-  )};
   ${greaterThanOrEqualTo(
     BreakPoint.LG + 1,
     `
@@ -85,6 +67,14 @@ const AuthorListItem = styled.li`
   :hover {
     background-color: rgba(0, 0, 0, 0.05);
   }
+  ${orBelow(
+    BreakPoint.LG,
+    `
+      :focus {
+        background-color: white !important;
+      }
+    `,
+  )};
   button {
     :focus {
       background-color: rgba(0, 0, 0, 0.05);

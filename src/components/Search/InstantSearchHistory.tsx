@@ -65,17 +65,6 @@ const SearchHistoryItem = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  ${orBelow(
-    BreakPoint.LG,
-    `
-      :hover {
-        background-color: white !important;
-      }
-      :focus {
-        background-color: white !important;
-      }
-    `,
-  )};
   a {
     padding: 14px 0;
     span {
@@ -90,6 +79,17 @@ const SearchHistoryItem = styled.li`
   :focus {
     background-color: #f7fafc;
   }
+  ${orBelow(
+    BreakPoint.LG,
+    `
+      :hover {
+        background-color: white;
+      }
+      :focus {
+        background-color: white;
+      }
+    `,
+  )}
   outline: none;
 `;
 
