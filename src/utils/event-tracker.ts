@@ -10,8 +10,6 @@ const deviceType = getDeviceType() === 'mobile' ? DeviceType.Mobile : DeviceType
 const tracker = (function createTracker() {
   if (typeof window !== 'undefined') {
     return new Tracker({
-      // @ts-ignore
-      userId: null,
       // Todo device 판단  User-Agent ?
       deviceType,
       beaconOptions: {
