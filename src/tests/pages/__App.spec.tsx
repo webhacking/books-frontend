@@ -1,11 +1,13 @@
 import '@testing-library/jest-dom/extend-expect';
 import { act, render, cleanup, RenderResult } from '@testing-library/react';
+import { ensureMocksReset } from '@shopify/jest-dom-mocks';
 import * as React from 'react';
 
 import App from 'src/pages/_app';
 import makeStore from '../utils/makeStore';
 
 afterEach(async () => {
+  ensureMocksReset();
   await act(async () => {
     cleanup();
   });
