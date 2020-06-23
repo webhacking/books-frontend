@@ -7,11 +7,11 @@ import { localStorage } from 'src/utils/storages';
 
 const deviceType = getDeviceType() === 'mobile' ? DeviceType.Mobile : DeviceType.PC;
 
-export const createTracker = (userId: string | null) => {
+const tracker = (function createTracker() {
   if (typeof window !== 'undefined') {
     return new Tracker({
       // @ts-ignore
-      userId: userId || null,
+      userId: null,
       // Todo device 판단  User-Agent ?
       deviceType,
       beaconOptions: {
@@ -36,18 +36,18 @@ export const createTracker = (userId: string | null) => {
       },
       // eslint-disable-next-line no-process-env
       development: !process.env.IS_PRODUCTION,
+      throttleWait: 5000,
     });
   }
   return null;
-};
+}());
 
-const tracker = createTracker(null);
-if (tracker) {
-  tracker.initialize();
+export function initialize() {
+  tracker?.initialize();
 }
 
 export function setUserId(userId: string | null) {
-  tracker?.set({ userId });
+  tracker?.set({ userId: userId || undefined });
 }
 
 export function sendEvent(type: SendEventType, data?: any) {

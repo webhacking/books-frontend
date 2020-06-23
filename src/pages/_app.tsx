@@ -21,6 +21,7 @@ import sentry from 'src/utils/sentry';
 import InAppThemeProvider, { getAppTheme, Theme } from 'src/components/Misc/InAppThemeProvider';
 import { AccountProvider } from 'src/hooks/useAccount';
 import { NotificationProvider } from 'src/hooks/useNotification';
+import { initialize as eventTrackerInitialize } from 'src/utils/event-tracker';
 
 interface StoreAppProps {
   // tslint:disable-next-line
@@ -81,6 +82,15 @@ class StoreApp extends App<StoreAppProps> {
       .startsWith('/partials/');
     if (!isPartials) {
       this.serviceWorkerInit();
+      try {
+        window.requestIdleCallback(() => {
+          eventTrackerInitialize();
+        }, { timeout: 2000 });
+      } catch {
+        setTimeout(() => {
+          eventTrackerInitialize();
+        }, 2000);
+      }
     }
     // Windows에서만 웹폰트 로드
     if (
