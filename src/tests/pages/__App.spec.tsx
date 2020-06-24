@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import { act, render, cleanup, RenderResult } from '@testing-library/react';
-import { ensureMocksReset } from '@shopify/jest-dom-mocks';
+import { ensureMocksReset, requestIdleCallback } from '@shopify/jest-dom-mocks';
 import * as React from 'react';
 
 import App from 'src/pages/_app';
@@ -53,6 +53,7 @@ describe('App', () => {
 
   it('should render regular pages', async () => {
     const mock = jest.fn().mockReturnValue(<div>mock</div>);
+    requestIdleCallback.mock();
     let renderResult: RenderResult;
     await act(async () => {
       renderResult = render(
@@ -65,14 +66,17 @@ describe('App', () => {
         />
       );
     });
+    requestIdleCallback.runIdleCallbacks();
     expect(renderResult.container.innerHTML).not.toMatch(/GLOBAL_STYLE_RESET/);
     expect(renderResult.container).toHaveTextContent(/GNB/);
     expect(renderResult.container).toHaveTextContent(/mock/);
     expect(renderResult.container).toHaveTextContent(/Footer/);
+    requestIdleCallback.restore();
   });
 
   it('should render inapp', async () => {
     const mock = jest.fn().mockReturnValue(<div>mock</div>);
+    requestIdleCallback.mock();
     let renderResult: RenderResult;
     await act(async () => {
       renderResult = render(
@@ -85,14 +89,17 @@ describe('App', () => {
         />
       );
     });
+    requestIdleCallback.runIdleCallbacks();
     expect(renderResult.container.innerHTML).not.toMatch(/GLOBAL_STYLE_RESET/);
     expect(renderResult.container).not.toHaveTextContent(/GNB/);
     expect(renderResult.container).toHaveTextContent(/mock/);
     expect(renderResult.container).not.toHaveTextContent(/Footer/);
+    requestIdleCallback.restore();
   });
 
   it('should render partials', async () => {
     const mock = jest.fn().mockReturnValue(<div>mock</div>);
+    requestIdleCallback.mock();
     let renderResult: RenderResult;
     await act(async () => {
       renderResult = render(
@@ -105,9 +112,11 @@ describe('App', () => {
         />
       );
     });
+    requestIdleCallback.runIdleCallbacks();
     expect(renderResult.container.innerHTML).toMatch(/GLOBAL_STYLE_RESET/);
     expect(renderResult.container).not.toHaveTextContent(/GNB/);
     expect(renderResult.container).toHaveTextContent(/mock/);
     expect(renderResult.container).not.toHaveTextContent(/Footer/);
+    requestIdleCallback.restore();
   });
 });
