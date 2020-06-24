@@ -1,89 +1,41 @@
 import React from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import { getEscapedNode } from 'src/utils/highlight';
-import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
-import { gray100, slateGray50 } from '@ridi/colors';
+import { gray100, slateGray50, slateGray60 } from '@ridi/colors';
+
+import Switch from 'src/components/Switch';
 import { ADULT_BADGE_URL } from 'src/constants/icons';
 import * as SearchTypes from 'src/types/searchResults';
+import { getEscapedNode } from 'src/utils/highlight';
+import { BreakPoint, greaterThanOrEqualTo, orBelow } from 'src/utils/mediaQuery';
 
-import AuthorInfo from './Authors/AuthorInfo';
-import { SearchResult } from './types';
+import AuthorInfo from '../Authors/AuthorInfo';
+import { SearchResult } from '../types';
 
-const listItemCSS = css`
+const BookListItem = styled.li<{ focused?: boolean }>`
   ${orBelow(BreakPoint.LG, 'min-height: 40px;')};
   cursor: pointer;
-`;
 
-const BookListItem = styled.li`
-  ${listItemCSS}
-  ${greaterThanOrEqualTo(
-    BreakPoint.LG + 1,
-    `
-      :first-of-type {
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-      }
-      :last-of-type {
-        border-bottom-left-radius: 3px;
-        border-bottom-right-radius: 3px;
-      }
-    `,
-  )}
-  :hover {
+  :hover, :focus-within {
     background-color: rgba(0, 0, 0, 0.05);
   }
-  ${orBelow(
+  ${(props) => props.focused && 'background-color: rgba(0, 0, 0, 0.05);'}
+  ${(props) => orBelow(
     BreakPoint.LG,
     `
-      :focus {
-        background-color: white !important;
+      :hover, :focus-within {
+        background-color: white;
       }
+      ${props.focused && 'background-color: white;'}
     `,
   )}
-  button {
-    :focus {
-      background-color: rgba(0, 0, 0, 0.05);
-      outline: none !important;
-    }
-  }
   &, button {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
   }
 `;
 
-const AuthorListItem = styled.li`
-  ${listItemCSS};
+const AuthorListItem = styled(BookListItem)`
   display: flex;
-  ${greaterThanOrEqualTo(
-    BreakPoint.LG + 1,
-    `
-      :first-of-type {
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-      }
-    `,
-  )};
-  :hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-  ${orBelow(
-    BreakPoint.LG,
-    `
-      :focus {
-        background-color: white !important;
-      }
-    `,
-  )};
-  button {
-    :focus {
-      background-color: rgba(0, 0, 0, 0.05);
-      outline: none !important;
-    }
-  }
-  &, button {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
-  }
 `;
 
 const searchResultItemButton = css`
@@ -92,6 +44,10 @@ const searchResultItemButton = css`
   padding: 12px 16px;
   text-align: left;
   flex-wrap: wrap;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const AuthorListItemButton = styled.button`
@@ -103,6 +59,7 @@ const BookListItemButton = styled.button`
   align-items: center;
   ${searchResultItemButton}
 `;
+
 const BookTitle = styled.span`
   font-size: 14px;
   line-height: 1.4em;
@@ -147,11 +104,37 @@ const Divider = styled.div`
   background: #e6e8e0;
 `;
 
+const AdultExcludeButton = styled.label`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  margin-bottom: 4px;
+  padding: 9px 16px;
+  outline: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  color: ${slateGray60};
+  :active {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  :hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+`;
+
 interface InstantSearchResultProps {
+  focusedPosition?: number;
   result: SearchResult;
-  handleClickAuthorItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  handleClickBookItem: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  focusedPosition: number;
+  adultExclude?: boolean;
+  onAuthorClick?(id: number): void;
+  onBookClick?(id: string): void;
+  onAdultExcludeChange?(value: boolean): void;
+  onItemHover?(index: number): void;
+  className?: string;
 }
 
 // Todo 사용 컴포넌트마다 다른 options 사용해서 보여주기
@@ -173,35 +156,43 @@ const AuthorLabel: React.FC<{ author: string; authors: SearchTypes.AuthorsInfo[]
   );
 };
 
-const ResultWrapper = styled.div`
-  padding: 4px 0 0;
-`;
-
-function InstantSearchResult(props: InstantSearchResultProps) {
+export default function InstantSearchResult(props: InstantSearchResultProps) {
   const {
     focusedPosition,
-    handleClickAuthorItem,
-    handleClickBookItem,
     result: { authors, books },
+    adultExclude = false,
+    onAuthorClick,
+    onBookClick,
+    onAdultExcludeChange,
+    onItemHover,
+    className,
   } = props;
-  const focusRef = React.useCallback((node: HTMLButtonElement | null) => {
-    if (node != null) {
-      node.focus();
-    }
-  }, []);
+  const handleAuthorClick = React.useCallback((e: React.MouseEvent<HTMLElement>) => {
+    const id = e.currentTarget.dataset.authorId;
+    id && onAuthorClick?.(Number(id));
+  }, [onAuthorClick]);
+  const handleBookClick = React.useCallback((e: React.MouseEvent<HTMLElement>) => {
+    const id = e.currentTarget.dataset.bookId;
+    id && onBookClick?.(id);
+  }, [onBookClick]);
   const authorCount = authors.length;
+
   return (
-    <ResultWrapper>
+    <div className={className}>
       {authors.length > 0 && (
         <>
           <ul>
             {authors.map((author, index) => (
-              <AuthorListItem key={index}>
+              <AuthorListItem
+                key={index}
+                focused={focusedPosition === index}
+              >
                 <AuthorListItemButton
-                  ref={index === focusedPosition - 1 ? focusRef : undefined}
                   type="button"
                   data-author-id={author.id}
-                  onClick={handleClickAuthorItem}
+                  tabIndex={-1}
+                  onClick={handleAuthorClick}
+                  onMouseEnter={() => onItemHover?.(index)}
                 >
                   <AuthorInfo author={author} />
                 </AuthorListItemButton>
@@ -215,12 +206,16 @@ function InstantSearchResult(props: InstantSearchResultProps) {
         <>
           <ul>
             {books.map((book: SearchTypes.SearchBookDetail, index) => (
-              <BookListItem data-book-id={book.b_id} key={index}>
+              <BookListItem
+                key={index}
+                focused={focusedPosition === authorCount + index}
+              >
                 <BookListItemButton
-                  ref={index + authorCount === focusedPosition - 1 ? focusRef : undefined}
                   type="button"
                   data-book-id={book.b_id}
-                  onClick={handleClickBookItem}
+                  tabIndex={-1}
+                  onClick={handleBookClick}
+                  onMouseEnter={() => onItemHover?.(authorCount + index)}
                 >
                   <BookTitle>
                     {getEscapedNode(
@@ -238,10 +233,12 @@ function InstantSearchResult(props: InstantSearchResultProps) {
             ))}
           </ul>
           <InstantSearchDivider />
+          <AdultExcludeButton>
+            성인 제외
+            <Switch checked={adultExclude} onChange={onAdultExcludeChange} />
+          </AdultExcludeButton>
         </>
       )}
-    </ResultWrapper>
+    </div>
   );
 }
-
-export default React.memo(InstantSearchResult);
