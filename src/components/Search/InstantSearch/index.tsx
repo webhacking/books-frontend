@@ -101,9 +101,9 @@ const StyledLens = styled(Lens)<{focused?: boolean}, RIDITheme>`
 
 const SearchBox = styled.input`
   flex: 1;
-  height: 32px;
+  height: 36px;
   padding: 7px 0;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 18px;
 `;
 
