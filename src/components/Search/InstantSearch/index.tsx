@@ -103,7 +103,7 @@ const SearchBox = styled.input`
   flex: 1;
   height: 36px;
   padding: 7px 0;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 18px;
 `;
 
