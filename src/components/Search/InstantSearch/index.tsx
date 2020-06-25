@@ -409,7 +409,7 @@ export default function InstantSearch() {
         }
         sentry.captureException(err);
       });
-    }, 1000);
+    }, 500);
     return () => {
       window.clearTimeout(handle);
       cancelSource.cancel();
