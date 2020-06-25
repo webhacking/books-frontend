@@ -184,7 +184,8 @@ export default function InstantSearch() {
         ) {
           return parsedHistory
             .map((item) => item.trim())
-            .filter((item) => item !== '');
+            .filter((item) => item !== '')
+            .slice(0, 5);
         }
       } catch (_) {
         // invalid history, do nothing
@@ -448,7 +449,7 @@ export default function InstantSearch() {
       popup = (
         <InstantSearchHistory
           disableRecord={disableRecord}
-          searchHistory={searchHistory.slice(0, 5)}
+          searchHistory={searchHistory}
           focusedPosition={focusedPosition ?? undefined}
           onDisableRecordChange={setDisableRecord}
           onItemClick={handleHistoryItemClick}
