@@ -3,11 +3,11 @@ import { useRouter, NextRouter } from 'next/router';
 import React from 'react';
 import { useImmer } from 'use-immer';
 import Cookies from 'universal-cookie';
-import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
 
 import localStorageKeys from 'src/constants/localStorage';
 import * as labels from 'src/labels/instantSearch.json';
 import { RIDITheme } from 'src/styles';
+import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
 import Clear from 'src/svgs/Clear.svg';
 import Lens from 'src/svgs/Lens.svg';
 import { CancelToken } from 'src/utils/axios';
@@ -50,12 +50,11 @@ const FocusTrap = styled.div`
 `;
 
 const SearchBoxWrapper = styled.div<{ focused?: boolean }, RIDITheme>`
-  display: inherit;
   ${(props) => orBelow(BreakPoint.LG, `
     padding-top: 9px;
-    display: flex;
-    align-items: center;
     ${props.focused && `
+      display: flex;
+      align-items: center;
       padding: 6px;
       background-color: ${props.theme.primaryColor};
     `}
@@ -80,23 +79,25 @@ const StyledClear = styled(Clear)`
   padding: 5px;
 `;
 
-const StyledArrowLeft = styled(ArrowLeft)<{focused?: boolean}>`
+const ArrowButton = styled.button<{focused?: boolean}>`
   display: none;
-  cursor: pointer;
+  ${orBelow(BreakPoint.LG, 'margin: 0 11px 0 5px; display: block;')};
+`;
+
+const StyledArrowLeft = styled(ArrowLeft)`
   fill: white;
   width: 16px;
   height: 16px;
-  ${(props) => props.focused && orBelow(BreakPoint.LG, 'margin: 0 11px 0 5px; display: block;')};
 `;
 
 const StyledLens = styled(Lens)<{focused?: boolean}, RIDITheme>`
-  fill: ${(props) => (props.focused ? 'rgb(128, 137, 145);' : props.theme.input.placeholder)};
+  fill: ${(props) => props.theme.input.placeholder};
   flex: none;
   width: 24px;
   height: 24px;
   margin: 4px;
   margin-left: 6px;
-  opacity: 0.6;
+  opacity: ${(props) => (props.focused ? 1 : 0.6)};
 `;
 
 const SearchBox = styled.input`
@@ -484,7 +485,13 @@ export default function InstantSearch() {
       {/* 검색창 내부 포커스를 여기서 잡음 */}
       <FocusTrap tabIndex={-1} onKeyDown={handleKeyDown}>
         <SearchBoxWrapper focused={Boolean(isFocused)}>
-          <StyledArrowLeft focused={isFocused} onClick={handleArrowLeftClick} />
+          {
+            isFocused && (
+              <ArrowButton onClick={handleArrowLeftClick}>
+                <StyledArrowLeft />
+              </ArrowButton>
+            )
+          }
           <SearchBoxShape focused={isFocused}>
             <StyledLens focused={Boolean(isFocused)} />
             <SearchBox
