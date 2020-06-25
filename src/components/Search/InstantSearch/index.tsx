@@ -3,6 +3,7 @@ import { useRouter, NextRouter } from 'next/router';
 import React from 'react';
 import { useImmer } from 'use-immer';
 import Cookies from 'universal-cookie';
+import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
 
 import localStorageKeys from 'src/constants/localStorage';
 import * as labels from 'src/labels/instantSearch.json';
@@ -49,8 +50,11 @@ const FocusTrap = styled.div`
 `;
 
 const SearchBoxWrapper = styled.div<{ focused?: boolean }, RIDITheme>`
+  display: inherit;
   ${(props) => orBelow(BreakPoint.LG, `
     padding-top: 9px;
+    display: flex;
+    align-items: center;
     ${props.focused && `
       padding: 6px;
       background-color: ${props.theme.primaryColor};
@@ -58,12 +62,15 @@ const SearchBoxWrapper = styled.div<{ focused?: boolean }, RIDITheme>`
   `)}
 `;
 
-const SearchBoxShape = styled.label`
+const SearchBoxShape = styled.label<{focused?: boolean}>`
   background: white;
   border-radius: 3px;
 
   display: flex;
   align-items: center;
+  ${(props) => (props.focused
+    ? orBelow(BreakPoint.LG, 'width: calc(100% - 9px)')
+    : orBelow(BreakPoint.LG, 'width: 100%'))}
 `;
 
 const StyledClear = styled(Clear)`
@@ -73,8 +80,17 @@ const StyledClear = styled(Clear)`
   padding: 5px;
 `;
 
-const StyledLens = styled(Lens)<{}, RIDITheme>`
-  fill: ${(props) => props.theme.input.placeholder};
+const StyledArrowLeft = styled(ArrowLeft)<{focused?: boolean}>`
+  display: none;
+  cursor: pointer;
+  fill: white;
+  width: 16px;
+  height: 16px;
+  ${(props) => props.focused && orBelow(BreakPoint.LG, 'margin: 0 11px 0 5px; display: block;')};
+`;
+
+const StyledLens = styled(Lens)<{focused?: boolean}, RIDITheme>`
+  fill: ${(props) => (props.focused ? 'rgb(128, 137, 145);' : props.theme.input.placeholder)};
   flex: none;
   width: 24px;
   height: 24px;
@@ -290,6 +306,10 @@ export default function InstantSearch() {
     window.location.href = `/books/${id}?${params.toString()}`;
   }, [keyword]);
 
+  const handleArrowLeftClick = React.useCallback(() => {
+    setFocused(false);
+  }, []);
+
   const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
     let itemCount = 0;
     let authors: SearchResult['authors'] = [];
@@ -427,7 +447,7 @@ export default function InstantSearch() {
       popup = (
         <InstantSearchHistory
           disableRecord={disableRecord}
-          searchHistory={searchHistory}
+          searchHistory={searchHistory.slice(0, 5)}
           focusedPosition={focusedPosition ?? undefined}
           onDisableRecordChange={setDisableRecord}
           onItemClick={handleHistoryItemClick}
@@ -463,9 +483,10 @@ export default function InstantSearch() {
     >
       {/* 검색창 내부 포커스를 여기서 잡음 */}
       <FocusTrap tabIndex={-1} onKeyDown={handleKeyDown}>
-        <SearchBoxWrapper focused={isFocused}>
-          <SearchBoxShape>
-            <StyledLens />
+        <SearchBoxWrapper focused={Boolean(isFocused)}>
+          <StyledArrowLeft focused={isFocused} onClick={handleArrowLeftClick} />
+          <SearchBoxShape focused={isFocused}>
+            <StyledLens focused={Boolean(isFocused)} />
             <SearchBox
               placeholder={labels.searchPlaceHolder}
               value={keyword}
