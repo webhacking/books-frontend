@@ -32,7 +32,7 @@ const WrapperForm = styled.form<{ focused?: boolean }>`
     max-width: 100%;
     order: 3;
     ${props.focused && `
-      position: absolute;
+      position: fixed;
       left: 0;
       top: 0;
       right: 0;
@@ -409,7 +409,7 @@ export default function InstantSearch() {
         }
         sentry.captureException(err);
       });
-    }, 1000);
+    }, 500);
     return () => {
       window.clearTimeout(handle);
       cancelSource.cancel();
