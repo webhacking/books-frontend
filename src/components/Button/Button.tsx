@@ -25,7 +25,9 @@ const StyledButton = styled.button<{ buttonStyle: 'primary' | 'secondary' }, RID
   :hover {
     opacity: 0.7;
   }
-  transition: all 0.2s ease-in-out;
+  transition-property: color, background-color, border, opacity;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
   line-height: 30px;
   display: flex;
   justify-content: center;
