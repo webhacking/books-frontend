@@ -1,3 +1,4 @@
+import isPropValid from '@emotion/is-prop-valid';
 import styled from '@emotion/styled';
 import { useRouter, NextRouter } from 'next/router';
 import React from 'react';
@@ -7,6 +8,7 @@ import Cookies from 'universal-cookie';
 import localStorageKeys from 'src/constants/localStorage';
 import * as labels from 'src/labels/instantSearch.json';
 import { RIDITheme } from 'src/styles';
+import ArrowLeft from 'src/svgs/Arrow_Left_13.svg';
 import Clear from 'src/svgs/Clear.svg';
 import Lens from 'src/svgs/Lens.svg';
 import { CancelToken } from 'src/utils/axios';
@@ -52,6 +54,8 @@ const SearchBoxWrapper = styled.div<{ focused?: boolean }, RIDITheme>`
   ${(props) => orBelow(BreakPoint.LG, `
     padding-top: 9px;
     ${props.focused && `
+      display: flex;
+      align-items: center;
       padding: 6px;
       background-color: ${props.theme.primaryColor};
     `}
@@ -64,6 +68,7 @@ const SearchBoxShape = styled.label`
 
   display: flex;
   align-items: center;
+  ${orBelow(BreakPoint.LG, 'width: 100%')}
 `;
 
 const StyledClear = styled(Clear)`
@@ -73,22 +78,34 @@ const StyledClear = styled(Clear)`
   padding: 5px;
 `;
 
-const StyledLens = styled(Lens)<{}, RIDITheme>`
+const ArrowButton = styled.button`
+  display: none;
+  ${orBelow(BreakPoint.LG, 'margin: 0 11px 0 5px; display: block;')};
+`;
+
+const StyledArrowLeft = styled(ArrowLeft)`
+  fill: white;
+  width: 16px;
+  height: 16px;
+`;
+
+const StyledLens = styled(Lens, {
+  shouldForwardProp: (prop) => isPropValid(prop) && prop !== 'focused',
+})<{focused?: boolean}, RIDITheme>`
   fill: ${(props) => props.theme.input.placeholder};
   flex: none;
   width: 24px;
   height: 24px;
   margin: 4px;
   margin-left: 6px;
-  opacity: 0.6;
+  opacity: ${(props) => (props.focused ? 1 : 0.6)};
 `;
 
 const SearchBox = styled.input`
   flex: 1;
-  height: 32px;
-  padding: 7px 0;
+  height: 36px;
   font-size: 16px;
-  line-height: 18px;
+  line-height: 16px;
 `;
 
 const SearchResetButton = styled.button`
@@ -167,7 +184,8 @@ export default function InstantSearch() {
         ) {
           return parsedHistory
             .map((item) => item.trim())
-            .filter((item) => item !== '');
+            .filter((item) => item !== '')
+            .slice(0, 5);
         }
       } catch (_) {
         // invalid history, do nothing
@@ -289,6 +307,10 @@ export default function InstantSearch() {
     setFocused(false);
     window.location.href = `/books/${id}?${params.toString()}`;
   }, [keyword]);
+
+  const handleArrowLeftClick = React.useCallback(() => {
+    setFocused(false);
+  }, []);
 
   const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
     let itemCount = 0;
@@ -464,8 +486,15 @@ export default function InstantSearch() {
       {/* 검색창 내부 포커스를 여기서 잡음 */}
       <FocusTrap tabIndex={-1} onKeyDown={handleKeyDown}>
         <SearchBoxWrapper focused={isFocused}>
+          {
+            isFocused && (
+              <ArrowButton onClick={handleArrowLeftClick}>
+                <StyledArrowLeft />
+              </ArrowButton>
+            )
+          }
           <SearchBoxShape>
-            <StyledLens />
+            <StyledLens focused={isFocused} />
             <SearchBox
               placeholder={labels.searchPlaceHolder}
               value={keyword}
