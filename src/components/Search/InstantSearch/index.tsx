@@ -1,3 +1,4 @@
+import isPropValid from '@emotion/is-prop-valid';
 import styled from '@emotion/styled';
 import { useRouter, NextRouter } from 'next/router';
 import React from 'react';
@@ -61,15 +62,13 @@ const SearchBoxWrapper = styled.div<{ focused?: boolean }, RIDITheme>`
   `)}
 `;
 
-const SearchBoxShape = styled.label<{focused?: boolean}>`
+const SearchBoxShape = styled.label`
   background: white;
   border-radius: 3px;
 
   display: flex;
   align-items: center;
-  ${(props) => (props.focused
-    ? orBelow(BreakPoint.LG, 'width: calc(100% - 9px)')
-    : orBelow(BreakPoint.LG, 'width: 100%'))}
+  ${orBelow(BreakPoint.LG, 'width: 100%')}
 `;
 
 const StyledClear = styled(Clear)`
@@ -79,7 +78,7 @@ const StyledClear = styled(Clear)`
   padding: 5px;
 `;
 
-const ArrowButton = styled.button<{focused?: boolean}>`
+const ArrowButton = styled.button`
   display: none;
   ${orBelow(BreakPoint.LG, 'margin: 0 11px 0 5px; display: block;')};
 `;
@@ -90,7 +89,9 @@ const StyledArrowLeft = styled(ArrowLeft)`
   height: 16px;
 `;
 
-const StyledLens = styled(Lens)<{focused?: boolean}, RIDITheme>`
+const StyledLens = styled(Lens, {
+  shouldForwardProp: (prop) => isPropValid(prop) && prop !== 'focused',
+})<{focused?: boolean}, RIDITheme>`
   fill: ${(props) => props.theme.input.placeholder};
   flex: none;
   width: 24px;
@@ -103,9 +104,8 @@ const StyledLens = styled(Lens)<{focused?: boolean}, RIDITheme>`
 const SearchBox = styled.input`
   flex: 1;
   height: 36px;
-  padding: 7px 0;
   font-size: 16px;
-  line-height: 18px;
+  line-height: 16px;
 `;
 
 const SearchResetButton = styled.button`
@@ -485,7 +485,7 @@ export default function InstantSearch() {
     >
       {/* 검색창 내부 포커스를 여기서 잡음 */}
       <FocusTrap tabIndex={-1} onKeyDown={handleKeyDown}>
-        <SearchBoxWrapper focused={Boolean(isFocused)}>
+        <SearchBoxWrapper focused={isFocused}>
           {
             isFocused && (
               <ArrowButton onClick={handleArrowLeftClick}>
@@ -493,8 +493,8 @@ export default function InstantSearch() {
               </ArrowButton>
             )
           }
-          <SearchBoxShape focused={isFocused}>
-            <StyledLens focused={Boolean(isFocused)} />
+          <SearchBoxShape>
+            <StyledLens focused={isFocused} />
             <SearchBox
               placeholder={labels.searchPlaceHolder}
               value={keyword}
