@@ -39,45 +39,43 @@ const Navigation = styled.nav`
 `;
 
 const LogoWrapper = styled.ul`
-  min-height: 30px;
-  margin-right: -2.5px;
   flex: none;
+  order: 1;
+
+  min-height: 30px;
+  margin-right: 16px;
+  margin-bottom: 0;
+  display: flex;
+
   ${orBelow(
     BreakPoint.LG,
-    `
-      height: 30px;
-      margin-right: 0;
-    `,
-  )};
-  order: 1;
-  margin-bottom: 0;
-  display: inline-flex;
-  li {
-    display: inline-flex;
-    align-items: center;
+    'height: 30px; margin-right: 0;',
+  )}
+`;
 
-    ::after {
-      position: relative;
-      font-size: 14px;
-      content: '|';
-      color: white;
-      opacity: 0.4;
-      margin: 0 8.5px 0 10px;
+const LogoItem = styled.li`
+  display: flex;
+  align-items: center;
+  line-height: 0;
 
-      ${orBelow(BreakPoint.LG, 'margin: 0 6px 0 5px; font-size: 12px;')}
-    }
-    :last-of-type {
-      ::after {
-        content: '';
-      }
-    }
+  & + &::before {
+    display: inline-block;
+    content: '';
+    width: 1px;
+    height: 14px;
+    margin: 0 10px;
+
+    background-color: white;
+    opacity: 0.3;
+
+    ${orBelow(BreakPoint.LG, 'height: 12px; margin: 0 6px;')}
   }
 `;
 
 const RidibooksLogo = styled.img<{}, RIDITheme>`
   filter: ${(props) => props.theme.logoFilter};
-  width: 103px;
-  height: 16px;
+  width: 119px;
+  height: 18px;
   fill: white;
   :hover {
     opacity: 0.8;
@@ -101,8 +99,8 @@ const RidiSelectLogo = styled.img<{}, RIDITheme>`
   filter: ${(props) => props.theme.logoFilter};
   fill: white;
   opacity: 0.6;
-  width: 87.5px;
-  height: 14px;
+  width: 100px;
+  height: 16px;
 
   ${orBelow(
     BreakPoint.LG,
@@ -117,28 +115,20 @@ const RidiSelectLogo = styled.img<{}, RIDITheme>`
 `;
 
 const ButtonWrapper = styled.ul`
-  margin-left: auto;
-  display: flex;
-  flex: none;
+  flex: 1;
   order: 3;
-  ${orBelow(
-    BreakPoint.LG,
-    `
-      right: 10px;
-      order: 2;
-      position: absolute;
-    `,
-  )};
 
-  li {
-    :not(:last-of-type) {
-      margin-right: 6px;
+  margin-left: auto;
 
-      ${orBelow(
-    BreakPoint.LG,
-    'margin-right: 3px;',
-  )};
-    }
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  ${orBelow(BreakPoint.LG, 'order: 2;')};
+
+  li + li {
+    margin-left: 6px;
+    ${orBelow(BreakPoint.LG, 'margin-left: 3px;')};
   }
 `;
 
@@ -325,7 +315,7 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
           <Navigation>
             <LogoSearchBoxArea>
               <LogoWrapper>
-                <li>
+                <LogoItem>
                   <h1>
                     <HomeLink passHref>
                       <a aria-label="리디북스 홈으로 이동">
@@ -333,15 +323,15 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
                       </a>
                     </HomeLink>
                   </h1>
-                </li>
-                <li>
+                </LogoItem>
+                <LogoItem>
                   <a
                     href="https://select.ridibooks.com"
                     aria-label="리디셀렉트 홈으로 이동"
                   >
                     <RidiSelectLogo src={RIDISELECT_LOGO_URL} alt="리디셀렉트" />
                   </a>
-                </li>
+                </LogoItem>
               </LogoWrapper>
               <ButtonWrapper>
                 <GNBButtons
