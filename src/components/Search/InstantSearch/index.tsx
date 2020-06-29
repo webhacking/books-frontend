@@ -507,9 +507,11 @@ export default function InstantSearch() {
             )}
           </SearchBoxShape>
         </SearchBoxWrapper>
-        <PopupWrapper focused={isFocused}>
-          {popup}
-        </PopupWrapper>
+        {popup && (
+          <PopupWrapper focused={isFocused}>
+            {popup}
+          </PopupWrapper>
+        )}
       </FocusTrap>
     </WrapperForm>
   );
