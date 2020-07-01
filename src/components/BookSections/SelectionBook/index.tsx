@@ -1,13 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { SectionTitle, SectionTitleLink } from 'src/components/BookSections/SectionTitle';
 import useIsTablet from 'src/hooks/useIsTablet';
+import { RootState } from 'src/store/config';
 import { SectionExtra } from 'src/types/sections';
 import { orBelow } from 'src/utils/mediaQuery';
 
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/store/config';
 import SelectionBookCarousel from './SelectionBookCarousel';
 import SelectionBookList from './SelectionBookList';
 import { SelectionBookListProps } from './types';
@@ -34,8 +34,8 @@ const SelectionBook: React.FC<SelectionBookProps> = (props) => {
   const {
     genre, type, items, slug, title, extra, selectionId, categoryId,
   } = props;
-  const categories = useSelector((state: RootState) => state.categories);
-  const genreName = categoryId ? categories.items?.[categoryId]?.genre_v2 : null;
+  const genreName = useSelector((state: RootState) => (categoryId
+    ? state.categories.items?.[categoryId]?.genre_v2 : null));
 
   // Hack
   const isWebtoon = genreName === 'comic_serial';
