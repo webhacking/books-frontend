@@ -1,8 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { SectionTitle, SectionTitleLink } from 'src/components/BookSections/SectionTitle';
 import useIsTablet from 'src/hooks/useIsTablet';
+import { RootState } from 'src/store/config';
 import { SectionExtra } from 'src/types/sections';
 import { orBelow } from 'src/utils/mediaQuery';
 
@@ -30,9 +32,13 @@ type SelectionBookProps = SelectionBookOwnProps & SelectionBookListProps;
 
 const SelectionBook: React.FC<SelectionBookProps> = (props) => {
   const {
-    genre, type, items, slug, title, extra, selectionId,
+    genre, type, items, slug, title, extra, selectionId, categoryId,
   } = props;
+  const genreName = useSelector((state: RootState) => (categoryId
+    ? state.categories.items?.[categoryId]?.genre_v2 : null));
 
+  // Hack
+  const isWebtoon = genreName === 'comic_serial';
   const isTablet = useIsTablet();
   const listProps = {
     genre,
@@ -49,7 +55,7 @@ const SelectionBook: React.FC<SelectionBookProps> = (props) => {
   return (
     <SectionWrapper>
       <SectionTitle>
-        <SectionTitleLink title={title} href={sectionHref} />
+        <SectionTitleLink title={`${isWebtoon ? '[웹툰] ' : ''}${title}`} href={sectionHref} />
       </SectionTitle>
       <div>
         {isTablet ? (
