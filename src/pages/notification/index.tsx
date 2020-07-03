@@ -175,7 +175,7 @@ const NoEmptyNotificationText = styled.span`
 
 interface NotificationItemScheme {
   landingUrl: string;
-  deeplinkUrl?: string | null;
+  deeplinkUrl: string | null;
   expireAt: number;
   imageUrl: string;
   imageType: string;
