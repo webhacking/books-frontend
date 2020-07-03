@@ -175,6 +175,7 @@ const NoEmptyNotificationText = styled.span`
 
 interface NotificationItemScheme {
   landingUrl: string;
+  deeplinkUrl?: string | null;
   expireAt: number;
   imageUrl: string;
   imageType: string;
@@ -197,7 +198,10 @@ interface NotificationItemProps {
 
 interface NotificationPageProps {
   isTitleHidden?: boolean;
+  useDeeplinkUrl?: boolean;
 }
+
+const NotificationContext = React.createContext({ useDeeplinkUrl: false });
 
 export const NotificationItem: React.FunctionComponent<NotificationItemProps> = (props) => {
   const {
@@ -214,12 +218,14 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
 
   const ref = useViewportIntersection<HTMLLIElement>(handleVisible);
 
+  const { useDeeplinkUrl } = React.useContext(NotificationContext);
+
   return (
     <NotiListItem ref={ref}>
       <NotiItemWrapper
         // eslint-disable-next-line react/jsx-no-bind
         onClick={tracker.sendClickEvent.bind(null, item, slug, order)}
-        href={item.landingUrl}
+        href={useDeeplinkUrl ? item.deeplinkUrl || item.landingUrl : item.landingUrl}
       >
         <ImageWrapper
           className={slug}
@@ -247,7 +253,10 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
 };
 
 const NotificationPage: React.FC<NotificationPageProps> = (props) => {
-  const { isTitleHidden = false } = props;
+  const {
+    isTitleHidden = false,
+    useDeeplinkUrl = false,
+  } = props;
   const { unreadCount, items, requestFetchNotifications } = useNotification();
   const loggedUser = useAccount();
   const slug = 'notification-item';
@@ -285,16 +294,18 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
                 <NoEmptyNotificationText>새로운 알림이 없습니다.</NoEmptyNotificationText>
               </NoEmptyNotification>
             ) : (
-              items.map((item, index) => (
-                <NotificationItem
-                  key={index}
-                  createdAtTimeAgo={timeAgo(item.createdAt)}
-                  item={item}
-                  dot={index < unreadCount}
-                  slug={slug}
-                  order={index}
-                />
-              ))
+              <NotificationContext.Provider value={{ useDeeplinkUrl }}>
+                {items.map((item, index) => (
+                  <NotificationItem
+                    key={index}
+                    createdAtTimeAgo={timeAgo(item.createdAt)}
+                    item={item}
+                    dot={index < unreadCount}
+                    slug={slug}
+                    order={index}
+                  />
+                ))}
+              </NotificationContext.Provider>
             )}
           </NotiList>
         ) : (
