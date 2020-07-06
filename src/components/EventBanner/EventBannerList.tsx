@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import styled from '@emotion/styled';
+import React from 'react';
+
 import { EventBannerItem } from 'src/components/EventBanner/index';
+import { useViewportIntersectionOnce } from 'src/hooks/useViewportIntersection';
+import * as tracker from 'src/utils/event-tracker';
 import { between, BreakPoint, orBelow } from 'src/utils/mediaQuery';
 import { EventBanner } from 'src/types/sections';
-import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver';
-import * as tracker from 'src/utils/event-tracker';
-import styled from '@emotion/styled';
 
 const List = styled.ul`
   display: flex;
@@ -33,28 +34,33 @@ interface EventBannerListProps {
 }
 
 const EventBannerList: React.FC<EventBannerListProps> = (props) => {
-  const targetRef = useRef(null);
-  const isIntersecting = useIntersectionObserver(targetRef, '0px');
-  useEffect(() => {
-    if (isIntersecting) {
-      props.items.forEach((item, index) => {
-        tracker.sendDisplayEvent({
-          slug: props.slug,
-          id: String(item.id),
-          order: index,
-        });
+  const { items, slug } = props;
+  const [showImage, setShowImage] = React.useState(false);
+  const sendDisplayEvent = React.useCallback(() => {
+    setShowImage(true);
+    items.forEach((item, index) => {
+      tracker.sendDisplayEvent({
+        slug,
+        id: String(item.id),
+        order: index,
       });
-    }
-  }, [isIntersecting, props.items, props.slug]);
+    });
+  }, [items, slug]);
+  const ref = useViewportIntersectionOnce<HTMLUListElement>(sendDisplayEvent);
   return (
-    <List ref={targetRef}>
+    <List ref={ref}>
       {props.items.slice(0, 4).map((item, index) => (
         <EventBannerItem key={index}>
           <a
             href={item.url}
-            onClick={tracker.sendClickEvent.bind(null, item.id, props.slug, index)}
+            onClick={tracker.sendClickEvent.bind(null, item.id, slug, index)}
           >
-            <img width="100%" height="100%" src={item.image_url} alt={item.title} />
+            <img
+              width="100%"
+              height="100%"
+              src={showImage ? item.image_url : undefined}
+              alt={item.title}
+            />
           </a>
         </EventBannerItem>
       ))}
