@@ -263,14 +263,13 @@ workflows:
                 color: '#805b24'
                 channel: deploy-books-dev
                 rollback: true
-  deploy-prod:
+  deploy-prerelease:
     jobs:
       - build:
           name: build-prod
           filters:
             branches:
-              only:
-                - /release\/.+/
+              only: master
       - deploy-s3:
           name: deploy-prod/s3
           requires:
@@ -284,6 +283,30 @@ workflows:
           post-steps:
             - notify:
                 prefix: '[PRE-RELEASE]'
+      - rollback-approval:
+          type: approval
+          requires:
+            - deploy-prerelease
+      - rollback:
+          name: rollback-prerelease
+          requires:
+            - rollback-approval
+          post-steps:
+            - notify:
+                color: '#805b24'
+                rollback: true
+  deploy-prod:
+    jobs:
+      - build:
+          name: build-prod
+          filters:
+            branches:
+              only:
+                - /release\/.+/
+      - deploy-s3:
+          name: deploy-prod/s3
+          requires:
+            - build-prod
       - slack/approval-notification:
           channel: deploy-books
           requires:
