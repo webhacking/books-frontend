@@ -139,6 +139,9 @@ jobs:
       aws-secret-access-key:
         type: env_var_name
         default: PROD_AWS_SECRET_ACCESS_KEY
+      s3-bucket:
+        type: string
+        default: ridi-books-prod
       stage:
         type: string
         default: production
@@ -147,6 +150,7 @@ jobs:
         default: https://books.ridicdn.net
     environment:
       STAGE: << parameters.stage >>
+      S3_BUCKET: << parameters.s3-bucket >>
       ASSET_PREFIX: << parameters.assetPrefix >>
     steps:
       - checkout
@@ -228,6 +232,7 @@ workflows:
             - build-dev
           aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
           aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
+          s3-bucket: ridi-books-dev
           stage: staging
           assetPrefix: https://books.ridi.io
       - deploy:
@@ -236,6 +241,7 @@ workflows:
             - build-dev
           aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
           aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
+          s3-bucket: ridi-books-dev
           stage: development
           assetPrefix: https://books-static.ridi.io
           post-steps:
