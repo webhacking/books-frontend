@@ -8,6 +8,7 @@ import { timeAgo } from 'src/utils/common';
 import ArrowLeft from 'src/svgs/ChevronRight.svg';
 import NotificationIcon from 'src/svgs/Notification_solid.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import { Notification as NotificationItemScheme } from 'src/types/notification';
 import NotificationPlaceholder from 'src/components/Placeholder/NotificationItemPlaceholder';
 import * as tracker from 'src/utils/event-tracker';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
@@ -173,23 +174,9 @@ const NoEmptyNotificationText = styled.span`
   font-weight: normal;
 `;
 
-interface NotificationItemScheme {
-  landingUrl: string;
-  deeplinkUrl: string | null;
-  expireAt: number;
-  imageUrl: string;
-  imageType: string;
-  createdAt: number;
-  userIdx: number;
-  message: string;
-  id: string;
-  tag: string;
-  itemId: string;
-  strCreatedAt: string;
-}
-
 interface NotificationItemProps {
   item: NotificationItemScheme;
+  landingUrl: NotificationItemScheme['landingUrl'];
   createdAtTimeAgo: string;
   dot?: boolean;
   slug: string;
@@ -200,8 +187,6 @@ interface NotificationPageProps {
   isTitleHidden?: boolean;
   useDeeplinkUrl?: boolean;
 }
-
-const NotificationContext = React.createContext({ useDeeplinkUrl: false });
 
 export const NotificationItem: React.FunctionComponent<NotificationItemProps> = (props) => {
   const {
@@ -218,14 +203,12 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
 
   const ref = useViewportIntersection<HTMLLIElement>(handleVisible);
 
-  const { useDeeplinkUrl } = React.useContext(NotificationContext);
-
   return (
     <NotiListItem ref={ref}>
       <NotiItemWrapper
         // eslint-disable-next-line react/jsx-no-bind
         onClick={tracker.sendClickEvent.bind(null, item, slug, order)}
-        href={useDeeplinkUrl ? item.deeplinkUrl || item.landingUrl : item.landingUrl}
+        href={item.landingUrl}
       >
         <ImageWrapper
           className={slug}
@@ -294,18 +277,17 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
                 <NoEmptyNotificationText>새로운 알림이 없습니다.</NoEmptyNotificationText>
               </NoEmptyNotification>
             ) : (
-              <NotificationContext.Provider value={{ useDeeplinkUrl }}>
-                {items.map((item, index) => (
-                  <NotificationItem
-                    key={index}
-                    createdAtTimeAgo={timeAgo(item.createdAt)}
-                    item={item}
-                    dot={index < unreadCount}
-                    slug={slug}
-                    order={index}
-                  />
-                ))}
-              </NotificationContext.Provider>
+              items.map((item, index) => (
+                <NotificationItem
+                  key={index}
+                  createdAtTimeAgo={timeAgo(item.createdAt)}
+                  item={item}
+                  landingUrl={useDeeplinkUrl && item.deeplinkUrl ? item.deeplinkUrl : item.landingUrl}
+                  dot={index < unreadCount}
+                  slug={slug}
+                  order={index}
+                />
+              ))
             )}
           </NotiList>
         ) : (
