@@ -80,8 +80,7 @@ export function ViewportIntersectionProvider(props: Props) {
 }
 
 /**
- * 뷰포트 영역의 IntersectionObserver에 엘리먼트를 등록하는 ref를 반환하는
- * 훅입니다.
+ * 뷰포트 영역의 IntersectionObserver에 엘리먼트를 등록하는 ref를 반환합니다.
  *
  * 상위에 ViewportIntersectionProvider가 있어야 합니다.
  *
@@ -97,4 +96,25 @@ export function useViewportIntersection<T extends Element>(callback: Callback): 
     return ctx.getRegisterRef<T>(callback);
   }, [ctx, callback]);
   return ref;
+}
+
+/**
+ * 뷰포트 영역의 IntersectionObserver에 엘리먼트를 등록하는 ref를 반환합니다.
+ * useViewportIntersection과는 달리 콜백이 뷰포트에 들어올 때 한 번만
+ * 실행됩니다.
+ *
+ * 상위에 ViewportIntersectionProvider가 있어야 합니다.
+ *
+ * @argument callback 엘리먼트가 뷰포트 영역에 들어올 때 실행될 함수
+ * @returns 추적할 엘리먼트에 붙일 ref
+ */
+export function useViewportIntersectionOnce<T extends Element>(callback: () => void): React.Ref<T> {
+  const called = React.useRef(false);
+  const callbackGuard = React.useCallback((visible: boolean) => {
+    if (!called.current && visible) {
+      called.current = true;
+      callback();
+    }
+  }, [callback]);
+  return useViewportIntersection(callbackGuard);
 }
