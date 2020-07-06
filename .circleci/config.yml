@@ -237,7 +237,7 @@ workflows:
           aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
           aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
           stage: development
-          assetPrefix: https://books.ridi.io
+          assetPrefix: https://books-static.ridi.io
           post-steps:
             - notify:
                 channel: deploy-store-dev
