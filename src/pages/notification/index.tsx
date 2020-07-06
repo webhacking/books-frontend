@@ -8,6 +8,7 @@ import { timeAgo } from 'src/utils/common';
 import ArrowLeft from 'src/svgs/ChevronRight.svg';
 import NotificationIcon from 'src/svgs/Notification_solid.svg';
 import { BreakPoint, orBelow } from 'src/utils/mediaQuery';
+import { Notification as NotificationItemScheme } from 'src/types/notification';
 import NotificationPlaceholder from 'src/components/Placeholder/NotificationItemPlaceholder';
 import * as tracker from 'src/utils/event-tracker';
 import { useViewportIntersection } from 'src/hooks/useViewportIntersection';
@@ -173,22 +174,9 @@ const NoEmptyNotificationText = styled.span`
   font-weight: normal;
 `;
 
-interface NotificationItemScheme {
-  landingUrl: string;
-  expireAt: number;
-  imageUrl: string;
-  imageType: string;
-  createdAt: number;
-  userIdx: number;
-  message: string;
-  id: string;
-  tag: string;
-  itemId: string;
-  strCreatedAt: string;
-}
-
 interface NotificationItemProps {
   item: NotificationItemScheme;
+  landingUrl: NotificationItemScheme['landingUrl'];
   createdAtTimeAgo: string;
   dot?: boolean;
   slug: string;
@@ -197,6 +185,7 @@ interface NotificationItemProps {
 
 interface NotificationPageProps {
   isTitleHidden?: boolean;
+  useDeeplinkUrl?: boolean;
 }
 
 export const NotificationItem: React.FunctionComponent<NotificationItemProps> = (props) => {
@@ -247,7 +236,10 @@ export const NotificationItem: React.FunctionComponent<NotificationItemProps> = 
 };
 
 const NotificationPage: React.FC<NotificationPageProps> = (props) => {
-  const { isTitleHidden = false } = props;
+  const {
+    isTitleHidden = false,
+    useDeeplinkUrl = false,
+  } = props;
   const { unreadCount, items, requestFetchNotifications } = useNotification();
   const loggedUser = useAccount();
   const slug = 'notification-item';
@@ -290,6 +282,7 @@ const NotificationPage: React.FC<NotificationPageProps> = (props) => {
                   key={index}
                   createdAtTimeAgo={timeAgo(item.createdAt)}
                   item={item}
+                  landingUrl={useDeeplinkUrl && item.deeplinkUrl ? item.deeplinkUrl : item.landingUrl}
                   dot={index < unreadCount}
                   slug={slug}
                   order={index}
