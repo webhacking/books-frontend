@@ -286,9 +286,9 @@ workflows:
       - rollback-approval:
           type: approval
           requires:
-            - deploy-prod
+            - deploy-prerelease
       - rollback:
-          name: rollback-prod
+          name: rollback-prerelease
           requires:
             - rollback-approval
           post-steps:
