@@ -3,7 +3,7 @@ version: '3.7'
 # ssl dependent by traefik (https://github.com/ridi/traefik)
 services:
   books:
-    image: node:10
+    image: node:12
     container_name: books
     volumes:
       - type: bind
@@ -16,10 +16,7 @@ services:
           nocopy: true
     working_dir: /books
     init: true
-    env_file:
-      - ./.env
     environment:
-      ENVIRONMENT: local
       NEXT_TELEMETRY_DISABLED: '1'
     command: >
       sh -c "yarn install --frozen-lockfile &&

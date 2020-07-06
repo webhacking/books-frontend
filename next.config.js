@@ -55,7 +55,7 @@ const nextConfig = {
     },
   },
   webpack (config, { buildId, isServer, webpack }) {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.SENTRY_AUTH_TOKEN) {
       config.plugins.push(
         new SentryCliPlugin({
           include: ['./build/', './src/'],
