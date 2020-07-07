@@ -160,11 +160,17 @@ jobs:
           aws-access-key-id: << parameters.aws-access-key-id >>
           aws-secret-access-key: << parameters.aws-secret-access-key >>
       - run:
+          name: Get last deployment timestamp
           command:
             yarn serverless deploy list -s << parameters.stage >> | awk '/Timestamp/ {print $NF}' | tail -n 1 > .lastdeploytimestamp
       - run:
+          name: Deploy lambda function
           command: yarn deploy -s << parameters.stage >>
           when: always
+      - run:
+          name: Deploy full serverless app
+          command: yarn serverless deploy -v -s << parameters.stage >>
+          when: on_fail
       - persist_to_workspace:
           root: .
           paths:
