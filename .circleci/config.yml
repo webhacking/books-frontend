@@ -162,12 +162,13 @@ jobs:
       - run:
           command:
             yarn serverless deploy list -s << parameters.stage >> | awk '/Timestamp/ {print $NF}' | tail -n 1 > .lastdeploytimestamp
+      - run:
+          command: yarn deploy -s << parameters.stage >>
+          when: always
       - persist_to_workspace:
           root: .
           paths:
             - .lastdeploytimestamp
-      - run:
-          command: yarn deploy -s << parameters.stage >>
   profile-live:
     docker:
       - image: circleci/node:lts-browsers
