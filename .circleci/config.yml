@@ -250,7 +250,7 @@ workflows:
           aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
           s3-bucket: ridi-books-dev
           stage: development
-          assetPrefix: https://books-static.ridi.io
+          assetPrefix: https://books.ridi.io
           post-steps:
             - notify:
                 channel: deploy-store-dev
