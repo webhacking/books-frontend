@@ -45,7 +45,7 @@ module.exports.server = server;
 
 // binary mode
 // https://github.com/dougmoscrop/serverless-http/blob/master/docs/ADVANCED.md#binary-mode
-module.exports.handler = serverless(server, {
+const handler = serverless(server, {
   binary: [
     'application/javascript',
     'application/json',
@@ -66,3 +66,16 @@ module.exports.handler = serverless(server, {
     'text/xml',
   ],
 });
+
+module.exports.handler = (event, context) => {
+  // decode query params for ALB
+  // Node.js 12.x에서 Object.fromEntries 사용 가능함
+  if (event.requestContext && event.requestContext.elb) {
+    const params = Object.fromEntries(
+      Object.entries(event.queryStringParameters)
+        .map(([key, value]) => [decodeURIComponent(key), decodeURIComponent(value)])
+    );
+    event.queryStringParameters = params;
+  }
+  return handler(event, context);
+};
