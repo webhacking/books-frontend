@@ -287,7 +287,6 @@ workflows:
           requires:
             - build-prod
           stage: prerelease
-          assetPrefix: https://books.ridibooks.com
           post-steps:
             - notify:
                 prefix: '[PRE-RELEASE]'
