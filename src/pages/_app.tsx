@@ -17,7 +17,7 @@ import { PartialSeparator } from 'src/components/Misc';
 import wrapper from 'src/store/config';
 import { ViewportIntersectionProvider } from 'src/hooks/useViewportIntersection';
 import Meta from 'src/components/Meta';
-import DisallowedHostsFilter from 'src/components/Misc/DisallowedHostsFilter';
+import DisallowedHostsFilter, { getStage } from 'src/components/Misc/DisallowedHostsFilter';
 import sentry from 'src/utils/sentry';
 import InAppThemeProvider, { getAppTheme, Theme } from 'src/components/Misc/InAppThemeProvider';
 import { AccountProvider } from 'src/hooks/useAccount';
@@ -45,7 +45,7 @@ class StoreApp extends App<StoreAppProps> {
   public static async getInitialProps({ ctx, Component }: AppContext) {
     const cookies = new Cookies(ctx.req?.headers?.cookie ?? {});
     const theme = getAppTheme(cookies);
-    const stage = String(cookies.get('stage'));
+    const stage = getStage(cookies);
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
       : {};
