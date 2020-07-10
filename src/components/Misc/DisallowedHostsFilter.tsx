@@ -33,7 +33,7 @@ const DisallowedHostsFilter: React.FC<{ stage: string }> = ({ stage }) => {
     }
   }, []);
 
-  return !stage ? <></> : (
+  return !stage ? null : (
     <Badge>{stage}</Badge>
   );
 };
