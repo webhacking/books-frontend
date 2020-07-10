@@ -254,7 +254,7 @@ workflows:
           assetPrefix: https://books.ridi.io
           post-steps:
             - notify:
-                channel: deploy-store-dev
+                channel: deploy-books-dev
                 prefix: '[DEV]'
       - rollback-approval:
           type: approval
