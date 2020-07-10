@@ -387,7 +387,7 @@ const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
             <SubServicesList>
               {subGenreData.map((service) => (
                 <TabItem
-                  key={service.name}
+                  key={service.path}
                   href={service.path}
                   activePath={service.activePaths}
                   label={service.name}

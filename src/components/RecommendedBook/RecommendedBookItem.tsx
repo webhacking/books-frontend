@@ -56,7 +56,6 @@ function RecommendedBookItem(props: Props) {
     className,
     // @ts-ignore
     book: { sentence, b_id },
-    type,
   } = props;
   return (
     <PortraitBook
@@ -66,8 +65,8 @@ function RecommendedBookItem(props: Props) {
       slug={slug}
       className={className}
     >
-      {type === 'HotRelease' && <BookMeta bId={b_id} theme={theme} />}
-      {type === 'TodayRecommendation' && (
+      {props.type === 'HotRelease' && <BookMeta bId={b_id} theme={theme} />}
+      {props.type === 'TodayRecommendation' && (
         <RecommendationText bg={theme}>
           {newlineToReactNode(sentence)}
         </RecommendationText>

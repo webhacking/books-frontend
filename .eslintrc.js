@@ -34,6 +34,7 @@ module.exports = {
     'import/prefer-default-export': 0,
     'import/no-cycle': 0,
     'import/no-extraneous-dependencies': 0,
+    'react/destructuring-assignment': 0,
     'react/prop-types': 0,
     'react/no-array-index-key': 'warn',
     'react/jsx-props-no-spreading': 0,

@@ -32,11 +32,7 @@ const easings: {[index: string]: Function} = {
     return 1 - t * t * t * t;
   },
   easeInOutQuart(t: number) {
-    if (t < 0.5) {
-      return 8 * t * t * t * t;
-    }
-    t -= 1;
-    return 1 - 8 * t * t * t * t;
+    return t < 0.5 ? 8 * t ** 4 : 1 - 8 * (t - 1) ** 4;
   },
   easeInQuint(t: number) {
     return t * t * t * t * t;

@@ -50,31 +50,32 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
   }
 
   public render() {
-    const { props, state } = this;
+    const { theme, isMounted } = this.state;
+    const { pathname, type, is_login } = this.props;
     return (
-      <ThemeProvider theme={!state.theme ? defaultTheme : darkTheme}>
-        <PartialSeparator name="GNB" wrapped={!state.isMounted}>
+      <ThemeProvider theme={!theme ? defaultTheme : darkTheme}>
+        <PartialSeparator name="GNB" wrapped={!isMounted}>
           <GlobalNavigationBar
             id="gnb"
-            pathname={props.pathname}
+            pathname={pathname}
             isPartials
-            isLoginForPartials={props.is_login}
-            type={props.type}
+            isLoginForPartials={is_login}
+            type={type}
             searchKeyword=""
           />
-          {props.pathname === '/category/list' && (
+          {pathname === '/category/list' && (
             <GenreTab isPartials currentGenre="category" />
           )}
 
-          {['/v2/Detail'].includes(props.pathname ?? '') && (
+          {['/v2/Detail'].includes(pathname ?? '') && (
             <GenreTab isPartials currentGenre="" />
           )}
 
-          {props.pathname?.startsWith('/books') && (
+          {pathname?.startsWith('/books') && (
             <GenreTab isPartials currentGenre="" />
           )}
 
-          {props.pathname?.startsWith('/event') && (
+          {pathname?.startsWith('/event') && (
             <GenreTab isPartials currentGenre="" />
           )}
         </PartialSeparator>
