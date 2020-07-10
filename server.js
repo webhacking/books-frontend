@@ -16,6 +16,8 @@ server.use(async (ctx, next) => {
     ctx.status = 308;
     ctx.redirect(`${ctx.request.path.replace(/\/+$/, '')}${ctx.request.search}`);
   } else {
+    ctx.res.statusCode = 200;
+    ctx.set('Cache-Control', 'no-store');
     await next();
   }
 });
@@ -23,11 +25,6 @@ server.use(async (ctx, next) => {
 router.all("*", async ctx => {
   await handle(ctx.req, ctx.res);
   ctx.response = false;
-});
-
-server.use(async (ctx, next) => {
-  ctx.res.statusCode = 200;
-  await next();
 });
 
 server.use(router.routes());

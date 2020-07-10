@@ -127,6 +127,7 @@ jobs:
           aws-access-key-id: << parameters.aws-access-key-id >>
           aws-secret-access-key: << parameters.aws-secret-access-key >>
           arguments: |
+            --cache-control public,max-age=31536000,immutable \
             --exclude "*.map"
   deploy:
     docker:
@@ -286,7 +287,6 @@ workflows:
           requires:
             - build-prod
           stage: prerelease
-          assetPrefix: https://books.ridibooks.com
           post-steps:
             - notify:
                 prefix: '[PRE-RELEASE]'
