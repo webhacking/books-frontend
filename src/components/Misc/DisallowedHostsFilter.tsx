@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import Cookies from 'universal-cookie';
+import React, { useEffect } from 'react';
 import { localStorage } from 'src/utils/storages';
 import styled from '@emotion/styled';
 
@@ -24,13 +23,8 @@ const Badge = styled.div`
   display: block;
 `;
 
-const DisallowedHostsFilter: React.FC = () => {
-  const [stage, setStage] = useState('');
-
+const DisallowedHostsFilter: React.FC<{ stage: string }> = ({ stage }) => {
   useEffect(() => {
-    const cookies = new Cookies();
-    setStage(cookies.get('stage'));
-
     const bypass = JSON.parse(localStorage.getItem('disallowed-hosts-filter/bypass') || 'false');
     if (!stage && location.host === 'books.ridibooks.com' && !bypass) {
       const url = new URL(location.href);

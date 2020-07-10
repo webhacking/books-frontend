@@ -8,6 +8,7 @@ import Head from 'next/head';
 import { END } from 'redux-saga';
 import React, { ErrorInfo } from 'react';
 import { UAParser } from 'ua-parser-js';
+import Cookies from 'universal-cookie';
 
 import GNB from 'src/components/GNB';
 import { defaultTheme, partialResetStyles, resetStyles } from 'src/styles';
@@ -29,6 +30,7 @@ interface StoreAppProps {
   // tslint:disable-next-line
   query: any;
   theme?: Theme;
+  stage: string;
   nonce?: string;
   hasError: boolean;
   sentryErrorEventId?: string;
@@ -41,7 +43,9 @@ const Contents = styled.main`
 
 class StoreApp extends App<StoreAppProps> {
   public static async getInitialProps({ ctx, Component }: AppContext) {
-    const theme = getAppTheme(ctx.req?.headers ?? {});
+    const cookies = new Cookies(ctx.req?.headers?.cookie ?? {});
+    const theme = getAppTheme(cookies);
+    const stage = String(cookies.get('stage'));
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
       : {};
@@ -53,6 +57,7 @@ class StoreApp extends App<StoreAppProps> {
     return {
       pageProps,
       theme,
+      stage,
       query: {
         ...ctx.query,
         is_login: ctx?.query?.is_login === 'true' ? 'true' : 'false',
@@ -108,6 +113,7 @@ class StoreApp extends App<StoreAppProps> {
       Component,
       query,
       theme,
+      stage,
       pageProps,
       nonce,
     } = this.props;
@@ -149,7 +155,7 @@ class StoreApp extends App<StoreAppProps> {
       return (
         <>
           <Meta />
-          <DisallowedHostsFilter />
+          <DisallowedHostsFilter stage={stage} />
           <CacheProvider value={createCache({ ...cache, nonce })}>
             <Global styles={resetStyles} />
             <AccountProvider>
@@ -172,7 +178,7 @@ class StoreApp extends App<StoreAppProps> {
       // CacheProvider 올바르게 동작하는지 확인하기
       <>
         <Meta />
-        <DisallowedHostsFilter />
+        <DisallowedHostsFilter stage={stage} />
         <CacheProvider value={createCache({ ...cache, nonce })}>
           <Global styles={resetStyles} />
           <AccountProvider>
