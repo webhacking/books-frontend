@@ -61,9 +61,9 @@ export const Home: NextPage<HomeProps> = (props) => {
   const dispatch = useDispatch();
   const route = useRouter();
 
-  const { lazyLoadBIds, genre = 'general', branches: _branches } = props;
+  const { lazyLoadBIds, genre = 'general' } = props;
   const previousGenre = usePrevious(genre);
-  const [branches, setBranches] = useState(_branches || []);
+  const [branches, setBranches] = useState(props.branches || []);
 
   useEffect(() => {
     const cookies = new Cookies();

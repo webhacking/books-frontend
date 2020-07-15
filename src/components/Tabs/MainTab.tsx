@@ -296,7 +296,7 @@ const genreValueReplace = (visitedGenre: string) => {
   return visitedGenre;
 };
 
-export const MainTab: React.FC<MainTabProps> = (props) => {
+export default function MainTab(props: MainTabProps) {
   const { loggedUserInfo } = props;
   const { unreadCount, items, requestFetchUnreadCount } = useNotification();
   const router = useRouter();
@@ -365,6 +365,4 @@ export const MainTab: React.FC<MainTabProps> = (props) => {
       </Tabs>
     </>
   );
-};
-
-export default MainTab;
+}

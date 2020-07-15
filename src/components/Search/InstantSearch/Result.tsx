@@ -141,8 +141,8 @@ interface InstantSearchResultProps {
 const AuthorLabel: React.FC<{ author: string; authors: SearchTypes.AuthorsInfo[] }> = ({ authors, author }) => {
   const viewedAuthors = authors
     && authors
-      .filter((authorItem) => authorItem.role !== 'translator')
-      .map((authorItem) => authorItem.name);
+      .filter(({ role }) => role !== 'translator')
+      .map(({ name }) => name);
   if (!viewedAuthors || viewedAuthors.length === 0) {
     return <Author>{author}</Author>;
   }

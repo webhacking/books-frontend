@@ -21,9 +21,9 @@ interface EventBannerProps {
   slug: string;
 }
 
-const EventBanner: React.FC<EventBannerProps> = ({ items, genre, slug }) => (
+const EventBanner: React.FC<EventBannerProps> = (props) => (
   <Section>
-    <EventBannerList items={items} genre={genre} slug={slug} />
+    <EventBannerList {...props} />
   </Section>
 );
 
