@@ -26,7 +26,7 @@ module.exports = {
   rules: {
     'class-methods-use-this': 'warn',
     'max-len': 0,
-    'no-param-reassign': 0,
+    'no-param-reassign': ['error', { props: false }],
     'no-restricted-globals': 'warn',
     'no-underscore-dangle': ['error', { allow: ['__NEXT_DATA__']}],
     'no-unused-expressions': 0,

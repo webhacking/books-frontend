@@ -36,22 +36,24 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
   constructor(props: GNBProps) {
     super(props);
     this.state = {
-      theme: props.theme,
       isMounted: false,
     };
   }
 
   public componentDidMount(): void {
-    const { props } = this;
     this.setState({
       isMounted: true,
-      theme: props.theme,
     });
   }
 
   public render() {
-    const { theme, isMounted } = this.state;
-    const { pathname, type, is_login } = this.props;
+    const { isMounted } = this.state;
+    const {
+      theme,
+      pathname,
+      type,
+      is_login,
+    } = this.props;
     return (
       <ThemeProvider theme={!theme ? defaultTheme : darkTheme}>
         <PartialSeparator name="GNB" wrapped={!isMounted}>
