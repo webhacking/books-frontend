@@ -190,8 +190,11 @@ interface NotificationPageProps {
 
 export const NotificationItem: React.FunctionComponent<NotificationItemProps> = (props) => {
   const {
-    item, landingUrl, createdAtTimeAgo, dot = false, slug, order,
+    item, createdAtTimeAgo, dot = false, slug, order,
   } = props;
+
+  // 잘못된 deeplinkUrl 로 이동하지 않도록 하기 위한 임시 코드. 2020-08-10 revert 예정.
+  const landingUrl = item.createdAt < 1594967400000 ? item.landingUrl : props.landingUrl;
 
   const handleVisibleRef = React.useRef<boolean>(false);
   const handleVisible = React.useCallback((visible) => {
