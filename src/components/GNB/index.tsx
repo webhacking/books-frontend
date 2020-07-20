@@ -288,11 +288,10 @@ export const GNB: React.FC<GNBProps> = React.memo((props: GNBProps) => {
 
   const initialLoginPath = `${process.env.NEXT_STATIC_ACCOUNT_HOST}/account/login`;
   const initialSignupPath = `${process.env.NEXT_STATIC_ACCOUNT_HOST}/account/signup`;
-  const initialCashOrderPath = `${process.env.NEXT_STATIC_ACCOUNT_HOST}/order/checkout/cash`;
+  const cashOrderPath = `${process.env.NEXT_STATIC_ACCOUNT_HOST}/order/checkout/cash`;
 
   const [loginPath, setLoginPath] = useState(initialLoginPath);
   const [signUpPath, setSignUpPath] = useState(initialSignupPath);
-  const [cashOrderPath, setCashOrderPath] = useState(initialCashOrderPath);
 
   const [origin, setOrigin] = useState('');
 

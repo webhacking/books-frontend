@@ -296,7 +296,7 @@ interface SavedSubServices {
 }
 
 const GenreTab: React.FC<GenreTabProps> = React.memo((props) => {
-  const { currentGenre, isPartials } = props;
+  const { currentGenre } = props;
   const subGenreData = subGenres[currentGenre.split('-')[0]];
 
   const router = useRouter();

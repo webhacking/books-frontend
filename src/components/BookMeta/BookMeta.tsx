@@ -38,7 +38,7 @@ const AuthorsWrapper = styled.span<{color: string}>`
 `;
 
 function AuthorAnchor(props: { author: BookApi.Author }) {
-  const { id, name } = props.author;
+  const { author: { id, name } } = props;
   return (
     <a
       href={

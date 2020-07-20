@@ -2,7 +2,7 @@ import * as React from 'react';
 import { darkTheme, defaultTheme } from 'src/styles/themes';
 import { ThemeProvider } from 'emotion-theming';
 import { ConnectedInitializeProps } from 'src/types/common';
-import GNB from 'src/components/GNB';
+import GlobalNavigationBar from 'src/components/GNB';
 import { PartialSeparator } from 'src/components/Misc';
 import { GenreTab } from 'src/components/Tabs';
 
@@ -23,7 +23,7 @@ interface GNBProps {
   q?: string;
 }
 export default class PartialGNB extends React.Component<GNBProps, GNBState> {
-  public static async getInitialProps(initialProps: ConnectedInitializeProps) {
+  public static getInitialProps(initialProps: ConnectedInitializeProps) {
     if (initialProps.req) {
       return {
         ...initialProps.query,
@@ -33,44 +33,51 @@ export default class PartialGNB extends React.Component<GNBProps, GNBState> {
     return { ...initialProps.query };
   }
 
-  public state: GNBState = {
-    // eslint-disable-next-line no-invalid-this
-    theme: this.props.theme,
-    isMounted: false,
-  };
+  constructor(props: GNBProps) {
+    super(props);
+    this.state = {
+      isMounted: false,
+    };
+  }
 
   public componentDidMount(): void {
     this.setState({
       isMounted: true,
-      theme: this.props.theme,
     });
   }
 
   public render() {
+    const { isMounted } = this.state;
+    const {
+      theme,
+      pathname,
+      type,
+      is_login,
+    } = this.props;
     return (
-      <ThemeProvider theme={!this.state.theme ? defaultTheme : darkTheme}>
-        <PartialSeparator name="GNB" wrapped={!this.state.isMounted}>
-          <GNB
+      <ThemeProvider theme={!theme ? defaultTheme : darkTheme}>
+        <PartialSeparator name="GNB" wrapped={!isMounted}>
+          <GlobalNavigationBar
             id="gnb"
-            pathname={this.props.pathname}
+            pathname={pathname}
             isPartials
-            isLoginForPartials={this.props.is_login}
-            type={this.props.type}
+            isLoginForPartials={is_login}
+            type={type}
             searchKeyword=""
           />
-          {this.props.pathname === '/category/list' && (
+          {pathname === '/category/list' && (
             <GenreTab isPartials currentGenre="category" />
           )}
 
-          {['/v2/Detail'].includes(this.props.pathname ?? '') && (
+          {['/v2/Detail'].includes(pathname ?? '') && (
             <GenreTab isPartials currentGenre="" />
           )}
 
-          {this.props.pathname?.startsWith('/books') && (
+          {pathname?.startsWith('/books') && (
             <GenreTab isPartials currentGenre="" />
           )}
 
-          {this.props.pathname?.startsWith('/event') && (
+          {pathname?.startsWith('/event') && (
             <GenreTab isPartials currentGenre="" />
           )}
         </PartialSeparator>

@@ -1,3 +1,4 @@
+import React from 'react';
 // easing functions
 // https://gist.github.com/gre/1650294
 const easings: {[index: string]: Function} = {
@@ -5,40 +6,40 @@ const easings: {[index: string]: Function} = {
     return t;
   },
   easeInQuad(t: number) {
-    return t * t;
+    return t ** 2;
   },
   easeOutQuad(t: number) {
     return t * (2 - t);
   },
   easeInOutQuad(t: number) {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    return t < 0.5 ? 2 * t ** 2 : -1 + (4 - 2 * t) * t;
   },
   easeInCubic(t: number) {
-    return t * t * t;
+    return t ** 3;
   },
   easeOutCubic(t: number) {
-    return --t * t * t + 1;
+    return (t - 1) ** 3 + 1;
   },
   easeInOutCubic(t: number) {
-    return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+    return t < 0.5 ? 4 * t ** 3 : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
   },
   easeInQuart(t: number) {
-    return t * t * t * t;
+    return t ** 4;
   },
   easeOutQuart(t: number) {
-    return 1 - --t * t * t * t;
+    return 1 - (t - 1) ** 4;
   },
   easeInOutQuart(t: number) {
-    return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t;
+    return t < 0.5 ? 8 * t ** 4 : 1 - 8 * (t - 1) ** 4;
   },
   easeInQuint(t: number) {
-    return t * t * t * t * t;
+    return t ** 5;
   },
   easeOutQuint(t: number) {
-    return 1 + --t * t * t * t * t;
+    return 1 + (t - 1) ** 5;
   },
   easeInOutQuint(t: number) {
-    return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t;
+    return t < 0.5 ? 16 * t ** 5 : 1 + 16 * (t - 1) ** 5;
   },
 };
 
@@ -89,6 +90,7 @@ const horizontalAnimateScroll = (
       if (finished) {
         return;
       }
+
       refRafId.current = requestAnimationFrame(scroll);
     };
     scroll();

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import StarRating from 'src/components/StarRating/StarRating';
-import Tag from 'src/components/Tag/Tag';
+import * as Tags from 'src/components/Tag/Tag';
 import { StarRating as StarRatingType } from 'src/types/sections';
 
 import { useBookSelector } from 'src/hooks/useBookDetailSelector';
@@ -58,9 +58,9 @@ export default function BookMeta(props: BookMetaProps) {
       )}
       {(showTag || (showSomeDeal && isSomedeal)) && (
         <TagWrapper>
-          {showTag && isComic && <Tag.Comic />}
-          {showTag && isNovel && <Tag.Novel />}
-          {showSomeDeal && isSomedeal && <Tag.SomeDeal />}
+          {showTag && isComic && <Tags.ComicTag />}
+          {showTag && isNovel && <Tags.NovelTag />}
+          {showSomeDeal && isSomedeal && <Tags.SomeDealTag />}
         </TagWrapper>
       )}
     </BookMetaBase>
