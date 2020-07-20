@@ -18,7 +18,7 @@ const easings: {[index: string]: Function} = {
     return t ** 3;
   },
   easeOutCubic(t: number) {
-    return ((t - 1) ** 3) + 1;
+    return (t - 1) ** 3 + 1;
   },
   easeInOutCubic(t: number) {
     return t < 0.5 ? 4 * t ** 3 : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
