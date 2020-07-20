@@ -35,7 +35,7 @@ const someDealCSS = css`
 `;
 
 export function NovelTag() {
-  return (<span css={novelCSS}>소설</span>);
+  return <span css={novelCSS}>소설</span>;
 }
 export function ComicTag() {
   return (<span css={comicCSS}>만화</span>);
